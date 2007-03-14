@@ -28,9 +28,10 @@ my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 De
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
 
 $0=~/(.+\\)/is;
-our $path=$1;
+our $mypath=$1;
+our $path=$mypath."..\\GeoAM\\geo\\";
 
-my $dir=$path."geo\\$city_inf";
+my $dir=$path."$city_inf";
 mkdir $dir unless -d $dir;
 
 
@@ -40,13 +41,13 @@ my $InF=undef;
 my $OutF;
 my @cities;
 
-	open($InF, "<$path".'geo\\city.inf') or die "No file";
+	open($InF, "<$mypath".'city.inf') or die "No file $mypath".'city.inf';
 	@cities=<$InF>;
 	my $citlist=join("",@cities);
 	close($InF);
 #	die $citlist;
 
-	open($InF, "<$path".'geo\\timezone.inf') or die "No file";
+	open($InF, "<$mypath".'timezone.inf') or die "No file";
 	my @alltz=<$InF>;
 	close($InF);
 #	die $alltz;
@@ -55,7 +56,7 @@ my @cities;
 #=head
 if(! -f "$dir\\$city_inf\.txt"){
   unlink "$dir\\$city_inf\.txt";
-	open($InF, "<$path"."geo\\$city_inf\.inf") or die "No file";
+	open($InF, "<$path$city_inf\.ini") or die "No file $path$city_inf\.ini";
 	@cities=<$InF>;
 	close($InF);
 	my $cid=1;
@@ -128,7 +129,8 @@ if(! -f "$dir\\$city_inf\.txt"){
 #		print "$invoke\n";
 		system($invoke);
 	}
-	die "Ready. Check coords.";
+  unlink $path.'country.tmp';
+	die "Ready. Check coords.\n";
 #=cut
 }
 #####################################
@@ -154,7 +156,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			print "\n-----------------------\n";
 			my $tz=get_tz($params[3],$city);
 			my $dstbuf=calc_dst($tz);
-			my $invoke=$path."mutter.exe 2007 geo0- $params[1] $params[2]";
+			my $invoke=$mypath."mutter.exe 2007 geo0- $params[1] $params[2]";
 			print "$invoke\n";
 			system($invoke);
 			if($params[3]=~/USA \- (.+)/is){
