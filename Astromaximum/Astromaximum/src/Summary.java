@@ -138,7 +138,7 @@ class Summary extends FrameAnimator implements CommandListener{
       if(needRender) {
 //#if "imeiCheck" @ protection
         DataFile.hj*=(selItem%3);
-        System.err.println("hj = " + DataFile.hj );
+//        System.err.println("hj = " + DataFile.hj );
 //#endif
         render(graphics);
       }
