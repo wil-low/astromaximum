@@ -1,12 +1,16 @@
 use strict;
 
 my $rar='d:\Program Files\WinRAR\winrar.exe';
-my $jar='..\\..\\GeoAM\\dist\\GeoAM.jar';
+my $jar='dist\\GeoAM.jar';
 my @files;
 
 	$0=~/(.+\\)/is;
-	our $path=$1;
+	our $mypath=$1;
+	our $path=$mypath.'geo\\';
 	my $manif=$path.'META-INF';
+	our $deploy=$mypath.'deploy\\';
+	mkdir $deploy unless -d $deploy;
+	
 	mkdir $manif unless -d $manif;
 	$manif.="\\MANIFEST.MF";
 	
@@ -49,28 +53,28 @@ foreach my $city_inf(@files){
 		print $InF $jad;
 	close($InF);
 	
-	open($InF, "<$path$jar") or die "No file";
+	open($InF, "<$mypath$jar") or die "No file";
 	binmode($InF);
 	my @data=<$InF>;
 	$buf=join("",@data);
 	close($InF);
 	
-	open($InF, ">$path$dir\\$fname.jar") or die "No file $dir\\$fname.jar";
+	open($InF, ">$deploy$fname.jar") or die "No file $deploy$fname.jar";
 	binmode($InF);
 		print $InF $buf;
 	close($InF);
 	
-	my $cmd="\"$rar\" f $path$dir\\$fname\.jar $manif";
+	my $cmd="\"$rar\" f $deploy$fname\.jar $manif";
 	print "$cmd\n";
 	system($cmd);
-	$cmd="\"$rar\" f -ep1 $path$dir\\$fname\.jar $path$dir\\locations.dat";
+	$cmd="\"$rar\" a -ep1 $deploy$fname\.jar $path$dir\\locations.dat";
 	print "$cmd\n";
 	system($cmd);
 	
-	my $asize= -s "$dir\\$fname\.jar";
+	my $asize= -s "$deploy$fname\.jar";
 	$jad.="MIDlet-Jar-Size: $asize\n";
 	
-	open($InF, ">$path$dir\\$fname\.jad") or die "No file";
+	open($InF, ">$deploy$fname\.jad") or die "No file";
 		print $InF $jad;
 	close($InF);
 }
