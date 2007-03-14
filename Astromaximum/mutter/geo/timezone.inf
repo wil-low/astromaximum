@@ -1,0 +1,409 @@
++4.5                                                       AFG_Afghanistan, Kabul
++1.0   LastSunMar@2              LastSunOct@3              ALB_Albania, Tirana
++1.0                                                       DZA_Algeria, Algiers
+-11.0                                                      ASM_American Samoa, Pago Pago
++1.0   LastSunMar@2              LastSunOct@3              AND_Andorra, Andorra La Vella
++1.0                                                       AGO_Angola, Luanda
+-4.0                                                       AIA_Anguilla (GBR), The Valley
++8.0                                                       ATA Antarctica (AUS), Casey
++7.0                                                       ATA Antarctica (AUS), Davis
++6.0                                                       ATA Antarctica (AUS), Mawson
++10.0                                                      ATA Antarctica (FRA), Dumont-d´Urville
++5.0                                                       TFA Antarctica (FRA), Kerguelen Islands
++3.0                                                       ATA Antarctica (JAP), Syowa
++12.0  FirstSunOct@2             FirstSunAfter15Mar@3      ATA Antarctica (USA), McMurdo
+-4.0   FirstSunAfter09Oct@0      FirstSunAfter09Mar@0      ATA Antarctica (USA), Palmer
+-4.0                                                       ATG_Antigua and Barbuda (USA), Saint John´s
+-4.0                                                       ANT_Antilles (NLD) - Bonaire, Kralendijk
+-4.0                                                       ANT_Antilles (NLD) - Curaçao, Willemstad
+-3.0                                                       ARG_Argentina, Buenos Aires
++4.0   LastSunMar@2              LastSunOct@3              ARM_Armenia, Yerevan
+-4.0                                                       ABW_Aruba, Oranjestad
++0.0                                                       GBR Ascension Island, Georgetown
++10.0  LastSunOct@2              FirstSunApr@3             AUS_Australia - Capital Territory, Canberra
++10.5  LastSunOct@2              FirstSunApr@2             AUS Australia - Lord Howe Island
++9.5   LastSunOct@2              FirstSunApr@3             AUS Australia - New South Wales, Broken Hill
++10.0  LastSunOct@2              FirstSunApr@3             AUS_Australia - New South Wales, Sydney
++9.5                                                       AUS_Australia - North, Darwin
++10.0                                                      AUS_Australia - Queensland, Brisbane
++9.5   LastSunOct@2              FirstSunApr@3             AUS_Australia - South, Adelaide
++10.0  FirstSunOct@2             FirstSunApr@3             AUS_Australia - Tasmania, Hobart
++10.0  LastSunOct@2              FirstSunApr@3             AUS_Australia - Victoria, Melbourne
++8.0                                                       AUS_Australia - West, Perth
++1.0   LastSunMar@2              LastSunOct@3              AUT_Austria, Vienna (Wien)
++4.0   LastSunMar@4              LastSunOct@5              AZE_Azerbaijan, Baku
+-1.0   LastSunMar@0              LastSunOct@1              PRT_Azores, Ponta Delgada
+-5.0   FirstSunApr@2             LastSunOct@2              BHS_Bahamas (USA), Nassau
++3.0                                                       BHR_Bahrain, Al Manamah
++6.0                                                       BGD_Bangladesh, Dhaka (Dacca)
+-4.0                                                       BRB_Barbados, Bridgetown
++2.0   LastSunMar@2              LastSunOct@3              BLR_Belarus, Minsk
++1.0   LastSunMar@2              LastSunOct@3              BEL_Belgium, Brussels (Bruxelles)
+-6.0                                                       BLZ_Belize, Belmopan
++1.0                                                       BEN_Benin, Porto Novo
+-4.0   FirstSunApr@2             LastSunOct@2              BMU_Bermuda (GBR), Hamilton
++6.0                                                       BTN_Bhutan, Thimphu
+-4.0                                                       BOL_Bolivia, La Paz
++1.0   LastSunMar@2              LastSunOct@3              BIH_Bosnia and Herzegovina, Sarajevo
++2.0                                                       BWA_Botswana, Gaborone
+-5.0                                                       BRA Brazil - Acre, Rio Branco
+-3.0                                                       BRA Brazil - Alagoas, Maceió
+-3.0                                                       BRA Brazil - Amapá, Macapá
+-3.0                                                       BRA Brazil - Bahia, Salvador
+-3.0                                                       BRA Brazil - Ceará, Fortaleza
+-3.0   05Nov@0                   FirstSunAfter15Feb@0      BRA_Brazil - Distrito Federal, Brasilia
+-4.0                                                       BRA Brazil - East Amazonas, Manaus
+-3.0                                                       BRA Brazil - East Pará, Belém
+-3.0   05Nov@0                   FirstSunAfter15Feb@0      BRA Brazil - Espírito Santo, Vitória
+-3.0   05Nov@0                   FirstSunAfter15Feb@0      BRA Brazil - Goiás, Goiânia
+-3.0                                                       BRA Brazil - Maranhão, Sao Luís
+-4.0   05Nov@0                   FirstSunAfter15Feb@0      BRA Brazil - Mato Grosso do Sul, Campo Grande
+-4.0   05Nov@0                   FirstSunAfter15Feb@0      BRA Brazil - Mato Grosso, Cuiabá
+-3.0   05Nov@0                   FirstSunAfter15Feb@0      BRA Brazil - Minas Gerais, Belo Horizonte
+-3.0   05Nov@0                   FirstSunAfter15Feb@0      BRA Brazil - Paraná, Curitiba
+-3.0                                                       BRA Brazil - Paraíba, João Pessoa
+-2.0                                                       BRA Brazil - Pernambuco, Fernando de Noronha
+-3.0                                                       BRA Brazil - Pernambuco, Recife
+-3.0                                                       BRA Brazil - Piauí, Teresina
+-3.0                                                       BRA Brazil - Rio Grande do Norte, Natal
+-3.0   05Nov@0                   FirstSunAfter15Feb@0      BRA Brazil - Rio Grande do Sul, Caxias do Sul
+-3.0   05Nov@0                   FirstSunAfter15Feb@0      BRA Brazil - Rio de Janeiro, Rio de Janeiro
+-4.0                                                       BRA Brazil - Rondônia, Porto Velho
+-4.0                                                       BRA Brazil - Roraima, Boa Vista
+-3.0   05Nov@0                   FirstSunAfter15Feb@0      BRA Brazil - Santa Catarina, Florianópolis
+-3.0   05Nov@0                   FirstSunAfter15Feb@0      BRA Brazil - Sao Paulo, São Paulo
+-3.0                                                       BRA Brazil - Sergipe, Aracaju
+-3.0                                                       BRA Brazil - Tocantins, Araguaína
+-5.0                                                       BRA Brazil - West Amazonas, Eirunepé
+-4.0                                                       BRA Brazil - West Pará, Santarém
++6.0                                                       IOT_British Indian Ocean Territory, Diego Garcia
++8.0                                                       BRN_Brunei, Bandar Seri Begawan
++2.0   LastSunMar@3              LastSunOct@4              BGR_Bulgaria, Sofia
++0.0                                                       BFA_Burkina Faso, Ouagadougou
++2.0                                                       BDI_Burundi, Bujumbura
++7.0                                                       KHM_Cambodia, Phnom Penh
++1.0                                                       CMR_Cameroon, Yaoundé
+-7.0   FirstSunApr@2             LastSunOct@2              CAN Canada - Alberta, Edmonton
+-7.0                                                       CAN Canada - Brit. Columbia, Dawson Creek
+-8.0   FirstSunApr@2             LastSunOct@2              CAN Canada - Brit. Columbia, Vancouver
+-6.0   FirstSunApr@2             LastSunOct@3              CAN Canada - Manitoba, Winnipeg
+-4.0   FirstSunApr@0.0167        LastSunOct@0.0167         CAN Canada - New Brunswick, Fredericton
+-4.0   FirstSunApr@0.0167        LastSunOct@0.0167         CAN Canada - Newfoundland, Goose Bay
+-3.5   FirstSunApr@0.0167        LastSunOct@0.0167         CAN Canada - Newfoundland, Saint John´s
+-7.0   FirstSunApr@2             LastSunOct@2              CAN Canada - Northwest Territories, Yellowknife
+-4.0   FirstSunApr@2             LastSunOct@2              CAN Canada - Nova Scotia, Halifax
+-5.0                                                       CAN Canada - Nunavut, Coral Harbour
+-5.0   FirstSunApr@2             LastSunOct@2              CAN Canada - Nunavut, Iqaluit
+-7.0   FirstSunApr@2             LastSunOct@2              CAN Canada - Nunavut, Kugluktuk
+-6.0   FirstSunApr@2             LastSunOct@2              CAN Canada - Nunavut, Rankin Inlet
+-5.0   FirstSunApr@2             LastSunOct@2              CAN_Canada - Ontario, Ottawa
+-4.0   FirstSunApr@2             LastSunOct@2              CAN Canada - Prince Edward, Charlottetown
+-5.0   FirstSunApr@2             LastSunOct@2              CAN Canada - Quebec, Quebec
+-6.0                                                       CAN Canada - Saskatchewan, Regina
+-8.0   FirstSunApr@2             LastSunOct@2              CAN Canada - Yukon, Whitehorse
++0.0   LastSunMar@1              LastSunOct@2              ESP_Canary Islands, Las Palmas
+-1.0                                                       CPV_Cape Verde, Praia
+-5.0                                                       CYM_Cayman Islands (GBR), George Town
++1.0                                                       CAF_Central African Republic, Bangui
++1.0                                                       TCD_Chad, N´Djamena
+-4.0   FirstSunAfter09Oct@0      FirstSunAfter09Mar@0      CHL_Chile, Santiago
++8.0                                                       CHN_China, Beijing
++7.0                                                       CXR_Christmas Island (AUS), The Settlement
++6.5                                                       CCK Cocos (Keeling) Islands (AUS)
+-5.0                                                       COL_Colombia, Bogotá
++3.0                                                       COM_Comoros, Moroni
++1.0                                                       COD_Congo Dem. Rep., Kinshasa
++2.0                                                       COD Congo Dem. Rep., Lubumbashi
++1.0                                                       COG_Congo Rep., Brazzaville
+-10.0                                                      COK_Cook Islands, Avarua
+-6.0                                                       CRI_Costa Rica, San José
++1.0   LastSunMar@2              LastSunOct@3              HRV_Croatia, Zagreb
+-5.0   01Jan@0                   LastSunOct@1              CUB_Cuba, Havana
++2.0   LastSunMar@3              LastSunOct@4              CYP_Cyprus, Nicosia
++1.0   LastSunMar@2              LastSunOct@3              CZE_Czech Republic, Prague
++1.0   LastSunMar@2              LastSunOct@3              DNK_Denmark, Copenhagen (København)
++3.0                                                       DJI_Djibouti, Djibouti
+-4.0                                                       DMA_Dominica, Roseau
+-4.0                                                       DOM_Dominican Republic, Santo Domingo
+-6.0   FirstSatAfter08Oct@22     FirstSatAfter08Mar@22     CHL_Easter Island, Mataveri
+-5.0                                                       ECU_Ecuador, Quito
++2.0   LastFriApr@0              22Sep@0                   EGY_Egypt, Cairo
+-6.0                                                       SLV_El Salvador, San Salvador
++0.0   LastSunMar@1              LastSunOct@2              GBR_England, London
++1.0                                                       GNQ_Equatorial Guinea, Malabo
++3.0                                                       ERI_Eritrea, Asmara
++2.0   LastSunMar@3              LastSunOct@4              EST_Estonia, Tallinn
++3.0                                                       ETH_Ethiopia, Addis Ababa
+-4.0   FirstSunSep@2             FirstSunAfter15Apr@2      FLK_Falkland Islands (GBR), Stanley
++0.0   LastSunMar@1              LastSunOct@2              FRO_Faroe Islands (DNK), Tórshavn
++12.0                                                      FJI_Fiji Islands (USA), Suva
++2.0   LastSunMar@3              LastSunOct@4              ALA Finland - Åland Islands, Mariehamn
++2.0   LastSunMar@3              LastSunOct@4              FIN_Finland, Helsinki
++1.0   LastSunMar@2              LastSunOct@3              FRA_France, Paris
+-3.0                                                       GUF_French Guiana (FRA), Cayenne
+-10.0                                                      PYF_French Polynesia (FRA), Papeete (Tahiti)
++1.0                                                       GAB_Gabon, Libreville
+-6.0                                                       ECU_Galapagos Islands, Puerto Baquerizo
++0.0                                                       GMB_Gambia, Banjul
+-9.0                                                       PYF_Gambier Islands, Rikitea
++4.0                                                       GEO_Georgia, Tbilisi
++1.0   LastSunMar@2              LastSunOct@3              DEU_Germany, Berlin
++0.0                                                       GHA_Ghana, Accra
++1.0   LastSunMar@2              LastSunOct@3              GIB_Gibraltar, Gibraltar
++2.0   LastSunMar@3              LastSunOct@4              GRC_Greece, Athens
++0.0                                                       GRL Greenland (DNK), Danmarkshavn
+-1.0   LastSunMar@0              LastSunOct@1              GRL Greenland (DNK), Ittoqqortoormiit (Scoresbysund)
+-3.0   FirstSatAfter24Mar@22     FirstSatAfter24Oct@23     GRL_Greenland (DNK), Nuuk (Godthåb)
+-4.0   FirstSunApr@2             LastSunOct@2              GRL Greenland (DNK), Pituffik (Thule)
+-4.0                                                       GRD_Grenada, Saint George´s
+-4.0                                                       GLP_Guadeloupe (FRA), Pointe-à-Pitre
++10.0                                                      GUM Guam (USA), Agana
+-6.0   LastSunApr@0              FirstSunOct@0             GTM_Guatemala, Guatemala
++0.0   LastSunMar@1              LastSunOct@2              GBR_Guernsey, St. Peter Port
++0.0                                                       GIN_Guinea, Conakry
++0.0                                                       GNB_Guinea-Bissau, Bissau
+-4.0                                                       GUY_Guyana, Georgetown
+-5.0   FirstSunApr@0             LastSunOct@0              HTI_Haiti, Port-au-Prince
++1.0   LastSunMar@2              LastSunOct@3              VAT_Holy See, Vatican City
+-6.0   FirstSunMay@0             FirstMonAug@0             HND_Honduras, Tegucigalpa
++8.0                                                       HKG_Hong Kong (CHN), Victoria
++1.0   LastSunMar@2              LastSunOct@3              HUN_Hungary, Budapest
++0.0                                                       ISL_Iceland, Reykjavik
++5.5                                                       IND_India, New Delhi
++7.0                                                       IDN_Indonesia, Jakarta
++9.0                                                       IDN Indonesia, Jayapura
++8.0                                                       IDN Indonesia, Makassar
++3.5                                                       IRN_Iran, Tehran
++3.0   01Apr@3                   01Oct@4                   IRQ_Iraq, Baghdad
++0.0   LastSunMar@1              LastSunOct@2              IRL_Ireland, Dublin
++0.0   LastSunMar@1              LastSunOct@2              GBR_Isle of Man, Douglas
++2.0   FirstFriAfter26Mar@2      01Oct@2                   ISR_Israel, Jerusalem
++1.0   LastSunMar@2              LastSunOct@3              ITA_Italy, Rome
++0.0                                                       CIV_Ivory Coast (Côte d´Ivoire), Abidjan
+-5.0                                                       JAM_Jamaica, Kingston
++1.0   LastSunMar@2              LastSunOct@3              SJM Jan Mayen Island (NOR)
++9.0                                                       JPN_Japan, Tokyo
++0.0   LastSunMar@1              LastSunOct@2              GBR_Jersey Island, Saint Helier
+-10.0                                                      JTN Johnston Island (USA)
++2.0   LastThuMar@0              LastFriOct@1              JOR_Jordan, Amman
+-4.0   FirstSunAfter09Oct@0      FirstSunAfter09Mar@0      CHL_Juan Fernández Islands, San Juan Bautista
++5.0                                                       KAZ Kazakhstan, Aqtobe (Aktyubinsk)
++6.0                                                       KAZ_Kazakhstan, Astana (Zelinograd)
++3.0                                                       KEN_Kenya, Nairobi
++14.0                                                      KIR Kiribati - Kiritimati Island
++13.0                                                      KIR Kiribati - Phoenix Islands
++12.0                                                      KIR_Kiribati - Tarawa
++3.0                                                       KWT_Kuwait, Kuwait City
++6.0                                                       KGZ_Kyrgyzstan, Bishkek
++7.0                                                       LAO_Laos, Vientiane
++2.0   LastSunMar@3              LastSunOct@4              LVA_Latvia, Riga
++2.0   LastSunMar@0              LastSunOct@0              LBN_Lebanon, Beirut
++2.0                                                       LSO_Lesotho, Maseru
++0.0                                                       LBR_Liberia, Monrovia
++2.0                                                       LBY_Libya, Tripoli
++1.0   LastSunMar@2              LastSunOct@3              LIE_Liechtenstein, Vaduz
++2.0   LastSunMar@3              LastSunOct@4              LTU_Lithuania, Vilnius
++1.0   LastSunMar@2              LastSunOct@3              LUX_Luxembourg, Luxembourg
++8.0                                                       MAC_Macao (CHN), Macao
++1.0   LastSunMar@2              LastSunOct@3              MKD_Macedonia, Skopje
++3.0                                                       MDG_Madagascar, Antananarivo
++0.0   LastSunMar@1              LastSunOct@2              PRT_Madeira, Funchal
++2.0                                                       MWI_Malawi, Lilongwe
++8.0                                                       MYS_Malaysia, Kuala Lumpur
++5.0                                                       MDV_Maldives, Male
++0.0                                                       MLI_Mali, Bamako
++1.0   LastSunMar@2              LastSunOct@3              MLT_Malta, Valletta
+-9.5                                                       PYF_Marquesas Islands, Tai o Hae
++12.0                                                      MHL_Marshall Islands (USA), Majuro
+-4.0                                                       MTQ_Martinique (FRA), Fort-de-France
++0.0                                                       MRT_Mauritania, Nouakchott
++4.0                                                       MUS_Mauritius, Port Louis
++3.0                                                       MYT_Mayotte, Mamoutzou
+-7.0   FirstSunApr@2             LastSunOct@2              MEX Mexico, Chihuahua CHI
+-7.0                                                       MEX Mexico, Hermosillo SON
+-6.0   FirstSunApr@2             LastSunOct@2              MEX_Mexico, Mexico City DF
+-8.0   FirstSunApr@2             LastSunOct@2              MEX Mexico, Tijuana BCN
++11.0                                                      FSM_Micronesia, Palikir (Pohnpei)
++10.0                                                      FSM Micronesia, Yap
+-11.0                                                      USA Midway Islands
++2.0   LastSunMar@3              LastSunOct@4              MDA_Moldova, Chisinau (Kishinev)
++1.0   LastSunMar@2              LastSunOct@3              MCO_Monaco, Monaco
++7.0   LastSatMar@2              LastSatSep@2              MNG Mongolia, Khovd
++8.0   LastSatMar@2              LastSatSep@2              MNG_Mongolia, Ulaanbaatar
+-4.0                                                       MSR_Montserrat (GBR), Brades
++0.0                                                       MAR_Morocco, Rabat
++2.0                                                       MOZ_Mozambique, Maputo
++6.5                                                       MMR_Myanmar, Yangon (Rangoon)
++1.0   FirstSunSep@2             FirstSunApr@2             NAM_Namibia, Windhoek
++12.0                                                      NRU_Nauru, Yaren District
++5.75                                                      NPL_Nepal, Kathmandu
++1.0   LastSunMar@2              LastSunOct@3              NLD_Netherlands, Amsterdam
++11.0                                                      NCL_New Caledonia (FRA), Nouméa
++12.75 FirstSunOct@2.75          FirstSunAfter15Mar@3.75   NZL New Zealand, Chatham Island
++12.0  FirstSunOct@2             FirstSunAfter15Mar@3      NZL_New Zealand, Wellington
+-6.0   LastSunApr@2              FirstSunOct@1             NIC_Nicaragua, Managua
++1.0                                                       NER_Niger, Niamey
++1.0                                                       NGA_Nigeria, Abuja
+-11.0                                                      NIU_Niue, Alofi
++11.5                                                      NFK_Norfolk Island (AUS), Kingston
++9.0                                                       PRK_North Korea, Pyongyang
++10.0                                                      MNP_Northern Mariana Islands, Saipan
++1.0   LastSunMar@2              LastSunOct@3              NOR_Norway, Oslo
++4.0                                                       OMN_Oman, Muscat
++5.0                                                       PAK_Pakistan, Islamabad
++9.0                                                       PLW_Palau, Koror
++2.0   FirstFriAfter15Apr@0      22Sep@0                   PSE_Palestine (Gaza area), Gaza
++2.0   FirstFriAfter15Apr@0      22Sep@0                   PSE_Palestine (West Bank), Jerusalem
+-5.0                                                       PAN_Panama, Panamá City
++10.0                                                      PNG_Papua New Guinea, Port Moresby
++8.0                                                       CHN Paracel Islands
+-4.0   FirstSunAfter15Oct@0      FirstSunAfter08Mar@0      PRY_Paraguay, Asunción
+-5.0                                                       PER_Peru, Lima
++8.0                                                       PHL_Philippines, Manila
+-8.0                                                       PCN_Pitcairn (GBR), Adamstown
++1.0   LastSunMar@2              LastSunOct@3              POL_Poland, Warsaw
++0.0   LastSunMar@1              LastSunOct@2              PRT_Portugal, Lisbon (Lisboa)
+-4.0                                                       PRI_Puerto Rico, San Juan
++3.0                                                       QAT_Qatar, Doha
++4.0                                                       REU_Reunion (FRA), Saint-Denis
++2.0   LastSunMar@3              LastSunOct@4              ROU_Romania, Bucharest
++2.0   LastSunMar@2              LastSunOct@3              RUS Russia  +2, Kaliningrad
++3.0   LastSunMar@2              LastSunOct@3              RUS_Russia  +3, Moscow
++4.0   LastSunMar@2              LastSunOct@3              RUS Russia  +4, Samara
++5.0   LastSunMar@2              LastSunOct@3              RUS Russia  +5, Ekaterinburg
++6.0   LastSunMar@2              LastSunOct@3              RUS Russia  +6, Novosibirsk
++7.0   LastSunMar@2              LastSunOct@3              RUS Russia  +7, Krasnoyarsk
++8.0   LastSunMar@2              LastSunOct@3              RUS Russia  +8, Irkutsk
++9.0   LastSunMar@2              LastSunOct@3              RUS Russia  +9, Yakutsk
++10.0  LastSunMar@2              LastSunOct@3              RUS Russia +10, Vladivostok
++11.0  LastSunMar@2              LastSunOct@3              RUS Russia +11, Magadan
++12.0  LastSunMar@2              LastSunOct@3              RUS Russia +12, Anadyr
++2.0                                                       RWA_Rwanda, Kigali
++0.0                                                       SHN_Saint Helena (GBR), Jamestown
+-4.0                                                       KNA_Saint Kitts and Nevis, Basseterre
+-4.0                                                       LCA_Saint Lucia, Castries
+-3.0   FirstSunApr@2             LastSunOct@2              SPM_Saint Pierre and Miquelon (FRA), Saint-Pierre
+-4.0                                                       VCT_Saint Vincent Grenadines, Kingstown
+-11.0                                                      WSM_Samoa, Apia
++1.0   LastSunMar@2              LastSunOct@3              SMR_San Marino, San Marino
++0.0                                                       STP_Sao Tome and Principe, São Tomé
++3.0                                                       SAU_Saudi Arabia, Riyadh
++0.0   LastSunMar@1              LastSunOct@2              GBR_Scotland, Glasgow
++0.0                                                       SEN_Senegal, Dakar
++1.0   LastSunMar@2              LastSunOct@3              SCG Serbia and Montenegro (Kosovo), Pristina
++1.0   LastSunMar@2              LastSunOct@3              SCG Serbia and Montenegro (M), Podgorica
++1.0   LastSunMar@2              LastSunOct@3              SCG_Serbia and Montenegro (S), Belgrade
++4.0                                                       SYC_Seychelles, Victoria
++0.0                                                       SLE_Sierra Leone, Freetown
++8.0                                                       SGP_Singapore, Singapore
++1.0   LastSunMar@2              LastSunOct@3              SVK_Slovakia, Bratislava
++1.0   LastSunMar@2              LastSunOct@3              SVN_Slovenia, Ljubljana
++11.0                                                      SLB_Solomon Islands, Honiara
++3.0                                                       SOM_Somalia, Mogadishu
++2.0                                                       ZAF_South Africa, Pretoria
+-2.0                                                       SGS_South Georgia Island (GBR), Grytviken
++9.0                                                       KOR_South Korea, Seoul
++1.0   LastSunMar@2              LastSunOct@3              ESP_Spain, Madrid
++8.0                                                       CHN Spratly Islands
++5.5                                                       LKA_Sri Lanka, Colombo
++3.0                                                       SDN_Sudan, Khartoum
+-3.0                                                       SUR_Suriname, Paramaribo
++1.0   LastSunMar@2              LastSunOct@3              SJM_Svalbard (NOR), Longyearbyen
++2.0                                                       SWZ_Swaziland, Mbabane
++1.0   LastSunMar@2              LastSunOct@3              SWE_Sweden, Stockholm
++1.0   LastSunMar@2              LastSunOct@3              CHE_Switzerland, Bern
++2.0   31Mar@0                   22Sep@0                   SYR_Syria, Damascus
++8.0                                                       TWN_Taiwan, Taipei
++5.0                                                       TJK_Tajikistan, Dushanbe
++3.0                                                       TZA_Tanzania, Dodoma
++7.0                                                       THA_Thailand, Bangkok
++9.0                                                       TLS_Timor-Leste (East Timor), Dili
++0.0                                                       TGO_Togo, Lomé
+-10.0                                                      TKL_Tokelau (NZL), Fakaofo
++13.0                                                      TON_Tonga, Nuku´alofa
+-4.0                                                       TTO_Trinidad and Tobago, Port of Spain
++0.0                                                       GBR_Tristan da Cunha Island, Edinburgh
++1.0   LastSunMar@2              LastSunOct@3              TUN_Tunisia, Tunis
++2.0   LastSunMar@3              LastSunOct@4              TUR_Turkey, Ankara
++5.0                                                       TKM_Turkmenistan, Ashgabat
+-5.0   FirstSunApr@0             LastSunOct@0              TCA_Turks and Caicos Islands (GBR), Cockburn Town
++12.0                                                      TUV_Tuvalu, Funafuti
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Alabama, Montgomery
+-10.0  FirstSunApr@2             LastSunOct@2              ALK USA - Alaska, Adak (Aleutian Islands)
+-9.0   FirstSunApr@2             LastSunOct@2              ALK_USA - Alaska, Juneau
+-7.0                                                       USA_USA - Arizona, Phoenix
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Arkansas, Little Rock
+-8.0   FirstSunApr@2             LastSunOct@2              USA_USA - California, Sacramento
+-7.0   FirstSunApr@2             LastSunOct@2              USA_USA - Colorado, Denver
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Connecticut, Hartford
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Delaware, Dover
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - District of Columbia, Washington DC
+-6.0   FirstSunApr@2             LastSunOct@2              USA USA - Florida, Pensacola
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Florida, Tallahassee
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Georgia, Atlanta
+-10.0                                                      USA_USA - Hawaii, Honolulu
+-7.0   FirstSunApr@2             LastSunOct@2              USA_USA - Idaho, Boise
+-8.0   FirstSunApr@2             LastSunOct@2              USA USA - Idaho, Moscow
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Illinois, Springfield
+-6.0   FirstSunApr@2             LastSunOct@2              USA USA - Indiana, Evansville
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Indiana, Indianapolis
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Iowa, Des Moines
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Kansas, Topeka
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Kentucky, Frankfort
+-6.0   FirstSunApr@2             LastSunOct@2              USA USA - Kentucky, Madisonville
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Louisiana, Baton Rouge
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Maine, Augusta
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Maryland, Annapolis
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Massachusetts, Boston
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Michigan, Lansing
+-6.0   FirstSunApr@2             LastSunOct@2              USA USA - Michigan, Menominee
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Minnesota, St. Paul
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Mississippi, Jackson
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Missouri, Jefferson City
+-7.0   FirstSunApr@2             LastSunOct@2              USA_USA - Montana, Helena
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Nebraska, Lincoln
+-7.0   FirstSunApr@2             LastSunOct@2              USA USA - Nebraska, Scottsbluff
+-8.0   FirstSunApr@2             LastSunOct@2              USA_USA - Nevada, Carson City
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - New Hampshire, Concord
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - New Jersey, Trenton
+-7.0   FirstSunApr@2             LastSunOct@2              USA_USA - New Mexico, Santa Fe
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - New York, Albany
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - North Carolina, Raleigh
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - North Dakota, Bismarck
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Ohio, Columbus
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Oklahoma, Oklahoma City
+-8.0   FirstSunApr@2             LastSunOct@2              USA_USA - Oregon, Salem
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Pennsylvania, Harrisburg
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Rhode Island, Providence
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - South Carolina, Columbia
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - South Dakota, Pierre
+-7.0   FirstSunApr@2             LastSunOct@2              USA USA - South Dakota, Rapid City
+-5.0   FirstSunApr@2             LastSunOct@2              USA USA - Tennessee, Knoxville
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Tennessee, Nashville
+-6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Texas, Austin
+-7.0   FirstSunApr@2             LastSunOct@2              USA USA - Texas, El Paso
+-7.0   FirstSunApr@2             LastSunOct@2              USA_USA - Utah, Salt Lake City
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Vermont, Montpelier
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Virginia, Richmond
+-8.0   FirstSunApr@2             LastSunOct@2              USA_USA - Washington, Olympia
+-5.0   FirstSunApr@2             LastSunOct@2              USA_USA - West Virginia, Charleston
+-6.0   FirstSunApr@1             LastSunOct@2              USA_USA - Wisconsin, Madison
+-7.0   FirstSunApr@2             LastSunOct@2              USA_USA - Wyoming, Cheyenne
++3.0                                                       UGA_Uganda, Kampala
++2.0   LastSunMar@3              LastSunOct@4              UKR_Ukraine, Kiev
++4.0                                                       ARE_United Arab Emirates, Dubai (Abu Dhabi)
+-3.0   FirstSunOct@2             FirstSunAfter08Mar@2      URY_Uruguay, Montevideo
++5.0                                                       UZB_Uzbekistan, Tashkent
++11.0                                                      VUT_Vanuatu, Port Vila
+-4.0                                                       VEN_Venezuela, Caracas
++7.0                                                       VNM_Vietnam, Hanoi
+-4.0                                                       VGB_Virgin Islands (GBR), Road Town
+-4.0                                                       VIR_Virgin Islands (USA), Charlotte Amalie
++12.0                                                      USA Wake Island
++0.0   LastSunMar@1              LastSunOct@2              GBR_Wales, Cardiff
++12.0                                                      WLF_Wallis and Futuna (FRA), Mata-Utu
++8.0                                                       IDN_West Timor, Kupang
++0.0                                                       ESH_Western Sahara, El Aaiún
++3.0                                                       YEM_Yemen, Sana´a
++2.0                                                       ZMB_Zambia, Lusaka
++2.0                                                       ZWE_Zimbabwe, Harare

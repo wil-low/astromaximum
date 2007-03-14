@@ -1,0 +1,866 @@
+//---------------------------------------------------------------------------
+#include <fstream>
+#include <algorithm>
+using namespace std;
+#pragma hdrstop
+
+#include "datafile.h"
+#include <dirent.h>
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+static sMatrix matrix[PLANET_COUNT][PLANET_COUNT];
+static const unsigned char ASP_ANGLES[]={0,180,90,120,60};
+DataFile::DataFile()
+{
+  Lon=30.51; Lat=50.43;
+}
+
+void DataFile::init(sEphRecord *ephdata, double start, unsigned int count)
+{
+  Event::startJD=start;
+  startJD=start; dayCount=count; stepCount=count/MINUTE_STEP;
+  ephData=ephdata;
+}
+
+struct less_event  {
+  bool operator()(Event *c1, Event *c2)
+  {
+    return c1->date[0]<c2->date[0];
+  }
+};
+
+void DataFile::AscendingTest(const char* dirname)
+{
+  DIR *dir;
+  struct dirent *ent;
+
+  printf("First pass on '%s':\n",dirname);
+  if ((dir = opendir(dirname)) == NULL){
+    perror("Unable to open directory");
+    exit(1);
+  }
+
+  while ((ent = readdir(dir)) != NULL)
+    if(strstr(ent->d_name,".bin")){
+//      printf("\n%s",ent->d_name);
+      VAE work;
+      readSubData(ent->d_name,work);
+      long cur=0;
+      for(int i=0; i<work.size(); i++){
+        if(work[i]->date[0]<cur){
+          printf("\n%s\n", "*****Ascension order is broken!*****");
+          break;
+        }
+        cur=work[i]->date[0];
+      }
+    }
+  closedir(dir);
+
+}
+
+void DataFile::sortVAE(VAE &work)
+{
+  sort(work.begin(), work.end(), less_event());
+}
+
+void DataFile::AAA()
+{
+  VAE work, assist, vout, work2;
+// -----------------------
+//  choice(EV_ASP_EXACT, work, assist, vout, work2);
+/*
+  choice(EV_DEGREE_PASS, work, assist, vout, work2);
+  choice(EV_VIA_COMBUSTA, work, assist, vout, work2);
+  choice(EV_ASP_EXACT, work, assist, vout, work2);
+  choice(EV_SIGN_ENTER, work, assist, vout, work2);
+  choice(EV_VOC, work, assist, vout, work2);
+  choice(EV_RETROGRADE, work, assist, vout, work2);
+  choice(EV_ECLIPSE, work, assist, vout, work2);
+  choice(EV_TITHI, work, assist, vout, work2);
+  choice(EV_NAKSHATRA, work, assist, vout, work2);
+  choice(EV_MOON_PHASE, work, assist, vout, work2);
+*/
+// ------------------------
+//  choice(EV_RISE, work, assist, vout, work2);
+//  choice(EV_DECL_EXACT, work, assist, vout, work2);
+//  choice(EV_NAVROZ, work, assist, vout, work2);
+
+//  choice(EV_ASP_EXACT, work, assist, vout, work2);
+
+//  choice(EV_DEGREE_PASS, work, assist, vout, work2);
+//  choice(EV_TITHI, work, assist, vout, work2);
+//  choice(EV_SIGN_ENTER, work, assist, vout, work2);
+//  release(work);
+//  return;
+
+  readSubData("tithi.bin",work);
+//  readSubData("geo0-rise00.bin",work);
+//  release(work);
+  for(int i=0; i<80/*work.size()*/; i++){
+    work[i]->dump();
+//    work2[i]->dump();
+//    printf("\n-------");
+//    int delta=work[i]->date[0]-work2[i]->date[0];
+//    printf("\n%d %d",work[i]->date[0],work2[i]->date[0]);
+//    if(delta!=0)
+//      printf("%d %d\n",i, delta);
+  }
+  
+//    work[i]->dump();
+// -----------------------
+  release(work);
+  release(work2);
+//  release(assist);
+
+}
+
+
+void DataFile::calcAspExact(VAE & moonvae,VAE & vae)
+{
+  // [0] - aspect angle, [1] - counter
+  for(int i=0; i<PLANET_COUNT; i++)
+    for(int j=0; j<PLANET_COUNT; j++){
+      matrix[i][j].ang=1;
+      matrix[i][j].counter=0;
+  }
+
+  for(int c=0; c<stepCount; c++){
+    for(int i=0; i<PLANET_COUNT; i++)
+      for(int j=i+1; j<PLANET_COUNT; j++){
+        double aspa=fabs(ephData[c].data[i]-ephData[c].data[j]);
+        if(aspa>195) aspa-=180;
+        int aspindex=-1;
+        for(int cnt=0; cnt<sizeof(ASP_ANGLES)/sizeof(char); cnt++){
+          double d=aspa-ASP_ANGLES[cnt];
+          d=d-int(d/360.);
+          if(fabs(d)<0.01){
+            aspindex=cnt; break;
+          }
+        }
+        sMatrix &mtx=matrix[i][j];
+        if(aspindex!=-1){ // exact - yes
+          if(mtx.ang==ASP_ANGLES[aspindex]){ // aspect persists
+            ++mtx.counter;
+          }
+          else{ // new aspect
+            registerAspect(moonvae, vae,i,j);
+            mtx.counter=1; mtx.step=c; mtx.ang=ASP_ANGLES[aspindex];
+          }
+        }
+        else{ // exact - no
+          registerAspect(moonvae,vae,i,j);
+          mtx.counter=0; mtx.ang=1;
+        }
+      }
+      if(c%10000==0)
+        printf("%d...",c/10000);
+    }
+  for(int i=0; i<PLANET_COUNT; i++)
+    for(int j=0; j<PLANET_COUNT; j++)
+      registerAspect(moonvae, vae,i,j);
+}
+
+void DataFile::registerAspect(VAE &moonvae, VAE &vae, int i, int j)
+{
+  const sMatrix &mtx=matrix[i][j];
+  if(mtx.counter){ // there was previous aspect
+    double tm=startJD+(mtx.step+(mtx.counter-1)/2.)*MINUTE_STEP;
+    Event *ec=new Event(tm, i);
+    ec->degree=mtx.ang; ec->planetId[1]=j;
+    if((i==SE_MOON)||(j==SE_MOON)){
+      if(j==SE_MOON){
+        ec->planetId[0]=j;
+        ec->planetId[1]=i;
+      }
+      moonvae.push_back(ec);
+    }
+    else
+      vae.push_back(ec);
+  }
+}
+
+void DataFile::calcDegPass(VAE & vae, int planet)
+{
+  double endJD=startJD+dayCount;
+  Event *ev=new Event(startJD,planet);
+  ev->date[1]=ev->packDate(endJD);
+  ev->degree=ephData[0].data[planet];
+  vae.push_back(ev);
+  int lastd=ev->degree;
+  double cur=startJD;
+  for(int i=1; i<stepCount; i++){
+    cur+=MINUTE_STEP;
+    int dgr=ephData[i].data[planet];
+    if(lastd!=dgr){
+      ev->date[1]=ev->packDate(cur);
+      ev=new Event(cur,planet);
+      ev->date[1]=ev->packDate(endJD);
+      ev->degree=dgr;
+      lastd=dgr;
+      vae.push_back(ev);
+    }
+  }
+}
+
+DataFile::~DataFile()
+{
+  release(events);
+}
+
+void DataFile::release(VAE & v)
+{
+  for(int i=0; i<v.size(); i++)
+    delete v[i];
+  v.clear();
+}
+
+void DataFile::clearDegPass(VAE & src, VAE & dest, int id)
+{
+  static const int degarray[14]={17,68,126,174,222,280,329,22,72,129,180,228,288,333};
+  for(int i=0; i<src.size(); i++){
+    Event *ev=src[i];
+    int degree=ev->degree & 0x3fff;
+    int idx=-1;
+    for(int i=0; i<14; i++)
+      if(degree==degarray[i]){
+        idx=i; break;
+      }
+    if(idx!=-1){ // selected degree
+      degree+=((idx>=7? 1: 2)<<14);
+      ev->degree=degree;
+      dest.push_back(ev);
+    }
+    else
+      if(id!=SE_MOON)
+        dest.push_back(ev);
+  }
+}
+
+void DataFile::clearSignEnter(VAE & src, VAE & dest)
+{
+  int sign=-1;
+  for(int i=0; i<src.size(); i++){
+    Event *ev=src[i];
+    int dgr=ev->degree;
+    int new_sign=dgr/30;
+    if(sign!=new_sign){
+      sign=new_sign;
+      ev->degree=sign;
+      dest.push_back(ev);
+    }
+  }
+}
+
+void DataFile::clearViaCombusta(VAE & src, VAE & dest)
+{
+  static const int limit[]={6*30+24, 7*30+6};
+  Event *tmp;
+  if((src[0]->degree>=limit[0])&&(src[0]->degree<limit[1]))
+    tmp=new Event(startJD,0); // starting may be in VC
+  for(int i=1; i<src.size(); i++){
+    Event *ev=src[i];
+    if(ev->degree==limit[0])
+      tmp=new Event(ev->julianDay,0);
+    if(ev->degree==limit[1]){
+      tmp->date[1]=tmp->packDate(ev->julianDay);
+      dest.push_back(tmp);
+      tmp=NULL;
+    }
+  }
+  if(tmp){
+    tmp->date[1]=tmp->packDate(startJD+dayCount);
+    dest.push_back(tmp);
+  }
+}
+
+bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int planet, char* fname)
+{
+  long tm=GetTickCount();
+  char buf[200];
+  sprintf(buf,"output\\%s",fname);
+  printf("\nSaving %s...",buf);
+  FILE *fout=fopen(buf,"wb");
+  fwrite(&evtype, 1, 1, fout);
+  long start=ftell(fout);
+  long cumul=v[0]->date[0];
+  short sBuf; int iBuf;
+  fseek(fout,2,SEEK_CUR);
+  sBuf=swapShort(evflags);
+  fwrite(&sBuf, 2, 1, fout);
+  fwrite(&planet, 1, 1, fout);
+  int sz=v.size();
+  sBuf=swapShort(sz);
+  fwrite(&sBuf, 2, 1, fout);
+  printf("%u records...",v.size());
+//  v[0]->dump();
+//  v[1]->dump();
+  for(int i=0; i<v.size(); i++){
+    Event *ev=v[i];
+    if((evflags & EF_CUMUL_DATE_W)&& (i>0)){
+      int delta=(ev->date[0]-cumul-24*60*60)/60;
+      if(abs(delta)>32767){
+        printf("\nError overflow %d",delta);
+        return false;
+      }
+      short d=delta;
+      cumul=ev->date[0];
+      sBuf=swapShort(d);
+      fwrite(&sBuf, 1, 2, fout);
+    }
+    else if((evflags & EF_CUMUL_DATE_B)&& (i>0)){
+      int delta=(ev->date[0]-cumul-24*60*60)/60;
+      if(abs(delta)>127){
+        printf("\nError overflow %d",delta);
+        return false;
+      }
+      char d=delta;
+      cumul=ev->date[0];
+      fwrite(&d, 1, 1, fout);
+    }
+    else{
+      iBuf=swapInt(ev->date[0]);
+      fwrite(&iBuf, 1, 4, fout);
+    }
+    if(evflags & EF_DATE){
+      iBuf=swapInt(ev->date[1]);
+      fwrite(&iBuf, 4, 1, fout);
+    }
+    if(evflags & EF_PLANET1)
+      fwrite(&ev->planetId[0], 1, 1, fout);
+    if(evflags & EF_PLANET2)
+      fwrite(&ev->planetId[1], 1, 1, fout);
+    if(evflags & EF_DEGREE)
+      if(evflags & EF_SHORT_DEGREE)
+        fwrite(&ev->degree, 1, 1, fout);
+      else{
+        sBuf=swapShort(ev->degree);
+        fwrite(&sBuf, 2, 1, fout);
+      }
+  }
+  long fsize=ftell(fout);
+  fseek(fout,start,SEEK_SET);
+  sBuf=swapShort(fsize);
+  fwrite(&sBuf, 2, 1, fout);
+  fclose(fout);
+  printf("Done. ET=%ld\n",GetTickCount()-tm);
+  return true;
+}
+
+short DataFile::swapShort(short var)
+{
+  var=(var & 0xff)<<8 | ((var >> 8) & 0xff);
+  return var;
+}
+
+int DataFile::swapInt(int var)
+{
+  int res=0;
+  for(int i=0; i<4; i++){
+    res<<=8;
+    res|=(var & 0xff);
+    var>>=8;
+  }
+  return res;
+}
+
+bool DataFile::readSubData(char* fname, VAE & v)
+{
+  char buf[200];
+  sprintf(buf,"output\\%s",fname);
+  printf("\nReading %s...",buf);
+  FILE *fin=fopen(buf,"rb");
+
+  if(!fin)
+    return false;
+  fseek(fin,0,SEEK_END);
+  long realsz=ftell(fin);
+  fseek(fin,1,SEEK_SET);
+  long fsize=0;
+  int evflags=0, recCount=0;
+  char planet; int date;
+  fread(&fsize, 2, 1, fin);
+  fsize=swapShort(fsize);
+
+  if(fsize!=realsz) goto err;
+  fread(&evflags, 2, 1, fin);
+  evflags=swapShort(evflags);
+  fread(&planet, 1, 1, fin);
+  fread(&recCount, 2, 1, fin);
+  recCount=swapShort(recCount);
+  printf("%u records...",recCount);
+  int cumul;
+  for(int i=0; i<recCount; i++){
+    if(ferror(fin)) goto err;
+    if(evflags & EF_CUMUL_DATE_B){
+      if(i){
+        char d;
+        fread(&d, 1, 1, fin);
+        cumul=d;
+        date+=(cumul+24*60)*60;
+      }
+      else{
+        fread(&date, 1, 4, fin);
+        date=swapInt(date);
+      }
+    }
+    else if(evflags & EF_CUMUL_DATE_W){
+      if(i){
+        short d;
+        fread(&d, 1, 2, fin);
+        d=swapShort(d);
+        cumul=d;
+        date+=(cumul+24*60)*60;
+      }
+      else{
+        fread(&date, 1, 4, fin);
+        date=swapInt(date);
+      }
+    }
+    else{
+      fread(&date, 1, 4, fin);
+      date=swapInt(date);
+    }
+
+    Event *ev=new Event(Event::calcJD(date),planet);
+    int iBuf; short sBuf;
+    if(evflags & EF_DATE){
+      fread(&iBuf, 1, 4, fin);
+      ev->date[1]=swapInt(iBuf);
+    }
+    if(evflags & EF_PLANET1)
+      fread(&ev->planetId[0], 1, 1, fin);
+    if(evflags & EF_PLANET2)
+      fread(&ev->planetId[1], 1, 1, fin);
+    if(evflags & EF_DEGREE)
+      if(evflags & EF_SHORT_DEGREE)
+        fread(&ev->degree, 1, 1, fin);
+      else{
+        fread(&sBuf, 2, 1, fin);
+        ev->degree=swapShort(sBuf);
+      }
+    if(evflags & EF_NEXT_DATE2)
+      if(v.size()>0)
+        v[v.size()-1]->date[1]=ev->date[0];
+    v.push_back(ev);
+  }
+  v[v.size()-1]->date[1]=Event::packDate(startJD+dayCount);
+  fclose(fin);
+  printf("Done.");
+  return true;
+err:
+  fclose(fin);
+  printf("Error!");
+  return false;
+}
+
+int DataFile::select(VAE & src, double jdstart, double jdend, char planet, bool both, VAE & dest)
+{
+  for(int i=0; i<src.size(); i++){
+    Event *ev=src[i];
+    double evd=ev->julianDay;
+    bool save=false;
+    if((evd>=jdstart)&&(evd<jdend))
+      if(planet!=-1){
+        if(both){
+          if((ev->planetId[0]==planet)||(ev->planetId[1]==planet))
+            save=true;
+        }
+        else
+          if(ev->planetId[0]==planet)
+            save=true;
+      }
+      else
+        save=true;
+    if(save)
+      dest.push_back(ev);
+  }
+  return dest.size();
+}
+
+void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2,
+  char* prefix)
+{
+  char extra_plt[]={SE_TRUE_NODE,SE_MEAN_APOG,17};
+  char fname[200];
+  double endJD;
+  double geopos[3]={Lon,Lat,0},tret[2]; char serr[255];
+  release(work); release(assist); release(vout); release(work2);
+  Event *ev;
+  VAE allDegPass;
+  printf("\n");
+  switch(et){
+    case EV_VIA_COMBUSTA:
+      printf("Via Combusta...");
+      calcDegPass(allDegPass,SE_MOON);
+      clearViaCombusta(allDegPass,work);
+      sprintf(fname,"via01.bin");
+      writeSubData(work,EV_VIA_COMBUSTA,EF_DATE,SE_MOON,fname);
+      release(work); release(allDegPass);
+      break;
+    case EV_ASP_EXACT:
+      printf("AspExact...");
+      calcAspExact(work2,work);
+      printf("calcAspExact =  %d events\n",work.size());
+      sprintf(fname,"aspects.bin");
+      sortVAE(work);
+      writeSubData(work,EV_ASP_EXACT,EF_CUMUL_DATE_W|EF_PLANET1|EF_PLANET2|EF_DEGREE|EF_SHORT_DEGREE,-1,fname);
+      release(work);
+      sprintf(fname,"aspects01.bin");
+      writeSubData(work2,EV_ASP_EXACT,EF_CUMUL_DATE_W|EF_PLANET2|EF_DEGREE|EF_SHORT_DEGREE,SE_MOON,fname);
+      release(work2);
+      break;
+    case EV_SIGN_ENTER:
+      printf("SignEnter...");
+      for(int i=0; i<PLANET_COUNT; i++){
+        calcDegPass(allDegPass,i);
+        clearSignEnter(allDegPass,work);
+        sprintf(fname,"signenter%02u.bin",i);
+        writeSubData(work,EV_SIGN_ENTER,EF_DEGREE|EF_SHORT_DEGREE|EF_NEXT_DATE2,i,fname);
+        work.clear(); release(allDegPass);
+      }
+      break;
+    case EV_VOC:
+      printf("VOC...");
+      readSubData("signenter01.bin",work);
+      readSubData("aspects01.bin",assist);
+      double st;
+      st=startJD;
+      for(int i=0; i<work.size(); i++){
+        int sz;
+        sz=select(assist,st,work[i]->julianDay,SE_MOON,true,vout);
+        Event *last;
+        if(sz) last=vout[sz-1];
+        double evstart;
+        evstart=sz? last->julianDay: st;
+        char lastPlt,lastAsp;
+        lastPlt=SE_MOON;
+        if(sz)
+          if(last->planetId[0]==lastPlt)
+            lastPlt=last->planetId[1];
+          else
+            lastPlt=last->planetId[0];
+        lastAsp=0;
+        if(sz)
+          lastAsp=last->degree;
+        ev=new Event(evstart,SE_MOON);
+        ev->date[1]=ev->packDate(work[i]->julianDay);
+        ev->degree=lastAsp; ev->planetId[1]=lastPlt;
+        if(ev->date[0]!=ev->date[1])
+          work2.push_back(ev);
+        st=work[i]->julianDay;
+        vout.clear();
+      }
+      sprintf(fname,"voc01.bin");
+      writeSubData(work2,EV_VOC,EF_DATE|EF_DEGREE|EF_SHORT_DEGREE|EF_PLANET2,SE_MOON,fname);
+
+      break;
+    case EV_DEGREE_PASS:
+      printf("DegPass...");
+      for(int i=0; i<13; i++){
+        calcDegPass(allDegPass,i);
+        clearDegPass(allDegPass,work,i);
+        sprintf(fname,"degpass%02u.bin",i);
+        if(i==SE_MOON)
+          writeSubData(work,EV_DEGREE_PASS,EF_CUMUL_DATE_W|EF_DATE|EF_DEGREE,i,fname);
+        else{
+          int flag=EF_DEGREE|EF_NEXT_DATE2;
+          if(i<=SE_MARS)
+            flag|=EF_CUMUL_DATE_W;
+          writeSubData(work,EV_DEGREE_PASS,flag,i,fname);
+        }
+        work.clear(); release(allDegPass);
+      }
+      break;
+    case EV_RISE:
+      printf("RiseSets & moon days...");
+      sprintf(fname,"new01.bin");
+      double novol, ddd[6]; novol=startJD-31; int ii; ii=0;
+      if(!readSubData(fname, vout)){
+        while(novol<startJD+dayCount){
+          swe_calc_ut(novol, SE_SUN, EFLAG, ddd, serr);
+          double sun_ang=ddd[0];
+          swe_calc_ut(novol, SE_MOON, EFLAG, ddd, serr);
+          double aspa=fabs(sun_ang-ddd[0]);
+          if(aspa>195) aspa-=180;
+          if(aspa<0.01){
+            Event *ev=new Event(novol,SE_MOON);
+            ev->planetId[1]=255;
+            vout.push_back(ev);
+            novol+=27;
+          }
+          novol+=MINUTE_STEP;
+          ++ii;
+          if(ii%10000==0)
+            printf("%d...",ii/10000);
+
+        }
+        writeSubData(vout,EV_STATUS,0,SE_MOON,fname);
+      }
+//      for(int i=0; i<vout.size(); i++)
+//        vout[i]->dump();
+//      return;
+      long tm; tm=GetTickCount();
+      for(int j=SE_SUN; j<=SE_SATURN; j++){
+        sprintf(fname,"%srise%02u.bin",prefix,j);
+        if(j==SE_MOON){
+          endJD=startJD-31;
+          while(endJD<startJD+dayCount+31){
+            swe_rise_trans(endJD,SE_MOON,NULL,EFLAG,SE_CALC_RISE|SE_BIT_DISC_CENTER,geopos,0,20,&tret[0],serr);
+            Event *ev=new Event(tret[0],j);
+            work.push_back(ev);
+            endJD=tret[0]+0.01;
+          }
+          endJD=startJD-31;
+          while(endJD<startJD+dayCount+31){
+            swe_rise_trans(endJD,SE_MOON,NULL,EFLAG,SE_CALC_SET|SE_BIT_DISC_CENTER,geopos,0,20,&tret[1],serr);
+            Event *ev=new Event(tret[1],j);
+            work2.push_back(ev);
+            endJD=tret[1]+0.01;
+          }
+          VAE output;
+          for(int k=0; k<vout.size(); k++){
+            double jstart=vout[k]->julianDay;
+            double jend=(k==vout.size()-1)? startJD+dayCount:vout[k+1]->julianDay;
+            select(work,jstart,jend,-1,false,assist);
+            assist.insert(assist.begin(),vout[k]);
+            int md=1;
+            for(int i=0; i<assist.size(); i++){
+              assist[i]->degree=md;
+              md++;
+              output.push_back(assist[i]);
+            }
+            assist.clear();
+          }
+          select(output,startJD,startJD+dayCount,-1,false,assist);
+          if(!writeSubData(assist,EV_RISE,EF_CUMUL_DATE_W|EF_NEXT_DATE2|EF_DEGREE|EF_SHORT_DEGREE,SE_MOON,fname));
+            writeSubData(assist,EV_RISE,EF_NEXT_DATE2|EF_DEGREE|EF_SHORT_DEGREE,SE_MOON,fname);
+          assist.clear();
+          release(vout);
+        }
+        else{
+          endJD=startJD-31;
+          while(endJD<startJD+dayCount+31){
+            swe_rise_trans(endJD,j,NULL,EFLAG,SE_CALC_RISE|SE_BIT_DISC_CENTER,geopos,0,20,&tret[0],serr);
+            Event *ev=new Event(tret[0],j);
+            work.push_back(ev);
+            endJD=tret[0]+0.2;
+            swe_rise_trans(endJD,j,NULL,EFLAG,SE_CALC_SET|SE_BIT_DISC_CENTER,geopos,0,20,&tret[1],serr);
+            ev=new Event(tret[1],j);
+            work2.push_back(ev);
+            endJD=tret[1]+0.2;
+          }
+          select(work,startJD,startJD+dayCount,-1,false,assist);
+          if(!writeSubData(assist,EV_RISE,EF_CUMUL_DATE_B|EF_NEXT_DATE2,j,fname))
+            writeSubData(assist,EV_RISE,EF_CUMUL_DATE_W|EF_NEXT_DATE2,j,fname);
+          assist.clear();
+        }
+        sprintf(fname,"%sset%02u.bin",prefix,j);
+        assist.clear();
+        select(work2,startJD,startJD+dayCount,-1,false,assist);
+        if(!writeSubData(assist,EV_SET,EF_CUMUL_DATE_B,j,fname))
+          writeSubData(assist,EV_SET,EF_CUMUL_DATE_W,j,fname);
+        assist.clear();
+        release(work);
+        release(work2);
+      }
+      printf("\n  ET=%ld\n",GetTickCount()-tm);
+      break;
+    case EV_RETROGRADE:
+      printf("Retrograde..."); bool isRetro;
+      double data[6];
+      for(int body=SE_MERCURY; body<=SE_PLUTO; body++){
+        isRetro=false; endJD=startJD; ev=NULL;
+        for(int i=0; i<stepCount; i++){
+          swe_calc_ut(endJD, body, EFLAG, data, serr);
+          isRetro=(data[3]<0);
+          if(isRetro){  // retrograde
+            if(!ev)   // was direct
+              ev=new Event(endJD,body);
+          }
+          else  // direct
+            if(ev){  //was retrograde
+              ev->date[1]=ev->packDate(endJD);
+              work.push_back(ev);
+              ev=NULL;
+            }
+          endJD+=MINUTE_STEP;
+          if(i%10000==0)
+            printf("%d...",i/10000);
+        }
+        if(ev){  //was retrograde
+          ev->date[1]=ev->packDate(endJD);
+          work.push_back(ev);
+        }
+        sprintf(fname,"retro%02u.bin",body);
+        writeSubData(work,EV_RETROGRADE,EF_DATE,body,fname);
+        release(work);
+      }
+      break;
+    case EV_ECLIPSE:
+      for(int i=SE_SUN; i<=SE_MOON; i++){
+        endJD=startJD; double tret[10];
+        do{
+          if(i==SE_SUN)
+            swe_sol_eclipse_when_glob(endJD, EFLAG, 0, tret, false, serr);
+          else
+            swe_lun_eclipse_when(endJD, EFLAG, 0, tret, false, serr);
+          endJD=tret[0];
+          work.push_back(new Event(endJD,i));
+        }while(endJD<startJD+dayCount);
+        delete work.back();
+        work.pop_back();
+        sprintf(fname,"eclipse%02u.bin",i);
+        writeSubData(work,EV_ECLIPSE,EF_DEGREE|EF_SHORT_DEGREE,i,fname);
+        release(work);
+      }
+      break;
+    case EV_TITHI:
+      printf("Tithi...");
+      int tith; tith=-1;
+      st=startJD;
+      for(int i=0; i<stepCount; i++){
+        double delta=ephData[i].data[SE_MOON]-ephData[i].data[SE_SUN];
+        NormAngle(delta);
+        int new_tith=delta/12+1;
+        if(tith!=new_tith){
+          ev=new Event(st,SE_MOON);
+          tith=new_tith;
+          ev->degree=tith;
+          work.push_back(ev);
+        }
+        st+=MINUTE_STEP;
+        if(i%10000==0)
+          printf("%d...",i/10000);
+      }
+      sprintf(fname,"tithi.bin");
+      writeSubData(work,EV_TITHI,EF_CUMUL_DATE_W|EF_NEXT_DATE2|EF_DEGREE|EF_SHORT_DEGREE,SE_MOON,fname);
+      break;
+    case EV_NAKSHATRA:
+      printf("Nakshatra...");
+      tith=-1;
+      st=startJD;
+      for(int i=0; i<stepCount; i++){
+        int new_tith=ephData[i].data[SE_MOON]*28./360.+1;
+        if(tith!=new_tith){
+          ev=new Event(st,SE_MOON);
+          tith=new_tith;
+          ev->degree=tith;
+          work.push_back(ev);
+        }
+        st+=MINUTE_STEP;
+        if(i%10000==0)
+          printf("%d...",i/10000);
+      }
+      sprintf(fname,"nakshatra.bin");
+      writeSubData(work,EV_NAKSHATRA,EF_CUMUL_DATE_W|EF_NEXT_DATE2|EF_DEGREE|EF_SHORT_DEGREE,SE_MOON,fname);
+      break;
+    case EV_DECL_EXACT:
+      printf("Declination...");
+      st=startJD; double decl; bool flag;
+      flag=false; ev=NULL;
+      for(int i=0; i<stepCount; i++){
+        swe_calc_ut(st, SE_SUN, EFLAG|SEFLG_EQUATORIAL, data, serr);
+        decl=data[1];
+        swe_calc_ut(st, SE_MOON, EFLAG|SEFLG_EQUATORIAL, data, serr);
+
+        if(fabs(decl-data[1])<0.0004){ // exact
+          if(!ev)   // no event
+            ev=new Event(st,-1);
+        }
+        else  // not exact
+          if(ev){   // event exists
+            ev->date[1]=ev->packDate(st);
+            work.push_back(ev);
+            ev=NULL;
+          }
+        st+=MINUTE_STEP;
+        if(i%10000==0)
+          printf("%d...",i/10000);
+      }
+      sprintf(fname,"decl.bin");
+      writeSubData(work,EV_DECL_EXACT,EF_DATE,-1,fname);
+      break;
+    case EV_NAVROZ:
+      printf("Navroz...");
+      st=startJD-dayCount; int deg;
+      deg=-1; ev=NULL;
+      do{
+        swe_calc_ut(st, SE_SUN, EFLAG, data, serr);
+        if(deg!=int(data[0])){
+          deg=data[0];
+          if(!deg) break;
+        }
+        st+=MINUTE_STEP;
+      }while(true);
+      swe_rise_trans(st,SE_SUN,NULL,EFLAG,SE_CALC_RISE,geopos,0,20,&tret[0],serr);
+      ev=new Event(tret[0],SE_SUN);
+      work.push_back(ev);
+      readSubData("signenter00.bin",assist);
+      for(int i=0; i<assist.size(); i++)
+        if(assist[i]->degree==0){
+          swe_rise_trans(assist[i]->julianDay,SE_SUN,NULL,EFLAG,SE_CALC_RISE,geopos,0,20,&tret[0],serr);
+          ev=new Event(tret[0],SE_SUN);
+          work.push_back(ev);
+          break;
+        }
+
+      sprintf(fname,"%snavroz.bin",prefix);
+      writeSubData(work,EV_NAVROZ,0,SE_SUN,fname);
+      release(assist);
+      break;
+    case EV_MOON_PHASE:
+      printf("Moon phases...");
+      readSubData("aspects01.bin",work);
+      int idx;
+      for(int i=0; i<work.size(); i++){
+        if(work[i]->planetId[1]!=SE_SUN)
+          continue;
+        int dgr=work[i]->degree;
+        idx=getAspIndex(dgr);
+        if((idx>=0)&&(idx<=2)){
+          work[i]->planetId[1]=dgr;
+          assist.push_back(work[i]);
+        }
+      }
+      for(int i=0; i<assist.size(); i++)
+        if(assist[i]->planetId[1]==0){
+          idx=i;
+          break;
+        }
+      idx%=4;
+      for(int i=0; i<assist.size(); i++){
+        assist[i]->planetId[1]=idx%4;
+        idx++;
+      }
+      sprintf(fname,"phase01.bin");
+      writeSubData(assist,EV_MOON_PHASE,EF_NEXT_DATE2|EF_PLANET2,SE_MOON,fname);
+      assist.clear();
+      release(work);
+      break;
+  }
+
+}
+
+int DataFile::getAspIndex(int angle)
+{
+  int idx=-1;
+  for(int i=0; i<sizeof(ASP_ANGLES)/sizeof(char); i++)
+    if(ASP_ANGLES[i]==angle){
+      idx=i;
+      break;
+    }
+  return idx;
+}
+
+void DataFile::NormAngle(double &a)
+{
+  while(a<0) a+=360.L;
+  while(a>=360) a-=360.L;
+}
+
+
+void DataFile::geopos(char* city, double lat, double lon, char* suffix)
+{
+  //TODO: Add your source code here
+}

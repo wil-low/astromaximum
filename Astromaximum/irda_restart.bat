@@ -1,0 +1,2 @@
+net stop "INFRARED MONITOR"
+net start "INFRARED MONITOR"
