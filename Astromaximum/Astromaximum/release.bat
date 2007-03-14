@@ -11,5 +11,3 @@ goto endit
 
 
 :endit
-explorer deploy
-pause

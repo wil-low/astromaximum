@@ -333,13 +333,10 @@ class Summary extends FrameAnimator implements CommandListener{
 //    Astromaximum.evDump(vNavroz);
     long navroz=aNavroz[1].date0;
     final long sunrise=getItem(Event.EV_SUN_RISE).events[0].date0;
-    if(sunrise>=navroz) {
-      pltDaySun = (int) ((sunrise - navroz) / Astromaximum.MSECINDAY);
-    } 
-    else{
+    if(sunrise<navroz) {
       navroz=aNavroz[0].date0;
-      pltDaySun=(int)((sunrise-navroz)/Astromaximum.MSECINDAY);
-    }
+    } 
+    pltDaySun = (int) ((sunrise - navroz)*1000 / Astromaximum.MSECINDAY+500)/1000;
     if(pltDaySun < 360) {
       pltDaySun = Astromaximum.getSignDegree(pltDaySun);
     }
