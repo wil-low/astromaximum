@@ -96,7 +96,7 @@
       </exec>
     </target>
 
-    <target name="post-jar" description="Messing up JAR." if="do.timebomb">
+    <target name="post-jar" description="Messing up JAR." unless="no.messjar">
       <exec executable="C:/perl/bin/perl.exe">
         <arg value="messjar.pl"/>
         <arg value="${dist.dir}/${dist.jar}"/>
@@ -107,6 +107,9 @@
       <condition property="do.timebomb">
         <equals arg1="${config.active}" arg2="midp2y2007release_tb"/>
       </condition>
+      <condition property="no.messjar">
+        <equals arg1="${config.active}" arg2="midp2y2007notest"/>
+      </condition>
       <antcall target="tb.install">
         <param name="script.dir" value="./"/>
         <param name="class.dir" value="${build.classes.dir}"/>
@@ -114,12 +117,16 @@
     </target>
     
     <target name="pre-jar" description="Injecting Amdata.">
-      <copy file="${src.dir}/Amdata.class" todir="${preverify.classes.dir}"/>
+      <antcall target="amdata"/>
       <antcall target="common.install">
         <param name="class.dir" value="${preprocessed.dir}"/>
       </antcall>
     </target>
     
+    <target name="amdata" description="Injecting Amdata."  unless="no.messjar">
+      <copy file="${src.dir}/Amdata.class" todir="${preverify.classes.dir}"/>
+    </target>
+
     <target name="common.install" if="imei.code">
       <condition property="valid.imei">
         <length string="${imei.code}" length="15"/>

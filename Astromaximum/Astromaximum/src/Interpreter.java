@@ -337,15 +337,20 @@ class Interpreter extends Canvas implements CommandListener {
             s=dis.readUTF();
 //            System.out.println("FullText:");
 //            System.out.println(s);
-//#if 1 == 1
-            isTopicTitle=si.haveTopic((int)params[0]);
-            int topp=isTopicTitle? topic: 10;
             char allowed0=0, allowed1=0;
+            isTopicTitle=si.haveTopic((int)params[0]);
+            int topp=topic;
+            if(params[0]==Event.EV_MOON_MOVE){
+              allowed0='@'; 
+            }
+            else{
+              topp=isTopicTitle? topic: 10;
+            }
             StringBuffer sb=new StringBuffer(s);
             if(topp!=10){
               allowed1=RESERVED_CHARS.charAt(topp);
               if(topp!=T_MEDICINE && topp!=T_DECUMB && topp!=T_VACATION && topp!=T_LOVE){
-                allowed0='@';
+                  allowed0='@';
               }
               for(int i=0; i<RESERVED_CHARS.length(); i++){
                 char rc=RESERVED_CHARS.charAt(i);
@@ -369,7 +374,7 @@ class Interpreter extends Canvas implements CommandListener {
               }
             }
             else{
-//              s=removeTopic(s,T_LOVE);
+              s=removeTopic(s,T_LOVE);
               s=removeTopic(s,T_MEDICINE);
               s=removeTopic(s,T_DECUMB);
               sb=new StringBuffer(s);
@@ -381,7 +386,6 @@ class Interpreter extends Canvas implements CommandListener {
               }
             }
             s=sb.toString();
-//#endif            
             s=s.trim();
             break;
           }

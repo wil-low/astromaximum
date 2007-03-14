@@ -19,7 +19,7 @@ our %eventType=qw(EV_VOC 0 EV_SIGN_ENTER 1 EV_ASP_EXACT 2 EV_RISE 3 EV_DEGREE_PA
   EV_SUN_DAY 22 EV_MOON_DAY 23 EV_GRID_DATE 24 EV_MOON_PHASE 25 EV_ZODIAC_SIGN 26 
   EV_PANEL 27 EV_FAST_BUTTON 28 EV_DEG_2ND 29 EV_WEEK_GRID 30 EV_MONTH_GRID 31 
   EV_DECUMBITURE 32 EV_DECUMB_ASPECT 33 EV_DECUMB_BEGIN 34 EV_SUN_DEGREE_LARGE 35 
-  EV_MOON_SIGN_LARGE 36 EV_HELP 37 EV_LAST 38
+  EV_MOON_SIGN_LARGE 36 EV_HELP 37 EV_ASP_EXACT_MOON 38 EV_LAST 39
   );
 	
 our %eventFlags=qw(EF_PLANET1 2 EF_PLANET2 4 EF_DEGREE 8 EF_SHORT_DEGREE 64);
@@ -61,7 +61,6 @@ foreach my $ff(@bins){
 my $RESERVED_CHARS='*^$}>{~#@=';
 
 	foreach my $ln(@buf){
-		$output='';
 		my $line=$ln;
 		$line=~s/\/\/.+//is;
 		next if $line!~/%[\d\s\,\-]+%/;
@@ -107,17 +106,19 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 		use bytes; $len=length($outbuf)+11; 
 	};
 #	die $flag;	 
-	print "$len\n";
-	$output=pack('nNCnna*',$eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
-	our $OutF=undef;
-	open($OutF, ">$path..\\Astromaximum\\src\\$eventType{$evt}.txt") or die "No file";
-	binmode($OutF);
-	print $OutF $output;
-	close($OutF);
+	print "$len, $planet\n";
+	$output=pack('nNcnna*',$eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
+#	die $output;
+	open(OF, ">$path..\\Astromaximum\\src\\$eventType{$evt}.txt") or die "No file";
+	binmode(OF);
+	print OF $output;
+	close(OF);
+	$output='';
+	$outbuf='';
 	
 }
 if($errors==0){
-	our $OutF=undef;
+#	our $OutF=undef;
 #	open($OutF, ">$path".'..\Astromaximum\src\interp.txt') or die "No file";
 #	binmode($OutF);
 #	print $OutF $output;

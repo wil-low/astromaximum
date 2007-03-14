@@ -54,19 +54,21 @@ class SummItem extends TimerTask implements RecordFilter{
     topics.put(new Integer(Event.EV_MOON_DAY), "#*^$}>@");
     topics.put(new Integer(Event.EV_RETROGRADE), "*^$}>@");
     topics.put(new Integer(Event.EV_SIGN_ENTER), "*}{~=^");
-    topics.put(new Integer(Event.EV_ASP_EXACT), "~*^$}>@#{=");
+    topics.put(new Integer(Event.EV_ASP_EXACT), "~*^$}>@");
     topics.put(new Integer(Event.EV_VIA_COMBUSTA), "~#*^$}>@");
     topics.put(new Integer(Event.EV_NAVROZ), ">");
     topics.put(new Integer(Event.EV_RISE), "}~#*^=");
     topics.put(new Integer(Event.EV_TITHI), "}{~*^$>@=");
+    topics.put(new Integer(Event.EV_ASP_EXACT_MOON), "*~#^$}>@={");
     topics.put(new Integer(Event.EV_DECUMBITURE), "#");
     topics.put(new Integer(Event.EV_MOON_PHASE), "^}~#*$>@");
     topics.put(new Integer(Event.EV_VOC), "~*^$}>@");
+    topics.put(new Integer(Event.EV_MOON_MOVE), "*^$}>@");
     topics.put(new Integer(Event.EV_WEEK), "^}{~=$");
     topics.put(new Integer(Event.EV_ECLIPSE), "*^$}>@");
     topics.put(new Integer(Event.EV_PLANET_HOUR), "*^${~#}>@=");
 ///////////////
-    topics.put(new Integer(Event.EV_MOON_MOVE), "*^$}>@=~");
+    topics.put(new Integer(Event.EV_MOON_MOVE), "*^${}>@=~");
     topics.put(new Integer(Event.EV_MOON_SIGN_LARGE), topics.get(new Integer(Event.EV_SIGN_ENTER))); //EV_SIGN_ENTER
     topics.put(new Integer(Event.EV_DAY_HOURS), topics.get(new Integer(Event.EV_PLANET_HOUR))); //EV_PLANET_HOUR
     topics.put(new Integer(Event.EV_NIGHT_HOURS), topics.get(new Integer(Event.EV_PLANET_HOUR)));//EV_PLANET_HOUR
@@ -1245,7 +1247,7 @@ class SummItem extends TimerTask implements RecordFilter{
           else{
 //            Astromaximum.evDump(events);
             //           System.out.println(dgr);
-            return new long[]{Event.EV_ASP_EXACT,plt,plt2,getBadGoodAspect(dgr),dgr,d0,0};
+            return new long[]{Event.EV_ASP_EXACT_MOON,plt,plt2,getBadGoodAspect(dgr),dgr,d0,0};
           }
         }
     }
