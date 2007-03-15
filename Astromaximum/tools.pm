@@ -1,6 +1,7 @@
 package tools;
 
 use strict;
+
 our $rar='d:\Program Files\WinRAR\winrar.exe';
 
 sub join_datafiles # size, destfile, fname_listref
@@ -67,6 +68,7 @@ sub create_geo { # code, region, descript, destdir, locationpath, templatedatare
 	$jad=~s/<CODE>/$code/s;
 	$jad=~s/<DESC>/$desc/s;
 	$jad=~s/<JAR>/$fname\.jar/is;
+#	die $jad;
 	mkdir ".temp\\META-INF\\" unless -d ".temp\\META-INF\\";
 	open(INF, ">.temp\\META-INF\\MANIFEST.MF") or die "No file";
 		print INF $jad;
@@ -83,10 +85,7 @@ sub create_geo { # code, region, descript, destdir, locationpath, templatedatare
 		print INF $buf;
 	close(INF);
 	
-	my $cmd="\"$rar\" f $destdir$fname\.jar .temp\\META-INF\\MANIFEST.MF";
-	print "$cmd\n";
-	system($cmd);
-	$cmd="\"$rar\" a -ep1 $destdir$fname\.jar $locpath\\locations.dat";
+	my $cmd="\"$rar\" a -r -ep1 $destdir$fname\.jar .temp\\*";
 	print "$cmd\n";
 	system($cmd);
 	

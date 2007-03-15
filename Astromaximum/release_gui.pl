@@ -1,10 +1,12 @@
 use strict;
 use Tk;
+use warnings;
+use lib 'd:/projects/nomad_prj';
 use tools;
 
-our $antpath='"d:\\Program Files\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat"';
+our $antpath='d:\\Program Files\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat';
 if(! -f $antpath){
-	$antpath='"d:\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat"';
+	$antpath='d:\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat';
 }
 
 $0=~/(.+\\)/is;
@@ -12,7 +14,7 @@ our $path=$1;
 our $sortmode='city';
 my $main = new MainWindow(-title=>"Astromaximum Release GUI");
 my $frame0=$main->Frame();
-my $imei=$frame0->Entry();
+my $imei=$frame0->Entry(-text=>'359593001109710');
 my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>\&do_imei);
 my $lbox = $frame0->Listbox(-height=>0,-activestyle=>"dotbox");
 my @list = ( "5", "10", "20", "30", "60" );
@@ -27,15 +29,15 @@ $lbox->pack();
 
 $bt_timebomb->pack(-fill=>"x");
 
-my $frame3=$frame0->Frame();
-my $geodesc=$frame3->Entry();
-$frame3->pack(-fill=>"both", -expand=>1,-padx=>5, -side=>'bottom');
+my $frame4=$frame0->Frame();
+my $geodesc=$frame4->Entry(-text=>'<No description>');
+$frame4->pack(-fill=>"both", -expand=>1,-padx=>5, -side=>'bottom');
 $geodesc->pack(-side=>'bottom');
-$frame3->Label(-text=>"Geo description:")->pack(-side=>'bottom');
-my $geofile=$frame3->Entry();
-$frame3->pack(-fill=>"both", -expand=>1,-padx=>5, -side=>'bottom');
+$frame4->Label(-text=>"Midlet description:")->pack(-side=>'bottom');
+my $geofile=$frame4->Entry(-text=>'Cities');
+$frame4->pack(-fill=>"both", -expand=>1,-padx=>5, -side=>'bottom');
 $geofile->pack(-side=>'bottom');
-$frame3->Label(-text=>"Geo caption:")->pack(-side=>'bottom');
+$frame4->Label(-text=>"Midlet name:")->pack(-side=>'bottom');
 
 $frame0->pack(-side=>"left",-fill=>"both", -expand=>1,-padx=>5,-pady=>5);
 
@@ -83,7 +85,7 @@ sub comparator {
 sub do_timebomb {
 	print "timebomb\n";
 	my $timeout=$lbox->get($lbox->curselection);
-	my $cmd="$antpath -f Astromaximum\\build.xml -Dconfig.active=midp2y2007release_tb -Dtb.timeout=$timeout clean deploy";
+	my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=midp2y2007release_tb -Dtb.timeout=$timeout clean deploy";
 	print "$cmd\n";
 	my $res=system($cmd);
 	if($res==0){
@@ -97,7 +99,7 @@ sub do_imei {
 	my $code=$imei->get();
 	if($code=~/\A\d{15}\Z/is){
 		print "imei\n";
-		my $cmd="$antpath -f Astromaximum\\build.xml -Dconfig.active=midp2y2007release -Dimei.code=$code clean deploy";
+		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dno.messjar=1 -Dconfig.active=midp2y2007release -Dimei.code=$code clean deploy";
 		print "$cmd\n";
 		my $res=system($cmd);
 		if($res==0){
@@ -122,7 +124,6 @@ sub do_geo {
 		tools::join_datafiles($#selected+1, $path.".temp\\locations.dat", \@geo);
 		tools::create_geo("USER", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\");
 		$main->messageBox(-icon => 'info', -message => "Geo build successful", -title => 'Message', -type => 'Ok');
-		system("deltree .temp");
 		return;		
 	}
 	$main->messageBox(-icon => 'error', -message => "Geo build failed!", -title => 'Message', -type => 'Ok');
@@ -150,7 +151,9 @@ sub move_record { # index, listsrc, listdest
 sub do_lbselect {
 	return if $lbcities->size==0;
 	move_record($lbcities->index('active'), \@files, \@selected);
+	my $idx=$lbcities->nearest(0);
 	refill_list($lbcities, \@files);
+	$lbcities->yview($idx);
 	refill_list($lbsel, \@selected);
 }
 

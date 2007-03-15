@@ -120,7 +120,10 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
         break;
       default:  
         tit=LocalizationSupport.getMessage("Date");
-        sDate=Event.long2String(tm,0,false);
+
+        sDate=Event.long2String((Astromaximum.summary.period0+
+          Astromaximum.summary.period0)>>1,0,false).substring(0,5);
+//        sDate=Event.long2String(tm,0,false);
     }
     setTitle(tit+" "+sDate);
   }
@@ -154,7 +157,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
   }
 
   void init(int pn) {
-    setTimePrompt(Astromaximum.summary.pageNum,0);
+    setTimePrompt(Astromaximum.summary.pageNum,dateField.getDate().getTime());
     if(get(size()-1)==cg){
       delete(size()-1);
     }

@@ -104,6 +104,9 @@
     </target>
      
     <target name="pre-obfuscate" description="Installing timebomb.">
+      <antcall target="common.install">
+        <param name="class.dir" value="${basedir}/${build.classes.dir}"/>
+      </antcall>
       <condition property="do.timebomb">
         <equals arg1="${config.active}" arg2="midp2y2007release_tb"/>
       </condition>
@@ -118,9 +121,6 @@
     
     <target name="pre-jar" description="Injecting Amdata.">
       <antcall target="amdata"/>
-      <antcall target="common.install">
-        <param name="class.dir" value="${preprocessed.dir}"/>
-      </antcall>
     </target>
     
     <target name="amdata" description="Injecting Amdata."  unless="no.messjar">
@@ -133,7 +133,7 @@
       </condition>
       <fail unless="valid.imei" message="---- Invalid IMEI! ----"/>
       <exec executable="C:/perl/bin/perl.exe">
-        <arg value="../join_common.pl"/>
+        <arg value="${basedir}/../join_common.pl"/>
         <arg value="${class.dir}"/>
         <arg value="${imei.code}"/>
       </exec>

@@ -136,9 +136,9 @@ class Summary extends FrameAnimator implements CommandListener{
     else{
       
       if(needRender) {
-//#if "imeiCheck" @ protection
-        DataFile.hj*=(selItem%3);
-//        System.err.println("hj = " + DataFile.hj );
+//#if midp2y2007notest
+//# //        DataFile.hj*=(selItem%3+1);
+//# //        System.err.println("hj = " + DataFile.hj );
 //#endif
         render(graphics);
       }
@@ -534,8 +534,6 @@ class Summary extends FrameAnimator implements CommandListener{
     }
     Astromaximum.customTime.setTime(false);
     final String et="gET="+Long.toString(System.currentTimeMillis()-tick);
-//    Astromaximum.log(et);
-    
   }
   
   private final String title = "";

@@ -226,7 +226,7 @@ class SummItem extends TimerTask implements RecordFilter{
    * @param now */
   void render(Graphics osg, boolean isSelected, long now, boolean isCus) {
 //    if((page%2)>0) // on 1st page
-    if(owner.pageNum!=Summary.PAGE_PANEL){
+    if(owner.pageNum!=Summary.PAGE_PANEL && type!=Event.EV_RISE){
       
       if(!isEmpty() && haveTopic(type)){
         osg.setColor(Astromaximum.TOPIC_COLOR);
@@ -1646,7 +1646,7 @@ class SummItem extends TimerTask implements RecordFilter{
       }
 //#if "imeiCheck" @ protection
       /* todo DataFile.hj=Options.hj */
-      DataFile.hj=Options.hj*(int)(tick & 65418);
+      DataFile.hj=Options.hj*(int)((tick<<10) & 0x6fedc6);
       
 //#endif
 //      GeoList.localOffset=TimeZone.getDefault().getRawOffset();

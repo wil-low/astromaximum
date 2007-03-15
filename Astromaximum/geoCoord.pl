@@ -2,6 +2,7 @@ use strict;
 use POSIX;
 use Unicode::String;
 use Encode;
+use lib 'd:/projects/nomad_prj';
 use tools;
 
 if($#ARGV!=0){

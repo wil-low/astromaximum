@@ -194,6 +194,7 @@ class Options extends GeoList{
     Astromaximum.log(res);
     try {
       hj=res.compareTo(imei.toString());
+      Astromaximum.log(Long.toString(hj));
     } 
     catch (NullPointerException npe){
       hj=getHeight();

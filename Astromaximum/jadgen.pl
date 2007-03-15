@@ -1,4 +1,5 @@
 use strict;
+use lib 'd:/projects/nomad_prj';
 use tools;
 
 my $jar='GeoAM\\dist\\GeoAM.jar';
@@ -8,7 +9,7 @@ my @files;
 	our $mypath=$1;
 	our $path=$mypath.'GeoAM\\geo\\';
 	my $manif=$path.'META-INF';
-	our $deploy=$mypath.'GeoAM\\deploy\\';
+	our $deploy='d:\\GeoStates\\';
 	mkdir $deploy unless -d $deploy;
 	
 	mkdir $manif unless -d $manif;
@@ -35,7 +36,7 @@ foreach my $city_inf(@files){
 	$buf=$data[0];
 	close($InF);
 	chomp($buf);
-	my($reg, $code)=$buf=~/\#\#(.+):(.+)/is;
+	my($code,$reg)=$buf=~/\#\#(.+):(.+)/is;
 	tools::create_geo($city_inf, $code, $reg, $deploy, "$path$city_inf", $template);
 }
 

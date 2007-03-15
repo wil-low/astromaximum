@@ -194,12 +194,11 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#endif
       } 
       catch(Exception oome){
-//#if "timeBomb" @ protection
-//#else
-        Astromaximum.log("****Total memory = "+Long.toString(Runtime.getRuntime().totalMemory()));
-        Astromaximum.log(oome.toString());
-        logBox.showLog(null);
-        oome.printStackTrace();
+//#if midp2y2007notest
+//#         Astromaximum.log("****Total memory = "+Long.toString(Runtime.getRuntime().totalMemory()));
+//#         Astromaximum.log(oome.toString());
+//#         logBox.showLog(null);
+//#         oome.printStackTrace();
 //#endif        
 //        quit();
       }
