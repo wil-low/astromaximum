@@ -2,6 +2,7 @@ use strict;
 use POSIX;
 use Unicode::String;
 use Encode;
+use tools;
 
 if($#ARGV!=0){
 	die "Usage: <country group code>\n";
@@ -10,7 +11,7 @@ my $city_inf=$ARGV[0]; # файл со списком городов
 
 
 my $country='';
-my $tz;#='+2.0   LastSunMar@3              LastSunOct@4              UKR_Ukraine, Kiev';
+my $tz;
 my ($year, $month, $day, $hour, $min, $day_count)=(2007,1,1,0,0,365);
 my $tz_ofs=0;
 {
@@ -29,7 +30,7 @@ my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
 
 $0=~/(.+\\)/is;
 our $mypath=$1;
-our $path=$mypath."..\\GeoAM\\geo\\";
+our $path=$mypath."GeoAM\\geo\\";
 
 my $dir=$path."$city_inf";
 mkdir $dir unless -d $dir;
@@ -176,13 +177,13 @@ if(! -f "$dir\\$city_inf\.txt"){
 			my $counter=0;
 			print join(@bins,"\n");
 			foreach my $ff(@bins){
-					writeData(2, $ff, 0);
+				tools::writeData($ff, $fname, 0);
 			}	
 		}
 		$i++;
 	}
 	my @bins=glob("$dir\\Data*.dat");
-	join_datafiles($i, "$dir\\locations.dat", \@bins);
+	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
 
 sub get_tz{
 	my ($country,$city)=@_;
@@ -273,52 +274,6 @@ sub decode_time{
 	}
   print "Date = ", POSIX::ctime($tm);
 	return ($tm+$tz_ofs)/60;
-}
-
-sub join_datafiles # size, destfile, fname_listref
-{
-	my $size=$_[0];
-	open($OutF, ">$_[1]") or die "No file";
-	my @bins=@{$_[2]};
-	my @buf;
-	my @bodies;
-	binmode($OutF);
-	print $OutF pack('n',$#bins+1);
-	my $i=0;
-	foreach my $ff(@bins){
-		open($InF, "<$ff") or die "No file";
-		binmode($InF);
-		undef $/ ;
-		@buf=<$InF>;
-		close($InF);
-		$bodies[$i]="@buf";
-		print $OutF pack('n',length($bodies[$i]));
-		++$i;
-		last if $i>=$size;
-	}
-	foreach my $png(@bodies){
-		print $OutF $png;
-	}
-	close($OutF);
-}
-
-sub writeData
-{
-	my $bintype=shift;
-	my $src=shift;
-	open($OutF, ">>$fname") or die "No file";
-	binmode($OutF);
-	open($InF, "<$src") or die "No file";
-	binmode($InF);
-	undef $/ ;
-	my $body=<$InF>;
-	close($InF);
-	my $imeichar=shift;
-	if(length($body)>8){
-		print $OutF pack('c',$imeichar).$body; #
-		print "$src\t$bintype\t$imeichar\n";
-	}
-	close($OutF);
 }
 
 sub writeUTF

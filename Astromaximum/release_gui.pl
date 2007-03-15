@@ -1,9 +1,16 @@
 use strict;
 use Tk;
+use tools;
+
+our $antpath='"d:\\Program Files\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat"';
+if(! -f $antpath){
+	$antpath='"d:\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat"';
+}
+
 $0=~/(.+\\)/is;
 our $path=$1;
 our $sortmode='city';
-my $main = new MainWindow(-title=>"Astromaximum");
+my $main = new MainWindow(-title=>"Astromaximum Release GUI");
 my $frame0=$main->Frame();
 my $imei=$frame0->Entry();
 my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>\&do_imei);
@@ -16,15 +23,24 @@ $bt_imei->pack(-fill=>"x");
 $frame0->Label(-text=>"or")->pack(-pady=>10);
 $lbox->insert('end', @list );
 $lbox->selectionSet(2);
-$lbox->focusFollowsMouse();
 $lbox->pack();
 
 $bt_timebomb->pack(-fill=>"x");
 
-$frame0->pack(-side=>"left");
+my $frame3=$frame0->Frame();
+my $geodesc=$frame3->Entry();
+$frame3->pack(-fill=>"both", -expand=>1,-padx=>5, -side=>'bottom');
+$geodesc->pack(-side=>'bottom');
+$frame3->Label(-text=>"Geo description:")->pack(-side=>'bottom');
+my $geofile=$frame3->Entry();
+$frame3->pack(-fill=>"both", -expand=>1,-padx=>5, -side=>'bottom');
+$geofile->pack(-side=>'bottom');
+$frame3->Label(-text=>"Geo caption:")->pack(-side=>'bottom');
+
+$frame0->pack(-side=>"left",-fill=>"both", -expand=>1,-padx=>5,-pady=>5);
 
 my $frame1=$main->Frame();
-$frame1->pack(-side=>"left", -fill=>"both", -expand=>1,-padx=>5,-pady=>5);
+$frame1->pack(-side=>"left", -fill=>"both", -expand=>1,-pady=>5);
 
 my $lbsel=$frame1->Scrolled('Listbox',-scrollbars=>'e',-activestyle=>"dotbox",-width=>40,-height=>30);
 $lbsel->configure(-selectmode=>'multiple');
@@ -66,21 +82,50 @@ sub comparator {
 
 sub do_timebomb {
 	print "timebomb\n";
-	my $timeout=$lbox->get("active");
-	system("release.bat tb $timeout");
+	my $timeout=$lbox->get($lbox->curselection);
+	my $cmd="$antpath -f Astromaximum\\build.xml -Dconfig.active=midp2y2007release_tb -Dtb.timeout=$timeout clean deploy";
+	print "$cmd\n";
+	my $res=system($cmd);
+	if($res==0){
+		$main->messageBox(-icon => 'info', -message => "Build successful", -title => 'Message', -type => 'Ok');
+		return;
+	}
+	$main->messageBox(-icon => 'error', -message => "Build failed!", -title => 'Message', -type => 'Ok');
 }
 
 sub do_imei {
-	print "imei\n";
 	my $code=$imei->get();
-	system("release.bat imei $code");
+	if($code=~/\A\d{15}\Z/is){
+		print "imei\n";
+		my $cmd="$antpath -f Astromaximum\\build.xml -Dconfig.active=midp2y2007release -Dimei.code=$code clean deploy";
+		print "$cmd\n";
+		my $res=system($cmd);
+		if($res==0){
+			$main->messageBox(-icon => 'info', -message => "Build successful", -title => 'Message', -type => 'Ok');
+			return;
+		}
+	}
+	$main->messageBox(-icon => 'error', -message => "Build failed!", -title => 'Message', -type => 'Ok');
 }
 
 sub do_geo {
-	print "geo\n";
-	foreach my $sc (@selected){
-		print $sc->{city}."\t".$sc->{fname}."\n";
+	my $geocap=$geofile->get();
+	my $geod=$geodesc->get();
+	if($geocap and $geod and $#selected>=0){
+		print "geo\n";
+		my @geo;
+		foreach my $sc (@selected){
+			print $sc->{city}."\t".$sc->{fname}."\n";
+			push(@geo, $sc->{fname});
+		}
+		mkdir '.temp' unless -d '.temp';
+		tools::join_datafiles($#selected+1, $path.".temp\\locations.dat", \@geo);
+		tools::create_geo("USER", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\");
+		$main->messageBox(-icon => 'info', -message => "Geo build successful", -title => 'Message', -type => 'Ok');
+		system("deltree .temp");
+		return;		
 	}
+	$main->messageBox(-icon => 'error', -message => "Geo build failed!", -title => 'Message', -type => 'Ok');
 }
 
 sub do_sel_all {
@@ -104,7 +149,6 @@ sub move_record { # index, listsrc, listdest
 
 sub do_lbselect {
 	return if $lbcities->size==0;
-	print "lbselect\n";
 	move_record($lbcities->index('active'), \@files, \@selected);
 	refill_list($lbcities, \@files);
 	refill_list($lbsel, \@selected);
@@ -112,7 +156,6 @@ sub do_lbselect {
 
 sub do_lbunselect {
 	return if $lbsel->size==0;
-	print "lbunselect\n";
 	move_record($lbsel->index('active'), \@selected, \@files);
 	@files = sort comparator @files;
 	refill_list($lbcities, \@files);
@@ -120,12 +163,12 @@ sub do_lbunselect {
 }
 
 sub get_city_list {
-	my @inis=glob($path."..\\GeoAM\\geo\\*.ini");
+	my @inis=glob($path."GeoAM\\geo\\*.ini");
 	my @files;
 	foreach my $ini (@inis){
 		$ini=~/.+\\(.+?)\.ini/is;
 		$ini=$1;
-		my $inipath="$path..\\GeoAM\\geo\\$ini\\";
+		my $inipath=$path."GeoAM\\geo\\$ini\\";
 		open(INI,"<$inipath$ini.txt") or warn "No file $path$ini.txt\n";
 		my @cset=<INI>;
 		close(INI);

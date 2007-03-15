@@ -13,8 +13,8 @@ sub join_phases
 	my $size=shift;
 	my @buf;
 	my @bodies;
-	my @bins=glob($path.'phasesgif\\ph'.$size.'-*.png');
-	open($OutF, ">$path".'..\\Astromaximum\\src\\res\\ph'.$size.'.dat') or die "No file";
+	my @bins=glob($path.'images\\phasesgif\\ph'.$size.'-*.png');
+	open($OutF, ">$path".'Astromaximum\\src\\res\\ph'.$size.'.dat') or die "No file";
 	binmode($OutF);
 	print $OutF pack('n',$#bins+1);
 	my $i=0;

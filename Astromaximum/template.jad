@@ -1,7 +1,7 @@
 MIDlet-1: <REGION>'07,,GeoInstaller
 MIDlet-Jar-URL: <JAR>
-MIDlet-Name: AM-<REGION>'07
-MIDlet-Description: <CODE>
+MIDlet-Name: AM-<CODE>'07
+MIDlet-Description: <DESC>
 MIDlet-Vendor: Wiland
 MIDlet-Version: 1.0
 MicroEdition-Configuration: CLDC-1.1

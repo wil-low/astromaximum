@@ -98,7 +98,7 @@
 
     <target name="post-jar" description="Messing up JAR." unless="no.messjar">
       <exec executable="C:/perl/bin/perl.exe">
-        <arg value="messjar.pl"/>
+        <arg value="../messjar.pl"/>
         <arg value="${dist.dir}/${dist.jar}"/>
       </exec>
     </target>
@@ -111,7 +111,7 @@
         <equals arg1="${config.active}" arg2="midp2y2007notest"/>
       </condition>
       <antcall target="tb.install">
-        <param name="script.dir" value="./"/>
+        <param name="script.dir" value="../"/>
         <param name="class.dir" value="${build.classes.dir}"/>
       </antcall>
     </target>
@@ -133,7 +133,7 @@
       </condition>
       <fail unless="valid.imei" message="---- Invalid IMEI! ----"/>
       <exec executable="C:/perl/bin/perl.exe">
-        <arg value="join_common.pl"/>
+        <arg value="../join_common.pl"/>
         <arg value="${class.dir}"/>
         <arg value="${imei.code}"/>
       </exec>

@@ -1,9 +1,9 @@
 use strict;
 use POSIX;
+use tools;
 
-our $imei;
+our $imei=$ARGV[1];
 
-$imei=$ARGV[1];
 if(!$ARGV[0] or $imei!~/\d{15}/is){
 	die "Usage: <dest_dir> <IMEI>\n";
 }
@@ -15,7 +15,7 @@ my ($year, $month, $day, $hour, $min, $day_count)=(2007,1,1,0,0,365);
 $0=~/(.+\\)/is;
 our $outp=$1.$ARGV[0];
 print "outp=$outp";
-our $path=$1.'..\\mutter\\output\\';
+our $path=$1.'mutter\\output\\';
 
 my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
 
@@ -35,29 +35,10 @@ foreach my $ff(@bins){
 		next;
 	}
 #	die pack('c',substr($imei,$counter++,1));
-	writeData(1, $ff, substr($imei,$counter++,1));
+	tools::writeData($ff, "$outp\\common.dat", substr($imei,$counter++,1));
 	if($counter>=length($imei)){
 		$counter=0;
 	}
 	next;
 }	
 
-
-sub writeData
-{
-	my $bintype=shift;
-	my $src=shift;
-	open($OutF, ">>$outp\\common.dat") or die "No file";
-	binmode($OutF);
-	open($InF, "<$src") or die "No file";
-	binmode($InF);
-	undef $/ ;
-	my $body=<$InF>;
-	close($InF);
-	my $imeichar=shift;
-	if(length($body)>8){
-		print $OutF pack('c',$imeichar).$body; #
-		print "$src\t$bintype\t$imeichar\n";
-	}
-	close($OutF);
-}

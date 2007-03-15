@@ -5,14 +5,14 @@ my $path=$1;
 
 my $EV_LAST=27;
 
-my @bins=glob("$path".'*.txt');
+my @bins=glob("$path".'arrays\\*.txt');
 foreach my $ff(@bins){
 	my $InF=undef;
 	our $OutF=undef;
 	open($InF, "<$ff") or die "No file";
 	$ff=~/.+[\\\/](\w+)\./is;
 	my $fname=$1;
-	open($OutF, ">$path".'..\\Astromaximum\\src\\res\\'.$fname.'.dat') or die "No file";
+	open($OutF, ">$path".'Astromaximum\\src\\res\\'.$fname.'.dat') or die "No file";
 	binmode($OutF);
 	my $count=-1;
 	my @buf=<$InF>;
@@ -40,13 +40,5 @@ foreach my $ff(@bins){
 			print ($OutF pack('c',$count+$i));
 		}
 	}
-	
-#	if($fname=~/size/is){
-#		for(my $i=0; $i<2; $i++){
-#			for(my $j=0; $j<12; $j++){
-#				print ($OutF pack('cccccc',1+$PL_HOURS_W*$j,$PL_HOURS_Y+$PL_HOURS_H*$i,$PL_HOURS_W,$PL_HOURS_H,-1,$i+7));
-#			}
-#		}
-#	}
 	close($OutF);
 }

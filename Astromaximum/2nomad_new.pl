@@ -6,7 +6,7 @@ $0=~/(.+\\)/is;
 
 my $path=$1;
 my $InF=undef;
-my @bins=glob("$path".'*.txt');
+my @bins=glob("$path".'interpret\\*.txt');
 my @buf;
 my $body;
 
@@ -109,7 +109,7 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 	print "$len, $planet\n";
 	$output=pack('nNcnna*',$eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
 #	die $output;
-	open(OF, ">$path..\\Astromaximum\\src\\$eventType{$evt}.txt") or die "No file";
+	open(OF, ">$path"."Astromaximum\\src\\$eventType{$evt}.txt") or die "No file";
 	binmode(OF);
 	print OF $output;
 	close(OF);

@@ -15,9 +15,9 @@ sub join_phases
 	my @bodies;
 	my @bins=qw(service zodiac planet opaqplanet aspect phases);
 	foreach my $it(@bins){
-		$it=$path.'size_png\\'.$it.$size.'.png';
+		$it=$path.'images\\size_png\\'.$it.$size.'.png';
 	}
-	open($OutF, ">$path".'..\\Astromaximum\\src\\res\\sz'.$size.'.dat') or die "No file";
+	open($OutF, ">$path".'Astromaximum\\src\\res\\sz'.$size.'.dat') or die "No file";
 	binmode($OutF);
 	print $OutF pack('n',$#bins+1);
 	my $i=0;
