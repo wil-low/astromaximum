@@ -172,7 +172,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			print $OutF $header;
 			close($OutF);
 			
-			my @bins=glob($path."output\\geo0-\*.bin");
+			my @bins=glob($mypath."output\\geo0-\*.bin");
 			my $counter=0;
 			print join(@bins,"\n");
 			foreach my $ff(@bins){

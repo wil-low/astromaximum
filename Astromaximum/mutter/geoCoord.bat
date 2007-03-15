@@ -1,2 +1,2 @@
-perl geoCoord.pl test
+perl geoCoord.pl UA
 pause
