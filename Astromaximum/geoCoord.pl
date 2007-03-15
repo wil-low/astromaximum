@@ -10,7 +10,7 @@ my $city_inf=$ARGV[0]; # файл со списком городов
 
 
 my $country='';
-my $tz='+2.0   LastSunMar@3              LastSunOct@4              UKR_Ukraine, Kiev';
+my $tz;#='+2.0   LastSunMar@3              LastSunOct@4              UKR_Ukraine, Kiev';
 my ($year, $month, $day, $hour, $min, $day_count)=(2007,1,1,0,0,365);
 my $tz_ofs=0;
 {
@@ -181,7 +181,8 @@ if(! -f "$dir\\$city_inf\.txt"){
 		}
 		$i++;
 	}
-	join_phases($i);
+	my @bins=glob("$dir\\Data*.dat");
+	join_datafiles($i, "$dir\\locations.dat", \@bins);
 
 sub get_tz{
 	my ($country,$city)=@_;
@@ -274,13 +275,13 @@ sub decode_time{
 	return ($tm+$tz_ofs)/60;
 }
 
-sub join_phases
+sub join_datafiles # size, destfile, fname_listref
 {
-	my $size=shift;
+	my $size=$_[0];
+	open($OutF, ">$_[1]") or die "No file";
+	my @bins=@{$_[2]};
 	my @buf;
 	my @bodies;
-	my @bins=glob("$dir\\Data*.dat");
-	open($OutF, ">$dir\\locations.dat") or die "No file";
 	binmode($OutF);
 	print $OutF pack('n',$#bins+1);
 	my $i=0;
@@ -300,8 +301,6 @@ sub join_phases
 	}
 	close($OutF);
 }
-
-
 
 sub writeData
 {
