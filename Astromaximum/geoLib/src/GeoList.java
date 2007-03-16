@@ -48,8 +48,10 @@ public class GeoList extends List  implements RecordComparator, RecordFilter, Co
   public GeoList(MIDlet midlet, int type){
     super("",type);
     main=midlet;
-    System.out.print("Default tz_ofs=");
-    System.out.println(TimeZone.getDefault().getRawOffset());
+//#mdebug info    
+//#     System.out.print("Default tz_ofs=");
+//#     System.out.println(TimeZone.getDefault().getRawOffset());
+//#enddebug
 //    addCommand(new Command(LocalizationSupport.getMessage("Back"),
 //        Command.BACK, 1));
     addCommand(new Command(getMessage("Cancel"),Command.CANCEL, 1));
@@ -102,9 +104,11 @@ public class GeoList extends List  implements RecordComparator, RecordFilter, Co
       rs=RecordStore.openRecordStore(STORE_NAME, "Wiland", "Astromaximum2007");
     }
     curCity=rs.getRecord(1);
-    System.out.println(new String(curCity));
     RecordEnumeration rece=rs.enumerateRecords(this,null,false);
-    System.out.println(rece.numRecords());
+//#mdebug info 
+//#     System.out.println(new String(curCity));
+//#     System.out.println(rece.numRecords());
+//#enddebug    
     byte[] nextR;
     nextR = rece.nextRecord();
     DataInputStream dis=new DataInputStream(new ByteArrayInputStream(nextR));
@@ -117,16 +121,19 @@ public class GeoList extends List  implements RecordComparator, RecordFilter, Co
     tzOffset*=60000L;
     if(dstExists){
       dstStart=dis.readInt()*60000L-tzOffset;//
-      System.out.println(dstStart);
-      System.out.println(new Date(dstStart).toString());
       dstEnd=dis.readInt()*60000L-tzOffset-3600000L;
-      System.out.println(dstEnd);
-      System.out.println(new Date(dstEnd).toString());
+//#mdebug info
+//#       System.out.println(dstStart);
+//#       System.out.println(new Date(dstStart).toString());
+//#       System.out.println(dstEnd);
+//#       System.out.println(new Date(dstEnd).toString());
+//#enddebug      
     }
 
-    System.out.print("TZ offset=");
-    System.out.println(tzOffset);
-    
+//#mdebug info
+//#     System.out.print("TZ offset=");
+//#     System.out.println(tzOffset);
+//#enddebug    
     byte[] data=new byte[dis.available()];
     dis.read(data);
     dis.close();

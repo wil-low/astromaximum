@@ -1329,6 +1329,7 @@ class SummItem extends TimerTask implements RecordFilter{
     }
   }
   
+//#mdebug info
   void dump() {
     System.out.println("**SummItem dump**");
     System.out.print("Type: ");
@@ -1342,6 +1343,7 @@ class SummItem extends TimerTask implements RecordFilter{
       Astromaximum.evDump(events);
     }
   }
+//#enddebug
   
   void prepareTithi() {
     if(type != Event.EV_TITHI) {

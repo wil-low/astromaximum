@@ -185,6 +185,7 @@ class Event {
     return true;
   }
   
+//#mdebug info
   /**
    * dump
    * @noinspection UseOfSystemOutOrSystemErr
@@ -201,6 +202,7 @@ class Event {
     System.out.print("  planets "+Integer.toString(planet0)+" - "+
         Integer.toString(planet1)+"\n");
   }
+//#enddebug
   
   /**
    *

@@ -81,7 +81,7 @@ class Options extends GeoList{
     catch (Exception ex) {
       Astromaximum.log(ex.toString());
     } 
-    setTitle("IMEI: "+imei.toString());
+//    setTitle("IMEI: "+imei.toString());
 //    String res="";
 //    final String[] ids={
 //      "CellID",
@@ -111,6 +111,7 @@ class Options extends GeoList{
     else
     switch(c.getPriority()){
       case 1:
+//#debug debug 
         System.out.println("OK");
         curCity=getString(getSelectedIndex()).getBytes();
         try{
@@ -149,6 +150,7 @@ class Options extends GeoList{
   
   /** @noinspection UnusedParameters*/
   void addImeiChar(Object obj) {
+//#debug info 
     System.out.println("App IMEI="+imei);
     String res="";
     final String[] ids={
@@ -192,6 +194,7 @@ class Options extends GeoList{
   //#endif
     Astromaximum.log(id+": ");
     Astromaximum.log(res);
+    Astromaximum.log(imei.toString());
     try {
       hj=res.compareTo(imei.toString());
       Astromaximum.log(Long.toString(hj));
@@ -208,14 +211,16 @@ class Options extends GeoList{
 //     }
 //#endif
   }
-  private StringBuffer imei;
+  StringBuffer imei;
   
   void addImeiChar(char c){
     if(imei==null) {
-      imei = new StringBuffer(c);
+      imei = new StringBuffer();
     }
     if(imei.length() < IMEI_LEN) {
       imei.append(c);
+//      System.out.print("imeibuf=");
+//      System.out.println(imei);
     }
   }
   
@@ -277,6 +282,7 @@ class Options extends GeoList{
 //        rs.addRecord(geo, 0, geo.length);
         geo=extractCityName(geo).getBytes();
         rs.setRecord(1,geo, 0, geo.length);
+//#debug info
         System.out.println("RecStore created");
       }
     }
@@ -284,6 +290,7 @@ class Options extends GeoList{
     DataInputStream dis=new DataInputStream(new ByteArrayInputStream(rs.getRecord(2)));
     try {
       CustomTime.histCount=dis.readUnsignedShort();
+//#debug info 
       System.out.println("Read history");
       for(int i=0; i<CustomTime.histCount; i++){
         CustomTime.history[i]=dis.readLong();
@@ -312,8 +319,10 @@ class Options extends GeoList{
     byte[] cur=baos.toByteArray();
     try {
       rs.setRecord(2,cur, 0, cur.length);
+//#debug info
       System.out.println("history");
-    } catch (RecordStoreException ex) {
+    } 
+    catch (RecordStoreException ex) {
       ex.printStackTrace();
     }        
   }

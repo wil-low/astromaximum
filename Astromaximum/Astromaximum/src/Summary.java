@@ -214,9 +214,11 @@ class Summary extends FrameAnimator implements CommandListener{
 //          case KEY_NUM3:
 //            changeDay(1);
 //            break;
+//#mdebug info
           case Canvas.KEY_STAR:
             si.dump();
             break;
+//#enddebug
           case Canvas.KEY_NUM9:
             int pn=pageNum+1;
             if(pageNum==PAGE_HELP){
@@ -996,15 +998,17 @@ class Summary extends FrameAnimator implements CommandListener{
     }
   }
   
-  private void weeklyForecast(int zodSign) {
-    System.out.println("Weekly forecast for "+Astromaximum.CONSTELL[zodSign]);
-  }
+//  private void weeklyForecast(int zodSign) {
+//    System.out.println("Weekly forecast for "+Astromaximum.CONSTELL[zodSign]);
+//  }
   
   private void recalcBounds(int w, int h) {
+//#mdebug info
     System.out.print("*** Bounds = ");
     System.out.print(w);
     System.out.print(" x ");
     System.out.println(h);
+//#enddebug
 //    sizer.setSize(w,h);
     if(needRender){
 //#ifdef UseBuffer

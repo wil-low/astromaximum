@@ -68,8 +68,10 @@ final class DataFile{
 //      System.out.println(Event.long2String(startJD,false,false));
       dayCount= is.readShort();
       finalJD=startJD+dayCount*Astromaximum.MSECINDAY;
+//#debug info 
       System.out.println(dayCount);
       commonData=new byte[is.available()];
+//#debug debug 
       System.out.println(is.available());
       is.read(commonData);
       is.close();
@@ -82,6 +84,7 @@ final class DataFile{
     for(int i=0; i<tmp.size(); i++) {
       eclipses.addElement(tmp.elementAt(i));
     }
+//#debug error
     System.out.println(Runtime.getRuntime().freeMemory());
   }
 
@@ -303,10 +306,10 @@ final class DataFile{
       }
       while(true){
         int ch=is.readUnsignedByte();
-	  if(isCommon && Astromaximum.options!=null){
-	    Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
-	  }
         while (evtype != is.readUnsignedByte()) {
+          if(isCommon && Astromaximum.options!=null){
+            Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
+          }
           skipOff = is.readShort()-3;
           is.skip(skipOff);
           ch=is.readUnsignedByte();
@@ -598,6 +601,7 @@ final class DataFile{
     Vector v =null;// readSubData(geoposData, event, planet);
     if (v.size() > 0){
       cache.addElement(new EventCache(v, event, planet));
+//#debug info 
       System.out.println("Cached "+Integer.toString(v.size()));
     }
   }
@@ -612,18 +616,4 @@ final class DataFile{
       planet=plt;
     }
   }
-  
-
-//  /**
-//   * readInt
-//   *
-//   * @param is DataInputStream
-//   * @return short
-//   * @throws IOException
-//   * @noinspection MagicNumber
-//   */
-//  private long readInt(DataInputStream is) throws IOException {
-//    return is.readByte() & 0xff | (is.readByte() & 0xff) << 8 | (is.readByte() & 0xff) << 16 | (is.readByte() & 0xff) << 24;
-//  }
-
 }

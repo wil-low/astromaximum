@@ -2,7 +2,7 @@ import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 import java.io.*;
 import java.util.*;
-///#define perftest=2
+//#define perftest="0"
 /** @noinspection CastToConcreteClass*/
 public class Astromaximum extends MIDlet implements CommandListener{
   static final int BACK_COLOR = 0xb0b0b0;
@@ -78,12 +78,14 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //      }
       
 //#if "timeBomb" @ protection
+//#mdebug debug
 //#      System.out.println(Integer.toHexString(Interpreter.hj));
 //#       System.out.println(Integer.toHexString(CustomTime.hj));
+//#enddebug
 //#endif
       LocalizationSupport.initLocalizationSupport("ru_RU");
       summary =new Summary();
-//#ifndef perftest 
+//#if perftest=="0"
       summary.setMoonXY(summary.getWidth()>>1,summary.getHeight()>>1,
           Graphics.HCENTER|Graphics.VCENTER);
       summary.run();
@@ -101,7 +103,6 @@ public class Astromaximum extends MIDlet implements CommandListener{
         //    sizer.setSize(logBox.getWidth(), logBox.getHeight());
         options = new Options();
         dataFile = new DataFile();
-        
         try {
           options.initDB(true);
         } 
@@ -112,12 +113,14 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //        log("Options");
 //          System.out.println(Runtime.getRuntime().freeMemory());
         interpreter =new Interpreter();
+//#debug error 
         System.out.println("Interpreter");
+//#debug fatal 
         System.out.println(Runtime.getRuntime().freeMemory());
         customTime =new CustomTime();
 //        log("customTime");
 //          System.out.println(Runtime.getRuntime().freeMemory());
-//#if perftest == 2
+//#if perftest == "2"
 //#         calendar.set(Calendar.YEAR,2007);
 //#         calendar.set(Calendar.MONTH,Calendar.FEBRUARY);
 //#         calendar.set(Calendar.DAY_OF_MONTH,1);
@@ -146,7 +149,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#         Astromaximum.log("Total time="+Long.toString(System.currentTimeMillis()-tick));
 //#         logBox.showLog(null);
 //#endif      
-//#if perftest == 1
+//#if perftest == "1"
 //#         calendar.set(Calendar.YEAR,2007);
 //#         calendar.set(Calendar.MONTH,Calendar.FEBRUARY);
 //#         calendar.set(Calendar.DAY_OF_MONTH,1);
@@ -202,7 +205,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#endif        
 //        quit();
       }
-//#ifndef perftest
+//#if perftest=="0"
       if(true/*dataFile.isDateAvailable(summary.selDate)*/){
 //        log("SDS before");
         summary.moonPhase= Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE,Event.SE_MOON,
@@ -285,6 +288,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
    * @param string String
    */
   static void log(String string) {
+//#mdebug debug
     if(Astromaximum.logBox.getString(0).equals(LogBox.EMPTY)) {
       Astromaximum.logBox.delete(0);
     }
@@ -293,6 +297,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
       Astromaximum.logBox.delete(0);
     }
     System.out.println(string);
+//#enddebug
   }
   
   
@@ -336,6 +341,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
   
 
   
+//#mdebug info
   /** @noinspection StaticMethodOnlyUsedInOneClass*/
   static void evDump(Event[] events) {
     System.out.println("**Array dump**");
@@ -354,6 +360,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
     for(Enumeration e=events.elements(); e.hasMoreElements();)
       ((Event)e.nextElement()).dump();
   }
+//#enddebug
 
   public void commandAction(Command c, Displayable d) {
     switch(c.getCommandType()){

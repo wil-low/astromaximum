@@ -79,13 +79,13 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
   }
 
   public void itemStateChanged(Item item) {
-    if(item==cg){
-      System.out.println("hkjh");
+//    if(item==cg){
+//      System.out.println("hkjh");
 //      long tm=history[cg.getSelectedIndex()];
 //      tm-=Event.localOffset(tm);
 //      dateField.setDate(new Date(tm));
 //      setTimePrompt(invoker,0);
-    }
+//    }
   }
   
   public void commandAction(Command c, Displayable d)  {
