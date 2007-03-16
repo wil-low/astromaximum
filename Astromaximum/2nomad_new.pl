@@ -1,4 +1,5 @@
 use strict;
+use warnings;
 use Unicode::String;
 use Encode;
 my ($year, $month, $day, $hour, $min, $day_count)=(2005,12,31,0,0,367);

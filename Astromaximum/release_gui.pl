@@ -1,6 +1,7 @@
 use strict;
 use Tk;
 use warnings;
+use lib 'D:/Willow/prj/astrology/nomad_prj/'; 
 use lib 'd:/projects/nomad_prj';
 use tools;
 
@@ -99,7 +100,7 @@ sub do_imei {
 	my $code=$imei->get();
 	if($code=~/\A\d{15}\Z/is){
 		print "imei\n";
-		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dno.messjar=1 -Dconfig.active=midp2y2007release -Dimei.code=$code clean deploy";
+		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=midp2y2007release -Dimei.code=$code clean deploy";
 		print "$cmd\n";
 		my $res=system($cmd);
 		if($res==0){

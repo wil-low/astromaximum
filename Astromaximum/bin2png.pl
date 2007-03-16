@@ -1,4 +1,5 @@
 use strict;
+use warnings;
 use GD;
 use GD::Image;
 die "Please provide filename as parameter.\n" if $#ARGV!=0;

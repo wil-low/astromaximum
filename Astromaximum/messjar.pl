@@ -1,4 +1,5 @@
 use strict;
+use warnings;
 use Digest::Crc32;
 #die;
 our $file_sign="\x50\x4B\x03\x04";
@@ -100,7 +101,7 @@ sub mess_add_special_entry {
 	my $crc32=new Digest::Crc32();
 	my $crc=pack('L',$crc32->strcrc32($inn));
 	my $sz=length($inn);
-	my $sz=pack('LL',$sz,$sz);
+	$sz=pack('LL',$sz,$sz);
 	$before=~s/(.+$file_sign.{4}).(.{5}).{12}/$1\0$2$crc$sz/s;
 	$body=~s/.(.{5}).{12}(.{18}Amaxdata\.dat)/\0$1$crc$sz$2/s;
 	return $before.$inn.$body;

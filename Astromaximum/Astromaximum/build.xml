@@ -78,18 +78,13 @@
     -->    
     
     <property name="AM.dist" value="dist/midp2y2007release_tb/"/>
-    
-    
+
+<!--    
+    <property name="imei.code" value="359593001109710"/>
+    classpath="${platform.bootclasspath}" 
+--> 
     <target name="tb.install" description="Installing timebomb." if="do.timebomb">
-<!--
-      <input
-        message="Enter bomb timeout in minutes? "
-        validargs="20,30,10,5"
-        addproperty="tb.timeout"
-        defaultvalue="20"
-      />
--->     
-      <exec executable="C:/perl/bin/perl.exe">
+      <exec executable="C:/perl/bin/perl.exe" failonerror="true">
         <arg value="${script.dir}/timebomb.pl"/>
         <arg value="${class.dir}"/>
         <arg value="${tb.timeout}"/>
@@ -97,7 +92,7 @@
     </target>
 
     <target name="post-jar" description="Messing up JAR." unless="no.messjar">
-      <exec executable="C:/perl/bin/perl.exe">
+      <exec executable="C:/perl/bin/perl.exe" failonerror="true">
         <arg value="../messjar.pl"/>
         <arg value="${dist.dir}/${dist.jar}"/>
       </exec>
@@ -123,7 +118,7 @@
       <antcall target="amdata"/>
     </target>
     
-    <target name="amdata" description="Injecting Amdata."  unless="no.messjar">
+    <target name="amdata" description="Injecting Amdata." unless="no.messjar">
       <copy file="${src.dir}/Amdata.class" todir="${preverify.classes.dir}"/>
     </target>
 
@@ -132,11 +127,24 @@
         <length string="${imei.code}" length="15"/>
       </condition>
       <fail unless="valid.imei" message="---- Invalid IMEI! ----"/>
-      <exec executable="C:/perl/bin/perl.exe">
+      <exec executable="C:/perl/bin/perl.exe" failonerror="true">
         <arg value="${basedir}/../join_common.pl"/>
         <arg value="${class.dir}"/>
         <arg value="${imei.code}"/>
       </exec>
     </target>
- 
+
+    <target name="obfuscate" depends="init,compile,obfuscate-check,pre-obfuscate" description="Obfuscate project classes." unless="no.obfusc">
+        <dirname file="${obfuscator.srcjar}" property="obfuscator.srcjar.dir"/>
+        <dirname file="${obfuscator.destjar}" property="obfuscator.destjar.dir"/>
+        <mkdir dir="${obfuscator.srcjar.dir}"/>
+        <mkdir dir="${obfuscator.destjar.dir}"/>
+        <jar jarfile="${obfuscator.srcjar}" basedir="${build.classes.dir}"/>
+        <property name="obfuscation.custom" value=""/>
+        <nb-obfuscate srcjar="${obfuscator.srcjar}" destjar="${obfuscator.destjar}" obfuscatorclasspath="${obfuscator.classpath}" obfuscationLevel="${obfuscation.level}" extraScript="${obfuscation.custom}"/>
+        <mkdir dir="${obfuscated.classes.dir}"/>
+        <unjar src="${obfuscator.destjar}" dest="${obfuscated.classes.dir}"/>
+        <antcall target="post-obfuscate" inheritall="true" inheritrefs="true"/>
+    </target>
+    
 </project>

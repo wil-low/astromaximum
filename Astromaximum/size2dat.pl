@@ -1,4 +1,5 @@
 use strict;
+use warnings;
 $0=~/(.+\\)/is;
 
 my $path=$1;

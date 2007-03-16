@@ -1,4 +1,5 @@
 use strict;
+use warnings;
 use POSIX;
 my @file=("Interpreter","CustomTime");
 my @sign=(pack('N',0x01234567),pack('N',0x89abcdef));

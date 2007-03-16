@@ -303,10 +303,10 @@ final class DataFile{
       }
       while(true){
         int ch=is.readUnsignedByte();
+	  if(isCommon && Astromaximum.options!=null){
+	    Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
+	  }
         while (evtype != is.readUnsignedByte()) {
-          if(isCommon && Astromaximum.options!=null){
-            Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
-          }
           skipOff = is.readShort()-3;
           is.skip(skipOff);
           ch=is.readUnsignedByte();

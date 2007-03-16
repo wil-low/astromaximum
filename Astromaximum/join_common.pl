@@ -1,5 +1,7 @@
 use strict;
+use warnings;
 use POSIX;
+use lib 'D:/Willow/prj/astrology/nomad_prj/';
 use lib 'd:/projects/nomad_prj';
 use tools;
 
@@ -32,19 +34,14 @@ undef $/ ;
 print $path."*.bin\n";
 my @bins=glob("$path".'*.bin');
 
-#my @bins=glob("$path".'retro09.bin');
 my $counter=0;
 foreach my $ff(@bins){
 	if($ff=~/(rise|set|navroz|geo|nakshatra)/is){
 		next;
 	}
-#	die pack('c',substr($imei,$counter++,1));
-	my $c=substr($imei,$counter++,1);
-	print "$c\n";
-	tools::writeData($ff, "$outp\\common.dat", $c);
+	tools::writeData($ff, "$outp\\common.dat", substr($imei,$counter++,1));
 	if($counter>=length($imei)){
 		$counter=0;
 	}
-	next;
 }	
 

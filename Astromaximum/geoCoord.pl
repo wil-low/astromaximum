@@ -1,7 +1,9 @@
 use strict;
 use POSIX;
+use warnings;
 use Unicode::String;
 use Encode;
+use lib 'D:/Willow/prj/astrology/nomad_prj/'; 
 use lib 'd:/projects/nomad_prj';
 use tools;
 

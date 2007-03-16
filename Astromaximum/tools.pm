@@ -41,10 +41,9 @@ sub writeData # srcfile, destfile, imeichar
 	undef $/ ;
 	my $body=<INF>;
 	close(INF);
-	my $imeichar=shift;
 	if(length($body)>8){
 		print OUTF pack('c',$imeichar).$body; #
-		print "$src\t$imeichar\n";
+		print "$src $imeichar\n";
 	}
 	close(OUTF);
 }
