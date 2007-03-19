@@ -22,7 +22,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
 //#if "timeBomb" @ protection
 //#   static int hj=0x89abcdef;
 //#endif
-  private int invoker;
+  int invoker=Event.EV_ASP_EXACT_MOON;
   final DateField dateField;
   final ChoiceGroup cg;
   static final int HIST_COUNT=5;

@@ -17,12 +17,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Random;
+import java.util.Vector;
 import javax.microedition.lcdui.*;
-import javax.microedition.rms.InvalidRecordIDException;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreNotOpenException;
 
 class Options extends GeoList{
   
@@ -153,26 +152,39 @@ class Options extends GeoList{
 //#debug info 
     System.out.println("App IMEI="+imei);
     String res="";
-    final String[] ids={
-      "com.sonyericsson.IMEI",
-      "com.samsung.IMEI",
-      "com.samsung.imei",
-      "com.samsungmobile.IMEI",
-      "com.samsungmobile.imei",
-      "com.siemens.mp.imei",
-      "phone.imei",
-      "phone.IMEI",
-      "com.nokia.mid.imei",
-      "device.imei",
-      "device.IMEI",
-      "imei",
-      "IMEI"
-    };
+    if(DataFile.ids==null){
+      DataFile.ids=new Vector();
+//#if 1==2      
+//#       System.out.println(LogBox.access(0)+LogBox.access(1)+LogBox.access(2)+LogBox.access(3));
+//#       System.out.println(LogBox.access(0)+LogBox.access(4)+LogBox.access(2)+LogBox.access(3));
+//#       DataFile.ids.addElement(LogBox.access(0)+LogBox.access(1)+LogBox.access(3));
+//#else      
+      final String[] ids={
+        "com.sonyericsson.IMEI",
+        "com.samsung.IMEI",
+        "com.samsung.imei",
+        "com.samsungmobile.IMEI",
+        "com.samsungmobile.imei",
+        "com.siemens.mp.imei",
+        "phone.imei",
+        "phone.IMEI",
+        "com.nokia.mid.imei",
+        "device.imei",
+        "device.IMEI",
+        "imei",
+        "IMEI"
+      };
+      for(int i=0; i<ids.length; i++){
+        DataFile.ids.addElement(ids[i]);
+      }
+//#endif      
+    }    
     String id="";
-    for(int i=0; i<ids.length; i++){
-      res=System.getProperty(ids[i]);
+    for(int i=0; i<DataFile.ids.size(); i++){
+      String ss=(String)DataFile.ids.elementAt(i);
+      res=System.getProperty(ss);
       if(res!=null){
-        id=ids[i];
+        id=ss;
         final StringBuffer sb=new StringBuffer(res);
         for(int j=0; j<sb.length(); j++){
           final char c=sb.charAt(j);

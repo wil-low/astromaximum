@@ -41,6 +41,7 @@ final class DataFile{
   private final Vector cache=new Vector();
   byte[] commonData;
   byte[] geoposData;
+  static Vector ids;
   
 //  private int curRec=-1;
   Vector eclipses=null;

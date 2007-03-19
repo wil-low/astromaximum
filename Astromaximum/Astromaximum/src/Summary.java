@@ -30,7 +30,7 @@ class Summary extends FrameAnimator implements CommandListener{
   private static final int BOUNDS_VARS=12;
   static long period0;
   static long period1;
-  static int size;
+  static int size=3;
   private int selItem;
 //  static boolean isCurDay;
   private int previousPage=PAGE_SUMMARY;
@@ -1258,11 +1258,12 @@ class Summary extends FrameAnimator implements CommandListener{
   protected void sizeChanged(int w, int h){
     if(!Astromaximum.firstRun){
 //      Astromaximum.log("chs");
-      items=null;
-      recalcBounds(w,h);
-      changeSize();
-      setCurPage(pageNum);
-      repaint(0, 0, getWidth(), getHeight()); 
+//      items=null;
+//      recalcBounds(w,h);
+//      changeSize();
+//      setCurPage(pageNum);
+//      Display.getDisplay(Astromaximum.instance).setCurrent(this);
+//      repaint(0, 0, getWidth(), getHeight()); 
     }
   }
 

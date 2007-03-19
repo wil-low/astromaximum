@@ -69,6 +69,7 @@ class Event {
   static final int EV_HELP=37;
   static final int EV_ASP_EXACT_MOON=38;
   static final int EV_LAST=39;  // last - do not use
+  
 //#if "imeiCheck" @ protection
   static int hj;
 //#endif

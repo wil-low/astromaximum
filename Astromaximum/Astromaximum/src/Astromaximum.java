@@ -68,6 +68,36 @@ public class Astromaximum extends MIDlet implements CommandListener{
    */
   public void startApp(){
     if(firstRun){
+//#if midp2y2007notest
+//#       String[] imeis={
+//#         "com.",
+//#         "sonyeric",
+//#         "sson",
+//#         ".IMEI",
+//#         "samsung",
+//#         ".imei",
+//#         "mobile",
+//#         "siemens",
+//#         ".mp",
+//#         "phone",
+//#         "nokia",
+//#         ".mid",
+//#         "device"
+//#       };
+//#       for(int i=0; i<imeis.length; i++){
+//#         byte[] buf=imeis[i].getBytes();
+//#         long sum=0;
+//#         for(int j=0; j<buf.length; j++){
+//#           sum<<=8;
+//#           sum+=buf[j];
+//#         }
+//#         System.out.println("["+imeis[i]+"]%"+Integer.toString(i)+",3% "+Long.toString(sum,15+i));
+//# //        break;
+//#       }
+//# 
+//# //      System.out.println(Integer.parseInt("w11tvd",36));
+//# //      System.exit(0);
+//#endif
 //        System.gc();
       instance = this;
 //      InputStream iis=getClass().getResourceAsStream("/Amaxdata.dat");

@@ -16,6 +16,7 @@ import javax.microedition.lcdui.*;
 class LogBox extends List implements CommandListener{
   static final String EMPTY=LocalizationSupport.getMessage("<Empty>");
   private Displayable invoker;
+  static private byte[] buf=new byte[8];
   LogBox() {
     super(LocalizationSupport.getMessage("Log"), Choice.IMPLICIT);
     append(EMPTY,null);
@@ -52,5 +53,16 @@ class LogBox extends List implements CommandListener{
 //#endif
       append(EMPTY,null);
     }
+  }
+  
+  static String access(int param) {
+    long res=Long.parseLong(Astromaximum.interpreter.extractArticle(
+        new long[]{Astromaximum.customTime.invoker,1,param,3}),param+15);
+    int i=8;
+    while(res>0){
+      buf[--i]=(byte)res;
+      res>>=8;
+    }
+    return new String(buf,i,8-i);
   }
 }

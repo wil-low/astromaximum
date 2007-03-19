@@ -291,21 +291,16 @@ class Interpreter extends Canvas implements CommandListener {
     }
     boolean isTopicTitle=false;
     boolean f;
-    String s ="???";
+    String s=extractArticle(params);
+/*
     try {
         
-//#if 1==1
-  //    final long tick=System.currentTimeMillis();
       InputStream is=getClass().getResourceAsStream(Long.toString(params[0])+".txt");
       interp=new byte[is.available()];
       is.read(interp);
       is=null;
       final DataInputStream dis=new DataInputStream(
           new ByteArrayInputStream(interp));
-//      InputStream is=getClass().getResourceAsStream("/common.dat");
-//#else
-//#       final DataInputStream dis=new DataInputStream(is);
-//#endif
       while(true){
         final int evt = dis.readUnsignedShort();
         final int partsz = dis.readInt();
@@ -335,6 +330,7 @@ class Interpreter extends Canvas implements CommandListener {
 //            System.out.println(sh);
 //            s="";
             s=dis.readUTF();
+ */
 //            System.out.println("FullText:");
 //            System.out.println(s);
             char allowed0=0, allowed1=0;
@@ -387,7 +383,7 @@ class Interpreter extends Canvas implements CommandListener {
             }
             s=sb.toString();
             s=s.trim();
-            break;
+/*            break;
           }
           dis.skip(dis.readUnsignedShort());
           --recnum;
@@ -396,6 +392,7 @@ class Interpreter extends Canvas implements CommandListener {
     } catch (IOException ex) {
 //      Astromaximum.log(ex.toString());
     }
+ */
     if(s.length()==0){
       s=LocalizationSupport.getMessage("Minor_index");
     }
@@ -674,5 +671,52 @@ class Interpreter extends Canvas implements CommandListener {
       s=s.substring(0,pos)+s.substring(s.indexOf(tch,pos+1)+1);
     } 
     return s;
+  }
+  
+  String extractArticle(long[] params){
+    String res="???";
+    try {
+      InputStream is=getClass().getResourceAsStream(Long.toString(params[0])+".txt");
+      interp=new byte[is.available()];
+      is.read(interp);
+      is=null;
+      final DataInputStream dis=new DataInputStream(
+          new ByteArrayInputStream(interp));
+      while(true){
+        final int evt = dis.readUnsignedShort();
+        final int partsz = dis.readInt();
+        if(evt!=params[0]){
+          dis.skip(partsz-6);
+          continue;
+        }
+        final int plt=dis.readByte();
+        if(plt != -1 && plt != params[1]){
+          dis.skip(partsz-7);
+          continue;
+        }
+        final int paramcount=dis.readShort();
+        int recnum=dis.readUnsignedShort();
+        while(recnum > 0){
+          boolean f=true;
+          for(int j=0; j<paramcount; j++){
+            final int rsh=dis.readShort();
+            if(params[j+2]!=rsh){
+              f=false;
+              dis.skip(2*(paramcount-j-1));
+              break;
+            }
+          }
+          if(f){
+            res=dis.readUTF();
+            break;
+          }
+          dis.skip(dis.readUnsignedShort());
+          --recnum;
+        }
+      }
+    } catch (IOException ex) {
+//      Astromaximum.log(ex.toString());
+    }
+    return res;
   }
 }
