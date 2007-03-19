@@ -496,21 +496,22 @@ class SummItem extends TimerTask implements RecordFilter{
         break;
       case Event.EV_SEL_DEGREES:
         for(int i=0; i<events.length; i++){
+          boolean isHighlighted=false;
           Event e=events[i];
           drawSelDegree(osg,e,getX(i, XCENTER),y,
               Graphics.VCENTER|Graphics.HCENTER);
           if(contains(e,now)) {
             osg.setColor(Astromaximum.RED_COLOR);
+            isHighlighted=true;
           } 
-          else
-            if(isCus && contains(e,owner.cusTime)) {
-              osg.setColor(Astromaximum.CUST_COLOR);
-            } 
-            else {
-              continue;
-            }
-          final int x=getX(i, XLEFT);
-          osg.drawRect(x+2,top+2,getX(i, XRIGHT)-x-5,height-4);
+          if(isCus && contains(e,owner.cusTime)) {
+            osg.setColor(Astromaximum.CUST_COLOR);
+            isHighlighted=true;
+          } 
+          if(isHighlighted){
+            final int x=getX(i, XLEFT);
+            osg.drawRect(x+2,top+2,getX(i, XRIGHT)-x-5,height-4);
+          }
         }
         break;
       case Event.EV_RETROGRADE:
@@ -1211,7 +1212,8 @@ class SummItem extends TimerTask implements RecordFilter{
         } else if(asp != 0) {
           asp = 1;
         }
-        return new long[]{Event.EV_ASP_EXACT,plt,evi.planet1,asp,dgr,d0,0};
+        return new long[]{Event.EV_ASP_EXACT_MOON,plt,evi.planet1,getBadGoodAspect(dgr),dgr,d0,0};
+//        return new long[]{Event.EV_MOON_ASP_EXACT,plt,evi.planet1,asp,dgr,d0,0};
       case Event.EV_MOON_MOVE:
         if(dgr == 200){
           int id1=-1;
@@ -1298,12 +1300,13 @@ class SummItem extends TimerTask implements RecordFilter{
     }
     if(isCustom) {
       cusSelection = -1;
-    } else {
+    } 
+    else {
       nowSelection = -1;
     }
-    if(!isCustom && !Summary.isCurrentDay) {
-      return;
-    }
+//    if(!isCustom /*&& !Summary.isCurrentDay*/) {
+//      return;
+//    }
     boolean flg;
     for (int i=0; i<events.length; i++) {
       if (events[i] != null) {
@@ -1313,7 +1316,8 @@ class SummItem extends TimerTask implements RecordFilter{
             delta = -delta;
           }
           flg = delta < DEGREE_DELTA_MSEC;
-        } else {
+        } 
+        else {
           flg = contains(events[i], time);
         }
         if (!flg) {

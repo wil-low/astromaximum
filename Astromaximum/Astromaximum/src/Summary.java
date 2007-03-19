@@ -23,6 +23,7 @@ class Summary extends FrameAnimator implements CommandListener{
 //#endif
   static int moonPhaseH;
   static private SummItem timerTask;
+//  private SummItem prevPH;
   private int[] bounds;
   private int[] _bounds;
   private Date date=new Date();
@@ -87,6 +88,7 @@ class Summary extends FrameAnimator implements CommandListener{
 //    catch (IOException ex) {
 //    }
     selItem=0;
+//    prevPH=new SummItem(Event.EV_LAST);
     SummItem.owner=this;
     try {
       imgPanel =Image.createImage("/res/panel.png");
@@ -461,8 +463,18 @@ class Summary extends FrameAnimator implements CommandListener{
     for(int i=0; i<24; i++){
       getItem(i < 12 ? Event.EV_DAY_HOURS : Event.EV_NIGHT_HOURS).setEvents(i%12,aev[i]);
     }
-    long pp0=period0 -Astromaximum.MSECINDAY, pp1=period1 +Astromaximum.MSECINDAY;
+//    long pp0=period0 + Astromaximum.MSECINDAY, pp1=period1 + Astromaximum.MSECINDAY;
+//    ev= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
+//      pp0, pp1);
+//    ev.date1=Astromaximum.dataFile.getEventOnPeriod(Event.EV_SET,Event.SE_SUN,false,
+//      pp0, pp1).date0;
+////        ev.dump();
+//    aev=calcPlanetHours(ev,getItem(Event.EV_SUN_RISE).events[0],weekStartHour[(weekDay+1)%7]);
+//    prevPH.setEvents(aev);
+//    prevPH.recalcSelection(period0, true);
+//    prevPH.dump();
 //******* common risesets
+    long pp0=period0 -Astromaximum.MSECINDAY, pp1=period1 +Astromaximum.MSECINDAY;
     for(int i=Event.SE_SUN; i <= Event.SE_WHITE_MOON; i++){
       Vector tmp2=new Vector();
       if(i == Event.SE_MOON) {
@@ -1008,6 +1020,7 @@ class Summary extends FrameAnimator implements CommandListener{
     System.out.print(w);
     System.out.print(" x ");
     System.out.println(h);
+    Astromaximum.log(Integer.toString(w)+" x "+Integer.toString(h));
 //#enddebug
 //    sizer.setSize(w,h);
     if(needRender){
@@ -1042,7 +1055,8 @@ class Summary extends FrameAnimator implements CommandListener{
 //      String ext=Integer.toString(IMG_HEIGHT)+".png";
       final int dx= w*10;
       final int dy= h*10;
-      if(bounds==null){
+      Astromaximum.log(Integer.toString(dy));
+//      if(bounds==null){
         bounds=loadArray("/res/size"+Integer.toString(size)+".dat");
         _bounds=new int[bounds.length];
         System.arraycopy(bounds, 0, _bounds, 0, bounds.length);
@@ -1051,7 +1065,7 @@ class Summary extends FrameAnimator implements CommandListener{
             _bounds[i * BOUNDS_VARS + j] = bounds[i * BOUNDS_VARS + j] * (j % 2 == 0 ? dx : dy) / 1000;
           }
         }
-      }
+//      }
     }
   }
   
@@ -1239,11 +1253,16 @@ class Summary extends FrameAnimator implements CommandListener{
     getItem(Event.EV_DECUMB_BEGIN).setEvents(asi);
     setCurPage(PAGE_DECUMB);
   }
-  
+
+ 
   protected void sizeChanged(int w, int h){
     if(!Astromaximum.firstRun){
+//      Astromaximum.log("chs");
+      items=null;
       recalcBounds(w,h);
-      repaint();
+      changeSize();
+      setCurPage(pageNum);
+      repaint(0, 0, getWidth(), getHeight()); 
     }
   }
 
@@ -1264,8 +1283,8 @@ class Summary extends FrameAnimator implements CommandListener{
 //#if MIDP == "2.0"
     setFullScreenMode(true);
 //#endif
-    if(timerTask!=null)
-      timerTask.run();
+//    if(timerTask!=null)
+//      timerTask.run();
   }
   
   public void stop(){
