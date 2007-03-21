@@ -311,6 +311,9 @@ class Summary extends FrameAnimator implements CommandListener{
 //****** VIA COMBUSTA
     getItem(Event.EV_VIA_COMBUSTA).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
         Event.EV_VIA_COMBUSTA,Event.SE_MOON,false, period0, period1));
+//#ifdef logger
+//#       Astromaximum.instance.logger(" VC");
+//#endif      
 //****** SUN & MOON RISES & SETS
     for(int i=Event.SE_SUN; i <= Event.SE_MOON; i++){
       Event eop= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,i,true, period0, period1);
@@ -324,14 +327,23 @@ class Summary extends FrameAnimator implements CommandListener{
       }
       getItem(Event.EV_SUN_RISE+i).events[0].date1=eop.date0;
     }
+//#ifdef logger
+//#       Astromaximum.instance.logger(" SO,MO riseset");
+//#endif      
     
     int pltDaySun;
 //****** SUN DEGREE PASS
     getItem(Event.EV_SUN_DEGREE_LARGE).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
         Event.EV_DEGREE_PASS,Event.SE_SUN,true, period0, period1));
+//#ifdef logger
+//#       Astromaximum.instance.logger(" SO degpass");
+//#endif      
 //****** MOON SIGN ENTER
     getItem(Event.EV_MOON_SIGN_LARGE).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
         Event.EV_SIGN_ENTER,Event.SE_MOON,true, period0, period1));
+//#ifdef logger
+//#       Astromaximum.instance.logger(" MO signenter");
+//#endif      
     
 //    Astromaximum.evDump(vNavroz);
     long navroz=aNavroz[1].date0;
@@ -366,6 +378,9 @@ class Summary extends FrameAnimator implements CommandListener{
         false, period0, period1,0);
 //    Astromaximum.evDump(tith);
     getItem(Event.EV_TITHI).setEvents(tith);
+//#ifdef logger
+//#       Astromaximum.instance.logger(" tithi");
+//#endif      
     
 //****** MOON ASPECTS
     final Vector asp=new Vector();
@@ -379,6 +394,9 @@ class Summary extends FrameAnimator implements CommandListener{
         period0 -Astromaximum.MSECINDAY, period1 +Astromaximum.MSECINDAY);
     
     getItem(Event.EV_ASP_EXACT).setEvents(evInCurrentDay(new Vector(),asp));
+//#ifdef logger
+//#       Astromaximum.instance.logger(" aspExact");
+//#endif      
     
     asp.removeAllElements();
     Astromaximum.dataFile.getEventsOnPeriod(asp,Event.EV_SIGN_ENTER,Event.SE_MOON,
@@ -428,6 +446,9 @@ class Summary extends FrameAnimator implements CommandListener{
     }
     
     getItem(Event.EV_MOON_MOVE).setEvents(asp);
+//#ifdef logger
+//#       Astromaximum.instance.logger(" moonMove");
+//#endif      
     
     final Vector retrograde=new Vector();
     final Vector workVec=new Vector();
@@ -447,12 +468,18 @@ class Summary extends FrameAnimator implements CommandListener{
 //    Astromaximum.evDump(workVec);
     mergeEvents(asp,workVec,true);
     getItem(Event.EV_SEL_DEGREES).setEvents(asp);
+//#ifdef logger
+//#       Astromaximum.instance.logger(" selDegree");
+//#endif      
     workVec.removeAllElements();
     for(int i=Event.SE_SUN; i <= Event.SE_PLUTO; i++){
       Astromaximum.dataFile.getEventsOnPeriod(workVec,Event.EV_RETROGRADE,i,
           false, period0, period1,0);
     }
     getItem(Event.EV_RETROGRADE).setEvents(workVec);
+//#ifdef logger
+//#       Astromaximum.instance.logger(" retrograde");
+//#endif      
 
 //****** PLANETARY HOURS
     ev= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
@@ -462,6 +489,9 @@ class Summary extends FrameAnimator implements CommandListener{
     for(int i=0; i<24; i++){
       getItem(i < 12 ? Event.EV_DAY_HOURS : Event.EV_NIGHT_HOURS).setEvents(i%12,aev[i]);
     }
+//#ifdef logger
+//#       Astromaximum.instance.logger(" planetHours");
+//#endif      
 //    long pp0=period0 + Astromaximum.MSECINDAY, pp1=period1 + Astromaximum.MSECINDAY;
 //    ev= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
 //      pp0, pp1);
@@ -529,6 +559,9 @@ class Summary extends FrameAnimator implements CommandListener{
       
       tmp2= evInCurrentDay(new Vector(),tmp);
       getItem(Event.EV_RISE,i).setEvents(tmp2);
+//#ifdef logger
+//#       Astromaximum.instance.logger(" other risesets");
+//#endif      
 //      System.out.println("EvDump:");
 //      Astromaximum.evDump(tmp2);
     }
@@ -793,6 +826,8 @@ class Summary extends FrameAnimator implements CommandListener{
         break;
       case 6:
         Interpreter.topic=10;
+        if(pageNum==PAGE_DECUMB)
+          setCurPage(PAGE_SUMMARY);
         repaint();
         break;
       case 5:
@@ -1095,7 +1130,13 @@ class Summary extends FrameAnimator implements CommandListener{
    */
   void showDaySummary(){
     gatherSummary(selDate.getTime());
+//#ifdef logger
+//#       Astromaximum.instance.logger("gatherSummary");
+//#endif      
     setCurPage(PAGE_SUMMARY);
+//#ifdef logger
+//#       Astromaximum.instance.logger("setCurPage");
+//#endif      
     selItem=0;
     moveFocus(1,1);
 //    Display.getDisplay(this).setCurrent(summary);

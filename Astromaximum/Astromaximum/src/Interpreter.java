@@ -40,7 +40,7 @@ class Interpreter extends Canvas implements CommandListener {
   static final int T_DECUMB=7;
   static final int T_LOVE=8;
   byte[] interp;
-  private String txt;
+  String txt="";
   static String RESERVED_CHARS="}$>*^{~#=@\0";
   static int topic=10;
   

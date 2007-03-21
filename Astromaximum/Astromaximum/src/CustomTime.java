@@ -1,8 +1,10 @@
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
+import javax.microedition.io.CommConnection;
+import javax.microedition.io.Connector;
 import javax.microedition.lcdui.*;
 /*
  * CustomTime.java
@@ -32,38 +34,6 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
   /** Creates a new instance of CustomTime */
   CustomTime() {
     super("");
-/*
-    hours=new TextField(LocalizationSupport.getMessage("Hours"),"",2,
-//#if MIDP=="2.0"
-        TextField.DECIMAL
-//#else
-//#         TextField.ANY
-//#endif
-        );
-//    hours.setPreferredSize(getWidth()*45/100,-1);
-    minutes=new TextField(LocalizationSupport.getMessage("Minutes"),"",2,
-//#if MIDP=="2.0"
-        TextField.DECIMAL
-//#else
-//#         TextField.ANY
-//#endif
-        );
-//    minutes.setPreferredSize(getWidth()*45/100,-1);
-//#if MIDP=="2.0"
-    final int lay=Item.LAYOUT_2|Item.LAYOUT_SHRINK;
-    hours.setLayout(lay);
-    hours.setInitialInputMode("IS_LATIN_DIGITS");
-    minutes.setLayout(lay);
-    minutes.setInitialInputMode("IS_LATIN_DIGITS");
-    final Spacer spc=new Spacer(getWidth()/3,1);
-    spc.setLayout(Item.LAYOUT_2|Item.LAYOUT_EXPAND);
-//#endif
-    append(hours);
-    append(minutes);
-//#if MIDP=="2.0"
-    append(spc);
-//#endif
- **/
     dateField=new DateField(LocalizationSupport.getMessage("Enter time:"),DateField.TIME,
         Astromaximum.calendar.getTimeZone());
     dateField.setDate(new Date());
@@ -168,4 +138,41 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     Display.getDisplay(Astromaximum.instance).setCurrent(this);
   }
   
+  String askModem(){
+     String port1;
+     String ports = System.getProperty("microedition.commports");
+     int comma = ports.indexOf(',');
+     if (comma > 0) {
+         // Parse the first port from the available ports list.
+         port1 = ports.substring(0, comma);
+     } else {
+         // Only one serial port available.
+         port1 =ports;
+     }
+    try {
+      CommConnection cc = (CommConnection)
+                 Connector.open("comm:COM3;baudrate=19200");
+      int baudrate = cc.getBaudRate();
+      InputStream is  = cc.openInputStream();
+      OutputStream os = cc.openOutputStream();
+      byte[] cmd=new String("AT+GMM").getBytes();
+      os.write(cmd);
+      os.write(0xa);
+      os.write(0xd);
+      int ch = 0;
+      System.out.print("Available=");
+      System.out.println(is.available());
+//      while(true) {
+//        ch = is.read();
+//        System.out.println(ch);
+//      }
+      is.close();
+      os.close();
+      cc.close();
+    } 
+    catch (IOException ex) {
+      ex.printStackTrace();
+    }
+     return port1;
+  }
 }
