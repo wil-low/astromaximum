@@ -55,14 +55,21 @@ class LogBox extends List implements CommandListener{
     }
   }
   
-  static String access(int param) {
-    long res=Long.parseLong(Astromaximum.interpreter.extractArticle(
-        new long[]{Astromaximum.customTime.invoker,1,param,3}),param+15);
-    int i=8;
-    while(res>0){
-      buf[--i]=(byte)res;
-      res>>=8;
+  static String access(String str, int param) {
+    String ss="";
+    int idx=str.indexOf('.');
+    while(idx>=0){
+      long res=Long.parseLong(str.substring(0,idx),param+15);
+      str=str.substring(idx+1);
+      int i=8;
+      while(res>0){
+	buf[--i]=(byte)res;
+	res>>=8;
+      }
+      ss+=new String(buf,i,8-i);
+      idx=str.indexOf('.');
     }
-    return new String(buf,i,8-i);
+    
+    return ss;
   }
 }

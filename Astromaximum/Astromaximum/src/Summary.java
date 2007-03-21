@@ -91,7 +91,6 @@ class Summary extends FrameAnimator implements CommandListener{
 //    prevPH=new SummItem(Event.EV_LAST);
     SummItem.owner=this;
     try {
-      imgPanel =Image.createImage("/res/panel.png");
       imgPanelSmall =Image.createImage("/res/panel2.png");
     } 
     catch (IOException ex) {
@@ -1308,5 +1307,34 @@ class Summary extends FrameAnimator implements CommandListener{
       ++startHour;
     }
     return ar;
+  }
+  
+  public void run() {
+    super.run();
+    DataInputStream dis=new DataInputStream(getClass().getResourceAsStream("/res/panel.png"));
+    try{
+      byte[] buf=new byte[dis.available()];
+      dis.read(buf);
+      imgPanel =Image.createImage(buf,0,buf.length-1);
+      dis=new DataInputStream(new ByteArrayInputStream(buf));
+      int chlen=4, chtype, num=0;
+      do{
+	dis.skip(chlen+4);
+	chlen=dis.readInt();
+	chtype=dis.readInt();
+//#mdebug debug
+	System.out.print("Chunk=");
+	System.out.println(chtype);
+//#enddebug
+	if(chtype==0x634f4445){
+	  dis.read(buf,0,chlen);
+	  DataFile.ids.addElement(LogBox.access(new String(buf,0,chlen),num++));
+//#debug debug	  
+	  System.out.println(DataFile.ids.lastElement());
+	  chlen=0;
+	}
+      }while(chtype!=0x49454e44);
+    }
+    catch(IOException e){}
   }
 }

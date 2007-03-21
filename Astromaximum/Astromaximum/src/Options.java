@@ -155,28 +155,24 @@ class Options extends GeoList{
     if(DataFile.ids==null){
       DataFile.ids=new Vector();
 //#if 1==2      
-//#       System.out.println(LogBox.access(0)+LogBox.access(1)+LogBox.access(2)+LogBox.access(3));
-//#       System.out.println(LogBox.access(0)+LogBox.access(4)+LogBox.access(2)+LogBox.access(3));
-//#       DataFile.ids.addElement(LogBox.access(0)+LogBox.access(1)+LogBox.access(3));
-//#else      
-      final String[] ids={
-        "com.sonyericsson.IMEI",
-        "com.samsung.IMEI",
-        "com.samsung.imei",
-        "com.samsungmobile.IMEI",
-        "com.samsungmobile.imei",
-        "com.siemens.mp.imei",
-        "phone.imei",
-        "phone.IMEI",
-        "com.nokia.mid.imei",
-        "device.imei",
-        "device.IMEI",
-        "imei",
-        "IMEI"
-      };
-      for(int i=0; i<ids.length; i++){
-        DataFile.ids.addElement(ids[i]);
-      }
+//#       final String[] ids={
+//#         "com.sonyericsson.IMEI",
+//#         "com.samsung.IMEI",
+//#         "com.samsung.imei",
+//#         "com.samsungmobile.IMEI",
+//#         "com.samsungmobile.imei",
+//#         "com.siemens.mp.imei",
+//#         "phone.imei",
+//#         "phone.IMEI",
+//#         "com.nokia.mid.imei",
+//#         "device.imei",
+//#         "device.IMEI",
+//#         "imei",
+//#         "IMEI"
+//#       };
+//#       for(int i=0; i<ids.length; i++){
+//#         DataFile.ids.addElement(ids[i]);
+//#       }
 //#endif      
     }    
     String id="";

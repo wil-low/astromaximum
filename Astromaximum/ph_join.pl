@@ -1,7 +1,15 @@
 use strict;
 use warnings;
-use POSIX;
 
+#for(my $i=0; $i<=$#str; $i++){
+#  $str[$i]=~/\"(.+?)\"/is;
+#  my $ss=$1;
+#  my $strr=$ss;
+#  $ss=str_encode($strr, $i);
+#  print("[".$strr."]%".$i.",3% ".$ss."\n");
+#}
+#
+#die ;
 $0=~/(.+\\)/is;
 our $path=$1;
 my($InF,$OutF);
@@ -22,10 +30,9 @@ sub join_phases
 	foreach my $ff(@bins){
 		open($InF, "<$ff") or die "No file";
 		binmode($InF);
-		undef $/ ;
 		@buf=<$InF>;
 		close($InF);
-		$bodies[$i]="@buf";
+		$bodies[$i]=join('',@buf);
 		print $OutF pack('n',length($bodies[$i]));
 		++$i;
 	}
@@ -34,3 +41,4 @@ sub join_phases
 	}
 	close($OutF);
 }
+
