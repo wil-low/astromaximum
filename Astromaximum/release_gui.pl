@@ -9,6 +9,8 @@ our $antpath='d:\\Program Files\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat';
 if(! -f $antpath){
 	$antpath='d:\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat';
 }
+my @chks;
+my ($is_logger)=(0);
 
 $0=~/(.+\\)/is;
 our $path=$1;
@@ -16,13 +18,16 @@ our $sortmode='city';
 my $main = new MainWindow(-title=>"Astromaximum Release GUI");
 my $frame0=$main->Frame();
 my $imei=$frame0->Entry(-text=>'359593001109710');
-my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>\&do_imei);
+my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>[\&do_imei,'midp2y2007release']);
+my $bt_imei_logger=$frame0->Button(-text=>"IMEI logger", -command=>[\&do_imei,'midp2y2007release_logger']);
 my $lbox = $frame0->Listbox(-height=>0,-activestyle=>"dotbox");
 my @list = ( "5", "10", "20", "30", "60" );
 my $bt_timebomb=$frame0->Button(-text=>"Time Bomb", -command=>\&do_timebomb);
 
 $imei->pack();
 $bt_imei->pack(-fill=>"x");
+$bt_imei_logger->pack(-fill=>"x",-pady=>3);
+
 $frame0->Label(-text=>"or")->pack(-pady=>10);
 $lbox->insert('end', @list );
 $lbox->selectionSet(2);
@@ -96,11 +101,12 @@ sub do_timebomb {
 	$main->messageBox(-icon => 'error', -message => "Build failed!", -title => 'Message', -type => 'Ok');
 }
 
-sub do_imei {
+sub do_imei { # config_name
+	my $conf=shift;
 	my $code=$imei->get();
 	if($code=~/\A\d{15}\Z/is){
 		print "imei\n";
-		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=midp2y2007release -Dimei.code=$code clean deploy";
+		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dimei.code=$code clean deploy";
 		print "$cmd\n";
 		my $res=system($cmd);
 		if($res==0){
@@ -200,3 +206,4 @@ sub refill_list { # lbox, listref
 		$_[0]->insert('end',$fl->{city}.', '.$fl->{state});
 	}
 }
+

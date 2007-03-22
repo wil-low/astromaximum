@@ -91,7 +91,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
       interpreter =new Interpreter();
 //#ifdef logger
 //#       Display.getDisplay(this).setCurrent(interpreter);
-//#       logger("Start="+Long.toString(Runtime.getRuntime().totalMemory()));
+//#       logger(" Start="+Long.toString(Runtime.getRuntime().totalMemory()));
 //#endif      
       summary =new Summary();
 //#if perftest=="0"
@@ -429,6 +429,12 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#   void logger(String s){
 //#     if(isLogged){
 //#       interpreter.txt+=(s+" ("+Long.toString(Runtime.getRuntime().freeMemory())+")|");
+//#       try {
+//#         Thread.currentThread().sleep(1000);
+//#       } 
+//#       catch (InterruptedException ex) {
+//#         ex.printStackTrace();
+//#       }
 //#       interpreter.repaint();
 //#       interpreter.serviceRepaints();
 //#     }

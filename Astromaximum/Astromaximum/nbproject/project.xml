@@ -6,6 +6,7 @@
             <configuration>midp1y2007</configuration>
             <configuration>midp2y2007notest</configuration>
             <configuration>midp2y2007release</configuration>
+            <configuration>midp2y2007release_logger</configuration>
             <configuration>midp2y2007release_tb</configuration>
             <configuration>midp2y2007</configuration>
         </configurations>

@@ -394,6 +394,9 @@
             <param name="config.active" value="midp2y2007release"/>
         </antcall>
         <antcall target="${target.to.call}" inheritall="false" inheritrefs="false">
+            <param name="config.active" value="midp2y2007release_logger"/>
+        </antcall>
+        <antcall target="${target.to.call}" inheritall="false" inheritrefs="false">
             <param name="config.active" value="midp2y2007release_tb"/>
         </antcall>
         <antcall target="${target.to.call}" inheritall="false" inheritrefs="false">
