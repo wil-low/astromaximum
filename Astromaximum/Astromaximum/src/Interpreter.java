@@ -43,6 +43,7 @@ class Interpreter extends Canvas implements CommandListener {
   String txt="";
   static String RESERVED_CHARS="}$>*^{~#=@\0";
   static int topic=10;
+  boolean isLogged=false;
   
   Interpreter(){
     super();
@@ -602,17 +603,16 @@ class Interpreter extends Canvas implements CommandListener {
         }
       }
       int wlen=i-start;
-      if(wlen>0){
-        cw=fnt.charsWidth(ca,start,wlen);
-        if(curX+cw>width){
-          newLine();
-        }
-        osg.drawChars(ca, start, wlen, curX, curY, Graphics.LEFT|Graphics.TOP);
-        isLastSpace=false;
+      cw=fnt.charsWidth(ca,start,wlen);
+      if(curX+cw>width){
+        newLine();
       }
+      osg.drawChars(ca, start, wlen, curX, curY, Graphics.LEFT|Graphics.TOP);
+      isLastSpace=false;
       if(curc=='|'){
         newLine();
-      } else{
+      } 
+      else{
         if(!isLastSpace){
           curX+=cw+spaceW;
           isLastSpace=true;

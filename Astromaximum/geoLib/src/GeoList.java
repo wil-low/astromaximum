@@ -25,8 +25,6 @@
  */
 
 import java.io.*;
-import java.util.Date;
-import java.util.TimeZone;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.*;
@@ -101,7 +99,7 @@ public class GeoList extends List  implements RecordComparator, RecordFilter, Co
 
   public byte[] initDB(boolean canCreate) throws Exception{
     if(rs==null){
-      rs=RecordStore.openRecordStore(STORE_NAME, "Wiland", "Astromaximum2007");
+      rs=RecordStore.openRecordStore(STORE_NAME, "S&W", "Astromaximum2007");
     }
     curCity=rs.getRecord(1);
     RecordEnumeration rece=rs.enumerateRecords(this,null,false);

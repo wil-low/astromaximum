@@ -541,7 +541,7 @@ class SummItem extends TimerTask implements RecordFilter{
             int xx=getX(i, XLEFT)+2;
             osg.fillRect(xx,top+2,getX(i, XRIGHT)-xx-2,height-3);
           }
-          drawImg(osg,Summary.opaquePlanets,plt,getX(i, XCENTER),
+          drawImg(osg,Summary.imgOpaq,plt,getX(i, XCENTER),
               i % 2 > 0 ? y + 2 : y - 1,Graphics.VCENTER|Graphics.HCENTER);
         }
         for(int i=0; i<events.length; i++){
@@ -1260,6 +1260,9 @@ class SummItem extends TimerTask implements RecordFilter{
     if(type == Event.EV_FAST_BUTTON){
       return LocalizationSupport.getMessage("fb"+Integer.toString(tag));
     }
+    if(type == Event.EV_PANEL){
+      return LocalizationSupport.getMessage("Topics");
+    }
     String s="";
     final Event sel=getSelEvent();
     int hrOnly=1;
@@ -1557,7 +1560,7 @@ class SummItem extends TimerTask implements RecordFilter{
     if(event.getDegType() == 1) {
       plt += 13;//Astromaximum.PLANET_COUNT;
     }
-    drawImg(osg,Summary.opaquePlanets,plt,x,y,anchor);
+    drawImg(osg,Summary.imgOpaq,plt,x,y,anchor);
   }
   
   private static void drawAspect(Graphics osg, Event event, int x, int y, int vanchor) {

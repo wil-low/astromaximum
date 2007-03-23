@@ -1,3 +1,6 @@
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,7 +17,7 @@ import javax.microedition.lcdui.*;
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
+//#define timeHistory1
 /**
  *
  * @author Administrator
@@ -26,11 +29,14 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
 //#endif
   int invoker=Event.EV_ASP_EXACT_MOON;
   final DateField dateField;
-  final ChoiceGroup cg;
-  static final int HIST_COUNT=5;
-  static long[] history=new long[HIST_COUNT];
-  static int histCount=0;
-  private boolean showHistory;
+
+//#if timeHistory
+//#   final ChoiceGroup cg;
+//#   static final int HIST_COUNT=5;
+//#   static long[] history=new long[HIST_COUNT];
+//#   static int histCount=0;
+//#   private boolean showHistory;
+//#endif
   /** Creates a new instance of CustomTime */
   CustomTime() {
     super("");
@@ -38,10 +44,12 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
         Astromaximum.calendar.getTimeZone());
     dateField.setDate(new Date());
     append(dateField);
-    cg=new ChoiceGroup(LocalizationSupport.getMessage("History"), Choice.EXCLUSIVE);
-    for(int i=0; i<histCount; i++){
-      cg.append(Event.long2String(history[i],0,false),null);
-    }
+//#if timeHistory
+//#     cg=new ChoiceGroup(LocalizationSupport.getMessage("History"), Choice.EXCLUSIVE);
+//#     for(int i=0; i<histCount; i++){
+//#       cg.append(Event.long2String(history[i],0,false),null);
+//#     }
+//#endif
     addCommand(new Command("OK",Command.OK,1));
     addCommand(new Command(LocalizationSupport.getMessage("Cancel"),Command.CANCEL,1));
     setCommandListener(this);
@@ -64,7 +72,11 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     }
     else{
       Astromaximum.summary.isShowCustom=true;
-      setTime(showHistory);
+//#if timeHistory
+//#       setTime(showHistory);
+//#else
+      setTime(false);
+//#endif
       switch(invoker){
         case Summary.PAGE_PANEL:
         case Summary.PAGE_DECUMB:
@@ -103,38 +115,42 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     Astromaximum.calendar.setTime(dt);
     Astromaximum.summary.setCustomTime(
         Astromaximum.calendar.get(Calendar.HOUR_OF_DAY),Astromaximum.calendar.get(Calendar.MINUTE));
-    if(addHistory){
-      for(int i=0; i<histCount; i++){
-        if(history[i]==Astromaximum.summary.cusTime){
-          cg.setSelectedIndex(i,true);
-          return;
-        }
-      }
-      for(int i=histCount-1; i>0; i--){
-        history[i]=history[i-1];
-      }
-      history[0]=Astromaximum.summary.cusTime;
-      if(histCount<HIST_COUNT){
-        ++histCount;
-      }
-      cg.insert(0,Event.long2String(history[0],0,false),null);
-      cg.setSelectedIndex(0,true);
-      while(cg.size()>HIST_COUNT){
-        cg.delete(cg.size()-1);
-      }
-      Astromaximum.options.saveHistory();
-    }
+//#if timeHistory
+//#     if(addHistory){
+//#       for(int i=0; i<histCount; i++){
+//#         if(history[i]==Astromaximum.summary.cusTime){
+//#           cg.setSelectedIndex(i,true);
+//#           return;
+//#         }
+//#       }
+//#       for(int i=histCount-1; i>0; i--){
+//#         history[i]=history[i-1];
+//#       }
+//#       history[0]=Astromaximum.summary.cusTime;
+//#       if(histCount<HIST_COUNT){
+//#         ++histCount;
+//#       }
+//#       cg.insert(0,Event.long2String(history[0],0,false),null);
+//#       cg.setSelectedIndex(0,true);
+//#       while(cg.size()>HIST_COUNT){
+//#         cg.delete(cg.size()-1);
+//#       }
+//#       Astromaximum.options.saveHistory();
+//#     }
+//#endif
   }
 
   void init(int pn) {
     setTimePrompt(Astromaximum.summary.pageNum,dateField.getDate().getTime());
-    if(get(size()-1)==cg){
-      delete(size()-1);
-    }
-    showHistory= pn==Summary.PAGE_PANEL || pn==Summary.PAGE_DECUMB;
-    if(showHistory){
-//      append(cg);
-    }
+//#if timeHistory
+//#     if(get(size()-1)==cg){
+//#       delete(size()-1);
+//#     }
+//#     showHistory= pn==Summary.PAGE_PANEL || pn==Summary.PAGE_DECUMB;
+//#     if(showHistory){
+//#       append(cg);
+//#     }
+//#endif
     Display.getDisplay(Astromaximum.instance).setCurrent(this);
   }
   
@@ -174,5 +190,41 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
       ex.printStackTrace();
     }
      return port1;
+  }
+
+  void readHistory(DataInputStream dis) {
+//#if timeHistory
+//#     try {
+//#       histCount=dis.readUnsignedShort();
+//#debug info 
+//#       System.out.println("Read history");
+//#       for(int i=0; i<histCount; i++){
+//#         history[i]=dis.readLong();
+//#       }
+//#     } 
+//#     catch (IOException ex) {
+//#       histCount=0;
+//#     }
+//#endif
+  }
+
+  byte[] writeHistory() {
+//#if timeHistory
+//#     ByteArrayOutputStream baos=new ByteArrayOutputStream();
+//#     DataOutputStream dos=new DataOutputStream(baos);
+//#     try {
+//#       dos.writeShort(histCount);
+//#       for(int i=0; i<histCount; i++){
+//#         dos.writeLong(history[i]);
+//#       }
+//#     } 
+//#     catch (IOException ex) {
+//#       return null;
+//#     }
+//#     dos=null;
+//#     return baos.toByteArray();
+//#else
+    return null;
+//#endif
   }
 }

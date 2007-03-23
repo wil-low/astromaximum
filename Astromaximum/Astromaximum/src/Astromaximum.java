@@ -17,10 +17,8 @@ public class Astromaximum extends MIDlet implements CommandListener{
   static final int TOPIC_COLOR = 0xd0d0d0;
   static final int GRAY_COLOR = 0xe0e0e0;
   static final String URL="www.astromaximum.com";
+  static final int LOGGER_SLEEP = 2000;
 
-//#ifdef logger
-//#   boolean isLogged=true;
-//#endif
 //#if "imeiCheck" @ protection
   static int hj;
 //#endif
@@ -87,11 +85,20 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#       System.out.println(Integer.toHexString(CustomTime.hj));
 //#enddebug
 //#endif
+//#if logger
+//#       long beforeLS=Runtime.getRuntime().freeMemory();
+//#endif      
       LocalizationSupport.initLocalizationSupport("ru_RU");
+//#if logger
+//#       long afterLS=Runtime.getRuntime().freeMemory();
+//#endif      
       interpreter =new Interpreter();
-//#ifdef logger
+//#if logger
+//#       interpreter.isLogged=true;
 //#       Display.getDisplay(this).setCurrent(interpreter);
-//#       logger(" Start="+Long.toString(Runtime.getRuntime().totalMemory()));
+//#       logger("Total heap="+Long.toString(Runtime.getRuntime().totalMemory())+
+//#           "|before LocSupport="+Long.toString(beforeLS)+
+//#           "|after LocSupport="+Long.toString(afterLS));
 //#endif      
       summary =new Summary();
 //#if perftest=="0"
@@ -114,7 +121,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
         //    sizer.setSize(logBox.getWidth(), logBox.getHeight());
         options = new Options();
         dataFile = new DataFile();
-//#ifdef logger
+//#if logger
 //#       logger("dataFile");
 //#endif      
         try {
@@ -123,22 +130,16 @@ public class Astromaximum extends MIDlet implements CommandListener{
         catch (Exception ex) {
           options.resetStorage();
         }
-//#ifdef logger
+//#if logger
 //#       logger("initDB");
 //#endif      
-      
+      System.gc();
 //        dataFile.fillCache();
 //        log("Options");
 //          System.out.println(Runtime.getRuntime().freeMemory());
 //#debug error 
         System.out.println("Interpreter");
-//#debug fatal 
-        System.out.println(Runtime.getRuntime().freeMemory());
-        customTime =new CustomTime();
-//#ifdef logger
-//#       logger("customTime");
-//#endif      
-//        System.out.println("Modem="+customTime.askModem());
+
 //        log("customTime");
 //          System.out.println(Runtime.getRuntime().freeMemory());
 //#if perftest == "2"
@@ -221,31 +222,36 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //        log("SDS before");
         summary.moonPhase= Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE,Event.SE_MOON,
             dataFile.startJD,dataFile.finalJD);
-//#ifdef logger
+//#if logger
 //#       logger("moonPhase");
 //#endif      
         Vector nav=dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 1, dataFile.finalJD);
 //        evDump(nav);
         nav.copyInto(summary.aNavroz);
-//#ifdef logger
+//#if logger
 //#       logger("Navroz");
 //#endif      
-        summary.changeSize();
-//#ifdef logger
+      summary.changeSize();
+//#if logger
 //#       logger("changeSize");
 //#endif      
+      customTime =new CustomTime();
+//#if logger
+//#       logger("customTime");
+//#endif      
+//        System.out.println("Modem="+customTime.askModem());
         summary.setCell(getToday(),true);
-//#ifdef logger
+//#if logger
 //#       logger("setCell");
 //#endif      
         summary.showDaySummary();
-//#ifdef logger
+//#if logger
 //#       logger("showDaySummary");
 //#endif      
-        summary.stop();
-//#ifdef logger
+      summary.stop();
+//#if logger
 //#       Thread.currentThread().sleep(8000);
-//#       isLogged=false;
+//#       interpreter.isLogged=false;
 //#       Display.getDisplay(this).setCurrent(summary);
 //#endif      
       } 
@@ -425,18 +431,18 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#   }
 //#endif
 
-//#ifdef logger
+//#if logger
 //#   void logger(String s){
-//#     if(isLogged){
+//#     if(interpreter.isLogged){
 //#       interpreter.txt+=(s+" ("+Long.toString(Runtime.getRuntime().freeMemory())+")|");
+//#       interpreter.repaint();
+//#       interpreter.serviceRepaints();
 //#       try {
-//#         Thread.currentThread().sleep(1000);
+//#         Thread.currentThread().sleep(LOGGER_SLEEP);
 //#       } 
 //#       catch (InterruptedException ex) {
 //#         ex.printStackTrace();
 //#       }
-//#       interpreter.repaint();
-//#       interpreter.serviceRepaints();
 //#     }
 //#   }
 //#endif

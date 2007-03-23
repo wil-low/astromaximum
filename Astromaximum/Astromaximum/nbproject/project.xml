@@ -3,8 +3,8 @@
     <type>org.netbeans.modules.kjava.j2meproject</type>
     <configuration>
         <configurations xmlns="http://www.netbeans.org/ns/project-configurations/1">
-            <configuration>midp1y2007</configuration>
             <configuration>midp2y2007notest</configuration>
+            <configuration>midp2y2007notest_logger</configuration>
             <configuration>midp2y2007release</configuration>
             <configuration>midp2y2007release_logger</configuration>
             <configuration>midp2y2007release_tb</configuration>

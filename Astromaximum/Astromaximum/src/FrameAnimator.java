@@ -59,7 +59,9 @@ class FrameAnimator extends Canvas implements Runnable{
   
   public void stop(){
     goon=false;
-    timer.cancel();
+    if(timer!=null){
+      timer.cancel();
+    }
     progress=0;
   }
   
@@ -79,7 +81,8 @@ class FrameAnimator extends Canvas implements Runnable{
     if(goon){
       if(progress<frameCount/2){
         img=Astromaximum.extractImg(progress,moonFile);
-  //      System.out.println("repaint");
+//#debug debug        
+        System.out.println("drawFrame");
         repaint();
         serviceRepaints();
         ++progress;

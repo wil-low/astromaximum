@@ -295,36 +295,16 @@ class Options extends GeoList{
       }
     }
     Astromaximum.dataFile.geoposData=super.initDB(false);
-    DataInputStream dis=new DataInputStream(new ByteArrayInputStream(rs.getRecord(2)));
-    try {
-      CustomTime.histCount=dis.readUnsignedShort();
-//#debug info 
-      System.out.println("Read history");
-      for(int i=0; i<CustomTime.histCount; i++){
-        CustomTime.history[i]=dis.readLong();
-      }
-    } 
-    catch (IOException ex) {
-      CustomTime.histCount=0;
-    }
-    dis=null;
+//#if timeHistory
+//#     DataInputStream dis=new DataInputStream(new ByteArrayInputStream(rs.getRecord(2)));
+//#     Astromaximum.customTime.readHistory(dis);
+//#     dis=null;
+//#endif
     return null;
   }
 
   void saveHistory(){
-    ByteArrayOutputStream baos=new ByteArrayOutputStream();
-    DataOutputStream dos=new DataOutputStream(baos);
-    try {
-      dos.writeShort(CustomTime.histCount);
-      for(int i=0; i<CustomTime.histCount; i++){
-        dos.writeLong(CustomTime.history[i]);
-      }
-    } 
-    catch (IOException ex) {
-      return;
-    }
-    dos=null;
-    byte[] cur=baos.toByteArray();
+    byte[] cur=Astromaximum.customTime.writeHistory();
     try {
       rs.setRecord(2,cur, 0, cur.length);
 //#debug info

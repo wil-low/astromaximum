@@ -385,10 +385,10 @@
             <param name="config.active" value=""/>
         </antcall>
         <antcall target="${target.to.call}" inheritall="false" inheritrefs="false">
-            <param name="config.active" value="midp1y2007"/>
+            <param name="config.active" value="midp2y2007notest"/>
         </antcall>
         <antcall target="${target.to.call}" inheritall="false" inheritrefs="false">
-            <param name="config.active" value="midp2y2007notest"/>
+            <param name="config.active" value="midp2y2007notest_logger"/>
         </antcall>
         <antcall target="${target.to.call}" inheritall="false" inheritrefs="false">
             <param name="config.active" value="midp2y2007release"/>

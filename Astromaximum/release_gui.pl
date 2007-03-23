@@ -15,6 +15,10 @@ my ($is_logger)=(0);
 $0=~/(.+\\)/is;
 our $path=$1;
 our $sortmode='city';
+
+my @files=get_city_list();
+my @selected;
+
 my $main = new MainWindow(-title=>"Astromaximum Release GUI");
 my $frame0=$main->Frame();
 my $imei=$frame0->Entry(-text=>'359593001109710');
@@ -36,38 +40,48 @@ $lbox->pack();
 $bt_timebomb->pack(-fill=>"x");
 
 my $frame4=$frame0->Frame();
+
+my $frame5=$frame4->Frame();
+$frame5->Label(-text=>"Sort by:")->pack(-side=>'left');
+$frame5->Radiobutton(-text=>'city', -value=>'city', -command=>\&do_sort, -variable=>\$sortmode)->pack(-side=>'left');
+$frame5->Radiobutton(-text=>'state', -value=>'state', -command=>\&do_sort, -variable=>\$sortmode)->pack(-side=>'left');
+
+my $geofile=$frame4->Entry(-text=>'Cities');
 my $geodesc=$frame4->Entry(-text=>'<No description>');
 $frame4->pack(-fill=>"both", -expand=>1,-padx=>5, -side=>'bottom');
 $geodesc->pack(-side=>'bottom');
 $frame4->Label(-text=>"Midlet description:")->pack(-side=>'bottom');
-my $geofile=$frame4->Entry(-text=>'Cities');
+
 $frame4->pack(-fill=>"both", -expand=>1,-padx=>5, -side=>'bottom');
 $geofile->pack(-side=>'bottom');
 $frame4->Label(-text=>"Midlet name:")->pack(-side=>'bottom');
 
-$frame0->pack(-side=>"left",-fill=>"both", -expand=>1,-padx=>5,-pady=>5);
-
 my $frame1=$main->Frame();
-$frame1->pack(-side=>"left", -fill=>"both", -expand=>1,-pady=>5);
+my $frame2=$main->Frame();
 
 my $lbsel=$frame1->Scrolled('Listbox',-scrollbars=>'e',-activestyle=>"dotbox",-width=>40,-height=>30);
-$lbsel->configure(-selectmode=>'multiple');
-$lbsel->bind('<Double-1>',\&do_lbunselect);
-
 my $bt_geo=$frame1->Button(-text=>"Generate Geo", -command=>\&do_geo);
-
-$lbsel->pack(-fill=>"both", -expand=>1);
-$bt_geo->pack(-fill=>"x");
-
-my $frame2=$main->Frame();
-$frame2->pack(-side=>"left", -fill=>"both", -expand=>1,-padx=>5,-pady=>5);
-
-
 my $lbcities=$frame2->Scrolled('Listbox',-scrollbars=>'e',-activestyle=>"dotbox",-width=>40,-height=>30);
 $lbcities->configure(-selectmode=>'multiple');
 
 $lbcities->pack(-fill=>"both", -expand=>1);
 $lbcities->bind('<Double-1>',\&do_lbselect);
+
+
+$frame5->pack(-fill=>"x", -pady=>5, -side=>'bottom');
+
+$frame0->pack(-side=>"left",-fill=>"both", -expand=>1,-padx=>5,-pady=>5);
+
+$frame1->pack(-side=>"left", -fill=>"both", -expand=>1,-pady=>5);
+
+$lbsel->configure(-selectmode=>'multiple');
+$lbsel->bind('<Double-1>',\&do_lbunselect);
+
+
+$lbsel->pack(-fill=>"both", -expand=>1);
+$bt_geo->pack(-fill=>"x");
+
+$frame2->pack(-side=>"left", -fill=>"both", -expand=>1,-padx=>5,-pady=>5);
 
 my $frame3=$frame2->Frame();
 $frame3->pack(-fill=>"both");
@@ -76,8 +90,6 @@ $frame3->Button(-text=>"All", -command=>\&do_sel_all,-state=>'disabled')->pack(-
 $frame3->Button(-text=>"Invert", -command=>\&do_sel_invert,-state=>'disabled')->pack(-side=>"left",-fill=>"both", -expand=>1);
 $frame3->Button(-text=>"None", -command=>\&do_sel_none,-state=>'disabled')->pack(-side=>"left",-fill=>"both", -expand=>1);
 
-my @files=get_city_list();
-my @selected;
 
 refill_list($lbcities, \@files);
 refill_list($lbsel, \@selected);
@@ -167,8 +179,7 @@ sub do_lbselect {
 sub do_lbunselect {
 	return if $lbsel->size==0;
 	move_record($lbsel->index('active'), \@selected, \@files);
-	@files = sort comparator @files;
-	refill_list($lbcities, \@files);
+	do_sort();
 	refill_list($lbsel, \@selected);
 }
 
@@ -207,3 +218,7 @@ sub refill_list { # lbox, listref
 	}
 }
 
+sub do_sort {
+	@files = sort comparator @files;
+	refill_list($lbcities, \@files);
+}
