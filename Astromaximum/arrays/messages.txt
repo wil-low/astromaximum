@@ -1,0 +1,6 @@
+﻿!!type EV_LOCALE
+!!params 2
+!!planet -1
+
+%0,0% Seien Sie nicht böse auf mich
+%1,0% Не сердитесь на меня

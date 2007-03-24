@@ -221,6 +221,9 @@ class Summary extends FrameAnimator implements CommandListener{
             break;
 //#enddebug
           case Canvas.KEY_NUM9:
+            if(pageNum==PAGE_DECUMB){
+              return;
+            }
             int pn=pageNum+1;
             if(pageNum==PAGE_HELP){
               pn=PAGE_SUMMARY;
@@ -233,6 +236,9 @@ class Summary extends FrameAnimator implements CommandListener{
             setCurPage(pn);
             break;
           case Canvas.KEY_NUM7:
+            if(pageNum==PAGE_DECUMB){
+              return;
+            }
             pn=pageNum-1;
             if(pageNum==PAGE_HELP){
               pn=PAGE_SUMMARY;
@@ -1114,7 +1120,10 @@ class Summary extends FrameAnimator implements CommandListener{
 //      if(bounds==null){
         bounds=loadArray("/res/size"+Integer.toString(size)+".dat");
         _bounds=new int[bounds.length];
-        System.arraycopy(bounds, 0, _bounds, 0, bounds.length);
+        for(int i=0; i<bounds.length; i++) {
+          _bounds[i]=bounds[i];
+        }
+//        System.arraycopy(bounds, 0, _bounds, 0, bounds.length);
         for(int i=0; i<bounds.length/ BOUNDS_VARS; i++) {
           for (int j = 0; j < 4; j++) {
             _bounds[i * BOUNDS_VARS + j] = bounds[i * BOUNDS_VARS + j] * (j % 2 == 0 ? dx : dy) / 1000;
@@ -1128,14 +1137,14 @@ class Summary extends FrameAnimator implements CommandListener{
     int[] arr=null;
     try {
       final DataInputStream dis=new DataInputStream(getClass().getResourceAsStream(resName));
-      final int count=dis.available();
+      final int count=dis.available()/2;
       arr=new int[count];
       for(int i=0; i<count; i++) {
         arr[i] = dis.readShort();
       }
       dis.close();
     } catch (IOException ex) {
-//      ex.printStackTrace();
+      ex.printStackTrace();
     }
     return arr;
   }

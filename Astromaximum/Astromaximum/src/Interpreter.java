@@ -522,6 +522,8 @@ class Interpreter extends Canvas implements CommandListener {
  
   public void commandAction(Command c, Displayable d)  {
     if (c==cmds[0]) {
+      txt=null;
+      System.gc();
       Astromaximum.summary.dontRender();
     }
     if (c==cmds[1]) {
@@ -680,19 +682,21 @@ class Interpreter extends Canvas implements CommandListener {
       interp=new byte[is.available()];
       is.read(interp);
       is=null;
-      final DataInputStream dis=new DataInputStream(
+      DataInputStream dis=new DataInputStream(
           new ByteArrayInputStream(interp));
-      while(true){
+//      while(true){
         final int evt = dis.readUnsignedShort();
         final int partsz = dis.readInt();
         if(evt!=params[0]){
           dis.skip(partsz-6);
-          continue;
+//          continue;
+//          return res;
         }
         final int plt=dis.readByte();
         if(plt != -1 && plt != params[1]){
           dis.skip(partsz-7);
-          continue;
+//          continue;
+//          return res;
         }
         final int paramcount=dis.readShort();
         int recnum=dis.readUnsignedShort();
@@ -708,15 +712,18 @@ class Interpreter extends Canvas implements CommandListener {
           }
           if(f){
             res=dis.readUTF();
+            dis=null;
             break;
           }
           dis.skip(dis.readUnsignedShort());
           --recnum;
         }
-      }
-    } catch (IOException ex) {
+//      }
+    } 
+    catch (IOException ex) {
 //      Astromaximum.log(ex.toString());
     }
+    interp=null;
     return res;
   }
 }

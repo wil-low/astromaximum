@@ -28,7 +28,7 @@ class SummItem extends TimerTask implements RecordFilter{
   private int[] widths;
   private int rowCount=1;
   byte tag;
-  int[] nav=null;
+  short[] nav=null;
   Event[] events;
   final int left;
   final int top;
@@ -43,7 +43,7 @@ class SummItem extends TimerTask implements RecordFilter{
 //#if "imeiCheck" @ protection
   static int hj;
 //#endif
-  String str="";
+  String str;
   private static Image tithi;
   static final Vector moonMoveVec=new Vector();
   private static final long DEGREE_DELTA_MSEC=24*60*1000;
@@ -97,8 +97,8 @@ class SummItem extends TimerTask implements RecordFilter{
     this.type = type;
     this.left = left;
     this.top = top;
-    nav=new int[4];
-    nav[0]=nleft; nav[1]=nright; nav[2]=nup; nav[3]=ndown;
+    nav=new short[4];
+    nav[0]=(short)nleft; nav[1]=(short)nright; nav[2]=(short)nup; nav[3]=(short)ndown;
     width = w;
     height = h;
     this.page = page;
@@ -136,7 +136,7 @@ class SummItem extends TimerTask implements RecordFilter{
   }
   
   void initString(){
-    str="";
+    str=null;
     final Calendar cal=Astromaximum.calendar;
     switch(type){
       case Event.EV_GRID_DATE:
@@ -174,7 +174,7 @@ class SummItem extends TimerTask implements RecordFilter{
         if(si.type != Event.EV_STATUS) {
           str = si.getStatus();
         }
-        if(str==""){
+        if(str==null){
           str=Event.long2String(owner.cusTime, 1, false);
           tag=1;
         }
@@ -390,7 +390,9 @@ class SummItem extends TimerTask implements RecordFilter{
         }
         osg.drawString(type == Event.EV_VIA_COMBUSTA ? "vc" : "voc",getX(0, XLEFT)+3,top+1,
             Graphics.TOP|Graphics.LEFT);
-        osg.drawString(str,getX(0, XRIGHT)-1,top+1,Graphics.TOP|Graphics.RIGHT);
+        if(str!=null){
+          osg.drawString(str,getX(0, XRIGHT)-1,top+1,Graphics.TOP|Graphics.RIGHT);
+        }
         break;
       case Event.EV_SUN_RISE:
         drawRiseSetCell(osg, now, isCus);
@@ -580,8 +582,9 @@ class SummItem extends TimerTask implements RecordFilter{
 //        System.out.println(str);
         y=top+height-3;
 //        if(owner.isShowCustom){
+        if(str!=null){
           osg.drawString(str,getX(0,XCENTER),y,Graphics.HCENTER|Graphics.BASELINE);
-//        }
+        }
         osg.setFont(old);
         if(Summary.isInCurrentDay(now)){
           osg.setColor(Astromaximum.RUBY_COLOR);

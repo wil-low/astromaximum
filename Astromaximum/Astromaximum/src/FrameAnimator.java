@@ -59,6 +59,7 @@ class FrameAnimator extends Canvas implements Runnable{
   
   public void stop(){
     goon=false;
+    img=null;
     if(timer!=null){
       timer.cancel();
     }

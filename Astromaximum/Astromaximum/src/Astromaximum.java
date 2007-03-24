@@ -370,10 +370,11 @@ public class Astromaximum extends MIDlet implements CommandListener{
       }
       final int len=dis.readShort();
       dis.skip(2*(all-index-1)+off);
-      final byte[] pngdata=new byte[len+1];
+      byte[] pngdata=new byte[len+1];
       dis.read(pngdata);
       dis.close();
       res=Image.createImage(pngdata,0,len);
+      pngdata=null;
     } catch (IOException ex) {
 //      ex.printStackTrace();
     }
