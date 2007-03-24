@@ -1,5 +1,5 @@
 use strict;
-use warnings;
+
 use Digest::Crc32;
 #die;
 our $file_sign="\x50\x4B\x03\x04";
@@ -84,7 +84,7 @@ sub mess_add_special_entry {
 #		print "$ind\n";
 		$old=$ind;
 		$ind=index($after,$file_sign,$start);
-	}while($ind>=0);
+	}while($ind>=0 and $#apos<10); # only first 10 files recorded
 	$ind=0;
 	substr($inn,0,1)=pack('c',$#apos+1);
 	

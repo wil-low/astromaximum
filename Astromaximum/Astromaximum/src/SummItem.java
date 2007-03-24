@@ -1144,7 +1144,7 @@ class SummItem extends TimerTask implements RecordFilter{
   long[] getParams(int idx) {
     int tp=type;
     if(tp==Event.EV_HELP){
-      return new long[]{tp,-1,tag*10+selIndex,0,0};
+      return new long[]{Event.EV_HELP0+tag/6,-1,tag*10+selIndex,0,0};
     }
     if(tp==Event.EV_DECUMB_BEGIN){
 //      Astromaximum.interpreter.topic=Interpreter.T_DECUMB;
@@ -1200,7 +1200,7 @@ class SummItem extends TimerTask implements RecordFilter{
         }
       case Event.EV_SUN_DEGREE_LARGE:
       case Event.EV_SEL_DEGREES:
-        return new long[]{Event.EV_DEGREE_PASS,plt,dgr,Astromaximum.getSignDegree(dgr),
+        return new long[]{Event.EV_DEGPASS0+dgr/90,plt,dgr,Astromaximum.getSignDegree(dgr),
           dgr/30,evi.getDegType(),d0,d1};
       case Event.EV_WEEK:
         return new long[]{t,-1,plt,0,0};

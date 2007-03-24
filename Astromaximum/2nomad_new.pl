@@ -20,13 +20,18 @@ our %eventType=qw(EV_VOC 0 EV_SIGN_ENTER 1 EV_ASP_EXACT 2 EV_RISE 3 EV_DEGREE_PA
   EV_SUN_DAY 22 EV_MOON_DAY 23 EV_GRID_DATE 24 EV_MOON_PHASE 25 EV_ZODIAC_SIGN 26 
   EV_PANEL 27 EV_FAST_BUTTON 28 EV_DEG_2ND 29 EV_WEEK_GRID 30 EV_MONTH_GRID 31 
   EV_DECUMBITURE 32 EV_DECUMB_ASPECT 33 EV_DECUMB_BEGIN 34 EV_SUN_DEGREE_LARGE 35 
-  EV_MOON_SIGN_LARGE 36 EV_HELP 37 EV_ASP_EXACT_MOON 38 EV_LAST 39
+  EV_MOON_SIGN_LARGE 36 EV_HELP 37 EV_ASP_EXACT_MOON 38 EV_DEGPASS0 39 EV_DEGPASS1 40
+  EV_DEGPASS2 41 EV_DEGPASS3 42 EV_HELP0 43 EV_HELP1 44 EV_LAST 45
   );
 	
 our %eventFlags=qw(EF_PLANET1 2 EF_PLANET2 4 EF_DEGREE 8 EF_SHORT_DEGREE 64);
 
 my %hash;
 
+	my @clean=glob($path."Astromaximum\\src\\*.txt");
+	foreach (@clean){
+		unlink $_ if $_=~/\\\d+\.txt$/is;
+	}
   our $output=''; our $paramcount=0; our $outbuf; our $errors=0; 
 #die $eventType{'EV_VOC'};  
 foreach my $ff(@bins){

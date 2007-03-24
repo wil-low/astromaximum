@@ -420,7 +420,10 @@ class Interpreter extends Canvas implements CommandListener {
         res.append(LocalizationSupport.getMessage("Sun_day#")).append(params[2]);
         break;
       case Event.EV_DEG_2ND:
-      case Event.EV_DEGREE_PASS:
+      case Event.EV_DEGPASS0:
+      case Event.EV_DEGPASS1:
+      case Event.EV_DEGPASS2:
+      case Event.EV_DEGPASS3:
         res.append(Astromaximum.PLANETS[(int)params[1]]).append(" ")
             .append(params[3]).append("\u00b0").append(Astromaximum.CONSTELL[(int)params[4]]);
         if(params[5]>0){
