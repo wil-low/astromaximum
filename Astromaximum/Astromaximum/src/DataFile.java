@@ -37,7 +37,7 @@ final class DataFile{
 //  static final int NDF_GEOPOS = 3;
   long startJD, finalJD;
   int dayCount;
-  private final Vector cache=new Vector();
+//  private final Vector cache=new Vector();
   byte[] commonData;
   byte[] geoposData;
   static Vector ids=new Vector();
@@ -88,23 +88,23 @@ final class DataFile{
     System.out.println(Runtime.getRuntime().freeMemory());
   }
 
-  void fillCache(){
-    cacheData(Event.EV_RISE,Event.SE_SUN);
-    cacheData(Event.EV_SET,Event.SE_SUN);
-    cacheData(Event.EV_RISE,Event.SE_MOON);
-    cacheData(Event.EV_SET,Event.SE_MOON);
-    cacheData(Event.EV_RISE,Event.SE_MERCURY);
-    cacheData(Event.EV_SET,Event.SE_MERCURY);
-    cacheData(Event.EV_RISE,Event.SE_VENUS);
-    cacheData(Event.EV_SET,Event.SE_VENUS);
-    cacheData(Event.EV_RISE,Event.SE_MARS);
-    cacheData(Event.EV_SET,Event.SE_MARS);
-    cacheData(Event.EV_RISE,Event.SE_JUPITER);
-    cacheData(Event.EV_SET,Event.SE_JUPITER);
-    cacheData(Event.EV_RISE,Event.SE_SATURN);
-    cacheData(Event.EV_SET,Event.SE_SATURN);
-//    cacheData(Event.EV_ASP_EXACT,Event.SE_SUN);
-  }
+//  void fillCache(){
+//    cacheData(Event.EV_RISE,Event.SE_SUN);
+//    cacheData(Event.EV_SET,Event.SE_SUN);
+//    cacheData(Event.EV_RISE,Event.SE_MOON);
+//    cacheData(Event.EV_SET,Event.SE_MOON);
+//    cacheData(Event.EV_RISE,Event.SE_MERCURY);
+//    cacheData(Event.EV_SET,Event.SE_MERCURY);
+//    cacheData(Event.EV_RISE,Event.SE_VENUS);
+//    cacheData(Event.EV_SET,Event.SE_VENUS);
+//    cacheData(Event.EV_RISE,Event.SE_MARS);
+//    cacheData(Event.EV_SET,Event.SE_MARS);
+//    cacheData(Event.EV_RISE,Event.SE_JUPITER);
+//    cacheData(Event.EV_SET,Event.SE_JUPITER);
+//    cacheData(Event.EV_RISE,Event.SE_SATURN);
+//    cacheData(Event.EV_SET,Event.SE_SATURN);
+////    cacheData(Event.EV_ASP_EXACT,Event.SE_SUN);
+//  }
 
 //  /**
 //   * readShort
@@ -516,12 +516,12 @@ final class DataFile{
    * @return Vector
    */
   Vector getEvents(int evtype, int planet, long dayStart, long dayEnd) {
-    for (Enumeration e = cache.elements() ; e.hasMoreElements() ;) {
-      final EventCache ev = (EventCache) e.nextElement();
-      if(ev.planet == planet && ev.eventType == evtype){
-        return ev.events;
-      }
-    }
+//    for (Enumeration e = cache.elements() ; e.hasMoreElements() ;) {
+//      final EventCache ev = (EventCache) e.nextElement();
+//      if(ev.planet == planet && ev.eventType == evtype){
+//        return ev.events;
+//      }
+//    }
     switch(evtype){
       case Event.EV_RISE:
       case Event.EV_SET:
@@ -597,23 +597,23 @@ final class DataFile{
     return null;
   }
   
-  public void cacheData(int event, int planet) {
-    Vector v =null;// readSubData(geoposData, event, planet);
-    if (v.size() > 0){
-      cache.addElement(new EventCache(v, event, planet));
-//#debug info 
-      System.out.println("Cached "+Integer.toString(v.size()));
-    }
-  }
+//  public void cacheData(int event, int planet) {
+//    Vector v =null;// readSubData(geoposData, event, planet);
+//    if (v.size() > 0){
+//      cache.addElement(new EventCache(v, event, planet));
+////#debug info 
+//      System.out.println("Cached "+Integer.toString(v.size()));
+//    }
+//  }
   
-  private final class EventCache {
-    final Vector events;
-    final int eventType;
-    private final int planet;
-    EventCache(Vector ev, int evtype, int plt) {
-      events=ev;
-      eventType=evtype;
-      planet=plt;
-    }
-  }
+//  private final class EventCache {
+//    final Vector events;
+//    final int eventType;
+//    private final int planet;
+//    EventCache(Vector ev, int evtype, int plt) {
+//      events=ev;
+//      eventType=evtype;
+//      planet=plt;
+//    }
+//  }
 }

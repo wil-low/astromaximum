@@ -25,7 +25,7 @@ class SummItem extends TimerTask implements RecordFilter{
   private static final int XCENTER=1;
   private static final int XRIGHT=2;
   
-  private int[] widths;
+  private short[] widths;
   private int rowCount=1;
   byte tag;
   short[] nav=null;
@@ -113,7 +113,7 @@ class SummItem extends TimerTask implements RecordFilter{
     
     if (widCount > 0) {
       events = new Event[widCount];
-      widths = new int[widCount / this.rowCount];
+      widths = new short[widCount / this.rowCount];
       widths[0] = 1000;
     }
     switch (type) {
@@ -193,9 +193,9 @@ class SummItem extends TimerTask implements RecordFilter{
       default:
 //        try{
           final int sz=events.length;
-          widths=new int[sz];
+          widths=new short[sz];
           for(int i=0; i<sz; i++) {
-            widths[i] = 1000 / sz;
+            widths[i] = (short)(1000 / sz);
           }
 //        }
 //        catch(Exception e){

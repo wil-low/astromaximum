@@ -24,8 +24,8 @@ class Summary extends FrameAnimator implements CommandListener{
   static int moonPhaseH;
   static private SummItem timerTask;
 //  private SummItem prevPH;
-  private int[] bounds;
-  private int[] _bounds;
+  private short[] bounds;
+  private short[] _bounds;
   private Date date=new Date();
   private static final int BOUNDS_VARS=12;
   static long period0;
@@ -1117,28 +1117,23 @@ class Summary extends FrameAnimator implements CommandListener{
       final int dx= w*10;
       final int dy= h*10;
       Astromaximum.log(Integer.toString(dy));
-//      if(bounds==null){
-        bounds=loadArray("/res/size"+Integer.toString(size)+".dat");
-        _bounds=new int[bounds.length];
-        for(int i=0; i<bounds.length; i++) {
-          _bounds[i]=bounds[i];
+      bounds=loadArray("/res/size"+Integer.toString(size)+".dat");
+      _bounds=new short[bounds.length];
+      System.arraycopy(bounds, 0, _bounds, 0, bounds.length);
+      for(int i=0; i<bounds.length/ BOUNDS_VARS; i++) {
+        for (int j = 0; j < 4; j++) {
+          _bounds[i * BOUNDS_VARS + j] = (short)(bounds[i * BOUNDS_VARS + j] * (j % 2 == 0 ? dx : dy) / 1000);
         }
-//        System.arraycopy(bounds, 0, _bounds, 0, bounds.length);
-        for(int i=0; i<bounds.length/ BOUNDS_VARS; i++) {
-          for (int j = 0; j < 4; j++) {
-            _bounds[i * BOUNDS_VARS + j] = bounds[i * BOUNDS_VARS + j] * (j % 2 == 0 ? dx : dy) / 1000;
-          }
-        }
-//      }
+      }
     }
   }
   
-  private int[] loadArray(String resName){
-    int[] arr=null;
+  private short[] loadArray(String resName){
+    short[] arr=null;
     try {
       final DataInputStream dis=new DataInputStream(getClass().getResourceAsStream(resName));
       final int count=dis.available()/2;
-      arr=new int[count];
+      arr=new short[count];
       for(int i=0; i<count; i++) {
         arr[i] = dis.readShort();
       }
