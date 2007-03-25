@@ -119,6 +119,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
         
         logBox =new LogBox();
         //    sizer.setSize(logBox.getWidth(), logBox.getHeight());
+        log("TZ id="+TimeZone.getDefault().getID());
         options = new Options();
         dataFile = new DataFile();
 //#if logger
@@ -251,8 +252,10 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#endif      
       summary.stop();
 //#if logger
-//#       Thread.currentThread().sleep(8000);
-//#       interpreter.isLogged=false;
+//#       if(interpreter.isLogged){
+//#         Thread.currentThread().sleep(8000);
+//#         interpreter.isLogged=false;
+//#       }
 //#       Display.getDisplay(this).setCurrent(summary);
 //#endif      
       } 
@@ -419,16 +422,21 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if "timeBomb" @ protection
 //#   static byte[] getArray() {
 //#     int now=(int)(new Date().getTime()/4096);
-//#     System.out.println("Division");
-//#     System.out.println(CustomTime.hj-now);
-//#     System.out.println(now-Interpreter.hj);
+//#mdebug info
+//#     Astromaximum.log("Timebomb:");
+//#     Astromaximum.log(Long.toString(GeoList.tzOffset));
+//# //    Astromaximum.log(Long.toString(GeoList.localOffset));
+//#     Astromaximum.log(Integer.toHexString(Interpreter.hj));
+//#     Astromaximum.log(Integer.toHexString(now));
+//#     Astromaximum.log(Integer.toHexString(CustomTime.hj));
+//#enddebug
 //#     int mul=(CustomTime.hj-now)*(now-Interpreter.hj);
-//#     System.out.println(mul);
+//# //    System.out.println(mul);
 //#     if(mul==0){
 //#       mul=1;
 //#     }
 //#     mul/=Math.abs(mul);
-//#     System.out.println(Integer.toHexString(now));
+//# //    System.out.println(Integer.toHexString(now));
 //#     return new byte[mul];
 //#   }
 //#endif
@@ -443,6 +451,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#         Thread.currentThread().sleep(LOGGER_SLEEP);
 //#       } 
 //#       catch (InterruptedException ex) {
+//#debug debug
 //#         ex.printStackTrace();
 //#       }
 //#     }

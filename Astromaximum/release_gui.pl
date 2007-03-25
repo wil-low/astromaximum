@@ -18,6 +18,7 @@ our $sortmode='city';
 
 my @files=get_city_list();
 my @selected;
+my $debug=0;
 
 my $main = new MainWindow(-title=>"Astromaximum Release GUI");
 my $frame0=$main->Frame();
@@ -32,7 +33,7 @@ $imei->pack();
 $bt_imei->pack(-fill=>"x");
 $bt_imei_logger->pack(-fill=>"x",-pady=>3);
 
-$frame0->Label(-text=>"or")->pack(-pady=>10);
+$frame0->Checkbutton(-text=>"Debug", -variable=>\$debug)->pack(-pady=>10);
 $lbox->insert('end', @list );
 $lbox->selectionSet(2);
 $lbox->pack();
@@ -102,8 +103,16 @@ sub comparator {
 
 sub do_timebomb {
 	print "timebomb\n";
+	my $conf='midp2y2007release_tb';
 	my $timeout=$lbox->get($lbox->curselection);
-	my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=midp2y2007release_tb -Dtb.timeout=$timeout clean deploy";
+	my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dtb.timeout=$timeout -Dconfigs.$conf.debug.level=";
+	if($debug){
+		$cmd.="debug";
+	}
+	else{
+		$cmd.="fatal";
+	}
+	$cmd.=" clean deploy";
 	print "$cmd\n";
 	my $res=system($cmd);
 	if($res==0){
@@ -118,7 +127,14 @@ sub do_imei { # config_name
 	my $code=$imei->get();
 	if($code=~/\A\d{15}\Z/is){
 		print "imei\n";
-		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dimei.code=$code clean deploy";
+		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dimei.code=$code -Dconfigs.$conf.debug.level=";
+		if($debug){
+			$cmd.="debug";
+		}
+		else{
+			$cmd.="fatal";
+		}
+		$cmd.=" clean deploy";
 		print "$cmd\n";
 		my $res=system($cmd);
 		if($res==0){

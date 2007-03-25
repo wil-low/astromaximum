@@ -638,11 +638,22 @@ class Interpreter extends Canvas implements CommandListener {
     curX=0;
     ++lineCount;
   }
+  
   protected void keyReleased(int keyCode) {
     final int ga=getGameAction(keyCode);
     switch (ga) {
       case Canvas.FIRE:
+//#if logger
+//#         if(isLogged){
+//#           Astromaximum.instance.logger("Stopping log...");
+//#           isLogged=false;
+//#         }
+//#         else{
+//#           Astromaximum.summary.dontRender();
+//#         }
+//#else
         Astromaximum.summary.dontRender();
+//#endif
         break;
       case Canvas.UP:
         if(topLine+VMARGIN*3<getHeight()){
