@@ -328,67 +328,67 @@
 +5.0                                                       TKM_Turkmenistan, Ashgabat
 -5.0   FirstSunApr@0             LastSunOct@0              TCA_Turks and Caicos Islands (GBR), Cockburn Town
 +12.0                                                      TUV_Tuvalu, Funafuti
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Alabama, Montgomery
--10.0  FirstSunApr@2             LastSunOct@2              ALK USA - Alaska, Adak (Aleutian Islands)
--9.0   FirstSunApr@2             LastSunOct@2              ALK_USA - Alaska, Juneau
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Alabama, Montgomery
+-10.0  FirstSunAfter7Mar@2       FirstSunNov@2             ALK USA - Alaska, Adak (Aleutian Islands)
+-9.0   FirstSunAfter7Mar@2       FirstSunNov@2             ALK_USA - Alaska, Juneau
 -7.0                                                       USA_USA - Arizona, Phoenix
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Arkansas, Little Rock
--8.0   FirstSunApr@2             LastSunOct@2              USA_USA - California, Sacramento
--7.0   FirstSunApr@2             LastSunOct@2              USA_USA - Colorado, Denver
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Connecticut, Hartford
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Delaware, Dover
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - District of Columbia, Washington DC
--6.0   FirstSunApr@2             LastSunOct@2              USA USA - Florida, Pensacola
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Florida, Tallahassee
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Georgia, Atlanta
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Arkansas, Little Rock
+-8.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - California, Sacramento
+-7.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Colorado, Denver
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Connecticut, Hartford
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Delaware, Dover
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - District of Columbia, Washington DC
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA USA - Florida, Pensacola
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Florida, Tallahassee
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Georgia, Atlanta
 -10.0                                                      USA_USA - Hawaii, Honolulu
--7.0   FirstSunApr@2             LastSunOct@2              USA_USA - Idaho, Boise
--8.0   FirstSunApr@2             LastSunOct@2              USA USA - Idaho, Moscow
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Illinois, Springfield
--6.0   FirstSunApr@2             LastSunOct@2              USA USA - Indiana, Evansville
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Indiana, Indianapolis
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Iowa, Des Moines
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Kansas, Topeka
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Kentucky, Frankfort
--6.0   FirstSunApr@2             LastSunOct@2              USA USA - Kentucky, Madisonville
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Louisiana, Baton Rouge
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Maine, Augusta
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Maryland, Annapolis
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Massachusetts, Boston
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Michigan, Lansing
--6.0   FirstSunApr@2             LastSunOct@2              USA USA - Michigan, Menominee
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Minnesota, St. Paul
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Mississippi, Jackson
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Missouri, Jefferson City
--7.0   FirstSunApr@2             LastSunOct@2              USA_USA - Montana, Helena
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Nebraska, Lincoln
--7.0   FirstSunApr@2             LastSunOct@2              USA USA - Nebraska, Scottsbluff
--8.0   FirstSunApr@2             LastSunOct@2              USA_USA - Nevada, Carson City
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - New Hampshire, Concord
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - New Jersey, Trenton
--7.0   FirstSunApr@2             LastSunOct@2              USA_USA - New Mexico, Santa Fe
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - New York, Albany
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - North Carolina, Raleigh
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - North Dakota, Bismarck
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Ohio, Columbus
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Oklahoma, Oklahoma City
--8.0   FirstSunApr@2             LastSunOct@2              USA_USA - Oregon, Salem
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Pennsylvania, Harrisburg
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Rhode Island, Providence
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - South Carolina, Columbia
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - South Dakota, Pierre
--7.0   FirstSunApr@2             LastSunOct@2              USA USA - South Dakota, Rapid City
--5.0   FirstSunApr@2             LastSunOct@2              USA USA - Tennessee, Knoxville
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Tennessee, Nashville
--6.0   FirstSunApr@2             LastSunOct@2              USA_USA - Texas, Austin
--7.0   FirstSunApr@2             LastSunOct@2              USA USA - Texas, El Paso
--7.0   FirstSunApr@2             LastSunOct@2              USA_USA - Utah, Salt Lake City
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Vermont, Montpelier
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - Virginia, Richmond
--8.0   FirstSunApr@2             LastSunOct@2              USA_USA - Washington, Olympia
--5.0   FirstSunApr@2             LastSunOct@2              USA_USA - West Virginia, Charleston
--6.0   FirstSunApr@1             LastSunOct@2              USA_USA - Wisconsin, Madison
--7.0   FirstSunApr@2             LastSunOct@2              USA_USA - Wyoming, Cheyenne
+-7.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Idaho, Boise
+-8.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA USA - Idaho, Moscow
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Illinois, Springfield
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA USA - Indiana, Evansville
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Indiana, Indianapolis
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Iowa, Des Moines
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Kansas, Topeka
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Kentucky, Frankfort
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA USA - Kentucky, Madisonville
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Louisiana, Baton Rouge
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Maine, Augusta
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Maryland, Annapolis
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Massachusetts, Boston
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Michigan, Lansing
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA USA - Michigan, Menominee
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Minnesota, St. Paul
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Mississippi, Jackson
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Missouri, Jefferson City
+-7.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Montana, Helena
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Nebraska, Lincoln
+-7.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA USA - Nebraska, Scottsbluff
+-8.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Nevada, Carson City
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - New Hampshire, Concord
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - New Jersey, Trenton
+-7.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - New Mexico, Santa Fe
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - New York, Albany
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - North Carolina, Raleigh
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - North Dakota, Bismarck
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Ohio, Columbus
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Oklahoma, Oklahoma City
+-8.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Oregon, Salem
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Pennsylvania, Harrisburg
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Rhode Island, Providence
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - South Carolina, Columbia
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - South Dakota, Pierre
+-7.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA USA - South Dakota, Rapid City
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA USA - Tennessee, Knoxville
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Tennessee, Nashville
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Texas, Austin
+-7.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA USA - Texas, El Paso
+-7.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Utah, Salt Lake City
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Vermont, Montpelier
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Virginia, Richmond
+-8.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Washington, Olympia
+-5.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - West Virginia, Charleston
+-6.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Wisconsin, Madison
+-7.0   FirstSunAfter7Mar@2       FirstSunNov@2             USA_USA - Wyoming, Cheyenne
 +3.0                                                       UGA_Uganda, Kampala
 +2.0   LastSunMar@3              LastSunOct@4              UKR_Ukraine, Kiev
 +4.0                                                       ARE_United Arab Emirates, Dubai (Abu Dhabi)
