@@ -1648,7 +1648,7 @@ class SummItem extends TimerTask implements RecordFilter{
   public void run() {
     if(type==1){
       owner.recalcAllSelections();
-      long tick=System.currentTimeMillis();
+      long tick=Options.currentTime();
       for(int i=0; i<owner.items.length; i++){
         SummItem si=owner.items[i];
         if(si!=null && si.isOnPage()){

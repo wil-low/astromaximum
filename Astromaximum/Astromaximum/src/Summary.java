@@ -152,7 +152,7 @@ class Summary extends FrameAnimator implements CommandListener{
    * render
    */
   private void render(Graphics osg) {
-    final long now=System.currentTimeMillis();
+    final long now=Options.currentTime();
     if(pageNum == Summary.PAGE_MONTH || pageNum == Summary.PAGE_WEEK) {
       osg.setColor(Astromaximum.CURRENT_MONTH_COLOR);
     } 
@@ -268,14 +268,14 @@ class Summary extends FrameAnimator implements CommandListener{
    * @param delta int
    */
   long changeDay(int delta) {
-    final long tick=System.currentTimeMillis();
+    final long tick=Options.currentTime();
     long tmp=Astromaximum.instance.changeDate(date,delta);
     if(tmp!=0){
       gatherSummary(tmp);
       setCurPage(pageNum);
 //      repaint();
     }
-    return System.currentTimeMillis()-tick;
+    return Options.currentTime()-tick;
   }
   
   /**
@@ -286,7 +286,7 @@ class Summary extends FrameAnimator implements CommandListener{
    * @param date0 
    */
   private void gatherSummary(long date0) {
-    final long tick=System.currentTimeMillis();
+    final long tick=Options.currentTime();
     rowCount=1;
     date.setTime(date0);//new Date(date.getTime());
     period0 =date.getTime();
@@ -585,7 +585,7 @@ class Summary extends FrameAnimator implements CommandListener{
       }
     }
     Astromaximum.customTime.setTime(false);
-    final String et="gET="+Long.toString(System.currentTimeMillis()-tick);
+    final String et="gET="+Long.toString(Options.currentTime()-tick);
   }
   
   private final String title = "";
@@ -1333,7 +1333,7 @@ class Summary extends FrameAnimator implements CommandListener{
   }
 
   void recalcAllSelections() {
-    long cur=System.currentTimeMillis();
+    long cur=Options.currentTime();
     long cus=isShowCustom? cusTime: 0;
     for(int i=0; i<items.length; i++) {
       SummItem si=items[i];

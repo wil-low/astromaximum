@@ -327,5 +327,12 @@ class Options extends GeoList{
       ex.printStackTrace();
     }        
   }
-
+  
+  static long currentTime(){
+    long now=System.currentTimeMillis();
+    if((optFlags&1)!=0){
+      now-=Event.localOffset(now);
+    }
+    return now;
+  }
 }
