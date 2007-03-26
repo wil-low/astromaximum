@@ -86,18 +86,18 @@ void DataFile::AAA()
 //  choice(EV_DECL_EXACT, work, assist, vout, work2);
 //  choice(EV_NAVROZ, work, assist, vout, work2);
 
-//  choice(EV_ASP_EXACT, work, assist, vout, work2);
+  choice(EV_ASP_EXACT, work, assist, vout, work2);
 
 //  choice(EV_DEGREE_PASS, work, assist, vout, work2);
 //  choice(EV_TITHI, work, assist, vout, work2);
 //  choice(EV_SIGN_ENTER, work, assist, vout, work2);
-//  release(work);
+  release(work);
 //  return;
 
-  readSubData("tithi.bin",work);
+  readSubData("aspects01.bin",work);
 //  readSubData("geo0-rise00.bin",work);
 //  release(work);
-  for(int i=0; i<80/*work.size()*/; i++){
+  for(int i=0; i<240/*work.size()*/; i++){
     work[i]->dump();
 //    work2[i]->dump();
 //    printf("\n-------");
@@ -128,8 +128,9 @@ void DataFile::calcAspExact(VAE & moonvae,VAE & vae)
   for(int c=0; c<stepCount; c++){
     for(int i=0; i<PLANET_COUNT; i++)
       for(int j=i+1; j<PLANET_COUNT; j++){
-        double aspa=fabs(ephData[c].data[i]-ephData[c].data[j]);
-        if(aspa>195) aspa-=180;
+        double aspa=(ephData[c].data[i]-ephData[c].data[j]);
+        if(aspa<0) aspa+=360;
+        if(aspa>180) aspa=360-aspa;
         int aspindex=-1;
         for(int cnt=0; cnt<sizeof(ASP_ANGLES)/sizeof(char); cnt++){
           double d=aspa-ASP_ANGLES[cnt];

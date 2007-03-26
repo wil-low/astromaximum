@@ -31,7 +31,7 @@ import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.*;
 
-public class GeoList extends List  implements RecordComparator, RecordFilter, CommandListener{
+public class GeoList extends Form implements RecordComparator, RecordFilter, CommandListener{
   protected RecordStore rs;
   protected byte[] curCity=null;
   int total;
@@ -42,11 +42,11 @@ public class GeoList extends List  implements RecordComparator, RecordFilter, Co
   static long dstEnd;
   static boolean dstExists;
   static long tzOffset;
-
+  ChoiceGroup cityList;
   static long localOffset;
   
   public GeoList(MIDlet midlet, int type){
-    super("",type);
+    super("");
     main=midlet;
 //    localOffset=TimeZone.getDefault().getRawOffset();
 //#mdebug info    
@@ -63,17 +63,18 @@ public class GeoList extends List  implements RecordComparator, RecordFilter, Co
     } 
     catch(IOException e) {
     }
-
+    cityList=new ChoiceGroup("",type);
+    append(cityList);
   }
   
   void init()  {
 //#if MIDP == "2.0"
-    deleteAll();
+    cityList.deleteAll();
     try {
 //#else
 //#    try {
 //#      while(true)
-//#        delete(0);
+//#        cityList.delete(0);
 //#    } catch (IndexOutOfBoundsException iob) {}
 //#endif
       

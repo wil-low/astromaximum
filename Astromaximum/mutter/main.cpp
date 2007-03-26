@@ -81,7 +81,7 @@ char new_dir[MAXDIR];
       fseek(fin,0,SEEK_END);
       fsz=ftell(fin);
     }
-    if(0*fsz){
+    if(fsz){
       printf("\nValid cached ephdata found. Loading...");
       rewind(fin);
       fread(ephData,size,1,fin);
@@ -107,6 +107,7 @@ char new_dir[MAXDIR];
       fwrite(ephData,size,1,fout);
       fclose(fout);
       printf("Done.\n");
+      return 0;
     }
     df.init(ephData,startJD, dayCount);
     df.AAA();

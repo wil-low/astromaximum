@@ -24,13 +24,19 @@ import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
 class Options extends GeoList{
-  
+  ChoiceGroup optList;
+  static byte optFlags;
   Options(){
     super(Astromaximum.instance,Choice.EXCLUSIVE);
+    setTitle(LocalizationSupport.getMessage("Options"));
     setCommandListener(this);
     addCommand(new Command("OK",Command.ITEM, 1));
     addCommand(new Command("Delete",Command.ITEM, 2));
 //    addCommand(new Command("Reset storage",Command.ITEM, 3));
+    String[] sOpt={LocalizationSupport.getMessage("Local_time")};
+    optList=new ChoiceGroup(LocalizationSupport.getMessage("Options"),Choice.MULTIPLE,
+        sOpt,null);
+    append(optList);
   }
 //#if "imeiCheck" @ protection
   static int hj;
@@ -41,11 +47,11 @@ class Options extends GeoList{
   /** @noinspection InfiniteLoopStatement*/
   void init() {
 //#if MIDP == "2.0"
-    deleteAll();
+    cityList.deleteAll();
 //#else
 //#    try {
 //#      while(true)
-//#        delete(0);
+//#        cityList.delete(0);
 //#    } catch (IndexOutOfBoundsException iob) {}
 //#endif
     
@@ -70,9 +76,9 @@ class Options extends GeoList{
       Astromaximum.log(cur);
       for(int i=0; i<cities.length; i++){
         if(cities[i]!=null){
-          append(cities[i],null);
+          cityList.append(cities[i],null);
           if(cities[i].equals(cur)){
-            setSelectedIndex(size()-1,true);
+            cityList.setSelectedIndex(cityList.size()-1,true);
           }
         }
       }
@@ -112,7 +118,15 @@ class Options extends GeoList{
       case 1:
 //#debug debug 
         System.out.println("OK");
-        curCity=getString(getSelectedIndex()).getBytes();
+        optFlags=0;
+        for(int i=0; i<optList.size(); i++){
+          if(optList.isSelected(i)){
+            optFlags+=(1<<i);
+          }
+        }
+//#debug debug 
+        System.out.println(optFlags);
+        curCity=cityList.getString(cityList.getSelectedIndex()).getBytes();
         try{
           rs.setRecord(1,curCity, 0, curCity.length);
 //          rs.closeRecordStore();
@@ -128,7 +142,7 @@ class Options extends GeoList{
 //        resetStorage();
 //        break;
       case 2:
-        String sel=getString(getSelectedIndex());
+        String sel=cityList.getString(cityList.getSelectedIndex());
         if(!sel.equals(curCity)){
           String oldc=new String(curCity);
           curCity=sel.getBytes();

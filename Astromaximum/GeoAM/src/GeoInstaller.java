@@ -37,7 +37,7 @@ public class GeoInstaller extends MIDlet implements CommandListener{
       for(int i=0; i<gl.total; i++){
         if(interrupt)
           throw new IllegalArgumentException();
-        gl.append(gl.extractCityName(gl.extractLocation(i)),null);
+        gl.cityList.append(gl.extractCityName(gl.extractLocation(i)),null);
       }
       Display.getDisplay(this).setCurrent(gl);
     } 
@@ -65,7 +65,7 @@ public class GeoInstaller extends MIDlet implements CommandListener{
 	String msg="Cities installed";
 	AlertType at=AlertType.INFO;
         boolean[] selArray=new boolean[gl.size()];
-        if(gl.getSelectedFlags(selArray)>0){
+        if(gl.cityList.getSelectedFlags(selArray)>0){
           for(int i=0; i<selArray.length; i++){
             if(selArray[i]){
               byte[] cn=gl.extractLocation(i);

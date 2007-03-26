@@ -18,7 +18,7 @@ my ($year, $month, $day, $hour, $min, $day_count)=(2007,1,1,0,0,365);
 $0=~/(.+\\)/is;
 
 our $outp=$ARGV[0];
-print "imei=$imei";
+print "imei=$imei\n";
 our $path=$1.'mutter\\output\\';
 
 my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
