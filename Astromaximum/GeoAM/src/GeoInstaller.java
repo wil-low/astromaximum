@@ -62,6 +62,8 @@ public class GeoInstaller extends MIDlet implements CommandListener{
   public void commandAction(Command c, Displayable d) {
     switch(c.getCommandType()){
       case Command.OK:
+	String msg="Cities installed";
+	AlertType at=AlertType.INFO;
         boolean[] selArray=new boolean[gl.size()];
         if(gl.getSelectedFlags(selArray)>0){
           for(int i=0; i<selArray.length; i++){
@@ -71,10 +73,17 @@ public class GeoInstaller extends MIDlet implements CommandListener{
                 gl.rs.addRecord(cn,0,cn.length);
               }
               catch (RecordStoreException ex) {
+		msg="An error occured when installing cities!;";
+		at=AlertType.ERROR;
               }
             }
           }
+	  Alert alert=new Alert("GeoInstaller",msg,null,at);
+	  alert.addCommand(new Command("Close", Command.CANCEL,1));
+	  alert.setCommandListener(this);
+	  Display.getDisplay(this).setCurrent(alert);
         }
+	break;
       case Command.ITEM:
       case Command.CANCEL:
         quit();
