@@ -1,8 +1,8 @@
 #ifndef eventsH
 #define eventsH
 
-#include "../../astro/eph/sweph/src/swephexp.h"
-//#include "../../eph/sweph/src/swephexp.h"
+//#include "../../astro/eph/sweph/src/swephexp.h"
+#include "../../eph/sweph/src/swephexp.h"
 const PLANET_COUNT=SE_PLUTO-SE_SUN+1;
 const EFLAG=SEFLG_SPEED|SEFLG_SWIEPH;
 

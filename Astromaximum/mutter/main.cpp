@@ -22,12 +22,13 @@ const char outFile[]="output.txt";
 
 int main(int argc, char* argv[])
 {
-char old_dir[MAXDIR];
-char new_dir[MAXDIR];
-  getcurdir(0, old_dir);
-  printf("Current directory is: \\%s\n", old_dir);
-
-
+  char path[_MAX_PATH];
+  strcpy(path,argv[0]);
+  char *pos=strrchr(path,'\\');
+  *(pos+1)=0;
+  printf("Current directory is: %s\n", path);
+  chdir(path);
+//  return 0;
   struct tm now;
   now.tm_year=2006-1900;
   now.tm_mon=11;

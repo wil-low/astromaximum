@@ -160,7 +160,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			print "\n-----------------------\n";
 			my $tz=get_tz($params[3],$city);
 			my $dstbuf=calc_dst($tz);
-			my $invoke=$mypath."mutter.exe 2007 geo0- $params[1] $params[2]";
+			my $invoke=$mypath."mutter\\mutter.exe 2007 geo0- $params[1] $params[2]";
 			print "$invoke\n";
 			system($invoke);
 			if($params[3]=~/USA \- (.+)/is){
@@ -176,7 +176,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			print $OutF $header;
 			close($OutF);
 			
-			my @bins=glob($mypath."output\\geo0-\*.bin");
+			my @bins=glob($mypath."mutter\\output\\geo0-\*.bin");
 			my $counter=0;
 			print join(@bins,"\n");
 			foreach my $ff(@bins){
