@@ -5,6 +5,7 @@ import javax.microedition.lcdui.game.Sprite;
 import java.util.*;
 import javax.microedition.rms.RecordFilter;
 
+//#define aspswap
 /*
  * Event.EV_java
  *
@@ -714,6 +715,7 @@ class SummItem extends TimerTask implements RecordFilter{
         osg.setColor(Astromaximum.BACK_COLOR);
         osg.fillRect(left,top,width,height);
         osg.setColor(0);
+// @todo zero        
         zeroPlaces();
         Date cur=new Date(Summary.firstGridDate.getTime());
         final Font oldFont=osg.getFont();
@@ -727,7 +729,20 @@ class SummItem extends TimerTask implements RecordFilter{
         int cnt=0;
         boolean[] nodrawNums=new boolean[owner.colCount*owner.rowCount];
         // dimmed days aside selected month
-// **********        
+// @todo **********        
+        int count=0;
+        int count2=1;
+        long fgd;
+        final long fgd2;
+        if(!weekMode){
+          // weekday numbering
+          fgd=Summary.period0; fgd2=Summary.period1;
+        } 
+        else{ // week mode
+          fgd= Summary.firstGridDate.getTime();
+          fgd-=Event.localOffset(fgd);
+          fgd2=fgd+ owner.rowCount*Astromaximum.MSECINDAY;
+        }
         for(int row=0; row< owner.rowCount; row++){
           for(int col=0; col< owner.colCount; col++){
             int fontColor=0;
@@ -765,13 +780,16 @@ class SummItem extends TimerTask implements RecordFilter{
               osg.setColor(Astromaximum.SELECTION_COLOR);
               osg.drawRect(xx + 1, yy,colWidth - 1, rowHeight - 1);
             }
-            /* @todo Eclipse drawing in week mode */
+            /* @todo Eclipse drawing */
             if(eclipse!=null) {
               drawImg(osg, Summary.imgAspect,
                 10 + eclipse.planet0,
-                (weekMode ? 32 : colWidth) + xx,
+                (weekMode ? Summary.IMG_WIDTH*9/2 : colWidth) + xx,
                 (weekMode ? 3 : rowHeight - Summary.IMG_HEIGHT) + yy - 1,
                 Graphics.TOP | Graphics.RIGHT);
+              if(weekMode){
+                ++places[row];
+              }
 //              nodrawNums[cnt]=true;
             }
             
@@ -791,7 +809,7 @@ class SummItem extends TimerTask implements RecordFilter{
               for(Enumeration e= owner.moonPhase.elements(); e.hasMoreElements();){
                 eclipse=(Event)e.nextElement();
                 if(eclipse.isDateBetween(0,ld,ld2)){
-                  drawImg(osg,Summary.imgPhase,eclipse.planet1,xx+4,yy,
+                  drawImg(osg,Summary.imgPhase,eclipse.planet1,xx+owner.IMG_WIDTH*2,yy,
                       Graphics.BOTTOM | Graphics.LEFT);
                   nodrawNums[cnt]=true;
                   break;
@@ -809,40 +827,33 @@ class SummItem extends TimerTask implements RecordFilter{
             ++cnt;
           }
         }
-// **********
+// @todo **********
         osg.setColor(0);
         osg.setFont(oldFont);
-        int count=0;
-        int count2=1;
-        long fgd;
-        final long fgd2;
-        if(!weekMode){
-          // weekday numbering
-          fgd=Summary.period0; fgd2=Summary.period1;
-        } 
-        else{ // week mode
-          fgd= Summary.firstGridDate.getTime();
-          fgd-=Event.localOffset(fgd);
-          fgd2=fgd+ owner.rowCount*Astromaximum.MSECINDAY;
-          zeroPlaces();
-          // @todo Aspect drawing in week mode
-          for(Enumeration e= owner.mAsp.elements(); e.hasMoreElements();){
-            ev=(Event)e.nextElement();
-            long date=ev.date0;
-            if(ev.isDateBetween(0,fgd,fgd2)){
-              final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
-              places[day]+=(owner.size+2);
-              final int x=colWidth+(2- places[day])*(Summary.IMG_HEIGHT+1)-1;
-              y=day/ owner.colCount*rowHeight+top+3;
-              drawAspect(osg,ev,x,y,Graphics.TOP);
-              if(places[day]>10){
-                nodrawNums[day]=true;
-              }
-//              osg.drawChar('.',x-Summary.IMG_HEIGHT*3/2-2,y+Summary.IMG_HEIGHT,Graphics.BASELINE|Graphics.RIGHT);
-            }
-          }
-        }
-        zeroPlaces();
+//#ifndef aspswap
+//#         if(weekMode){
+//# // @todo zero in week       
+//#           zeroPlaces();
+//#           // @todo Aspect drawing in week mode
+//#           for(Enumeration e= owner.mAsp.elements(); e.hasMoreElements();){
+//#             ev=(Event)e.nextElement();
+//#             long date=ev.date0;
+//#             if(ev.isDateBetween(0,fgd,fgd2)){
+//#               final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
+//#               places[day]+=(owner.size+2);
+//#               final int x=colWidth+(2- places[day])*(Summary.IMG_HEIGHT+1)-1;
+//#               y=day/ owner.colCount*rowHeight+top+3;
+//#               drawAspect(osg,ev,x,y,Graphics.TOP);
+//#               if(places[day]>10){
+//#                 nodrawNums[day]=true;
+//#               }
+//# //              osg.drawChar('.',x-Summary.IMG_HEIGHT*3/2-2,y+Summary.IMG_HEIGHT,Graphics.BASELINE|Graphics.RIGHT);
+//#             }
+//#           }
+//#         }
+//#endif
+// @todo zero        
+//        zeroPlaces();
         for(Enumeration e= owner.mIngress.elements(); e.hasMoreElements();){
           ev=(Event)e.nextElement();
           final long date=ev.date0;
@@ -853,10 +864,16 @@ class SummItem extends TimerTask implements RecordFilter{
             final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
             int x=day% owner.colCount*colWidth+1; y=day/ owner.colCount*rowHeight+top+1;
             if(weekMode){
-              places[day]+=5;
-              x+=(places[day]-5)*Summary.IMG_WIDTH/2+Summary.imgPhase.getHeight()+2;
+              if(ev.planet0==Event.SE_MOON){
+                x=0;
+              }
+              else{
+                places[day]+=5;
+                x+=(places[day]-5)*Summary.IMG_WIDTH/2+Summary.imgPhase.getHeight()+2+Summary.IMG_WIDTH*2;
+              }
               y+=rowHeight-Summary.IMG_HEIGHT-2;
-            } else{
+            } 
+            else{
               places[day]++;
               y+=(places[day]-1)*Summary.IMG_HEIGHT;
             }
@@ -882,7 +899,7 @@ class SummItem extends TimerTask implements RecordFilter{
                 y=day/owner.colCount*rowHeight+top+2;
                 if(weekMode){
                   y+=rowHeight-Summary.IMG_HEIGHT-3;
-                  x+=Summary.imgPhase.getHeight()+pos*Summary.IMG_HEIGHT/2;
+                  x+=Summary.imgPhase.getHeight()+pos*Summary.IMG_HEIGHT/2+Summary.IMG_WIDTH*2;
                 } 
                 else {
                   y += pos * Summary.IMG_HEIGHT;
@@ -918,13 +935,41 @@ class SummItem extends TimerTask implements RecordFilter{
             drawImg(osg,Summary.imgService,1,x+3,y+3,Graphics.BOTTOM|Graphics.LEFT);
 //          }
         }
+//#ifdef aspswap
+        if(weekMode){
+// @todo zero in week       
+          zeroPlaces();
+          // @todo Aspect drawing in week mode
+          for(Enumeration e= owner.mAsp.elements(); e.hasMoreElements();){
+            ev=(Event)e.nextElement();
+            long date=ev.date0;
+            if(ev.isDateBetween(0,fgd,fgd2)){
+              final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
+              places[day]+=(owner.size==2? 3:3);
+              final int x=colWidth+(2- places[day])*(Summary.IMG_HEIGHT+1)-1;
+              y=day/ owner.colCount*rowHeight+top+3;
+              drawAspect(osg,ev,x,y,Graphics.TOP);
+              if(places[day]>10){
+                nodrawNums[day]=true;
+              }
+//              osg.drawChar('.',x-Summary.IMG_HEIGHT*3/2-2,y+Summary.IMG_HEIGHT,Graphics.BASELINE|Graphics.RIGHT);
+            }
+          }
+        }
+//#endif
             /* @todo Day # drawing in week mode */
         cur=new Date(Summary.firstGridDate.getTime());
         cnt=0;
         for(int row=0; row< owner.rowCount; row++){
           for(int col=0; col< owner.colCount; col++){
             if(!nodrawNums[cnt++]){
-              int xx=leftm+col*colWidth;
+              int xx=leftm;
+              if(weekMode){
+                xx+=owner.IMG_WIDTH*2;
+              }
+              else{
+                xx+=col*colWidth;
+              }
               int yy=(row+1)*rowHeight + top + 1;
               Astromaximum.calendar.setTime(cur);
               if(Astromaximum.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
