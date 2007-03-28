@@ -84,6 +84,9 @@
     classpath="${platform.bootclasspath}" 
 --> 
     <target name="tb.install" description="Installing timebomb." if="do.timebomb">
+<!--
+      <echo message="Abil = ${abilities}"/>
+-->      
       <exec executable="C:/perl/bin/perl.exe" failonerror="true">
         <arg value="${script.dir}/timebomb.pl"/>
         <arg value="${class.dir}"/>

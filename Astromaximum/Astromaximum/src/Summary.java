@@ -1088,6 +1088,11 @@ class Summary extends FrameAnimator implements CommandListener{
       else {
         IMG_HEIGHT = IMG_WIDTH = 12;
       }
+      if(h < w){
+        IMG_HEIGHT = IMG_WIDTH = 12;
+        moonPhaseH = 50;
+        size=3;
+      }
       String ext="/res/sz"+Integer.toString(IMG_HEIGHT)+".dat";
       imgService=Astromaximum.extractImg(0,ext);
 //#if logger

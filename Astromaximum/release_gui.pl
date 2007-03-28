@@ -19,6 +19,7 @@ our $sortmode='city';
 my @files=get_city_list();
 my @selected;
 my $debug=0;
+my $ltime=0;
 
 my $main = new MainWindow(-title=>"Astromaximum Release GUI");
 my $frame0=$main->Frame();
@@ -26,7 +27,7 @@ my $imei=$frame0->Entry(-text=>'359593001109710');
 my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>[\&do_imei,'midp2y2007release']);
 my $bt_imei_logger=$frame0->Button(-text=>"IMEI logger", -command=>[\&do_imei,'midp2y2007release_logger']);
 my $lbox = $frame0->Listbox(-height=>0,-activestyle=>"dotbox");
-my @list = ( "5", "10", "20", "30", "60" );
+my @list = ( "5", "6", "7", "8", "9" );
 my $bt_timebomb=$frame0->Button(-text=>"Time Bomb", -command=>\&do_timebomb);
 
 $imei->pack();
@@ -35,10 +36,11 @@ $bt_imei_logger->pack(-fill=>"x",-pady=>3);
 
 $frame0->Checkbutton(-text=>"Debug", -variable=>\$debug)->pack(-pady=>10);
 $lbox->insert('end', @list );
-$lbox->selectionSet(2);
+$lbox->selectionSet(0);
 $lbox->pack();
 
 $bt_timebomb->pack(-fill=>"x");
+$frame0->Checkbutton(-text=>"Localtime", -variable=>\$ltime)->pack();
 
 my $frame4=$frame0->Frame();
 
@@ -237,4 +239,21 @@ sub refill_list { # lbox, listref
 sub do_sort {
 	@files = sort comparator @files;
 	refill_list($lbcities, \@files);
+}
+
+sub get_abilities { # config
+	my $conf=shift();
+	if($conf){
+		$conf='configs\.'.$conf.'\.abilities';
+	}
+	else{
+		$conf='abilities';
+	}
+	open(PROP, "<$path".'Astromaximum\\nbproject\\project.properties') or die 'No file';
+	my @lines=<PROP>;
+	close(PROP);
+	@lines=grep(/$conf/, @lines);
+	chomp($lines[0]);
+	$lines[0]=~s/(.+?)(abilities)/$2/is;
+	return $lines[0];
 }

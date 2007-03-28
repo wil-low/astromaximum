@@ -134,6 +134,12 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if logger
 //#       logger("initDB");
 //#endif      
+      customTime =new CustomTime();
+//#if logger
+//#       logger("customTime");
+//#endif      
+//        System.out.println("Modem="+customTime.askModem());
+      options.loadHistory();
       System.gc();
 //        dataFile.fillCache();
 //        log("Options");
@@ -237,11 +243,6 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if logger
 //#       logger("changeSize");
 //#endif      
-      customTime =new CustomTime();
-//#if logger
-//#       logger("customTime");
-//#endif      
-//        System.out.println("Modem="+customTime.askModem());
         summary.setCell(getToday(),true);
 //#if logger
 //#       logger("setCell");
@@ -421,7 +422,9 @@ public class Astromaximum extends MIDlet implements CommandListener{
 
 //#if "timeBomb" @ protection
 //#   static byte[] getArray() {
-//#     int now=(int)(new Date().getTime()/4096);
+//#debug
+//#         System.out.println(Options.optFlags);
+//#     int now=(int)(Options.currentTime()/4096);
 //#mdebug info
 //#     Astromaximum.log("Timebomb:");
 //#     Astromaximum.log(Long.toString(GeoList.tzOffset));

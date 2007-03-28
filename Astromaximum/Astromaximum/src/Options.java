@@ -25,9 +25,15 @@ import javax.microedition.rms.RecordStoreException;
 
 class Options extends GeoList{
   ChoiceGroup optList;
+//#if localtime  
+//#   static byte OPT_FLAGS=1;
+//#else
+      static byte OPT_FLAGS=0;
+//#endif  
   static byte optFlags;
   Options(){
     super(Astromaximum.instance,Choice.EXCLUSIVE);
+    optFlags=OPT_FLAGS;
     setTitle(LocalizationSupport.getMessage("Options"));
     setCommandListener(this);
     addCommand(new Command("OK",Command.ITEM, 1));
@@ -126,6 +132,7 @@ class Options extends GeoList{
         }
 //#debug debug 
         System.out.println(optFlags);
+        saveHistory();
         curCity=cityList.getString(cityList.getSelectedIndex()).getBytes();
         try{
           rs.setRecord(1,curCity, 0, curCity.length);
@@ -310,24 +317,54 @@ class Options extends GeoList{
     Astromaximum.dataFile.geoposData=super.initDB(false);
 //#if timeHistory
 //#     DataInputStream dis=new DataInputStream(new ByteArrayInputStream(rs.getRecord(2)));
-//#     Astromaximum.customTime.readHistory(dis);
+//#     Astromaximum.customTime.loadHistory(dis);
 //#     dis=null;
 //#endif
     return null;
   }
 
   void saveHistory(){
-    byte[] cur=Astromaximum.customTime.writeHistory();
+    ByteArrayOutputStream baos=new ByteArrayOutputStream();
+    DataOutputStream dos=new DataOutputStream(baos);
     try {
-      rs.setRecord(2,cur, 0, cur.length);
+      dos.writeByte(optFlags);
+      dos.writeShort(Astromaximum.customTime.histCount);
+      for(int i=0; i<Astromaximum.customTime.histCount; i++){
+        dos.writeLong(Astromaximum.customTime.history[i]);
+      }
+      dos=null;
+      rs.setRecord(2,baos.toByteArray(), 0, baos.size());
 //#debug info
       System.out.println("history");
+      baos=null;
     } 
-    catch (RecordStoreException ex) {
+    catch (Exception ex) {
       ex.printStackTrace();
-    }        
+    }
   }
-  
+
+  void loadHistory() {
+//#debug info 
+      System.out.println("Load history");
+    try {
+      ByteArrayInputStream baos=new ByteArrayInputStream(rs.getRecord(2));
+      DataInputStream dis=new DataInputStream(baos);
+      optFlags=dis.readByte();
+      Astromaximum.customTime.histCount=dis.readUnsignedShort();
+      for(int i=0; i<Astromaximum.customTime.histCount; i++){
+        Astromaximum.customTime.history[i]=dis.readLong();
+      }
+    } 
+    catch (Exception ex) {
+      Astromaximum.customTime.histCount=0;
+      optFlags=OPT_FLAGS;
+    }
+    for(int i=0; i<optList.size(); i++){
+      optList.setSelectedIndex(i,(optFlags&(1<<i))!=0);
+    }
+    
+  }
+
   static long currentTime(){
     long now=System.currentTimeMillis();
     if((optFlags&1)!=0){

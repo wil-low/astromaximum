@@ -30,13 +30,11 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
   int invoker=Event.EV_ASP_EXACT_MOON;
   final DateField dateField;
 
-//#if timeHistory
-//#   final ChoiceGroup cg;
-//#   static final int HIST_COUNT=5;
-//#   static long[] history=new long[HIST_COUNT];
-//#   static int histCount=0;
-//#   private boolean showHistory;
-//#endif
+  final ChoiceGroup cg;
+  static final int HIST_COUNT=5;
+  static long[] history=new long[HIST_COUNT];
+  static int histCount=0;
+  private boolean showHistory;
   /** Creates a new instance of CustomTime */
   CustomTime() {
     super("");
@@ -44,12 +42,10 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
         Astromaximum.calendar.getTimeZone());
     dateField.setDate(new Date());
     append(dateField);
-//#if timeHistory
-//#     cg=new ChoiceGroup(LocalizationSupport.getMessage("History"), Choice.EXCLUSIVE);
-//#     for(int i=0; i<histCount; i++){
-//#       cg.append(Event.long2String(history[i],0,false),null);
-//#     }
-//#endif
+    cg=new ChoiceGroup(LocalizationSupport.getMessage("History"), Choice.EXCLUSIVE);
+    for(int i=0; i<histCount; i++){
+      cg.append(Event.long2String(history[i],0,false),null);
+    }
     addCommand(new Command("OK",Command.OK,1));
     addCommand(new Command(LocalizationSupport.getMessage("Cancel"),Command.CANCEL,1));
     setCommandListener(this);
@@ -190,41 +186,5 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
       ex.printStackTrace();
     }
      return port1;
-  }
-
-  void readHistory(DataInputStream dis) {
-//#if timeHistory
-//#     try {
-//#       histCount=dis.readUnsignedShort();
-//#debug info 
-//#       System.out.println("Read history");
-//#       for(int i=0; i<histCount; i++){
-//#         history[i]=dis.readLong();
-//#       }
-//#     } 
-//#     catch (IOException ex) {
-//#       histCount=0;
-//#     }
-//#endif
-  }
-
-  byte[] writeHistory() {
-//#if timeHistory
-//#     ByteArrayOutputStream baos=new ByteArrayOutputStream();
-//#     DataOutputStream dos=new DataOutputStream(baos);
-//#     try {
-//#       dos.writeShort(histCount);
-//#       for(int i=0; i<histCount; i++){
-//#         dos.writeLong(history[i]);
-//#       }
-//#     } 
-//#     catch (IOException ex) {
-//#       return null;
-//#     }
-//#     dos=null;
-//#     return baos.toByteArray();
-//#else
-    return null;
-//#endif
   }
 }

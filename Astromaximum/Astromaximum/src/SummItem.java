@@ -142,8 +142,8 @@ class SummItem extends TimerTask implements RecordFilter{
       case Event.EV_GRID_DATE:
         cal.setTime(new Date(events[1].date0));
         selIndex=1;
-        str=Astromaximum.months[cal.get(Calendar.MONTH)]+" "+
-            Integer.toString(cal.get(Calendar.YEAR));
+        str=Astromaximum.months[cal.get(Calendar.MONTH)]+"'"+
+            Integer.toString(cal.get(Calendar.YEAR)).substring(2,4);
         break;
       case Event.EV_WEEK:
         cal.setTime(new Date(events[1].date0));
@@ -375,9 +375,11 @@ class SummItem extends TimerTask implements RecordFilter{
       case Event.EV_GRID_DATE:
       case Event.EV_WEEK:
         osg.drawString(str,getX(1, XCENTER),top+height,Graphics.BOTTOM|Graphics.HCENTER);
-        for(int i=0; i <= 2; i+=2){
-          drawImg(osg,Summary.imgService,i,getX(i, XCENTER),y,
-              Graphics.VCENTER|Graphics.HCENTER);
+        if(!isSelected){
+          for(int i=0; i <= 2; i+=2){
+            drawImg(osg,Summary.imgService,i,getX(i, XCENTER),y,
+                Graphics.VCENTER|Graphics.HCENTER);
+          }
         }
         break;
       case Event.EV_VOC:
