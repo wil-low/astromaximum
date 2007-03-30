@@ -283,7 +283,7 @@ class Interpreter extends Canvas implements CommandListener {
     return s.length()>1;
   }
 */  
-  boolean findText(SummItem si) {
+  boolean findText(SummItem si, boolean ignoreAllTopics) {
 //    System.out.println("ft");
     txt="";
     final long[] params=si.getParams(si.selIndex);
@@ -293,107 +293,59 @@ class Interpreter extends Canvas implements CommandListener {
     boolean isTopicTitle=false;
     boolean f;
     String s=extractArticle(params);
-/*
-    try {
-        
-      InputStream is=getClass().getResourceAsStream(Long.toString(params[0])+".txt");
-      interp=new byte[is.available()];
-      is.read(interp);
-      is=null;
-      final DataInputStream dis=new DataInputStream(
-          new ByteArrayInputStream(interp));
-      while(true){
-        final int evt = dis.readUnsignedShort();
-        final int partsz = dis.readInt();
-        if(evt!=params[0]){
-          dis.skip(partsz-6);
-          continue;
+    StringBuffer sb=new StringBuffer(s);
+    if(!ignoreAllTopics){
+//    System.out.println("FullText:");
+//    System.out.println(s);
+      char allowed0=0, allowed1=0;
+      isTopicTitle=si.haveTopic((int)params[0]);
+      int topp=topic;
+      if(params[0]==Event.EV_MOON_MOVE){
+        allowed0='@'; 
+      }
+      else{
+        topp=isTopicTitle? topic: 10;
+      }
+      if(topp!=10){
+        allowed1=RESERVED_CHARS.charAt(topp);
+        if(topp!=T_MEDICINE && topp!=T_DECUMB && topp!=T_VACATION && topp!=T_LOVE){
+            allowed0='@';
         }
-        final int plt=dis.readByte();
-        if(plt != -1 && plt != params[1]){
-          dis.skip(partsz-7);
-          continue;
-        }
-        final int paramcount=dis.readShort();
-        int recnum=dis.readUnsignedShort();
-        while(recnum > 0){
-          f=true;
-          for(int j=0; j<paramcount; j++){
-            final int rsh=dis.readShort();
-            if(params[j+2]!=rsh){
-              f=false;
-              dis.skip(2*(paramcount-j-1));
-              break;
+        for(int i=0; i<RESERVED_CHARS.length(); i++){
+          char rc=RESERVED_CHARS.charAt(i);
+          if(allowed0!=rc && allowed1!=rc){
+            for(int j=0; j<sb.length(); j++){
+              if(rc==sb.charAt(j)){
+                sb.deleteCharAt(j--);
+              }
             }
           }
-          if(f){
-//            int sh=dis.readInt();
-//            System.out.println(sh);
-//            s="";
-            s=dis.readUTF();
- */
-//            System.out.println("FullText:");
-//            System.out.println(s);
-            char allowed0=0, allowed1=0;
-            isTopicTitle=si.haveTopic((int)params[0]);
-            int topp=topic;
-            if(params[0]==Event.EV_MOON_MOVE){
-              allowed0='@'; 
-            }
-            else{
-              topp=isTopicTitle? topic: 10;
-            }
-            StringBuffer sb=new StringBuffer(s);
-            if(topp!=10){
-              allowed1=RESERVED_CHARS.charAt(topp);
-              if(topp!=T_MEDICINE && topp!=T_DECUMB && topp!=T_VACATION && topp!=T_LOVE){
-                  allowed0='@';
-              }
-              for(int i=0; i<RESERVED_CHARS.length(); i++){
-                char rc=RESERVED_CHARS.charAt(i);
-                if(allowed0!=rc && allowed1!=rc){
-                  for(int j=0; j<sb.length(); j++){
-                    if(rc==sb.charAt(j)){
-                      sb.deleteCharAt(j--);
-                    }
-                  }
-                }
-              }
-              s=sb.toString();
-              sb=new StringBuffer();
-              for(int i=0; i<s.length(); i++){
-                char rc=s.charAt(i);
-                if(allowed0==rc || allowed1==rc){
-                  int pos=s.indexOf(rc,i+1);
-                  sb.append(s.substring(i+1,pos));
-                  i=pos;
-                }
-              }
-            }
-            else{
-              s=removeTopic(s,T_LOVE);
-              s=removeTopic(s,T_MEDICINE);
-              s=removeTopic(s,T_DECUMB);
-              sb=new StringBuffer(s);
-            }
-            
-            for(int i=0; i<sb.length(); i++){
-              if(RESERVED_CHARS.indexOf(sb.charAt(i))>=0){
-                sb.deleteCharAt(i--);
-              }
-            }
-            s=sb.toString();
-            s=s.trim();
-/*            break;
+        }
+        s=sb.toString();
+        sb=new StringBuffer();
+        for(int i=0; i<s.length(); i++){
+          char rc=s.charAt(i);
+          if(allowed0==rc || allowed1==rc){
+            int pos=s.indexOf(rc,i+1);
+            sb.append(s.substring(i+1,pos));
+            i=pos;
           }
-          dis.skip(dis.readUnsignedShort());
-          --recnum;
         }
       }
-    } catch (IOException ex) {
-//      Astromaximum.log(ex.toString());
+      else{
+        s=removeTopic(s,T_LOVE);
+        s=removeTopic(s,T_MEDICINE);
+        s=removeTopic(s,T_DECUMB);
+        sb=new StringBuffer(s);
+      }
     }
- */
+    for(int i=0; i<sb.length(); i++){
+      if(RESERVED_CHARS.indexOf(sb.charAt(i))>=0){
+        sb.deleteCharAt(i--);
+      }
+    }
+    s=sb.toString();
+    s=s.trim();
     if(s.length()==0){
       s=LocalizationSupport.getMessage("Minor_index");
     }
@@ -402,12 +354,8 @@ class Interpreter extends Canvas implements CommandListener {
     if(!s.endsWith(".")){
       s+=".";
     }
-//    final String[] sp=new String[params.length-1];
-//    for(int j=1; j<params.length; j++) {
-//      sp[j - 1] = Long.toString(params[j]);
-//    }
     
-        StringBuffer res=new StringBuffer();
+    StringBuffer res=new StringBuffer();
 //#if 1==1    
     switch((int)params[0]){
       case Event.EV_MOON_DAY:

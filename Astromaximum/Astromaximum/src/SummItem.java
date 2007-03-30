@@ -62,7 +62,7 @@ class SummItem extends TimerTask implements RecordFilter{
     topics.put(new Integer(Event.EV_TITHI), "}{~*^$>@=");
     topics.put(new Integer(Event.EV_ASP_EXACT_MOON), "*~#^$}>@={");
     topics.put(new Integer(Event.EV_DECUMBITURE), "#");
-    topics.put(new Integer(Event.EV_MOON_PHASE), "^}~#*$>@");
+    topics.put(new Integer(Event.EV_MOON_PHASE), "^$}~#*>@");
     topics.put(new Integer(Event.EV_VOC), "~*^$}>@");
     topics.put(new Integer(Event.EV_MOON_MOVE), "*^$}>@");
     topics.put(new Integer(Event.EV_WEEK), "^}{~=$");

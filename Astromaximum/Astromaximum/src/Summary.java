@@ -183,7 +183,7 @@ class Summary extends FrameAnimator implements CommandListener{
     SummItem si=getSelectedItem();
     switch (ga) {
       case Canvas.FIRE:
-        selectSummItem(si);
+        selectSummItem(si,false);
         return;
 //      case Canvas.UP:
 //      case Canvas.DOWN:
@@ -252,7 +252,7 @@ class Summary extends FrameAnimator implements CommandListener{
           case Canvas.KEY_NUM0:
             if((pageNum>=PAGE_SUMMARY && pageNum<=PAGE_LAST)|| pageNum==PAGE_PANEL){
               SummItem sip=getItem(Event.EV_PANEL);
-              selectSummItem(sip);
+              selectSummItem(sip,false);
               if(sip.isOnPage()){
                 selItem=0;
               }
@@ -282,7 +282,7 @@ class Summary extends FrameAnimator implements CommandListener{
           SummItem si=new SummItem(Event.EV_MOON_SIGN_LARGE);
           si.events=new Event[1];
           si.setEvents(0,ev);
-          selectSummItem(si);
+          selectSummItem(si,true);
           break;
         }
       }
@@ -717,11 +717,12 @@ class Summary extends FrameAnimator implements CommandListener{
         } 
         return;
     }
-//#debug debug
+//#mdebug debug
     System.out.print("Oldsel ");
     System.out.println(oldSelection);
+//#enddebug    
     if(oldSelection == selItem && sind == oldEvent) {
-      selectSummItem(si);
+      selectSummItem(si,false);
     } 
     else{
       si.prepareTithi();
@@ -729,7 +730,7 @@ class Summary extends FrameAnimator implements CommandListener{
     }
   }
   
-  private void selectSummItem(SummItem si) {
+  private void selectSummItem(SummItem si, boolean ignoreAllTopics) {
     switch(si.type){
       case Event.EV_STATUS:
         if(si.selIndex==0){
@@ -771,7 +772,7 @@ class Summary extends FrameAnimator implements CommandListener{
         setCurPage(PAGE_SUMMARY+1);
         break;
       default:
-        if(Astromaximum.interpreter.findText(si)) {
+        if(Astromaximum.interpreter.findText(si,ignoreAllTopics)) {
           Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.interpreter);
         }
         break;
