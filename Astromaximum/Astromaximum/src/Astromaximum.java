@@ -363,8 +363,6 @@ public class Astromaximum extends MIDlet implements CommandListener{
   
   static Image extractImg(int index, String string) {
     Image res=null;
-//#debug debug    
-    System.out.println(index);
     try {
       final DataInputStream dis=new DataInputStream(
           instance.getClass().getResourceAsStream(string));

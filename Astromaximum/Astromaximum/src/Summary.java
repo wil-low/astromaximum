@@ -69,7 +69,6 @@ class Summary extends FrameAnimator implements CommandListener{
   static Image imgPanel;
   static Image imgService;
   static Image imgOpaq;
-  
   Vector moonPhase;
   Event[] aNavroz=new Event[2];
 
@@ -251,8 +250,16 @@ class Summary extends FrameAnimator implements CommandListener{
             setCurPage(pn);
             break;
           case Canvas.KEY_NUM0:
-            selectSummItem(getItem(Event.EV_PANEL));
-            selItem=0;
+            if((pageNum>=PAGE_SUMMARY && pageNum<=PAGE_LAST)|| pageNum==PAGE_PANEL){
+              SummItem sip=getItem(Event.EV_PANEL);
+              selectSummItem(sip);
+              if(sip.isOnPage()){
+                selItem=0;
+              }
+            }
+            else{
+              showMoonIngress();
+            }
             break;
           case Canvas.KEY_POUND:
             Astromaximum.logBox.showLog(this);
@@ -261,7 +268,26 @@ class Summary extends FrameAnimator implements CommandListener{
     }
   }
   
-  
+  void showMoonIngress(){
+    if(pageNum==PAGE_WEEK && getSelectedItem().type==Event.EV_WEEK_GRID){
+//#mdebug debug
+//      System.out.println("period0="+Event.long2String(period0,0,false));
+//      System.out.println("period1="+Event.long2String(period1,0,false));
+//      System.out.println("Date="+selDate.toString());
+//#enddebug
+      long p0=selDate.getTime(), p1=p0+Astromaximum.MSECINDAY-1;
+      for (Enumeration e = mIngress.elements() ; e.hasMoreElements() ;) {
+        final Event ev=(Event)e.nextElement();
+        if(ev.planet0==Event.SE_MOON && ev.isDateBetween(0, p0, p1)){
+          SummItem si=new SummItem(Event.EV_MOON_SIGN_LARGE);
+          si.events=new Event[1];
+          si.setEvents(0,ev);
+          selectSummItem(si);
+          break;
+        }
+      }
+    }
+  }
   /**
    * changeDay
    *
@@ -644,7 +670,7 @@ class Summary extends FrameAnimator implements CommandListener{
    * @noinspection AssignmentToMethodParameter
    */
   protected void pointerPressed(int x, int y) {
-    final int oldSelection=selItem;
+    int oldSelection=selItem;
     int oldEvent=-1;
     SummItem si=null;
     
@@ -680,15 +706,20 @@ class Summary extends FrameAnimator implements CommandListener{
         y-=si.top;
         x-=si.left;
         final int ss=x*colCount/si.width+y*rowCount/si.height*colCount;
+        moveDay(ss-selCell,true);
+        repaint();
+        if(pageNum==PAGE_WEEK && x<IMG_WIDTH*2){
+          showMoonIngress();
+          return;
+        }
         if(ss == selCell) {
           showDaySummary();
         } 
-        else{
-          moveDay(ss-selCell,true);
-          repaint();
-        }
         return;
     }
+//#debug debug
+    System.out.print("Oldsel ");
+    System.out.println(oldSelection);
     if(oldSelection == selItem && sind == oldEvent) {
       selectSummItem(si);
     } 
@@ -809,6 +840,9 @@ class Summary extends FrameAnimator implements CommandListener{
   }
   
   void setCustomTime(int h, int m) {
+    period0 =date.getTime();
+    period0-=Event.localOffset(period0);
+    period1 = period0 +Astromaximum.MSECINDAY-1;
     Astromaximum.calendar.setTime(new Date((period0 + period1)/2));
     Astromaximum.calendar.set(Calendar.HOUR_OF_DAY,h);
     Astromaximum.calendar.set(Calendar.MINUTE,m);

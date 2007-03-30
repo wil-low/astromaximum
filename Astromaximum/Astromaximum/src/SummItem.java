@@ -376,7 +376,7 @@ class SummItem extends TimerTask implements RecordFilter{
       case Event.EV_GRID_DATE:
       case Event.EV_WEEK:
         osg.drawString(str,getX(1, XCENTER),top+height,Graphics.BOTTOM|Graphics.HCENTER);
-        if(!isSelected){
+        if(isSelected){
           for(int i=0; i <= 2; i+=2){
             drawImg(osg,Summary.imgService,i,getX(i, XCENTER),y,
                 Graphics.VCENTER|Graphics.HCENTER);
