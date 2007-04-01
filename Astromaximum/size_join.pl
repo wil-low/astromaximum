@@ -14,7 +14,7 @@ sub join_phases
 	my $size=shift;
 	my @buf;
 	my @bodies;
-	my @bins=qw(service zodiac planet opaqplanet aspect phases);
+	my @bins=qw(service zodiac planet opaqplanet aspect);
 	foreach my $it(@bins){
 		$it=$path.'images\\size_png\\'.$it.$size.'.png';
 	}

@@ -31,16 +31,25 @@ class Options extends GeoList{
       static byte OPT_FLAGS=0;
 //#endif  
   static byte optFlags;
+  
+  static final int FLG_ALLTEXT=1;
+  static final int FLG_LOCALTIME=2;
+  
   Options(){
     super(Astromaximum.instance,Choice.EXCLUSIVE);
+
+    String[] sOpt={
+      LocalizationSupport.getMessage("uat"),
+      LocalizationSupport.getMessage("Local_time"),
+    };
+    
     optFlags=OPT_FLAGS;
     setTitle(LocalizationSupport.getMessage("Options"));
     setCommandListener(this);
     addCommand(new Command("OK",Command.ITEM, 1));
     addCommand(new Command("Delete",Command.ITEM, 2));
 //    addCommand(new Command("Reset storage",Command.ITEM, 3));
-    String[] sOpt={LocalizationSupport.getMessage("Local_time")};
-    optList=new ChoiceGroup(LocalizationSupport.getMessage("Options"),Choice.MULTIPLE,
+    optList=new ChoiceGroup(LocalizationSupport.getMessage("Settings"),Choice.MULTIPLE,
         sOpt,null);
     append(optList);
   }
@@ -367,7 +376,7 @@ class Options extends GeoList{
 
   static long currentTime(){
     long now=System.currentTimeMillis();
-    if((optFlags&1)!=0){
+    if((optFlags & FLG_LOCALTIME)!=0){
       now-=Event.localOffset(now);
     }
     return now;

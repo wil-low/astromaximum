@@ -334,8 +334,10 @@ class SummItem extends TimerTask implements RecordFilter{
             break;
           case 6:
             for(int i=0; i<4; i++){
-              drawImg(osg,Summary.imgPhase,i,getX(i+1, XCENTER),y,
-                  Graphics.VCENTER|Graphics.HCENTER);
+              owner.drawPhase(osg,getX(i+1, XCENTER)-owner.IMG_HEIGHT/2,
+                  y-owner.IMG_HEIGHT/2,owner.IMG_HEIGHT,i);
+//              drawImg(osg,Summary.imgPhase,i,getX(i+1, XCENTER),y,
+//                  Graphics.VCENTER|Graphics.HCENTER);
             }
             osg.drawString("VOC",getX(0, XCENTER),top+height-1,
                 Graphics.BASELINE | Graphics.HCENTER);
@@ -447,8 +449,10 @@ class SummItem extends TimerTask implements RecordFilter{
               Graphics.VCENTER | Graphics.HCENTER);
         }
         else{
-          drawImg(osg,Summary.imgPhase,events[0].planet1,
-              left+width/2,top+height/2,Graphics.VCENTER | Graphics.HCENTER);
+          owner.drawPhase(osg,left+width/2-owner.IMG_HEIGHT/2,
+              top+height/2-owner.IMG_HEIGHT/2,owner.IMG_HEIGHT,events[0].planet1);
+//          drawImg(osg,Summary.imgPhase,events[0].planet1,
+//              left+width/2,top+height/2,Graphics.VCENTER | Graphics.HCENTER);
         }
         break;
       case Event.EV_TITHI:
@@ -486,16 +490,18 @@ class SummItem extends TimerTask implements RecordFilter{
             }
             drawImg(osg,Summary.imgService,imgid,x100,y,
                 Graphics.VCENTER|Graphics.HCENTER);
-          } else
+          } 
+          else
             if(ev.planet1 == Event.SE_MOON){ // this is sign enter, not aspect
-            drawImg(osg,Summary.imgZodiac,ev.getDegree(),x100,y,
-                Graphics.VCENTER|Graphics.HCENTER);
-            } else{
-            drawImg(osg,Summary.imgPlanet,ev.planet1,x100,y,
-                Graphics.BOTTOM|Graphics.HCENTER);
-            drawImg(osg,Summary.imgAspect, getAspIndex(
-                ev.getDegree()),x100,y,
-                Graphics.TOP|Graphics.HCENTER);
+              drawImg(osg,Summary.imgZodiac,ev.getDegree(),x100,y,
+                  Graphics.VCENTER|Graphics.HCENTER);
+            } 
+            else{
+              drawImg(osg,Summary.imgPlanet,ev.planet1,x100,y,
+                  Graphics.BOTTOM|Graphics.HCENTER);
+              drawImg(osg,Summary.imgAspect, getAspIndex(
+                  ev.getDegree()),x100,y,
+                  Graphics.TOP|Graphics.HCENTER);
             }
         }
         break;
@@ -583,7 +589,7 @@ class SummItem extends TimerTask implements RecordFilter{
 //        if(str.length()<14)
 //          osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_PLAIN,Font.SIZE_LARGE));
 //        System.out.println(str);
-        y=top+height-3;
+        y=top+height;
 //        if(owner.isShowCustom){
         if(str!=null){
           osg.drawString(str,getX(0,XCENTER),y,Graphics.HCENTER|Graphics.BASELINE);
@@ -604,10 +610,6 @@ class SummItem extends TimerTask implements RecordFilter{
         break;
       case Event.EV_SUN_DAY:
       case Event.EV_MOON_DAY:
-        final int plt=type-Event.EV_SUN_DAY;
-        drawImg(osg,Summary.imgPlanet,plt,left+width/3,top-2,
-            Graphics.BOTTOM|Graphics.HCENTER);
-        
         for(int i=0; i<events.length; i++){
           osg.setColor(0);
           if(nowSelection==i) {
@@ -632,11 +634,28 @@ class SummItem extends TimerTask implements RecordFilter{
         break;
       case Event.EV_ECLIPSE:
         try{
-          if(events[0].planet0==tag){
-            drawImg(osg,Summary.imgAspect,tag+10,left+width/2,top+height/2,
-                Graphics.HCENTER|Graphics.VCENTER);
+          int xxx=left-owner.IMG_WIDTH*3/2;
+          int plt=tag & 1;
+          if((tag&6) != 6){ 
+            drawImg(osg,Summary.imgPlanet,plt,xxx,top+1,
+                Graphics.TOP|Graphics.LEFT);
           }
-        } catch(NullPointerException npe){}
+          int pll=events[0].planet1;
+          if((tag & 4)!=0){
+            drawImg(osg,Summary.imgAspect,plt+10,left+width/2,top+height/2,
+                Graphics.HCENTER|Graphics.VCENTER);
+            pll=2;
+          }
+          else{
+            xxx=left+width/2-owner.IMG_HEIGHT/2;
+          }
+          if((tag & 2)!=0){
+            owner.drawPhase(osg,xxx,
+                top+height/2-owner.IMG_HEIGHT/2,
+                owner.IMG_HEIGHT,pll);
+          }
+        } 
+        catch(NullPointerException npe){}
         break;
       case Event.EV_RISE:
 //        ev=events[0];
@@ -809,8 +828,10 @@ class SummItem extends TimerTask implements RecordFilter{
               for(Enumeration e= owner.moonPhase.elements(); e.hasMoreElements();){
                 eclipse=(Event)e.nextElement();
                 if(eclipse.isDateBetween(0,ld,ld2)){
-                  drawImg(osg,Summary.imgPhase,eclipse.planet1,xx+owner.IMG_WIDTH*2,yy,
-                      Graphics.BOTTOM | Graphics.LEFT);
+                  owner.drawPhase(osg,xx+owner.IMG_WIDTH*2,
+                      yy-owner.IMG_HEIGHT,owner.IMG_HEIGHT,eclipse.planet1);
+//                  drawImg(osg,Summary.imgPhase,eclipse.planet1,xx+owner.IMG_WIDTH*2,yy,
+//                      Graphics.BOTTOM | Graphics.LEFT);
                   nodrawNums[cnt]=true;
                   break;
                 }
@@ -869,7 +890,7 @@ class SummItem extends TimerTask implements RecordFilter{
               }
               else{
                 places[day]+=5;
-                x+=(places[day]-5)*Summary.IMG_WIDTH/2+Summary.imgPhase.getHeight()+2+Summary.IMG_WIDTH*2;
+                x+=(places[day]-5)*Summary.IMG_WIDTH/2+Summary.IMG_WIDTH+2+Summary.IMG_WIDTH*2;
               }
               y+=rowHeight-Summary.IMG_HEIGHT-2;
             } 
@@ -899,7 +920,7 @@ class SummItem extends TimerTask implements RecordFilter{
                 y=day/owner.colCount*rowHeight+top+2;
                 if(weekMode){
                   y+=rowHeight-Summary.IMG_HEIGHT-3;
-                  x+=Summary.imgPhase.getHeight()+pos*Summary.IMG_HEIGHT/2+Summary.IMG_WIDTH*2;
+                  x+=Summary.IMG_WIDTH+pos*Summary.IMG_HEIGHT/2+Summary.IMG_WIDTH*2;
                 } 
                 else {
                   y += pos * Summary.IMG_HEIGHT;
@@ -962,32 +983,32 @@ class SummItem extends TimerTask implements RecordFilter{
         cnt=0;
         for(int row=0; row< owner.rowCount; row++){
           for(int col=0; col< owner.colCount; col++){
+            int xx=leftm;
+            if(weekMode){
+              xx+=owner.IMG_WIDTH*2;
+            }
+            else{
+              xx+=col*colWidth;
+            }
+            int yy=(row+1)*rowHeight + top + 1;
+            Astromaximum.calendar.setTime(cur);
+            if(weekMode){
+              yy-=rowHeight/2;
+            }
+            if(Astromaximum.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+              osg.setColor(Astromaximum.RUBY_COLOR);
+            } 
+            else {
+              osg.setColor(0);
+            }
+            if(weekMode){
+              osg.drawString(Astromaximum.dow[Astromaximum.calendar.get(Calendar.DAY_OF_WEEK)-1],
+                  xx+owner.IMG_WIDTH,yy-1,Graphics.BASELINE | Graphics.HCENTER);
+            }
             if(!nodrawNums[cnt++]){
-              int xx=leftm;
-              if(weekMode){
-                xx+=owner.IMG_WIDTH*2;
-              }
-              else{
-                xx+=col*colWidth;
-              }
-              int yy=(row+1)*rowHeight + top + 1;
-              Astromaximum.calendar.setTime(cur);
-              if(Astromaximum.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                osg.setColor(Astromaximum.RUBY_COLOR);
-              } 
-              else {
-                osg.setColor(0);
-              }
-              if(weekMode){
-                yy-=rowHeight/2;
-              }
               osg.drawString(Integer.toString(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH)),
-                  xx + (weekMode ? 10 : colWidth / 2),yy,
+                  xx + (weekMode ? owner.IMG_WIDTH : colWidth / 2),yy,
                   (weekMode ? Graphics.TOP : Graphics.BASELINE) | Graphics.HCENTER);
-              if(weekMode && owner.size>1){
-                osg.drawString(Astromaximum.dow[Astromaximum.calendar.get(Calendar.DAY_OF_WEEK)-1],
-                    xx+10,yy-1,Graphics.BASELINE | Graphics.HCENTER);
-              }
             }
             final long start=cur.getTime();
             cur.setTime(start + Astromaximum.MSECINDAY);
@@ -1229,12 +1250,14 @@ class SummItem extends TimerTask implements RecordFilter{
         final long d2=(d0+d1)/2;
         return new long[]{t,plt,evi.getDegree(),d2,d0,d1};
       case Event.EV_ECLIPSE:
-        return new long[]{t,-1,plt,d0,0};
+        if((tag & 4)!=0){
+          return new long[]{t,-1,plt,d0,0};
+        }
+      case Event.EV_MOON_PHASE:
+          return new long[]{Event.EV_MOON_PHASE, 1, evi.planet1, d0, 0};
       case Event.EV_VIA_COMBUSTA:
       case Event.EV_VOC:
         return new long[]{t,plt,d0,d1};
-      case Event.EV_MOON_PHASE:
-          return new long[]{t, 1, evi.planet1, d0, 0};
       case Event.EV_RETROGRADE:
           return new long[]{t, -1, plt, d0, d1};
       case Event.EV_DAY_HOURS:
@@ -1313,6 +1336,9 @@ class SummItem extends TimerTask implements RecordFilter{
     if(type == Event.EV_PANEL){
       return LocalizationSupport.getMessage("Topics");
     }
+    if(type == Event.EV_WEEK){
+      return LocalizationSupport.getMessage("week_day");
+    }
     String s="";
     final Event sel=getSelEvent();
     int hrOnly=1;
@@ -1332,13 +1358,16 @@ class SummItem extends TimerTask implements RecordFilter{
             s = sel.getDateString(0, hrOnly) + tire + sel.getDateString(1, hrOnly);
           }
           break;
-        case Event.EV_WEEK:
+        case Event.EV_ECLIPSE:
+          s = sel.getDateString(0, 0);
           break;
+        case Event.EV_WEEK:
         default:
           hrOnly=0;
           if(sel.date0==sel.date1) {
             s = sel.getDateString(0, hrOnly);
-          } else {
+          } 
+          else {
             s = sel.getDateString(0, hrOnly) + tire +
                 sel.getDateString(1, hrOnly);
           }

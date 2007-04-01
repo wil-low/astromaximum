@@ -9,20 +9,20 @@ $0=~/(.+\\)/is;
 die "Usage: <classes dir> <timeout>\n" if($#ARGV!=1);
 my $class_dir=$ARGV[0];
 my $arg=$ARGV[1];
-my $revhours=$arg-1;
 #$class_dir=$1.'build\\midp2y2007notest\\compiled';
 #my $tz_ofs=0;
 #		my $tm=time;
 		my ($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = localtime();
+		$hour+=$arg;
 		my $tm2=POSIX::mktime($sec, $min, $hour, $mday, $m,$y,0,0,-1)*1000;
 #		$tz_ofs=$tm-$tm2;
 		
-print "Installing time bomb -$revhours hours...\n\n";
+print "Installing time bomb - $arg hours...\n\n";
 #print POSIX::strftime( "Current time is %B %d, %Y - %H:%M:%S GMT\n", $sec,$min,$hour,$mday,$m,$y,$wday );
 print "Begin time:  ", timebomb_install($tm2,0);
-$hour+=$revhours;
+
 #print POSIX::strftime( "Deadline time is  %B %d, %Y - %H:%M:%S GMT\n", $sec,$min,$hour,$mday,$m,$y,$wday );
-$tm2=POSIX::mktime($sec, $min, $hour, $mday, $m,$y,0,0,-1)*1000;
+$tm2=POSIX::mktime($sec, $min+30, $hour, $mday, $m,$y,0,0,-1)*1000;
 print "  End time:  ", timebomb_install($tm2,1);
 
 print "Finished.\n";

@@ -65,7 +65,6 @@ class Summary extends FrameAnimator implements CommandListener{
   static Image imgPlanet;
   static Image imgZodiac;
   static Image imgAspect;
-  static Image imgPhase;
   static Image imgPanel;
   static Image imgService;
   static Image imgOpaq;
@@ -151,6 +150,13 @@ class Summary extends FrameAnimator implements CommandListener{
    * render
    */
   private void render(Graphics osg) {
+/*    osg.setColor(Astromaximum.BACK_COLOR);
+    osg.fillRect(0,0,getWidth(),getHeight());
+    drawPhase(osg,10,10,10,0);
+    drawPhase(osg,70,10,10,1);
+    drawPhase(osg,10,70,10,2);
+    drawPhase(osg,70,70,10,3);*/
+    
     final long now=Options.currentTime();
     if(pageNum == Summary.PAGE_MONTH || pageNum == Summary.PAGE_WEEK) {
       osg.setColor(Astromaximum.CURRENT_MONTH_COLOR);
@@ -319,12 +325,26 @@ class Summary extends FrameAnimator implements CommandListener{
     period0-=Event.localOffset(period0);
 //    System.out.println(period0);
 //    System.out.println(new Date(period0).toString());
-    Event todayEclipse = Astromaximum.dataFile.todayEclipse(period0,3);
-    getItem(Event.EV_ECLIPSE,0).events[0]=getItem(Event.EV_ECLIPSE,1).events[0]=null;
-    if(todayEclipse!=null){
-      getItem(Event.EV_ECLIPSE,todayEclipse.planet0).events[0]=todayEclipse;
-    }
     period1 = period0 +Astromaximum.MSECINDAY-1;
+    SummItem si=getItem(Event.EV_ECLIPSE,1);
+    si.tag=1;
+    SummItem si0=getItem(Event.EV_ECLIPSE,0);
+    si0.tag=0;
+    si0.events[0]=si.events[0]=null;
+    for(Enumeration e= moonPhase.elements(); e.hasMoreElements();){
+      Event ph=(Event)e.nextElement();
+      if(ph.isDateBetween(0,period0,period1)){
+        si.events[0]=ph;
+        si.tag+=2;
+        break;
+      }
+    }
+    Event todayEclipse = Astromaximum.dataFile.todayEclipse(period0,3);
+    if(todayEclipse!=null){
+      si=getItem(Event.EV_ECLIPSE,todayEclipse.planet0);
+      si.events[0]=todayEclipse;
+      si.tag|=4;
+    }
     for(int i=moonPhase.size()-1; i>=0; i--){
       Event ph=Astromaximum.evAt(moonPhase,i);
       if(ph.date0<period1){
@@ -599,7 +619,7 @@ class Summary extends FrameAnimator implements CommandListener{
     }
 ///////////////////////////////////////
     if(cusTime==0){
-      SummItem si=getItem(Event.EV_RISE,Event.SE_SUN);
+      si=getItem(Event.EV_RISE,Event.SE_SUN);
       for(int i=0; i<si.events.length; i++){
         if(si.events[i].getDegree()==2){
           long tm=si.events[i].date0;
@@ -772,6 +792,9 @@ class Summary extends FrameAnimator implements CommandListener{
         setCurPage(PAGE_SUMMARY+1);
         break;
       default:
+        if((Interpreter.topic==10) && ((Options.optFlags & Options.FLG_ALLTEXT)!=0)){
+          ignoreAllTopics=true;
+        }
         if(Astromaximum.interpreter.findText(si,ignoreAllTopics)) {
           Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.interpreter);
         }
@@ -862,6 +885,9 @@ class Summary extends FrameAnimator implements CommandListener{
    * @param d
    */
   public void commandAction(Command c, Displayable d) {
+    if(pageNum==PAGE_DECUMB){
+      isShowCustom=false;
+    }
     switch(c.getPriority()){
       case 3:
       case 4:
@@ -1148,10 +1174,6 @@ class Summary extends FrameAnimator implements CommandListener{
       imgAspect=Astromaximum.extractImg(4,ext);
 //#if logger
 //#       Astromaximum.instance.logger(" imgAspect");
-//#endif      
-      imgPhase=Astromaximum.extractImg(5,ext);
-//#if logger
-//#       Astromaximum.instance.logger(" imgPhase");
 //#endif      
 //      String ext=Integer.toString(IMG_HEIGHT)+".png";
       final int dx= w*10;
@@ -1442,5 +1464,36 @@ class Summary extends FrameAnimator implements CommandListener{
       }while(chtype!=0x49454e44);
     }
     catch(IOException e){}
+  }
+  
+  void drawPhase(Graphics osg, int x, int y, int wh, int phase) {
+    int old_color=osg.getColor();
+    osg.setColor(0);
+    if((wh & 1)!=0){
+      wh++;
+    }
+    switch(phase){
+      case 2:
+        osg.setColor(0xffffff);
+      case 0:
+        osg.fillArc(x,y,wh,wh,0,360);
+        osg.setColor(0);
+        break;
+      case 1:
+        osg.setColor(0);
+        osg.fillArc(x,y,wh,wh,90,180);
+        osg.setColor(0xffffff);
+        osg.fillArc(x,y,wh,wh,270,180);
+        osg.setColor(0);
+        break;
+      case 3:
+        osg.setColor(0xf0f0f0);
+        osg.fillArc(x,y,wh,wh,90,180);
+        osg.setColor(0);
+        osg.fillArc(x,y,wh,wh,270,180);
+        break;
+    }
+    osg.drawArc(x,y,wh,wh,0,360);
+    osg.setColor(old_color);
   }
 }

@@ -1,12 +1,17 @@
 use strict;
 use warnings;
-$0=~/(.+\\)/is;
 
-my $path=$1;
+my $path=$ARGV[0];
+
+if(!$path){
+	$0=~/(.+\\)/is;
+	$path=$1;
+}
 
 my $EV_LAST=27;
 
 my @bins=glob("$path".'arrays\\*.txt');
+die "nofiles" if $#bins<0;
 foreach my $ff(@bins){
 	my $InF=undef;
 	our $OutF=undef;
@@ -42,4 +47,5 @@ foreach my $ff(@bins){
 		}
 	}
 	close($OutF);
+	print "$fname processed\n";
 }

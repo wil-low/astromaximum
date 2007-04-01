@@ -26,8 +26,7 @@ my $frame0=$main->Frame();
 my $imei=$frame0->Entry(-text=>'359593001109710');
 my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>[\&do_imei,'midp2y2007release']);
 my $bt_imei_logger=$frame0->Button(-text=>"IMEI logger", -command=>[\&do_imei,'midp2y2007release_logger']);
-my $lbox = $frame0->Listbox(-height=>0,-activestyle=>"dotbox");
-my @list = ( "5", "6", "7", "8", "9" );
+my $lbox = $frame0->Entry(-text=>'0');
 my $bt_timebomb=$frame0->Button(-text=>"Time Bomb", -command=>\&do_timebomb);
 
 $imei->pack();
@@ -35,12 +34,10 @@ $bt_imei->pack(-fill=>"x");
 $bt_imei_logger->pack(-fill=>"x",-pady=>3);
 
 $frame0->Checkbutton(-text=>"Debug", -variable=>\$debug)->pack(-pady=>10);
-$lbox->insert('end', @list );
-$lbox->selectionSet(0);
 $lbox->pack();
 
 $bt_timebomb->pack(-fill=>"x");
-$frame0->Checkbutton(-text=>"Localtime", -variable=>\$ltime)->pack();
+#$frame0->Checkbutton(-text=>"Localtime", -variable=>\$ltime)->pack();
 
 my $frame4=$frame0->Frame();
 
@@ -106,7 +103,7 @@ sub comparator {
 sub do_timebomb {
 	print "timebomb\n";
 	my $conf='midp2y2007release_tb';
-	my $timeout=$lbox->get($lbox->curselection);
+	my $timeout=$lbox->get();
 	my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dtb.timeout=$timeout -Dconfigs.$conf.debug.level=";
 	if($debug){
 		$cmd.="debug";

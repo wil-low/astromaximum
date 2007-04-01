@@ -83,6 +83,22 @@
     <property name="imei.code" value="359593001109710"/>
     classpath="${platform.bootclasspath}" 
 --> 
+    <target name="pre-init">
+      <uptodate property="size2dat.notRequired">
+        <srcfiles dir= "../arrays" includes="**/size?.txt"/>
+        <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
+      </uptodate>
+      <echo message="size2dat.notRequired=${size2dat.notRequired}"/>
+      <antcall target="size.compile"/>
+   </target>
+    
+    <target name="size.compile" description="Size to dat files" unless="size2dat.notRequired">
+      <echo message="Invoking size2dat.pl:"/>
+      <exec executable="C:/perl/bin/perl.exe" failonerror="true">
+        <arg value="${basedir}/../size2dat.pl"/>
+      </exec>
+    </target>
+    
     <target name="tb.install" description="Installing timebomb." if="do.timebomb">
 <!--
       <echo message="Abil = ${abilities}"/>
