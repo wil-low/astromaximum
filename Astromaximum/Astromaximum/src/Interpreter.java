@@ -351,9 +351,9 @@ class Interpreter extends Canvas implements CommandListener {
     }
 //    System.out.println(">"+s+"<");
     
-    if(!s.endsWith(".")){
-      s+=".";
-    }
+//    if(!s.endsWith(".")){
+//      s+=".";
+//    }
     
     StringBuffer res=new StringBuffer();
 //#if 1==1    

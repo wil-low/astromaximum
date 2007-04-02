@@ -324,11 +324,6 @@ class Options extends GeoList{
       }
     }
     Astromaximum.dataFile.geoposData=super.initDB(false);
-//#if timeHistory
-//#     DataInputStream dis=new DataInputStream(new ByteArrayInputStream(rs.getRecord(2)));
-//#     Astromaximum.customTime.loadHistory(dis);
-//#     dis=null;
-//#endif
     return null;
   }
 
@@ -338,13 +333,16 @@ class Options extends GeoList{
     try {
       dos.writeByte(optFlags);
       dos.writeShort(Astromaximum.customTime.histCount);
+      dos.writeInt(Astromaximum.customTime.lockFlags);
       for(int i=0; i<Astromaximum.customTime.histCount; i++){
         dos.writeLong(Astromaximum.customTime.history[i]);
       }
       dos=null;
       rs.setRecord(2,baos.toByteArray(), 0, baos.size());
-//#debug info
-      System.out.println("history");
+//#mdebug info
+      System.out.println("history lock");
+      System.out.println(Integer.toBinaryString(Astromaximum.customTime.lockFlags));
+//#enddebug      
       baos=null;
     } 
     catch (Exception ex) {
@@ -360,18 +358,28 @@ class Options extends GeoList{
       DataInputStream dis=new DataInputStream(baos);
       optFlags=dis.readByte();
       Astromaximum.customTime.histCount=dis.readUnsignedShort();
+      Astromaximum.customTime.lockFlags=dis.readInt();
       for(int i=0; i<Astromaximum.customTime.histCount; i++){
-        Astromaximum.customTime.history[i]=dis.readLong();
+        long tt=dis.readLong();
+        Astromaximum.customTime.history[i]=tt;
+        String str=Event.long2String(tt,0,false);
+        if((Astromaximum.customTime.lockFlags&(1<<i))!=0){
+          str+="*";
+        }
+        Astromaximum.customTime.cg.append(str,null);
       }
     } 
     catch (Exception ex) {
-      Astromaximum.customTime.histCount=0;
+      Astromaximum.customTime.histCount=Astromaximum.customTime.lockFlags=0;
+      Astromaximum.customTime.cg.deleteAll();
       optFlags=OPT_FLAGS;
     }
     for(int i=0; i<optList.size(); i++){
       optList.setSelectedIndex(i,(optFlags&(1<<i))!=0);
     }
-    
+//#mdebug info      
+      System.out.println(Integer.toBinaryString(Astromaximum.customTime.lockFlags));
+//#enddebug      
   }
 
   static long currentTime(){

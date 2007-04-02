@@ -17,7 +17,7 @@ import javax.microedition.lcdui.*;
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-//#define timeHistory1
+//#define timeHistory
 /**
  *
  * @author Administrator
@@ -28,50 +28,72 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
 //#   static int hj=0x89abcdef;
 //#endif
   int invoker=Event.EV_ASP_EXACT_MOON;
+  final DateField timeField;
   final DateField dateField;
-
+  long decumbDate;
+  int lockFlags;
   final ChoiceGroup cg;
-  static final int HIST_COUNT=5;
+  static final int HIST_COUNT=12;
   static long[] history=new long[HIST_COUNT];
   static int histCount=0;
   private boolean showHistory;
   /** Creates a new instance of CustomTime */
   CustomTime() {
     super("");
-    dateField=new DateField(LocalizationSupport.getMessage("Enter time:"),DateField.TIME,
+    timeField=new DateField(LocalizationSupport.getMessage("Enter_time:"),DateField.TIME,
         Astromaximum.calendar.getTimeZone());
-    dateField.setDate(new Date());
-    append(dateField);
-    cg=new ChoiceGroup(LocalizationSupport.getMessage("History"), Choice.EXCLUSIVE);
+    dateField=new DateField(null,DateField.DATE_TIME,Astromaximum.calendar.getTimeZone());
+    timeField.setDate(new Date());
+    decumbDate=System.currentTimeMillis();
+    dateField.setDate(new Date(decumbDate+Event.localOffset(decumbDate)));
+    cg=new ChoiceGroup(null/*LocalizationSupport.getMessage("History")*/, Choice.EXCLUSIVE);
     for(int i=0; i<histCount; i++){
       cg.append(Event.long2String(history[i],0,false),null);
     }
-    addCommand(new Command("OK",Command.OK,1));
-    addCommand(new Command(LocalizationSupport.getMessage("Cancel"),Command.CANCEL,1));
+    addCommand(new Command("OK",Command.ITEM,2));
+    addCommand(new Command(LocalizationSupport.getMessage("Lock/Unlock"),Command.ITEM,3));
+    addCommand(new Command(LocalizationSupport.getMessage("Cancel"),Command.CANCEL,4));
     setCommandListener(this);
     setItemStateListener(this);
   }
 
   public void itemStateChanged(Item item) {
-//    if(item==cg){
-//      System.out.println("hkjh");
-//      long tm=history[cg.getSelectedIndex()];
-//      tm-=Event.localOffset(tm);
-//      dateField.setDate(new Date(tm));
+    if(item==cg){
+      System.out.println("hkjh");
+      long tm=history[cg.getSelectedIndex()];
+      dateField.setDate(new Date(tm+Event.localOffset(tm)));
 //      setTimePrompt(invoker,0);
-//    }
+    }
   }
   
   public void commandAction(Command c, Displayable d)  {
-    if (c.getCommandType() == Command.CANCEL){
+    if(c.getPriority() == 3){
+      int sel=cg.getSelectedIndex();
+      String str=cg.getString(sel);
+      if(str.endsWith("*")){
+        str=str.substring(0,str.length()-1);
+      }
+      else{
+        str+="*";
+      }
+      lockFlags^=(1<<sel);
+//#debug debug      
+      System.out.println("Lock="+Integer.toBinaryString(lockFlags));
+      cg.set(sel,str,null);
+      return;
+    }
+    Astromaximum.options.saveHistory();
+    if (c.getPriority() == 4){
       Astromaximum.summary.dontRender();
     }
-    else{
+    if (c.getPriority() == 2){
       Astromaximum.summary.isShowCustom=true;
 //#if timeHistory
-//#       setTime(showHistory);
+      if(!setTime(showHistory)){
+        return;
+      }
 //#else
-      setTime(false);
+//#       setTime(false);
 //#endif
       switch(invoker){
         case Summary.PAGE_PANEL:
@@ -93,8 +115,10 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
       case Summary.PAGE_PANEL:
       case Summary.PAGE_DECUMB:
         tit=LocalizationSupport.getMessage("Disease_date");
-        sDate=Event.long2String((Astromaximum.summary.period0+
-          Astromaximum.summary.period0)>>1,0,false).substring(0,5);
+        sDate="";//Event.long2String((Astromaximum.summary.period0+
+          //Astromaximum.summary.period0)>>1,0,false).substring(0,5);
+        decumbDate=dateField.getDate().getTime();
+        decumbDate-=Event.localOffset(decumbDate);
         break;
       default:  
         tit=LocalizationSupport.getMessage("Date");
@@ -106,46 +130,68 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     setTitle(tit+" "+sDate);
   }
 
-  void setTime(boolean addHistory) {
-    Date dt=dateField.getDate();
+  boolean setTime(boolean addHistory) {
+    Date dt=(addHistory? dateField:timeField).getDate();
     Astromaximum.calendar.setTime(dt);
     Astromaximum.summary.setCustomTime(
         Astromaximum.calendar.get(Calendar.HOUR_OF_DAY),Astromaximum.calendar.get(Calendar.MINUTE));
-//#if timeHistory
-//#     if(addHistory){
-//#       for(int i=0; i<histCount; i++){
-//#         if(history[i]==Astromaximum.summary.cusTime){
-//#           cg.setSelectedIndex(i,true);
-//#           return;
-//#         }
-//#       }
-//#       for(int i=histCount-1; i>0; i--){
-//#         history[i]=history[i-1];
-//#       }
-//#       history[0]=Astromaximum.summary.cusTime;
-//#       if(histCount<HIST_COUNT){
-//#         ++histCount;
-//#       }
-//#       cg.insert(0,Event.long2String(history[0],0,false),null);
-//#       cg.setSelectedIndex(0,true);
-//#       while(cg.size()>HIST_COUNT){
-//#         cg.delete(cg.size()-1);
-//#       }
-//#       Astromaximum.options.saveHistory();
-//#     }
-//#endif
+    if(addHistory){
+      long tmp=dt.getTime();
+      tmp-=Event.localOffset(tmp);
+      if(!Astromaximum.dataFile.isDateAvailable(tmp)){
+        Alert alert=new Alert(LocalizationSupport.getMessage("Error"),
+            LocalizationSupport.getMessage("Date_unavail"), null, AlertType.ERROR);
+        Display.getDisplay(Astromaximum.instance).setCurrent(alert,this);
+        return false;
+      }
+      decumbDate=tmp;
+      for(int i=0; i<histCount; i++){
+        if(history[i]==decumbDate){
+          cg.setSelectedIndex(i,true);
+          return true;
+        }
+      }
+      if(histCount<HIST_COUNT){
+        for(int i=histCount-1; i>=0; i--){
+          history[i+1]=history[i];
+        }
+        ++histCount;
+      }
+      else{
+        int newLock=0; 
+        for(int i=histCount-1; i>=0; i--){
+          newLock<<=1;
+          if((lockFlags & (1<<i))!=0){ //locked
+            ++newLock;
+          }
+          else{
+            if(addHistory){
+              cg.delete(i);
+              addHistory=false;
+            }
+          }
+        }
+        lockFlags=newLock;
+      }
+      history[0]=decumbDate;
+      cg.insert(0,Event.long2String(history[0],0,false),null);
+      cg.setSelectedIndex(0,true);
+    }
+    return true;
   }
 
   void init(int pn) {
-    setTimePrompt(Astromaximum.summary.pageNum,dateField.getDate().getTime());
+    setTimePrompt(Astromaximum.summary.pageNum,timeField.getDate().getTime());
 //#if timeHistory
-//#     if(get(size()-1)==cg){
-//#       delete(size()-1);
-//#     }
-//#     showHistory= pn==Summary.PAGE_PANEL || pn==Summary.PAGE_DECUMB;
-//#     if(showHistory){
-//#       append(cg);
-//#     }
+    deleteAll();
+    showHistory= pn==Summary.PAGE_PANEL || pn==Summary.PAGE_DECUMB;
+    if(showHistory){
+      append(dateField);
+      append(cg);
+    }
+    else{
+      append(timeField);
+    }
 //#endif
     Display.getDisplay(Astromaximum.instance).setCurrent(this);
   }

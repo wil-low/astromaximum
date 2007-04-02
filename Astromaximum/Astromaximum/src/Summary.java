@@ -623,7 +623,7 @@ class Summary extends FrameAnimator implements CommandListener{
       for(int i=0; i<si.events.length; i++){
         if(si.events[i].getDegree()==2){
           long tm=si.events[i].date0;
-          Astromaximum.customTime.dateField.setDate(new Date(
+          Astromaximum.customTime.timeField.setDate(new Date(
              (tm+Event.localOffset(tm))% Astromaximum.MSECINDAY));          
 //      GeoList.localOffset=+TimeZone.getDefault().getRawOffset();
           break;
@@ -1264,7 +1264,7 @@ class Summary extends FrameAnimator implements CommandListener{
   
   void calcDecumbiture(){
     Astromaximum.interpreter.topic=Interpreter.T_DECUMB;
-    long startDate=cusTime;
+    long startDate=Astromaximum.customTime.decumbDate;
     Vector moonSign=new Vector();
     long p0=startDate-5*Astromaximum.MSECINDAY/2,p1=startDate+32*Astromaximum.MSECINDAY;
     Astromaximum.dataFile.getEventsOnPeriod(moonSign,Event.EV_SIGN_ENTER,Event.SE_MOON,
