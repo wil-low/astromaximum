@@ -595,6 +595,7 @@ class Interpreter extends Canvas implements CommandListener {
 //#         if(isLogged){
 //#           Astromaximum.instance.logger("Stopping log...");
 //#           isLogged=false;
+//#           Astromaximum.summary.stop();
 //#         }
 //#         else{
 //#           Astromaximum.summary.dontRender();

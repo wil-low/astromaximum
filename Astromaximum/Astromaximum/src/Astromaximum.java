@@ -105,6 +105,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
       summary.setMoonXY(summary.getWidth()>>1,summary.getHeight()>>1,
           Graphics.HCENTER|Graphics.VCENTER);
       summary.run();
+//      summary.timer.cancel();
   //#ifndef logger
       Display.getDisplay(this).setCurrent(summary);
   //#endif      
@@ -254,7 +255,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
       summary.stop();
 //#if logger
 //#       if(interpreter.isLogged){
-//#         Thread.currentThread().sleep(8000);
+//#         Thread.currentThread().sleep(3000);
 //#         interpreter.isLogged=false;
 //#       }
 //#       Display.getDisplay(this).setCurrent(summary);

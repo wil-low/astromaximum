@@ -618,6 +618,9 @@ class Summary extends FrameAnimator implements CommandListener{
 //      Astromaximum.evDump(tmp2);
     }
 ///////////////////////////////////////
+//#if logger
+//#       Astromaximum.instance.logger("end risesets");
+//#endif      
     if(cusTime==0){
       si=getItem(Event.EV_RISE,Event.SE_SUN);
       for(int i=0; i<si.events.length; i++){
@@ -630,7 +633,13 @@ class Summary extends FrameAnimator implements CommandListener{
         }
       }
     }
+//#if logger
+//#       Astromaximum.instance.logger("before setTime");
+//#endif      
     Astromaximum.customTime.setTime(false);
+//#if logger
+//#       Astromaximum.instance.logger("after setTime");
+//#endif      
     final String et="gET="+Long.toString(Options.currentTime()-tick);
   }
   

@@ -729,298 +729,10 @@ class SummItem extends TimerTask implements RecordFilter{
         }
         break;
       case Event.EV_WEEK_GRID:
+        drawWeek(osg, isSelected, now);
+        break;
       case Event.EV_MONTH_GRID:
-        final boolean weekMode= type == Event.EV_WEEK_GRID;
-        osg.setColor(Astromaximum.BACK_COLOR);
-        osg.fillRect(left,top,width,height);
-        osg.setColor(0);
-// @todo zero        
-        zeroPlaces();
-        Date cur=new Date(Summary.firstGridDate.getTime());
-        final Font oldFont=osg.getFont();
-        if(weekMode){
-          osg.setFont(Font.getFont(Font.FACE_MONOSPACE,Font.STYLE_PLAIN,Font.SIZE_LARGE));
-          osg.setFont(oldFont);
-        }
-        final int colWidth=width/ owner.colCount;
-        final int rowHeight=height/ owner.rowCount;
-        final int leftm= width - colWidth * owner.colCount;
-        int cnt=0;
-        boolean[] nodrawNums=new boolean[owner.colCount*owner.rowCount];
-        // dimmed days aside selected month
-// @todo **********        
-        int count=0;
-        int count2=1;
-        long fgd;
-        final long fgd2;
-        if(!weekMode){
-          // weekday numbering
-          fgd=Summary.period0; fgd2=Summary.period1;
-        } 
-        else{ // week mode
-          fgd= Summary.firstGridDate.getTime();
-          fgd-=Event.localOffset(fgd);
-          fgd2=fgd+ owner.rowCount*Astromaximum.MSECINDAY;
-        }
-        for(int row=0; row< owner.rowCount; row++){
-          for(int col=0; col< owner.colCount; col++){
-            int fontColor=0;
-            int fillColor=Astromaximum.DIMMED_COLOR;
-            Astromaximum.calendar.setTime(cur);
-            if (owner.selMonth == Astromaximum.calendar.get(Calendar.MONTH)) {
-              fillColor = Astromaximum.CURRENT_MONTH_COLOR;
-            }
-            long ld=cur.getTime();
-            ld-=Event.localOffset(ld);
-            final long ld2=ld+Astromaximum.MSECINDAY;
-            Event eclipse= Astromaximum.dataFile.todayEclipse(ld,weekMode? 3: 0);
-            if(eclipse!=null && !weekMode){
-              fontColor=Astromaximum.SELECTION_COLOR;
-              fillColor=0;
-              nodrawNums[cnt]=true;
-            }
-            boolean isCurDay=isSelected && col == owner.getSelX() && row == owner.getSelY();
-            if(isCurDay){
-              // current day highlight
-              if(fillColor != 0){
-                if(type== Event.EV_MONTH_GRID)
-                  fillColor=Astromaximum.GRAY_COLOR;
-                fontColor=0;
-              } 
-              else {
-                fillColor = Astromaximum.BACK_COLOR;
-              }
-            }
-            int xx=leftm+col*colWidth;
-            int yy=row*rowHeight + top + 2;
-            osg.setColor(fillColor);
-            osg.fillRect(xx + 1, yy,colWidth - 1, rowHeight - 1);
-            if(isCurDay && weekMode){
-              osg.setColor(Astromaximum.SELECTION_COLOR);
-              osg.drawRect(xx + 1, yy,colWidth - 1, rowHeight - 1);
-            }
-            /* @todo Eclipse drawing */
-            if(eclipse!=null) {
-              drawImg(osg, Summary.imgAspect,
-                10 + eclipse.planet0,
-                (weekMode ? Summary.IMG_WIDTH*9/2 : colWidth) + xx,
-                (weekMode ? 3 : rowHeight - Summary.IMG_HEIGHT) + yy - 1,
-                Graphics.TOP | Graphics.RIGHT);
-              if(weekMode){
-                ++places[row];
-              }
-//              nodrawNums[cnt]=true;
-            }
-            
-            yy+=rowHeight-2;
-//            Astromaximum.evDump(owner.mSelDeg);
-            /* @todo Selected degrees drawing in week mode */
-            if(weekMode){
-              for(Enumeration e= owner.mSelDeg.elements(); e.hasMoreElements();){
-                ev=(Event)e.nextElement();
-                if(ev.isInPeriod(ld,ld2,false)){
-                  final int pos= ++places[row];
-                  drawSelDegree(osg,ev,xx+colWidth-pos*Summary.IMG_HEIGHT,yy,
-                      Graphics.BOTTOM|Graphics.HCENTER);
-                }
-              }
-              /* @todo Moon phase drawing in week mode */
-              for(Enumeration e= owner.moonPhase.elements(); e.hasMoreElements();){
-                eclipse=(Event)e.nextElement();
-                if(eclipse.isDateBetween(0,ld,ld2)){
-                  owner.drawPhase(osg,xx+owner.IMG_WIDTH*2,
-                      yy-owner.IMG_HEIGHT,owner.IMG_HEIGHT,eclipse.planet1);
-//                  drawImg(osg,Summary.imgPhase,eclipse.planet1,xx+owner.IMG_WIDTH*2,yy,
-//                      Graphics.BOTTOM | Graphics.LEFT);
-                  nodrawNums[cnt]=true;
-                  break;
-                }
-              }
-              yy-=rowHeight-2; xx+=2;
-            }
-            final long start=cur.getTime();
-            cur.setTime(start + Astromaximum.MSECINDAY);
-            if(now >= start && now < cur.getTime()){
-              osg.setColor(Astromaximum.RED_COLOR);
-              osg.drawRect(col * colWidth + 0+leftm, row * rowHeight + top + 1,
-                  colWidth - 0, rowHeight - 1);
-            }
-            ++cnt;
-          }
-        }
-// @todo **********
-        osg.setColor(0);
-        osg.setFont(oldFont);
-//#ifndef aspswap
-//#         if(weekMode){
-//# // @todo zero in week       
-//#           zeroPlaces();
-//#           // @todo Aspect drawing in week mode
-//#           for(Enumeration e= owner.mAsp.elements(); e.hasMoreElements();){
-//#             ev=(Event)e.nextElement();
-//#             long date=ev.date0;
-//#             if(ev.isDateBetween(0,fgd,fgd2)){
-//#               final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
-//#               places[day]+=(owner.size+2);
-//#               final int x=colWidth+(2- places[day])*(Summary.IMG_HEIGHT+1)-1;
-//#               y=day/ owner.colCount*rowHeight+top+3;
-//#               drawAspect(osg,ev,x,y,Graphics.TOP);
-//#               if(places[day]>10){
-//#                 nodrawNums[day]=true;
-//#               }
-//# //              osg.drawChar('.',x-Summary.IMG_HEIGHT*3/2-2,y+Summary.IMG_HEIGHT,Graphics.BASELINE|Graphics.RIGHT);
-//#             }
-//#           }
-//#         }
-//#endif
-// @todo zero        
-//        zeroPlaces();
-        for(Enumeration e= owner.mIngress.elements(); e.hasMoreElements();){
-          ev=(Event)e.nextElement();
-          final long date=ev.date0;
-          if(ev.date0<=Astromaximum.dataFile.startJD || ev.date1>=Astromaximum.dataFile.finalJD){
-            continue;
-          }
-          if(ev.isDateBetween(0,fgd,fgd2)){
-            final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
-            int x=day% owner.colCount*colWidth+1; y=day/ owner.colCount*rowHeight+top+1;
-            if(weekMode){
-              if(ev.planet0==Event.SE_MOON){
-                x=0;
-              }
-              else{
-                places[day]+=5;
-                x+=(places[day]-5)*Summary.IMG_WIDTH/2+Summary.IMG_WIDTH+2+Summary.IMG_WIDTH*2;
-              }
-              y+=rowHeight-Summary.IMG_HEIGHT-2;
-            } 
-            else{
-              places[day]++;
-              y+=(places[day]-1)*Summary.IMG_HEIGHT;
-            }
-            // @todo Ingress drawing
-            drawIngress(osg,ev,x+leftm,y,Graphics.TOP|Graphics.LEFT);
-            if(!weekMode && places[day]>1){
-              nodrawNums[day]=true;
-            }
-          }
-        }
-        for(Enumeration e= owner.mRetro.elements(); e.hasMoreElements();){
-          ev=(Event)e.nextElement();
-          int x;
-//          if(ev.date0<=Astromaximum.dataFile.startJD || ev.date1>=Astromaximum.dataFile.finalJD)
-//            continue;
-          if(ev.getDegree() == 0){
-            for(int i=0; i < 2; i++){
-              final long date=(i>0)? ev.date1: ev.date0;
-              if(ev.isDateBetween(i,fgd,fgd2)){
-                final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
-                final int pos= places[day]++;
-                x=day% owner.colCount*colWidth+1+leftm;
-                y=day/owner.colCount*rowHeight+top+2;
-                if(weekMode){
-                  y+=rowHeight-Summary.IMG_HEIGHT-3;
-                  x+=Summary.IMG_WIDTH+pos*Summary.IMG_HEIGHT/2+Summary.IMG_WIDTH*2;
-                } 
-                else {
-                  y += pos * Summary.IMG_HEIGHT;
-                }
-                // @todo Retrograde drawing
-                drawImg(osg,Summary.imgPlanet,ev.planet0,x,y,
-                    Graphics.TOP|Graphics.LEFT);
-                drawImg(osg,Summary.imgService,i*2+1,x+3,y+3,
-                    Graphics.TOP|Graphics.LEFT);
-                if(!weekMode && places[day]>1){
-                  nodrawNums[day]=true;
-                }
-              }
-            }
-          }
-          y=top-2;
-          x=count*(Summary.IMG_WIDTH+3);
-          if(ev.getDegree() == 0){
-            x=width-2-count2*(Summary.IMG_WIDTH+3);
-            ++count2;
-          } else {
-            ++count;
-          }
-          // @todo Retrograde drawing
-//          if(!weekMode){
-            if(owner.size>1){
-              if(!weekMode){
-                y-=osg.getFont().getHeight();
-              }
-            }
-            drawImg(osg,Summary.imgPlanet,ev.planet0,x,y,
-                Graphics.BOTTOM|Graphics.LEFT);
-            drawImg(osg,Summary.imgService,1,x+3,y+3,Graphics.BOTTOM|Graphics.LEFT);
-//          }
-        }
-//#ifdef aspswap
-        if(weekMode){
-// @todo zero in week       
-          zeroPlaces();
-          // @todo Aspect drawing in week mode
-          for(Enumeration e= owner.mAsp.elements(); e.hasMoreElements();){
-            ev=(Event)e.nextElement();
-            long date=ev.date0;
-            if(ev.isDateBetween(0,fgd,fgd2)){
-              final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
-              places[day]+=(owner.size==2? 3:3);
-              final int x=colWidth+(2- places[day])*(Summary.IMG_HEIGHT+1)-1;
-              y=day/ owner.colCount*rowHeight+top+3;
-              drawAspect(osg,ev,x,y,Graphics.TOP);
-              if(places[day]>10){
-                nodrawNums[day]=true;
-              }
-//              osg.drawChar('.',x-Summary.IMG_HEIGHT*3/2-2,y+Summary.IMG_HEIGHT,Graphics.BASELINE|Graphics.RIGHT);
-            }
-          }
-        }
-//#endif
-            /* @todo Day # drawing in week mode */
-        cur=new Date(Summary.firstGridDate.getTime());
-        cnt=0;
-        for(int row=0; row< owner.rowCount; row++){
-          for(int col=0; col< owner.colCount; col++){
-            int xx=leftm;
-            if(weekMode){
-              xx+=owner.IMG_WIDTH*2;
-            }
-            else{
-              xx+=col*colWidth;
-            }
-            int yy=(row+1)*rowHeight + top + 1;
-            Astromaximum.calendar.setTime(cur);
-            if(weekMode){
-              yy-=rowHeight/2;
-            }
-            if(Astromaximum.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-              osg.setColor(Astromaximum.RUBY_COLOR);
-            } 
-            else {
-              osg.setColor(0);
-            }
-            if(weekMode){
-              osg.drawString(Astromaximum.dow[Astromaximum.calendar.get(Calendar.DAY_OF_WEEK)-1],
-                  xx+owner.IMG_WIDTH,yy-1,Graphics.BASELINE | Graphics.HCENTER);
-            }
-            if(!nodrawNums[cnt++]){
-              osg.drawString(Integer.toString(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH)),
-                  xx + (weekMode ? owner.IMG_WIDTH : colWidth / 2),yy,
-                  (weekMode ? Graphics.TOP : Graphics.BASELINE) | Graphics.HCENTER);
-            }
-            final long start=cur.getTime();
-            cur.setTime(start + Astromaximum.MSECINDAY);
-          }
-        }
-        if(!weekMode && owner.size>1){
-          for(int i=0; i<7; i++){
-            osg.setColor(i == 0 ? 0xb00000: 0);
-            osg.drawString(Astromaximum.dow[i],
-                leftm+colWidth*i+colWidth/2,top,Graphics.BASELINE | Graphics.HCENTER);
-          }
-        }
+        drawMonth(osg, isSelected, now);
         break;
       case Event.EV_DECUMBITURE:
         osg.drawString(/*Event.long2String(events[0].date0,false,false)+" "+*/
@@ -1253,8 +965,9 @@ class SummItem extends TimerTask implements RecordFilter{
         if((tag & 4)!=0){
           return new long[]{t,-1,plt,d0,0};
         }
+        return new long[]{Event.EV_MOON_PHASE, 1, evi.planet1+4, d0, 0};
       case Event.EV_MOON_PHASE:
-          return new long[]{Event.EV_MOON_PHASE, 1, evi.planet1, d0, 0};
+        return new long[]{Event.EV_MOON_PHASE, 1, evi.planet1, d0, 0};
       case Event.EV_VIA_COMBUSTA:
       case Event.EV_VOC:
         return new long[]{t,plt,d0,d1};
@@ -1766,5 +1479,396 @@ class SummItem extends TimerTask implements RecordFilter{
   public boolean matches(byte[] b) {
     String s=Astromaximum.options.extractCityName(b);
     return b!=null && s!=null;
+  }
+
+  private void drawWeek(Graphics osg, boolean isSelected, long now) {
+    Event ev; int y;
+    osg.setColor(Astromaximum.BACK_COLOR);
+    osg.fillRect(left,top,width,height);
+    osg.setColor(0);
+// @todo zero        
+    zeroPlaces();
+    Date cur=new Date(Summary.firstGridDate.getTime());
+//    final Font oldFont=osg.getFont();
+//    osg.setFont(Font.getFont(Font.FACE_MONOSPACE,Font.STYLE_PLAIN,Font.SIZE_LARGE));
+//    osg.setFont(oldFont);
+    final int colWidth=width/ owner.colCount;
+    final int rowHeight=height/ owner.rowCount;
+    final int leftm= width - colWidth * owner.colCount;
+    int cnt=0;
+    boolean[] nodrawNums=new boolean[owner.colCount*owner.rowCount];
+    // dimmed days aside selected month
+// @todo **********        
+    int count=0;
+    int count2=1;
+    long fgd;
+    final long fgd2;
+    fgd= Summary.firstGridDate.getTime();
+    fgd-=Event.localOffset(fgd);
+    fgd2=fgd+ owner.rowCount*Astromaximum.MSECINDAY;
+    for(int row=0; row< owner.rowCount; row++){
+      for(int col=0; col< owner.colCount; col++){
+        int fontColor=0;
+        int fillColor=Astromaximum.DIMMED_COLOR;
+        Astromaximum.calendar.setTime(cur);
+        if (owner.selMonth == Astromaximum.calendar.get(Calendar.MONTH)) {
+          fillColor = Astromaximum.CURRENT_MONTH_COLOR;
+        }
+        long ld=cur.getTime();
+        ld-=Event.localOffset(ld);
+        final long ld2=ld+Astromaximum.MSECINDAY;
+        Event eclipse= Astromaximum.dataFile.todayEclipse(ld,3);
+        boolean isCurDay=isSelected && col == owner.getSelX() && row == owner.getSelY();
+        if(isCurDay){
+          // current day highlight
+          if(fillColor != 0){
+            if(type== Event.EV_MONTH_GRID)
+              fillColor=Astromaximum.GRAY_COLOR;
+            fontColor=0;
+          } 
+          else {
+            fillColor = Astromaximum.BACK_COLOR;
+          }
+        }
+        int xx=leftm+col*colWidth;
+        int yy=row*rowHeight + top + 2;
+        osg.setColor(fillColor);
+        osg.fillRect(xx + 1, yy,colWidth - 1, rowHeight - 1);
+        if(isCurDay){
+          osg.setColor(Astromaximum.SELECTION_COLOR);
+          osg.drawRect(xx + 1, yy,colWidth - 1, rowHeight - 1);
+        }
+        /* @todo Eclipse drawing */
+        if(eclipse!=null) {
+          drawImg(osg, Summary.imgAspect,
+            10 + eclipse.planet0,
+            (Summary.IMG_WIDTH*5) + xx,
+            (3) + yy - 1,
+            Graphics.TOP | Graphics.RIGHT);
+          ++places[row];
+//              nodrawNums[cnt]=true;
+        }
+        zeroPlaces();
+        yy+=rowHeight-2;
+//            Astromaximum.evDump(owner.mSelDeg);
+        /* @todo Selected degrees drawing in week mode */
+        for(Enumeration e= owner.mSelDeg.elements(); e.hasMoreElements();){
+          ev=(Event)e.nextElement();
+          if(ev.isInPeriod(ld,ld2,false)){
+            final int pos= ++places[row];
+            drawSelDegree(osg,ev,xx+colWidth-pos*Summary.IMG_HEIGHT,yy,
+                Graphics.BOTTOM|Graphics.HCENTER);
+          }
+        }
+        /* @todo Moon phase drawing in week mode */
+        for(Enumeration e= owner.moonPhase.elements(); e.hasMoreElements();){
+          eclipse=(Event)e.nextElement();
+          if(eclipse.isDateBetween(0,ld,ld2)){
+            owner.drawPhase(osg,leftm+owner.IMG_WIDTH*5/2,
+                yy-owner.IMG_HEIGHT,owner.IMG_HEIGHT,eclipse.planet1);
+//                  drawImg(osg,Summary.imgPhase,eclipse.planet1,xx+owner.IMG_WIDTH*2,yy,
+//                      Graphics.BOTTOM | Graphics.LEFT);
+            nodrawNums[cnt]=true;
+            break;
+          }
+        }
+        yy-=rowHeight-2; xx+=2;
+        final long start=cur.getTime();
+        cur.setTime(start + Astromaximum.MSECINDAY);
+        if(now >= start && now < cur.getTime()){
+          osg.setColor(Astromaximum.RED_COLOR);
+          osg.drawRect(col * colWidth + 0+leftm, row * rowHeight + top + 1,
+              colWidth - 0, rowHeight - 1);
+        }
+        ++cnt;
+      }
+    }
+// @todo **********
+    osg.setColor(0);
+//    osg.setFont(oldFont);
+// @todo zero        
+        zeroPlaces();
+    for(Enumeration e= owner.mIngress.elements(); e.hasMoreElements();){
+      ev=(Event)e.nextElement();
+      final long date=ev.date0;
+      if(ev.date0<=Astromaximum.dataFile.startJD || ev.date1>=Astromaximum.dataFile.finalJD){
+        continue;
+      }
+      if(ev.isDateBetween(0,fgd,fgd2)){
+        final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
+        int x=day% owner.colCount*colWidth+1; 
+        y=day/ owner.colCount*rowHeight+top+1;
+        if(ev.planet0==Event.SE_MOON){
+          x=0;
+        }
+        else{
+          places[day]+=5;
+          x+=(places[day]-5)*Summary.IMG_WIDTH/2+Summary.IMG_WIDTH*7/2;
+        }
+        y+=rowHeight-Summary.IMG_HEIGHT-2;
+        // @todo Ingress drawing
+        drawIngress(osg,ev,x+leftm,y,Graphics.TOP|Graphics.LEFT);
+      }
+    }
+    for(Enumeration e= owner.mRetro.elements(); e.hasMoreElements();){
+      ev=(Event)e.nextElement();
+      int x;
+//          if(ev.date0<=Astromaximum.dataFile.startJD || ev.date1>=Astromaximum.dataFile.finalJD)
+//            continue;
+      if(ev.getDegree() == 0){
+        for(int i=0; i < 2; i++){
+          final long date=(i>0)? ev.date1: ev.date0;
+          if(ev.isDateBetween(i,fgd,fgd2)){
+            final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
+            final int pos= places[day]++;
+            x=day% owner.colCount*colWidth+1+leftm;
+            y=day/owner.colCount*rowHeight+top+2;
+            y+=rowHeight-Summary.IMG_HEIGHT-3;
+            x+=pos*Summary.IMG_WIDTH/2+Summary.IMG_WIDTH*7/2;
+            // @todo Retrograde drawing
+            drawImg(osg,Summary.imgPlanet,ev.planet0,x,y,
+                Graphics.TOP|Graphics.LEFT);
+            drawImg(osg,Summary.imgService,i*2+1,x+3,y+3,
+                Graphics.TOP|Graphics.LEFT);
+          }
+        }
+      }
+      y=top-2;
+      x=count*(Summary.IMG_WIDTH+3);
+      if(ev.getDegree() == 0){
+        x=width-2-count2*(Summary.IMG_WIDTH+3);
+        ++count2;
+      } else {
+        ++count;
+      }
+      // @todo Retrograde drawing
+//          if(!weekMode){
+        drawImg(osg,Summary.imgPlanet,ev.planet0,x,y,
+            Graphics.BOTTOM|Graphics.LEFT);
+        drawImg(osg,Summary.imgService,1,x+3,y+3,Graphics.BOTTOM|Graphics.LEFT);
+//          }
+    }
+// @todo zero in week       
+    zeroPlaces();
+    // @todo Aspect drawing in week mode
+    for(Enumeration e= owner.mAsp.elements(); e.hasMoreElements();){
+      ev=(Event)e.nextElement();
+      long date=ev.date0;
+      if(ev.isDateBetween(0,fgd,fgd2)){
+        final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
+        places[day]+=(owner.size==2? 3:3);
+        final int x=colWidth+(2- places[day])*(Summary.IMG_HEIGHT+1)-1;
+        y=day/ owner.colCount*rowHeight+top+3;
+        drawAspect(osg,ev,x,y,Graphics.TOP);
+        if(places[day]>10){
+          nodrawNums[day]=true;
+        }
+//              osg.drawChar('.',x-Summary.IMG_HEIGHT*3/2-2,y+Summary.IMG_HEIGHT,Graphics.BASELINE|Graphics.RIGHT);
+      }
+    }
+        /* @todo Day # drawing in week mode */
+    cur=new Date(Summary.firstGridDate.getTime());
+    cnt=0;
+    for(int row=0; row< owner.rowCount; row++){
+      for(int col=0; col< owner.colCount; col++){
+        int xx=leftm;
+        xx+=owner.IMG_WIDTH*2;
+        int yy=(row+1)*rowHeight + top + 1;
+        Astromaximum.calendar.setTime(cur);
+        yy-=rowHeight/2;
+        if(Astromaximum.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+          osg.setColor(Astromaximum.RUBY_COLOR);
+        } 
+        else {
+          osg.setColor(0);
+        }
+        osg.drawString(Astromaximum.dow[Astromaximum.calendar.get(Calendar.DAY_OF_WEEK)-1],
+            xx+owner.IMG_WIDTH,yy-1,Graphics.BASELINE | Graphics.HCENTER);
+        if(!nodrawNums[cnt++]){
+          osg.drawString(Integer.toString(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH)),
+              xx + (owner.IMG_WIDTH),yy,
+              (Graphics.TOP) | Graphics.HCENTER);
+        }
+        final long start=cur.getTime();
+        cur.setTime(start + Astromaximum.MSECINDAY);
+      }
+    }
+  }
+
+  private void drawMonth(Graphics osg, boolean isSelected, long now) {
+    Event ev; int y;
+    osg.setColor(Astromaximum.BACK_COLOR);
+    osg.fillRect(left,top,width,height);
+    osg.setColor(0);
+// @todo zero        
+    zeroPlaces();
+    Date cur=new Date(Summary.firstGridDate.getTime());
+    final Font oldFont=osg.getFont();
+    final int colWidth=width/ owner.colCount;
+    final int rowHeight=height/ owner.rowCount;
+    final int leftm= width - colWidth * owner.colCount;
+    int cnt=0;
+    boolean[] nodrawNums=new boolean[owner.colCount*owner.rowCount];
+    // dimmed days aside selected month
+// @todo **********        
+    int count=0;
+    int count2=1;
+    long fgd;
+    final long fgd2;
+    // weekday numbering
+    fgd=Summary.period0; fgd2=Summary.period1;
+    for(int row=0; row< owner.rowCount; row++){
+      for(int col=0; col< owner.colCount; col++){
+        int fontColor=0;
+        int fillColor=Astromaximum.DIMMED_COLOR;
+        Astromaximum.calendar.setTime(cur);
+        if (owner.selMonth == Astromaximum.calendar.get(Calendar.MONTH)) {
+          fillColor = Astromaximum.CURRENT_MONTH_COLOR;
+        }
+        long ld=cur.getTime();
+        ld-=Event.localOffset(ld);
+        final long ld2=ld+Astromaximum.MSECINDAY;
+        Event eclipse= Astromaximum.dataFile.todayEclipse(ld,0);
+        if(eclipse!=null){
+          fontColor=Astromaximum.SELECTION_COLOR;
+          fillColor=0;
+          nodrawNums[cnt]=true;
+        }
+        boolean isCurDay=isSelected && col == owner.getSelX() && row == owner.getSelY();
+        if(isCurDay){
+          // current day highlight
+          if(fillColor != 0){
+            if(type== Event.EV_MONTH_GRID)
+              fillColor=Astromaximum.GRAY_COLOR;
+            fontColor=0;
+          } 
+          else {
+            fillColor = Astromaximum.BACK_COLOR;
+          }
+        }
+        int xx=leftm+col*colWidth;
+        int yy=row*rowHeight + top + 2;
+        osg.setColor(fillColor);
+        osg.fillRect(xx + 1, yy,colWidth - 1, rowHeight - 1);
+        /* @todo Eclipse drawing */
+        if(eclipse!=null) {
+          drawImg(osg, Summary.imgAspect,
+            10 + eclipse.planet0,
+            (colWidth) + xx,
+            (rowHeight - Summary.IMG_HEIGHT) + yy - 1,
+            Graphics.TOP | Graphics.RIGHT);
+//              nodrawNums[cnt]=true;
+        }
+
+        yy+=rowHeight-2;
+//            Astromaximum.evDump(owner.mSelDeg);
+        final long start=cur.getTime();
+        cur.setTime(start + Astromaximum.MSECINDAY);
+        if(now >= start && now < cur.getTime()){
+          osg.setColor(Astromaximum.RED_COLOR);
+          osg.drawRect(col * colWidth + 0+leftm, row * rowHeight + top + 1,
+              colWidth - 0, rowHeight - 1);
+        }
+        ++cnt;
+      }
+    }
+// @todo **********
+    osg.setColor(0);
+    osg.setFont(oldFont);
+// @todo zero        
+//        zeroPlaces();
+    for(Enumeration e= owner.mIngress.elements(); e.hasMoreElements();){
+      ev=(Event)e.nextElement();
+      final long date=ev.date0;
+      if(ev.date0<=Astromaximum.dataFile.startJD || ev.date1>=Astromaximum.dataFile.finalJD){
+        continue;
+      }
+      if(ev.isDateBetween(0,fgd,fgd2)){
+        final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
+        int x=day% owner.colCount*colWidth+1; y=day/ owner.colCount*rowHeight+top+1;
+        places[day]++;
+        y+=(places[day]-1)*Summary.IMG_HEIGHT;
+        // @todo Ingress drawing
+        drawIngress(osg,ev,x+leftm,y,Graphics.TOP|Graphics.LEFT);
+        if(places[day]>1){
+          nodrawNums[day]=true;
+        }
+      }
+    }
+    for(Enumeration e= owner.mRetro.elements(); e.hasMoreElements();){
+      ev=(Event)e.nextElement();
+      int x;
+//          if(ev.date0<=Astromaximum.dataFile.startJD || ev.date1>=Astromaximum.dataFile.finalJD)
+//            continue;
+      if(ev.getDegree() == 0){
+        for(int i=0; i < 2; i++){
+          final long date=(i>0)? ev.date1: ev.date0;
+          if(ev.isDateBetween(i,fgd,fgd2)){
+            final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
+            final int pos= places[day]++;
+            x=day% owner.colCount*colWidth+1+leftm;
+            y=day/owner.colCount*rowHeight+top+2;
+            y += pos * Summary.IMG_HEIGHT;
+            // @todo Retrograde drawing
+            drawImg(osg,Summary.imgPlanet,ev.planet0,x,y,
+                Graphics.TOP|Graphics.LEFT);
+            drawImg(osg,Summary.imgService,i*2+1,x+3,y+3,
+                Graphics.TOP|Graphics.LEFT);
+            if(places[day]>1){
+              nodrawNums[day]=true;
+            }
+          }
+        }
+      }
+      y=top-2;
+      x=count*(Summary.IMG_WIDTH+3);
+      if(ev.getDegree() == 0){
+        x=width-2-count2*(Summary.IMG_WIDTH+3);
+        ++count2;
+      } else {
+        ++count;
+      }
+      // @todo Retrograde drawing
+//          if(!weekMode){
+        if(owner.size>1){
+          y-=osg.getFont().getHeight();
+        }
+        drawImg(osg,Summary.imgPlanet,ev.planet0,x,y,
+            Graphics.BOTTOM|Graphics.LEFT);
+        drawImg(osg,Summary.imgService,1,x+3,y+3,Graphics.BOTTOM|Graphics.LEFT);
+//          }
+    }
+
+        /* @todo Day # drawing in week mode */
+    cur=new Date(Summary.firstGridDate.getTime());
+    cnt=0;
+    for(int row=0; row< owner.rowCount; row++){
+      for(int col=0; col< owner.colCount; col++){
+        int xx=leftm;
+        xx+=col*colWidth;
+        int yy=(row+1)*rowHeight + top + 1;
+        Astromaximum.calendar.setTime(cur);
+        if(Astromaximum.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+          osg.setColor(Astromaximum.RUBY_COLOR);
+        } 
+        else {
+          osg.setColor(0);
+        }
+        if(!nodrawNums[cnt++]){
+          osg.drawString(Integer.toString(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH)),
+              xx + (colWidth / 2),yy,
+              (Graphics.BASELINE) | Graphics.HCENTER);
+        }
+        final long start=cur.getTime();
+        cur.setTime(start + Astromaximum.MSECINDAY);
+      }
+    }
+    if(owner.size>1){
+      for(int i=0; i<7; i++){
+        osg.setColor(i == 0 ? 0xb00000: 0);
+        osg.drawString(Astromaximum.dow[i],
+            leftm+colWidth*i+colWidth/2,top,Graphics.BASELINE | Graphics.HCENTER);
+      }
+    }
   }
 }

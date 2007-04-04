@@ -181,6 +181,9 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
   }
 
   String extractCityName(byte[] b) {
+    if(b.length<1024){
+      return null;
+    }
     String name=null;
     try {
       DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(b));

@@ -49,9 +49,10 @@ class Options extends GeoList{
     addCommand(new Command("OK",Command.ITEM, 1));
     addCommand(new Command("Delete",Command.ITEM, 2));
 //    addCommand(new Command("Reset storage",Command.ITEM, 3));
-    optList=new ChoiceGroup(LocalizationSupport.getMessage("Settings"),Choice.MULTIPLE,
+    optList=new ChoiceGroup("",Choice.MULTIPLE,
         sOpt,null);
-    append(optList);
+    insert(0,optList);
+    cityList.setLabel(LocalizationSupport.getMessage("Cities"));
   }
 //#if "imeiCheck" @ protection
   static int hj;

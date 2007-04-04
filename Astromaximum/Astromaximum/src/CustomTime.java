@@ -40,12 +40,12 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
   /** Creates a new instance of CustomTime */
   CustomTime() {
     super("");
-    timeField=new DateField(LocalizationSupport.getMessage("Enter_time:"),DateField.TIME,
+    timeField=new DateField(null/*LocalizationSupport.getMessage("Enter_time:")*/,DateField.TIME,
         Astromaximum.calendar.getTimeZone());
-    dateField=new DateField(null,DateField.DATE_TIME,Astromaximum.calendar.getTimeZone());
-    timeField.setDate(new Date());
+    dateField=new DateField(null,DateField.DATE,Astromaximum.calendar.getTimeZone());
     decumbDate=System.currentTimeMillis();
     dateField.setDate(new Date(decumbDate+Event.localOffset(decumbDate)));
+    timeField.setDate(new Date(decumbDate+Event.localOffset(decumbDate)));
     cg=new ChoiceGroup(null/*LocalizationSupport.getMessage("History")*/, Choice.EXCLUSIVE);
     for(int i=0; i<histCount; i++){
       cg.append(Event.long2String(history[i],0,false),null);
@@ -59,7 +59,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
 
   public void itemStateChanged(Item item) {
     if(item==cg){
-      System.out.println("hkjh");
+//      System.out.println("hkjh");
       long tm=history[cg.getSelectedIndex()];
       dateField.setDate(new Date(tm+Event.localOffset(tm)));
 //      setTimePrompt(invoker,0);
@@ -186,6 +186,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     deleteAll();
     showHistory= pn==Summary.PAGE_PANEL || pn==Summary.PAGE_DECUMB;
     if(showHistory){
+      append(timeField);
       append(dateField);
       append(cg);
     }
