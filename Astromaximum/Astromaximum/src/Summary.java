@@ -191,14 +191,6 @@ class Summary extends FrameAnimator implements CommandListener{
       case Canvas.FIRE:
         selectSummItem(si,false);
         return;
-//      case Canvas.UP:
-//      case Canvas.DOWN:
-//      case Canvas.RIGHT:
-//      case Canvas.LEFT:
-//        final int delta= ga == UP || ga == LEFT ? -1 : 1;
-//        final boolean vert= ga == UP || ga == DOWN;
-//        getSelectedItem().keyNavigate(delta,vert);
-//        break;
       case Canvas.UP:
         si.keyNavigate(2);
         break;
@@ -241,6 +233,12 @@ class Summary extends FrameAnimator implements CommandListener{
             setCurPage(pn);
             break;
           case Canvas.KEY_NUM7:
+            if(pageNum==PAGE_WEEK && date.getTime()!=selDate.getTime()){
+              System.out.println(date);
+              System.out.println(selDate);
+              showDaySummary();
+              return;
+            }
             if(pageNum==PAGE_DECUMB){
               return;
             }
@@ -626,9 +624,9 @@ class Summary extends FrameAnimator implements CommandListener{
       for(int i=0; i<si.events.length; i++){
         if(si.events[i].getDegree()==2){
           long tm=si.events[i].date0;
+          tm+=Event.localOffset(tm);
           Astromaximum.customTime.timeField.setDate(new Date(
-             (tm+Event.localOffset(tm))% Astromaximum.MSECINDAY));          
-//      GeoList.localOffset=+TimeZone.getDefault().getRawOffset();
+             tm% Astromaximum.MSECINDAY));
           break;
         }
       }

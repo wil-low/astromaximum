@@ -23,7 +23,6 @@ import javax.microedition.lcdui.*;
  * @author Administrator
  */
 final class CustomTime extends Form implements CommandListener,ItemStateListener{
-//  private final TextField hours;
 //#if "timeBomb" @ protection
 //#   static int hj=0x89abcdef;
 //#endif
@@ -33,14 +32,14 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
   long decumbDate;
   int lockFlags;
   final ChoiceGroup cg;
-  static final int HIST_COUNT=12;
+  static final int HIST_COUNT=4;
   static long[] history=new long[HIST_COUNT];
   static int histCount=0;
   private boolean showHistory;
   /** Creates a new instance of CustomTime */
   CustomTime() {
     super("");
-    timeField=new DateField(null/*LocalizationSupport.getMessage("Enter_time:")*/,DateField.TIME,
+    timeField=new DateField(null,DateField.TIME,
         Astromaximum.calendar.getTimeZone());
     dateField=new DateField(null,DateField.DATE,Astromaximum.calendar.getTimeZone());
     decumbDate=System.currentTimeMillis();
@@ -50,8 +49,9 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     for(int i=0; i<histCount; i++){
       cg.append(Event.long2String(history[i],0,false),null);
     }
-    addCommand(new Command("OK",Command.ITEM,2));
-    addCommand(new Command(LocalizationSupport.getMessage("Lock/Unlock"),Command.ITEM,3));
+    addCommand(new Command("OK",Command.OK,1));
+    addCommand(new Command(LocalizationSupport.getMessage("Lock/Unlock"),Command.ITEM,2));
+    addCommand(new Command(LocalizationSupport.getMessage("Delete"),Command.ITEM,3));
     addCommand(new Command(LocalizationSupport.getMessage("Cancel"),Command.CANCEL,4));
     setCommandListener(this);
     setItemStateListener(this);
@@ -59,15 +59,52 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
 
   public void itemStateChanged(Item item) {
     if(item==cg){
-//      System.out.println("hkjh");
-      long tm=history[cg.getSelectedIndex()];
-      dateField.setDate(new Date(tm+Event.localOffset(tm)));
-//      setTimePrompt(invoker,0);
+      System.out.println("hkjh");
+      int sel=cg.getSelectedIndex();
+      if(sel>=0){
+        long tm=history[sel];
+        tm+=Event.localOffset(tm);
+        dateField.setDate(new Date(tm));
+        timeField.setDate(new Date(tm%Astromaximum.MSECINDAY));
+      }
+    }
+  }
+  
+  private void deleteHistItem(int sel){
+    if(sel>=0 && sel<histCount){
+      cg.delete(sel);
+      int newLock=0;
+      for(int i=histCount-1; i>=0; i--){
+        if(i!=sel){
+          newLock<<=1;
+          if((lockFlags & (1<<i))!=0){
+            ++newLock;
+          }
+        }
+      }
+      lockFlags=newLock;
+      for(int i=sel+1; i<histCount; i++){
+        System.out.println(i);
+        history[i-1]=history[i];
+      }
+      --histCount;
     }
   }
   
   public void commandAction(Command c, Displayable d)  {
-    if(c.getPriority() == 3){
+    if (c.getPriority() == 4){
+      Astromaximum.summary.dontRender();
+      return;
+    }
+    if (c.getPriority() == 3){
+      int sel=cg.getSelectedIndex();
+      if(sel>=0 && !cg.getString(sel).endsWith("*")){
+        deleteHistItem(sel);
+        itemStateChanged(cg);
+      }
+      return;
+    }
+    if(c.getPriority() == 2){
       int sel=cg.getSelectedIndex();
       String str=cg.getString(sel);
       if(str.endsWith("*")){
@@ -82,11 +119,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
       cg.set(sel,str,null);
       return;
     }
-    Astromaximum.options.saveHistory();
-    if (c.getPriority() == 4){
-      Astromaximum.summary.dontRender();
-    }
-    if (c.getPriority() == 2){
+    if (c.getCommandType() == Command.OK){
       Astromaximum.summary.isShowCustom=true;
 //#if timeHistory
       if(!setTime(showHistory)){
@@ -105,6 +138,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
           Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
 //          Astromaximum.summary.dontRender();
       }
+      Astromaximum.options.saveHistory();
     }
   }
   
@@ -131,12 +165,14 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
   }
 
   boolean setTime(boolean addHistory) {
-    Date dt=(addHistory? dateField:timeField).getDate();
-    Astromaximum.calendar.setTime(dt);
+    long tmp=timeField.getDate().getTime();
+    if(addHistory){
+      tmp+=dateField.getDate().getTime();
+    }
+    Astromaximum.calendar.setTime(new Date(tmp));
     Astromaximum.summary.setCustomTime(
         Astromaximum.calendar.get(Calendar.HOUR_OF_DAY),Astromaximum.calendar.get(Calendar.MINUTE));
     if(addHistory){
-      long tmp=dt.getTime();
       tmp-=Event.localOffset(tmp);
       if(!Astromaximum.dataFile.isDateAvailable(tmp)){
         Alert alert=new Alert(LocalizationSupport.getMessage("Error"),
@@ -151,28 +187,21 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
           return true;
         }
       }
-      if(histCount<HIST_COUNT){
-        for(int i=histCount-1; i>=0; i--){
-          history[i+1]=history[i];
+      if(histCount>=HIST_COUNT){
+        int i=histCount;
+        do{
+          --i;
+        }while(i>=0 && (lockFlags & (1<<i))!=0);
+        if(i<0){
+          return false;
         }
-        ++histCount;
+        deleteHistItem(i);
       }
-      else{
-        int newLock=0; 
-        for(int i=histCount-1; i>=0; i--){
-          newLock<<=1;
-          if((lockFlags & (1<<i))!=0){ //locked
-            ++newLock;
-          }
-          else{
-            if(addHistory){
-              cg.delete(i);
-              addHistory=false;
-            }
-          }
-        }
-        lockFlags=newLock;
+      lockFlags<<=1;
+      for(int i=histCount-1; i>=0; i--){
+        history[i+1]=history[i];
       }
+      ++histCount;
       history[0]=decumbDate;
       cg.insert(0,Event.long2String(history[0],0,false),null);
       cg.setSelectedIndex(0,true);
@@ -186,11 +215,13 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     deleteAll();
     showHistory= pn==Summary.PAGE_PANEL || pn==Summary.PAGE_DECUMB;
     if(showHistory){
-      append(timeField);
+      timeField.setLabel(null);
       append(dateField);
+      append(timeField);
       append(cg);
     }
     else{
+      timeField.setLabel(LocalizationSupport.getMessage("Enter_time:"));
       append(timeField);
     }
 //#endif

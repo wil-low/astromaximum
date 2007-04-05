@@ -229,7 +229,12 @@ sub get_city_list {
 sub refill_list { # lbox, listref
 	$_[0]->delete(0,'end');
 	foreach my $fl (@{$_[1]}){
-		$_[0]->insert('end',$fl->{city}.', '.$fl->{state});
+		if($sortmode eq 'city'){
+			$_[0]->insert('end',$fl->{city}.', '.$fl->{state});
+		}
+		else{
+			$_[0]->insert('end',$fl->{state}.', '.$fl->{city});
+		}
 	}
 }
 
