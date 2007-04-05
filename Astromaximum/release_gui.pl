@@ -104,14 +104,14 @@ sub do_timebomb {
 	print "timebomb\n";
 	my $conf='midp2y2007release_tb';
 	my $timeout=$lbox->get();
-	my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dtb.timeout=$timeout -Dconfigs.$conf.debug.level=";
+	my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dfile.reference.Astromaximum-deploy=./deploy -Dtb.timeout=$timeout -Dconfigs.$conf.debug.level=";
 	if($debug){
 		$cmd.="debug";
 	}
 	else{
 		$cmd.="fatal";
 	}
-	$cmd.=" clean deploy";
+	$cmd.=" deploy";
 	print "$cmd\n";
 	my $res=system($cmd);
 	if($res==0){
@@ -126,14 +126,14 @@ sub do_imei { # config_name
 	my $code=$imei->get();
 	if($code=~/\A\d{15}\Z/is){
 		print "imei\n";
-		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dimei.code=$code -Dconfigs.$conf.debug.level=";
+		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dfile.reference.Astromaximum-deploy=./deploy -Dimei.code=$code -Dconfigs.$conf.debug.level=";
 		if($debug){
 			$cmd.="debug";
 		}
 		else{
 			$cmd.="fatal";
 		}
-		$cmd.=" clean deploy";
+		$cmd.=" deploy";
 		print "$cmd\n";
 		my $res=system($cmd);
 		if($res==0){

@@ -105,7 +105,6 @@ public class Astromaximum extends MIDlet implements CommandListener{
       summary.setMoonXY(summary.getWidth()>>1,summary.getHeight()>>1,
           Graphics.HCENTER|Graphics.VCENTER);
       summary.run();
-//      summary.timer.cancel();
   //#ifndef logger
       Display.getDisplay(this).setCurrent(summary);
   //#endif      
@@ -140,6 +139,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#       logger("customTime");
 //#endif      
 //        System.out.println("Modem="+customTime.askModem());
+      Astromaximum.log("****Total memory = "+Long.toString(Runtime.getRuntime().totalMemory()));
       options.loadHistory();
       System.gc();
 //        dataFile.fillCache();
@@ -283,12 +283,12 @@ public class Astromaximum extends MIDlet implements CommandListener{
     
     } 
     catch(Exception oome){
-//#if midp2y2007notest
-//#       Astromaximum.log("****Total memory = "+Long.toString(Runtime.getRuntime().totalMemory()));
-//#       Astromaximum.log(oome.toString());
-//#       logBox.showLog(null);
-//#       oome.printStackTrace();
-//#endif        
+//#mdebug debug
+      Astromaximum.log("****Total memory = "+Long.toString(Runtime.getRuntime().totalMemory()));
+      Astromaximum.log(oome.toString());
+      logBox.showLog(null);
+      oome.printStackTrace();
+//#enddebug        
 //        quit();
     }
     }  
@@ -333,16 +333,14 @@ public class Astromaximum extends MIDlet implements CommandListener{
    * @param string String
    */
   static void log(String string) {
-//#mdebug error
-    if(Astromaximum.logBox.getString(0).equals(LogBox.EMPTY)) {
-      Astromaximum.logBox.delete(0);
-    }
-    Astromaximum.logBox.append(string,null);
-    while(Astromaximum.logBox.size() > 30) {
-      Astromaximum.logBox.delete(0);
-    }
-    System.out.println(string);
-//#enddebug
+     if(Astromaximum.logBox.getString(0).equals(LogBox.EMPTY)) {
+       Astromaximum.logBox.delete(0);
+     }
+     Astromaximum.logBox.append(string,null);
+     while(Astromaximum.logBox.size() > 30) {
+       Astromaximum.logBox.delete(0);
+     }
+     System.out.println(string);
   }
   
   
