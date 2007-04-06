@@ -43,16 +43,10 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
   static boolean dstExists;
   static long tzOffset;
   ChoiceGroup cityList;
-  static long localOffset;
   
   public GeoList(MIDlet midlet, int type){
     super("");
     main=midlet;
-//    localOffset=TimeZone.getDefault().getRawOffset();
-//#mdebug info    
-    System.out.print("localOffset=");
-    System.out.println(Long.toString(localOffset));
-//#enddebug
 //    addCommand(new Command(LocalizationSupport.getMessage("Back"),
 //        Command.BACK, 1));
     addCommand(new Command(getMessage("Cancel"),Command.CANCEL, 1));

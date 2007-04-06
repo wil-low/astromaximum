@@ -243,15 +243,15 @@ class Event {
    */
   static String long2String(long date0, int hoursOnly, boolean h24) {
 /* @todo TZ code! */
-    date0+=localOffset(date0);
     if(hoursOnly==1){
       if(date0 <Summary.period0) {
-        date0 = Summary.period0-localOffset(Summary.period0);
+        date0 = Summary.period0;//-localOffset(Summary.period0);
       }
       if(date0 >Summary.period1) {
-        date0 = Summary.period1-localOffset(Summary.period1);
+        date0 = Summary.period1;//-localOffset(Summary.period1);
       }
     }
+    date0+=localOffset(date0);
     Astromaximum.calendar.setTime(new Date(date0));
     final StringBuffer s=new StringBuffer();
         
@@ -276,7 +276,7 @@ class Event {
   }
 
   static long localOffset(long date0) {
-    long ofs=GeoList.tzOffset-GeoList.localOffset;
+    long ofs=GeoList.tzOffset;//-GeoList.localOffset;
     if(Options.dstExists){
       int inn=dateBetween(date0,GeoList.dstStart,GeoList.dstEnd);
       if(inn==0){

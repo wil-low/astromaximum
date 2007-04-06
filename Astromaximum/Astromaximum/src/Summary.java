@@ -30,7 +30,7 @@ class Summary extends FrameAnimator implements CommandListener{
   private static final int BOUNDS_VARS=12;
   static long period0;
   static long period1;
-  static int size=3;
+  static int size;
   private int selItem;
 //  static boolean isCurDay;
   private int previousPage=PAGE_SUMMARY;
@@ -684,7 +684,8 @@ class Summary extends FrameAnimator implements CommandListener{
     Astromaximum.log("size change");
     if(pageNum == Summary.PAGE_MONTH){
       rowCount=6; colCount=7;
-    } else{
+    } 
+    else{
       rowCount=7; colCount=1;
     }
   }
@@ -917,8 +918,15 @@ class Summary extends FrameAnimator implements CommandListener{
         repaint();
         break;
       case 1:
-        if(pageNum==PAGE_DECUMB)
-          Astromaximum.interpreter.topic=9;
+        if(pageNum==PAGE_DECUMB){
+//          Astromaximum.interpreter.topic=9;
+          Date tm=Astromaximum.customTime.dateField.getDate();
+          if(!selDate.equals(tm)){
+            selDate=tm;
+            showDaySummary();
+            break;
+          }
+        }
         setCurPage(PAGE_SUMMARY);
         repaint();
     }
@@ -1138,12 +1146,7 @@ class Summary extends FrameAnimator implements CommandListener{
 //#ifdef UseBuffer
 //#       offScreenBuffer = Image.createImage(w,h);
 //#endif      
-      size=2; 
       PAGE_LAST=PAGE_SUMMARY+1;
-      if(h<210){
-        size=1;
-        PAGE_LAST=PAGE_SUMMARY+3;
-      }
       if(h < 230) {
         moonPhaseH = 28;
       } 
@@ -1156,10 +1159,22 @@ class Summary extends FrameAnimator implements CommandListener{
       else {
         IMG_HEIGHT = IMG_WIDTH = 12;
       }
-      if(h < w){
+      size=Options.layout.getSelectedIndex();
+      if(size==0){
+        size=2; 
+        if(h<210){
+          size=1;
+        }
+        if(h < w){
+          size=3;
+        }
+      }
+      if(size==3){
         IMG_HEIGHT = IMG_WIDTH = 12;
         moonPhaseH = 50;
-        size=3;
+      }
+      if(size!=2){
+        PAGE_LAST+=2;
       }
       String ext="/res/sz"+Integer.toString(IMG_HEIGHT)+".dat";
       imgService=Astromaximum.extractImg(0,ext);

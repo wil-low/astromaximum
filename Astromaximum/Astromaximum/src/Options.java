@@ -24,33 +24,44 @@ import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
 class Options extends GeoList{
-  ChoiceGroup optList;
+  static ChoiceGroup optList;
+  static ChoiceGroup timeGap;
+  static ChoiceGroup layout;
 //#if localtime  
 //#   static byte OPT_FLAGS=1;
 //#else
       static byte OPT_FLAGS=0;
 //#endif  
   static byte optFlags;
-  
+  private static long localOffset;
   static final int FLG_ALLTEXT=1;
   static final int FLG_LOCALTIME=2;
   
   Options(){
     super(Astromaximum.instance,Choice.EXCLUSIVE);
+    String[] sTimeGap={"-2","-1","0","1","2"};
+    timeGap=new ChoiceGroup(LocalizationSupport.getMessage("Correction_hr"),
+        Choice.POPUP,sTimeGap,null);
+    timeGap.setSelectedIndex(2,true);
+    
+    String[] sLayout={LocalizationSupport.getMessage("Auto"),"1","2","3"};
+    layout=new ChoiceGroup(LocalizationSupport.getMessage("Screen"),
+        Choice.POPUP,sLayout,null);
 
     String[] sOpt={
       LocalizationSupport.getMessage("uat"),
       LocalizationSupport.getMessage("Local_time"),
     };
-    
     optFlags=OPT_FLAGS;
     setTitle(LocalizationSupport.getMessage("Options"));
     setCommandListener(this);
-    addCommand(new Command("OK",Command.ITEM, 1));
-    addCommand(new Command("Delete",Command.ITEM, 2));
+    addCommand(new Command("OK",Command.OK, 1));
+    addCommand(new Command(LocalizationSupport.getMessage("Delete_city"),Command.ITEM, 2));
 //    addCommand(new Command("Reset storage",Command.ITEM, 3));
     optList=new ChoiceGroup("",Choice.MULTIPLE,
         sOpt,null);
+    insert(0,layout);
+    insert(0,timeGap);
     insert(0,optList);
     cityList.setLabel(LocalizationSupport.getMessage("Cities"));
   }
@@ -144,6 +155,7 @@ class Options extends GeoList{
         System.out.println(optFlags);
         saveHistory();
         curCity=cityList.getString(cityList.getSelectedIndex()).getBytes();
+        localOffset=getLocalOffset();
         try{
           rs.setRecord(1,curCity, 0, curCity.length);
 //          rs.closeRecordStore();
@@ -152,6 +164,12 @@ class Options extends GeoList{
         }
         catch(Exception e){
           e.printStackTrace();
+        }
+        if(Astromaximum.summary.size!=layout.getSelectedIndex()){
+          Astromaximum.summary.items=null;
+          Astromaximum.summary.pageNum=Summary.PAGE_SUMMARY;
+          Astromaximum.summary.changeSize();
+          Astromaximum.summary.showDaySummary();
         }
         Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
         break;
@@ -333,6 +351,8 @@ class Options extends GeoList{
     DataOutputStream dos=new DataOutputStream(baos);
     try {
       dos.writeByte(optFlags);
+      dos.writeByte(timeGap.getSelectedIndex());
+      dos.writeByte(layout.getSelectedIndex());
       dos.writeShort(Astromaximum.customTime.histCount);
       dos.writeInt(Astromaximum.customTime.lockFlags);
       for(int i=0; i<Astromaximum.customTime.histCount; i++){
@@ -358,6 +378,8 @@ class Options extends GeoList{
       ByteArrayInputStream baos=new ByteArrayInputStream(rs.getRecord(2));
       DataInputStream dis=new DataInputStream(baos);
       optFlags=dis.readByte();
+      timeGap.setSelectedIndex(dis.readByte(),true);
+      layout.setSelectedIndex(dis.readByte(),true);
       Astromaximum.customTime.histCount=dis.readUnsignedShort();
       Astromaximum.customTime.lockFlags=dis.readInt();
       for(int i=0; i<Astromaximum.customTime.histCount; i++){
@@ -373,11 +395,14 @@ class Options extends GeoList{
     catch (Exception ex) {
       Astromaximum.customTime.histCount=Astromaximum.customTime.lockFlags=0;
       Astromaximum.customTime.cg.deleteAll();
+      timeGap.setSelectedIndex(2,true);
+      layout.setSelectedIndex(0,true);
       optFlags=OPT_FLAGS;
     }
     for(int i=0; i<optList.size(); i++){
       optList.setSelectedIndex(i,(optFlags&(1<<i))!=0);
     }
+    localOffset=getLocalOffset();
 //#mdebug info      
       System.out.println(Integer.toBinaryString(Astromaximum.customTime.lockFlags));
 //#enddebug      
@@ -388,6 +413,10 @@ class Options extends GeoList{
     if((optFlags & FLG_LOCALTIME)!=0){
       now-=Event.localOffset(now);
     }
-    return now;
+    return now+localOffset;
+  }
+
+  private long getLocalOffset() {
+    return Long.parseLong(timeGap.getString(timeGap.getSelectedIndex()))*3600000;
   }
 }
