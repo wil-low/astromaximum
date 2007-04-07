@@ -8,8 +8,13 @@ const EFLAG=SEFLG_SPEED|SEFLG_SWIEPH;
 
 const double MINUTE_STEP=(1./24/60);
 const double MSECINDAY=86400*1000;
+
 struct sEphRecord {
   double data[13];
+};
+
+struct sAscRecord {
+  double data[2];
 };
 
 struct sMatrix {
@@ -49,7 +54,24 @@ typedef enum {
   EV_PANEL,
   EV_FAST_BUTTON,
   EV_DEG_2ND,
-  EV_LAST  // last - do not use
+  EV_WEEK_GRID,
+  EV_MONTH_GRID,
+  EV_DECUMBITURE,
+  EV_DECUMB_ASPECT,
+  EV_DECUMB_BEGIN,
+  EV_SUN_DEGREE_LARGE,
+  EV_MOON_SIGN_LARGE,
+  EV_HELP,
+  EV_ASP_EXACT_MOON,
+  EV_DEGPASS0,
+  EV_DEGPASS1,
+  EV_DEGPASS2,
+  EV_DEGPASS3,
+  EV_HELP0,
+  EV_HELP1,
+  EV_ASTRORISE,
+  EV_ASTROSET,
+  EV_LAST // last - do not use
 } EventType;
 
 

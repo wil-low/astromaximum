@@ -1,6 +1,6 @@
 use strict;
 use POSIX;
-use warnings;
+#use warnings;
 use Unicode::String;
 use Encode;
 use lib 'D:/Willow/prj/astrology/nomad_prj/'; 

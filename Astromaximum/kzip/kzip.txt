@@ -1,0 +1,16 @@
+KZIP [options] [.ZIP file] [@file or filespec...]              by Ken Silverman
+   KZIP creates .ZIP files that are roughly 1-3% smaller than "pkzip -ex ..."
+
+Available options:
+   /r   Recurse sub-directories
+   /v,q Verbose,Quiet mode
+   /y   Assume Yes at the 'overwrite file?' prompt
+   /s#  Select strategy. 0:Xtreme(default), 1:Intense, 2:Longest Match,
+        3:Huffman Only, 4:Uncompressed
+   /b#  Block split threshold (lower=more blocks, 0=1 block/file, default=256)
+        Good values to try (other than default) are: /b128, /b512, /b0, /b1024
+   /n#  Exact number of Huffman blocks (overrides /b#)
+   /rn  Randomized initial tables (good for many trials with same options)
+
+Example: "kzip save *" will compress the current directory into save.zip
+Ken's official web site: http://advsys.net/ken            Compiled: Oct 11 2006

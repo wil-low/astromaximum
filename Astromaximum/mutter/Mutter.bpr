@@ -36,7 +36,7 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -DUSE_DLL -D_DEBUG -I$(BCB)\include -I$(BCB)\include\vcl 
+    <IDLCFLAGS value="-I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp -DUSE_DLL -D_DEBUG 
       -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -pr -a1 -6 -b- -k -y -v 
       -vi- -tWC -tWM- -c"/>
@@ -120,7 +120,7 @@ Item3=_DEBUG
 DebugSourceDirs=$(BCB)\source\vcl
 
 [Parameters]
-RunParams=2007 geo0- -75.16 39.95
+RunParams=2007 geo0- 30.51 50.43
 Launcher=
 UseLauncher=0
 DebugCWD=

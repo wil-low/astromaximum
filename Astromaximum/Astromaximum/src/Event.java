@@ -74,7 +74,9 @@ class Event {
   static final int EV_DEGPASS3=42;
   static final int EV_HELP0=43;
   static final int EV_HELP1=44;
-  static final int EV_LAST=45;  // last - do not use
+  static final int EV_ASTRORISE=45;
+  static final int EV_ASTROSET=46;
+  static final int EV_LAST=47;  // last - do not use
   
 //#if "imeiCheck" @ protection
   static int hj;

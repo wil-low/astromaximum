@@ -23,6 +23,19 @@ const char outFile[]="output.txt";
 int main(int argc, char* argv[])
 {
   char path[_MAX_PATH];
+
+  swe_set_ephe_path(ephemPath);
+/*
+  double test_day=swe_julday(2007, 4, 7, 0, SE_GREG_CAL);
+  double result;
+  double geopos[3]={30.51,50.43,200};
+  swe_rise_trans(test_day,SE_MOON,NULL,0,SE_CALC_SET| SE_BIT_DISC_CENTER ,geopos,0,20,&result,path);
+  int y,m,d; double hour;
+  swe_revjul(result, SE_GREG_CAL, &y, &m, &d, &hour);
+  printf("%02d.%02d.%04d %02d:%02d",d, m, y, (int)hour, (int)((hour-(int)hour)*60));
+  scanf("%s",path);
+  return 0;
+*/
   strcpy(path,argv[0]);
   char *pos=strrchr(path,'\\');
   *(pos+1)=0;
@@ -43,7 +56,7 @@ int main(int argc, char* argv[])
   tm *st=gmtime(&loo);
   loo=mktime(st);
   assert(sizeof(sMatrix)==9);
-  assert(EV_LAST==30);
+  assert(EV_LAST==47);
   if(argc<2) return NOT_ENOUGH_PARAMS;
   DataFile df;
   char buf[20];
@@ -59,7 +72,6 @@ int main(int argc, char* argv[])
     return INVALID_YEAR;
   printf("Year = %d\n",year);
   Event::startYear=year;
-  swe_set_ephe_path(ephemPath);
   double startJD=swe_julday(year-1,12,31,0,SE_GREG_CAL);
   printf("startJD=%f\n",startJD);
   double endJD=swe_julday(year+1,1,2,0,SE_GREG_CAL);
@@ -69,48 +81,49 @@ int main(int argc, char* argv[])
 
 
   int dayCount=endJD-startJD;
-  if(argc==2){
-    double data[6]; char serr[255];
-    unsigned int stepCount=dayCount/MINUTE_STEP;
-    ephData=new sEphRecord [stepCount];
-    endJD=startJD;
-    int size=sizeof(sEphRecord)*stepCount;
+  unsigned int stepCount=dayCount/MINUTE_STEP;
 
-    FILE *fin=fopen("..\\ephdata.dat", "rb");
-    int fsz=0;
-    if(fin){
-      fseek(fin,0,SEEK_END);
-      fsz=ftell(fin);
-    }
-    if(fsz){
-      printf("\nValid cached ephdata found. Loading...");
-      rewind(fin);
-      fread(ephData,size,1,fin);
-      fclose(fin);
-      printf("Done.\n");
-    }
-    else{
-      printf("\nCalculating ephdata...");
-      fclose(fin);
+  double data[6]; char serr[255];
+  ephData=new sEphRecord [stepCount];
+  endJD=startJD;
+  int size=sizeof(sEphRecord)*stepCount;
 
-      printf("\nSteps = %d\n",stepCount);
-      for(int i=0; i<stepCount; i++){
-        for(int body=0; body<13; body++){
-          swe_calc_ut(endJD, PLANETS[body], EFLAG, data, serr);
-          ephData[i].data[body]=data[0];
-        }
-        endJD+=MINUTE_STEP;
-        if(i%10000==0)
-          printf("%d...",i/10000);
+  FILE *fin=fopen("..\\ephdata.dat", "rb");
+  int fsz=0;
+  if(fin){
+    fseek(fin,0,SEEK_END);
+    fsz=ftell(fin);
+  }
+  if(fsz){
+    printf("\nValid cached ephdata found. Loading...");
+    rewind(fin);
+    fread(ephData,size,1,fin);
+    fclose(fin);
+    printf("Done.\n");
+  }
+  else{
+    printf("\nCalculating ephdata...");
+    fclose(fin);
+
+    printf("\nSteps = %d\n",stepCount);
+    for(int i=0; i<stepCount; i++){
+      for(int body=0; body<13; body++){
+        swe_calc_ut(endJD, PLANETS[body], EFLAG, data, serr);
+        ephData[i].data[body]=data[0];
       }
-      printf("\nSaving cached ephemeris...");
-      FILE *fout=fopen("..\\ephdata.dat","wb");
-      fwrite(ephData,size,1,fout);
-      fclose(fout);
-      printf("Done.\n");
-      return 0;
+      endJD+=MINUTE_STEP;
+      if(i%10000==0)
+        printf("%d...",i/10000);
     }
-    df.init(ephData,startJD, dayCount);
+    printf("\nSaving cached ephemeris...");
+    FILE *fout=fopen("..\\ephdata.dat","wb");
+    fwrite(ephData,size,1,fout);
+    fclose(fout);
+    printf("Done.\n");
+    return 0;
+  }
+  df.init(ephData,startJD, dayCount);
+  if(argc==2){
     df.AAA();
   //  df.saveFile(outFile);
     delete[] ephData;
@@ -120,12 +133,32 @@ int main(int argc, char* argv[])
   else{
     if(argc!=5)
       return NOT_ENOUGH_PARAMS;
-    df.init(ephData,startJD, dayCount);
     df.Lon=strtod(argv[3],NULL);
     df.Lat=strtod(argv[4],NULL);
+
+    double cusps[13], ascmc[10];
+    sAscRecord *ascData=new sAscRecord[stepCount];
+    endJD=startJD;
+    long tm=GetTickCount();
+    for(int i=0; i<stepCount; i++){
+      swe_houses(endJD, df.Lat, df.Lon, 'P', cusps, ascmc);
+      ascData[i].data[0]=cusps[1];  //asc
+      ascData[i].data[1]=cusps[7];  //dsc
+      endJD+=MINUTE_STEP;
+      if(i%10000==0)
+        printf("%d...",i/10000);
+    }
+    df.ascData=ascData;
+    printf("\n  ET=%ld\n",GetTickCount()-tm);
+
+
     VAE work, assist, vout, work2;
+    df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
     df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
     df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
+
+    delete[] ephData;
+    delete[] ascData;
   }
   printf("Finished.\n");
   return 0;

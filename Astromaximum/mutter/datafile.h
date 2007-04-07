@@ -49,6 +49,7 @@ private:
   short swapShort(short var);
   int swapInt(int var);
 public:
+  sAscRecord *ascData;
   void sortVAE(VAE &work);
   void AscendingTest(const char* dirname);
   DataFile();

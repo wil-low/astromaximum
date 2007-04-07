@@ -523,6 +523,8 @@ final class DataFile{
 //      }
 //    }
     switch(evtype){
+      case Event.EV_ASTRORISE:
+      case Event.EV_ASTROSET:
       case Event.EV_RISE:
       case Event.EV_SET:
       case Event.EV_NAVROZ:

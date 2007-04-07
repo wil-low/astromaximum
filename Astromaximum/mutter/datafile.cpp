@@ -294,14 +294,16 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
   sBuf=swapShort(sz);
   fwrite(&sBuf, 2, 1, fout);
   printf("%u records...",v.size());
+  int PERIOD=24*60*60;
 //  v[0]->dump();
 //  v[1]->dump();
   for(int i=0; i<v.size(); i++){
     Event *ev=v[i];
     if((evflags & EF_CUMUL_DATE_W)&& (i>0)){
-      int delta=(ev->date[0]-cumul-24*60*60)/60;
+      int delta=(ev->date[0]-cumul-PERIOD)/60;
       if(abs(delta)>32767){
-        printf("\nError overflow %d",delta);
+        printf("\nError overflow %d at:",delta);
+        ev->dump();
         return false;
       }
       short d=delta;
@@ -310,9 +312,10 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
       fwrite(&sBuf, 1, 2, fout);
     }
     else if((evflags & EF_CUMUL_DATE_B)&& (i>0)){
-      int delta=(ev->date[0]-cumul-24*60*60)/60;
+      int delta=(ev->date[0]-cumul-PERIOD)/60;
       if(abs(delta)>127){
-        printf("\nError overflow %d",delta);
+        printf("\nError overflow %d at:",delta);
+        ev->dump();
         return false;
       }
       char d=delta;
@@ -376,12 +379,15 @@ bool DataFile::readSubData(char* fname, VAE & v)
     return false;
   fseek(fin,0,SEEK_END);
   long realsz=ftell(fin);
-  fseek(fin,1,SEEK_SET);
+  fseek(fin,0,SEEK_SET);
+  EventType evtype;
+  fread(&evtype, 1, 1, fin);
   long fsize=0;
   int evflags=0, recCount=0;
   char planet; int date;
   fread(&fsize, 2, 1, fin);
   fsize=swapShort(fsize);
+  int PERIOD=(evtype==EV_ASTRORISE)? 6*60: 24*60;
 
   if(fsize!=realsz) goto err;
   fread(&evflags, 2, 1, fin);
@@ -398,7 +404,7 @@ bool DataFile::readSubData(char* fname, VAE & v)
         char d;
         fread(&d, 1, 1, fin);
         cumul=d;
-        date+=(cumul+24*60)*60;
+        date+=(cumul+PERIOD)*60;
       }
       else{
         fread(&date, 1, 4, fin);
@@ -411,7 +417,7 @@ bool DataFile::readSubData(char* fname, VAE & v)
         fread(&d, 1, 2, fin);
         d=swapShort(d);
         cumul=d;
-        date+=(cumul+24*60)*60;
+        date+=(cumul+PERIOD)*60;
       }
       else{
         fread(&date, 1, 4, fin);
@@ -602,7 +608,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
 //        vout[i]->dump();
 //      return;
       long tm; tm=GetTickCount();
-      for(int j=SE_SUN; j<=SE_SATURN; j++){
+      for(int j=SE_SUN; j<=SE_MOON; j++){
         sprintf(fname,"%srise%02u.bin",prefix,j);
         if(j==SE_MOON){
           endJD=startJD-31;
@@ -667,6 +673,70 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
       }
       printf("\n  ET=%ld\n",GetTickCount()-tm);
       break;
+    case EV_ASTRORISE:
+      printf("Astro risesets...");
+      tm=GetTickCount();
+      for(int i=SE_SUN; i<=SE_SATURN; i++){
+        endJD=startJD;
+        int phase=-1; double min=360;
+        for(int j=0; j<stepCount; j++){
+          double pos=ephData[j].data[i];
+          if(phase>=0){
+            double aspa=(pos-ascData[j].data[phase]);
+            if(aspa<0) aspa+=360;
+            if(aspa>180) aspa=360-aspa;
+            if(aspa<3)
+              if(aspa>min){
+                Event *ev=new Event(endJD-MINUTE_STEP,i);
+                if(phase)
+                  work2.push_back(ev);
+                else
+                  work.push_back(ev);
+//                ev->dump();
+                phase=1-phase;
+                min=360;
+              }
+              else
+                min=aspa;
+          }
+          else
+            for(int cnt=0; cnt<2; cnt++){
+              double aspa=(pos-ascData[j].data[cnt]);
+              if(aspa<0) aspa+=360;
+              if(aspa>180) aspa=360-aspa;
+              if(aspa<3)
+                if(aspa>min){
+                  Event *ev=new Event(endJD-MINUTE_STEP,i);
+                  phase=cnt;
+                  if(phase)
+                    work2.push_back(ev);
+                  else
+                    work.push_back(ev);
+//                  ev->dump();
+                  phase=1-phase;
+                  min=360;
+                  break;
+                }
+                else
+                  min=aspa;
+            }
+          endJD+=MINUTE_STEP;
+        }
+        sprintf(fname,"%sarise%02u.bin",prefix,i);
+        if(!writeSubData(work,EV_ASTRORISE,EF_CUMUL_DATE_B|EF_NEXT_DATE2,i,fname))
+          writeSubData(work,EV_ASTRORISE,EF_CUMUL_DATE_W|EF_NEXT_DATE2,i,fname);
+        sprintf(fname,"%saset%02u.bin",prefix,i);
+        if(!writeSubData(work2,EV_ASTROSET,EF_CUMUL_DATE_B,i,fname))
+          writeSubData(work2,EV_ASTROSET,EF_CUMUL_DATE_W,i,fname);
+        release(work);
+        release(work2);
+      }
+/*      readSubData("~arise01.bin",work);
+      for(int i=0; i<50; i++)
+        work[i]->dump();
+      printf("\n  ET=%ld\n",GetTickCount()-tm);
+      scanf("%s",fname);
+*/      break;
     case EV_RETROGRADE:
       printf("Retrograde..."); bool isRetro;
       double data[6];

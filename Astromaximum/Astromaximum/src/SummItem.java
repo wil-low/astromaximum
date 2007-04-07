@@ -47,7 +47,8 @@ class SummItem extends TimerTask implements RecordFilter{
   String str;
   private static Image tithi;
   static final Vector moonMoveVec=new Vector();
-  private static final long DEGREE_DELTA_MSEC=24*60*1000;
+  private static final long DEGREE_DELTA_MSEC1=-40*60*1000;
+  private static final long DEGREE_DELTA_MSEC2=28*60*1000;
   static Summary owner;
   private static final int[] ASP_ANGLES={0,180,90,120,60,45,30,15,72,150};
   static Hashtable topics = new Hashtable();  
@@ -851,8 +852,8 @@ class SummItem extends TimerTask implements RecordFilter{
     int y2=top+height/2-1;
     int cus0=0;
     int now0=0;
-    String s1="rise ";
-    String s2="set ";
+    String s1=LocalizationSupport.getMessage("rise")+" ";
+    String s2=LocalizationSupport.getMessage("set")+" ";
     long d1=events[0].date0;
     long d2=events[0].date1;
     
@@ -1106,11 +1107,11 @@ class SummItem extends TimerTask implements RecordFilter{
     for (int i=0; i<events.length; i++) {
       if (events[i] != null) {
         if (type == Event.EV_RISE) {
-          long delta = events[i].date0 - time;
-          if (delta < 0) {
-            delta = -delta;
-          }
-          flg = delta < DEGREE_DELTA_MSEC;
+          long delta = time-events[i].date0;
+//          if (delta < 0) {
+//            delta = -delta;
+//          }
+          flg = (delta > DEGREE_DELTA_MSEC1) && (delta < DEGREE_DELTA_MSEC2);
         } 
         else {
           flg = contains(events[i], time);

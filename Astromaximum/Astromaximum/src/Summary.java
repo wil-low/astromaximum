@@ -570,7 +570,7 @@ class Summary extends FrameAnimator implements CommandListener{
       }
       final Vector tmp=new Vector();
       tmp2.removeAllElements();
-      Astromaximum.dataFile.getEventsOnPeriod(tmp,Event.EV_RISE,i,
+      Astromaximum.dataFile.getEventsOnPeriod(tmp,Event.EV_ASTRORISE,i,
           false, pp0, pp1,0);
       for(int j=0; j<tmp.size(); j++){
         ev=Astromaximum.evAt(tmp,j);
@@ -584,7 +584,7 @@ class Summary extends FrameAnimator implements CommandListener{
           ev.setDegree(1);
         }
       }
-      Astromaximum.dataFile.getEventsOnPeriod(tmp,Event.EV_SET,i,
+      Astromaximum.dataFile.getEventsOnPeriod(tmp,Event.EV_ASTROSET,i,
           false, pp0,pp1,3);
       mergeEvents(tmp2,tmp,true);
 //      Astromaximum.evDump(tmp2);
