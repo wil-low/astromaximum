@@ -54,17 +54,18 @@ class SummItem extends TimerTask implements RecordFilter{
   static Hashtable topics = new Hashtable();  
   static{
     topics.put(new Integer(Event.EV_MOON_DAY), "#*^$}>@");
-    topics.put(new Integer(Event.EV_RETROGRADE), "*^$}>@");
-    topics.put(new Integer(Event.EV_SIGN_ENTER), "*}{~=^");
     topics.put(new Integer(Event.EV_ASP_EXACT), "~*^$}>@");
     topics.put(new Integer(Event.EV_VIA_COMBUSTA), "~#*^$}>@");
     topics.put(new Integer(Event.EV_NAVROZ), ">");
-    topics.put(new Integer(Event.EV_RISE), "}~#*^=");
-    topics.put(new Integer(Event.EV_TITHI), "}{~*^$>@=");
+    topics.put(new Integer(Event.EV_RISE), "}~#*^");
     topics.put(new Integer(Event.EV_ASP_EXACT_MOON), "*~#^$}>@={");
-    topics.put(new Integer(Event.EV_DECUMBITURE), "#");
     topics.put(new Integer(Event.EV_MOON_PHASE), "^$}~#*>@");
     topics.put(new Integer(Event.EV_VOC), "~*^$}>@");
+    topics.put(new Integer(Event.EV_HELP1), "*");
+    topics.put(new Integer(Event.EV_SIGN_ENTER), "*}{~=^");
+    topics.put(new Integer(Event.EV_RETROGRADE), "*^$}>@");
+    topics.put(new Integer(Event.EV_DECUMBITURE), "#");
+    topics.put(new Integer(Event.EV_TITHI), "}{~*^$>@=");
     topics.put(new Integer(Event.EV_MOON_MOVE), "*^$}>@");
     topics.put(new Integer(Event.EV_WEEK), "^}{~=$");
     topics.put(new Integer(Event.EV_ECLIPSE), "*^$}>@");
@@ -74,8 +75,8 @@ class SummItem extends TimerTask implements RecordFilter{
     topics.put(new Integer(Event.EV_MOON_SIGN_LARGE), topics.get(new Integer(Event.EV_SIGN_ENTER))); //EV_SIGN_ENTER
     topics.put(new Integer(Event.EV_DAY_HOURS), topics.get(new Integer(Event.EV_PLANET_HOUR))); //EV_PLANET_HOUR
     topics.put(new Integer(Event.EV_NIGHT_HOURS), topics.get(new Integer(Event.EV_PLANET_HOUR)));//EV_PLANET_HOUR
-    topics.put(new Integer(Event.EV_SUN_RISE), "#*^$}>~=");
-    topics.put(new Integer(Event.EV_MOON_RISE), "#*^$}>~=");
+    topics.put(new Integer(Event.EV_SUN_RISE), "#*^$}>~");
+    topics.put(new Integer(Event.EV_MOON_RISE), "#*^$}>~");
     topics.put(new Integer(Event.EV_SUN_DAY), topics.get(new Integer(Event.EV_NAVROZ))); //EV_NAVROZ
   }
   
@@ -590,7 +591,7 @@ class SummItem extends TimerTask implements RecordFilter{
 //        if(str.length()<14)
 //          osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_PLAIN,Font.SIZE_LARGE));
 //        System.out.println(str);
-        y=top+height;
+        y=top+height-1;
 //        if(owner.isShowCustom){
         if(str!=null){
           osg.drawString(str,getX(0,XCENTER),y,Graphics.HCENTER|Graphics.BASELINE);
@@ -889,7 +890,7 @@ class SummItem extends TimerTask implements RecordFilter{
         osg.setColor(Astromaximum.CUST_COLOR);
       }
       osg.drawString(s1+Event.long2String(d1,1,false),
-          getX(0, XRIGHT)-2,y1,Graphics.TOP|Graphics.RIGHT);
+          getX(0, XRIGHT),y1,Graphics.TOP|Graphics.RIGHT);
     }
     if(d2 != 0){
       osg.setColor(0);
@@ -900,7 +901,7 @@ class SummItem extends TimerTask implements RecordFilter{
         osg.setColor(Astromaximum.CUST_COLOR);
       }
       osg.drawString(s2+Event.long2String(d2,1,false),
-          getX(0, XRIGHT)-2,y2,Graphics.TOP|Graphics.RIGHT);
+          getX(0, XRIGHT),y2,Graphics.TOP|Graphics.RIGHT);
     }
     osg.setColor(0);
   }

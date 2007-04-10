@@ -64,7 +64,7 @@ public class GeoInstaller extends MIDlet implements CommandListener{
       case Command.OK:
 	String msg="Cities installed";
 	AlertType at=AlertType.INFO;
-        boolean[] selArray=new boolean[gl.size()];
+        boolean[] selArray=new boolean[gl.cityList.size()];
         if(gl.cityList.getSelectedFlags(selArray)>0){
           for(int i=0; i<selArray.length; i++){
             if(selArray[i]){

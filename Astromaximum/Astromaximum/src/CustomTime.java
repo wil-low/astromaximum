@@ -43,8 +43,10 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     timeField=new DateField(null,DateField.TIME,
         Astromaximum.calendar.getTimeZone());
     dateField=new DateField(null,DateField.DATE,Astromaximum.calendar.getTimeZone());
-//    decumbDate=System.currentTimeMillis();
+    decumbDate=System.currentTimeMillis();
     dateField.setDate(new Date(decumbDate+Event.localOffset(decumbDate)));
+//    System.out.print("<> ");
+//    System.out.println(dateField.getDate());
     timeField.setDate(new Date(decumbDate+Event.localOffset(decumbDate)));
     cg=new ChoiceGroup(null/*LocalizationSupport.getMessage("History")*/, Choice.EXCLUSIVE);
     for(int i=0; i<histCount; i++){
@@ -68,6 +70,8 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
         long tm=history[sel];
         tm+=Event.localOffset(tm);
         dateField.setDate(new Date(tm));
+//        System.out.print("isc ");
+//        System.out.println(dateField.getDate());
         timeField.setDate(new Date(tm%Astromaximum.MSECINDAY));
       }
     }
@@ -223,6 +227,8 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     if(showHistory){
       timeField.setLabel(null);
       append(dateField);
+//      System.out.print("init ");
+//      System.out.println(dateField.getDate());
       append(timeField);
       append(cg);
       for(int i=0; i<4; i++){

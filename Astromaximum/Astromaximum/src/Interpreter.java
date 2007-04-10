@@ -410,7 +410,7 @@ class Interpreter extends Canvas implements CommandListener {
 //        res.append(LocalizationSupport.getMessage("mph"+Integer.toString((int)params[2])));
         break;
       case Event.EV_RISE:
-        res.append("(\u00b124 ").append(LocalizationSupport.getMessage("min."))
+        res.append("(-40/+28 ").append(LocalizationSupport.getMessage("min."))
             .append(") ").append(getFullPlanet(params[2])).append(" ")
             .append(getRiseString((int)params[3]));
         break;

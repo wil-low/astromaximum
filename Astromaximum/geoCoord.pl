@@ -146,6 +146,17 @@ if(! -f "$dir\\$city_inf\.txt"){
 	our $city;
 	undef $/ ;
 	foreach my $cit(@cities){
+		$cit=~s/[\n\r]//isg;;
+		
+		next if $cit=~/\#/is;
+		next if $cit!~/\d/is;
+		my @params=split(/\|/is, $cit);
+		if(! -f $fname){
+			$city=$params[0];
+			my $tz=get_tz($params[3],$city);
+		}		
+	}
+	foreach my $cit(@cities){
 		$outbuf='';
 		$cit=~s/[\n\r]//isg;;
 		

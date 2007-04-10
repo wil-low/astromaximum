@@ -111,7 +111,7 @@ sub do_timebomb {
 	else{
 		$cmd.="fatal";
 	}
-	$cmd.=" deploy";
+	$cmd.=" clean deploy";
 	print "$cmd\n";
 	my $res=system($cmd);
 	if($res==0){

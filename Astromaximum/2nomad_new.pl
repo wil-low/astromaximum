@@ -171,4 +171,4 @@ sub add_event_char
 	if($hash{$_[0]}!~/$_[1]/is){
 		$hash{$_[0]}.=$_[1];
 	}
-}	
+}

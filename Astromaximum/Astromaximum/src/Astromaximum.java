@@ -284,12 +284,12 @@ public class Astromaximum extends MIDlet implements CommandListener{
     } 
     catch(Exception oome){
 //#mdebug debug
-      Astromaximum.log("****Total memory = "+Long.toString(Runtime.getRuntime().totalMemory()));
-      Astromaximum.log(oome.toString());
-      logBox.showLog(null);
-      oome.printStackTrace();
-//#enddebug        
+       Astromaximum.log("****Total memory = "+Long.toString(Runtime.getRuntime().totalMemory()));
+       Astromaximum.log(oome.toString());
+       logBox.showLog(null);
+       oome.printStackTrace();
 //        quit();
+//#enddebug       
     }
     }  
     summary.repaint();
@@ -333,6 +333,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
    * @param string String
    */
   static void log(String string) {
+//#mdebug debug    
      if(Astromaximum.logBox.getString(0).equals(LogBox.EMPTY)) {
        Astromaximum.logBox.delete(0);
      }
@@ -341,6 +342,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
        Astromaximum.logBox.delete(0);
      }
      System.out.println(string);
+//#enddebug
   }
   
   
@@ -422,14 +424,12 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#debug
 //#         System.out.println(Options.optFlags);
 //#     int now=(int)(Options.currentTime()/4096);
-//#mdebug info
-//#     Astromaximum.log("Timebomb:");
-//#     Astromaximum.log(Long.toString(GeoList.tzOffset));
-//# //    Astromaximum.log(Long.toString(GeoList.localOffset));
-//#     Astromaximum.log(Integer.toHexString(Interpreter.hj));
-//#     Astromaximum.log(Integer.toHexString(now));
-//#     Astromaximum.log(Integer.toHexString(CustomTime.hj));
-//#enddebug
+//#      Astromaximum.log("Timebomb:");
+//#      Astromaximum.log(Long.toString(GeoList.tzOffset));
+//#  //    Astromaximum.log(Long.toString(GeoList.localOffset));
+//#      Astromaximum.log(new Date((long)Interpreter.hj*4096).toString());
+//#      Astromaximum.log(new Date((long)now*4096).toString());
+//#      Astromaximum.log(new Date((long)CustomTime.hj*4096).toString());
 //#     int mul=(CustomTime.hj-now)*(now-Interpreter.hj);
 //# //    System.out.println(mul);
 //#     if(mul==0){
@@ -439,7 +439,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //# //    System.out.println(Integer.toHexString(now));
 //#     return new byte[mul];
 //#   }
-//#endif
+//#endif  
 
 //#if logger
 //#   void logger(String s){
