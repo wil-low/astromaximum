@@ -88,7 +88,9 @@
         <srcfiles dir= "../arrays" includes="**/size?.txt"/>
         <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
       </uptodate>
+<!--
       <echo message="size2dat.notRequired=${size2dat.notRequired}"/>
+-->      
       <antcall target="size.compile"/>
    </target>
     
@@ -141,6 +143,30 @@
       <copy file="${src.dir}/Amdata.class" todir="${preverify.classes.dir}"/>
     </target>
 
+    <target name="jar" depends="init,preverify,create-jad,set-keystore-password,set-alias-password,pre-jar" description="Build jar and application descriptor.">
+        <dirname file="${dist.dir}/${dist.jar}" property="dist.jar.dir"/>
+        <mkdir dir="${dist.jar.dir}"/>
+        <jar compress="${jar.compress}" jarfile="${dist.dir}/${dist.jar}" manifest="${build.dir}/manifest.mf" manifestencoding="UTF-8">
+            <fileset dir="${preverify.classes.dir}"/>
+            <fileset dir="${obfuscated.classes.dir}">
+                <exclude name="**/*.class"/>
+            </fileset>
+        </jar>
+        <nb-jad jadfile="${dist.dir}/${dist.jad}" jarfile="${dist.dir}/${dist.jar}" url="${dist.jar}" sign="${sign.enabled}" keystore="${sign.keystore}" keystorepassword="${sign.keystore.password}" alias="${sign.alias}" aliaspassword="${sign.alias.password}" encoding="${javac.encoding}"/>
+        <antcall target="post-jar" inheritall="true" inheritrefs="true"/>
+    </target>
+    
+    <target name="kzip" depends="init" description="Kzip instead of Jar">
+      <mkdir dir="${dist.jar.dir}/META-INF"/>
+      <copy file="${build.dir}/manifest.mf" todir="${dist.jar.dir}/META-INF"/>
+      <exec executable="${basedir}/../kzip/kzip.exe">
+        
+      </exec>
+    <delete includeEmptyDirs="true">
+      <fileset dir="${dist.jar.dir}/META-INF"/>
+    </delete>
+    </target>  
+    
     <target name="common.install" if="imei.code">
       <condition property="valid.imei">
         <length string="${imei.code}" length="15"/>

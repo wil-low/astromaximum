@@ -41,6 +41,9 @@ $bt_timebomb->pack(-fill=>"x");
 
 my $frame4=$frame0->Frame();
 
+our $lbsize=$frame4->Label();
+
+
 my $frame5=$frame4->Frame();
 $frame5->Label(-text=>"Sort by:")->pack(-side=>'left');
 $frame5->Radiobutton(-text=>'city', -value=>'city', -command=>\&do_sort, -variable=>\$sortmode)->pack(-side=>'left');
@@ -62,7 +65,7 @@ my $frame2=$main->Frame();
 my $lbsel=$frame1->Scrolled('Listbox',-scrollbars=>'e',-activestyle=>"dotbox",-width=>40,-height=>30);
 my $bt_geo=$frame1->Button(-text=>"Generate Geo", -command=>\&do_geo);
 my $lbcities=$frame2->Scrolled('Listbox',-scrollbars=>'e',-activestyle=>"dotbox",-width=>40,-height=>30);
-$lbcities->configure(-selectmode=>'multiple');
+#$lbcities->configure(-selectmode=>'multiple');
 
 $lbcities->pack(-fill=>"both", -expand=>1);
 $lbcities->bind('<Double-1>',\&do_lbselect);
@@ -70,11 +73,13 @@ $lbcities->bind('<Double-1>',\&do_lbselect);
 
 $frame5->pack(-fill=>"x", -pady=>5, -side=>'bottom');
 
+$lbsize->pack(-fill=>"x", -pady=>5, -side=>'bottom');
+
 $frame0->pack(-side=>"left",-fill=>"both", -expand=>1,-padx=>5,-pady=>5);
 
 $frame1->pack(-side=>"left", -fill=>"both", -expand=>1,-pady=>5);
 
-$lbsel->configure(-selectmode=>'multiple');
+#$lbsel->configure(-selectmode=>'multiple');
 $lbsel->bind('<Double-1>',\&do_lbunselect);
 
 
@@ -156,8 +161,8 @@ sub do_geo {
 		}
 		mkdir '.temp' unless -d '.temp';
 		tools::join_datafiles($#selected+1, $path.".temp\\locations.dat", \@geo);
-		tools::create_geo("USER", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\");
-		$main->messageBox(-icon => 'info', -message => "Geo build successful", -title => 'Message', -type => 'Ok');
+		my $code=tools::create_geo("USER", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\", 1);
+		$main->messageBox(-icon => 'info', -message => "Geo build #$code successful", -title => 'Message', -type => 'Ok');
 		return;		
 	}
 	$main->messageBox(-icon => 'error', -message => "Geo build failed!", -title => 'Message', -type => 'Ok');
@@ -189,6 +194,7 @@ sub do_lbselect {
 	refill_list($lbcities, \@files);
 	$lbcities->yview($idx);
 	refill_list($lbsel, \@selected);
+	refresh_lbsize();
 }
 
 sub do_lbunselect {
@@ -196,6 +202,7 @@ sub do_lbunselect {
 	move_record($lbsel->index('active'), \@selected, \@files);
 	do_sort();
 	refill_list($lbsel, \@selected);
+	refresh_lbsize();
 }
 
 sub get_city_list {
@@ -258,4 +265,14 @@ sub get_abilities { # config
 	chomp($lines[0]);
 	$lines[0]=~s/(.+?)(abilities)/$2/is;
 	return $lines[0];
+}
+
+sub refresh_lbsize {
+	if($#selected==-1){
+		$lbsize->configure('-text'=>'');
+	}
+	else{
+		my $locsize=(5100+($#selected+1)*8300/2.25)/1024;
+		$lbsize->configure('-text'=>sprintf('Cities = %d,   file size ~ %d kb',$#selected+1, $locsize));
+	}
 }

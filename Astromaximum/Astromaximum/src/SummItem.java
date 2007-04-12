@@ -591,7 +591,7 @@ class SummItem extends TimerTask implements RecordFilter{
 //        if(str.length()<14)
 //          osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_PLAIN,Font.SIZE_LARGE));
 //        System.out.println(str);
-        y=top+height-1;
+        y=top+height-2;
 //        if(owner.isShowCustom){
         if(str!=null){
           osg.drawString(str,getX(0,XCENTER),y,Graphics.HCENTER|Graphics.BASELINE);
@@ -1169,122 +1169,6 @@ class SummItem extends TimerTask implements RecordFilter{
   
   /** @noinspection AssignmentToMethodParameter*/
   void keyNavigate(int dir) {
-//    switch(type){
-//      case Event.EV_DECUMBITURE:
-////        if(events[0].planet0==1){
-////          vert=false;
-////        }
-//      case Event.EV_MOON_PHASE:
-//        if(owner.pageNum!=Summary.PAGE_DECUMB){
-//          vert=false;
-//        }
-//        owner.moveFocus(delta*(vert? 2: 1));
-//        break;
-////      case Event.EV_MOON_RISE:
-////      case Event.EV_SEL_DEGREES:
-//      case Event.EV_DECUMB_BEGIN:
-//      case Event.EV_DECUMB_ASPECT:
-//        if(vert){
-//          owner.moveFocus(delta*2);
-//        }
-//        else
-//          if((selIndex==0 && delta<0)||(selIndex==events.length-1 && delta>0)){
-//            owner.moveFocus(delta);
-//          }
-//          else{
-//            moveSelection(delta);
-//          }
-//        break;
-//      case Event.EV_FAST_BUTTON:
-//        if(vert){
-//          if(tag<3 && delta<0){
-//            owner.moveFocus(-tag-1);
-//            break;
-//          }
-//          if(tag>5 && delta>0){
-//            owner.moveFocus(9-tag);
-//            break;
-//          }
-//           owner.moveFocus(delta*3);
-//        }
-//        else{
-//            owner.moveFocus(delta);
-//          }
-//        break;
-////      case Event.EV_STATUS:
-////      case Event.EV_PANEL:
-////        owner.moveFocus(delta);
-////        break;
-//      case Event.EV_WEEK:
-//        if(vert) {
-//          owner.moveFocus(delta);
-//        } 
-//        else{
-//          owner.changeDay(delta);
-//        }
-//        selIndex=1;
-//        break;
-//      case Event.EV_GRID_DATE:
-//        if(vert) {
-//          owner.moveFocus(delta);
-//        } 
-//        else{
-//          selIndex=1;
-//          if(owner.pageNum == Summary.PAGE_MONTH) {
-//            owner.moveMonth(delta);
-//          } 
-//          else {
-//            owner.moveDay(delta*owner.rowCount,true);
-//          }
-//        }
-//        break;
-//      case Event.EV_MONTH_GRID:
-//        owner.moveDay(delta*(vert? owner.colCount: 1),!vert);
-//        break;
-//      case Event.EV_WEEK_GRID:
-//        owner.moveDay(delta*(vert? 1: owner.rowCount),!vert);
-//        break;
-//      case Event.EV_ZODIAC_SIGN:
-//      case Event.EV_STATUS:
-//        if(vert){
-//          owner.moveFocus(delta);
-//        }
-//        else
-//          if((selIndex==0 && delta<0)||(selIndex==widths.length-1 && delta>0)){
-//            owner.moveFocus(delta);
-//          }
-//          else{
-//            selIndex+=delta;
-//          }
-//        break;
-//      case Event.EV_HELP:
-//      case Event.EV_RISE:
-//        if(vert){
-//          owner.moveFocus(delta);
-//        }
-//        else{
-//           moveSelection(delta);
-//        }
-//        break;
-//      case Event.EV_SUN_DAY:
-//      case Event.EV_SUN_RISE:
-////      case Event.EV_MOON_PHASE:
-//        if(delta>0){
-//          owner.moveFocus((vert? 4: 1));
-//          break;
-//        }
-//      default:
-//        if(vert){
-//          owner.moveFocus(delta);
-//        }
-//        else
-//          if((selIndex==0 && delta<0)||(selIndex==events.length-1 && delta>0)){
-//            owner.moveFocus(delta);
-//          }
-//          else{
-//            moveSelection(delta);
-//          }
-//    }
     int dn=defaultNavigate(dir);
     boolean vert=dir>=2;
     int delta= (dir&1)==0? -1: 1;
@@ -1312,7 +1196,14 @@ class SummItem extends TimerTask implements RecordFilter{
           owner.moveDay(delta*owner.rowCount,true);
         }
         break;
-        
+      case 26: // Event.EV_MOON_MOVE
+        if(selIndex<events.length/2){ // at head
+          owner.moveFocus(delta>0? 1: (owner.size==1? -3: -4), dir);
+        }
+        else{ // at tail
+          owner.moveFocus(delta>0? 2: -1, dir);
+        }
+        break;
     }
     owner.repaint();
     
@@ -1325,6 +1216,7 @@ class SummItem extends TimerTask implements RecordFilter{
   private int defaultNavigate(int dir) {
     int delta=nav[dir];
     int msel=(dir%2==0)? -1: 1;
+    int where=0;
     if(delta==0){
       moveSelection(msel);
       return 0;
@@ -1336,11 +1228,25 @@ class SummItem extends TimerTask implements RecordFilter{
         return 0;
       }
     }
+    if(delta>50 && delta<70){ // to first
+      delta-=60;
+      where=-1;
+    }
+    if(delta>70 && delta<90){ // to last
+      delta-=80;
+      where=1;
+    }
     if(delta>20){
       return delta;
     }
     else{
       owner.moveFocus(delta,msel);
+      if(where<0){
+        owner.items[owner.selItem].selIndex=0;
+      }
+      if(where>0){
+        owner.items[owner.selItem].selIndex=owner.items[owner.selItem].events.length-1;
+      }
     }
     return 0;
   }

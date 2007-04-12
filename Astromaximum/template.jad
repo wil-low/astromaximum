@@ -1,4 +1,4 @@
-MIDlet-1: <REGION>'07,/icon.png,GeoInstaller
+MIDlet-1: AM-<CODE>'07,/icon.png,GeoInstaller
 MIDlet-Jar-URL: <JAR>
 MIDlet-Name: AM-<CODE>'07
 MIDlet-Description: <DESC>

@@ -73,7 +73,7 @@ public class GeoInstaller extends MIDlet implements CommandListener{
                 gl.rs.addRecord(cn,0,cn.length);
               }
               catch (RecordStoreException ex) {
-		msg="An error occured when installing cities!;";
+		msg="An error occured when installing cities!  "+ex.toString();
 		at=AlertType.ERROR;
               }
             }
@@ -81,6 +81,7 @@ public class GeoInstaller extends MIDlet implements CommandListener{
 	  Alert alert=new Alert("GeoInstaller",msg,null,at);
 	  alert.addCommand(new Command("Close", Command.CANCEL,1));
 	  alert.setCommandListener(this);
+          alert.setTimeout(Alert.FOREVER);
 	  Display.getDisplay(this).setCurrent(alert);
         }
 	break;

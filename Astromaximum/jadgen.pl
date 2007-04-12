@@ -39,6 +39,6 @@ foreach my $city_inf(@files){
 	close($InF);
 	chomp($buf);
 	my($code,$reg)=$buf=~/\#\#(.+):(.+)/is;
-	tools::create_geo($city_inf, $code, $reg, $deploy, "$path$city_inf", $template);
+	tools::create_geo($city_inf, $code, $reg, $deploy, "$path$city_inf", undef, $template);
 }
 

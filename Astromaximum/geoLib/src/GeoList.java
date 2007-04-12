@@ -57,7 +57,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     } 
     catch(IOException e) {
     }
-    cityList=new ChoiceGroup("",type);
+    cityList=new ChoiceGroup(null,type);
     append(cityList);
   }
   
@@ -146,11 +146,13 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
   
   String[] getAvailableCities() throws Exception{
     String[] cities=null;
+    long ET=System.currentTimeMillis();
     RecordEnumeration re = rs.enumerateRecords(null, this, false);
     cities=new String[re.numRecords()];
     for(int i=0; re.hasNextElement(); i++){
       cities[i]=extractCityName(re.nextRecord());
     }
+    System.out.println("getAvailableCities="+Long.toString(System.currentTimeMillis()-ET));
     return cities;
   }
 

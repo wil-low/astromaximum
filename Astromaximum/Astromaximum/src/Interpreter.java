@@ -437,6 +437,9 @@ class Interpreter extends Canvas implements CommandListener {
 //        System.out.println(params[2]);
         res.append(getFullPlanet(params[2]));
         break;
+      case Event.EV_ASP_EXACT_MOON:
+        res.append("\u00b110 "+LocalizationSupport.getMessage("hrs"));
+        break;
     }
 //#endif   
     String ss="";

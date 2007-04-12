@@ -56,17 +56,24 @@ sub read_template {
 	return \$template;
 }
 
-sub create_geo { # code, region, descript, destdir, locationpath, templatedataref
-	my ($code, $reg, $desc, $destdir, $locpath, $template)=@_;
+sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, templatedataref
+	my ($code, $reg, $desc, $destdir, $locpath, $is_numbered, $template, )=@_;
 	if(!$template){
 		$template=read_template();
 	}
 	my $fname="GeoAM-$code";
 	my $jad=$$template;
-	$jad=~s/<REGION>/$reg/s;
-	$jad=~s/<CODE>/$code/s;
-	$jad=~s/<DESC>/$desc/s;
-	$jad=~s/<JAR>/$fname\.jar/is;
+	if($is_numbered){
+		my $locsz= -s '.temp\\locations.dat';
+		$locsz=~/(\d{0,4})$/is;
+		$code=$1;
+		warn $locsz;
+	}
+	$jad=~s/<REGION>/$reg/isg;
+	$jad=~s/<CODE>/$code/isg;
+	$jad=~s/<DESC>/$desc/isg;
+	$jad=~s/<JAR>/$fname\.jar/isg;
+	
 #	die $jad;
 	mkdir ".temp\\META-INF\\" unless -d ".temp\\META-INF\\";
 	open(INF, ">.temp\\META-INF\\MANIFEST.MF") or die "No file";
@@ -94,7 +101,7 @@ sub create_geo { # code, region, descript, destdir, locationpath, templatedatare
 	open(INF, ">$destdir$fname\.jad") or die "No file";
 		print INF $jad;
 	close(INF);
-	
+	return $code;
 }
 
 

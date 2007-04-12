@@ -31,7 +31,7 @@ class Summary extends FrameAnimator implements CommandListener{
   static long period0;
   static long period1;
   static int size;
-  private int selItem;
+  int selItem;
 //  static boolean isCurDay;
   private int previousPage=PAGE_SUMMARY;
   int pageNum;

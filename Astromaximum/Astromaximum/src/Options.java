@@ -58,7 +58,7 @@ class Options extends GeoList{
     addCommand(new Command("OK",Command.OK, 1));
     addCommand(new Command(LocalizationSupport.getMessage("Delete_city"),Command.ITEM, 2));
 //    addCommand(new Command("Reset storage",Command.ITEM, 3));
-    optList=new ChoiceGroup("",Choice.MULTIPLE,
+    optList=new ChoiceGroup(null,Choice.MULTIPLE,
         sOpt,null);
     insert(0,layout);
     insert(0,timeGap);
