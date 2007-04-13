@@ -146,25 +146,40 @@
     <target name="jar" depends="init,preverify,create-jad,set-keystore-password,set-alias-password,pre-jar" description="Build jar and application descriptor.">
         <dirname file="${dist.dir}/${dist.jar}" property="dist.jar.dir"/>
         <mkdir dir="${dist.jar.dir}"/>
+
+<!--	
         <jar compress="${jar.compress}" jarfile="${dist.dir}/${dist.jar}" manifest="${build.dir}/manifest.mf" manifestencoding="UTF-8">
             <fileset dir="${preverify.classes.dir}"/>
             <fileset dir="${obfuscated.classes.dir}">
                 <exclude name="**/*.class"/>
             </fileset>
         </jar>
+-->
+	<antcall target="kzip" inheritall="true" inheritrefs="true"/>
+	
         <nb-jad jadfile="${dist.dir}/${dist.jad}" jarfile="${dist.dir}/${dist.jar}" url="${dist.jar}" sign="${sign.enabled}" keystore="${sign.keystore}" keystorepassword="${sign.keystore.password}" alias="${sign.alias}" aliaspassword="${sign.alias.password}" encoding="${javac.encoding}"/>
         <antcall target="post-jar" inheritall="true" inheritrefs="true"/>
     </target>
     
     <target name="kzip" depends="init" description="Kzip instead of Jar">
-      <mkdir dir="${dist.jar.dir}/META-INF"/>
-      <copy file="${build.dir}/manifest.mf" todir="${dist.jar.dir}/META-INF"/>
-      <exec executable="${basedir}/../kzip/kzip.exe">
-        
+      <delete includeEmptyDirs="true" quiet="true">
+	<fileset dir=".temp"/>
+      </delete>
+      <mkdir dir=".temp/META-INF"/>
+      <copy file="${build.dir}/manifest.mf" todir=".temp/META-INF"/>
+      <copy todir=".temp">
+        <fileset dir="${preverify.classes.dir}"/>
+        <fileset dir="${obfuscated.classes.dir}">
+          <exclude name="**/*.class"/>
+        </fileset>
+      </copy>
+      <exec executable="${basedir}/../kzip/kzip.exe" dir=".temp">
+        <arg line="/r /rn /q temp.zip *"/>
       </exec>
-    <delete includeEmptyDirs="true">
-      <fileset dir="${dist.jar.dir}/META-INF"/>
-    </delete>
+      <copy file=".temp/temp.zip" tofile="${dist.dir}/${dist.jar}"/>
+      <delete includeEmptyDirs="true">
+	<fileset dir=".temp"/>
+      </delete>
     </target>  
     
     <target name="common.install" if="imei.code">
