@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="jarorkzip" basedir=".">
+  <target name="make.jar" unless="need.kzip">
+    <jar compress="${jar.compress}" jarfile="${dist.dir}/${dist.jar}" manifest="${build.dir}/manifest.mf" manifestencoding="UTF-8">
+        <fileset dir="${preverify.classes.dir}"/>
+        <fileset dir="${obfuscated.classes.dir}">
+            <exclude name="**/*.class"/>
+        </fileset>
+    </jar>
+  </target>
+
+  <target name="make.kzip" if="need.kzip" description="Kzip instead of Jar">
+    <delete includeEmptyDirs="true" quiet="true">
+      <fileset dir=".temp"/>
+    </delete>
+    <mkdir dir=".temp/META-INF"/>
+    <copy file="${build.dir}/manifest.mf" todir=".temp/META-INF"/>
+    <copy todir=".temp">
+      <fileset dir="${preverify.classes.dir}"/>
+      <fileset dir="${obfuscated.classes.dir}">
+        <exclude name="**/*.class"/>
+      </fileset>
+    </copy>
+    <exec executable="${basedir}/../kzip/kzip.exe" dir=".temp">
+      <arg line="/r /rn /y /q"/>
+      <arg value="${basedir}/${dist.dir}/${dist.jar}"/>
+      <arg value="*"/>
+    </exec>
+    <delete includeEmptyDirs="true">
+      <fileset dir=".temp"/>
+    </delete>
+  </target>  
+</project>

@@ -1,2 +1,2 @@
-perl geoCoord.pl test0
-pause
+perl geoCoord.pl EE
+

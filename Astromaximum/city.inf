@@ -95,8 +95,9 @@ Santa Fe
 Santiago del Estero
 Vicente López
 @ Armenia, Yerevan
-Gyumri (Leninakan)
+Leninakan
 Kirovakan
+Kadzaran
 @ Aruba, Oranjestad
 @ Ascension Island, Georgetown
 @ Australia - Capital Territory, Canberra
@@ -167,6 +168,7 @@ Rockingham
 @ Austria, Vienna (Wien)
 Braunau am Inn
 Bregenz
+Eisentadt
 Klagenfurt
 Graz
 Innsbruck
@@ -175,9 +177,11 @@ Salzburg
 @ Azerbaijan, Baku
 Ali-Bajramli
 Astara
-Kirovabad (Gandzha)
+Gandzha
+Dzhalilabad
 Stepanakert
 Sumgait
+Zardob
 @ Azores, Ponta Delgada
 @ Bahamas (USA), Nassau
 Dunmore Town
@@ -1206,7 +1210,7 @@ Paphos
 Rizokárpason
 @ Czech Republic, Prague
 Brno
-Ceské Budejovice
+Ceske Budejovice
 Decín
 Frydek-Mistek
 Havírov
@@ -1421,6 +1425,7 @@ Massawa
 Jõgeva
 Kohtla-Järve
 Pärnu
+Narva
 Rapla
 Tartu
 Valga
@@ -1702,17 +1707,17 @@ Eger
 Györ
 Hódmezövásárhely
 Kaposvár
-Kecskemét
+Kecskemet
 Miskolc
 Nyíregyháza
-Pécs
+Pecs
 Salgótarján
 Szeged
 Szekszárd
 Szolnok
 Szombathely
 Székesfehérvár
-Tatabánya
+Tatabanya
 Veszprém
 Zalaegerszeg
 @ Iceland, Reykjavik
@@ -2533,7 +2538,7 @@ Savannakhet
 Daugavpils
 Jelgava
 Jurmala
-Liepãja
+Liepaja
 @ Lebanon, Beirut
 Sidon
 Sur
@@ -2564,9 +2569,10 @@ Zuwarah
 @ Liechtenstein, Vaduz
 @ Lithuania, Vilnius
 Kaunas
+Druskininkai
 Klaipeda
-Panevezhis
-Shauliai
+Panevezys
+Siauliai
 @ Luxembourg, Luxembourg
 Esch-sur-Alzette
 @ Macao (CHN), Macao
@@ -2737,7 +2743,7 @@ Kagul
 Komrat
 Lipkany
 Soroki
-Tighina (Bendery)
+Bendery
 Tiraspol
 @ Monaco, Monaco
 @ Mongolia, Khovd
@@ -3124,6 +3130,7 @@ Gdynia
 Gliwice
 Gorzów Wielkopolski
 Grudziadz
+Jelenia Gora
 Jastrzebie-Zdrój
 Kalisz
 Katowice
@@ -3137,6 +3144,7 @@ Olsztyn
 Opole
 Plock
 Poznan
+Przemysl
 Radom
 Ruda Slaska
 Rybnik
@@ -3151,7 +3159,7 @@ Walbrzych
 Wloclawek
 Wroclaw
 Zabrze
-Zielona Góra
+Zielona Gora
 @ Portugal, Lisbon (Lisboa)
 Amadora
 Aveiro
@@ -3185,6 +3193,7 @@ Ar Rayyan
 Umm Said
 @ Reunion (FRA), Saint-Denis
 @ Romania, Bucharest
+Alexandria
 Arad
 Bacau
 Baia Mare
@@ -3219,7 +3228,7 @@ Astrakhan
 Balakovo
 Balashikha
 Belgorod
-Brjansk
+Bryansk
 Cheboksary
 Cherepovets
 Cherkessk
@@ -3343,7 +3352,7 @@ Serov
 Solikamsk
 Sterlitamak
 Surgut
-Tjumen
+Tyumen
 Tobolsk
 Ufa
 Zlatoust
@@ -4670,18 +4679,22 @@ Donetsk
 Evpatoriya
 Gorlovka
 Ivano-Frankovsk
+Izmail
+Jaremca
 Kamenetz-Podolsky
-Kertch
+Kerch
 Kharkov
 Kherson
 Khmelnitsky
 Kirovograd
 Konotop
 Konstantinovka
+Kovel'
 Kramatorsk
 Krasny Lutch
 Krementchug
 Krivoi Rog
+Krivoy Rog
 Lisichansk
 Lugansk
 Lutsk
@@ -4703,6 +4716,7 @@ Stakhanov
 Sumy
 Ternopol
 Uzhgorod
+Uman'
 Vinnitsa
 Yenakievo
 Zaporozje

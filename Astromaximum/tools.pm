@@ -56,12 +56,12 @@ sub read_template {
 	return \$template;
 }
 
-sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, templatedataref
-	my ($code, $reg, $desc, $destdir, $locpath, $is_numbered, $template, )=@_;
+sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, year, templatedataref
+	my ($prefix, $reg, $desc, $destdir, $locpath, $is_numbered, $year, $template )=@_;
+	my $code='';
 	if(!$template){
 		$template=read_template();
 	}
-	my $fname="GeoAM-$code";
 	my $jad=$$template;
 	if($is_numbered){
 		my $locsz= -s '.temp\\locations.dat';
@@ -69,6 +69,9 @@ sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, t
 		$code=$1;
 		warn $locsz;
 	}
+	$year=~s/\d\d(\d\d)/$1/is;
+	my $fname="$prefix$code\'$year";
+	$jad=~s/<YEAR>/$year/isg;
 	$jad=~s/<REGION>/$reg/isg;
 	$jad=~s/<CODE>/$code/isg;
 	$jad=~s/<DESC>/$desc/isg;
@@ -104,5 +107,14 @@ sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, t
 	return $code;
 }
 
+sub get_year { 
+# in: path
+# out: year, day count
+	open(FYEAR, "<$_[0]".'year.txt') or die "No file: $!";
+	my $year=<FYEAR>;
+	close(FYEAR);
+	chomp($year);
+	return split(/,/is, $year);
+}
 
 1;

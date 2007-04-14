@@ -12,10 +12,14 @@ if($#ARGV!=0){
 }
 my $city_inf=$ARGV[0]; # файл со списком городов
 
+$0=~/(.+\\)/is;
+our $mypath=$1;
+our $path=$mypath."GeoAM\\geo\\";
 
 my $country='';
 my $tz;
-my ($year, $month, $day, $hour, $min, $day_count)=(2007,1,1,0,0,365);
+my ($year, $day_count)=tools::get_year($mypath);
+my ($month, $day, $hour, $min)=(1,1,0,0);
 my $tz_ofs=0;
 {
 #		warn $tm;
@@ -31,9 +35,6 @@ my $sqpath='d:\\projects\\astro\\';
 my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
 
-$0=~/(.+\\)/is;
-our $mypath=$1;
-our $path=$mypath."GeoAM\\geo\\";
 
 my $dir=$path."$city_inf";
 mkdir $dir unless -d $dir;
@@ -48,6 +49,7 @@ my @cities;
 	open($InF, "<$mypath".'city.inf') or die "No file $mypath".'city.inf';
 	@cities=<$InF>;
 	my $citlist=join("",@cities);
+	$citlist=~s/\([^\)]+\)//isg;
 	close($InF);
 #	die $citlist;
 
@@ -59,6 +61,7 @@ my @cities;
 #die get_tz('USA - District of Columbia', 'Washington');
 #=head
 if(! -f "$dir\\$city_inf\.txt"){
+	my $error=0;
   unlink "$dir\\$city_inf\.txt";
 	open($InF, "<$path$city_inf\.ini") or die "No file $path$city_inf\.ini";
 	@cities=<$InF>;
@@ -71,6 +74,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 	my $tmp=$path.'country.tmp';
 	foreach my $cit(@cities){
 		chomp($cit);
+		next if $cit=~/\A\s*\Z/is;
 		next if $cit=~/\#/is;
 		if($cit=~s/\@\s*//is){
 	#		die if $country;
@@ -86,7 +90,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			close($InF);
 			if($countries[0]=~/(\d+)\|/is){
 				$cid=$1;
-				print "$country  capital =";
+#				print "$country  capital =";
 				$cit=$country;
 				$cit=~s/\(.+?\)//isg;
 				$cit=~s/.+,\s*//is;
@@ -106,6 +110,8 @@ if(! -f "$dir\\$city_inf\.txt"){
 		}
 		next if $cit=~/\#/is;
 		$cit=~s/\'/\'\'/isg;
+		$cit=~s/(\!.+)//is;
+		my $altcit=$1;
 		my $state=$country;
 		my $sql;
 		if($state=~/USA \- (.+)/is){
@@ -129,13 +135,37 @@ if(! -f "$dir\\$city_inf\.txt"){
 			$state=$1;
 			$sql="select eng, longit, latit, \'$state\' from cities where eng = \'$cit\' and country_id=$cid limit 1";
 		}
-		$invoke="echo $sql; \| $db >> \"$dir\\$city_inf\.txt\"";
+		$invoke="echo $sql; \| $db > \"$tmp\"";
 #		print "$invoke\n";
 		system($invoke);
+		open($InF, "<$tmp") or die "No file $tmp";
+		my @countries=<$InF>;
+		close($InF);
+		if($countries[0]=~/\|/is){
+			chomp($countries[0]);
+			$countries[0]=~s/\|/$altcit\|/is;
+			my @params=split(/\|/is, $countries[0]);
+			$params[0]=~s/.+!//is;
+			$error++ if !get_tz($params[3],$params[0],0);
+			$invoke="echo \"$countries[0]\" >> \"$dir\\$city_inf\.txt\"";
+#			print "$invoke\n";
+			system($invoke);
+		}
+		else{
+			warn "*** $cit ($state) not found\n";
+			$error++;
+		}
+		
 	}
-  unlink $path.'country.tmp';
-	die "Ready. Check coords.\n";
-#=cut
+  unlink $tmp;
+  if($error){
+  	unlink "$dir\\$city_inf\.txt";
+  	die "Please correct $error errors.\n";
+  }
+  else{
+		warn "Ready. Check coords.\n";
+	}
+	<STDIN>;
 }
 #####################################
 	open($InF, "<$dir\\$city_inf\.txt") or die "No file";
@@ -145,33 +175,37 @@ if(! -f "$dir\\$city_inf\.txt"){
 	my $i=0;
 	our $city;
 	undef $/ ;
-	foreach my $cit(@cities){
-		$cit=~s/[\n\r]//isg;;
-		
-		next if $cit=~/\#/is;
-		next if $cit!~/\d/is;
-		my @params=split(/\|/is, $cit);
-		if(! -f $fname){
-			$city=$params[0];
-			my $tz=get_tz($params[3],$city);
-		}		
-	}
+#	foreach my $cit(@cities){
+#		chomp($cit);
+#		next if $cit=~/\A\s*\Z/is;
+#		$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
+#		next if $cit=~/\#/is;
+#		next if $cit!~/\d/is;
+#		my @params=split(/\|/is, $cit);
+#		if(! -f $fname){
+#			$city=$params[0];
+#			$city=~s/.+!//is;
+#			get_tz($params[3],$city);
+#		}		
+#	}
 	foreach my $cit(@cities){
 		$outbuf='';
-		$cit=~s/[\n\r]//isg;;
-		
+		chomp($cit);
+		$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
+		next if $cit=~/\A\s*\Z/is;
 		next if $cit=~/\#/is;
 		next if $cit!~/\d/is;
 		my @params=split(/\|/is, $cit);
 		$fname=$dir.sprintf('\\Data%02d.dat',$i);
+		$city=$params[0];
+		$city=~s/.+!//is;
 		if(! -f $fname){
-			$city=$params[0];
 			print "\n-----------------------";
 			print "\n******** $city ********";
 			print "\n-----------------------\n";
-			my $tz=get_tz($params[3],$city);
+			my $tz=get_tz($params[3],$city,1);
 			my $dstbuf=calc_dst($tz);
-			my $invoke=$mypath."mutter\\mutter.exe 2007 geo0- $params[1] $params[2]";
+			my $invoke=$mypath."mutter\\mutter.exe $year geo0- $params[1] $params[2]";
 			print "$invoke\n";
 			system($invoke);
 			if($params[3]=~/USA \- (.+)/is){
@@ -194,13 +228,18 @@ if(! -f "$dir\\$city_inf\.txt"){
 				tools::writeData($ff, $fname, 0);
 			}	
 		}
+		else{
+			data_check($fname, $year, $city);
+		}
+
 		$i++;
 	}
-	my @bins=glob("$dir\\Data*.dat");
-	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
+#	my @bins=glob("$dir\\Data*.dat");
+#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
 
 sub get_tz{
-	my ($country,$city)=@_;
+	my ($country,$city,$isdie)=@_;
+	$country=~s/.+\$//is;
 	if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n]+\))?\n)/is){
 		my $tzz=$1;
 		$tzz=~/\A(.+?)\n/is;
@@ -210,7 +249,13 @@ sub get_tz{
 			return $li if $li=~/$tzz/is;
 		}
 	}
-	die "No TZ for $country, $city!";
+	if($isdie){
+		die "No TZ for $country, $city!";
+	}
+	else{
+		warn "No TZ for $country, $city!\n";
+	}
+	return undef;
 }
 
 sub calc_dst{
@@ -300,3 +345,24 @@ sub writeUTF
 #	$outbuf.=$param;
 #	die $outbuf;
 }
+
+sub data_check
+{
+	#in: fname, year, cityname
+	my ($data_year, $dc_len, $data_city);
+	open(FILE, "<$_[0]");
+	read(FILE, $data_year,4);
+	$data_year=unpack('S',$data_year);
+	seek(FILE,8,0);
+	read(FILE, $dc_len,2);
+	$dc_len=unpack('n',$dc_len);
+	read(FILE, $data_city,$dc_len);
+	close(FILE);
+	if($data_year==$_[1] and $data_city eq $_[2]){
+		return 1;
+	}
+	else{
+		die "$_[0] contains \"$data_city\" and \"$data_year\"!\n";
+	}
+}
+	

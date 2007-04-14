@@ -5,6 +5,7 @@ use lib 'D:/Willow/prj/astrology/nomad_prj/';
 use lib 'd:/projects/nomad_prj';
 use tools;
 
+our $year='';
 our $antpath='d:\\Program Files\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat';
 if(! -f $antpath){
 	$antpath='d:\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat';
@@ -16,12 +17,16 @@ $0=~/(.+\\)/is;
 our $path=$1;
 our $sortmode='city';
 
+($year)=tools::get_year($path);
+die "Invalid year record: $year" if $year!~/\d{4}/is;
+ 
 my @files=get_city_list();
 my @selected;
 my $debug=0;
+my $kzip=1;
 my $ltime=0;
 
-my $main = new MainWindow(-title=>"Astromaximum Release GUI");
+my $main = new MainWindow(-title=>"Astromaximum Release GUI - $year");
 my $frame0=$main->Frame();
 my $imei=$frame0->Entry(-text=>'359593001109710');
 my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>[\&do_imei,'midp2y2007release']);
@@ -33,7 +38,10 @@ $imei->pack();
 $bt_imei->pack(-fill=>"x");
 $bt_imei_logger->pack(-fill=>"x",-pady=>3);
 
-$frame0->Checkbutton(-text=>"Debug", -variable=>\$debug)->pack(-pady=>10);
+my $frame6=$frame0->Frame();
+$frame6->Checkbutton(-text=>"Debug", -variable=>\$debug)->pack(-side=>'left');
+$frame6->Checkbutton(-text=>"Kzip", -variable=>\$kzip)->pack(-side=>'left');
+$frame6->pack(-pady=>3);
 $lbox->pack();
 
 $bt_timebomb->pack(-fill=>"x");
@@ -116,6 +124,7 @@ sub do_timebomb {
 	else{
 		$cmd.="fatal";
 	}
+  $cmd.=' -Dneed.kzip=true' if $kzip;
 	$cmd.=" clean deploy";
 	print "$cmd\n";
 	my $res=system($cmd);
@@ -138,6 +147,7 @@ sub do_imei { # config_name
 		else{
 			$cmd.="fatal";
 		}
+		$cmd.=' -Dneed.kzip=true' if $kzip;
 		$cmd.=" deploy";
 		print "$cmd\n";
 		my $res=system($cmd);
@@ -161,7 +171,7 @@ sub do_geo {
 		}
 		mkdir '.temp' unless -d '.temp';
 		tools::join_datafiles($#selected+1, $path.".temp\\locations.dat", \@geo);
-		my $code=tools::create_geo("USER", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\", 1);
+		my $code=tools::create_geo("Cities-", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\", 1, $year);
 		$main->messageBox(-icon => 'info', -message => "Geo build #$code successful", -title => 'Message', -type => 'Ok');
 		return;		
 	}
@@ -220,10 +230,13 @@ sub get_city_list {
 			my $ci=$_;
 			next if $ci=~/\#/is;
 			chomp($ci);
+			$ci=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
 			$ci=~/(.+?)\|.+\|(.+)/is;
+			my($city,$state)=($1,$2);
+			$city=~s/.+!//is;
 			my $datapath="$inipath".sprintf('Data%02d.dat', $i++);
 			if(-f $datapath){
-				push(@files, {city=>$1, state=>$2, fname=>$datapath} );
+				push(@files, {city=>$city, state=>$state, fname=>$datapath} );
 			}
 			else{
 				warn "No datafile $datapath\n";

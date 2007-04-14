@@ -14,12 +14,15 @@ $imei='359593001109710' unless $imei;
 
 #die sprintf('%x',substr($imei,0,8));
 
-my ($year, $month, $day, $hour, $min, $day_count)=(2007,1,1,0,0,365);
 $0=~/(.+\\)/is;
+my $mypath=$1;
+
+my ($year, $day_count)=tools::get_year($mypath);
+my ($month, $day, $hour, $min)=(1,1,0,0);
 
 our $outp=$ARGV[0];
 print "imei=$imei\n";
-our $path=$1.'mutter\\output\\';
+our $path=$mypath.'mutter\\output\\';
 
 my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
 
