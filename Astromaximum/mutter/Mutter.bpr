@@ -120,7 +120,7 @@ Item3=_DEBUG
 DebugSourceDirs=$(BCB)\source\vcl
 
 [Parameters]
-RunParams=2007 geo0- 30.51 50.43
+RunParams=2007 electio 30.51 50.43
 Launcher=
 UseLauncher=0
 DebugCWD=

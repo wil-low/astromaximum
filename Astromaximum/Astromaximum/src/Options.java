@@ -169,7 +169,7 @@ class Options extends GeoList{
           Astromaximum.summary.items=null;
           Astromaximum.summary.pageNum=Summary.PAGE_SUMMARY;
           Astromaximum.summary.changeSize();
-          Astromaximum.summary.showDaySummary();
+          Astromaximum.summary.gatherSummary(Astromaximum.summary.date.getTime());
         }
         Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
         break;

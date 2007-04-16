@@ -26,7 +26,7 @@ class Summary extends FrameAnimator implements CommandListener{
 //  private SummItem prevPH;
   private short[] bounds;
   private short[] _bounds;
-  private Date date=new Date();
+  Date date=new Date();
   private static final int BOUNDS_VARS=12;
   static long period0;
   static long period1;
@@ -315,7 +315,7 @@ class Summary extends FrameAnimator implements CommandListener{
    * @noinspection AssignmentToForLoopParameter,ValueOfIncrementOrDecrementUsed,ProhibitedExceptionCaught
    * @param date0 
    */
-  private void gatherSummary(long date0) {
+  void gatherSummary(long date0) {
     final long tick=Options.currentTime();
     rowCount=1;
     date.setTime(date0);//new Date(date.getTime());

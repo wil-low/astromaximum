@@ -388,7 +388,10 @@ class Interpreter extends Canvas implements CommandListener {
         res.append("Via Combusta");
         break;
       case Event.EV_WEEK:
-        res.append(LocalizationSupport.getMessage("wd"+Integer.toString((int)params[2])));
+        res.append(LocalizationSupport.getMessage("wd"+Long.toString(params[2]))).
+            append(" - ").append(LocalizationSupport.getMessage("Day")+" "+
+            LocalizationSupport.getMessage(
+            "of"+Integer.toString(SummItem.weekPlanets[(int)params[2]-1])));
         break;
 //      case Event.EV_HELP:
 //      case Event.EV_DECUMBITURE:
@@ -400,11 +403,11 @@ class Interpreter extends Canvas implements CommandListener {
         break;
       case Event.EV_ECLIPSE:
         res.append(LocalizationSupport.getMessage("Eclipse")).append(" ").append(
-            LocalizationSupport.getMessage("of_"+Astromaximum.PLANETS[(int)params[2]]));
+            LocalizationSupport.getMessage("of"+Long.toString(params[2])));
         break;
       case Event.EV_PLANET_HOUR:
         res.append(LocalizationSupport.getMessage("Hour")).append(" ").append(
-            LocalizationSupport.getMessage("of_"+Astromaximum.PLANETS[(int)params[2]]));
+            LocalizationSupport.getMessage("of"+Long.toString(params[2])));
         break;
       case Event.EV_MOON_PHASE:
 //        res.append(LocalizationSupport.getMessage("mph"+Integer.toString((int)params[2])));
@@ -438,7 +441,7 @@ class Interpreter extends Canvas implements CommandListener {
         res.append(getFullPlanet(params[2]));
         break;
       case Event.EV_ASP_EXACT_MOON:
-        res.append("\u00b110 "+LocalizationSupport.getMessage("hrs"));
+        res.append("\u00b16 "+LocalizationSupport.getMessage("hrs"));
         break;
     }
 //#endif   

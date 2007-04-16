@@ -48,6 +48,7 @@ private:
   void geopos(char* city, double lat, double lon, char* suffix);
   short swapShort(short var);
   int swapInt(int var);
+  int calcAphetics(unsigned char planet, unsigned short degree);
 public:
   sAscRecord *ascData;
   void sortVAE(VAE &work);
@@ -59,5 +60,6 @@ public:
   void init(sEphRecord *ephdata, double start, unsigned int count);
   void AAA();
   ~DataFile();
+  boolean loadAphetics(sAphRecord *data);
 };
 #endif

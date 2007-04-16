@@ -20,6 +20,8 @@ const NOT_ENOUGH_PARAMS=-1,
 char ephemPath[]="swiss";
 const char outFile[]="output.txt";
 
+sAphRecord aphetics[SE_SATURN+1];
+
 int main(int argc, char* argv[])
 {
   char path[_MAX_PATH];
@@ -56,7 +58,7 @@ int main(int argc, char* argv[])
   tm *st=gmtime(&loo);
   loo=mktime(st);
   assert(sizeof(sMatrix)==9);
-  assert(EV_LAST==47);
+  assert(EV_LAST==48);
   if(argc<2) return NOT_ENOUGH_PARAMS;
   DataFile df;
   char buf[20];
@@ -139,24 +141,30 @@ int main(int argc, char* argv[])
     double cusps[13], ascmc[10];
     sAscRecord *ascData=new sAscRecord[stepCount];
     endJD=startJD;
-    long tm=GetTickCount();
-    for(int i=0; i<stepCount; i++){
-      swe_houses(endJD, df.Lat, df.Lon, 'P', cusps, ascmc);
-      ascData[i].data[0]=cusps[1];  //asc
-      ascData[i].data[1]=cusps[7];  //dsc
-      endJD+=MINUTE_STEP;
-      if(i%10000==0)
-        printf("%d...",i/10000);
-    }
-    df.ascData=ascData;
-    printf("\n  ET=%ld\n",GetTickCount()-tm);
-
-
     VAE work, assist, vout, work2;
-    df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
-    df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
-    df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
+    long tm=GetTickCount();
 
+
+    if(strcmp(argv[2],"electio")==0){
+      df.loadAphetics(aphetics);
+//      df.choice(EV_APHETICS, work, assist, vout, work2, argv[2]);
+      scanf("%s",buf);
+    }
+    else{
+      for(int i=0; i<stepCount; i++){
+        swe_houses(endJD, df.Lat, df.Lon, 'P', cusps, ascmc);
+        ascData[i].data[0]=cusps[1];  //asc
+        ascData[i].data[1]=cusps[7];  //dsc
+        endJD+=MINUTE_STEP;
+        if(i%10000==0)
+          printf("%d...",i/10000);
+      }
+      df.ascData=ascData;
+      printf("\n  ET=%ld\n",GetTickCount()-tm);
+      df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
+      df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
+      df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
+    }
     delete[] ephData;
     delete[] ascData;
   }

@@ -497,6 +497,20 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
   VAE allDegPass;
   printf("\n");
   switch(et){
+    case EV_APHETICS:
+      printf("Aphetics...");
+/*      for(int i=0; i<PLANET_COUNT; i++){
+        sprintf(fname,"degpass%02d.bin",i);
+        readSubData(fname,work);
+        for(int j=0; j<work.size(); j++){
+          work[j]->dump();
+          int ball=calcAphetics(i,work[j]->degree&0x3fff);
+          work[j]->planetId[1]=ball+50;
+        }
+        release(work);
+        break;
+      }
+*/      break;
     case EV_VIA_COMBUSTA:
       printf("Via Combusta...");
       calcDegPass(allDegPass,SE_MOON);
@@ -934,4 +948,98 @@ void DataFile::NormAngle(double &a)
 void DataFile::geopos(char* city, double lat, double lon, char* suffix)
 {
   //TODO: Add your source code here
+}
+
+int DataFile::calcAphetics(unsigned char planet, unsigned short degree)
+{
+  static const unsigned char OWN_SIGN[2][7]=
+    {{4,3,2,1,0,8,9},
+     {4,3,5,6,7,11,10}};
+  static const unsigned char EXALTATION[7]=
+    {0,1,100,11,9,3,6};
+  static const unsigned char TRIPLICITY[3][7]={
+    {0,1,2,1,3,0,2},
+    {4,5,6,5,7,4,6},
+    {8,9,10,9,11,8,10}
+  };
+
+
+  int aph=0;
+  int sign=degree/30;
+  // domicile
+  if(sign==OWN_SIGN[0][planet]){
+    aph+=5;
+  }
+  if((planet>SE_MOON) && sign==OWN_SIGN[1][planet]){
+    aph+=5;
+  }
+  // exaltation
+  if(sign==EXALTATION[planet]){
+    aph+=4;
+  }
+  // triplicity
+  for(int i=0; i<3; i++){
+    if(sign==TRIPLICITY[i][planet]){
+      aph+=3;
+      break;
+    }
+  }
+
+  return aph;
+}
+
+
+boolean DataFile::loadAphetics(sAphRecord *data)
+{
+  static const char PLANET_BALLS[SE_SATURN+1][12]={
+    {10, 6,11, 7, 3, 5, 1, 9, 2, 8, 0, 4},
+    { 9, 7, 0, 8, 4, 2,10, 6, 5,11, 1, 3},
+    {11, 8, 3, 7, 1, 9, 4, 0, 6,10, 2, 5},
+    { 0, 7, 5, 2,10, 8, 4, 3, 9,11, 6, 1},
+    { 1, 6, 3,11, 5, 2,10, 8, 4, 9, 7, 0},
+    { 5, 2, 9, 7, 1,10, 6, 4, 0, 3,11, 8},
+    { 4, 3, 0, 2, 8,11, 7, 5, 1, 6,10, 9},
+  };
+  static const char DECANES[3][12]={
+    {4,2,5,3,6,0,1,4,2,5,3,6},
+    {0,1,4,2,5,3,6,0,1,4,2,5},
+    {3,6,0,1,4,2,5,3,6,0,1,4},
+  };
+  FILE *aphet=fopen("aphetics.bin","rb");
+  if(aphet){
+    fread(data,SE_SATURN+1,360,aphet);
+  }
+  else{
+    printf("\nCalculating aphetics...");
+    for(int i=0; i<=SE_SATURN; i++){
+      for(int j=0; j<12; j++){
+        int sign=PLANET_BALLS[i][j]*30;
+        int ball=j-6;
+        if(ball>=0) ball++;
+        for(int k=0; k<30; k++){
+          data[i].data[sign+k]=ball;
+        }
+      }
+    }
+    FILE *terma=fopen("terma.bin","rb");
+    short count=0;
+    fread(&count,1,2,terma);
+    short buf[2];
+    int ii=0;
+    for(int i=0; i<count; i++){
+      fread(buf,2,2,terma);
+      for(int j=0; j<buf[0]; j++){
+        data[buf[1]].data[ii++]+=2;
+      }
+    }
+    fclose(terma);
+    for(int i=0; i<360; i++){
+      int j=i/30;
+      data[DECANES[(i-(j*30))/10][j]].data[i]++;
+    }
+    aphet=fopen("aphetics.bin","wb");
+    fwrite(data,SE_SATURN+1,360,aphet);
+  }
+  fclose(aphet);
+  return true;
 }

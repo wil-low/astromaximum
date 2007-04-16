@@ -13,6 +13,10 @@ struct sEphRecord {
   double data[13];
 };
 
+struct sAphRecord {
+  char data[360];
+};
+
 struct sAscRecord {
   double data[2];
 };
@@ -71,6 +75,7 @@ typedef enum {
   EV_HELP1,
   EV_ASTRORISE,
   EV_ASTROSET,
+  EV_APHETICS,
   EV_LAST // last - do not use
 } EventType;
 

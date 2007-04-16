@@ -51,6 +51,7 @@ class SummItem extends TimerTask implements RecordFilter{
   private static final long DEGREE_DELTA_MSEC2=28*60*1000;
   static Summary owner;
   private static final int[] ASP_ANGLES={0,180,90,120,60,45,30,15,72,150};
+  static final byte[] weekPlanets={0,1,4,2,5,3,6};
   static Hashtable topics = new Hashtable();  
   static{
     topics.put(new Integer(Event.EV_MOON_DAY), "#*^$}>@");
@@ -1052,7 +1053,8 @@ class SummItem extends TimerTask implements RecordFilter{
       return LocalizationSupport.getMessage("Topics");
     }
     if(type == Event.EV_WEEK){
-      return LocalizationSupport.getMessage("week_day");
+      return LocalizationSupport.getMessage("Day")+" "+LocalizationSupport.getMessage(
+          "of"+Integer.toString(weekPlanets[events[1].planet0-1]));
     }
     String s="";
     final Event sel=getSelEvent();
