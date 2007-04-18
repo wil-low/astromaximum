@@ -38,8 +38,8 @@ class SummItem extends TimerTask implements RecordFilter{
   final int type;
   static  byte[] places;
   int selIndex;
-  private int nowSelection=-1;
-  private int cusSelection=-1;
+  int nowSelection=-1;
+  int cusSelection=-1;
   private final int page;
 //#if "imeiCheck" @ protection
   static int hj;
@@ -1153,13 +1153,24 @@ class SummItem extends TimerTask implements RecordFilter{
       return;
     }
 //    events[0].dump();
-    final int deg2=getSelEvent().getDegree()-1;
+    int deg2=getSelEvent().getDegree()-1;
+//#if logger
+//#       Astromaximum.instance.logger(Integer.toString(deg2));
+//#endif  
+    if(deg2>30){
+      deg2=0;
+      Astromaximum.instance.log("wrong tithi");
+    }
     tithi =Astromaximum.extractImg(deg2,"/res/ph"+Integer.toString(Summary.moonPhaseH)+".dat");
   }
   
   void setSelection(){
     if(Summary.isCurrentDay) {
       selIndex = nowSelection;
+    }
+    else{
+      Astromaximum.log("not current!");
+      selIndex=0;
     }
   }
   

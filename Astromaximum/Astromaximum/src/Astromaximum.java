@@ -17,7 +17,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
   static final int TOPIC_COLOR = 0xd0d0d0;
   static final int GRAY_COLOR = 0xe0e0e0;
   static final String URL="www.astromaximum.com";
-  static final int LOGGER_SLEEP = 2000;
+  static int LOGGER_SLEEP = 2000;
 
 //#if "imeiCheck" @ protection
   static int hj;
@@ -333,7 +333,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
    * @param string String
    */
   static void log(String string) {
-//#mdebug debug    
+///#mdebug debug    
      if(Astromaximum.logBox.getString(0).equals(LogBox.EMPTY)) {
        Astromaximum.logBox.delete(0);
      }
@@ -342,7 +342,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
        Astromaximum.logBox.delete(0);
      }
      System.out.println(string);
-//#enddebug
+///#enddebug
   }
   
   

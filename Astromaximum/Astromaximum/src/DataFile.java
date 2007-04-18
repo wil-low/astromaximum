@@ -356,6 +356,9 @@ final class DataFile{
       }
       int cumul; long date=0;
       long sJD=startJD, fJD=finalJD;
+      if(planet==Event.SE_MOON){
+//        fJD+=31*Astromaximum.MSECINDAY;
+      }
 //      Astromaximum.instance.log("Count="+Integer.toString(count),true);
       for(int i=0; i<count; i++){
 //////////////

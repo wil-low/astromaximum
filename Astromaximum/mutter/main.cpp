@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
   Event::startYear=year;
   double startJD=swe_julday(year-1,12,31,0,SE_GREG_CAL);
   printf("startJD=%f\n",startJD);
-  double endJD=swe_julday(year+1,1,2,0,SE_GREG_CAL);
+  double endJD=swe_julday(year+1,2,1,0,SE_GREG_CAL);
 
 
 //  double endJD=swe_julday(year,2,1,0,SE_GREG_CAL);

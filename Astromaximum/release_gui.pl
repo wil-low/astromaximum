@@ -222,25 +222,29 @@ sub get_city_list {
 		$ini=~/.+\\(.+?)\.ini/is;
 		$ini=$1;
 		my $inipath=$path."GeoAM\\geo\\$ini\\";
-		open(INI,"<$inipath$ini.txt") or warn "No file $path$ini.txt\n";
-		my @cset=<INI>;
-		close(INI);
-		my $i=0;
-		foreach (@cset){
-			my $ci=$_;
-			next if $ci=~/\#/is;
-			chomp($ci);
-			$ci=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
-			$ci=~/(.+?)\|.+\|(.+)/is;
-			my($city,$state)=($1,$2);
-			$city=~s/.+!//is;
-			my $datapath="$inipath".sprintf('Data%02d.dat', $i++);
-			if(-f $datapath){
-				push(@files, {city=>$city, state=>$state, fname=>$datapath} );
+		if(open(INI,"<$inipath$ini.txt")){
+			my @cset=<INI>;
+			close(INI);
+			my $i=0;
+			foreach (@cset){
+				my $ci=$_;
+				next if $ci=~/\#/is;
+				chomp($ci);
+				$ci=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
+				$ci=~/(.+?)\|.+\|(.+)/is;
+				my($city,$state)=($1,$2);
+				$city=~s/.+!//is;
+				my $datapath="$inipath".sprintf('Data%02d.dat', $i++);
+				if(-f $datapath){
+					push(@files, {city=>$city, state=>$state, fname=>$datapath} );
+				}
+				else{
+					warn "No datafile $datapath\n";
+				}
 			}
-			else{
-				warn "No datafile $datapath\n";
-			}
+		}
+		else{
+			 warn "No file $path$ini.txt\n";
 		}
 	}
 	return sort comparator @files;

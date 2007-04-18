@@ -42,12 +42,13 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     super("");
     timeField=new DateField(null,DateField.TIME,
         Astromaximum.calendar.getTimeZone());
+    
     dateField=new DateField(null,DateField.DATE,Astromaximum.calendar.getTimeZone());
     decumbDate=System.currentTimeMillis();
     dateField.setDate(new Date(decumbDate+Event.localOffset(decumbDate)));
 //    System.out.print("<> ");
 //    System.out.println(dateField.getDate());
-    timeField.setDate(new Date(decumbDate+Event.localOffset(decumbDate)));
+    timeField.setDate(new Date((decumbDate+Event.localOffset(decumbDate))%Astromaximum.MSECINDAY));
     cg=new ChoiceGroup(null/*LocalizationSupport.getMessage("History")*/, Choice.EXCLUSIVE);
     for(int i=0; i<histCount; i++){
       cg.append(Event.long2String(history[i],0,false),null);
@@ -60,11 +61,15 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     };
     setCommandListener(this);
     setItemStateListener(this);
+//#if logger
+//#       Astromaximum.instance.logger("inside CustomTime");
+//#       Astromaximum.instance.logger(timeField.getDate().toString());
+//#endif      
   }
 
   public void itemStateChanged(Item item) {
     if(item==cg){
-      System.out.println("hkjh");
+//      System.out.println("hkjh");
       int sel=cg.getSelectedIndex();
       if(sel>=0){
         long tm=history[sel];
@@ -172,11 +177,20 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
   }
 
   boolean setTime(boolean addHistory) {
+//#if logger
+//#       Astromaximum.instance.logger(timeField.getDate().toString());
+//#endif      
     long tmp=timeField.getDate().getTime();
+//#if logger
+//#       Astromaximum.instance.logger(Event.long2String(tmp,0,false));
+//#endif      
     if(addHistory){
       tmp+=dateField.getDate().getTime();
     }
     Astromaximum.calendar.setTime(new Date(tmp));
+//#if logger
+//#       Astromaximum.instance.logger("before setCustomTime");
+//#endif      
     Astromaximum.summary.setCustomTime(
         Astromaximum.calendar.get(Calendar.HOUR_OF_DAY),Astromaximum.calendar.get(Calendar.MINUTE));
     if(addHistory){

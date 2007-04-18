@@ -274,18 +274,23 @@ class Summary extends FrameAnimator implements CommandListener{
   
   void showMoonIngress(){
     if(pageNum==PAGE_WEEK && getSelectedItem().type==Event.EV_WEEK_GRID){
-//#mdebug debug
-//      System.out.println("period0="+Event.long2String(period0,0,false));
-//      System.out.println("period1="+Event.long2String(period1,0,false));
-//      System.out.println("Date="+selDate.toString());
-//#enddebug
       long p0=selDate.getTime(), p1=p0+Astromaximum.MSECINDAY-1;
+//#mdebug debug
+      System.out.println("period0="+Event.long2String(p0,0,false));
+      System.out.println("period1="+Event.long2String(p1,0,false));
+      Astromaximum.evDump(mIngress);
+//#enddebug
+//      for(int i=mIngress.size()-1; i>=0; i--){
       for (Enumeration e = mIngress.elements() ; e.hasMoreElements() ;) {
         final Event ev=(Event)e.nextElement();
-        if(ev.planet0==Event.SE_MOON && ev.isDateBetween(0, p0, p1)){
+//        final Event ev=Astromaximum.evAt(mIngress,i);
+//        ev.dump();
+//        if(ev.planet0==Event.SE_MOON && ev.isDateBetween(0, p0, p1)){
+        if(ev.planet0==Event.SE_MOON && ev.isInPeriod(p0, p1,false)){
           SummItem si=new SummItem(Event.EV_MOON_SIGN_LARGE);
           si.events=new Event[1];
           si.setEvents(0,ev);
+//          si.dump();
           selectSummItem(si,true);
           break;
         }
@@ -427,6 +432,9 @@ class Summary extends FrameAnimator implements CommandListener{
     Astromaximum.dataFile.getEventsOnPeriod(tith,Event.EV_TITHI,Event.SE_MOON,
         false, period0, period1,0);
 //    Astromaximum.evDump(tith);
+//#if logger
+//#       Astromaximum.instance.logger("tithi found="+Integer.toString(tith.size()));
+//#endif      
     getItem(Event.EV_TITHI).setEvents(tith);
 //#if logger
 //#       Astromaximum.instance.logger(" tithi");
@@ -954,7 +962,13 @@ class Summary extends FrameAnimator implements CommandListener{
       rowCount= page == PAGE_WEEK ? 7 : 6;
 //      System.out.println(date.toString());
       setCell(date.getTime(),true);
+//#if logger
+//#       Astromaximum.instance.logger("after setCell");
+//#endif      
       gatherMonth();
+//#if logger
+//#       Astromaximum.instance.logger("gatherMonth");
+//#endif      
     }
     recalcAllSelections();
     if(oldPage!=pageNum){
@@ -967,10 +981,19 @@ class Summary extends FrameAnimator implements CommandListener{
       }
     }
     final SummItem selsi=getItem(Event.EV_TITHI);
-    if(selsi.isOnPage()){
+    if(selsi!=null && selsi.isOnPage()){
       selsi.setSelection();
+//#if logger
+//#       Astromaximum.instance.logger("recalcsel");
+//#       Astromaximum.instance.logger(Integer.toString(selsi.nowSelection));
+//#       Astromaximum.instance.logger(Integer.toString(selsi.selIndex)+" of "+
+//#        Integer.toString(selsi.events.length));
+//#endif      
       selsi.prepareTithi();
     }
+//#if logger
+//#       Astromaximum.instance.logger("end SetCurPage");
+//#endif      
     repaint();
   }
   
@@ -1349,6 +1372,7 @@ class Summary extends FrameAnimator implements CommandListener{
       moonSign.removeAllElements();
       Astromaximum.dataFile.getAspectsOnPeriod(moonSign,Event.SE_MOON,decumb[i]-delta,
         decumb[i]+delta);
+//      Astromaximum.evDump(moonSign);
       for(int j=0; j<moonSign.size(); j++){
         e0=Astromaximum.evAt(moonSign,j);
         dgr=e0.planet1;

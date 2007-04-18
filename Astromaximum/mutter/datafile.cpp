@@ -86,19 +86,20 @@ void DataFile::AAA()
 //  choice(EV_DECL_EXACT, work, assist, vout, work2);
 //  choice(EV_NAVROZ, work, assist, vout, work2);
 
-  choice(EV_ASP_EXACT, work, assist, vout, work2);
+//  choice(EV_ASP_EXACT, work, assist, vout, work2);
 
 //  choice(EV_DEGREE_PASS, work, assist, vout, work2);
 //  choice(EV_TITHI, work, assist, vout, work2);
-//  choice(EV_SIGN_ENTER, work, assist, vout, work2);
-  release(work);
+  choice(EV_SIGN_ENTER, work, assist, vout, work2);
+//  release(work);
 //  return;
 
-  readSubData("aspects01.bin",work);
+  readSubData("signenter01.bin",work);
 //  readSubData("geo0-rise00.bin",work);
 //  release(work);
-  for(int i=0; i<240/*work.size()*/; i++){
+  for(int i=0; i<work.size(); i++){
     work[i]->dump();
+//    break;
 //    work2[i]->dump();
 //    printf("\n-------");
 //    int delta=work[i]->date[0]-work2[i]->date[0];
