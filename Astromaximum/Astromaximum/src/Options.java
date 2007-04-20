@@ -248,17 +248,18 @@ class Options extends GeoList{
           res="";
     }
   //#endif
-    Astromaximum.log(id+": ");
-    Astromaximum.log(res);
-    Astromaximum.log(imei.toString());
     try {
       hj=res.compareTo(imei.toString());
-      Astromaximum.log(Long.toString(hj));
     } 
     catch (NullPointerException npe){
       hj=getHeight();
     }
-    
+  //#mdebug debug
+    Astromaximum.log(id+": ");
+    Astromaximum.log(res);
+    Astromaximum.log(imei.toString());
+    Astromaximum.log(Long.toString(hj));
+  //#enddebug
 //       final Alert alert=new Alert("Error",WARNING,null,AlertType.ERROR);
 //       alert.addCommand(new Command("OK",Command.OK,1));
 //       alert.setTimeout(8000);

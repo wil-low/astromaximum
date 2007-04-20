@@ -145,9 +145,8 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //        dataFile.fillCache();
 //        log("Options");
 //          System.out.println(Runtime.getRuntime().freeMemory());
-//#debug error 
+//#debug error
         System.out.println("Interpreter");
-
 //        log("customTime");
 //          System.out.println(Runtime.getRuntime().freeMemory());
 //#if perftest == "2"

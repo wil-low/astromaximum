@@ -524,7 +524,7 @@ class SummItem extends TimerTask implements RecordFilter{
           } 
           if(isHighlighted){
             final int x=getX(i, XLEFT);
-            osg.drawRect(x+2,top+2,getX(i, XRIGHT)-x-5,height-4);
+            osg.drawRect(x+2,top,getX(i, XRIGHT)-x-4,height-1);
           }
         }
         break;
@@ -1180,53 +1180,12 @@ class SummItem extends TimerTask implements RecordFilter{
     }
   }
   
-  /** @noinspection AssignmentToMethodParameter*/
-  void keyNavigate(int dir) {
-    int dn=defaultNavigate(dir);
-    boolean vert=dir>=2;
-    int delta= (dir&1)==0? -1: 1;
-    switch(dn){
-      case 0:
-        break;
-      case 21:
-        owner.changeDay(delta);
-        break;
-      case 22:
-        selIndex=1-selIndex;
-        break;
-      case 23: // Event.EV_MONTH_GRID
-        owner.moveDay(delta*(vert? owner.colCount: 1),!vert);
-        break;
-      case 24: // Event.EV_WEEK_GRID:
-        owner.moveDay(delta*(vert? 1: owner.rowCount),!vert);
-        break;
-      case 25: // Event.EV_DATE_GRID:
-        selIndex=1;
-        if(owner.pageNum == Summary.PAGE_MONTH) {
-          owner.moveMonth(delta);
-        } 
-        else {
-          owner.moveDay(delta*owner.rowCount,true);
-        }
-        break;
-      case 26: // Event.EV_MOON_MOVE
-        if(selIndex<events.length/2){ // at head
-          owner.moveFocus(delta>0? 1: (owner.size==1? -3: -4), dir);
-        }
-        else{ // at tail
-          owner.moveFocus(delta>0? 2: -1, dir);
-        }
-        break;
-    }
-    owner.repaint();
-    
-  }
   
 //  int getEventCount() {
 //    return events.length;
 //  }
 
-  private int defaultNavigate(int dir) {
+  int defaultNavigate(int dir) {
     int delta=nav[dir];
     int msel=(dir%2==0)? -1: 1;
     int where=0;
@@ -1237,8 +1196,10 @@ class SummItem extends TimerTask implements RecordFilter{
     if(delta>30 && delta<50){
       delta-=40;
       if(!((selIndex==0 && msel<0)||(selIndex==events.length-1 && msel>0))){
-        moveSelection(msel);
-        return 0;
+        if(!isEmpty()){
+          moveSelection(msel);
+          return 0;
+        }
       }
     }
     if(delta>50 && delta<70){ // to first
@@ -1252,14 +1213,16 @@ class SummItem extends TimerTask implements RecordFilter{
     if(delta>20){
       return delta;
     }
-    else{
-      owner.moveFocus(delta,msel);
-      if(where<0){
-        owner.items[owner.selItem].selIndex=0;
-      }
-      if(where>0){
-        owner.items[owner.selItem].selIndex=owner.items[owner.selItem].events.length-1;
-      }
+    owner.moveFocus(delta,dir);
+    SummItem si=owner.getSelectedItem();
+    if(si.isEmpty()){
+      return -1;
+    }
+    if(where<0){
+      si.selIndex=0;
+    }
+    if(where>0){
+      si.selIndex=si.events.length-1;
     }
     return 0;
   }
@@ -1511,8 +1474,8 @@ class SummItem extends TimerTask implements RecordFilter{
         zeroPlaces();
     for(Enumeration e= owner.mIngress.elements(); e.hasMoreElements();){
       ev=(Event)e.nextElement();
-      final long date=ev.date0;
-      if(ev.date0<=Astromaximum.dataFile.startJD || ev.date1>=Astromaximum.dataFile.finalJD){
+      final long date=ev.date0;//-Event.localOffset(ev.date0);
+      if(date<=Astromaximum.dataFile.startJD || ev.date1>=Astromaximum.dataFile.finalJD){
         continue;
       }
       if(ev.isDateBetween(0,fgd,fgd2)){
@@ -1527,7 +1490,7 @@ class SummItem extends TimerTask implements RecordFilter{
           x+=(places[day]-5)*Summary.IMG_WIDTH/2+Summary.IMG_WIDTH*7/2;
         }
         y+=rowHeight-Summary.IMG_HEIGHT-2;
-        // @todo Ingress drawing
+        // @todo Moon ingress drawing
         drawIngress(osg,ev,x+leftm,y,Graphics.TOP|Graphics.LEFT);
       }
     }

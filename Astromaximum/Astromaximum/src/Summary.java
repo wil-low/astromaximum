@@ -191,17 +191,17 @@ class Summary extends FrameAnimator implements CommandListener{
       case Canvas.FIRE:
         selectSummItem(si,false);
         return;
-      case Canvas.UP:
-        si.keyNavigate(2);
-        break;
-      case Canvas.DOWN:
-        si.keyNavigate(3);
+      case Canvas.LEFT:
+        keyNavigate(0);
         break;
       case Canvas.RIGHT:
-        si.keyNavigate(1);
+        keyNavigate(1);
         break;
-      case Canvas.LEFT:
-        si.keyNavigate(0);
+      case Canvas.UP:
+        keyNavigate(2);
+        break;
+      case Canvas.DOWN:
+        keyNavigate(3);
         break;
       default:
         switch (keyCode){
@@ -274,22 +274,26 @@ class Summary extends FrameAnimator implements CommandListener{
   
   void showMoonIngress(){
     if(pageNum==PAGE_WEEK && getSelectedItem().type==Event.EV_WEEK_GRID){
-      long p0=selDate.getTime(), p1=p0+Astromaximum.MSECINDAY-1;
+      long p0=selDate.getTime();
+      p0-=Event.localOffset(p0);
+      long p1=p0+Astromaximum.MSECINDAY-1;
 //#mdebug debug
       System.out.println("period0="+Event.long2String(p0,0,false));
       System.out.println("period1="+Event.long2String(p1,0,false));
       Astromaximum.evDump(mIngress);
 //#enddebug
-//      for(int i=mIngress.size()-1; i>=0; i--){
+
       for (Enumeration e = mIngress.elements() ; e.hasMoreElements() ;) {
         final Event ev=(Event)e.nextElement();
 //        final Event ev=Astromaximum.evAt(mIngress,i);
 //        ev.dump();
 //        if(ev.planet0==Event.SE_MOON && ev.isDateBetween(0, p0, p1)){
-        if(ev.planet0==Event.SE_MOON && ev.isInPeriod(p0, p1,false)){
+        if(ev.planet0==Event.SE_MOON && ev.date1>=p1){
           SummItem si=new SummItem(Event.EV_MOON_SIGN_LARGE);
           si.events=new Event[1];
           si.setEvents(0,ev);
+//          System.out.println(Event.long2String(ev.date0,0,false));
+//          System.out.println(Event.long2String(ev.date1,0,false));
 //          si.dump();
           selectSummItem(si,true);
           break;
@@ -725,7 +729,7 @@ class Summary extends FrameAnimator implements CommandListener{
     switch(si.type){
       case Event.EV_GRID_DATE:
         if(sind != 1){
-          si.keyNavigate(sind==0? 0: 1);
+          keyNavigate(sind==0? 0: 1);
           return;
         }
         break;
@@ -840,9 +844,9 @@ class Summary extends FrameAnimator implements CommandListener{
       si=items[selItem];
 //      delta=(dir&1)==0? 1: -1;
       delta=delta>0? 1: -1;
-    }while(!si.isOnPage() || si.isEmpty());
+    }while(!si.isOnPage()/* || si.isEmpty()*/);
 //    si.selIndex=(dir>0)? 0: si.events.length-1;
-    repaint();
+//    repaint();
   }
   
 //  protected void showNotify() {
@@ -1542,4 +1546,51 @@ class Summary extends FrameAnimator implements CommandListener{
     osg.drawArc(x,y,wh,wh,0,360);
     osg.setColor(old_color);
   }
+
+  /** @noinspection AssignmentToMethodParameter*/
+  void keyNavigate(int dir) {
+    int dn;
+    do{
+      dn=getSelectedItem().defaultNavigate(dir);
+    }while(dn<0);
+    boolean vert=dir>=2;
+    int delta= (dir&1)==0? -1: 1;
+    SummItem si=getSelectedItem();
+    switch(dn){
+      case 0:
+        break;
+      case 21:
+        changeDay(delta);
+        break;
+      case 22:
+        si.selIndex=1-si.selIndex;
+        break;
+      case 23: // Event.EV_MONTH_GRID
+        moveDay(delta*(vert? colCount: 1),!vert);
+        break;
+      case 24: // Event.EV_WEEK_GRID:
+        moveDay(delta*(vert? 1: rowCount),!vert);
+        break;
+      case 25: // Event.EV_DATE_GRID:
+        si.selIndex=1;
+        if(pageNum == Summary.PAGE_MONTH) {
+          moveMonth(delta);
+        } 
+        else {
+          moveDay(delta*rowCount,true);
+        }
+        break;
+      case 26: // Event.EV_MOON_MOVE
+        if(si.selIndex<si.events.length/2){ // at head
+          moveFocus(delta>0? 1: (size==1? -3: -4), dir);
+        }
+        else{ // at tail
+          moveFocus(delta>0? 2: -1, dir);
+        }
+        break;
+    }
+    repaint();
+    
+  }
 }
+

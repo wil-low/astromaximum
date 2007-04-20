@@ -156,7 +156,7 @@ sub do_imei { # config_name
 			$cmd.="fatal";
 		}
 		$cmd.=' -Dneed.kzip=true' if $kzip;
-		$cmd.=" deploy";
+		$cmd.=" clean deploy";
 		print "$cmd\n";
 		my $res=system($cmd);
 		if($res==0){
