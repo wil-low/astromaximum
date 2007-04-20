@@ -5,6 +5,14 @@ use lib 'D:/Willow/prj/astrology/nomad_prj/';
 use lib 'd:/projects/nomad_prj';
 use tools;
 
+
+my %imeis=qw( sonnenturm 359593001109710 moto 11234564 );
+
+my $init_imei=$imeis{'sonnenturm'};
+
+$init_imei=$imeis{$ARGV[0]} if defined $ARGV[0];
+$init_imei='0' x (15-length($init_imei)).$init_imei;
+
 our $year='';
 our $antpath='d:\\Program Files\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat';
 if(! -f $antpath){
@@ -28,7 +36,7 @@ my $ltime=0;
 
 my $main = new MainWindow(-title=>"Astromaximum Release GUI - $year");
 my $frame0=$main->Frame();
-my $imei=$frame0->Entry(-text=>'359593001109710');
+my $imei=$frame0->Entry(-text=>$init_imei);
 my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>[\&do_imei,'midp2y2007release']);
 my $bt_imei_logger=$frame0->Button(-text=>"IMEI logger", -command=>[\&do_imei,'midp2y2007release_logger']);
 my $lbox = $frame0->Entry(-text=>'0');
