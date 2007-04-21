@@ -27,7 +27,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="USE_DLL"/>
+    <USERDEFINES value="USE_DLL;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_NO_VCL;USEPACKAGES"/>
     <MAINSOURCE value="Mutter.bpf"/>
     <INCLUDEPATH value="$(BCB)\include;$(BCB)\include\vcl"/>
@@ -36,13 +36,14 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp -DUSE_DLL -boa"/>
-    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -pr -a1 -6 -b- -k- -vi -tWC 
-      -tWM- -c"/>
-    <PFLAGS value="-$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
+    <IDLCFLAGS value="-src_suffix cpp -DUSE_DLL -D_DEBUG -I$(BCB)\include -I$(BCB)\include\vcl 
+      -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -pr -a1 -6 -b- -k -y -v 
+      -vi- -tWC -tWM- -c"/>
+    <PFLAGS value="-$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-D&quot;&quot; -ap -Tpe -x -Gn"/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-D&quot;&quot; -ap -Tpe -x -Gn -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -110,8 +111,8 @@ Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=4
-Item0=USE_DLL
-Item1=USE_DLL;_DEBUG
+Item0=USE_DLL;_DEBUG
+Item1=USE_DLL
 Item2=_DEBUG;USE_DLL
 Item3=_DEBUG
 
@@ -119,7 +120,7 @@ Item3=_DEBUG
 DebugSourceDirs=$(BCB)\source\vcl
 
 [Parameters]
-RunParams=2007
+RunParams=2007 electio 30.51 50.43
 Launcher=
 UseLauncher=0
 DebugCWD=

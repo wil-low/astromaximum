@@ -88,17 +88,17 @@ void DataFile::AAA()
 
 //  choice(EV_ASP_EXACT, work, assist, vout, work2);
 
-//  choice(EV_DEGREE_PASS, work, assist, vout, work2);
+  choice(EV_DEGREE_PASS, work, assist, vout, work2);
 //  choice(EV_TITHI, work, assist, vout, work2);
-  choice(EV_SIGN_ENTER, work, assist, vout, work2);
+//  choice(EV_SIGN_ENTER, work, assist, vout, work2);
 //  release(work);
 //  return;
 
-  readSubData("signenter01.bin",work);
+//  readSubData("signenter01.bin",work);
 //  readSubData("geo0-rise00.bin",work);
 //  release(work);
-  for(int i=0; i<work.size(); i++){
-    work[i]->dump();
+//  for(int i=0; i<work.size(); i++){
+//    work[i]->dump();
 //    break;
 //    work2[i]->dump();
 //    printf("\n-------");
@@ -106,12 +106,12 @@ void DataFile::AAA()
 //    printf("\n%d %d",work[i]->date[0],work2[i]->date[0]);
 //    if(delta!=0)
 //      printf("%d %d\n",i, delta);
-  }
+//  }
   
 //    work[i]->dump();
 // -----------------------
-  release(work);
-  release(work2);
+//  release(work);
+//  release(work2);
 //  release(assist);
 
 }
@@ -217,7 +217,7 @@ void DataFile::release(VAE & v)
   v.clear();
 }
 
-void DataFile::clearDegPass(VAE & src, VAE & dest, int id)
+void DataFile::clearDegPass(VAE & src, VAE & dest, int id, VAE & destall)
 {
   static const int degarray[14]={17,68,126,174,222,280,329,22,72,129,180,228,288,333};
   for(int i=0; i<src.size(); i++){
@@ -228,6 +228,8 @@ void DataFile::clearDegPass(VAE & src, VAE & dest, int id)
       if(degree==degarray[i]){
         idx=i; break;
       }
+    if(id==SE_MOON)
+      destall.push_back(ev);
     if(idx!=-1){ // selected degree
       degree+=((idx>=7? 1: 2)<<14);
       ev->degree=degree;
@@ -236,6 +238,7 @@ void DataFile::clearDegPass(VAE & src, VAE & dest, int id)
     else
       if(id!=SE_MOON)
         dest.push_back(ev);
+
   }
 }
 
@@ -387,7 +390,7 @@ bool DataFile::readSubData(char* fname, VAE & v)
   int evflags=0, recCount=0;
   char planet; int date;
   fread(&fsize, 2, 1, fin);
-  fsize=swapShort(fsize);
+  fsize=(unsigned short)swapShort(fsize);
   int PERIOD=(evtype==EV_ASTRORISE)? 6*60: 24*60;
 
   if(fsize!=realsz) goto err;
@@ -486,6 +489,87 @@ int DataFile::select(VAE & src, double jdstart, double jdend, char planet, bool 
   return dest.size();
 }
 
+void DataFile::addBalls(char *arr, Event *ev, int add)
+{
+  int ind0=(ev->julianDay-startJD)/MINUTE_STEP;
+  int ind1=(ev->calcJD(ev->date[1])-startJD)/MINUTE_STEP+0.5;
+  if(add){
+    for(int i=ind0; i<ind1; i++){
+      arr[i]+=add;
+    }
+  }
+}
+
+void DataFile::clearAphetics(char * arr, VAE &dest)
+{
+  VAE work;
+  int value=arr[0];
+  int idx=0;
+  int i=1;
+  for(; i<stepCount; i++){
+    if(value!=arr[i]){
+      Event* ev=new Event(idx*MINUTE_STEP+startJD,value+50);
+      ev->date[1]=ev->packDate(i*MINUTE_STEP+startJD);
+      work.push_back(ev);
+      value=arr[i];
+      idx=i;
+    }
+  }
+  if(idx!=i){
+    Event* ev=new Event(idx*MINUTE_STEP+startJD,value+50);
+    ev->date[1]=ev->packDate(i*MINUTE_STEP+startJD);
+    work.push_back(ev);
+  }
+  for(VAE::iterator i=work.begin(); i!=work.end(); i++){
+    Event *ev=*i;
+    if(ev->date[1]-ev->date[0]<12*60){
+      work.erase(i);
+    }
+  }
+  int sign=-1;
+  for(int i=0; i<work.size(); i++){
+    Event *ev=work[i];
+    int dgr=ev->degree;
+    int new_sign=ev->planetId[0];
+    if(sign!=new_sign){
+      sign=new_sign;
+      dest.push_back(ev);
+    }
+  }
+}
+
+void DataFile::doAphetics(VAE &work)
+{
+  char *balls, fname[200];
+  balls=new char[stepCount]; // balls for all steps
+  memset(balls,0,stepCount);
+  for(int i=0; i<PLANET_COUNT; i++){
+    if(i==SE_MOON){
+      sprintf(fname,"degall01.bin");
+    }
+    else{
+      sprintf(fname,"degpass%02d.bin",i);
+    }
+    readSubData(fname,work);
+    for(int j=0; j<work.size(); j++){
+//      work[j]->dump();
+      addBalls(balls, work[j], calcAphetics(i,work[j]->degree&0x3fff));
+    }
+    release(work);
+//    break;
+  }
+  clearAphetics(balls, work);
+  delete[] balls;
+  printf("\nAphetics size=%d\n",work.size());
+  sprintf(fname,"aphetics.bin");
+  writeSubData(work,EV_APHETICS,EF_CUMUL_DATE_W|EF_PLANET1|EF_NEXT_DATE2,-1,fname);
+
+  for(int i=0; i<10; i++){
+    work[i]->dump();
+  }
+  release(work);
+}
+
 void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2,
   char* prefix)
 {
@@ -500,18 +584,8 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
   switch(et){
     case EV_APHETICS:
       printf("Aphetics...");
-/*      for(int i=0; i<PLANET_COUNT; i++){
-        sprintf(fname,"degpass%02d.bin",i);
-        readSubData(fname,work);
-        for(int j=0; j<work.size(); j++){
-          work[j]->dump();
-          int ball=calcAphetics(i,work[j]->degree&0x3fff);
-          work[j]->planetId[1]=ball+50;
-        }
-        release(work);
-        break;
-      }
-*/      break;
+      doAphetics(work);
+      break;
     case EV_VIA_COMBUSTA:
       printf("Via Combusta...");
       calcDegPass(allDegPass,SE_MOON);
@@ -581,17 +655,20 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
       printf("DegPass...");
       for(int i=0; i<13; i++){
         calcDegPass(allDegPass,i);
-        clearDegPass(allDegPass,work,i);
+        clearDegPass(allDegPass,work,i,work2);
         sprintf(fname,"degpass%02u.bin",i);
-        if(i==SE_MOON)
+        if(i==SE_MOON){
           writeSubData(work,EV_DEGREE_PASS,EF_CUMUL_DATE_W|EF_DATE|EF_DEGREE,i,fname);
+          sprintf(fname,"degall01.bin");
+          writeSubData(work2,EV_DEGREE_PASS,EF_CUMUL_DATE_W|EF_DATE|EF_DEGREE,i,fname);
+        }
         else{
           int flag=EF_DEGREE|EF_NEXT_DATE2;
           if(i<=SE_MARS)
             flag|=EF_CUMUL_DATE_W;
           writeSubData(work,EV_DEGREE_PASS,flag,i,fname);
         }
-        work.clear(); release(allDegPass);
+        work.clear(); work2.clear(); release(allDegPass);
       }
       break;
     case EV_RISE:
@@ -955,9 +1032,9 @@ int DataFile::calcAphetics(unsigned char planet, unsigned short degree)
 {
   static const unsigned char OWN_SIGN[2][7]=
     {{4,3,2,1,0,8,9},
-     {4,3,5,6,7,11,10}};
+     {100,100,5,6,7,11,10}};
   static const unsigned char EXALTATION[7]=
-    {0,1,100,11,9,3,6};
+    {0,1,5,11,9,3,6};
   static const unsigned char TRIPLICITY[3][7]={
     {0,1,2,1,3,0,2},
     {4,5,6,5,7,4,6},
@@ -971,13 +1048,30 @@ int DataFile::calcAphetics(unsigned char planet, unsigned short degree)
   if(sign==OWN_SIGN[0][planet]){
     aph+=5;
   }
-  if((planet>SE_MOON) && sign==OWN_SIGN[1][planet]){
-    aph+=5;
+  // detriment
+  if(sign==(OWN_SIGN[0][planet]+6)%12){
+    aph-=5;
   }
+
+  if(planet>SE_MOON){
+    if(sign==OWN_SIGN[1][planet]){
+      aph+=5;
+    }
+    // detriment
+    if(sign==(OWN_SIGN[1][planet]+6)%12){
+      aph-=5;
+    }
+  }
+
   // exaltation
   if(sign==EXALTATION[planet]){
     aph+=4;
   }
+  // fall
+  if(sign==(EXALTATION[planet]+6)%12){
+    aph-=4;
+  }
+
   // triplicity
   for(int i=0; i<3; i++){
     if(sign==TRIPLICITY[i][planet]){
@@ -1044,3 +1138,7 @@ boolean DataFile::loadAphetics(sAphRecord *data)
   fclose(aphet);
   return true;
 }
+
+
+
+

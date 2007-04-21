@@ -1488,12 +1488,24 @@ class Summary extends FrameAnimator implements CommandListener{
   }
   
   public void run() {
+//#ifndef logger
     super.run();
+//#endif    
     DataInputStream dis=new DataInputStream(getClass().getResourceAsStream("/res/panel.png"));
     try{
+//#ifdef logger
+//#     Astromaximum.instance.logger(Integer.toString(dis.available()));
+//#endif    
       byte[] buf=new byte[dis.available()];
       dis.read(buf);
-      imgPanel =Image.createImage(buf,0,buf.length-1);
+//#ifdef logger
+//#     Astromaximum.instance.logger(Integer.toString(buf[1896]));
+//#     Astromaximum.instance.logger(Integer.toString(buf[1897]));
+//#endif    
+      imgPanel =Image.createImage(buf,0,buf.length);
+//#ifdef logger
+//#     Astromaximum.instance.logger("imgPanel");
+//#endif    
       dis=new DataInputStream(new ByteArrayInputStream(buf));
       int chlen=4, chtype, num=0;
       do{

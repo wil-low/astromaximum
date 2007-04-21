@@ -18,7 +18,7 @@ public:
   static int startYear;
   static double calcJD(long date);
   Event(double jd, unsigned char planet);
-  static int packDate(double date);
+  static long packDate(double date);
   int getDayNumber();
   void dump();
 private:

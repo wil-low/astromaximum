@@ -23,7 +23,7 @@ my @bins=glob("$path".'*.bin');
 #my @bins=glob("$path".'retro09.bin');
 my $counter=0;
 foreach my $ff(@bins){
-	if($ff=~/(rise|set|navroz|geo|nakshatra)/is){
+	if($ff=~/(rise|set|navroz|geo|nakshatra|degall|aphetics)/is){
 		next;
 	}
 #	die pack('c',substr($imei,$counter++,1));

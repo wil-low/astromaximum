@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 
   int dayCount=endJD-startJD;
   unsigned int stepCount=dayCount/MINUTE_STEP;
-
+  printf("Steps = %d\n", stepCount);
   double data[6]; char serr[255];
   ephData=new sEphRecord [stepCount];
   endJD=startJD;
@@ -146,8 +146,8 @@ int main(int argc, char* argv[])
 
 
     if(strcmp(argv[2],"electio")==0){
-      df.loadAphetics(aphetics);
-//      df.choice(EV_APHETICS, work, assist, vout, work2, argv[2]);
+//      df.loadAphetics(aphetics);
+      df.choice(EV_APHETICS, work, assist, vout, work2, argv[2]);
       scanf("%s",buf);
     }
     else{

@@ -71,7 +71,8 @@ public class Astromaximum extends MIDlet implements CommandListener{
   public void startApp(){
     if(firstRun){
 //        System.gc();
-      instance = this;
+      try{
+        instance = this;
 //      InputStream iis=getClass().getResourceAsStream("/Amaxdata.dat");
 //      try {
 //        System.out.println(iis.available());
@@ -88,11 +89,11 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if logger
 //#       long beforeLS=Runtime.getRuntime().freeMemory();
 //#endif      
-      LocalizationSupport.initLocalizationSupport("ru_RU");
+        LocalizationSupport.initLocalizationSupport("ru_RU");
 //#if logger
 //#       long afterLS=Runtime.getRuntime().freeMemory();
 //#endif      
-      interpreter =new Interpreter();
+        interpreter =new Interpreter();
 //#if logger
 //#       interpreter.isLogged=true;
 //#       Display.getDisplay(this).setCurrent(interpreter);
@@ -100,16 +101,24 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#           "|before LocSupport="+Long.toString(beforeLS)+
 //#           "|after LocSupport="+Long.toString(afterLS));
 //#endif      
-      summary =new Summary();
+        summary =new Summary();
+//#if logger
+//#       logger(summary.toString());
+//#endif        
 //#if perftest=="0"
-      summary.setMoonXY(summary.getWidth()>>1,summary.getHeight()>>1,
-          Graphics.HCENTER|Graphics.VCENTER);
-      summary.run();
+        summary.setMoonXY(summary.getWidth()>>1,summary.getHeight()>>1,
+            Graphics.HCENTER|Graphics.VCENTER);
+//#if logger
+//#       logger("before summary run");
+//#endif        
+        summary.run();
   //#ifndef logger
-      Display.getDisplay(this).setCurrent(summary);
+        Display.getDisplay(this).setCurrent(summary);
   //#endif      
 //#endif
-      try{
+//#if logger
+//#       logger("after summary run");
+//#endif        
         for(int i=0; i < 12; i++) {
           months[i] = LocalizationSupport.getMessage(monthKeys[i]);
         }
@@ -118,6 +127,9 @@ public class Astromaximum extends MIDlet implements CommandListener{
         }
         
         logBox =new LogBox();
+//#if logger
+//#       logger(logBox.toString());
+//#endif        
         //    sizer.setSize(logBox.getWidth(), logBox.getHeight());
         log("TZ id="+TimeZone.getDefault().getID());
         options = new Options();

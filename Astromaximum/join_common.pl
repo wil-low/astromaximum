@@ -39,7 +39,7 @@ my @bins=glob("$path".'*.bin');
 
 my $counter=0;
 foreach my $ff(@bins){
-	if($ff=~/(rise|set|navroz|geo|nakshatra)/is){
+	if($ff=~/(rise|set|navroz|geo|nakshatra|degall|aphetics)/is){
 		next;
 	}
 	tools::writeData($ff, "$outp\\common.dat", substr($imei,$counter++,1));

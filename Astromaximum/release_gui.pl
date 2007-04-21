@@ -242,6 +242,7 @@ sub get_city_list {
 				$ci=~/(.+?)\|.+\|(.+)/is;
 				my($city,$state)=($1,$2);
 				$city=~s/.+!//is;
+				$state=~s/.+\$//is;
 				my $datapath="$inipath".sprintf('Data%02d.dat', $i++);
 				if(-f $datapath){
 					push(@files, {city=>$city, state=>$state, fname=>$datapath} );

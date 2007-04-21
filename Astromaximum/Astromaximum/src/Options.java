@@ -198,6 +198,7 @@ class Options extends GeoList{
   
   /** @noinspection UnusedParameters*/
   void addImeiChar(Object obj) {
+//#debug debug
     Astromaximum.log("App IMEI="+imei);
     String res="";
     if(DataFile.ids==null){

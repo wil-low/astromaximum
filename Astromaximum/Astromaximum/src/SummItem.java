@@ -380,7 +380,7 @@ class SummItem extends TimerTask implements RecordFilter{
         break;
       case Event.EV_GRID_DATE:
       case Event.EV_WEEK:
-        osg.drawString(str,getX(1, XCENTER),top+height,Graphics.BOTTOM|Graphics.HCENTER);
+        osg.drawString(str,getX(1, XCENTER),top+height-2,Graphics.BOTTOM|Graphics.HCENTER);
         if(isSelected){
           for(int i=0; i <= 2; i+=2){
             drawImg(osg,Summary.imgService,i,getX(i, XCENTER),y,
@@ -421,7 +421,7 @@ class SummItem extends TimerTask implements RecordFilter{
             osg.setColor(Astromaximum.CUST_COLOR);
           }
           osg.drawString(ev.getDateString(0, 1),
-              xr-2, top+height,
+              xr-2, top+height-1,
               Graphics.BASELINE | Graphics.RIGHT);
         }
         break;
@@ -442,7 +442,7 @@ class SummItem extends TimerTask implements RecordFilter{
               osg.setColor(Astromaximum.CUST_COLOR);
             }
             osg.drawString(ev.getDateString(0, 1),
-                xr-2, top+height,Graphics.BASELINE | Graphics.RIGHT);
+                xr-2, top+height-1,Graphics.BASELINE | Graphics.RIGHT);
           }
         }
         break;
@@ -469,7 +469,7 @@ class SummItem extends TimerTask implements RecordFilter{
             osg.setColor(Astromaximum.CUST_COLOR);
           }
           osg.drawString(Integer.toString(events[i].getDegree()),
-              x100,top+height, Graphics.BASELINE | Graphics.HCENTER);
+              x100,top+height-1, Graphics.BASELINE | Graphics.HCENTER);
         }
         break;
       case Event.EV_MOON_MOVE:
@@ -503,7 +503,7 @@ class SummItem extends TimerTask implements RecordFilter{
               drawImg(osg,Summary.imgPlanet,ev.planet1,x100,y,
                   Graphics.BOTTOM|Graphics.HCENTER);
               drawImg(osg,Summary.imgAspect, getAspIndex(
-                  ev.getDegree()),x100,y,
+                  ev.getDegree()),x100,y+1,
                   Graphics.TOP|Graphics.HCENTER);
             }
         }
@@ -685,9 +685,9 @@ class SummItem extends TimerTask implements RecordFilter{
             osg.setColor(Astromaximum.CUST_COLOR);
           }
           osg.drawString(ev.getDateString(0, 1),
-              xr, top+height*(i+1)/rowCount-1,Graphics.BASELINE | Graphics.RIGHT);
+              xr, top+height*(i+1)/rowCount-2,Graphics.BASELINE | Graphics.RIGHT);
           osg.drawString(Interpreter.riseKeys[ev.getDegree()-1],
-              left+2, top+height*(i+1)/rowCount-1,Graphics.BASELINE | Graphics.LEFT);
+              left+2, top+height*(i+1)/rowCount-2,Graphics.BASELINE | Graphics.LEFT);
           osg.setColor(0);
         }
         break;
@@ -713,7 +713,7 @@ class SummItem extends TimerTask implements RecordFilter{
                   continue;
                 }
               final int x=getX(i, XLEFT);
-              osg.drawRect(x,top+1,getX(i, XRIGHT)-x,height-2);
+              osg.drawRect(x,top+1,getX(i, XRIGHT)-x,height-1);
           } else{
             if(nowSelection==i) {
               osg.setColor(Astromaximum.RUBY_COLOR);
@@ -722,7 +722,7 @@ class SummItem extends TimerTask implements RecordFilter{
               osg.setColor(Astromaximum.CUST_COLOR);
             }
             osg.drawString(Integer.toString(Astromaximum.getSignDegree(ev.getDegree())),
-                getX(i, XCENTER),top+height-1, Graphics.BASELINE|Graphics.HCENTER);
+                getX(i, XCENTER),top+height-2, Graphics.BASELINE|Graphics.HCENTER);
             osg.setColor(0);
           }
         }
@@ -1440,7 +1440,7 @@ class SummItem extends TimerTask implements RecordFilter{
           ev=(Event)e.nextElement();
           if(ev.isInPeriod(ld,ld2,false)){
             final int pos= ++places[row];
-            drawSelDegree(osg,ev,xx+colWidth-pos*Summary.IMG_HEIGHT,yy,
+            drawSelDegree(osg,ev,xx+colWidth*2/5+pos*Summary.IMG_HEIGHT,yy,
                 Graphics.BOTTOM|Graphics.HCENTER);
           }
         }
@@ -1730,7 +1730,7 @@ class SummItem extends TimerTask implements RecordFilter{
       for(int col=0; col< owner.colCount; col++){
         int xx=leftm;
         xx+=col*colWidth;
-        int yy=(row+1)*rowHeight + top + 1;
+        int yy=(row+1)*rowHeight + top - 1;
         Astromaximum.calendar.setTime(cur);
         if(Astromaximum.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
           osg.setColor(Astromaximum.RUBY_COLOR);

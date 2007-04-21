@@ -38,7 +38,7 @@ private:
   void registerAspect(VAE & moonvae,VAE &vae, int i, int j);
   void registerDegPass(VAE &dpe, int deg, int body, int interval);
   void release(VAE & v);
-  void clearDegPass(VAE & src, VAE & dest, int id);
+  void clearDegPass(VAE & src, VAE & dest, int id, VAE & destall);
   void clearSignEnter(VAE & src, VAE & dest);
   void clearViaCombusta(VAE & src, VAE & dest);
   bool writeSubData(const VAE & v, EventType evtype, int evflags, int planet, char* fname);
@@ -49,6 +49,9 @@ private:
   short swapShort(short var);
   int swapInt(int var);
   int calcAphetics(unsigned char planet, unsigned short degree);
+  void addBalls(char *arr, Event *ev, int add);
+  void clearAphetics(char * arr, VAE &dest);
+  void doAphetics(VAE &work);
 public:
   sAscRecord *ascData;
   void sortVAE(VAE &work);

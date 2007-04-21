@@ -30,7 +30,7 @@ int Event::getDayNumber()
   return (julianDay-startJD)/MINUTE_STEP;
 }
 
-int Event::packDate(double date)
+long Event::packDate(double date)
 {
   int y,m,d; double hour;
   swe_revjul(date, SE_GREG_CAL, &y, &m, &d, &hour);
