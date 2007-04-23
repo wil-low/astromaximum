@@ -367,8 +367,8 @@ public class Astromaximum extends MIDlet implements CommandListener{
   }
   
   /** @noinspection BooleanMethodNameMustStartWithQuestion*/
-  long changeDate(Date date, int delta) {
-    long tmp=date.getTime();
+  long changeDate(Date date1, int delta) {
+    long tmp=date1.getTime();
     tmp += MSECINDAY *delta;
     return (dataFile.isDateAvailable(tmp))? tmp: 0;
   }

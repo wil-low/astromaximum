@@ -97,13 +97,13 @@ class Summary extends FrameAnimator implements CommandListener{
     setFullScreenMode(true);
 //#else
 //#endif
-    addCommand(new Command(LocalizationSupport.getMessage("Month"), Command.SCREEN, 4));
-    addCommand(new Command(LocalizationSupport.getMessage("Week"), Command.SCREEN, 3));
-    addCommand(new Command(LocalizationSupport.getMessage("Today"), Command.SCREEN, 2));
-    addCommand(new Command(LocalizationSupport.getMessage("No_theme"), Command.SCREEN, 6));
+    addCommand(new Command(LocalizationSupport.getMessage("Month"), Command.SCREEN, 3));
+    addCommand(new Command(LocalizationSupport.getMessage("Week"), Command.SCREEN, 2));
+    addCommand(new Command(LocalizationSupport.getMessage("Today"), Command.SCREEN, 1));
+    addCommand(new Command(LocalizationSupport.getMessage("No_theme"), Command.SCREEN, 5));
 //    addCommand(new Command("FScr","FullScreen", Command.SCREEN, 5));
-    addCommand(new Command(LocalizationSupport.getMessage("Options"),Command.SCREEN,5));
-    addCommand(new Command(LocalizationSupport.getMessage("Back"), Command.BACK, 1));
+    addCommand(new Command(LocalizationSupport.getMessage("Options"),Command.SCREEN,4));
+//    addCommand(new Command(LocalizationSupport.getMessage("Back"), Command.BACK, 1));
 //    sizeChanged(0,0);
     setCommandListener(this);
     pageNum=PAGE_SUMMARY;
@@ -909,27 +909,27 @@ class Summary extends FrameAnimator implements CommandListener{
       isShowCustom=false;
     }
     switch(c.getPriority()){
+      case 2:
       case 3:
-      case 4:
-        setCurPage(c.getPriority() == 3 ? Summary.PAGE_WEEK : Summary.PAGE_MONTH);
+        setCurPage(c.getPriority() == 2 ? Summary.PAGE_WEEK : Summary.PAGE_MONTH);
 //        Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.instance.summary);
         break;
-      case 6:
+      case 5:
         Interpreter.topic=10;
         if(pageNum==PAGE_DECUMB)
           setCurPage(PAGE_SUMMARY);
         repaint();
         break;
-      case 5:
+      case 4:
         Astromaximum.options.init();
         Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.options);
         break;
-      case 2:
+      case 1:
         selDate.setTime(Astromaximum.instance.getToday());
         showDaySummary();
         repaint();
         break;
-      case 1:
+/*      case 1:
         if(pageNum==PAGE_DECUMB){
 //          Astromaximum.interpreter.topic=9;
           Date tm=Astromaximum.customTime.dateField.getDate();
@@ -941,6 +941,7 @@ class Summary extends FrameAnimator implements CommandListener{
         }
         setCurPage(PAGE_SUMMARY);
         repaint();
+ */
     }
   }
   
@@ -1051,28 +1052,33 @@ class Summary extends FrameAnimator implements CommandListener{
    * @param delta int
    */
   void moveDay(int delta, boolean changePage){
+//    System.out.println("Was "+Event.long2String(selDate.getTime(),0,false));
     long tmp=Astromaximum.instance.changeDate(selDate,delta);
+//    System.out.println(" now= "+Event.long2String(selDate.getTime(),0,false));
     if(tmp!=0) {
+//      System.out.println(" tmp="+Event.long2String(tmp,0,false));
       setCell(tmp,changePage);
     } 
     else{
       moveFocus(delta<0? -1: 1,delta);
     }
+//    System.out.println(" now= "+Event.long2String(selDate.getTime(),0,false));
   }
   
-  void setCell(long date, boolean changePage){
+  void setCell(long date1, boolean changePage){
     int first=1, diff=1;
     final int oldMonth=selMonth;
 //    System.out.println("setCell");
     if(!changePage){
-      diff=(int)((date - firstGridDate.getTime()) / Astromaximum.MSECINDAY);
+      diff=(int)((date1 - firstGridDate.getTime()) / Astromaximum.MSECINDAY);
       if(diff < 0 || diff >= rowCount * colCount){
         moveFocus(diff < 0? -1: 1, diff);
         return;
 //        changePage=true;
       }
     }
-    selDate.setTime(date);
+    selDate.setTime(date1);
+
 //    System.out.println(selDate.toString());
     if(changePage){
       Astromaximum.calendar.setTime(selDate);
@@ -1086,11 +1092,13 @@ class Summary extends FrameAnimator implements CommandListener{
       firstGridDate.setTime(dd2.getTime() - first * Astromaximum.MSECINDAY);
       //    System.out.println("fgd="+firstGridDate.toString());
     }
+    
     selCell = diff + first - 1;
     if(changePage) {
 //      System.out.println(selMonth);
       gatherMonth();
     }
+ 
 //    repaint();
   }
   
@@ -1578,7 +1586,7 @@ class Summary extends FrameAnimator implements CommandListener{
         si.selIndex=1-si.selIndex;
         break;
       case 23: // Event.EV_MONTH_GRID
-        moveDay(delta*(vert? colCount: 1),!vert);
+        moveDay(delta*(vert? colCount: 1),false/*!vert*/);
         break;
       case 24: // Event.EV_WEEK_GRID:
         moveDay(delta*(vert? 1: rowCount),!vert);
@@ -1598,6 +1606,17 @@ class Summary extends FrameAnimator implements CommandListener{
         }
         else{ // at tail
           moveFocus(delta>0? 2: -1, dir);
+        }
+        break;
+      case 27: // Event.EV_WEEK
+        moveFocus(delta,1);
+        if(pageNum==PAGE_MONTH){
+          setCell(firstGridDate.getTime()+
+                (delta>0? rowCount/2: rowCount*colCount-rowCount/2-1)*Astromaximum.MSECINDAY,false);
+        }
+        if(pageNum==PAGE_WEEK){
+          setCell(firstGridDate.getTime()+
+                (delta>0? 0: rowCount-1)*Astromaximum.MSECINDAY,false);
         }
         break;
     }
