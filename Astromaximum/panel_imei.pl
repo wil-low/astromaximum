@@ -13,6 +13,7 @@ my @str=split(/\n/,<<END);
 "phone.imei",
 "phone.IMEI",
 "com.nokia.mid.imei",
+"com.nokia.IMEI",
 "device.imei",
 "device.IMEI",
 "imei",
