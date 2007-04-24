@@ -18,6 +18,21 @@ typedef enum{
   EF_NEXT_DATE2=0x80 // 2nd date is 1st in next event
 } EventFlag;
 
+typedef enum{
+  AF_DOMICILE=0x1,
+  AF_EXALT=0x2,
+  AF_TRIPL=0x4,
+  AF_TERM=0x8,
+  AF_DECANE=0x10,
+  AF_RECSIGN=0x20,
+  AF_RECEXALT=0x40,
+  AF_SUNHEART=0x80,
+  AF_DETRIMENT=0x100,
+  AF_FALL=0x200,
+  AF_RETRO=0x400,
+  AF_BURNT=0x800,
+} ApheFlag;
+
 static const char PLANETS[]={SE_SUN,SE_MOON,SE_MERCURY,SE_VENUS,SE_MARS,
   SE_JUPITER,SE_SATURN,SE_URANUS,SE_NEPTUNE,SE_PLUTO,SE_TRUE_NODE,SE_MEAN_APOG,
   SE_FICT_OFFSET_1+17
@@ -27,7 +42,11 @@ typedef vector<Event*> VAE;
 class DataFile
 {
 private:
+  struct aphRecord{
+    unsigned int data[7];
+  };
   sEphRecord *ephData;
+  char terms[360];
   double startJD;
   unsigned int dayCount, stepCount;
   VAE events;
@@ -48,10 +67,10 @@ private:
   void geopos(char* city, double lat, double lon, char* suffix);
   short swapShort(short var);
   int swapInt(int var);
-  int calcAphetics(unsigned char planet, unsigned short degree);
-  void addBalls(char *arr, Event *ev, int add);
-  void clearAphetics(char * arr, VAE &dest);
+  int calcAphetics(aphRecord *balls, const Event *ev);
+  void clearAphetics(aphRecord *arr, int planet, int mins, VAE &dest);
   void doAphetics(VAE &work);
+  void addBalls(aphRecord *balls, const Event *ev, int value);
 public:
   sAscRecord *ascData;
   void sortVAE(VAE &work);

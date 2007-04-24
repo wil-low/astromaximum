@@ -9,8 +9,30 @@ using namespace std;
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+
 static sMatrix matrix[PLANET_COUNT][PLANET_COUNT];
 static const unsigned char ASP_ANGLES[]={0,180,90,120,60};
+
+static const unsigned char OWN_SIGN[2][7]=
+  {{4,3,2,1,0,8,9},
+   {100,100,5,6,7,11,10}};
+static const unsigned char OWN_SIGN_REVERSE[12]=
+  {SE_MARS,SE_VENUS,SE_MERCURY,SE_MOON,SE_SUN,SE_MERCURY,
+   SE_VENUS,SE_MARS,SE_JUPITER,SE_SATURN,SE_SATURN,SE_JUPITER};
+static const unsigned char EXALTATION[7]=
+  {0,1,5,11,9,3,6};
+static const unsigned char EXALTATION_REVERSE[12]=
+  {SE_SUN,SE_MOON,100,SE_JUPITER,100,SE_MERCURY,
+   SE_SATURN,100,100,SE_MARS,100,SE_VENUS};
+static const unsigned char TRIPLICITY[3][7]={
+  {0,1,2,1,3,0,2},
+  {4,5,6,5,7,4,6},
+  {8,9,10,9,11,8,10}
+};
+
+static const char DECANES[7]=
+  {SE_MARS,SE_SUN,SE_VENUS,SE_MERCURY,SE_MOON,SE_SATURN,SE_JUPITER};
+
 DataFile::DataFile()
 {
   Lon=30.51; Lat=50.43;
@@ -489,61 +511,71 @@ int DataFile::select(VAE & src, double jdstart, double jdend, char planet, bool 
   return dest.size();
 }
 
-void DataFile::addBalls(char *arr, Event *ev, int add)
-{
-  int ind0=(ev->julianDay-startJD)/MINUTE_STEP;
-  int ind1=(ev->calcJD(ev->date[1])-startJD)/MINUTE_STEP+0.5;
-  if(add){
-    for(int i=ind0; i<ind1; i++){
-      arr[i]+=add;
-    }
-  }
-}
-
-void DataFile::clearAphetics(char * arr, VAE &dest)
+void DataFile::clearAphetics(aphRecord *arr, int planet, int mins, VAE &dest)
 {
   VAE work;
-  int value=arr[0];
+  int value=arr[0].data[planet];
   int idx=0;
   int i=1;
   for(; i<stepCount; i++){
-    if(value!=arr[i]){
-      Event* ev=new Event(idx*MINUTE_STEP+startJD,value+50);
+    if(value!=arr[i].data[planet]){
+      Event* ev=new Event(idx*MINUTE_STEP+startJD,planet);
       ev->date[1]=ev->packDate(i*MINUTE_STEP+startJD);
+      ev->degree=value;
       work.push_back(ev);
-      value=arr[i];
+      value=arr[i].data[planet];
       idx=i;
     }
   }
   if(idx!=i){
-    Event* ev=new Event(idx*MINUTE_STEP+startJD,value+50);
+    Event* ev=new Event(idx*MINUTE_STEP+startJD,planet);
     ev->date[1]=ev->packDate(i*MINUTE_STEP+startJD);
+    ev->degree=value;
     work.push_back(ev);
   }
-  for(VAE::iterator i=work.begin(); i!=work.end(); i++){
-    Event *ev=*i;
-    if(ev->date[1]-ev->date[0]<12*60){
-      work.erase(i);
+  if(mins){
+    for(VAE::iterator i=work.begin(); i!=work.end(); i++){
+      Event *ev=*i;
+      if(ev->date[1]-ev->date[0]<mins*60){
+        delete ev;
+        work.erase(i);
+      }
     }
   }
   int sign=-1;
   for(int i=0; i<work.size(); i++){
     Event *ev=work[i];
-    int dgr=ev->degree;
-    int new_sign=ev->planetId[0];
-    if(sign!=new_sign){
-      sign=new_sign;
+//    int new_sign=ev->degree;
+//    if(sign!=new_sign){
+//      sign=new_sign;
       dest.push_back(ev);
-    }
+//    }
   }
 }
 
 void DataFile::doAphetics(VAE &work)
 {
-  char *balls, fname[200];
-  balls=new char[stepCount]; // balls for all steps
-  memset(balls,0,stepCount);
-  for(int i=0; i<PLANET_COUNT; i++){
+  aphRecord *balls;
+  char fname[200];
+
+  FILE *terma=fopen("terma.bin","rb");
+  short count=0;
+  fread(&count,1,2,terma);
+  short buf[2];
+  int ii=0;
+  for(int i=0; i<count; i++){
+    fread(buf,2,2,terma);
+    for(int j=0; j<buf[0]; j++){
+      terms[ii++]=buf[1];
+    }
+  }
+  fclose(terma);
+
+  balls=new aphRecord[stepCount]; // balls for all steps
+  memset(balls,0,stepCount*sizeof(aphRecord));
+/*
+  // general
+  for(int i=0; i<7; i++){
     if(i==SE_MOON){
       sprintf(fname,"degall01.bin");
     }
@@ -552,22 +584,81 @@ void DataFile::doAphetics(VAE &work)
     }
     readSubData(fname,work);
     for(int j=0; j<work.size(); j++){
-//      work[j]->dump();
-      addBalls(balls, work[j], calcAphetics(i,work[j]->degree&0x3fff));
+//      work[j]->dump2();
+      calcAphetics(balls, work[j]);
     }
     release(work);
-//    break;
   }
-  clearAphetics(balls, work);
+  // sun heart
+  for(int i=0; i<stepCount; i++){
+    double sun=ephData[i].data[SE_SUN];
+    for(int j=SE_MOON; j<=SE_SATURN; j++){
+      double aspa=(ephData[i].data[j]-sun);
+      if(aspa<0) aspa+=360;
+      if(aspa>180) aspa=360-aspa;
+      if(aspa<17/60.){
+        balls[i].data[j]|=AF_SUNHEART;
+      }
+    }
+  }
+*/
+  // retrograde
+  for(int i=SE_MERCURY; i<=SE_SATURN; i++){
+    sprintf(fname,"retro%02d.bin",i);
+    readSubData(fname,work);
+    for(int j=0; j<work.size(); j++){
+      addBalls(balls,work[j],AF_RETRO);
+    }
+    release(work);
+  }
+/*
+  for(int i=0; i<stepCount; i++){
+    for(int j=SE_SUN; j<=SE_SATURN; j++){
+      int dj=ephData[i].data[j];
+      int sj=dj/30;
+      // sign reception
+      int k=OWN_SIGN_REVERSE[sj];
+      if(k>j){
+        int dk=ephData[i].data[k];
+        int sk=dk/30;
+        if((sk==OWN_SIGN[0][j])||(sk==OWN_SIGN[1][j])){
+          balls[i].data[j]|=AF_RECSIGN;
+          balls[i].data[k]|=AF_RECSIGN;
+        }
+      }
+      // exalt. reception
+      k=EXALTATION_REVERSE[sj];
+      if((k!=100) && (k>j)){
+        int dk=ephData[i].data[k];
+        int sk=dk/30;
+        if(sk==EXALTATION[j]){
+          balls[i].data[j]|=AF_RECEXALT;
+          balls[i].data[k]|=AF_RECEXALT;
+        }
+      }
+    }
+  }
+*/  
+/*
+  for(int i=0; i<stepCount; i++){
+    printf("\n %7d", i);
+    for(int j=SE_SUN; j<=SE_SATURN; j++){
+      printf(" %08u",balls[i].data[j]);
+    }
+  }
+*/
+  for(int i=SE_SUN; i<=SE_SATURN; i++){
+    clearAphetics(balls, i, 0, work);
+    sprintf(fname,"aphetics%02d.bin", i);
+    writeSubData(work,EV_APHETICS,EF_DEGREE|EF_NEXT_DATE2,i,fname);
+    if(i==SE_MERCURY){
+      for(int i=0; i<work.size(); i++){
+        work[i]->dump2();
+      }
+    }
+    release(work);
+  }
   delete[] balls;
-  printf("\nAphetics size=%d\n",work.size());
-  sprintf(fname,"aphetics.bin");
-  writeSubData(work,EV_APHETICS,EF_CUMUL_DATE_W|EF_PLANET1|EF_NEXT_DATE2,-1,fname);
-
-  for(int i=0; i<10; i++){
-    work[i]->dump();
-  }
-  release(work);
 }
 
 void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2,
@@ -1028,61 +1119,71 @@ void DataFile::geopos(char* city, double lat, double lon, char* suffix)
   //TODO: Add your source code here
 }
 
-int DataFile::calcAphetics(unsigned char planet, unsigned short degree)
+int DataFile::calcAphetics(aphRecord *balls, const Event *ev)
 {
-  static const unsigned char OWN_SIGN[2][7]=
-    {{4,3,2,1,0,8,9},
-     {100,100,5,6,7,11,10}};
-  static const unsigned char EXALTATION[7]=
-    {0,1,5,11,9,3,6};
-  static const unsigned char TRIPLICITY[3][7]={
-    {0,1,2,1,3,0,2},
-    {4,5,6,5,7,4,6},
-    {8,9,10,9,11,8,10}
-  };
-
-
   int aph=0;
+  int degree=ev->degree & 0x3fff;
   int sign=degree/30;
+  int planet=ev->planetId[0];
   // domicile
   if(sign==OWN_SIGN[0][planet]){
-    aph+=5;
+    aph|=AF_DOMICILE;
   }
-  // detriment
-  if(sign==(OWN_SIGN[0][planet]+6)%12){
-    aph-=5;
-  }
-
-  if(planet>SE_MOON){
-    if(sign==OWN_SIGN[1][planet]){
-      aph+=5;
-    }
-    // detriment
-    if(sign==(OWN_SIGN[1][planet]+6)%12){
-      aph-=5;
-    }
+  if(sign==OWN_SIGN[1][planet]){
+    aph|=AF_DOMICILE;
   }
 
   // exaltation
   if(sign==EXALTATION[planet]){
-    aph+=4;
+    aph|=AF_EXALT;
   }
+
   // fall
   if(sign==(EXALTATION[planet]+6)%12){
-    aph-=4;
+    aph|=AF_FALL;
   }
+
+  // detriment
+  if(sign==(OWN_SIGN[0][planet]+6)%12){
+    aph|=AF_DETRIMENT;
+  }
+  if(planet>SE_MOON){
+    if(sign==(OWN_SIGN[1][planet]+6)%12){
+      aph|=AF_DETRIMENT;
+    }
+  }
+
 
   // triplicity
   for(int i=0; i<3; i++){
     if(sign==TRIPLICITY[i][planet]){
-      aph+=3;
+      aph|=AF_TRIPL;
       break;
     }
   }
 
-  return aph;
+  // terms
+  if(planet==terms[degree]){
+    aph|=AF_TERM;
+  }
+
+  if(planet==DECANES[(degree/10)%7]){
+    aph|=AF_DECANE;
+  }
+  addBalls(balls,ev,aph);
 }
 
+void DataFile::addBalls(aphRecord *balls, const Event *ev, int value)
+{
+  int ind0=(ev->julianDay-startJD)/MINUTE_STEP;
+  int ind1=(ev->calcJD(ev->date[1])-startJD)/MINUTE_STEP+0.5;
+  int planet=ev->planetId[0];
+  if(value){
+    for(int i=ind0; i<ind1; i++){
+      balls[i].data[planet]|=value;
+    }
+  }
+}
 
 boolean DataFile::loadAphetics(sAphRecord *data)
 {

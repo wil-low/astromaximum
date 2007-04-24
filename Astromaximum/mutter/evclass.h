@@ -21,6 +21,7 @@ public:
   static long packDate(double date);
   int getDayNumber();
   void dump();
+  void dump2();
 private:
 };
 #endif

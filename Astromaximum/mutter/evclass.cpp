@@ -59,3 +59,14 @@ void Event::dump()
    printf(" %s",goodbad==2? "good": "bad");
   printf("  planets %u - %u",planetId[0],planetId[1]);
 }
+
+void Event::dump2()
+{
+  tm *st=gmtime(&date[0]);
+  printf("\n\n* %s - ", asctime(st));
+  st=gmtime(&date[1]);
+  printf("%s", asctime(st));
+  printf("   %d - %d\n", date[0], date[1]);
+  printf("  degree=%X",degree);
+  printf("  planets %u - %u",planetId[0],planetId[1]);
+}
