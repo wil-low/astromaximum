@@ -299,6 +299,8 @@ final class DataFile{
     final Vector v=new Vector();
     int flag;
     int skipOff;
+    Event last=new Event(0,0);
+    int fnext_date2=0;
     try {
       final DataInputStream is=new DataInputStream(new ByteArrayInputStream(buf));
       if(Astromaximum.options!=null){
@@ -332,12 +334,11 @@ final class DataFile{
       int fplanet2=(flag & EF_PLANET2);
       int fdegree=(flag & EF_DEGREE);
       int fshort_degree=(flag & EF_SHORT_DEGREE);
-      int fnext_date2=(flag & EF_NEXT_DATE2);
+      fnext_date2=(flag & EF_NEXT_DATE2);
       
       byte myplanet0=(byte)planet, myplanet1=-1;
       int mydgr=127;
       long mydate0,mydate1;
-      Event last=new Event(0,0);
       int skips=0;
       if(fdate!=0){
         skips+=4;
@@ -475,6 +476,9 @@ final class DataFile{
       long dayStart, long dayEnd, int value) {
     boolean flag=false;
     final Vector tmp=getEvents(evtype,planet, dayStart, dayEnd);
+//    if(planet==9){
+//      Astromaximum.evDump(tmp);
+//    }
     for (Enumeration e = tmp.elements() ; e.hasMoreElements() ;) {
       final Event ev=(Event)e.nextElement();
       if(ev.isInPeriod(dayStart,dayEnd,special)){
@@ -575,7 +579,9 @@ final class DataFile{
    * @return
    * @param date*/
   boolean isDateAvailable(long date) {
-    return Event.dateBetween(date,startJD,startJD+dayCount*Astromaximum.MSECINDAY)==0;
+    long fin=startJD+dayCount*Astromaximum.MSECINDAY;
+    return Event.dateBetween(date,startJD-Event.localOffset(startJD),
+        fin-Event.localOffset(fin))==0;
 //    return true;
   }
   

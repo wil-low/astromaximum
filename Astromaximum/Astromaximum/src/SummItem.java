@@ -54,9 +54,9 @@ class SummItem extends TimerTask implements RecordFilter{
   static final byte[] weekPlanets={0,1,4,2,5,3,6};
   static Hashtable topics = new Hashtable();  
   static{
-    topics.put(new Integer(Event.EV_MOON_DAY), "#*^$}>@");
+    topics.put(new Integer(Event.EV_MOON_DAY), "}#");
     topics.put(new Integer(Event.EV_ASP_EXACT), "~*^$}>@");
-    topics.put(new Integer(Event.EV_VIA_COMBUSTA), "~#*^$}>@");
+    topics.put(new Integer(Event.EV_VIA_COMBUSTA), "{~#*^$}>@");
     topics.put(new Integer(Event.EV_NAVROZ), ">");
     topics.put(new Integer(Event.EV_RISE), "}~#*^");
     topics.put(new Integer(Event.EV_ASP_EXACT_MOON), "*~#^$}>@={");
@@ -70,14 +70,14 @@ class SummItem extends TimerTask implements RecordFilter{
     topics.put(new Integer(Event.EV_MOON_MOVE), "*^$}>@");
     topics.put(new Integer(Event.EV_WEEK), "^}{~=$");
     topics.put(new Integer(Event.EV_ECLIPSE), "*^$}>@");
-    topics.put(new Integer(Event.EV_PLANET_HOUR), "*^${~#}>@=");
+    topics.put(new Integer(Event.EV_PLANET_HOUR), "*^$}{~#=");
 ///////////////
     topics.put(new Integer(Event.EV_MOON_MOVE), "*^${}>@=~");
     topics.put(new Integer(Event.EV_MOON_SIGN_LARGE), topics.get(new Integer(Event.EV_SIGN_ENTER))); //EV_SIGN_ENTER
     topics.put(new Integer(Event.EV_DAY_HOURS), topics.get(new Integer(Event.EV_PLANET_HOUR))); //EV_PLANET_HOUR
     topics.put(new Integer(Event.EV_NIGHT_HOURS), topics.get(new Integer(Event.EV_PLANET_HOUR)));//EV_PLANET_HOUR
-    topics.put(new Integer(Event.EV_SUN_RISE), "#*^$}>~");
-    topics.put(new Integer(Event.EV_MOON_RISE), "#*^$}>~");
+    topics.put(new Integer(Event.EV_SUN_RISE), "#*^}~");
+    topics.put(new Integer(Event.EV_MOON_RISE), "#*^}~");
     topics.put(new Integer(Event.EV_SUN_DAY), topics.get(new Integer(Event.EV_NAVROZ))); //EV_NAVROZ
   }
   
@@ -274,6 +274,11 @@ class SummItem extends TimerTask implements RecordFilter{
       }
 //    }
     if(events.length == 0) {
+      if(type==Event.EV_ASP_EXACT && isSelected){
+        osg.setColor(0);
+        osg.drawString(LocalizationSupport.getMessage("weekm"), left+width/2,
+            top+height-2, Graphics.BASELINE|Graphics.HCENTER);
+      }
       return;
     }
     if(isSelected){
@@ -304,8 +309,8 @@ class SummItem extends TimerTask implements RecordFilter{
 //        osg.drawRect(left,top,width,height);
 //      }
     }
-    osg.setColor(0);
     int y=top+height/2;
+    osg.setColor(0);
     final int xr;
     switch(type){
       case Event.EV_HELP:
@@ -1056,17 +1061,15 @@ class SummItem extends TimerTask implements RecordFilter{
       return LocalizationSupport.getMessage("Day")+" "+LocalizationSupport.getMessage(
           "of"+Integer.toString(weekPlanets[events[1].planet0-1]));
     }
+    if(type == Event.EV_SUN_RISE || type == Event.EV_MOON_RISE){
+      return LocalizationSupport.getMessage("pltonaxis");
+    }
     String s="";
     final Event sel=getSelEvent();
     int hrOnly=1;
     if(sel!=null){
       String tire=(Summary.IMG_HEIGHT==12)? " - ": "-";
       switch(type){
-        case Event.EV_SUN_RISE:
-        case Event.EV_MOON_RISE:
-          if(selIndex != 0) {
-            break;
-          }
         case Event.EV_MOON_MOVE:
           final int sind=selIndex;
           if(sel.date0==sel.date1) {
@@ -1201,6 +1204,12 @@ class SummItem extends TimerTask implements RecordFilter{
           return 0;
         }
       }
+      else
+        if(type==Event.EV_DAY_HOURS || type==Event.EV_NIGHT_HOURS){
+          selIndex=events.length-1-selIndex;
+          return 0;
+        }
+
     }
     if(delta>50 && delta<70){ // to first
       delta-=60;
@@ -1295,6 +1304,7 @@ class SummItem extends TimerTask implements RecordFilter{
       switch(type){
         case Event.EV_STATUS:
           return owner.pageNum==Summary.PAGE_PANEL;
+        case Event.EV_ASP_EXACT:
         case Event.EV_PANEL:
         case Event.EV_FAST_BUTTON:
         case Event.EV_WEEK_GRID:

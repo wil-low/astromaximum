@@ -97,14 +97,13 @@ class Summary extends FrameAnimator implements CommandListener{
     setFullScreenMode(true);
 //#else
 //#endif
+
+    addCommand(new Command(LocalizationSupport.getMessage("Help"), Command.SCREEN, 0));
     addCommand(new Command(LocalizationSupport.getMessage("Month"), Command.SCREEN, 3));
     addCommand(new Command(LocalizationSupport.getMessage("Week"), Command.SCREEN, 2));
     addCommand(new Command(LocalizationSupport.getMessage("Today"), Command.SCREEN, 1));
     addCommand(new Command(LocalizationSupport.getMessage("No_theme"), Command.SCREEN, 5));
-//    addCommand(new Command("FScr","FullScreen", Command.SCREEN, 5));
     addCommand(new Command(LocalizationSupport.getMessage("Options"),Command.SCREEN,4));
-//    addCommand(new Command(LocalizationSupport.getMessage("Back"), Command.BACK, 1));
-//    sizeChanged(0,0);
     setCommandListener(this);
     pageNum=PAGE_SUMMARY;
   }
@@ -564,6 +563,8 @@ class Summary extends FrameAnimator implements CommandListener{
 //    prevPH.setEvents(aev);
 //    prevPH.recalcSelection(period0, true);
 //    prevPH.dump();
+    
+    
 //******* common risesets
     long pp0=period0 -Astromaximum.MSECINDAY, pp1=period1 +Astromaximum.MSECINDAY;
     for(int i=Event.SE_SUN; i <= Event.SE_WHITE_MOON; i++){
@@ -805,12 +806,19 @@ class Summary extends FrameAnimator implements CommandListener{
         break;
       case Event.EV_MONTH_GRID:
       case Event.EV_WEEK_GRID:
-        showDaySummary();
+        if(Astromaximum.dataFile.isDateAvailable(selDate)){
+          showDaySummary();
+        }
         break;
       case Event.EV_SUN_RISE:
       case Event.EV_MOON_RISE:
         setCurPage(PAGE_SUMMARY+1);
         break;
+      case Event.EV_ASP_EXACT:
+        if(si.events.length==0){
+          setCurPage(PAGE_WEEK);
+          break;
+        }
       default:
         if((Interpreter.topic==10) && ((Options.optFlags & Options.FLG_ALLTEXT)!=0)){
           ignoreAllTopics=true;
@@ -844,7 +852,12 @@ class Summary extends FrameAnimator implements CommandListener{
       si=items[selItem];
 //      delta=(dir&1)==0? 1: -1;
       delta=delta>0? 1: -1;
-    }while(!si.isOnPage()/* || si.isEmpty()*/);
+    }while(!si.isOnPage());
+    
+    if(si.type==Event.EV_DAY_HOURS || si.type==Event.EV_NIGHT_HOURS){
+      si.selIndex=5;
+    }
+
 //    si.selIndex=(dir>0)? 0: si.events.length-1;
 //    repaint();
   }
@@ -909,6 +922,10 @@ class Summary extends FrameAnimator implements CommandListener{
       isShowCustom=false;
     }
     switch(c.getPriority()){
+      case 0:
+        setCurPage(Summary.PAGE_HELP);
+//        Astromaximum.summary.dontRender();
+        break;
       case 2:
       case 3:
         setCurPage(c.getPriority() == 2 ? Summary.PAGE_WEEK : Summary.PAGE_MONTH);
@@ -978,9 +995,9 @@ class Summary extends FrameAnimator implements CommandListener{
     recalcAllSelections();
     if(oldPage!=pageNum){
       selItem=-1;
-      if(pageNum!=PAGE_WEEK && pageNum!=PAGE_MONTH){
+//      if(pageNum!=PAGE_WEEK && pageNum!=PAGE_MONTH){
         moveFocus(1,1);
-      }
+//      }
       if(pageNum!=PAGE_DECUMB && pageNum!=PAGE_HELP){
         moveFocus(1,1);
       }
@@ -1581,16 +1598,16 @@ class Summary extends FrameAnimator implements CommandListener{
         break;
       case 21:
         changeDay(delta);
-        break;
+        return;
       case 22:
         si.selIndex=1-si.selIndex;
-        break;
+        return;
       case 23: // Event.EV_MONTH_GRID
         moveDay(delta*(vert? colCount: 1),false/*!vert*/);
-        break;
+        return;
       case 24: // Event.EV_WEEK_GRID:
         moveDay(delta*(vert? 1: rowCount),!vert);
-        break;
+        return;
       case 25: // Event.EV_DATE_GRID:
         si.selIndex=1;
         if(pageNum == Summary.PAGE_MONTH) {
@@ -1599,7 +1616,7 @@ class Summary extends FrameAnimator implements CommandListener{
         else {
           moveDay(delta*rowCount,true);
         }
-        break;
+        return;
       case 26: // Event.EV_MOON_MOVE
         if(si.selIndex<si.events.length/2){ // at head
           moveFocus(delta>0? 1: (size==1? -3: -4), dir);
@@ -1619,6 +1636,23 @@ class Summary extends FrameAnimator implements CommandListener{
                 (delta>0? 0: rowCount-1)*Astromaximum.MSECINDAY,false);
         }
         break;
+      case 28: // Event.EV_ASP_EXACT
+        if(size==2 && dir==2){
+          if(si.selIndex<si.events.length/2){ // at head
+            moveFocus(-2, dir);
+          }
+          else{ // at tail
+            moveFocus(-1, dir);
+          }
+          if(getSelectedItem().isEmpty()){
+            moveFocus(delta, dir);
+          }
+        }
+        break;
+    }
+    si=getSelectedItem();
+    if(si.isEmpty()){
+      si.defaultNavigate(dir);
     }
     repaint();
     

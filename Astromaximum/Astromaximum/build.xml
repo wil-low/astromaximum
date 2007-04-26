@@ -79,7 +79,6 @@
     -->    
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
     <property name="AM.dist" value="dist/midp2y2007release_tb/"/>
-
 <!--    
     <property name="imei.code" value="359593001109710"/>
     classpath="${platform.bootclasspath}" 
