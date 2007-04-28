@@ -1,10 +1,10 @@
 #ifndef eventsH
 #define eventsH
+#include "../swe/src/swephexp.h"
 
-#include "../../astro/eph/sweph/src/swephexp.h"
 //#include "../../eph/sweph/src/swephexp.h"
-const PLANET_COUNT=SE_PLUTO-SE_SUN+1;
-const EFLAG=SEFLG_SPEED|SEFLG_SWIEPH;
+const int PLANET_COUNT=SE_PLUTO-SE_SUN+1;
+const int EFLAG=SEFLG_SPEED|SEFLG_SWIEPH;
 
 const double MINUTE_STEP=(1./24/60);
 const double MSECINDAY=86400*1000;

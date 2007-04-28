@@ -7,7 +7,7 @@
 #include <vector>
 using namespace std;
 //---------------------------------------------------------------------------
-typedef vector <EventClass*> VAE;
+typedef vector <Event*> VAE;
 
 class DayRecord
 {
@@ -19,16 +19,16 @@ private:
 //  vector<GoodBadDegEvent> goodBadDeg;
   friend ostream & operator << (ostream& stream, DayRecord& dr)
   {
-    int sz=dr.events.size();
-    stream.write((const char*)&sz,2);
-    for(int i=0; i<sz; i++)
-      dr.events[i]->write2(stream);
-    return stream;
+//    int sz=dr.events.size();
+//    stream.write((const char*)&sz,2);
+//    for(int i=0; i<sz; i++)
+//      dr.events[i]->write2(stream);
+//    return stream;
   }
 public:
   DayRecord(unsigned int num);
   unsigned int length();
   ~DayRecord();
-  void addEvent(EventClass * ev);
+  void addEvent(Event * ev);
 };
 #endif

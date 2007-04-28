@@ -2,7 +2,7 @@
 
 #pragma hdrstop
 #include <time.h>
-
+#include "swephexp.h"
 #include "evclass.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

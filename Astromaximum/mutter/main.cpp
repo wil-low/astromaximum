@@ -4,7 +4,7 @@
 #include <time.h>
 #include <dir.h>
 #include <fstream>
-#include <assert>
+#include <assert.h>
 using namespace std;
 #pragma hdrstop
 
@@ -12,7 +12,7 @@ using namespace std;
 
 #pragma argsused
 
-const NOT_ENOUGH_PARAMS=-1,
+const int NOT_ENOUGH_PARAMS=-1,
       INVALID_YEAR=-2,
       INVALID_EVENT=-3;
 
