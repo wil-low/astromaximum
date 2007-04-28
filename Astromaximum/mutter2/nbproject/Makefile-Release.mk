@@ -37,26 +37,28 @@ CXXFLAGS=
 FFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=\
+	-L../swe \
+	-lswe
 
 # Build Targets
-.build-conf: ${BUILD_SUBPROJECTS} dist/Release/GNU-Windows/mutter2.exe
+.build-conf: ${BUILD_SUBPROJECTS} ../mutter/mutter2.exe
 
-dist/Release/GNU-Windows/mutter2.exe: ${OBJECTFILES}
-	${MKDIR} -p dist/Release/GNU-Windows
-	${LINK.cc} -o dist/Release/GNU-Windows/mutter2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
+../mutter/mutter2.exe: ${OBJECTFILES}
+	${MKDIR} -p ../mutter
+	${LINK.cc} -o ../mutter/mutter2 -s ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 build/Release/GNU-Windows/evclass.o: evclass.cpp 
 	${MKDIR} -p build/Release/GNU-Windows
-	$(COMPILE.cc) -O2 -o build/Release/GNU-Windows/evclass.o evclass.cpp
+	$(COMPILE.cc) -O2 -I../swe -o build/Release/GNU-Windows/evclass.o evclass.cpp
 
 build/Release/GNU-Windows/datafile.o: datafile.cpp 
 	${MKDIR} -p build/Release/GNU-Windows
-	$(COMPILE.cc) -O2 -o build/Release/GNU-Windows/datafile.o datafile.cpp
+	$(COMPILE.cc) -O2 -I../swe -o build/Release/GNU-Windows/datafile.o datafile.cpp
 
 build/Release/GNU-Windows/main.o: main.cpp 
 	${MKDIR} -p build/Release/GNU-Windows
-	$(COMPILE.cc) -O2 -o build/Release/GNU-Windows/main.o main.cpp
+	$(COMPILE.cc) -O2 -I../swe -o build/Release/GNU-Windows/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
@@ -64,7 +66,7 @@ build/Release/GNU-Windows/main.o: main.cpp
 # Clean Targets
 .clean-conf:
 	${RM} -r build/Release
-	${RM} dist/Release/GNU-Windows/mutter2.exe
+	${RM} ../mutter/mutter2.exe
 
 # Subprojects
 .clean-subprojects:

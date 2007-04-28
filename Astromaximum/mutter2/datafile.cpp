@@ -413,7 +413,7 @@ int DataFile::swapInt(int var)
 bool DataFile::readSubData(char* fname, VAE & v)
 {
   char buf[200];
-  sprintf(buf,"output\\%s",fname);
+  sprintf(buf,"output/%s",fname);
   printf("\nReading %s...",buf);
   FILE *fin=fopen(buf,"rb");
 

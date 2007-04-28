@@ -30,14 +30,14 @@
     <USERDEFINES value="USE_DLL;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_NO_VCL;USEPACKAGES"/>
     <MAINSOURCE value="Mutter.bpf"/>
-    <INCLUDEPATH value="$(BCB)\include;$(BCB)\include\vcl"/>
+    <INCLUDEPATH value="$(BCB)\include;$(BCB)\include\vcl;..\swe"/>
     <LIBPATH value="$(BCB)\Lib\Release;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
     <IDLCFLAGS value="-src_suffix cpp -DUSE_DLL -D_DEBUG -I$(BCB)\include -I$(BCB)\include\vcl 
-      -boa"/>
+      -I..\swe -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -pr -a1 -6 -b- -k -y -v 
       -vi- -tWC -tWM- -c"/>
     <PFLAGS value="-$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -95,9 +95,11 @@ Comments=
 d:\program files\borland\cbuilder6\Bin\dclite60.bpl=Borland Integrated Translation Environment
 
 [HistoryLists\hlIncludePath]
-Count=2
-Item0=$(BCB)\include;$(BCB)\include\vcl
-Item1=D:\projects\astro\mother;$(BCB)\include;$(BCB)\include\vcl
+Count=4
+Item0=$(BCB)\include;$(BCB)\include\vcl;..\swe
+Item1=$(BCB)\include;$(BCB)\include\vcl; ..\swe
+Item2=$(BCB)\include;$(BCB)\include\vcl
+Item3=D:\projects\astro\mother;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
 Count=3

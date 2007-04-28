@@ -38,26 +38,27 @@ FFLAGS=
 
 # Link Libraries and Options
 LDLIBSOPTIONS=\
-	../swe/src/libswe.a
+	-L../swe \
+	-lswe
 
 # Build Targets
-.build-conf: ${BUILD_SUBPROJECTS} dist/Debug/GNU-Windows/mutter2.exe
+.build-conf: ${BUILD_SUBPROJECTS} ../mutter/mutter2.exe
 
-dist/Debug/GNU-Windows/mutter2.exe: ${OBJECTFILES}
-	${MKDIR} -p dist/Debug/GNU-Windows
-	${LINK.cc} -o dist/Debug/GNU-Windows/mutter2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
+../mutter/mutter2.exe: ${OBJECTFILES}
+	${MKDIR} -p ../mutter
+	${LINK.cc} -o ../mutter/mutter2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 build/Debug/GNU-Windows/evclass.o: evclass.cpp 
 	${MKDIR} -p build/Debug/GNU-Windows
-	$(COMPILE.cc) -g -Wall -I../swe/src -o build/Debug/GNU-Windows/evclass.o evclass.cpp
+	$(COMPILE.cc) -g -Wall -I../swe -o build/Debug/GNU-Windows/evclass.o evclass.cpp
 
 build/Debug/GNU-Windows/datafile.o: datafile.cpp 
 	${MKDIR} -p build/Debug/GNU-Windows
-	$(COMPILE.cc) -g -Wall -I../swe/src -o build/Debug/GNU-Windows/datafile.o datafile.cpp
+	$(COMPILE.cc) -g -Wall -I../swe -o build/Debug/GNU-Windows/datafile.o datafile.cpp
 
 build/Debug/GNU-Windows/main.o: main.cpp 
 	${MKDIR} -p build/Debug/GNU-Windows
-	$(COMPILE.cc) -g -Wall -I../swe/src -o build/Debug/GNU-Windows/main.o main.cpp
+	$(COMPILE.cc) -g -Wall -I../swe -o build/Debug/GNU-Windows/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
@@ -65,7 +66,7 @@ build/Debug/GNU-Windows/main.o: main.cpp
 # Clean Targets
 .clean-conf:
 	${RM} -r build/Debug
-	${RM} dist/Debug/GNU-Windows/mutter2.exe
+	${RM} ../mutter/mutter2.exe
 
 # Subprojects
 .clean-subprojects:

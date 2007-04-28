@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
         printf("%d...",i/10000);
     }
     printf("\nSaving cached ephemeris...");
-    FILE *fout=fopen("..\\ephdata.dat","wb");
+    FILE *fout=fopen("../ephdata.dat","wb");
     fwrite(ephData,size,1,fout);
     fclose(fout);
     printf("Done.\n");
