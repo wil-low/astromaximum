@@ -90,6 +90,7 @@ typedef enum {
   EV_ASTROSET,
   EV_APHETICS,
   EV_FAST,
+  EV_ASCAPHETICS,
   EV_LAST // last - do not use
 } EventType;
 

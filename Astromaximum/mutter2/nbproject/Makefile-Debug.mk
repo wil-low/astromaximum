@@ -42,11 +42,10 @@ LDLIBSOPTIONS=\
 	-lswe
 
 # Build Targets
-.build-conf: ${BUILD_SUBPROJECTS} ../mutter/mutter2.exe
+.build-conf: ${BUILD_SUBPROJECTS} mutter2.exe
 
-../mutter/mutter2.exe: ${OBJECTFILES}
-	${MKDIR} -p ../mutter
-	${LINK.cc} -o ../mutter/mutter2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
+mutter2.exe: ${OBJECTFILES}
+	${LINK.cc} -o mutter2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 build/Debug/GNU-Windows/evclass.o: evclass.cpp 
 	${MKDIR} -p build/Debug/GNU-Windows
@@ -66,7 +65,7 @@ build/Debug/GNU-Windows/main.o: main.cpp
 # Clean Targets
 .clean-conf:
 	${RM} -r build/Debug
-	${RM} ../mutter/mutter2.exe
+	${RM} mutter2.exe
 
 # Subprojects
 .clean-subprojects:

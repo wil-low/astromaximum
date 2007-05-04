@@ -46,8 +46,9 @@ int main(int argc, char* argv[])
   }
   if(pos){
       *(pos+1)=0;
-      chdir(path);
   }
+  strcat(path,"../mutter/");
+  chdir(path);
   printf("Current directory is: %s\n", path);
 //  return 0;
   struct tm now;
@@ -64,7 +65,7 @@ int main(int argc, char* argv[])
   tm *st=gmtime(&loo);
   loo=mktime(st);
   assert(sizeof(sMatrix)==9);
-  assert(EV_LAST==49);
+  assert(EV_LAST==50);
   if(argc<2) return NOT_ENOUGH_PARAMS;
   DataFile df;
   char buf[20];
@@ -141,42 +142,33 @@ int main(int argc, char* argv[])
     scanf("%s",buf);
   }
   else{
-    if(argc!=5)
-      return NOT_ENOUGH_PARAMS;
-    df.Lon=strtod(argv[3],NULL);
-    df.Lat=strtod(argv[4],NULL);
-
-    double cusps[13], ascmc[10];
-    sAscRecord *ascData=new sAscRecord[stepCount];
-    endJD=startJD;
     VAE work, assist, vout, work2;
-    long tm=GetTickCount();
-
-
     if(strcmp(argv[2],"electio")==0){
 //      df.loadAphetics(aphetics);
       df.choice(EV_APHETICS, work, assist, vout, work2, argv[2]);
-      scanf("%s",buf);
+//      scanf("%s",buf);
     }
     else{
-      for(int i=0; i<stepCount; i++){
-        swe_houses(endJD, df.Lat, df.Lon, 'P', cusps, ascmc);
-        ascData[i].data[0]=cusps[1];  //asc
-        ascData[i].data[1]=cusps[7];  //dsc
-        endJD+=MINUTE_STEP;
-        if(i%10000==0)
-          printf("%d...",i/10000);
+      if(argc<5)
+        return NOT_ENOUGH_PARAMS;
+      df.Lon=strtod(argv[3],NULL);
+      df.Lat=strtod(argv[4],NULL);
+  // TODO remove this line
+//      df.stepCount=8000;
+      df.calcAscData();
+//      df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
+//      df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
+//      df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
+      if(argc>5 && (strcmp(argv[5],"electio")==0)){
+        df.choice(EV_ASCAPHETICS, work, assist, vout, work2, argv[2]);
       }
-      df.ascData=ascData;
-      printf("\n  ET=%ld\n",GetTickCount()-tm);
-      df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
-      df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
-      df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
     }
     delete[] ephData;
-    delete[] ascData;
   }
-  printf("Finished.\n");
+  if(df.ascData){
+    delete[] df.ascData;
+  }
+  printf("\nFinished.\n");
   return 0;
 }
 

@@ -5,7 +5,7 @@
   <confs>
     <conf name="Debug" type="1">
       <runprofile version="5">
-        <args>2007</args>
+        <args>2007 asc0- 23 16 electio</args>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <console-type>0</console-type>
@@ -19,7 +19,7 @@
     </conf>
     <conf name="Release" type="1">
       <runprofile version="5">
-        <args></args>
+        <args>2007 asc0- 23 16 electio</args>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <console-type>0</console-type>

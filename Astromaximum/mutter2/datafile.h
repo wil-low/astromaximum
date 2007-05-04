@@ -19,22 +19,40 @@ typedef enum{
 } EventFlag;
 
 typedef enum{
-  AF_DOMICILE=0x1,
-  AF_EXALT=0x2,
-  AF_TRIPL=0x4,
-  AF_TERM=0x8,
-  AF_DECANE=0x10,
-  AF_RECSIGN=0x20,
-  AF_RECEXALT=0x40,
-  AF_SUNHEART=0x80,
-  AF_DETRIMENT=0x100,
-  AF_FALL=0x200,
-  AF_RETRO=0x400,
-  AF_BURNT=0x800,
-  AF_FAST=0x1000,
-  AF_GROWINGMOON=0x2000,
+  AF_DOMICILE=0,
+  AF_EXALT,
+  AF_TRIPL,
+  AF_TERM,
+  AF_DECANE,
+  AF_RECSIGN,
+  AF_RECEXALT,
+  AF_SUNHEART,
+  AF_DETRIMENT,
+  AF_FALL,
+  AF_RETRO,
+  AF_BURNT,
+  AF_FAST,
+  AF_GROWINGMOON,
 } ApheFlag;
 
+static const int AF_PEREGRINE=(1<<AF_DOMICILE)+(1<<AF_EXALT)+(1<<AF_RECSIGN)+(1<<AF_RECEXALT)+(1<<AF_TRIPL);
+
+static const int ApheBalls[]={
+  5, // AF_DOMICILE
+  4, // AF_EXALT
+  3, // AF_TRIPL
+  2, // AF_TERM
+  1, // AF_DECANE
+  5, // AF_RECSIGN
+  4, // AF_RECEXALT
+  5, // AF_SUNHEART
+  -5, // AF_DETRIMENT
+  -4, // AF_FALL
+  -9, // AF_RETRO (-5 against DIRECT +4)
+  -5, // AF_BURNT
+  4, // AF_FAST (+2 against SLOW -2)
+  4, // AF_GROWINGMOON (+2 against  -2)
+};
 static const char PLANETS[]={SE_SUN,SE_MOON,SE_MERCURY,SE_VENUS,SE_MARS,
   SE_JUPITER,SE_SATURN,SE_URANUS,SE_NEPTUNE,SE_PLUTO,SE_TRUE_NODE,SE_MEAN_APOG,
   SE_FICT_OFFSET_1+17
@@ -50,7 +68,6 @@ private:
   sEphRecord *ephData;
   char terms[360];
   double startJD;
-  unsigned int dayCount, stepCount;
   VAE events;
   void calcAspExact(VAE & moonvae,VAE & vae);
   void calcDegPass(VAE & vae, int planet);
@@ -66,14 +83,18 @@ private:
   bool readSubData(char* fname, VAE & v);
   int select(VAE & src, double jdstart, double jdend, char planet, bool both, VAE & dest);
   int getAspIndex(int angle);
-  void geopos(char* city, double lat, double lon, char* suffix);
   short swapShort(short var);
   int swapInt(int var);
   int calcAphetics(aphRecord *balls, const Event *ev);
   void clearAphetics(aphRecord *arr, int planet, int mins, VAE &dest);
   void doAphetics(VAE &work);
+  void doAscAphetics(VAE &work);
   void addBalls(aphRecord *balls, const Event *ev, int value);
 public:
+  unsigned int dayCount, stepCount;
+  bool aph_ne(const Event* ev0, const Event* ev1);
+  int aspectExists(int step, int p0, int p1, double delta);
+  Event* eventContains(const VAE &work, double moment);
   sAscRecord *ascData;
   void sortVAE(VAE &work);
   void AscendingTest(const char* dirname);
@@ -84,6 +105,7 @@ public:
   void init(sEphRecord *ephdata, double start, unsigned int count);
   void AAA();
   ~DataFile();
-  boolean loadAphetics(sAphRecord *data);
+  bool loadAphetics(sAphRecord *data);
+  void calcAscData();
 };
 #endif

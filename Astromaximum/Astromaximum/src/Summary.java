@@ -1604,19 +1604,19 @@ class Summary extends FrameAnimator implements CommandListener{
         return;
       case 23: // Event.EV_MONTH_GRID
         moveDay(delta*(vert? colCount: 1),false/*!vert*/);
-        return;
+        break;
       case 24: // Event.EV_WEEK_GRID:
         moveDay(delta*(vert? 1: rowCount),!vert);
-        return;
+        break;
       case 25: // Event.EV_DATE_GRID:
         si.selIndex=1;
         if(pageNum == Summary.PAGE_MONTH) {
           moveMonth(delta);
         } 
-        else {
+        else{
           moveDay(delta*rowCount,true);
         }
-        return;
+        break;
       case 26: // Event.EV_MOON_MOVE
         if(si.selIndex<si.events.length/2){ // at head
           moveFocus(delta>0? 1: (size==1? -3: -4), dir);

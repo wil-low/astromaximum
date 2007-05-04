@@ -33,6 +33,7 @@ static const unsigned char TRIPLICITY[3][7]={
   {8,9,10,9,11,8,10}
 };
 
+static const char APH_ORBIS[7] = {8,6,4,4,4,5,5};
 static const char DECANES[7]=
   {SE_MARS,SE_SUN,SE_VENUS,SE_MERCURY,SE_MOON,SE_SATURN,SE_JUPITER};
 
@@ -167,17 +168,7 @@ void DataFile::calcAspExact(VAE & moonvae,VAE & vae)
   for(int c=0; c<stepCount; c++){
     for(int i=0; i<PLANET_COUNT; i++)
       for(int j=i+1; j<PLANET_COUNT; j++){
-        double aspa=(ephData[c].data[i]-ephData[c].data[j]);
-        if(aspa<0) aspa+=360;
-        if(aspa>180) aspa=360-aspa;
-        int aspindex=-1;
-        for(int cnt=0; cnt<sizeof(ASP_ANGLES)/sizeof(char); cnt++){
-          double d=aspa-ASP_ANGLES[cnt];
-          d=d-int(d/360.);
-          if(fabs(d)<0.01){
-            aspindex=cnt; break;
-          }
-        }
+        int aspindex=aspectExists(c,i,j,0.01);
         sMatrix &mtx=matrix[i][j];
         if(aspindex!=-1){ // exact - yes
           if(mtx.ang==ASP_ANGLES[aspindex]){ // aspect persists
@@ -336,7 +327,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
   sBuf=swapShort(sz);
   fwrite(&sBuf, 2, 1, fout);
   printf("%u records...",v.size());
-  int PERIOD=24*60*60;
+  int PERIOD=(evtype==EV_ASCAPHETICS)? 60*60: 24*60*60;
 //  v[0]->dump();
 //  v[1]->dump();
   for(int i=0; i<v.size(); i++){
@@ -567,6 +558,22 @@ void DataFile::clearAphetics(aphRecord *arr, int planet, int mins, VAE &dest)
       dest.push_back(ev);
 //    }
   }
+  // ball calculation
+  for(int i=0; i<dest.size(); i++){
+    Event *ev=dest[i];
+    int peregr=0;
+    int ball= 64 + 4-2-2; // DIRECT+SLOW+RAISEMOON + 50
+    if(!(ev->degree & AF_PEREGRINE)){
+      ball-=5;
+      peregr=1;
+    }
+    for(int j=0; j<sizeof(ApheBalls)/sizeof(int); j++){
+      if(ev->degree & (1<<j)){
+        ball+=ApheBalls[j];
+      }
+    }
+    ev->planetId[1]=ball+(peregr<<7);
+  }
 }
 
 void DataFile::doAphetics(VAE &work)
@@ -589,7 +596,7 @@ void DataFile::doAphetics(VAE &work)
 
   balls=new aphRecord[stepCount]; // balls for all steps
   memset(balls,0,stepCount*sizeof(aphRecord));
-/*
+
   // general
   for(int i=0; i<7; i++){
     if(i==SE_MOON){
@@ -605,8 +612,11 @@ void DataFile::doAphetics(VAE &work)
     }
     release(work);
   }
-  */
-  // sun heart
+  
+
+// ____________________
+//      sun heart
+  
   for(int i=0; i<stepCount; i++){
     double sun=ephData[i].data[SE_SUN];
     for(int j=SE_MOON; j<=SE_SATURN; j++){
@@ -614,22 +624,23 @@ void DataFile::doAphetics(VAE &work)
       if(aspa<0) aspa+=360;
       if(aspa>180) aspa=360-aspa;
       if(aspa<17/60.){
-        balls[i].data[j]|=AF_SUNHEART;
+        balls[i].data[j]|=(1<<AF_SUNHEART);
       }
       else
         if(aspa<BURNT_ORBIS[j]){
-          balls[i].data[j]|=AF_BURNT;
+          balls[i].data[j]|=(1<<AF_BURNT);
         }
 
     }
   }
-  /*
-  // retrograde
+  
+// ____________________
+//     retrograde
   for(int i=SE_MERCURY; i<=SE_SATURN; i++){
     sprintf(fname,"retro%02d.bin",i);
     readSubData(fname,work);
     for(int j=0; j<work.size(); j++){
-      addBalls(balls,work[j],AF_RETRO);
+      addBalls(balls,work[j],(1<<AF_RETRO));
     }
     release(work);
   }
@@ -639,7 +650,7 @@ void DataFile::doAphetics(VAE &work)
     sprintf(fname,"fast%02d.bin",i);
     readSubData(fname,work);
     for(int j=0; j<work.size(); j++){
-      addBalls(balls,work[j],AF_FAST);
+      addBalls(balls,work[j],(1<<AF_FAST));
     }
     release(work);
   }
@@ -648,10 +659,11 @@ void DataFile::doAphetics(VAE &work)
   readSubData(fname,work);
   for(int j=0; j<work.size(); j++){
     if(work[j]->planetId[1]<=1){
-      addBalls(balls,work[j],AF_GROWINGMOON);
+      addBalls(balls,work[j],(1<<AF_GROWINGMOON));
     }
   }
   release(work);
+  
   for(int i=0; i<stepCount; i++){
     for(int j=SE_SUN; j<=SE_SATURN; j++){
       int dj=ephData[i].data[j];
@@ -662,8 +674,8 @@ void DataFile::doAphetics(VAE &work)
         int dk=ephData[i].data[k];
         int sk=dk/30;
         if((sk==OWN_SIGN[0][j])||(sk==OWN_SIGN[1][j])){
-          balls[i].data[j]|=AF_RECSIGN;
-          balls[i].data[k]|=AF_RECSIGN;
+          balls[i].data[j]|=(1<<AF_RECSIGN);
+          balls[i].data[k]|=(1<<AF_RECSIGN);
         }
       }
       // exalt. reception
@@ -672,13 +684,13 @@ void DataFile::doAphetics(VAE &work)
         int dk=ephData[i].data[k];
         int sk=dk/30;
         if(sk==EXALTATION[j]){
-          balls[i].data[j]|=AF_RECEXALT;
-          balls[i].data[k]|=AF_RECEXALT;
+          balls[i].data[j]|=(1<<AF_RECEXALT);
+          balls[i].data[k]|=(1<<AF_RECEXALT);
         }
       }
     }
   }
-*/  
+  
 /*
   for(int i=0; i<stepCount; i++){
     printf("\n %7d", i);
@@ -690,7 +702,7 @@ void DataFile::doAphetics(VAE &work)
   for(int i=SE_SUN; i<=SE_SATURN; i++){
     clearAphetics(balls, i, 0, work);
     sprintf(fname,"aphetics%02d.bin", i);
-    writeSubData(work,EV_APHETICS,EF_DEGREE|EF_NEXT_DATE2,i,fname);
+    writeSubData(work,EV_APHETICS,EF_PLANET2|EF_NEXT_DATE2,i,fname);
     if(i==SE_MERCURY){
       for(int i=0; i<work.size(); i++){
         work[i]->dump2();
@@ -716,6 +728,14 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
     case EV_APHETICS:
       printf("Aphetics...");
       doAphetics(work);
+      break;
+    case EV_ASCAPHETICS:
+      printf("Ascendent aphetics...");
+      doAscAphetics(work);
+      sprintf(fname, "%sascaph.bin", prefix);
+      writeSubData(work,EV_ASCAPHETICS,EF_NEXT_DATE2|EF_PLANET1|
+        EF_PLANET2|EF_DEGREE|EF_CUMUL_DATE_B,-1,fname);
+      release(work);
       break;
     case EV_VIA_COMBUSTA:
       printf("Via Combusta...");
@@ -1178,11 +1198,6 @@ void DataFile::NormAngle(double &a)
 }
 
 
-void DataFile::geopos(char* city, double lat, double lon, char* suffix)
-{
-  //TODO: Add your source code here
-}
-
 int DataFile::calcAphetics(aphRecord *balls, const Event *ev)
 {
   int aph=0;
@@ -1191,29 +1206,29 @@ int DataFile::calcAphetics(aphRecord *balls, const Event *ev)
   int planet=ev->planetId[0];
   // domicile
   if(sign==OWN_SIGN[0][planet]){
-    aph|=AF_DOMICILE;
+    aph|=(1<<AF_DOMICILE);
   }
   if(sign==OWN_SIGN[1][planet]){
-    aph|=AF_DOMICILE;
+    aph|=(1<<AF_DOMICILE);
   }
 
   // exaltation
   if(sign==EXALTATION[planet]){
-    aph|=AF_EXALT;
+    aph|=(1<<AF_EXALT);
   }
 
   // fall
   if(sign==(EXALTATION[planet]+6)%12){
-    aph|=AF_FALL;
+    aph|=(1<<AF_FALL);
   }
 
   // detriment
   if(sign==(OWN_SIGN[0][planet]+6)%12){
-    aph|=AF_DETRIMENT;
+    aph|=(1<<AF_DETRIMENT);
   }
   if(planet>SE_MOON){
     if(sign==(OWN_SIGN[1][planet]+6)%12){
-      aph|=AF_DETRIMENT;
+      aph|=(1<<AF_DETRIMENT);
     }
   }
 
@@ -1221,18 +1236,19 @@ int DataFile::calcAphetics(aphRecord *balls, const Event *ev)
   // triplicity
   for(int i=0; i<3; i++){
     if(sign==TRIPLICITY[i][planet]){
-      aph|=AF_TRIPL;
+      aph|=(1<<AF_TRIPL);
       break;
     }
   }
 
   // terms
   if(planet==terms[degree]){
-    aph|=AF_TERM;
+    aph|=(1<<AF_TERM);
   }
 
+  // decanes
   if(planet==DECANES[(degree/10)%7]){
-    aph|=AF_DECANE;
+    aph|=(1<<AF_DECANE);
   }
   addBalls(balls,ev,aph);
 }
@@ -1249,7 +1265,7 @@ void DataFile::addBalls(aphRecord *balls, const Event *ev, int value)
   }
 }
 
-boolean DataFile::loadAphetics(sAphRecord *data)
+bool DataFile::loadAphetics(sAphRecord *data)
 {
   static const char PLANET_BALLS[SE_SATURN+1][12]={
     {10, 6,11, 7, 3, 5, 1, 9, 2, 8, 0, 4},
@@ -1304,6 +1320,113 @@ boolean DataFile::loadAphetics(sAphRecord *data)
   return true;
 }
 
+void DataFile::calcAscData()
+{
+  double cusps[13], ascmc[10];
+  sAscRecord *myascData=new sAscRecord[stepCount];
+  double endJD=startJD;
+  printf("\n AscData for %.2f, %.2f: ", Lat, Lon);
+  for(int i=0; i<stepCount; i++){
+    swe_houses(endJD, Lat, Lon, 'P', cusps, ascmc);
+    myascData[i].data[0]=cusps[1];  //asc
+    myascData[i].data[1]=cusps[7];  //dsc
+    endJD+=MINUTE_STEP;
+    if(i%10000==0)
+      printf("%d...",i/10000);
+  }
+  ascData=myascData;
+}
 
+void DataFile::doAscAphetics(VAE &work)
+{
+  char fname[200];
+  VAE vaes[7];
+  for(int i=0; i<7; i++){
+    sprintf(fname,"aphetics%02d.bin",i);
+    readSubData(fname,vaes[i]);
+  }
+  
+  double endJD=startJD;
+  Event *evhist[2]={NULL,NULL}; Event *evcur[2]; 
+  double oldtm=endJD; int oldstep=0;
+  int ascplt[2]; 
+  for(int i=0; i<stepCount; i++){
+    if(i>=527833){
+      printf("edf");
+    }
+    for(int j=0; j<2; j++){
+      ascplt[j]=OWN_SIGN_REVERSE[(int)(ascData[i].data[j]/30)];
+      evcur[j]=eventContains(vaes[ascplt[j]],endJD);
+    };
+    if(!evcur[0] || !evcur[1]){
+      break;
+    }
+//    if(aph_ne(evhist[0],evcur[0]) || aph_ne(evhist[1],evcur[1])){
+    if((evhist[0]!=evcur[0]) || (evhist[1]!=evcur[1])){
+      if(evhist[0]){
+        Event *ascev=new Event(oldtm,evhist[0]->planetId[1]);
+        ascev->planetId[1]=evhist[1]->planetId[1];
+        int delta=max(APH_ORBIS[ascplt[0]],APH_ORBIS[ascplt[1]]);
+        int aspind=aspectExists(oldstep,ascplt[0],ascplt[1],delta);
+        ascev->degree=(ascplt[0] & 0xf) + ((ascplt[1]<<4)& 0xf0) + ((aspind<<8)& 0xff00);
+        work.push_back(ascev);
+        oldtm=endJD;
+        oldstep=i;
+//        printf("\n\n %d %d -- %d",ascplt[0],ascplt[1],i);
+//        ascev->dump2();
+      }
+      evhist[0]=evcur[0];
+      evhist[1]=evcur[1];
+      evcur[0]=NULL;
+    }
+    endJD+=MINUTE_STEP;
+  }
+  if(evcur[0]){
+    Event *ascev=new Event(oldtm,evhist[0]->planetId[1]);
+    ascev->planetId[1]=evhist[1]->planetId[1];
+    int delta=max(APH_ORBIS[ascplt[0]],APH_ORBIS[ascplt[1]]);
+    int aspind=aspectExists(oldstep,ascplt[0],ascplt[1],delta);
+    ascev->degree=(ascplt[0] & 0xf) + ((ascplt[1]<<4)& 0xf0) + ((aspind<<8)& 0xff00);
+    work.push_back(ascev);
+//    printf("\n\n %d %d --",ascplt[0],ascplt[1]);
+//    ascev->dump2();
+  }
+  for(int i=0; i<7; i++){
+    release(vaes[i]);
+  }
+}
 
+Event* DataFile::eventContains(const VAE &work, double moment)
+{
+  for(int i=0; i<work.size(); i++){
+    if(work[i]->julianDay>moment){
+      return work[i-1];
+    }
+  }
+  return NULL;
+}
 
+int DataFile::aspectExists(int step, int p0, int p1, double delta)
+{
+  int aspindex=-1;
+  if(step<stepCount){
+    double ang0=ephData[step].data[p0], ang1=ephData[step].data[p1];
+    double aspa=(ang0-ang1);
+    if(aspa<0) aspa+=360;
+    if(aspa>180) aspa=360-aspa;
+    for(int cnt=0; cnt<sizeof(ASP_ANGLES)/sizeof(char); cnt++){
+      double d=aspa-ASP_ANGLES[cnt];
+      d=d-int(d/360.);
+      if(fabs(d)<delta){
+        aspindex=cnt; break;
+      }
+    }
+  }
+  return aspindex;
+}
+
+bool DataFile::aph_ne(const Event* ev0, const Event* ev1)
+{
+  return (ev0->degree != ev1->degree) || (ev0->planetId[0] != ev1->planetId[0])
+    || (ev0->planetId[1] != ev1->planetId[1]);
+}

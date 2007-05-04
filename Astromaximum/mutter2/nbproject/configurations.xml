@@ -48,7 +48,7 @@
         <fortranCompilerTool>
         </fortranCompilerTool>
         <linkerTool>
-          <output>../mutter/mutter2</output>
+          <output>mutter2</output>
           <linkerAddLib>
             <directoryPath>../swe</directoryPath>
           </linkerAddLib>
@@ -101,7 +101,7 @@
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
         <linkerTool>
-          <output>../mutter/mutter2</output>
+          <output>mutter2</output>
           <linkerAddLib>
             <directoryPath>../swe</directoryPath>
           </linkerAddLib>
