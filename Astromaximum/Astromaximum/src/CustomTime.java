@@ -144,12 +144,9 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
         case Summary.PAGE_PANEL:
         case Summary.PAGE_DECUMB:
           Astromaximum.summary.calcDecumbiture();
-          Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
-          break;
-        default:
-          Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
-//          Astromaximum.summary.dontRender();
       }
+      Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
+      arrangeHistory();
       Astromaximum.options.saveHistory();
     }
   }
@@ -202,30 +199,6 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
         return false;
       }
       decumbDate=tmp;
-      for(int i=0; i<histCount; i++){
-        if(history[i]==decumbDate){
-          cg.setSelectedIndex(i,true);
-          return true;
-        }
-      }
-      if(histCount>=HIST_COUNT){
-        int i=histCount;
-        do{
-          --i;
-        }while(i>=0 && (lockFlags & (1<<i))!=0);
-        if(i<0){
-          return false;
-        }
-        deleteHistItem(i);
-      }
-      lockFlags<<=1;
-      for(int i=histCount-1; i>=0; i--){
-        history[i+1]=history[i];
-      }
-      ++histCount;
-      history[0]=decumbDate;
-      cg.insert(0,Event.long2String(history[0],0,false),null);
-      cg.setSelectedIndex(0,true);
     }
     return true;
   }
@@ -295,5 +268,34 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
       ex.printStackTrace();
     }
      return port1;
+  }
+  
+  boolean arrangeHistory()
+  {
+    for(int i=0; i<histCount; i++){
+      if(history[i]==decumbDate){
+        cg.setSelectedIndex(i,true);
+        return true;
+      }
+    }
+    if(histCount>=HIST_COUNT){
+      int i=histCount;
+      do{
+        --i;
+      }while(i>=0 && (lockFlags & (1<<i))!=0);
+      if(i<0){
+        return false;
+      }
+      deleteHistItem(i);
+    }
+    lockFlags<<=1;
+    for(int i=histCount-1; i>=0; i--){
+      history[i+1]=history[i];
+    }
+    ++histCount;
+    history[0]=decumbDate;
+    cg.insert(0,Event.long2String(history[0],0,false),null);
+    cg.setSelectedIndex(0,true);
+    return true;
   }
 }

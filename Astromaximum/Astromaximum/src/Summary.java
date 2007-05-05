@@ -59,6 +59,7 @@ class Summary extends FrameAnimator implements CommandListener{
   static final int PAGE_DECUMB=0;//5;
   static final int PAGE_SUMMARY=4;
   static final int PAGE_HELP=8;
+  static final int PAGE_ELECTIO=9;
   static int PAGE_LAST;
   static int IMG_HEIGHT;
   static int IMG_WIDTH;
@@ -104,6 +105,7 @@ class Summary extends FrameAnimator implements CommandListener{
     addCommand(new Command(LocalizationSupport.getMessage("Today"), Command.SCREEN, 1));
     addCommand(new Command(LocalizationSupport.getMessage("No_theme"), Command.SCREEN, 5));
     addCommand(new Command(LocalizationSupport.getMessage("Options"),Command.SCREEN,4));
+    addCommand(new Command(LocalizationSupport.getMessage("Aphetics"),Command.SCREEN,6));
     setCommandListener(this);
     pageNum=PAGE_SUMMARY;
   }
@@ -738,6 +740,9 @@ class Summary extends FrameAnimator implements CommandListener{
         if(sind != 1){
           changeDay(sind-1);
           si.selIndex=1;
+          if(pageNum==PAGE_ELECTIO){
+            calcElectio();
+          }
           repaint();
           return;
         }
@@ -925,6 +930,10 @@ class Summary extends FrameAnimator implements CommandListener{
       case 0:
         setCurPage(Summary.PAGE_HELP);
 //        Astromaximum.summary.dontRender();
+        break;
+      case 6:
+        calcElectio();
+        setCurPage(Summary.PAGE_ELECTIO);
         break;
       case 2:
       case 3:
@@ -1598,6 +1607,13 @@ class Summary extends FrameAnimator implements CommandListener{
         break;
       case 21:
         changeDay(delta);
+        long tm=date.getTime();
+        tm+=Event.localOffset(tm);
+        Astromaximum.customTime.dateField.setDate(new Date(tm));
+        if(pageNum==PAGE_ELECTIO){
+          calcElectio();
+          break;
+        }
         return;
       case 22:
         si.selIndex=1-si.selIndex;
@@ -1655,7 +1671,15 @@ class Summary extends FrameAnimator implements CommandListener{
       si.defaultNavigate(dir);
     }
     repaint();
-    
+  }
+  
+  void calcElectio()
+  {
+    Vector vElectio=new Vector();
+    Astromaximum.dataFile.getEventsOnPeriod(vElectio,Event.EV_ASCAPHETICS,-1,false,
+        period0, period1,0);
+    Astromaximum.evDump(vElectio);
+    getItem(Event.EV_ASCAPHETICS).setEvents(vElectio);
   }
 }
 

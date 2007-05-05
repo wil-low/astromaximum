@@ -15,7 +15,7 @@ sub join_datafiles # size, destfile, fname_listref
 	print OUTF pack('n',$#bins+1);
 	my $i=0;
 	foreach my $ff(@bins){
-		open(INF, "<$ff") or die "No file";
+		open(INF, "<$ff") or die "No file $ff";
 		binmode(INF);
 		undef $/ ;
 		@buf=<INF>;

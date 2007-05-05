@@ -301,6 +301,7 @@ final class DataFile{
     int skipOff;
     Event last=new Event(0,0);
     int fnext_date2=0;
+    int PERIOD=(evtype==Event.EV_ASCAPHETICS)? 60: 24*60;
     try {
       final DataInputStream is=new DataInputStream(new ByteArrayInputStream(buf));
       if(Astromaximum.options!=null){
@@ -367,7 +368,7 @@ final class DataFile{
           if(i!=0){
             byte d=is.readByte();
             cumul=d;
-            date+=(cumul+24*60)*60;
+            date+=(cumul+PERIOD)*60;
           }
           else{
             date=is.readInt();
@@ -377,7 +378,7 @@ final class DataFile{
           if(i!=0){
             short d=is.readShort();
             cumul=d;
-            date+=(cumul+24*60)*60;
+            date+=(cumul+PERIOD)*60;
           }
           else{
             date=is.readInt();
@@ -535,6 +536,7 @@ final class DataFile{
       case Event.EV_RISE:
       case Event.EV_SET:
       case Event.EV_NAVROZ:
+      case Event.EV_ASCAPHETICS:
         return readSubData(geoposData,evtype, planet,false,dayStart,dayEnd);
       default:
         return readSubData(commonData,evtype, planet,true,dayStart,dayEnd);

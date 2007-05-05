@@ -205,7 +205,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			print "\n-----------------------\n";
 			my $tz=get_tz($params[3],$city,1);
 			my $dstbuf=calc_dst($tz);
-			my $invoke=$mypath."mutter\\mutter.exe $year geo0- $params[1] $params[2]";
+			my $invoke=$mypath."mutter2\\mutter2.exe $year geo0- $params[1] $params[2] electio";
 			print "$invoke\n";
 			system($invoke);
 			if($params[3]=~/USA \- (.+)/is){

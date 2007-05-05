@@ -51,6 +51,13 @@ class SummItem extends TimerTask implements RecordFilter{
   private static final long DEGREE_DELTA_MSEC2=28*60*1000;
   static Summary owner;
   private static final int[] ASP_ANGLES={0,180,90,120,60,45,30,15,72,150};
+  
+  static final int[] OWN_SIGN_REVERSE=
+  {
+    Event.SE_MARS,Event.SE_VENUS,Event.SE_MERCURY,Event.SE_MOON,Event.SE_SUN,Event.SE_MERCURY,
+    Event.SE_VENUS,Event.SE_MARS,Event.SE_JUPITER,Event.SE_SATURN,Event.SE_SATURN,Event.SE_JUPITER
+  };
+  
   static final byte[] weekPlanets={0,1,4,2,5,3,6};
   static Hashtable topics = new Hashtable();  
   static{
@@ -776,6 +783,38 @@ class SummItem extends TimerTask implements RecordFilter{
             drawImg(osg,Summary.imgPlanet,ev.planet0,x,y,Graphics.VCENTER|Graphics.RIGHT);
             osg.drawString(Interpreter.riseKeys[ev.getDegree()-1],x+1,top+height-1,
                 Graphics.BASELINE|Graphics.LEFT);
+          }
+        }
+        break;
+      case Event.EV_ASCAPHETICS:
+        x=left+width/2;
+        osg.setColor(Astromaximum.BORDER_COLOR);
+        osg.drawLine(x,top,x,top+height);
+        osg.setColor(0);
+        for(int i=0; i<events.length; i++){
+          ev=events[i];
+          y=top+height*i/rowCount+1;
+          int si0=ev.degree & 0xf, si1=(ev.degree & 0xf0)>>4;
+          drawImg(osg,Summary.imgZodiac,si0,x-3,y,Graphics.TOP|Graphics.RIGHT);
+          drawImg(osg,Summary.imgZodiac,si1,x+3,y,Graphics.TOP|Graphics.LEFT);
+          osg.drawString(Event.long2String(ev.date0,1,false),x-3-owner.IMG_WIDTH*2,y,
+              Graphics.TOP|Graphics.RIGHT);
+          osg.drawString(Event.long2String(ev.date1,1,true),x+3+owner.IMG_WIDTH*2,y,
+              Graphics.TOP|Graphics.LEFT);
+          y+=2+owner.IMG_WIDTH;
+          boolean peregr=(ev.planet0 & 0x80)!=0;
+          drawImg(osg,peregr? Summary.imgOpaq: Summary.imgPlanet,
+              OWN_SIGN_REVERSE[si0]+(peregr? 13: 0),x-3-owner.IMG_WIDTH,y,Graphics.TOP|Graphics.RIGHT);
+          peregr=(ev.planet1 & 0x80)!=0;
+          drawImg(osg,peregr? Summary.imgOpaq: Summary.imgPlanet,
+              OWN_SIGN_REVERSE[si1]+(peregr? 13: 0),x+3+owner.IMG_WIDTH,y,Graphics.TOP|Graphics.LEFT);
+          osg.drawString(Integer.toString((ev.planet0 & 0x7f)-64),x-3-owner.IMG_WIDTH*4,y,
+              Graphics.TOP|Graphics.LEFT);
+          osg.drawString(Integer.toString((ev.planet1 & 0x7f)-64),x+3+owner.IMG_WIDTH*4,y,
+              Graphics.TOP|Graphics.RIGHT);
+          si0=(ev.degree>>8) & 0xff;
+          if(si0<8){
+            drawImg(osg,Summary.imgAspect,si0,x,y,Graphics.TOP|Graphics.HCENTER);
           }
         }
         break;

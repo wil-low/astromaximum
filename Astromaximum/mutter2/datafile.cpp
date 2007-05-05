@@ -327,7 +327,9 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
   sBuf=swapShort(sz);
   fwrite(&sBuf, 2, 1, fout);
   printf("%u records...",v.size());
-  int PERIOD=(evtype==EV_ASCAPHETICS)? 60*60: 24*60*60;
+  int PERIOD=24*60*60;
+  if(evtype==EV_ASCAPHETICS) PERIOD=2*60*60;
+//  if(evtype==EV_ASTRORISE) PERIOD=6*60*60;
 //  v[0]->dump();
 //  v[1]->dump();
   for(int i=0; i<v.size(); i++){
@@ -420,7 +422,9 @@ bool DataFile::readSubData(char* fname, VAE & v)
   char planet; int date;
   fread(&fsize, 2, 1, fin);
   fsize=(unsigned short)swapShort(fsize);
-  int PERIOD=(evtype==EV_ASTRORISE)? 6*60: 24*60;
+  int PERIOD=24*60;
+  if(evtype==EV_ASCAPHETICS) PERIOD=2*60;
+//  if(evtype==EV_ASTRORISE) PERIOD=6*60;
 
   if(fsize!=realsz) goto err;
   fread(&evflags, 2, 1, fin);
@@ -734,7 +738,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
       doAscAphetics(work);
       sprintf(fname, "%sascaph.bin", prefix);
       writeSubData(work,EV_ASCAPHETICS,EF_NEXT_DATE2|EF_PLANET1|
-        EF_PLANET2|EF_DEGREE|EF_CUMUL_DATE_B,-1,fname);
+        EF_PLANET2|EF_DEGREE,-1,fname);
       release(work);
       break;
     case EV_VIA_COMBUSTA:
@@ -1345,17 +1349,14 @@ void DataFile::doAscAphetics(VAE &work)
     sprintf(fname,"aphetics%02d.bin",i);
     readSubData(fname,vaes[i]);
   }
-  
   double endJD=startJD;
   Event *evhist[2]={NULL,NULL}; Event *evcur[2]; 
   double oldtm=endJD; int oldstep=0;
-  int ascplt[2]; 
+  int ascsign[2], ascplt[2]; 
   for(int i=0; i<stepCount; i++){
-    if(i>=527833){
-      printf("edf");
-    }
     for(int j=0; j<2; j++){
-      ascplt[j]=OWN_SIGN_REVERSE[(int)(ascData[i].data[j]/30)];
+      ascsign[j]=ascData[i].data[j]/30;
+      ascplt[j]=OWN_SIGN_REVERSE[ascsign[j]];
       evcur[j]=eventContains(vaes[ascplt[j]],endJD);
     };
     if(!evcur[0] || !evcur[1]){
@@ -1368,7 +1369,7 @@ void DataFile::doAscAphetics(VAE &work)
         ascev->planetId[1]=evhist[1]->planetId[1];
         int delta=max(APH_ORBIS[ascplt[0]],APH_ORBIS[ascplt[1]]);
         int aspind=aspectExists(oldstep,ascplt[0],ascplt[1],delta);
-        ascev->degree=(ascplt[0] & 0xf) + ((ascplt[1]<<4)& 0xf0) + ((aspind<<8)& 0xff00);
+        ascev->degree=(ascsign[0] & 0xf) + ((ascsign[1]<<4)& 0xf0) + ((aspind<<8)& 0xff00);
         work.push_back(ascev);
         oldtm=endJD;
         oldstep=i;
@@ -1386,7 +1387,7 @@ void DataFile::doAscAphetics(VAE &work)
     ascev->planetId[1]=evhist[1]->planetId[1];
     int delta=max(APH_ORBIS[ascplt[0]],APH_ORBIS[ascplt[1]]);
     int aspind=aspectExists(oldstep,ascplt[0],ascplt[1],delta);
-    ascev->degree=(ascplt[0] & 0xf) + ((ascplt[1]<<4)& 0xf0) + ((aspind<<8)& 0xff00);
+    ascev->degree=(ascsign[0] & 0xf) + ((ascsign[1]<<4)& 0xf0) + ((aspind<<8)& 0xff00);
     work.push_back(ascev);
 //    printf("\n\n %d %d --",ascplt[0],ascplt[1]);
 //    ascev->dump2();
@@ -1394,6 +1395,10 @@ void DataFile::doAscAphetics(VAE &work)
   for(int i=0; i<7; i++){
     release(vaes[i]);
   }
+  for(int i=0; i<work.size(); i++){
+    work[i]->dump2();
+  }
+  
 }
 
 Event* DataFile::eventContains(const VAE &work, double moment)

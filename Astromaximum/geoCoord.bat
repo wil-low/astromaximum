@@ -1,2 +1,3 @@
-perl geoCoord.pl EE
+perl geoCoord.pl UA
+pause
 
