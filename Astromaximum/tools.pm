@@ -70,7 +70,7 @@ sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, y
 		warn $locsz;
 	}
 	$year=~s/\d\d(\d\d)/$1/is;
-	my $fname="$prefix$code\'$year";
+	my $fname="$prefix\'$year-$code";
 	$jad=~s/<YEAR>/$year/isg;
 	$jad=~s/<REGION>/$reg/isg;
 	$jad=~s/<CODE>/$code/isg;

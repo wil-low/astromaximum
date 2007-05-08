@@ -17,7 +17,8 @@ my @str=split(/\n/,<<END);
 "device.imei",
 "device.IMEI",
 "imei",
-"IMEI"
+"IMEI",
+"microedition.hostname"
 END
 
 $0=~/(.+\\)/is;

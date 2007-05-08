@@ -34,6 +34,7 @@ class Options extends GeoList{
 //#endif  
   static byte optFlags;
   private static long localOffset;
+  private String oldc, initCity;
   static final int FLG_ALLTEXT=1;
   static final int FLG_LOCALTIME=2;
   
@@ -137,6 +138,23 @@ class Options extends GeoList{
   }
   
   public void commandAction(Command c, Displayable d)  {
+    if(d!=this){
+      if(c.getCommandType()==Command.OK){
+        try {
+          RecordEnumeration rece=rs.enumerateRecords(this,null,false);
+          int nextID=rece.nextRecordId();
+          rs.deleteRecord(nextID);
+  //            rs.closeRecordStore();
+          curCity=oldc.getBytes();
+  //            Astromaximum.dataFile.geoposData=initDB(true);
+          init();
+        } 
+        catch (Exception ex) {
+        }
+      }
+      Display.getDisplay(Astromaximum.instance).setCurrent(this);
+      return;
+    }
     if(c.getCommandType()==Command.CANCEL){
       Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
     }
@@ -168,8 +186,11 @@ class Options extends GeoList{
         if(Astromaximum.summary.size!=layout.getSelectedIndex()){
           Astromaximum.summary.items=null;
           Astromaximum.summary.pageNum=Summary.PAGE_SUMMARY;
+          Astromaximum.summary.selItem=1;
           Astromaximum.summary.changeSize();
           Astromaximum.summary.gatherSummary(Astromaximum.summary.date.getTime());
+          Astromaximum.summary.setCurPage(Summary.PAGE_SUMMARY);
+//          Astromaximum.summary.repaint();
         }
         Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
         break;
@@ -178,20 +199,18 @@ class Options extends GeoList{
 //        break;
       case 2:
         String sel=cityList.getString(cityList.getSelectedIndex());
-        if(!sel.equals(curCity)){
-          String oldc=new String(curCity);
+        System.out.println(sel);
+        if(!sel.equals(curCity) && cityList.size()>1){
+          oldc=new String(curCity);
           curCity=sel.getBytes();
-          try {
-            RecordEnumeration rece=rs.enumerateRecords(this,null,false);
-            int nextID=rece.nextRecordId();
-            rs.deleteRecord(nextID);
-//            rs.closeRecordStore();
-            curCity=oldc.getBytes();
-//            Astromaximum.dataFile.geoposData=initDB(true);
-            init();
-          } 
-          catch (Exception ex) {
-          }
+          Alert alert=new Alert(LocalizationSupport.getMessage("Confirm"),
+              LocalizationSupport.getMessage("Delete_city")+" "+sel+"?",null,
+              AlertType.CONFIRMATION);
+          alert.addCommand(new Command("OK",Command.OK,1));
+          alert.addCommand(new Command(LocalizationSupport.getMessage("Cancel"),
+              Command.CANCEL,1));
+          alert.setCommandListener(this);
+          Display.getDisplay(Astromaximum.instance).setCurrent(alert);
         }
       }
   }

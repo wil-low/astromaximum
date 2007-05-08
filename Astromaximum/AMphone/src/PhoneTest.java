@@ -28,13 +28,13 @@ public class PhoneTest extends MIDlet implements CommandListener {
     "device.imei",
     "device.IMEI",
     "imei",
-    "IMEI"
+    "IMEI",
+    "microedition.hostname"
   };
   private final String[] props={
     "microedition.commports",
     "microedition.configuration",
     "microedition.encoding",
-    "microedition.hostname",
     "microedition.io.file.FileConnection.version",
     "microedition.jtwi.version",
     "microedition.locale",
@@ -54,6 +54,7 @@ public class PhoneTest extends MIDlet implements CommandListener {
     "audio.encodings",
     "batterylevel",
     "com.mot.carrier.URL",
+    "com.nokia.mid.CellID",
     "commports.maxbaudrate",
     "default.timezone",
     "device.model",
@@ -75,6 +76,10 @@ public class PhoneTest extends MIDlet implements CommandListener {
     "midp_selector_exit",
     "midp_selector_launch_failed",
     "midp_vertical_scroll",
+    "phone.mcc",
+    "phone.mnc",
+    "phone.lai",
+    "phone.cid",
     "supports.audio.capture",
     "supports.mixing",
     "supports.recording",
@@ -92,8 +97,6 @@ public class PhoneTest extends MIDlet implements CommandListener {
   }
   
   private List imeiList;//GEN-BEGIN:MVDFields
-  private org.netbeans.microedition.util.SimpleCancellableTask speedTask;
-  private org.netbeans.microedition.lcdui.WaitScreen waitScreen;
   private List propList;
   private Command exitCommand;
   private Command nextCommand;
@@ -107,34 +110,24 @@ public class PhoneTest extends MIDlet implements CommandListener {
    */
   public void commandAction(Command command, Displayable displayable) {//GEN-END:MVDCABegin
   // Insert global pre-action code here
-    if (displayable == waitScreen) {//GEN-BEGIN:MVDCABody
-      if (command == waitScreen.FAILURE_COMMAND) {//GEN-END:MVDCABody
+    if (displayable == imeiList) {//GEN-BEGIN:MVDCABody
+      if (command == exitCommand) {//GEN-END:MVDCABody
 	// Insert pre-action code here
-	getDisplay().setCurrent(get_imeiList());//GEN-LINE:MVDCAAction14
-	// Insert post-action code here
-      } else if (command == waitScreen.SUCCESS_COMMAND) {//GEN-LINE:MVDCACase14
-	// Insert pre-action code here
-	getDisplay().setCurrent(get_imeiList());//GEN-LINE:MVDCAAction13
-	// Insert post-action code here
-      }//GEN-BEGIN:MVDCACase13
-    } else if (displayable == imeiList) {
-      if (command == exitCommand) {//GEN-END:MVDCACase13
-	// Insert pre-action code here
-	exitMIDlet();//GEN-LINE:MVDCAAction23
+        exitMIDlet();//GEN-LINE:MVDCAAction23
 	// Insert post-action code here
       } else if (command == nextCommand) {//GEN-LINE:MVDCACase23
 	// Insert pre-action code here
-	getDisplay().setCurrent(get_propList());//GEN-LINE:MVDCAAction25
+        getDisplay().setCurrent(get_propList());//GEN-LINE:MVDCAAction25
 	// Insert post-action code here
       }//GEN-BEGIN:MVDCACase25
     } else if (displayable == propList) {
       if (command == exitCommand) {//GEN-END:MVDCACase25
 	// Insert pre-action code here
-	exitMIDlet();//GEN-LINE:MVDCAAction26
+        exitMIDlet();//GEN-LINE:MVDCAAction26
 	// Insert post-action code here
       } else if (command == backCommand) {//GEN-LINE:MVDCACase26
 	// Insert pre-action code here
-	getDisplay().setCurrent(get_imeiList());//GEN-LINE:MVDCAAction28
+        getDisplay().setCurrent(get_imeiList());//GEN-LINE:MVDCAAction28
 	// Insert post-action code here
       }//GEN-BEGIN:MVDCACase28
     }//GEN-END:MVDCACase28
@@ -145,7 +138,11 @@ public class PhoneTest extends MIDlet implements CommandListener {
    */
   private void initialize() {//GEN-END:MVDInitBegin
     // Insert pre-init code here
-    getDisplay().setCurrent(get_waitScreen());//GEN-LINE:MVDInitInit
+    CanvasTest canv=new CanvasTest();
+    getDisplay().setCurrent(canv);
+    screenHeight=canv.getHeight();
+    screenWidth=canv.getWidth();
+    getDisplay().setCurrent(get_imeiList());//GEN-LINE:MVDInitInit
     // Insert post-init code here
   }//GEN-LINE:MVDInitEnd
   
@@ -164,42 +161,7 @@ public class PhoneTest extends MIDlet implements CommandListener {
     destroyApp(true);
     notifyDestroyed();
   }//GEN-LAST:MVDExitMidlet
-
-  /** This method returns instance for speedTask component and should be called instead of accessing speedTask field directly.//GEN-BEGIN:MVDGetBegin11
-   * @return Instance for speedTask component
-   */
-  public org.netbeans.microedition.util.SimpleCancellableTask get_speedTask() {
-    if (speedTask == null) {//GEN-END:MVDGetBegin11
-      // Insert pre-init code here
-      speedTask = new org.netbeans.microedition.util.SimpleCancellableTask();//GEN-BEGIN:MVDGetInit11
-      speedTask.setExecutable(new org.netbeans.microedition.util.Executable() {
-	public void execute() throws Exception {
-	  
-	}
-      });//GEN-END:MVDGetInit11
-      // Insert post-init code here
-      
-    }//GEN-BEGIN:MVDGetEnd11
-    return speedTask;
-  }//GEN-END:MVDGetEnd11
-
-  /** This method returns instance for waitScreen component and should be called instead of accessing waitScreen field directly.//GEN-BEGIN:MVDGetBegin12
-   * @return Instance for waitScreen component
-   */
-  public org.netbeans.microedition.lcdui.WaitScreen get_waitScreen() {
-    if (waitScreen == null) {//GEN-END:MVDGetBegin12
-      // Insert pre-init code here
-      waitScreen = new org.netbeans.microedition.lcdui.WaitScreen(getDisplay());//GEN-BEGIN:MVDGetInit12
-      waitScreen.setCommandListener(this);
-      waitScreen.setFullScreenMode(true);
-      waitScreen.setText("Calculating speed...");//GEN-END:MVDGetInit12
-      // Insert post-init code here
-      screenWidth=waitScreen.getWidth();
-      screenHeight=waitScreen.getHeight();
-    }//GEN-BEGIN:MVDGetEnd12
-    return waitScreen;
-  }//GEN-END:MVDGetEnd12
-
+ 
   /** This method returns instance for imeiList component and should be called instead of accessing imeiList field directly.//GEN-BEGIN:MVDGetBegin4
    * @return Instance for imeiList component
    */
@@ -216,11 +178,12 @@ public class PhoneTest extends MIDlet implements CommandListener {
 	  Integer.toString(screenHeight));
       
       Calendar cal=Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-      String strDate="GMT "+cal.get(Calendar.DAY_OF_MONTH)+"."+
+      String strDate="GMT "+
+	  cal.get(Calendar.HOUR_OF_DAY)+":"+
+	  cal.get(Calendar.MINUTE)+" "+
+          cal.get(Calendar.DAY_OF_MONTH)+"."+
 	  cal.get(Calendar.MONTH)+"."+
-	  cal.get(Calendar.YEAR)+" "+
-	  cal.get(Calendar.HOUR_OF_DAY)+"."+
-	  cal.get(Calendar.MINUTE);
+	  cal.get(Calendar.YEAR);
       
       imeiList.append(strDate, null);
       
@@ -231,7 +194,8 @@ public class PhoneTest extends MIDlet implements CommandListener {
       for(int i=0; i<imeiCodes.length; i++){
 	String response=System.getProperty(imeiCodes[i]);
 	if(response!=null){
-	  imeiList.append(imeiCodes[i]+"="+response, null);
+	  imeiList.append(imeiCodes[i]+"=", null);
+	  imeiList.append(" "+response, null);
 	}
       }
       
@@ -309,4 +273,9 @@ public class PhoneTest extends MIDlet implements CommandListener {
   public void destroyApp(boolean unconditional) {
   }
   
+  class CanvasTest extends Canvas
+  {
+    protected void paint(Graphics graphics) {
+    }
+  }
 }

@@ -65,7 +65,8 @@ $frame5->Label(-text=>"Sort by:")->pack(-side=>'left');
 $frame5->Radiobutton(-text=>'city', -value=>'city', -command=>\&do_sort, -variable=>\$sortmode)->pack(-side=>'left');
 $frame5->Radiobutton(-text=>'state', -value=>'state', -command=>\&do_sort, -variable=>\$sortmode)->pack(-side=>'left');
 
-my $geofile=$frame4->Entry(-text=>'Cities');
+#$year=~/20(\d\d)/is;
+my $geofile=$frame4->Entry(-text=>"Cities");
 my $geodesc=$frame4->Entry(-text=>'<No description>');
 $frame4->pack(-fill=>"both", -expand=>1,-padx=>5, -side=>'bottom');
 $geodesc->pack(-side=>'bottom');
@@ -179,7 +180,7 @@ sub do_geo {
 		}
 		mkdir '.temp' unless -d '.temp';
 		tools::join_datafiles($#selected+1, $path.".temp\\locations.dat", \@geo);
-		my $code=tools::create_geo("Cities-", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\", 1, $year);
+		my $code=tools::create_geo("Cities", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\", 1, $year);
 		$main->messageBox(-icon => 'info', -message => "Geo build #$code successful", -title => 'Message', -type => 'Ok');
 		return;		
 	}

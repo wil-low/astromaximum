@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MVDData version="1.3">
-    <DesignDocument designVersion="MIDP-2" uidCounter="29">
+    <DesignDocument designVersion="MIDP-1" uidCounter="29">
         <DesignComponent id="$MobileDevice" typeid="MIDP:$MobileDevice" uid="0"/>
         <DesignComponent id="$StartPoint" typeid="MIDP:$StartPoint" uid="1">
-            <Property name="targetDisplayable" value="waitScreen"/>
+            <Property name="targetDisplayable" value="imeiList"/>
             <Property name="targetForwardDisplayable"/>
         </DesignComponent>
         <DesignComponent id="imeiList" typeid="MIDP:javax.microedition.lcdui.List" uid="4">
@@ -21,27 +21,6 @@
             <Property name="targetDisplayable"/>
             <Property name="targetForwardDisplayable"/>
             <Property name="actionOrigin" value="imeiList"/>
-        </DesignComponent>
-        <DesignComponent id="speedTask" typeid="MIDP-2:org.netbeans.microedition.util.SimpleCancellableTask" uid="11"/>
-        <DesignComponent id="waitScreen" typeid="MIDP-2:org.netbeans.microedition.lcdui.WaitScreen" uid="12">
-            <Property name="successCommandAction" value="$InternalCommandAction1"/>
-            <Property name="failureCommandAction" value="$InternalCommandAction2"/>
-            <Property name="failureAction"/>
-            <Property name="text" value="STRING:Calculating speed..."/>
-            <Property name="fullScreen" value="true"/>
-            <ContainerProperty name="commands"/>
-        </DesignComponent>
-        <DesignComponent id="$InternalCommandAction1" typeid="MIDP:InternalCommandAction" uid="13">
-            <Property name="targetDisplayable" value="imeiList"/>
-            <Property name="targetForwardDisplayable"/>
-            <Property name="actionSource" value="waitScreen"/>
-            <Property name="actionOrigin" value="waitScreen"/>
-        </DesignComponent>
-        <DesignComponent id="$InternalCommandAction2" typeid="MIDP:InternalCommandAction" uid="14">
-            <Property name="targetDisplayable" value="imeiList"/>
-            <Property name="targetForwardDisplayable"/>
-            <Property name="actionSource" value="waitScreen"/>
-            <Property name="actionOrigin" value="waitScreen"/>
         </DesignComponent>
         <DesignComponent id="propList" typeid="MIDP:javax.microedition.lcdui.List" uid="16">
             <Property name="title" value="STRING:"/>
@@ -100,16 +79,13 @@
         </DesignComponent>
     </DesignDocument>
     <FlowDocument version="1.1">
-        <Node id="waitScreen" location="408,192" order="$InternalCommandAction2,$InternalCommandAction1,,,,,,,,,$Default,,,,,"/>
-        <Node id="imeiList" location="608,192" order="$CommandAction1,$CommandAction2,,,,,,,,,$Default,,,,,"/>
         <Node id="$MobileDevice" location="160,192" order=",$StartPoint,,,,,,,,,$ExitPoint,,,,,"/>
+        <Node id="imeiList" location="608,192" order="$CommandAction1,$CommandAction2,,,,,,,,,$Default,,,,,"/>
         <Node id="propList" location="800,192" order="$CommandAction3,$CommandAction4,,,,,,,,,$Default,,,,,"/>
-        <Link id="$InternalCommandAction1$ActionLink" path="448,168,568,168"/>
-        <Link id="$StartPoint$ActionLink" path="200,168,368,168"/>
-        <Link id="$InternalCommandAction2$ActionLink" path="448,184,531,184,531,168,568,168"/>
+        <Link id="$StartPoint$ActionLink" path="200,168,568,168"/>
+        <Link id="$CommandAction1$ActionLink" path="648,184,718,184,718,229,47,229,47,168,120,168"/>
         <Link id="$CommandAction2$ActionLink" path="648,168,760,168"/>
         <Link id="$CommandAction3$ActionLink" path="840,184,890,184,890,229,47,229,47,168,120,168"/>
-        <Link id="$CommandAction1$ActionLink" path="648,184,718,184,718,229,47,229,47,168,120,168"/>
         <Link id="$CommandAction4$ActionLink" path="840,168,890,168,890,112,531,112,531,168,568,168"/>
     </FlowDocument>
 </MVDData>

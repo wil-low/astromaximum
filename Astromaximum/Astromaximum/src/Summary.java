@@ -1617,7 +1617,7 @@ class Summary extends FrameAnimator implements CommandListener{
         return;
       case 22:
         si.selIndex=1-si.selIndex;
-        return;
+        break;
       case 23: // Event.EV_MONTH_GRID
         moveDay(delta*(vert? colCount: 1),false/*!vert*/);
         break;
@@ -1678,7 +1678,7 @@ class Summary extends FrameAnimator implements CommandListener{
     Vector vElectio=new Vector();
     Astromaximum.dataFile.getEventsOnPeriod(vElectio,Event.EV_ASCAPHETICS,-1,false,
         period0, period1,0);
-    Astromaximum.evDump(vElectio);
+//    Astromaximum.evDump(vElectio);
     getItem(Event.EV_ASCAPHETICS).setEvents(vElectio);
   }
 }
