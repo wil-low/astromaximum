@@ -1,9 +1,32 @@
+//#ifdef build.desktop
+//# package com.sw_axis;
+//# import java.awt.Frame;
+//# import java.awt.event.WindowAdapter;
+//# import java.awt.event.WindowEvent;
+//#else
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
+//#endif
 import java.io.*;
 import java.util.*;
 //#define perftest="0"
 /** @noinspection CastToConcreteClass*/
+//#ifdef build.desktop
+//# public class Astromaximum extends Frame{
+//#   public Astromaximum() {
+//#     addWindowListener(new WindowAdapter() {
+//#       public void windowClosing(WindowEvent evt) {
+//#         exitForm(evt);
+//#       }
+//#     });
+//#     setBounds(0,0,200,200);
+//#     setTitle("Astromaximum Desktop");
+//#   }
+//#   private void exitForm(WindowEvent evt) {                          
+//#     System.exit(0);
+//#   }                         
+//#     
+//#else
 public class Astromaximum extends MIDlet implements CommandListener{
   static final int BACK_COLOR = 0xb0b0b0;
   static final int SELECTION_COLOR = 0xffffff;
@@ -467,6 +490,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#       }
 //#     }
 //#   }
+//#endif
 //#endif
 }
 

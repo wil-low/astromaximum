@@ -1,9 +1,5 @@
-import java.io.*;
-import javax.microedition.lcdui.*;
-import java.util.*;
-
 /**
- * <p>Title: Astromaximum</p>
+ * <p>Title: Summary</p>
  * 
  * <p>Description: </p>
  * 
@@ -16,6 +12,15 @@ import java.util.*;
  * @version 1.0
  * @noinspection CastToConcreteClass
  */
+
+//#ifdef build.desktop
+//# package com.sw_axis;
+//# 
+//# class Summary extends FrameAnimator{
+//#else
+import java.io.*;
+import javax.microedition.lcdui.*;
+import java.util.*;
 
 class Summary extends FrameAnimator implements CommandListener{
 //#ifdef UseBuffer
@@ -1681,5 +1686,6 @@ class Summary extends FrameAnimator implements CommandListener{
 //    Astromaximum.evDump(vElectio);
     getItem(Event.EV_ASCAPHETICS).setEvents(vElectio);
   }
+//#endif  
 }
 

@@ -7,13 +7,18 @@
  * and open the template in the editor.
  */
 
-import java.util.*;
-import javax.microedition.lcdui.*;
-
 /**
  *
  * @author Administrator
  */
+
+//#ifdef build.desktop
+//# package com.sw_axis;
+//# //import java.util.*;
+//# class FrameAnimator{
+//#else
+import javax.microedition.lcdui.*;
+import java.util.*;
 class FrameAnimator extends Canvas implements Runnable{
   protected Timer timer;
   private final int DELAY=200;
@@ -90,4 +95,5 @@ class FrameAnimator extends Canvas implements Runnable{
       }
     }
   }
+//#endif  
 }

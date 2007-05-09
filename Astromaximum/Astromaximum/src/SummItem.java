@@ -1,11 +1,3 @@
-import javax.microedition.lcdui.*;
-//#if MIDP == "2.0"
-import javax.microedition.lcdui.game.Sprite;
-//#endif
-import java.util.*;
-import javax.microedition.rms.RecordFilter;
-
-//#define aspswap
 /*
  * Event.EV_java
  *
@@ -20,6 +12,20 @@ import javax.microedition.rms.RecordFilter;
  * @author Administrator
  * @noinspection CastToConcreteClass
  */
+//#define aspswap
+//#ifdef build.desktop
+//# package com.sw_axis;
+//# import java.awt.Frame;
+//# class SummItem{
+//#else
+import javax.microedition.lcdui.*;
+//#if MIDP == "2.0"
+import javax.microedition.lcdui.game.Sprite;
+//#endif
+import java.util.*;
+import javax.microedition.rms.RecordFilter;
+
+
 class SummItem extends TimerTask implements RecordFilter{
   
   private static final int XLEFT=0;
@@ -1804,4 +1810,5 @@ class SummItem extends TimerTask implements RecordFilter{
       }
     }
   }
+//#endif  
 }

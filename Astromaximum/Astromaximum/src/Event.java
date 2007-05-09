@@ -1,3 +1,6 @@
+//#ifdef build.desktop
+//# package com.sw_axis;
+//#endif
 /**
  * <p>Title: Nomad</p>
  *
@@ -14,6 +17,7 @@
 import java.util.*;
 
 class Event {
+//#ifndef build.desktop
   static final byte SE_SUN          =0;
   static final byte SE_MOON         =1;
   static final byte SE_MERCURY      =2;
@@ -290,12 +294,5 @@ class Event {
     }
     return ofs;
   }
-  
-  // --Commented out by Inspection START (1/12/07 1:45 PM):
-//  static boolean between(Event ev, long date) {
-//    if(ev==null)
-//      return false;
-//    return (date>=ev.getDate(0))&&(date<=ev.getDate(1));
-//  }
-// --Commented out by Inspection STOP (1/12/07 1:45 PM)
+//#endif  
 }

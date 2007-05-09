@@ -1,3 +1,13 @@
+//#define timeHistory
+
+//#ifdef build.desktop
+//# package com.sw_axis;
+//# import java.awt.Frame;
+//# import java.awt.event.WindowAdapter;
+//# import java.awt.event.WindowEvent;
+//# 
+//# class CustomTime extends Frame{
+//#else
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -17,7 +27,7 @@ import javax.microedition.lcdui.*;
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-//#define timeHistory
+
 /**
  *
  * @author Administrator
@@ -298,4 +308,5 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     cg.setSelectedIndex(0,true);
     return true;
   }
+//#endif  
 }

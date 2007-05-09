@@ -59,10 +59,11 @@ int main(int argc, char* argv[])
   now.tm_sec=0;
   now.tm_isdst = 0;
 
-
-  time_t loo=mktime(&now)-_timezone;
+  time_t loo=mktime(&now);//-_timezone;
   tm *st=gmtime(&loo);
-  loo=mktime(st);
+  time_t loo1=mktime(st);
+  Event::_timezone_=loo1-loo;
+  printf("Local timezone %d\n",Event::_timezone_);
   assert(sizeof(sMatrix)==9);
   assert(EV_LAST==49);
   if(argc<2) return NOT_ENOUGH_PARAMS;

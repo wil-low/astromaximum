@@ -11,6 +11,10 @@
  * @version 1.0
  */
 
+//#ifdef build.desktop
+//# package com.sw_axis;
+//# class Interpreter {
+//#else
 import javax.microedition.lcdui.*;
 import java.io.*;
 
@@ -696,4 +700,5 @@ class Interpreter extends Canvas implements CommandListener {
     interp=null;
     return res;
   }
+//#endif  
 }

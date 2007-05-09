@@ -1,3 +1,6 @@
+//#ifdef build.desktop
+//# package com.sw_axis;
+//#endif
 /*
  
  * Localization Support Class

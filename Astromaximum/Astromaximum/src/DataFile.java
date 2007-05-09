@@ -1,3 +1,7 @@
+//#define optRead
+//#ifdef build.desktop
+//# package com.sw_axis;
+//#else
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -5,7 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
-//#define optRead
+//#endif
 /**
  * <p>Title: Astromaximum</p>
  * 
@@ -21,6 +25,8 @@ import java.util.Vector;
  * @noinspection CastToConcreteClass
  */
 final class DataFile{
+//#ifndef build.desktop
+  
   private static final int EF_DATE=0x1; // contains 2nd date - 4b
   private static final int EF_PLANET1=0x2; // contains 1nd planet - 1b
   private static final int EF_PLANET2=0x4; // contains 2nd planet - 1b
@@ -629,4 +635,5 @@ final class DataFile{
 //      planet=plt;
 //    }
 //  }
+//#endif
 }

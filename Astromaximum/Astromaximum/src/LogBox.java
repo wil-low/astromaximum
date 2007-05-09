@@ -1,5 +1,3 @@
-import javax.microedition.lcdui.*;
-
 /**
  * <p>Title: Astromaximum</p>
  * 
@@ -13,6 +11,14 @@ import javax.microedition.lcdui.*;
  * @author Andrei Ivushkin
  * @version 1.0
  */
+//#ifdef build.desktop
+//# package com.sw_axis;
+//# import java.awt.Frame;
+//# 
+//# class LogBox extends Frame{
+//#else
+import javax.microedition.lcdui.*;
+
 class LogBox extends List implements CommandListener{
   static final String EMPTY=LocalizationSupport.getMessage("<Empty>");
   private Displayable invoker;
@@ -72,4 +78,5 @@ class LogBox extends List implements CommandListener{
     
     return ss;
   }
+//#endif  
 }

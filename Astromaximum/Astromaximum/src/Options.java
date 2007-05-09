@@ -11,6 +11,12 @@
  * @version 1.0
  */
 
+//#ifdef build.desktop
+//# package com.sw_axis;
+//# import java.awt.Frame;
+//# 
+//# class Options extends Frame{
+//#else
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -22,7 +28,6 @@ import javax.microedition.lcdui.*;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
-
 class Options extends GeoList{
   static ChoiceGroup optList;
   static ChoiceGroup timeGap;
@@ -440,4 +445,5 @@ class Options extends GeoList{
   private long getLocalOffset() {
     return Long.parseLong(timeGap.getString(timeGap.getSelectedIndex()))*3600000;
   }
+//#endif  
 }

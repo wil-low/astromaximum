@@ -15,6 +15,7 @@ public:
   double julianDay;
   static double startJD;
   static int startYear;
+  static long _timezone_;
   static double calcJD(long date);
   Event(double jd, unsigned char planet);
   static long packDate(double date);

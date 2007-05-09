@@ -8,6 +8,7 @@
 #pragma package(smart_init)
 double Event::startJD=0;
 int Event::startYear=0;
+long Event::_timezone_=0;
 
 Event::Event(double jd, unsigned char planet)
 {
@@ -42,7 +43,7 @@ long Event::packDate(double date)
   now.tm_min=(hour-now.tm_hour)*60;
   now.tm_sec=0;
   now.tm_isdst = 0;
-  return mktime(&now)-_timezone;
+  return mktime(&now)-_timezone_;
 }
 
 

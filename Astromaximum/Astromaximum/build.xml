@@ -88,12 +88,10 @@
         <srcfiles dir= "../arrays" includes="**/size?.txt"/>
         <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
       </uptodate>
-<!--
-      <echo message="size2dat.notRequired=${size2dat.notRequired}"/>
--->      
       <antcall target="size.compile"/>
-   </target>
-    
+    </target>
+   
+  
     <target name="size.compile" description="Size to dat files" unless="size2dat.notRequired">
       <echo message="Invoking size2dat.pl:"/>
       <exec executable="C:/perl/bin/perl.exe" failonerror="true">
@@ -140,14 +138,15 @@
     </target>
 
     <target name="jar" depends="init,preverify,create-jad,set-keystore-password,set-alias-password,pre-jar" description="Build jar and application descriptor.">
-        <dirname file="${dist.dir}/${dist.jar}" property="dist.jar.dir"/>
-        <mkdir dir="${dist.jar.dir}"/>
+      <dirname file="${dist.dir}/${dist.jar}" property="dist.jar.dir"/>
+      <mkdir dir="${dist.jar.dir}"/>
 
-        <antcall target="make.jar" inheritall="true" inheritrefs="true"/>
-	<antcall target="make.kzip" inheritall="true" inheritrefs="true"/>
-	
-        <nb-jad jadfile="${dist.dir}/${dist.jad}" jarfile="${dist.dir}/${dist.jar}" url="${dist.jar}" sign="${sign.enabled}" keystore="${sign.keystore}" keystorepassword="${sign.keystore.password}" alias="${sign.alias}" aliaspassword="${sign.alias.password}" encoding="${javac.encoding}"/>
-        <antcall target="post-jar" inheritall="true" inheritrefs="true"/>
+      <antcall target="make.jar" inheritall="true" inheritrefs="true"/>
+      <antcall target="make.kzip" inheritall="true" inheritrefs="true"/>
+
+      <nb-jad jadfile="${dist.dir}/${dist.jad}" jarfile="${dist.dir}/${dist.jar}" url="${dist.jar}" sign="${sign.enabled}" keystore="${sign.keystore}" keystorepassword="${sign.keystore.password}" alias="${sign.alias}" aliaspassword="${sign.alias.password}" encoding="${javac.encoding}"/>
+      <antcall target="post-jar" inheritall="true" inheritrefs="true"/>
+      <echo message="Desktop=${build.desktop}"/>
     </target>
    
     <target name="common.install" if="imei.code">
@@ -173,6 +172,23 @@
         <mkdir dir="${obfuscated.classes.dir}"/>
         <unjar src="${obfuscator.destjar}" dest="${obfuscated.classes.dir}"/>
         <antcall target="post-obfuscate" inheritall="true" inheritrefs="true"/>
+    </target>
+
+    <target name="pre-preverify">
+      <condition property="build.desktop">
+        <contains string="${abilities}" substring="build.desktop"/>
+      </condition>
+      <condition property="no.messjar">
+        <isset property="build.desktop"/>
+      </condition>
+      <echo message="post-init bd=${build.desktop}"/>
+   </target>
+   
+    <target name="preverify" depends="init,compile,obfuscate,pre-preverify" description="Preverify project classes." unless="build.desktop">
+        <echo message="preverify=${build.desktop}"/>
+        <mkdir dir="${preverify.classes.dir}"/>
+        <nb-preverify srcdir="${obfuscated.classes.dir}" destdir="${preverify.classes.dir}" classpath="${platform.bootclasspath}" configuration="${platform.configuration}" platformhome="${platform.home}" platformtype="${platform.type}" commandline="${platform.preverifycommandline}"/>
+        <antcall target="post-preverify" inheritall="true" inheritrefs="true"/>
     </target>
     
 </project>
