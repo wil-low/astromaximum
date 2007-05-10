@@ -66,13 +66,13 @@ public class Astromaximum extends MIDlet implements CommandListener{
   static final int CUST_COLOR=0xf0;
   
   /**
-   * getToday
-   *
+   * getMidnight
+   * 
+   * 
    * @return Date
    */
-  long getToday() {
-    final Date dat=new Date();
-    calendar.setTime(dat);
+  long getMidnight(long time) {
+    calendar.setTime(new Date(time));
     calendar.set(Calendar.HOUR_OF_DAY,0);
     calendar.set(Calendar.MINUTE,0);
     calendar.set(Calendar.SECOND,0);
@@ -226,7 +226,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //# //        System.out.println("Mercury");
 //# //        evDump(v);
 //#         summary.changeSize();
-//# //        summary.setCell(getToday(),true);
+//# //        summary.setCell(getMidnight(),true);
 //# //        summary.showDaySummary();
 //#         summary.setCell(calendar.getTime().getTime(),true);
 //#         long tm[]=new long[31];
@@ -278,7 +278,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if logger
 //#       logger("changeSize");
 //#endif      
-        summary.setCell(getToday(),true);
+        summary.setCell(getMidnight(Options.currentTime()),true);
 //#if logger
 //#       logger("setCell");
 //#endif      

@@ -307,7 +307,7 @@ final class DataFile{
     int skipOff;
     Event last=new Event(0,0);
     int fnext_date2=0;
-    int PERIOD=(evtype==Event.EV_ASCAPHETICS)? 60: 24*60;
+    int PERIOD=(evtype==Event.EV_ASCAPHETICS)? 2*60: 24*60;
     try {
       final DataInputStream is=new DataInputStream(new ByteArrayInputStream(buf));
       if(Astromaximum.options!=null){

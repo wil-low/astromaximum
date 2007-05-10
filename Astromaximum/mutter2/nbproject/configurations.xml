@@ -43,7 +43,6 @@
           <includeDirectories>
             <directoryPath>../swe</directoryPath>
           </includeDirectories>
-          <warningLevel>2</warningLevel>
         </ccCompilerTool>
         <fortranCompilerTool>
         </fortranCompilerTool>

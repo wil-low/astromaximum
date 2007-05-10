@@ -154,11 +154,11 @@ int main(int argc, char* argv[])
       df.Lon=strtod(argv[3],NULL);
       df.Lat=strtod(argv[4],NULL);
   // TODO remove this line
-//      df.stepCount=8000;
-//      df.calcAscData();
+      df.stepCount=8000;
+      df.calcAscData();
 
 //      df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
-      df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
+//      df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
 //      df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
       if(argc>5 && (strcmp(argv[5],"electio")==0)){
         df.choice(EV_ASCAPHETICS, work, assist, vout, work2, argv[2]);

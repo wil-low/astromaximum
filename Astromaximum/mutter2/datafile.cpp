@@ -7,7 +7,7 @@ using namespace std;
 #include "events.h"
 #include "datafile.h"
 #include <dirent.h>
-
+// 2007 geo0- 30.51 50.43 electio
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
@@ -123,7 +123,8 @@ void DataFile::AAA()
 // ------------------------
 //  choice(EV_RISE, work, assist, vout, work2);
 //  choice(EV_DECL_EXACT, work, assist, vout, work2);
-  choice(EV_NAVROZ, work, assist, vout, work2);
+//  choice(EV_NAVROZ, work, assist, vout, work2);
+  choice(EV_APHETICS, work, assist, vout, work2);
 
 //  choice(EV_ASP_EXACT, work, assist, vout, work2);
 
@@ -133,19 +134,12 @@ void DataFile::AAA()
 //  release(work);
 //  return;
 
-//  readSubData("signenter01.bin",work);
+//  readSubData("aphetics00.bin",work);
 //  readSubData("geo0-rise00.bin",work);
-//  release(work);
-//  for(int i=0; i<work.size(); i++){
-//    work[i]->dump();
-//    break;
-//    work2[i]->dump();
-//    printf("\n-------");
-//    int delta=work[i]->date[0]-work2[i]->date[0];
-//    printf("\n%d %d",work[i]->date[0],work2[i]->date[0]);
-//    if(delta!=0)
-//      printf("%d %d\n",i, delta);
-//  }
+  release(work);
+  for(int i=0; i<work.size(); i++){
+    work[i]->dump();
+  }
   
 //    work[i]->dump();
 // -----------------------
@@ -708,7 +702,7 @@ void DataFile::doAphetics(VAE &work)
     sprintf(fname,"aphetics%02d.bin", i);
     writeSubData(work,EV_APHETICS,EF_PLANET2|EF_NEXT_DATE2,i,fname);
     if(i==SE_MERCURY){
-      for(int i=0; i<work.size(); i++){
+      for(int i=0; i<10; i++){
         work[i]->dump2();
       }
     }
@@ -740,6 +734,10 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
       writeSubData(work,EV_ASCAPHETICS,EF_NEXT_DATE2|EF_PLANET1|
         EF_PLANET2|EF_DEGREE,-1,fname);
       release(work);
+      readSubData(fname,work);
+      for(int i=0; i<30; i++){
+        work[i]->dump2();
+      }
       break;
     case EV_VIA_COMBUSTA:
       printf("Via Combusta...");
@@ -1395,7 +1393,7 @@ void DataFile::doAscAphetics(VAE &work)
   for(int i=0; i<7; i++){
     release(vaes[i]);
   }
-  for(int i=0; i<work.size(); i++){
+  for(int i=0; i<30; i++){
     work[i]->dump2();
   }
   
