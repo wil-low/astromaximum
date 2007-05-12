@@ -1326,21 +1326,21 @@ class SummItem extends TimerTask implements RecordFilter{
   
   private static void drawImg(Graphics osg, Image image, int index, int left, int top, int anchor) {
     final int h=image.getHeight();
-//#if MIDP=="2.0"
-    osg.drawRegion(image,h*index,0,h,h, Sprite.TRANS_NONE,left,top,anchor);
+//#if "2.0"!="2.0"
+//#     osg.drawRegion(image,h*index,0,h,h, Sprite.TRANS_NONE,left,top,anchor);
 //#else
-//#     int ch=osg.getClipHeight(),cw=osg.getClipWidth();
-//#     if((anchor & Graphics.HCENTER)!=0)
-//#       left-=h/2;
-//#     if((anchor & Graphics.RIGHT)!=0)
-//#       left-=h;
-//#     if((anchor & Graphics.VCENTER)!=0)
-//#       top-=h/2;
-//#     if((anchor & Graphics.BOTTOM)!=0)
-//#       top-=h;
-//#     osg.setClip(left,top,h,h);
-//#     osg.drawImage(image,left-h*index,top,Graphics.LEFT|Graphics.TOP);
-//#     osg.setClip(0,0,cw,ch);
+    int ch=osg.getClipHeight(),cw=osg.getClipWidth();
+    if((anchor & Graphics.HCENTER)!=0)
+      left-=h/2;
+    if((anchor & Graphics.RIGHT)!=0)
+      left-=h;
+    if((anchor & Graphics.VCENTER)!=0)
+      top-=h/2;
+    if((anchor & Graphics.BOTTOM)!=0)
+      top-=h;
+    osg.setClip(left,top,h,h);
+    osg.drawImage(image,left-h*index,top,Graphics.LEFT|Graphics.TOP);
+    osg.setClip(0,0,cw,ch);
 //#endif
   }
   

@@ -8,6 +8,9 @@
 #pragma package(smart_init)
 double Event::startJD=0;
 int Event::startYear=0;
+#ifdef ANSITZ
+long Event::_timezone_=0;
+#endif  
 
 Event::Event(double jd, unsigned char planet)
 {
@@ -42,7 +45,11 @@ long Event::packDate(double date)
   now.tm_min=(hour-now.tm_hour)*60;
   now.tm_sec=0;
   now.tm_isdst = 0;
+#ifdef ANSITZ
+  return mktime(&now)-Event::_timezone_;
+#else  
   return mktime(&now)-_timezone;
+#endif  
 }
 
 

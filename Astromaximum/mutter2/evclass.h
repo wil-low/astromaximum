@@ -14,6 +14,9 @@ public:
   unsigned short degree;
   double julianDay;
   static double startJD;
+#ifdef ANSITZ
+  static long _timezone_; 
+#endif  
   static int startYear;
   static double calcJD(long date);
   Event(double jd, unsigned char planet);

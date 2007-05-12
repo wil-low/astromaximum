@@ -1,7 +1,7 @@
 use strict;
 use Tk;
 use warnings;
-use lib 'D:/Willow/prj/astrology/nomad_prj/'; 
+use lib 'D:/Willow/prj/astrology/nomad_prj'; 
 use lib 'd:/projects/nomad_prj';
 use tools;
 
@@ -147,6 +147,7 @@ sub do_timebomb {
 sub do_imei { # config_name
 	my $conf=shift;
 	my $code=$imei->get();
+	$code.='0' x (15-length($code));
 	if($code=~/\A\d{15}\Z/is){
 		print "imei\n";
 		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dfile.reference.Astromaximum-deploy=./deploy -Dimei.code=$code -Dconfigs.$conf.debug.level=";

@@ -31,6 +31,7 @@ my $tz_ofs=0;
 }
 
 my $sqpath='d:\\projects\\astro\\';
+$sqpath='D:\\Willow\\prj\\astrology\\' unless -d $sqpath;
 
 my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
@@ -205,7 +206,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			print "\n-----------------------\n";
 			my $tz=get_tz($params[3],$city,1);
 			my $dstbuf=calc_dst($tz);
-			my $invoke=$mypath."mutter2\\mutter2.exe $year geo0- $params[1] $params[2] electio";
+			my $invoke=$mypath."mutter2\\mutter2.exe $year geo0- $params[1] $params[2]";# electio";
 			print "$invoke\n";
 			system($invoke);
 			if($params[3]=~/USA \- (.+)/is){

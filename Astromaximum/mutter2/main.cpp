@@ -60,10 +60,18 @@ int main(int argc, char* argv[])
   now.tm_sec=0;
   now.tm_isdst = 0;
 
-
+#ifdef ANSITZ
+  time_t loo=mktime(&now);//-_timezone;
+  tm *st=gmtime(&loo);
+  time_t loo1=mktime(st);
+  Event::_timezone_=loo1-loo;
+  printf("Local timezone offset %d\n",Event::_timezone_);
+#else  
   time_t loo=mktime(&now)-_timezone;
   tm *st=gmtime(&loo);
   loo=mktime(st);
+#endif  
+  
   assert(sizeof(sMatrix)==9);
   assert(EV_LAST==50);
   if(argc<2) return NOT_ENOUGH_PARAMS;
@@ -154,12 +162,12 @@ int main(int argc, char* argv[])
       df.Lon=strtod(argv[3],NULL);
       df.Lat=strtod(argv[4],NULL);
   // TODO remove this line
-      df.stepCount=8000;
+//      df.stepCount=8000;
       df.calcAscData();
 
-//      df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
-//      df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
-//      df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
+      df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
+      df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
+      df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
       if(argc>5 && (strcmp(argv[5],"electio")==0)){
         df.choice(EV_ASCAPHETICS, work, assist, vout, work2, argv[2]);
       }

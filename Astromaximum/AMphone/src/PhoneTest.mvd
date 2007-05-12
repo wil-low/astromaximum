@@ -52,7 +52,7 @@
         <DesignComponent id="nextCommand" typeid="MIDP:javax.microedition.lcdui.Command" uid="24">
             <Property name="label" value="STRING:Next"/>
             <Property name="priority" value="1"/>
-            <Property name="type" value="SCREEN"/>
+            <Property name="type" value="OK"/>
         </DesignComponent>
         <DesignComponent id="$CommandAction2" typeid="MIDP:CommandAction" uid="25">
             <Property name="targetDisplayable" value="propList"/>

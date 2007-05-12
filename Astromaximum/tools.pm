@@ -89,7 +89,7 @@ sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, y
 	my $buf=join("",@data);
 	close(INF);
 	
-	open(INF, ">$destdir$fname.jar") or die "No file $destdir$fname.jar";
+	open(INF, ">$destdir$fname.jar");
 	binmode(INF);
 		print INF $buf;
 	close(INF);

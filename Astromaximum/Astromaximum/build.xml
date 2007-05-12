@@ -182,6 +182,7 @@
         <isset property="build.desktop"/>
       </condition>
       <echo message="post-init bd=${build.desktop}"/>
+      <antcall target="instead-preverify" inheritall="true" inheritrefs="true"/>
    </target>
    
     <target name="preverify" depends="init,compile,obfuscate,pre-preverify" description="Preverify project classes." unless="build.desktop">
@@ -191,4 +192,23 @@
         <antcall target="post-preverify" inheritall="true" inheritrefs="true"/>
     </target>
     
+    <target name="instead-preverify" if="build.desktop">
+        <mkdir dir="${preverify.classes.dir}"/>
+        <copy todir="${preverify.classes.dir}">
+          <fileset dir="${obfuscated.classes.dir}"/>
+        </copy>
+    </target>
+
+    <target name="run" depends="init,jar" description="Run MIDlet suite.">
+      <antcall target="run.me" inheritall="true" inheritrefs="true"/>
+      <antcall target="run.desktop" inheritall="true" inheritrefs="true"/>
+    </target>
+
+    <target name="run.me" unless="build.desktop">
+        <nb-run jadfile="${dist.dir}/${dist.jad}" jarfile="${dist.dir}/${dist.jar}" jadurl="${dist.jad.url}" device="${platform.device}" platformhome="${platform.home}" platformtype="${platform.type}" execmethod="${run.method}" securitydomain="${evaluated.run.security.domain}" commandline="${platform.runcommandline}" classpath="${platform.bootclasspath}:${dist.dir}/${dist.jar}" cmdoptions="${run.cmd.options}"/>
+    </target>
+    
+    <target name="run.desktop" if="build.desktop">
+      <java jar="${dist.dir}/${dist.jar}" fork="true"/>
+    </target>
 </project>

@@ -49,15 +49,15 @@ mutter2.exe: ${OBJECTFILES}
 
 build/Release/GNU-Windows/evclass.o: evclass.cpp 
 	${MKDIR} -p build/Release/GNU-Windows
-	$(COMPILE.cc) -O2 -I../swe -o build/Release/GNU-Windows/evclass.o evclass.cpp
+	$(COMPILE.cc) -O2 -DANSITZ -I../swe -o build/Release/GNU-Windows/evclass.o evclass.cpp
 
 build/Release/GNU-Windows/datafile.o: datafile.cpp 
 	${MKDIR} -p build/Release/GNU-Windows
-	$(COMPILE.cc) -O2 -I../swe -o build/Release/GNU-Windows/datafile.o datafile.cpp
+	$(COMPILE.cc) -O2 -DANSITZ -I../swe -o build/Release/GNU-Windows/datafile.o datafile.cpp
 
 build/Release/GNU-Windows/main.o: main.cpp 
 	${MKDIR} -p build/Release/GNU-Windows
-	$(COMPILE.cc) -O2 -I../swe -o build/Release/GNU-Windows/main.o main.cpp
+	$(COMPILE.cc) -O2 -DANSITZ -I../swe -o build/Release/GNU-Windows/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

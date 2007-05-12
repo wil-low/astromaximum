@@ -4,6 +4,7 @@
  * Created on April 24, 2007, 1:50 PM
  */
 
+import javax.bluetooth.*;
 import java.util.Calendar;
 import java.util.TimeZone;
 import javax.microedition.midlet.*;
@@ -15,6 +16,7 @@ import javax.microedition.lcdui.*;
  */
 public class PhoneTest extends MIDlet implements CommandListener {
   private final String[] imeiCodes={
+    "microedition.timezone",
     "com.sonyericsson.IMEI",
     "com.samsung.IMEI",
     "com.samsung.imei",
@@ -29,7 +31,15 @@ public class PhoneTest extends MIDlet implements CommandListener {
     "device.IMEI",
     "imei",
     "IMEI",
-    "microedition.hostname"
+    "IMSI",
+    "MSISDN",
+    "phone.mcc",
+    "phone.mnc",
+    "phone.lai",
+    "phone.lac",
+    "phone.ta",
+    "phone.cid",
+    "microedition.hostname",
   };
   private final String[] props={
     "microedition.commports",
@@ -44,13 +54,10 @@ public class PhoneTest extends MIDlet implements CommandListener {
     "microedition.platform",
     "microedition.profiles",
     "microedition.smartcardslots",
-    "microedition.timezone",
     "CellID",
     "GPRSState",
-    "IMSI",
     "LocAreaCode",
     "MAType",
-    "MSISDN",
     "audio.encodings",
     "batterylevel",
     "com.mot.carrier.URL",
@@ -59,6 +66,7 @@ public class PhoneTest extends MIDlet implements CommandListener {
     "default.timezone",
     "device.model",
     "device.software.version",
+    "device.msisdn",
     "file.separator",
     "funlight.product",
     "language.direction",
@@ -76,10 +84,6 @@ public class PhoneTest extends MIDlet implements CommandListener {
     "midp_selector_exit",
     "midp_selector_launch_failed",
     "midp_vertical_scroll",
-    "phone.mcc",
-    "phone.mnc",
-    "phone.lai",
-    "phone.cid",
     "supports.audio.capture",
     "supports.mixing",
     "supports.recording",
@@ -91,6 +95,7 @@ public class PhoneTest extends MIDlet implements CommandListener {
   };
    
   int screenWidth, screenHeight;
+  String btAddress="<none>";
   /** Creates a new instance of PhoneTest */
   public PhoneTest() {
     initialize();
@@ -113,7 +118,7 @@ public class PhoneTest extends MIDlet implements CommandListener {
     if (displayable == imeiList) {//GEN-BEGIN:MVDCABody
       if (command == exitCommand) {//GEN-END:MVDCABody
 	// Insert pre-action code here
-        exitMIDlet();//GEN-LINE:MVDCAAction23
+	exitMIDlet();                        
 	// Insert post-action code here
       } else if (command == nextCommand) {//GEN-LINE:MVDCACase23
 	// Insert pre-action code here
@@ -138,11 +143,12 @@ public class PhoneTest extends MIDlet implements CommandListener {
    */
   private void initialize() {//GEN-END:MVDInitBegin
     // Insert pre-init code here
-    CanvasTest canv=new CanvasTest();
-    getDisplay().setCurrent(canv);
-    screenHeight=canv.getHeight();
-    screenWidth=canv.getWidth();
-    getDisplay().setCurrent(get_imeiList());//GEN-LINE:MVDInitInit
+    CanvasTest canvasTest=new CanvasTest(); 
+    canvasTest.setFullScreenMode(true);
+    getDisplay().setCurrent(canvasTest);
+    screenHeight=canvasTest.getHeight();
+    screenWidth=canvasTest.getWidth();
+    getDisplay().setCurrent(get_imeiList());                      
     // Insert post-init code here
   }//GEN-LINE:MVDInitEnd
   
@@ -190,12 +196,11 @@ public class PhoneTest extends MIDlet implements CommandListener {
       Runtime runtime=Runtime.getRuntime();
       imeiList.append("Free "+Long.toString(runtime.freeMemory()/1024)+" kb from "+
 	  Long.toString(runtime.totalMemory()/1024)+" kb" , null);
-
       for(int i=0; i<imeiCodes.length; i++){
 	String response=System.getProperty(imeiCodes[i]);
 	if(response!=null){
 	  imeiList.append(imeiCodes[i]+"=", null);
-	  imeiList.append(" "+response, null);
+	  imeiList.append("  "+response, null);
 	}
       }
       
@@ -215,6 +220,15 @@ public class PhoneTest extends MIDlet implements CommandListener {
       propList.setCommandListener(this);
       propList.setSelectedFlags(new boolean[0]);//GEN-END:MVDGetInit16
       // Insert post-init code here
+//      try {
+//        LocalDevice ld=LocalDevice.getLocalDevice();
+//        btAddress=LocalDevice.getProperty("bluetooth.api.version");//.getBluetoothAddress();
+//      } 
+//      catch (Exception ex) {
+//        btAddress=ex.toString();
+//      }
+//      propList.append("Bluetooth:",null);
+//      propList.append(" "+btAddress,null);
       for(int i=0; i<props.length; i++){
 	String response=System.getProperty(props[i]);
 	if(response!=null){
@@ -246,7 +260,7 @@ public class PhoneTest extends MIDlet implements CommandListener {
   public Command get_nextCommand() {
     if (nextCommand == null) {//GEN-END:MVDGetBegin24
       // Insert pre-init code here
-      nextCommand = new Command("Next", Command.SCREEN, 1);//GEN-LINE:MVDGetInit24
+      nextCommand = new Command("Next", Command.OK, 1);//GEN-LINE:MVDGetInit24
       // Insert post-init code here
     }//GEN-BEGIN:MVDGetEnd24
     return nextCommand;

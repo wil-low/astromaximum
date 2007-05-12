@@ -274,17 +274,21 @@ class Options extends GeoList{
     }
   //#endif
     try {
+	  while(res.length()<IMEI_LEN){
+	    res+="0";
+	  }
       hj=res.compareTo(imei.toString());
     } 
     catch (NullPointerException npe){
       hj=getHeight();
     }
-  //#mdebug debug
-    Astromaximum.log(id+": ");
-    Astromaximum.log(res);
-    Astromaximum.log(imei.toString());
-    Astromaximum.log(Long.toString(hj));
-  //#enddebug
+//    Astromaximum.log("hj="+Integer.toString(hj));
+//  //#mdebug debug
+     Astromaximum.log(id+": ");
+     Astromaximum.log(res);
+     Astromaximum.log(imei.toString());
+     Astromaximum.log(Long.toString(hj));
+//  //#enddebug
 //       final Alert alert=new Alert("Error",WARNING,null,AlertType.ERROR);
 //       alert.addCommand(new Command("OK",Command.OK,1));
 //       alert.setTimeout(8000);

@@ -64,7 +64,9 @@ class Summary extends FrameAnimator implements CommandListener{
   static final int PAGE_DECUMB=0;//5;
   static final int PAGE_SUMMARY=4;
   static final int PAGE_HELP=8;
-  static final int PAGE_ELECTIO=9;
+  //#ifdef ELECTIO
+//#   static final int PAGE_ELECTIO=9;
+  //#endif
   static int PAGE_LAST;
   static int IMG_HEIGHT;
   static int IMG_WIDTH;
@@ -76,7 +78,7 @@ class Summary extends FrameAnimator implements CommandListener{
   static Image imgOpaq;
   Vector moonPhase;
   Event[] aNavroz=new Event[2];
-
+  private Command[] cmds=new Command[8];
   static Image imgPanelSmall;
   /**
    * Summary
@@ -103,14 +105,7 @@ class Summary extends FrameAnimator implements CommandListener{
     setFullScreenMode(true);
 //#else
 //#endif
-
-    addCommand(new Command(LocalizationSupport.getMessage("Help"), Command.SCREEN, 0));
-    addCommand(new Command(LocalizationSupport.getMessage("Month"), Command.SCREEN, 3));
-    addCommand(new Command(LocalizationSupport.getMessage("Week"), Command.SCREEN, 2));
-    addCommand(new Command(LocalizationSupport.getMessage("Today"), Command.SCREEN, 1));
-    addCommand(new Command(LocalizationSupport.getMessage("No_theme"), Command.SCREEN, 5));
-    addCommand(new Command(LocalizationSupport.getMessage("Options"),Command.SCREEN,4));
-    addCommand(new Command(LocalizationSupport.getMessage("Aphetics"),Command.SCREEN,6));
+    createCommands(0);
     setCommandListener(this);
     pageNum=PAGE_SUMMARY;
   }
@@ -703,7 +698,7 @@ class Summary extends FrameAnimator implements CommandListener{
       statItem=getItem(Event.EV_STATUS);
 //      getItem(Event.EV_ZODIAC_SIGN).initString();
     }
-    Astromaximum.log("size change");
+//    Astromaximum.log("size change");
     if(pageNum == Summary.PAGE_MONTH){
       rowCount=6; colCount=7;
     } 
@@ -747,9 +742,11 @@ class Summary extends FrameAnimator implements CommandListener{
         if(sind != 1){
           changeDay(sind-1);
           si.selIndex=1;
-          if(pageNum==PAGE_ELECTIO){
-            calcElectio();
-          }
+          //#ifdef ELECTIO
+//#           if(pageNum==PAGE_ELECTIO){
+//#             calcElectio();
+//#           }
+          //#endif
           repaint();
           return;
         }
@@ -938,19 +935,23 @@ class Summary extends FrameAnimator implements CommandListener{
         setCurPage(Summary.PAGE_HELP);
 //        Astromaximum.summary.dontRender();
         break;
-      case 6:
-        calcElectio();
-        setCurPage(Summary.PAGE_ELECTIO);
-        break;
+      //#ifdef ELECTIO
+//#       case 7:
+//#         calcElectio();
+//#         setCurPage(Summary.PAGE_ELECTIO);
+//#         break;
+      //#endif
       case 2:
       case 3:
         setCurPage(c.getPriority() == 2 ? Summary.PAGE_WEEK : Summary.PAGE_MONTH);
 //        Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.instance.summary);
         break;
-      case 5:
+      case 6:
         Interpreter.topic=10;
-        if(pageNum==PAGE_DECUMB)
+        if(pageNum==PAGE_DECUMB){
           setCurPage(PAGE_SUMMARY);
+          createCommands(0);
+        }
         repaint();
         break;
       case 4:
@@ -961,6 +962,9 @@ class Summary extends FrameAnimator implements CommandListener{
         selDate.setTime(Astromaximum.instance.getMidnight(Options.currentTime()));
         showDaySummary();
         repaint();
+        break;
+      case 5: // back to CustomTime
+        Astromaximum.customTime.init(pageNum);
         break;
 /*      case 1:
         if(pageNum==PAGE_DECUMB){
@@ -1355,6 +1359,7 @@ class Summary extends FrameAnimator implements CommandListener{
   void calcDecumbiture(){
     Astromaximum.interpreter.topic=Interpreter.T_DECUMB;
     long startDate=Astromaximum.customTime.decumbDate;
+    gatherSummary(Astromaximum.instance.getMidnight(startDate));
     Vector moonSign=new Vector();
     long p0=startDate-5*Astromaximum.MSECINDAY/2,p1=startDate+32*Astromaximum.MSECINDAY;
     Astromaximum.dataFile.getEventsOnPeriod(moonSign,Event.EV_SIGN_ENTER,Event.SE_MOON,
@@ -1426,45 +1431,25 @@ class Summary extends FrameAnimator implements CommandListener{
     }
     
     Vector asi=new Vector();
-    final Vector mdd=new Vector();
-    Astromaximum.dataFile.getEventsOnPeriod(mdd,Event.EV_RISE,Event.SE_MOON,false,
-        p0, p1,0);
-    SummItem si=new SummItem(Event.EV_MOON_DAY);
-    si.setEvents(mdd);
+    SummItem si=getItem(Event.EV_MOON_DAY);
     si.recalcSelection(startDate, true);
     asi.addElement(si.getCusSelEvent());
-    p0=Astromaximum.instance.getMidnight(startDate);
-    p1=p0+Astromaximum.MSECINDAY;
-    e0= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true, p0, p1);
-    e0.date1=Astromaximum.dataFile.getEventOnPeriod(Event.EV_SET,Event.SE_SUN,false,
-      p0, p1).date0;
-//    e0.dump();
-    e1= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
-      p0+Astromaximum.MSECINDAY, p1+Astromaximum.MSECINDAY);
-//    e1.dump();
-    Astromaximum.calendar.setTime(new Date(startDate));
-    int weekDay= Astromaximum.calendar.get(Calendar.DAY_OF_WEEK);
-    SummItem siDH=new SummItem(Event.EV_DAY_HOURS),siNH=new SummItem(Event.EV_NIGHT_HOURS);
-    siDH.events=new Event[12];siNH.events=new Event[12];
-    Event[] aev=calcPlanetHours(e0,e1,weekStartHour[weekDay -1]);
-    for(int i=0; i<24; i++){
-      (i < 12 ? siDH : siNH).setEvents(i%12,aev[i]);
-    }
-    System.out.println(new Date(startDate));
-    siDH.recalcSelection(startDate, true);
-    Event ev=siDH.getCusSelEvent();
+    si=getItem(Event.EV_DAY_HOURS);
+    si.recalcSelection(startDate, true);
+    Event ev=si.getCusSelEvent();
     if(ev==null){
-      siNH.recalcSelection(startDate, true);
-      ev=siNH.getCusSelEvent();
+      si=getItem(Event.EV_NIGHT_HOURS);
+      si.recalcSelection(startDate, true);
+      ev=si.getCusSelEvent();
       if(ev==null){
-        long pp0=p0 - Astromaximum.MSECINDAY, pp1=p1 - Astromaximum.MSECINDAY;
+        long pp0=period0 - Astromaximum.MSECINDAY, pp1=period1 - Astromaximum.MSECINDAY;
         ev= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
           pp0, pp1);
         ev.date1=Astromaximum.dataFile.getEventOnPeriod(Event.EV_SET,Event.SE_SUN,false,
           pp0, pp1).date0;
 //        ev.dump();
-        weekDay=getItem(Event.EV_WEEK).events[1].planet0+5;
-        aev=calcPlanetHours(ev,getItem(Event.EV_SUN_RISE).events[0],weekStartHour[weekDay%7]);
+        int weekDay=getItem(Event.EV_WEEK).events[1].planet0+5;
+        Event[] aev=calcPlanetHours(ev,getItem(Event.EV_SUN_RISE).events[0],weekStartHour[weekDay%7]);
         si=new SummItem(Event.EV_LAST);
         si.setEvents(aev);
         si.recalcSelection(startDate, true);
@@ -1487,6 +1472,7 @@ class Summary extends FrameAnimator implements CommandListener{
 
     getItem(Event.EV_DECUMB_BEGIN).setEvents(asi);
     setCurPage(PAGE_DECUMB);
+    createCommands(1);
   }
 
  
@@ -1634,10 +1620,12 @@ class Summary extends FrameAnimator implements CommandListener{
         long tm=date.getTime();
         tm+=Event.localOffset(tm);
         Astromaximum.customTime.dateField.setDate(new Date(tm));
-        if(pageNum==PAGE_ELECTIO){
-          calcElectio();
-          break;
-        }
+        //#ifdef ELECTIO
+//#         if(pageNum==PAGE_ELECTIO){
+//#           calcElectio();
+//#           break;
+//#         }
+        //#endif
         return;
       case 22:
         si.selIndex=1-si.selIndex;
@@ -1696,14 +1684,43 @@ class Summary extends FrameAnimator implements CommandListener{
     }
     repaint();
   }
-  
-  void calcElectio()
-  {
-    Vector vElectio=new Vector();
-    Astromaximum.dataFile.getEventsOnPeriod(vElectio,Event.EV_ASCAPHETICS,-1,false,
-        period0, period1,0);
-    Astromaximum.evDump(vElectio);
-    getItem(Event.EV_ASCAPHETICS).setEvents(vElectio);
+
+  //#ifdef ELECTIO
+//#   void calcElectio()
+//#   {
+//#     Vector vElectio=new Vector();
+//#     Astromaximum.dataFile.getEventsOnPeriod(vElectio,Event.EV_ASCAPHETICS,-1,false,
+//#         period0, period1,0);
+//# //    Astromaximum.evDump(vElectio);
+//#     getItem(Event.EV_ASCAPHETICS).setEvents(vElectio);
+//#   }
+  //#endif  
+
+  private void createCommands(int mode) {
+    for(int i=0; i<cmds.length; i++){
+      removeCommand(cmds[i]);
+      cmds[i]=null;
+    }
+    if(mode==0){
+      cmds[0]=new Command(LocalizationSupport.getMessage("Help"), Command.SCREEN, 0);
+      cmds[1]=new Command(LocalizationSupport.getMessage("Today"), Command.SCREEN, 1);
+      cmds[2]=new Command(LocalizationSupport.getMessage("Week"), Command.SCREEN, 2);
+      cmds[3]=new Command(LocalizationSupport.getMessage("Month"), Command.SCREEN, 3);
+      cmds[4]=new Command(LocalizationSupport.getMessage("Options"),Command.SCREEN,4);
+      cmds[6]=new Command(LocalizationSupport.getMessage("No_theme"), Command.SCREEN, 6);
+      //#ifdef ELECTIO
+//#       cmds[7]=new Command(LocalizationSupport.getMessage("Aphetics"),Command.SCREEN,7);
+      //#endif
+    }
+    if(mode==1){
+      cmds[5]=new Command(LocalizationSupport.getMessage("Ch_decumb"), Command.SCREEN, 5);
+    }
+    cmds[6]=new Command(LocalizationSupport.getMessage("No_theme"), Command.SCREEN, 6);
+    for(int i=0; i<cmds.length; i++){
+      if(cmds[i]!=null){
+        addCommand(cmds[i]);
+      }
+    }
   }
 //#endif  
 }
