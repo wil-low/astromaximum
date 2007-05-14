@@ -6,7 +6,11 @@ use lib 'd:/projects/nomad_prj';
 use tools;
 
 
-my %imeis=qw( sonnenturm 359593001109710 moto 11234564 );
+my %imeis=qw( 
+	sonnenturm 359593001109710 
+	moto 11234564 
+	igor 359315001137255 
+);
 
 my $init_imei=$imeis{'sonnenturm'};
 

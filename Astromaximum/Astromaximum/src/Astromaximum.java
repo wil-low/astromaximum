@@ -88,6 +88,8 @@ public class Astromaximum extends MIDlet implements CommandListener{
   static Interpreter interpreter;
   static CustomTime customTime;
   
+  static String locale="ru_RU";
+  
   /**
    * Start this MIDlet
    */
@@ -112,7 +114,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if logger
 //#       long beforeLS=Runtime.getRuntime().freeMemory();
 //#endif      
-        LocalizationSupport.initLocalizationSupport("ru_RU");
+        LocalizationSupport.initLocalizationSupport(locale);
 //#if logger
 //#       long afterLS=Runtime.getRuntime().freeMemory();
 //#endif      

@@ -265,11 +265,18 @@ class Event {
     final StringBuffer s=new StringBuffer();
         
     if(hoursOnly==0) {
-      s.append(to2String(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH))).
-          append(".").
-          append(to2String(Astromaximum.calendar.get(Calendar.MONTH) + 1)).
-          append("/");
+      if(Astromaximum.locale!="ru_RU"){
+        s.append(to2String(Astromaximum.calendar.get(Calendar.MONTH) + 1)).
+            append("/").
+            append(to2String(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH)));
+      }
+      else{
+        s.append(to2String(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH))).
+            append(".").
+            append(to2String(Astromaximum.calendar.get(Calendar.MONTH) + 1));
+      }
     }
+    s.append(" ");
     int hh=Astromaximum.calendar.get(Calendar.HOUR_OF_DAY);
     final int mm=Astromaximum.calendar.get(Calendar.MINUTE);
     if(h24 && hh + mm == 0) {

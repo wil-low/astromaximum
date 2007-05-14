@@ -166,10 +166,18 @@ class SummItem extends TimerTask implements RecordFilter{
         cal.setTime(new Date(events[1].date0));
         selIndex=1;
         final int weekDay=cal.get(Calendar.DAY_OF_WEEK);
-        str=Astromaximum.dow[weekDay-1]+" "+
-            Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+" "+
-            Astromaximum.months[cal.get(Calendar.MONTH)].substring(0,3)+" '"+
-            Integer.toString(cal.get(Calendar.YEAR)).substring(2,4);
+        if(Astromaximum.locale!="ru_RU"){
+          str=Astromaximum.dow[weekDay-1]+" "+
+              Astromaximum.months[cal.get(Calendar.MONTH)].substring(0,3)+
+              " "+Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+
+              " '"+Integer.toString(cal.get(Calendar.YEAR)).substring(2,4);
+        }
+        else{
+          str=Astromaximum.dow[weekDay-1]+" "+
+              Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+" "+
+              Astromaximum.months[cal.get(Calendar.MONTH)].substring(0,3)+" '"+
+              Integer.toString(cal.get(Calendar.YEAR)).substring(2,4);
+        }
         break;
       case Event.EV_VOC:
       case Event.EV_VIA_COMBUSTA:
@@ -602,8 +610,9 @@ class SummItem extends TimerTask implements RecordFilter{
             Graphics.HCENTER|Graphics.VCENTER);
         break;
       case Event.EV_STATUS:
+        int colo=0;
         if(tag==1) {
-          osg.setColor(Astromaximum.CUST_COLOR);
+          colo=Astromaximum.CUST_COLOR;
         }
         
         final Font old=osg.getFont();
@@ -612,8 +621,35 @@ class SummItem extends TimerTask implements RecordFilter{
 //        System.out.println(str);
         y=top+height-2;
 //        if(owner.isShowCustom){
+        int x=getX(0,XCENTER);
         if(str!=null){
-          osg.drawString(str,getX(0,XCENTER),y,Graphics.HCENTER|Graphics.BASELINE);
+          if(str.length()>=7 && str.charAt(2)!=':' && str.charAt(8)==':'){
+            x-=old.stringWidth(str)/2;
+            String ss=str.substring(0,5);
+            osg.setColor(0x008000);
+            osg.drawString(ss,x,y,Graphics.LEFT|Graphics.BASELINE);
+            x+=old.stringWidth(ss);
+            osg.setColor(colo);
+            ss=str.substring(5,11);
+            osg.drawString(ss,x,y,Graphics.LEFT|Graphics.BASELINE);
+            if(str.length()>11){
+              int space=18;
+              if(Summary.IMG_HEIGHT==12){
+                space+=2;
+              }
+              x+=old.stringWidth(ss);
+              ss=str.substring(11,space);
+              osg.setColor(0x008000);
+              osg.drawString(ss,x,y,Graphics.LEFT|Graphics.BASELINE);
+              x+=old.stringWidth(ss);
+              osg.setColor(colo);
+              ss=str.substring(space,space+5);
+              osg.drawString(ss,x,y,Graphics.LEFT|Graphics.BASELINE);
+            }
+          }
+          else{
+            osg.drawString(str,x,y,Graphics.HCENTER|Graphics.BASELINE);
+          }
         }
         osg.setFont(old);
         if(Summary.isInCurrentDay(now)){
@@ -730,7 +766,7 @@ class SummItem extends TimerTask implements RecordFilter{
                 {
                   continue;
                 }
-              final int x=getX(i, XLEFT);
+              x=getX(i, XLEFT);
               osg.drawRect(x,top+1,getX(i, XRIGHT)-x,height-1);
           } else{
             if(nowSelection==i) {
@@ -764,7 +800,7 @@ class SummItem extends TimerTask implements RecordFilter{
       case Event.EV_DECUMB_ASPECT:
         for(int i=0; i<events.length; i++){
           ev=events[i];
-          int x=getX(i,XCENTER);
+          x=getX(i,XCENTER);
           drawImg(osg,Summary.imgAspect, getAspIndex(ev.getDegree()),x,y,
               Graphics.VCENTER|Graphics.RIGHT);
           drawImg(osg,Summary.imgPlanet,ev.planet1,x,y,
@@ -772,7 +808,7 @@ class SummItem extends TimerTask implements RecordFilter{
         }
         break;
       case Event.EV_DECUMB_BEGIN:
-        int x=getX(0,XCENTER);
+        x=getX(0,XCENTER);
 //        drawImg(osg,Summary.imgPlanet,Event.SE_MOON,x,y,Graphics.VCENTER|Graphics.RIGHT);
         if(events[0]!=null){
           osg.drawString(Integer.toString(events[0].getDegree()),x+1,top+height-1,
@@ -1113,7 +1149,7 @@ class SummItem extends TimerTask implements RecordFilter{
     final Event sel=getSelEvent();
     int hrOnly=1;
     if(sel!=null){
-      String tire=(Summary.IMG_HEIGHT==12)? " - ": "-";
+      String tire=(Summary.IMG_HEIGHT==12)? "   ": " ";
       switch(type){
         case Event.EV_MOON_MOVE:
           final int sind=selIndex;
