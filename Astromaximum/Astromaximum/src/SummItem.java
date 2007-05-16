@@ -623,7 +623,7 @@ class SummItem extends TimerTask implements RecordFilter{
 //        if(owner.isShowCustom){
         int x=getX(0,XCENTER);
         if(str!=null){
-          if(str.length()>=7 && str.charAt(2)!=':' && str.charAt(8)==':'){
+          if(str.length()>=9 && str.charAt(2)!=':' && str.charAt(8)==':'){
             x-=old.stringWidth(str)/2;
             String ss=str.substring(0,5);
             osg.setColor(0x008000);
