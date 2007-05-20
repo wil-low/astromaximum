@@ -433,11 +433,11 @@ class SummItem extends TimerTask implements RecordFilter{
         break;
       case Event.EV_SUN_DEGREE_LARGE:
         Event ev=events[0];
-        xr=getX(0, XRIGHT);
+        xr=getX(0, XLEFT);
+        String tmp=Integer.toString(Astromaximum.getSignDegree(ev.getDegree()))+"\u00b0";
+        osg.drawString(tmp,xr+1,top, Graphics.TOP|Graphics.LEFT);
         drawImg(osg,Summary.imgZodiac,ev.getDegree()/30,
-            xr-1,top+1, Graphics.TOP | Graphics.RIGHT);
-        osg.drawString(Integer.toString(Astromaximum.getSignDegree(ev.getDegree()))+"\u00b0",
-            xr-Summary.IMG_WIDTH-1,top, Graphics.TOP|Graphics.RIGHT);
+            xr+osg.getFont().stringWidth(tmp)+2,top+1, Graphics.TOP | Graphics.LEFT);
         osg.setColor(0);
         if(ev.date0>=Summary.period0){
           if(Summary.isCurrentDay && contains(ev,now)) {
@@ -447,19 +447,19 @@ class SummItem extends TimerTask implements RecordFilter{
             osg.setColor(Astromaximum.CUST_COLOR);
           }
           osg.drawString(ev.getDateString(0, 1),
-              xr-2, top+height-1,
-              Graphics.BASELINE | Graphics.RIGHT);
+              xr+1, top+height-1,
+              Graphics.BASELINE | Graphics.LEFT);
         }
         break;
       case Event.EV_MOON_RISE:
         drawRiseSetCell(osg, now,isCus);
         break;
       case Event.EV_MOON_SIGN_LARGE:
-        ev=events[0]; xr=getX(0, XRIGHT);
+        ev=events[0]; xr=getX(0, XLEFT);
         if(ev!=null){
 //          ev.dump();
           drawImg(osg,Summary.imgZodiac,ev.getDegree(),
-              xr-1,top+1, Graphics.TOP | Graphics.RIGHT);
+              xr+1,top+1, Graphics.TOP | Graphics.LEFT);
           if(ev.date0>=Summary.period0){
             if(Summary.isCurrentDay && contains(ev,now)) {
               osg.setColor(Astromaximum.RUBY_COLOR);
@@ -468,7 +468,7 @@ class SummItem extends TimerTask implements RecordFilter{
               osg.setColor(Astromaximum.CUST_COLOR);
             }
             osg.drawString(ev.getDateString(0, 1),
-                xr-2, top+height-1,Graphics.BASELINE | Graphics.RIGHT);
+                xr+1, top+height-1,Graphics.BASELINE | Graphics.LEFT);
           }
         }
         break;
@@ -626,7 +626,7 @@ class SummItem extends TimerTask implements RecordFilter{
           if(str.length()>=9 && str.charAt(2)!=':' && str.charAt(8)==':'){
             x-=old.stringWidth(str)/2;
             String ss=str.substring(0,5);
-            osg.setColor(0x008000);
+            osg.setColor(Astromaximum.SELECTION_COLOR);
             osg.drawString(ss,x,y,Graphics.LEFT|Graphics.BASELINE);
             x+=old.stringWidth(ss);
             osg.setColor(colo);
@@ -639,7 +639,7 @@ class SummItem extends TimerTask implements RecordFilter{
               }
               x+=old.stringWidth(ss);
               ss=str.substring(11,space);
-              osg.setColor(0x008000);
+              osg.setColor(Astromaximum.SELECTION_COLOR);
               osg.drawString(ss,x,y,Graphics.LEFT|Graphics.BASELINE);
               x+=old.stringWidth(ss);
               osg.setColor(colo);
@@ -1042,9 +1042,9 @@ class SummItem extends TimerTask implements RecordFilter{
     final long d1=evi.date1;
     switch(t){
       case Event.EV_SUN_DAY:
-        return new long[]{Event.EV_NAVROZ,plt,dgr,events[0].date0,0};
+        return new long[]{Event.EV_NAVROZ,plt,dgr,d0,0};
       case Event.EV_MOON_DAY:
-        return new long[]{t,plt,dgr,events[0].date0,events[0].date1};
+        return new long[]{t,plt,dgr,d0,d1};
       case Event.EV_RISE:
         return new long[]{t,-1,plt,dgr,d0,0};
       case Event.EV_TITHI:
