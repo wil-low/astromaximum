@@ -56,8 +56,8 @@ sub read_template {
 	return \$template;
 }
 
-sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, year, templatedataref
-	my ($prefix, $reg, $desc, $destdir, $locpath, $is_numbered, $year, $template )=@_;
+sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, year, citiesref, templatedataref
+	my ($prefix, $reg, $desc, $destdir, $locpath, $is_numbered, $year, $citiesref, $template )=@_;
 	my $code='';
 	if(!$template){
 		$template=read_template();
@@ -66,17 +66,21 @@ sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, y
 	if($is_numbered){
 		my $locsz= -s '.temp\\locations.dat';
 		$locsz=~/(\d{0,4})$/is;
-		$code=$1;
+		$code="-$1";
 		warn $locsz;
 	}
 	$year=~s/\d\d(\d\d)/$1/is;
-	my $fname="$prefix\'$year-$code";
+	my $fname="$prefix\'$year$code";
 	$jad=~s/<YEAR>/$year/isg;
 	$jad=~s/<REGION>/$reg/isg;
 	$jad=~s/<CODE>/$code/isg;
 	$jad=~s/<DESC>/$desc/isg;
 	$jad=~s/<JAR>/$fname\.jar/isg;
-	
+	my $i=0;
+	foreach my $lname (@{$citiesref}){
+		$jad.="Loc$i: $lname\n";
+		$i++;
+	}
 #	die $jad;
 	mkdir ".temp\\META-INF\\" unless -d ".temp\\META-INF\\";
 	open(INF, ">.temp\\META-INF\\MANIFEST.MF") or die "No file";

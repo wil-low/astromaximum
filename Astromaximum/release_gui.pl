@@ -179,13 +179,15 @@ sub do_geo {
 	if($geocap and $geod and $#selected>=0){
 		print "geo\n";
 		my @geo;
+		my @locs;
 		foreach my $sc (@selected){
 			print $sc->{city}."\t".$sc->{fname}."\n";
 			push(@geo, $sc->{fname});
+			push(@locs, $sc->{city});
 		}
 		mkdir '.temp' unless -d '.temp';
 		tools::join_datafiles($#selected+1, $path.".temp\\locations.dat", \@geo);
-		my $code=tools::create_geo("Cities", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\", 1, $year);
+		my $code=tools::create_geo("Cities", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\", 0, $year, \@locs);
 		$main->messageBox(-icon => 'info', -message => "Geo build #$code successful", -title => 'Message', -type => 'Ok');
 		return;		
 	}

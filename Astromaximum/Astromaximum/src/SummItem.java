@@ -1324,7 +1324,9 @@ class SummItem extends TimerTask implements RecordFilter{
   }
   
   static boolean contains(Event ev, long date) {
-    return ev != null && date >= ev.date0 && date <= ev.date1;
+//    date/=60000;
+//    return ev != null && date >= (ev.date0/60000) && date < (ev.date1/60000);
+    return ev != null && date >= ev.date0 && date < ev.date1;
   }
   
   private static void drawSelDegree(Graphics osg, Event event, int x, int y, int anchor) {

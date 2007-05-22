@@ -12,6 +12,7 @@
  * @version 1.0
  * @noinspection CastToConcreteClass
  */
+//#define imgPhase
 
 //#ifdef build.desktop
 //# package com.sw_axis;
@@ -22,7 +23,7 @@ import java.io.*;
 import javax.microedition.lcdui.*;
 import java.util.*;
 
-class Summary extends FrameAnimator implements CommandListener{
+class Summary extends Canvas implements CommandListener, Runnable{
 //#ifdef UseBuffer
 //#   static Image offScreenBuffer;
 //#endif
@@ -55,6 +56,7 @@ class Summary extends FrameAnimator implements CommandListener{
   static boolean isCurrentDay;
   static boolean isShowCustom=false;
   private static final long DELAY=15*1000;
+  private static final long LOGO_DELAY=200;
   private static final byte[] weekStartHour={0,3,6,2,5,1,4};
   private static final byte[] decumbAspects={45,15,30,30,15,45,45,15,30,30,15,45};
   static final byte[] decumbKeys={0,1,2,3,2,1,3,1,2,3,2,1,4};
@@ -86,8 +88,13 @@ class Summary extends FrameAnimator implements CommandListener{
    *
    *
    */
-  Summary() {
-    super("/res/ph50.dat",30,2);
+  Summary(String file, int frames, int progr) {
+    progress = progr;
+    frameCount = frames;
+//#ifdef imgPhase 
+    moonFile = file;
+    img = Astromaximum.extractImg(0, file);
+//#endif    
 //    try {
 //      imgLogo=Image.createImage("/res/logo.png");
 //    } 
@@ -128,7 +135,18 @@ class Summary extends FrameAnimator implements CommandListener{
 //#     }
 //#else
     if(goon){
-        super.paint(graphics);
+      final int x=graphics.getClipX();
+      final int y=graphics.getClipY();
+      final int w=graphics.getClipWidth();
+      final int h=graphics.getClipHeight();
+//#ifdef imgPhase
+      graphics.setClip(moonX,moonY,img.getWidth(),img.getHeight());
+      graphics.drawImage(img,moonX,moonY,Graphics.LEFT|Graphics.TOP);
+//#else
+//#       graphics.setClip(moonX,moonY,width,width);
+//#       graphics.fillArc(moonX,moonY,moonX,moonY,-90,180);
+//#endif      
+      graphics.setClip(x,y,w,h);
 //        graphics.setColor(0);
 //        graphics.fillRect(0,0,getWidth(),getHeight());
 //        graphics.drawImage(imgLogo,getWidth()/2,getHeight()/2,Graphics.HCENTER|Graphics.VCENTER);
@@ -1509,8 +1527,14 @@ class Summary extends FrameAnimator implements CommandListener{
   }
   
   public void stop(){
- //   imgLogo=null;
-    super.stop();
+    goon=false;
+//#if imgPhase
+    img=null;
+//#endif
+    if(timer!=null){
+      timer.cancel();
+    }
+    progress=0;
   }
 
   private Event[] calcPlanetHours(Event starte, Event ende, int startHour) {
@@ -1524,9 +1548,9 @@ class Summary extends FrameAnimator implements CommandListener{
       Event ev=new Event(st, hourSeq[startHour%7]);
       st += i < 12 ? dHour : nHour;
       ev.date1=st;
-      if(i==6 || i==18){
-        ev.date1+=60*1000; // +1 min for MC, IC
-      }
+//      if(i==6 || i==18){
+//        ev.date1+=60*1000; // +1 min for MC, IC
+//      }
       ar[i]=ev;
       ++startHour;
     }
@@ -1535,7 +1559,9 @@ class Summary extends FrameAnimator implements CommandListener{
   
   public void run() {
 //#ifndef logger
-    super.run();
+    goon=true;
+    timer=new Timer();
+    timer.schedule(new SummItem(0),LOGO_DELAY,LOGO_DELAY);
 //#endif    
     DataInputStream dis=new DataInputStream(getClass().getResourceAsStream("/res/panel.png"));
     try{
@@ -1725,5 +1751,50 @@ class Summary extends FrameAnimator implements CommandListener{
     }
   }
 //#endif  
+
+  protected Timer timer;
+
+  private int progress;
+
+  protected boolean goon;
+
+  private Image img;
+
+  private final String moonFile;
+
+  private int moonX;
+
+  private int moonY;
+
+  private final int frameCount;
+
+  void setMoonXY(int x, int y, int flags) {
+    moonX = x;
+    moonY = y;
+    if ((flags & Graphics.HCENTER) > 0) {
+      moonX -= img.getWidth() >> 1;
+    }
+    if ((flags & Graphics.VCENTER) > 0) {
+      moonY -= img.getHeight() >> 1;
+    }
+    if ((flags & Graphics.RIGHT) > 0) {
+      moonX -= img.getWidth();
+    }
+    if ((flags & Graphics.BOTTOM) > 0) {
+      moonY -= img.getHeight();
+    }
+  }
+
+  protected void drawFrame() {
+    if (goon) {
+      if (progress < frameCount / 2) {
+        img = Astromaximum.extractImg(progress, moonFile);
+//        System.out.println("drawFrame");
+        repaint();
+        serviceRepaints();
+        progress+=2;
+      }
+    }
+  }
 }
 

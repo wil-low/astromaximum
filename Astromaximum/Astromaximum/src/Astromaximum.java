@@ -126,7 +126,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#           "|before LocSupport="+Long.toString(beforeLS)+
 //#           "|after LocSupport="+Long.toString(afterLS));
 //#endif      
-        summary =new Summary();
+        summary =new Summary("/res/ph50.dat",30,2);
 //#if logger
 //#       logger(summary.toString());
 //#endif        
