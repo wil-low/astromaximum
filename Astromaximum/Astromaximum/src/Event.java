@@ -275,10 +275,10 @@ class Event {
             append(".").
             append(to2String(Astromaximum.calendar.get(Calendar.MONTH) + 1));
       }
+      s.append(" ");
     }
-    s.append(" ");
     int hh=Astromaximum.calendar.get(Calendar.HOUR_OF_DAY);
-    final int mm=Astromaximum.calendar.get(Calendar.MINUTE);
+    int mm=Astromaximum.calendar.get(Calendar.MINUTE);
     if(h24 && hh + mm == 0) {
       hh = 24;
     }

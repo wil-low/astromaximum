@@ -633,17 +633,20 @@ class SummItem extends TimerTask implements RecordFilter{
             ss=str.substring(5,11);
             osg.drawString(ss,x,y,Graphics.LEFT|Graphics.BASELINE);
             if(str.length()>11){
-              int space=18;
+              int space=1;
               if(Summary.IMG_HEIGHT==12){
                 space+=2;
               }
               x+=old.stringWidth(ss);
-              ss=str.substring(11,space);
+              ss=str.substring(11,11+space);
+              osg.drawString(ss,x,y,Graphics.LEFT|Graphics.BASELINE);
+              x+=old.stringWidth(ss);
+              ss=str.substring(11+space,17+space);
               osg.setColor(Astromaximum.SELECTION_COLOR);
               osg.drawString(ss,x,y,Graphics.LEFT|Graphics.BASELINE);
               x+=old.stringWidth(ss);
               osg.setColor(colo);
-              ss=str.substring(space,space+5);
+              ss=str.substring(17+space);
               osg.drawString(ss,x,y,Graphics.LEFT|Graphics.BASELINE);
             }
           }
@@ -998,6 +1001,9 @@ class SummItem extends TimerTask implements RecordFilter{
   }
   
   private void moveSelection(int delta) {
+    if(events.length==0){
+      return;
+    }
     do{
       selIndex+=delta;
       if(selIndex>widths.length-1) {
@@ -1149,7 +1155,7 @@ class SummItem extends TimerTask implements RecordFilter{
     final Event sel=getSelEvent();
     int hrOnly=1;
     if(sel!=null){
-      String tire=(Summary.IMG_HEIGHT==12)? "   ": " ";
+      String tire=(Summary.IMG_HEIGHT==12)? " - ": "-";
       switch(type){
         case Event.EV_MOON_MOVE:
           final int sind=selIndex;

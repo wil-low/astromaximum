@@ -544,31 +544,6 @@ class Summary extends FrameAnimator implements CommandListener{
 //#       Astromaximum.instance.logger(" retrograde");
 //#endif      
 
-//****** PLANETARY HOURS
-    ev= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
-      period0 +Astromaximum.MSECINDAY, period1 +Astromaximum.MSECINDAY);
-//    System.out.println("PH dump:");
-//    getItem(Event.EV_SUN_RISE).events[0].dump();
-//    ev.dump();
-    Event[] aev=calcPlanetHours(getItem(Event.EV_SUN_RISE).events[0],ev,weekStartHour[weekDay -1]);
-    for(int i=0; i<24; i++){
-      getItem(i < 12 ? Event.EV_DAY_HOURS : Event.EV_NIGHT_HOURS).setEvents(i%12,aev[i]);
-    }
-//#if logger
-//#       Astromaximum.instance.logger(" planetHours");
-//#endif      
-//    long pp0=period0 + Astromaximum.MSECINDAY, pp1=period1 + Astromaximum.MSECINDAY;
-//    ev= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
-//      pp0, pp1);
-//    ev.date1=Astromaximum.dataFile.getEventOnPeriod(Event.EV_SET,Event.SE_SUN,false,
-//      pp0, pp1).date0;
-////        ev.dump();
-//    aev=calcPlanetHours(ev,getItem(Event.EV_SUN_RISE).events[0],weekStartHour[(weekDay+1)%7]);
-//    prevPH.setEvents(aev);
-//    prevPH.recalcSelection(period0, true);
-//    prevPH.dump();
-    
-    
 //******* common risesets
     long pp0=period0 -Astromaximum.MSECINDAY, pp1=period1 +Astromaximum.MSECINDAY;
     for(int i=Event.SE_SUN; i <= Event.SE_WHITE_MOON; i++){
@@ -636,6 +611,30 @@ class Summary extends FrameAnimator implements CommandListener{
 //#if logger
 //#       Astromaximum.instance.logger("end risesets");
 //#endif      
+    
+//****** PLANETARY HOURS
+    ev= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
+      period0 +Astromaximum.MSECINDAY, period1 +Astromaximum.MSECINDAY);
+//    System.out.println("PH dump:");
+//    getItem(Event.EV_SUN_RISE).events[0].dump();
+//    ev.dump();
+    Event[] aev=calcPlanetHours(getItem(Event.EV_SUN_RISE).events[0],ev,weekStartHour[weekDay -1]);
+    for(int i=0; i<24; i++){
+      getItem(i < 12 ? Event.EV_DAY_HOURS : Event.EV_NIGHT_HOURS).setEvents(i%12,aev[i]);
+    }
+//#if logger
+//#       Astromaximum.instance.logger(" planetHours");
+//#endif      
+//    long pp0=period0 + Astromaximum.MSECINDAY, pp1=period1 + Astromaximum.MSECINDAY;
+//    ev= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
+//      pp0, pp1);
+//    ev.date1=Astromaximum.dataFile.getEventOnPeriod(Event.EV_SET,Event.SE_SUN,false,
+//      pp0, pp1).date0;
+////        ev.dump();
+//    aev=calcPlanetHours(ev,getItem(Event.EV_SUN_RISE).events[0],weekStartHour[(weekDay+1)%7]);
+//    prevPH.setEvents(aev);
+//    prevPH.recalcSelection(period0, true);
+//    prevPH.dump();
     if(cusTime==0){
       si=getItem(Event.EV_RISE,Event.SE_SUN);
       for(int i=0; i<si.events.length; i++){
@@ -1015,9 +1014,9 @@ class Summary extends FrameAnimator implements CommandListener{
     recalcAllSelections();
     if(oldPage!=pageNum){
       selItem=-1;
-//      if(pageNum!=PAGE_WEEK && pageNum!=PAGE_MONTH){
+      if(pageNum!=PAGE_WEEK && pageNum!=PAGE_MONTH){
         moveFocus(1,1);
-//      }
+      }
       if(pageNum!=PAGE_DECUMB && pageNum!=PAGE_HELP){
         moveFocus(1,1);
       }
@@ -1525,6 +1524,9 @@ class Summary extends FrameAnimator implements CommandListener{
       Event ev=new Event(st, hourSeq[startHour%7]);
       st += i < 12 ? dHour : nHour;
       ev.date1=st;
+      if(i==6 || i==18){
+        ev.date1+=60*1000; // +1 min for MC, IC
+      }
       ar[i]=ev;
       ++startHour;
     }
