@@ -18,5 +18,17 @@ sub cookie_check{
 	exit(0);
 }
 
+sub adm_panel{
+	return <<ADM;
+<p><b>Admin:&nbsp;&nbsp;
+<a href='http://localhost/Tools/phpMyAdmin/'>phpMyAdmin</a> 
+<a href='http://localhost/Docs/MySQL4/index.html'>mySQL docs</a> 
+<a href='sessions.cgi'>Sessions</a> 
+<a href='files.cgi'>Files</a> 
+<a href='upload.cgi'>Upload</a>
+</b></p>
+ADM
+
+}
 
 1;

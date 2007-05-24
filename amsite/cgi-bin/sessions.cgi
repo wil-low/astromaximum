@@ -15,8 +15,9 @@ my $dbh = DBI->connect($dsn, 'root', '');
 tools::cookie_check($dbh);
 
 print header, start_html(-title=>'Astromaximum - Session control');
+print tools::adm_panel();
 
-my $stcou = $dbh->prepare("SELECT customers.name, tm_start, tm_end FROM sessions,customers WHERE user_id=id ORDER BY customers.name");
+my $stcou = $dbh->prepare("SELECT customers.name, tm_start, tm_end FROM sessions,customers WHERE user_id=id ORDER BY customers.name, tm_start DESC");
 $stcou->execute;
 print "<table border=1>";
 my $i=1;

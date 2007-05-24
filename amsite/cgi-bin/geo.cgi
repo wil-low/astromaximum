@@ -8,6 +8,7 @@ use CGI::Carp 'fatalsToBrowser';
 $CGI::POST_MAX=1024 * 10;  # max 100K posts
 $CGI::DISABLE_UPLOADS = 1;  # no uploads
 use tools;
+use amtools;
 
 our $cur_country='';
 
@@ -64,14 +65,8 @@ my $cnum=param('cid');
 my $defyear=2007;
 
 print header, start_html(-title=>'Astromaximum location archives', -script=>$ADDCITY);
-print <<ADM;
-<p><b>Admins only: 
-<a href='http://localhost/Tools/phpMyAdmin/'>phpMyAdmin</a> 
-<a href='http://localhost/Docs/MySQL4/index.html'>mySQL docs</a> 
-<a href='sessions.cgi'>Sessions</a> 
-<a href='upload.cgi'>Upload</a>
-</b></p>
-ADM
+print tools::adm_panel();
+
 print start_form(-name=>'main', -method=>'post'), "<table width=100% border=1><tr valign=top><td><p><b>Year:</b> ",
 popup_menu(-name=>'year', -values=>[qw(2005 2006 2007 2008)], -default=>$defyear), "</td>";
 print "<td rowspan=2>", selected_cities(), "</td></tr>";
@@ -84,10 +79,13 @@ print hidden(-name=>'cid', -default=>'');
 end_form();
 #print Dump();
 #print join('.',@sel_cities);
+
 if(param('Action') eq 'Get data' && param('sc')=~/\d/){
-	my $url='http://astromaximum/cgi-bin/jar?id=2345-1324-2349-2131';
+	my ($fn,$id)=amtools::random('../files','.r');
+	create_jar(param('year'), param('sc'), $fn);
+	my $url='http://astromaximum/cgi-bin/data?r='.$id;
 	print "<b><p align=center>JAR link: <a href=\'$url\'>$url</a><br><br>";
-	$url=~s/jar/jad/is;
+	$url=~s/\?r/\?d/is;
 	print "JAD link: <a href=\'$url\'>$url</a><br>";
 	print "<br>Attention: links are valid within next 2 hours!</p></b>";
 }
@@ -158,4 +156,29 @@ sub restored_selection{ # ids
 	$sth->finish;
 	return $res;
 	
+}
+
+sub create_jar{ # $year, $city_ids, $outfile 
+	my($year, $ids, $outfile)=@_;
+	$ids=~/^\.(.+?)\.?$/is;
+	$ids=$1;
+	$ids=~s/\./\,/isg;
+	my ($dir)=amtools::random('../source');
+	my @data;
+#	amtools::join_datafiles2("$dir/locations.dat", \@data);
+#	system("zip --help >1.txt");
+	mkdir $dir;
+	system("unpack.bat $dir ../source/template.zip");
+	my $stat="SELECT cities.id, cities.name, locations.data FROM cities,countries WHERE cities.id IN ($ids) and countries.id=country_id ORDER BY countries.name,cities.name";
+#	print $stat;
+#	my $sth = $dbh->prepare($stat);
+#	$sth->execute;
+#	while(my @row = $sth->fetchrow_array){
+#		$res.="<input type=checkbox id=$row[0]></input>$row[1], $row[2]<br>\n";	
+#	}
+#	$sth->finish;
+	open(FFF, ">$outfile");
+	print(FFF $ids);
+	close(FFF);
+#	rmdir $dir;
 }
