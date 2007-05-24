@@ -591,9 +591,14 @@ class Summary extends Canvas implements CommandListener, Runnable{
           --j;
         }
         else{
+          ev.date1=ev.date0;
           ev.setDegree(1);
         }
       }
+//      System.out.println("Astrorise");
+//      Astromaximum.evDump(tmp);
+//      if(pp0>0)
+//        continue;
       Astromaximum.dataFile.getEventsOnPeriod(tmp,Event.EV_ASTROSET,i,
           false, pp0,pp1,3);
       mergeEvents(tmp2,tmp,true);
