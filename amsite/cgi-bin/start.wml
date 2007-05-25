@@ -1,0 +1,20 @@
+<?xml version="1.0"?> 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" 
+"http://www.wapforum.org/DTD/wml_1.1.xml"> 
+<wml> 
+<card id="Order" title="Query Inventory"> 
+<p> 
+<select name="Items" title="Items"> 
+<option value="Books">Books</option> 
+<option value="Music">Music</option> 
+<option value="Video">Video</option> 
+<option value="Software">Software</option> 
+</select> 
+</p> 
+<do type="accept" label="Query"> 
+<go href="http://127.0.0.1/WML/Inventory.asp" method="post"> 
+<postfield name="Items" value="$(Items)"/> 
+</go> 
+</do> 
+</card> 
+</wml>

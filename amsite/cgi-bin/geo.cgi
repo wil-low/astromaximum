@@ -12,6 +12,7 @@ use amtools;
 
 our $cur_country='';
 
+
 my $ADDCITY=<<ADDCITY;
 function city_add(cname){
 	selc=document.getElementById("selcit");
@@ -67,11 +68,13 @@ my $defyear=2007;
 print header, start_html(-title=>'Astromaximum location archives', -script=>$ADDCITY);
 print tools::adm_panel();
 
-print start_form(-name=>'main', -method=>'post'), "<table width=100% border=1><tr valign=top><td><p><b>Year:</b> ",
-popup_menu(-name=>'year', -values=>[qw(2005 2006 2007 2008)], -default=>$defyear), "</td>";
+print start_form(-name=>'main', -method=>'post'), "<table width=100% border=1><tr valign=top><td><font color='red'><i>Step 1:</i></font><br><b>Year:</b> ",
+popup_menu(-name=>'year', -values=>[qw(2005 2006 2007 2008)], -default=>$defyear, 
+	#-onchange=>"javascript:window.refresh()"
+	), "</td>";
 print "<td rowspan=2>", selected_cities(), "</td></tr>";
 print "<tr><td>", country_header(), city_selector(), "</td>";
-$dbh->disconnect;
+
 
 print "</tr></table>";
 print hidden(-name=>'sc', -default=>'.');
@@ -81,18 +84,23 @@ end_form();
 #print join('.',@sel_cities);
 
 if(param('Action') eq 'Get data' && param('sc')=~/\d/){
-	my ($fn,$id)=amtools::random('../files','.r');
-	create_jar(param('year'), param('sc'), $fn);
+	my $id=create_jar(param('year'), param('sc'));
 	my $url='http://astromaximum/cgi-bin/data?r='.$id;
-	print "<b><p align=center>JAR link: <a href=\'$url\'>$url</a><br><br>";
+	print "<p><center><font color='red'><i>Step 4:</i></font>";
+	print "<h4>Download to PC:</h4>";
+	print "<b>JAR link: <a href=\'$url\'>$id</a><br><br>";
 	$url=~s/\?r/\?d/is;
-	print "JAD link: <a href=\'$url\'>$url</a><br>";
-	print "<br>Attention: links are valid within next 2 hours!</p></b>";
+	print "JAD link: <a href=\'$url\'>$id</a><br><br></b>";
+	$url=~s/\?d/\?t/is;
+	print "<h4>Download to phone:</h4>";
+	print "<b>Direct link: <a href=\'$url\'>$id</a><br>";
+	print "<br><font color='red'>Attention: links are valid within next 2 hours!</font></b></center>";
 }
 print end_html;
+$dbh->disconnect;
 
 sub country_header{
-	my $res="<b>Country: </b>";
+	my $res="<font color='red'><i>Step 2:</i></font><br><b>Country: </b>";
 	my $stcou = $dbh->prepare("SELECT countries.id, countries.name FROM countries ORDER BY countries.name");
 	$stcou->execute;
 	while(my @row = $stcou->fetchrow_array){
@@ -107,15 +115,16 @@ sub country_header{
 		$res.="<a href='#' onclick=\"show_country($row[0])\">$row[1]</a>\n"; 
 	}
 	$stcou->finish;
-	$res.="<hr>";
 	return $res;
 }
 
 sub city_selector{
 	my $sth = $dbh->prepare(
-		"SELECT cities.id, cities.name FROM cities,countries WHERE country_id=$cnum and countries.id=country_id ORDER BY cities.name");
+		"SELECT cities.id, cities.name FROM cities,countries,locations WHERE country_id=".
+		"$cnum AND countries.id=country_id AND city_id=cities.id AND year=".
+		param('year')." ORDER BY cities.name");
 	$sth->execute;
-	my $res="<b>Cities:</b><br><div id=chkcit>";
+	my $res="<br><br><b>Cities:</b><br><div id=chkcit>";
 	my $i=0;
 	while(my @row = $sth->fetchrow_array){
 		$res.="<input type=checkbox id=$row[0] value='$row[1]'>$row[1]</input><br>\n"; 
@@ -129,10 +138,11 @@ sub city_selector{
 
 sub selected_cities{
 	my $rs=restored_selection(param('sc'));
-	my $res="<h4 align=center>Selected cities:</h4><div id=selcit>".$rs."</div>";
+	my $res="<h4 align=center>Selected cities:</h4>";
 #	if($rs){
-		$res.="<div align=right>".button(-value=>'Delete selected', -onClick=>"city_del()")."</div>";
-		$res.=submit('Action','Get data');
+		$res.="<div align=right>".button(-value=>'Delete selected', -onClick=>"city_del()")."</div>".
+			"<div id=selcit>".$rs."</div><p align=center><font color='red'><i>Step 3:</i></font> ";
+		$res.=submit('Action','Get data')."</p>";
 #	}
 #	else{
 #		$res.="<center><b><i>No cities selected.</i></b></center>";
@@ -158,27 +168,70 @@ sub restored_selection{ # ids
 	
 }
 
-sub create_jar{ # $year, $city_ids, $outfile 
+sub create_jar{ # $year, $city_ids
+	my $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
+	my $zip=q("d:/Program Files/WinRAR/WinRar.exe" a -afzip -r -ep1 %s.r %s/*);
 	my($year, $ids, $outfile)=@_;
 	$ids=~/^\.(.+?)\.?$/is;
 	$ids=$1;
 	$ids=~s/\./\,/isg;
-	my ($dir)=amtools::random('../source');
-	my @data;
-#	amtools::join_datafiles2("$dir/locations.dat", \@data);
-#	system("zip --help >1.txt");
-	mkdir $dir;
-	system("unpack.bat $dir ../source/template.zip");
-	my $stat="SELECT cities.id, cities.name, locations.data FROM cities,countries WHERE cities.id IN ($ids) and countries.id=country_id ORDER BY countries.name,cities.name";
+	my ($dir,$fn)=amtools::random('../files','.r');
+	my $srcdir="../source/$fn";
+	mkdir $srcdir;
+	open(INF, "<../source/template.jad") or die "No file";
+	my @data=<INF>;
+	close(INF);
+	my $template=join("",@data);
+	@data=();
+	$fn=~/(\d{4})$/is;
+	my $code="-$1";
+	my $fname="Cities$code";
+	$year=~/\d\d(\d\d)/is;
+	my $ye=$1;
+	$template=~s/<YEAR>/$ye/isg;
+#	$jad=~s/<REGION>/$reg/isg;
+	$template=~s/<CODE>/$code/isg;
+#	$jad=~s/<DESC>/$desc/isg;
+	$template=~s/<JAR>/$fname\.jar/isg;
+
+	my $cmd=sprintf($unzip, '../source/template.zip', $srcdir);
+	system($cmd);
+	open(INF, ">$srcdir/META-INF/MANIFEST.MF") or die "No file";
+		print INF $template;
+	close(INF);
+	my $stat="SELECT DISTINCT cities.name, data FROM cities, locations ".
+		"WHERE cities.id IN ($ids) AND city_id=cities.id AND year=$year".
+		" ORDER BY cities.name";
 #	print $stat;
-#	my $sth = $dbh->prepare($stat);
-#	$sth->execute;
-#	while(my @row = $sth->fetchrow_array){
-#		$res.="<input type=checkbox id=$row[0]></input>$row[1], $row[2]<br>\n";	
-#	}
-#	$sth->finish;
-	open(FFF, ">$outfile");
-	print(FFF $ids);
+	my $sth = $dbh->prepare($stat);
+	$sth->execute;
+	my $i=0;
+	while(my @row = $sth->fetchrow_array){
+		push(@data, $row[1]);		
+	}
+	$sth->finish;
+	amtools::join_datafiles2("$srcdir/locations.dat", \@data);
+	$cmd=sprintf($zip, "../files/$fn", "$srcdir");
+	system($cmd);
+	my $asize= -s "../files/$fn.r";
+	$template.="MIDlet-Jar-Size: $asize\n";
+	open(FFF, ">../files/$fn.d");
+	print(FFF $template);
 	close(FFF);
-#	rmdir $dir;
+	
+	$template=~s%(MIDlet-Jar-URL: ).+?\n%$1http://astromaximum/cgi-bin/data\?r=$fn\n%is;
+	open(FFF, ">../files/$fn.t");
+	print(FFF $template);
+	close(FFF);
+	system("rm -R $srcdir/*");
+	rmdir $srcdir;
+	my $sql='INSERT INTO files (id, type, user_id, end_tm) VALUES';
+	foreach (('r','d','t')){
+		$sql.=" ($fn, \'$_\', 1, NOW()+ INTERVAL 2 HOUR),";
+	}
+	$sql=~s/,$//is;
+	$sth = $dbh->prepare($sql);
+	$sth->execute;
+	$sth->finish;
+	return $fn;
 }
