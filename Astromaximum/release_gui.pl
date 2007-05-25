@@ -187,7 +187,7 @@ sub do_geo {
 		}
 		mkdir '.temp' unless -d '.temp';
 		tools::join_datafiles($#selected+1, $path.".temp\\locations.dat", \@geo);
-		my $code=tools::create_geo("Cities", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\", 0, $year, \@locs);
+		my $code=tools::create_geo("Cities", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\", 1, $year, \@locs);
 		$main->messageBox(-icon => 'info', -message => "Geo build #$code successful", -title => 'Message', -type => 'Ok');
 		return;		
 	}
