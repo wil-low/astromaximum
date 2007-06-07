@@ -60,12 +60,13 @@ my $mode=defined(param('cid'));
 my @sel_cities=param('Sel_cities');
 my $dbh = DBI->connect($dsn, 'root', '');
 
-tools::cookie_check($dbh);
+my $userid=tools::cookie_check($dbh);
 
 my $cnum=param('cid');
 my $defyear=2007;
 
 print header, start_html(-title=>'Astromaximum location archives', -script=>$ADDCITY);
+
 print tools::adm_panel();
 
 print start_form(-name=>'main', -method=>'post'), "<table width=100% border=1><tr valign=top><td><font color='red'><i>Step 1:</i></font><br><b>Year:</b> ",
@@ -169,8 +170,6 @@ sub restored_selection{ # ids
 }
 
 sub create_jar{ # $year, $city_ids
-	my $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
-	my $zip=q("d:/Program Files/WinRAR/WinRar.exe" a -afzip -r -ep1 %s.r %s/*);
 	my($year, $ids, $outfile)=@_;
 	$ids=~/^\.(.+?)\.?$/is;
 	$ids=$1;
@@ -194,7 +193,7 @@ sub create_jar{ # $year, $city_ids
 #	$jad=~s/<DESC>/$desc/isg;
 	$template=~s/<JAR>/$fname\.jar/isg;
 
-	my $cmd=sprintf($unzip, '../source/template.zip', $srcdir);
+	my $cmd=sprintf($amtools::unzip, '../source/template.zip', $srcdir);
 	system($cmd);
 	open(INF, ">$srcdir/META-INF/MANIFEST.MF") or die "No file";
 		print INF $template;
@@ -211,7 +210,7 @@ sub create_jar{ # $year, $city_ids
 	}
 	$sth->finish;
 	amtools::join_datafiles2("$srcdir/locations.dat", \@data);
-	$cmd=sprintf($zip, "../files/$fn", "$srcdir");
+	$cmd=sprintf($amtools::zip, "../files/$fn", "$srcdir");
 	system($cmd);
 	my $asize= -s "../files/$fn.r";
 	$template.="MIDlet-Jar-Size: $asize\n";
@@ -227,7 +226,7 @@ sub create_jar{ # $year, $city_ids
 	rmdir $srcdir;
 	my $sql='INSERT INTO files (id, type, user_id, end_tm) VALUES';
 	foreach (('r','d','t')){
-		$sql.=" ($fn, \'$_\', 1, NOW()+ INTERVAL 2 HOUR),";
+		$sql.=" ($fn, \'$_\', ".$userid.", NOW()+ INTERVAL 2 HOUR),";
 	}
 	$sql=~s/,$//is;
 	$sth = $dbh->prepare($sql);

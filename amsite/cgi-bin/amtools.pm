@@ -4,6 +4,9 @@ use strict;
 use CGI ':standard';
 use CGI::Carp 'fatalsToBrowser';
 
+our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
+our $zip=q("d:/Program Files/WinRAR/WinRar.exe" a -afzip -r -ep1 %s.r %s/*);
+
 sub join_datafiles2 # destfile, data_listref
 {
 	open(OUTF, ">$_[0]") or die "No file";
@@ -19,6 +22,20 @@ sub join_datafiles2 # destfile, data_listref
 		print OUTF $_;
 	}
 	close(OUTF);
+}
+
+sub rm_all{ #dir to erase
+	my $dir=shift;
+	unlink glob("$dir/*.*");
+#	foreach (glob("$dir/*.*")){
+#		if(-f $_){
+#			unlink $_;
+#		}
+#		else{
+#			rm_all($_);
+#		}
+#	}
+	rmdir($dir);
 }
 
 sub random # path, extension if file, undef if dir
