@@ -72,7 +72,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
    * @return Date
    */
   long getMidnight(long time) {
-    calendar.setTime(new Date(time));
+    calendar.setTime(new Date(time+Event.localOffset(time)));
     calendar.set(Calendar.HOUR_OF_DAY,0);
     calendar.set(Calendar.MINUTE,0);
     calendar.set(Calendar.SECOND,0);
