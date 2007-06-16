@@ -1,3 +1,4 @@
+#!/usr/bin/perl
 use strict;
 use warnings;
 use lib 'D:/Willow/prj/astrology/nomad_prj/'; 
