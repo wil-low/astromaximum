@@ -2,7 +2,9 @@
 #include "events.h"
 #include "datafile.h"
 #include <time.h>
-#include <dir.h>
+#ifdef _WIN32_
+	#include <dir.h>
+#endif
 #include <fstream>
 #include <assert.h>
 using namespace std;
@@ -24,7 +26,7 @@ sAphRecord aphetics[SE_SATURN+1];
 
 int main(int argc, char* argv[])
 {
-  char path[_MAX_PATH];
+  char path[255];
 
   swe_set_ephe_path(ephemPath);
 /*
@@ -133,6 +135,7 @@ int main(int argc, char* argv[])
       endJD+=MINUTE_STEP;
       if(i%10000==0)
         printf("%d...",i/10000);
+      	fflush(stdout);
     }
     printf("\nSaving cached ephemeris...");
     FILE *fout=fopen("../ephdata.dat","wb");

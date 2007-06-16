@@ -304,7 +304,6 @@ void DataFile::clearViaCombusta(VAE & src, VAE & dest)
 
 bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int planet, char* fname)
 {
-  long tm=GetTickCount();
   char buf[200];
   sprintf(buf,"output/%s",fname);
   printf("\nSaving %s...",buf);
@@ -376,7 +375,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
   sBuf=swapShort(fsize);
   fwrite(&sBuf, 2, 1, fout);
   fclose(fout);
-  printf("Done. ET=%ld\n",GetTickCount()-tm);
+  printf("Done. \n");
   return true;
 }
 
@@ -852,7 +851,6 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
 //      for(int i=0; i<vout.size(); i++)
 //        vout[i]->dump();
 //      return;
-      long tm; tm=GetTickCount();
       for(int j=SE_SUN; j<=SE_MOON; j++){
         sprintf(fname,"%srise%02u.bin",prefix,j);
         if(j==SE_MOON){
@@ -916,11 +914,9 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
         release(work);
         release(work2);
       }
-      printf("\n  ET=%ld\n",GetTickCount()-tm);
       break;
     case EV_ASTRORISE:
       printf("Astro risesets...");
-      tm=GetTickCount();
       for(int i=SE_SUN; i<=SE_SATURN; i++){
         endJD=startJD;
         int phase=-1; double min=360;
