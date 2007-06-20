@@ -17,7 +17,9 @@
 //#ifdef build.desktop
 //# package com.sw_axis;
 //# 
-//# class Summary extends FrameAnimator{
+//# import java.awt.Canvas;
+//# 
+//# class Summary extends Canvas{
 //#else
 import java.io.*;
 import javax.microedition.lcdui.*;
@@ -1755,7 +1757,6 @@ class Summary extends Canvas implements CommandListener, Runnable{
       }
     }
   }
-//#endif  
 
   protected Timer timer;
 
@@ -1801,5 +1802,6 @@ class Summary extends Canvas implements CommandListener, Runnable{
       }
     }
   }
+//#endif  
 }
 

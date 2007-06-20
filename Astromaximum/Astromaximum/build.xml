@@ -94,7 +94,7 @@
   
     <target name="size.compile" description="Size to dat files" unless="size2dat.notRequired">
       <echo message="Invoking size2dat.pl:"/>
-      <exec executable="C:/perl/bin/perl.exe" failonerror="true">
+      <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../size2dat.pl"/>
       </exec>
     </target>
@@ -103,7 +103,7 @@
 <!--
       <echo message="Abil = ${abilities}"/>
 -->      
-      <exec executable="C:/perl/bin/perl.exe" failonerror="true">
+      <exec executable="perl" failonerror="true">
         <arg value="${script.dir}/timebomb.pl"/>
         <arg value="${class.dir}"/>
         <arg value="${tb.timeout}"/>

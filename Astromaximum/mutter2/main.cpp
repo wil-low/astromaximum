@@ -102,12 +102,13 @@ int main(int argc, char* argv[])
   int dayCount=endJD-startJD;
   unsigned int stepCount=dayCount/MINUTE_STEP;
   printf("Steps = %d\n", stepCount);
-  double data[6]; char serr[255];
+  double data[6]; char serr[255],ephf[255];
   ephData=new sEphRecord [stepCount];
   endJD=startJD;
   int size=sizeof(sEphRecord)*stepCount;
+  sprintf(ephf,"../ephdata%04d.dat",year);
 
-  FILE *fin=fopen("../ephdata.dat", "rb");
+  FILE *fin=fopen(ephf, "rb");
   int fsz=0;
   if(fin){
     fseek(fin,0,SEEK_END);
@@ -138,17 +139,18 @@ int main(int argc, char* argv[])
       	fflush(stdout);
     }
     printf("\nSaving cached ephemeris...");
-    FILE *fout=fopen("../ephdata.dat","wb");
+    FILE *fout=fopen(ephf,"wb");
     fwrite(ephData,size,1,fout);
     fclose(fout);
     printf("Done.\n");
     return 0;
   }
   df.init(ephData,startJD, dayCount);
-  if(argc==2){
-    df.AAA();
+  if(argc==2){ // only year specified
+    df.AAA();  // calculate common.dat
   //  df.saveFile(outFile);
     delete[] ephData;
+    ephData=NULL;
     printf("\nPress any key...");
     scanf("%s",buf);
   }

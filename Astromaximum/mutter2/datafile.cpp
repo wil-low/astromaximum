@@ -106,8 +106,8 @@ void DataFile::AAA()
 {
   VAE work, assist, vout, work2;
 // -----------------------
-//  choice(EV_ASP_EXACT, work, assist, vout, work2);
-/*
+  choice(EV_ASP_EXACT, work, assist, vout, work2);
+
   choice(EV_DEGREE_PASS, work, assist, vout, work2);
   choice(EV_VIA_COMBUSTA, work, assist, vout, work2);
   choice(EV_ASP_EXACT, work, assist, vout, work2);
@@ -118,13 +118,13 @@ void DataFile::AAA()
   choice(EV_TITHI, work, assist, vout, work2);
   choice(EV_NAKSHATRA, work, assist, vout, work2);
   choice(EV_MOON_PHASE, work, assist, vout, work2);
-*/
+
 //  choice(EV_RETROGRADE, work, assist, vout, work2);
 // ------------------------
-//  choice(EV_RISE, work, assist, vout, work2);
-//  choice(EV_DECL_EXACT, work, assist, vout, work2);
-//  choice(EV_NAVROZ, work, assist, vout, work2);
-  choice(EV_APHETICS, work, assist, vout, work2);
+  choice(EV_RISE, work, assist, vout, work2);
+  choice(EV_DECL_EXACT, work, assist, vout, work2);
+  choice(EV_NAVROZ, work, assist, vout, work2);
+//  choice(EV_APHETICS, work, assist, vout, work2);
 
 //  choice(EV_ASP_EXACT, work, assist, vout, work2);
 
@@ -179,7 +179,7 @@ void DataFile::calcAspExact(VAE & moonvae,VAE & vae)
         }
       }
       if(c%10000==0)
-        printf("%d...",c/10000);
+        printf("%d...",c/10000); fflush(stdout);
     }
   for(int i=0; i<PLANET_COUNT; i++)
     for(int j=0; j<PLANET_COUNT; j++)
@@ -843,7 +843,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
           novol+=MINUTE_STEP;
           ++ii;
           if(ii%10000==0)
-            printf("%d...",ii/10000);
+            printf("%d...",ii/10000); fflush(stdout);
 
         }
         writeSubData(vout,EV_STATUS,0,SE_MOON,fname);
@@ -1013,7 +1013,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             }
           endJD+=MINUTE_STEP;
           if(i%10000==0)
-            printf("%d...",i/10000);
+            printf("%d...",i/10000); fflush(stdout);
         }
         if(ev){  //was retrograde
           ev->date[1]=ev->packDate(endJD);
@@ -1067,7 +1067,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
         }
         st+=MINUTE_STEP;
         if(i%10000==0)
-          printf("%d...",i/10000);
+          printf("%d...",i/10000); fflush(stdout);
       }
       sprintf(fname,"tithi.bin");
       writeSubData(work,EV_TITHI,EF_CUMUL_DATE_W|EF_NEXT_DATE2|EF_DEGREE|EF_SHORT_DEGREE,SE_MOON,fname);
@@ -1086,7 +1086,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
         }
         st+=MINUTE_STEP;
         if(i%10000==0)
-          printf("%d...",i/10000);
+          printf("%d...",i/10000); fflush(stdout);
       }
       sprintf(fname,"nakshatra.bin");
       writeSubData(work,EV_NAKSHATRA,EF_CUMUL_DATE_W|EF_NEXT_DATE2|EF_DEGREE|EF_SHORT_DEGREE,SE_MOON,fname);
@@ -1112,7 +1112,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
           }
         st+=MINUTE_STEP;
         if(i%10000==0)
-          printf("%d...",i/10000);
+          printf("%d...",i/10000); fflush(stdout);
       }
       sprintf(fname,"decl.bin");
       writeSubData(work,EV_DECL_EXACT,EF_DATE,-1,fname);
@@ -1330,7 +1330,7 @@ void DataFile::calcAscData()
     myascData[i].data[1]=cusps[7];  //dsc
     endJD+=MINUTE_STEP;
     if(i%10000==0)
-      printf("%d...",i/10000);
+      printf("%d...",i/10000); fflush(stdout); 
   }
   ascData=myascData;
 }

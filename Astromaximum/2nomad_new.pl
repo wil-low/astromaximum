@@ -4,11 +4,11 @@ use strict;
 use Unicode::String;
 use Encode;
 my ($year, $month, $day, $hour, $min, $day_count)=(2005,12,31,0,0,367);
-$0=~/(.+\\)/is;
+$0=~/(.+\/)/is;
 
 my $path=$1;
 my $InF=undef;
-my @bins=glob("$path".'interpret\\*.txt');
+my @bins=glob("$path".'interpret/*.txt');
 my @buf;
 my $body;
 
@@ -30,9 +30,9 @@ our %eventFlags=qw(EF_PLANET1 2 EF_PLANET2 4 EF_DEGREE 8 EF_SHORT_DEGREE 64);
 
 my %hash;
 
-	my @clean=glob($path."Astromaximum\\src\\*.txt");
+	my @clean=glob($path."Astromaximum/src/*.txt");
 	foreach (@clean){
-		unlink $_ if $_=~/\\\d+\.txt$/is;
+		unlink $_ if $_=~/\/\d+\.txt$/is;
 	}
   our $output=''; our $paramcount=0; our $outbuf; our $errors=0; 
 #die $eventType{'EV_VOC'};  
@@ -81,7 +81,7 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 #		print $line."\n";
 		
 		for(my $i=0; $i<length($RESERVED_CHARS); $i++){
-			my $char='\\'.substr($RESERVED_CHARS,$i,1);
+			my $char='/'.substr($RESERVED_CHARS,$i,1);
 			my @cnt=$line=~/([$char])/isg;
 			if($#cnt>=0){
 				warn "@cnt" if $char eq '$';
@@ -94,7 +94,7 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 						for(my $j=0; $j<length($RESERVED_CHARS)-1; $j++){
 							my $ch=substr($RESERVED_CHARS,$j,1);
 							if(index('#~{=',$ch)==-1){
-								add_event_char($evt,'\\'.$ch);
+								add_event_char($evt,'/'.$ch);
 							}
 						}
 					}
@@ -117,7 +117,7 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 	print "$len, $planet\n";
 	$output=pack('nNcnna*',$eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
 #	die $output;
-	open(OF, ">$path"."Astromaximum\\src\\$eventType{$evt}.txt") or die "No file";
+	open(OF, ">$path"."Astromaximum/src/$eventType{$evt}.txt") or die "No file";
 	binmode(OF);
 	print OF $output;
 	close(OF);
@@ -133,7 +133,7 @@ if($errors==0){
 #	close($OutF);
 #	print "\nFile saved!\n";
   while (my($key, $value) = each %hash) {
-  	$value=~s/\\//isg;
+  	$value=~s/\///isg;
   	print "    topics.put(new Integer(Event.$key), \"$value\");\n";
   	delete $hash{$key};   # This is safe
 	}
