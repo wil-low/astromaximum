@@ -13,9 +13,9 @@ if($#ARGV!=0){
 }
 my $city_inf=$ARGV[0]; # файл со списком городов
 
-$0=~/(.+\\)/is;
+$0=~/(.+/)/is;
 our $mypath=$1;
-our $path=$mypath."GeoAM\\geo\\";
+our $path=$mypath."GeoAM/geo/";
 
 my $country='';
 my $tz;
@@ -31,8 +31,8 @@ my $tz_ofs=0;
 		$tz_ofs=$tm-$tm2;
 }
 
-my $sqpath='d:\\projects\\astro\\';
-$sqpath='D:\\Willow\\prj\\astrology\\' unless -d $sqpath;
+my $sqpath='d:/projects/astro/v2/db/';
+$sqpath='D:/Willow/prj/astrology/v2/db/' unless -d $sqpath;
 
 my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
@@ -62,17 +62,17 @@ my @cities;
 
 #die get_tz('USA - District of Columbia', 'Washington');
 #=head
-if(! -f "$dir\\$city_inf\.txt"){
+if(! -f "$dir/$city_inf.txt"){
 	my $error=0;
-  unlink "$dir\\$city_inf\.txt";
-	open($InF, "<$path$city_inf\.ini") or die "No file $path$city_inf\.ini";
+  unlink "$dir/$city_inf.txt";
+	open($InF, "<$path$city_inf.ini") or die "No file $path$city_inf\.ini";
 	@cities=<$InF>;
 	close($InF);
 	my $cid=1;
 	$country='';
 	my $state=0;
 	my $invoke;
-	my $db=$sqpath.'v2\\db\\sqlite3 '.$sqpath.'v2\\db\\coords.sqb';
+	my $db=$sqpath.'sqlite3 '.$sqpath.'coords.sqb';
 	my $tmp=$path.'country.tmp';
 	foreach my $cit(@cities){
 		chomp($cit);
@@ -104,7 +104,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			else{
 				$cid=0;
 				warn "*****Not found:  $country\n";
-				$invoke="echo $cit >> \"$dir\\$city_inf\.txt\"";
+				$invoke="echo $cit >> \"$dir/$city_inf.txt\"";
 		#		print "$invoke\n";
 				system($invoke);
 				next;
@@ -149,7 +149,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			my @params=split(/\|/is, $countries[0]);
 			$params[0]=~s/.+!//is;
 			$error++ if !get_tz($params[3],$params[0],0);
-			$invoke="echo \"$countries[0]\" >> \"$dir\\$city_inf\.txt\"";
+			$invoke="echo \"$countries[0]\" >> \"$dir/$city_inf.txt\"";
 #			print "$invoke\n";
 			system($invoke);
 		}
@@ -161,7 +161,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 	}
   unlink $tmp;
   if($error){
-  	unlink "$dir\\$city_inf\.txt";
+  	unlink "$dir/$city_inf.txt";
   	die "Please correct $error errors.\n";
   }
   else{
@@ -170,7 +170,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 	<STDIN>;
 }
 #####################################
-	open($InF, "<$dir\\$city_inf\.txt") or die "No file";
+	open($InF, "<$dir/$city_inf.txt") or die "No file";
 	@cities=<$InF>;
 	close($InF);
 #	die "@cities";
@@ -198,7 +198,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 		next if $cit=~/\#/is;
 		next if $cit!~/\d/is;
 		my @params=split(/\|/is, $cit);
-		$fname=$dir.sprintf('\\Data%02d.dat',$i);
+		$fname=$dir.sprintf('/Data%02d.dat',$i);
 		$city=$params[0];
 		$city=~s/.+!//is;
 		if(! -f $fname){
@@ -207,7 +207,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			print "\n-----------------------\n";
 			my $tz=get_tz($params[3],$city,1);
 			my $dstbuf=calc_dst($tz);
-			my $invoke=$mypath."mutter2\\mutter2.exe $year geo0- $params[1] $params[2]";# electio";
+			my $invoke=$mypath."mutter2/mutter2 $year geo0- $params[1] $params[2]";# electio";
 			print "$invoke\n";
 			system($invoke);
 			if($params[3]=~/USA \- (.+)/is){
@@ -223,7 +223,7 @@ if(! -f "$dir\\$city_inf\.txt"){
 			print $OutF $header;
 			close($OutF);
 			
-			my @bins=glob($mypath."mutter\\output\\geo0-\*.bin");
+			my @bins=glob($mypath."mutter/output/geo0-\*.bin");
 			my $counter=0;
 			print join(@bins,"\n");
 			foreach my $ff(@bins){

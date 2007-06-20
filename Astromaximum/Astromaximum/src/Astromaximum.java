@@ -262,17 +262,31 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#         logBox.showLog(null);
 //#endif
 //#if perftest=="0"
-      if(true/*dataFile.isDateAvailable(summary.selDate)*/){
+      if(!dataFile.isDateAvailable(summary.selDate)){
+        //#if Demo
+        //#       calendar.set(Calendar.YEAR,2006);
+        //#       calendar.set(Calendar.MONTH,Calendar.DECEMBER);
+        //#       calendar.set(Calendar.DAY_OF_MONTH,14);
+        //#       grid.selDate=calendar.getTime();
+        //#       showDaySummary(grid.selDate);
+        //#else
+	reportTodayError();
+	calendar.setTime(summary.selDate);
+	calendar.set(Calendar.YEAR,Astromaximum.startYear);
+	summary.selDate=calendar.getTime();			
+	System.out.println(summary.selDate);
+        //#endif
+      }
 //        log("SDS before");
-        summary.moonPhase= Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE,Event.SE_MOON,
-            dataFile.startJD,dataFile.finalJD);
+      summary.moonPhase= Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE,Event.SE_MOON,
+	  dataFile.startJD,dataFile.finalJD);
 //#if logger
 //#       logger("moonPhase");
 //#endif      
-//        Vector nav=dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 1, dataFile.finalJD);
-//        evDump(nav);
-//        nav.copyInto(summary.aNavroz);
-        dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 1, dataFile.finalJD).copyInto(summary.aNavroz);
+        Vector nav=dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 1, dataFile.finalJD);
+        evDump(nav);
+        nav.copyInto(summary.aNavroz);
+//      dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 1, dataFile.finalJD).copyInto(summary.aNavroz);
 //#if logger
 //#       logger("Navroz");
 //#endif      
@@ -280,11 +294,11 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if logger
 //#       logger("changeSize");
 //#endif      
-        summary.setCell(getMidnight(Options.currentTime()),true);
+      summary.setCell(getMidnight(summary.selDate.getTime()),true);
 //#if logger
 //#       logger("setCell");
 //#endif      
-        summary.showDaySummary();
+      summary.showDaySummary();
 //#if logger
 //#       logger("showDaySummary");
 //#endif      
@@ -296,24 +310,6 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#       }
 //#       Display.getDisplay(this).setCurrent(summary);
 //#endif      
-      } 
-      else{
-        //#if Demo
-        //#       calendar.set(Calendar.YEAR,2006);
-        //#       calendar.set(Calendar.MONTH,Calendar.DECEMBER);
-        //#       calendar.set(Calendar.DAY_OF_MONTH,14);
-        //#       grid.selDate=calendar.getTime();
-        //#       showDaySummary(grid.selDate);
-        //#else
-        final Alert noDate=new Alert("Today: "+ summary.selDate.toString(),
-            "Year containing current date is not present in database.\nYou can install it"+
-            " or select another time range.",null,AlertType.WARNING);
-        noDate.addCommand(new Command("Install",Command.SCREEN,1));
-        noDate.addCommand(new Command("Avail.",Command.BACK,1));
-        noDate.setCommandListener(this);
-        Display.getDisplay(this).setCurrent(noDate);
-        //#endif
-      }
       firstRun =false;
 //#endif
     
@@ -455,6 +451,13 @@ public class Astromaximum extends MIDlet implements CommandListener{
     }
   }
 
+  public void reportTodayError() {
+	  final Alert noDate=new Alert("Today: "+ summary.selDate.toString(),
+			"Cannot set today date. Year containing this date is not present in database.",
+			null,AlertType.ERROR);
+		Display.getDisplay(this).setCurrent(noDate,Display.getDisplay(this).getCurrent());
+ 
+  }
 //#if "timeBomb" @ protection
 //#   static byte[] getArray() {
 //#debug

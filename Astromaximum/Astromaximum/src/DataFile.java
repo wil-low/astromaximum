@@ -588,6 +588,9 @@ final class DataFile{
    * @param date*/
   boolean isDateAvailable(long date) {
     long fin=startJD+dayCount*Astromaximum.MSECINDAY;
+    System.out.println(Event.long2String(date,0,false)+" "+Long.toString(date));
+    System.out.println(Event.long2String(startJD,0,false)+" "+Long.toString(startJD));
+    System.out.println(Event.long2String(fin,0,false)+" "+Long.toString(fin));
     return Event.dateBetween(date,startJD-Event.localOffset(startJD),
         fin-Event.localOffset(fin))==0;
 //    return true;

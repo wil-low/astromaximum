@@ -1,3 +1,4 @@
+#!/usr/bin/perl
 use strict;
 use POSIX;
 
@@ -5,12 +6,26 @@ our $imei='359593001109710';
 #our $imei='359308007701623';
 #die sprintf('%x',substr($imei,0,8));
 
-my ($year, $month, $day, $hour, $min, $day_count)=(2007,1,1,0,0,365);
-$0=~/(.+\\)/is;
+my ($year,$month, $day, $hour, $min, $day_count)=($ARGV[0],1,1,0,0,365);
+if($year%100==0){
+	if($year%400==0){
+		$day_count++;
+	}
+}
+else{
+	if($year%4==0){
+		$day_count++;
+	}
+}
+	 	
+	
+$0=~/(.+\/)/is;
 
 my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
 our $path=$1;
 
+my $year=$ARGV[0];
+$path.="archive/$year/";
 my $InF=undef;
 my $OutF;
 undef $/ ;

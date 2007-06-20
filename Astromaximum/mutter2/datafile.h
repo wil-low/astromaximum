@@ -69,6 +69,7 @@ private:
   char terms[360];
   double startJD;
   VAE events;
+  int year;
   void calcAspExact(VAE & moonvae,VAE & vae);
   void calcDegPass(VAE & vae, int planet);
   void NormAngle(double &a);

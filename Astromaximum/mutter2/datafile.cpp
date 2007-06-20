@@ -51,7 +51,7 @@ static const int BURNT_ORBIS[7]={0,7,8,8,11,7,7};
 
 DataFile::DataFile()
 {
-  Lon=30.51; Lat=50.43;
+  Lon=30.51; Lat=50.43; ascData=NULL;
 }
 
 void DataFile::init(sEphRecord *ephdata, double start, unsigned int count)
@@ -106,6 +106,8 @@ void DataFile::AAA()
 {
   VAE work, assist, vout, work2;
 // -----------------------
+//  printf("year=%d",Event::startYear);
+//  exit(0);
   choice(EV_ASP_EXACT, work, assist, vout, work2);
 
   choice(EV_DEGREE_PASS, work, assist, vout, work2);
@@ -305,7 +307,7 @@ void DataFile::clearViaCombusta(VAE & src, VAE & dest)
 bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int planet, char* fname)
 {
   char buf[200];
-  sprintf(buf,"output/%s",fname);
+  sprintf(buf,"output/archive/%d/%s",Event::startYear,fname);
   printf("\nSaving %s...",buf);
   FILE *fout=fopen(buf,"wb");
   fwrite(&evtype, 1, 1, fout);
@@ -399,7 +401,7 @@ int DataFile::swapInt(int var)
 bool DataFile::readSubData(char* fname, VAE & v)
 {
   char buf[200];
-  sprintf(buf,"output/%s",fname);
+  sprintf(buf,"output/archive/%d/%s",Event::startYear,fname);
   printf("\nReading %s...",buf);
   FILE *fin=fopen(buf,"rb");
 
@@ -752,6 +754,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
       printf("calcAspExact =  %d events\n",work.size());
       sprintf(fname,"aspects.bin");
       sortVAE(work);
+      printf(fname);
       writeSubData(work,EV_ASP_EXACT,EF_CUMUL_DATE_W|EF_PLANET1|EF_PLANET2|EF_DEGREE|EF_SHORT_DEGREE,-1,fname);
       release(work);
       sprintf(fname,"aspects01.bin");

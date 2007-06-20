@@ -26,18 +26,15 @@
     </logicalFolder>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
-  <defaultConf>1</defaultConf>
+  <defaultConf>0</defaultConf>
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
         <compilerSet>1</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <cCompilerTool>
-          <includeDirectories>
-            <directoryPath>../swe/src</directoryPath>
-          </includeDirectories>
         </cCompilerTool>
         <ccCompilerTool>
           <includeDirectories>
@@ -57,15 +54,6 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="datafile.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="evclass.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="events.h">
-        <itemTool>3</itemTool>
-      </item>
       <item path="datafile.cpp">
         <itemTool>1</itemTool>
         <ccCompilerTool>
@@ -76,6 +64,15 @@
         <ccCompilerTool>
         </ccCompilerTool>
       </item>
+      <item path="evclass.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="events.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="datafile.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="main.cpp">
         <itemTool>1</itemTool>
         <ccCompilerTool>
@@ -85,21 +82,20 @@
     <conf name="Release" type="1">
       <toolsSet>
         <compilerSet>1</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <cCompilerTool>
-          <developmentMode>5</developmentMode>
         </cCompilerTool>
         <ccCompilerTool>
-          <developmentMode>5</developmentMode>
+          <developmentMode>6</developmentMode>
+          <stripSymbols>true</stripSymbols>
           <includeDirectories>
             <directoryPath>../swe</directoryPath>
           </includeDirectories>
           <preprocessor>ANSITZ</preprocessor>
         </ccCompilerTool>
         <fortranCompilerTool>
-          <developmentMode>5</developmentMode>
         </fortranCompilerTool>
         <linkerTool>
           <output>mutter2</output>
@@ -112,15 +108,6 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="datafile.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="evclass.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="events.h">
-        <itemTool>3</itemTool>
-      </item>
       <item path="datafile.cpp">
         <itemTool>1</itemTool>
         <ccCompilerTool>
@@ -130,6 +117,15 @@
         <itemTool>1</itemTool>
         <ccCompilerTool>
         </ccCompilerTool>
+      </item>
+      <item path="evclass.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="events.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="datafile.h">
+        <itemTool>3</itemTool>
       </item>
       <item path="main.cpp">
         <itemTool>1</itemTool>

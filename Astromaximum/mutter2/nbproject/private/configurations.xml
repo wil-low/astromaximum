@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="31">
   <projectmakefile>Makefile</projectmakefile>
-  <defaultConf>1</defaultConf>
+  <defaultConf>0</defaultConf>
   <confs>
     <conf name="Debug" type="1">
       <runprofile version="5">
-        <args>2007 geo0- 30.51 50.43 electio</args>
-        <rundir></rundir>
+        <args>2006</args>
+        <rundir>/home/willow/prj/Astromaximum/mutter2</rundir>
         <buildfirst>true</buildfirst>
         <console-type>0</console-type>
         <terminal-type>0</terminal-type>
@@ -19,7 +19,7 @@
     </conf>
     <conf name="Release" type="1">
       <runprofile version="5">
-        <args>2007 geo0- 30.51 50.43 electio</args>
+        <args>2006</args>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <console-type>0</console-type>

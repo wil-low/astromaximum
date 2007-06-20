@@ -22,9 +22,9 @@ include Makefile
 
 # Object Files
 OBJECTFILES= \
-	build/Debug/GNU-Windows/evclass.o \
-	build/Debug/GNU-Windows/datafile.o \
-	build/Debug/GNU-Windows/main.o
+	build/Debug/GNU-Linux-x86/datafile.o \
+	build/Debug/GNU-Linux-x86/evclass.o \
+	build/Debug/GNU-Linux-x86/main.o
 
 # C Compiler Flags
 CFLAGS=
@@ -42,22 +42,22 @@ LDLIBSOPTIONS=\
 	-lswe
 
 # Build Targets
-.build-conf: ${BUILD_SUBPROJECTS} mutter2.exe
+.build-conf: ${BUILD_SUBPROJECTS} mutter2
 
-mutter2.exe: ${OBJECTFILES}
+mutter2: ${OBJECTFILES}
 	${LINK.cc} -o mutter2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-build/Debug/GNU-Windows/evclass.o: evclass.cpp 
-	${MKDIR} -p build/Debug/GNU-Windows
-	$(COMPILE.cc) -g -DANSITZ -I../swe -o build/Debug/GNU-Windows/evclass.o evclass.cpp
+build/Debug/GNU-Linux-x86/datafile.o: datafile.cpp 
+	${MKDIR} -p build/Debug/GNU-Linux-x86
+	$(COMPILE.cc) -g -DANSITZ -I../swe -o build/Debug/GNU-Linux-x86/datafile.o datafile.cpp
 
-build/Debug/GNU-Windows/datafile.o: datafile.cpp 
-	${MKDIR} -p build/Debug/GNU-Windows
-	$(COMPILE.cc) -g -DANSITZ -I../swe -o build/Debug/GNU-Windows/datafile.o datafile.cpp
+build/Debug/GNU-Linux-x86/evclass.o: evclass.cpp 
+	${MKDIR} -p build/Debug/GNU-Linux-x86
+	$(COMPILE.cc) -g -DANSITZ -I../swe -o build/Debug/GNU-Linux-x86/evclass.o evclass.cpp
 
-build/Debug/GNU-Windows/main.o: main.cpp 
-	${MKDIR} -p build/Debug/GNU-Windows
-	$(COMPILE.cc) -g -DANSITZ -I../swe -o build/Debug/GNU-Windows/main.o main.cpp
+build/Debug/GNU-Linux-x86/main.o: main.cpp 
+	${MKDIR} -p build/Debug/GNU-Linux-x86
+	$(COMPILE.cc) -g -DANSITZ -I../swe -o build/Debug/GNU-Linux-x86/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
@@ -65,7 +65,7 @@ build/Debug/GNU-Windows/main.o: main.cpp
 # Clean Targets
 .clean-conf:
 	${RM} -r build/Debug
-	${RM} mutter2.exe
+	${RM} mutter2
 
 # Subprojects
 .clean-subprojects:
