@@ -1,18 +1,15 @@
 #!/usr/bin/perl
 use strict;
 #use warnings;
-use Unicode::String;
 use Encode;
 my ($year, $month, $day, $hour, $min, $day_count)=(2005,12,31,0,0,367);
 $0=~/(.+\/)/is;
 
 my $path=$1;
 my $InF=undef;
-my @bins=glob("$path".'interpret/*.txt');
+my @bins=glob('interpret/*.txt');#"$path".
 my @buf;
 my $body;
-
-
 
 our %eventType=qw(EV_VOC 0 EV_SIGN_ENTER 1 EV_ASP_EXACT 2 EV_RISE 3 EV_DEGREE_PASS 4 
 	EV_VIA_COMBUSTA 5 EV_RETROGRADE 6 EV_ECLIPSE 7 EV_TITHI 8 EV_NAKSHATRA 9 EV_SET 10
@@ -37,7 +34,7 @@ my %hash;
   our $output=''; our $paramcount=0; our $outbuf; our $errors=0; 
 #die $eventType{'EV_VOC'};  
 foreach my $ff(@bins){
-	open($InF, "<$ff") or die "No file";
+	open($InF, "<$ff") or die "No file $ff";
 	@buf=<$InF>;
 	close($InF);
 	print "\n\n**** $ff: *****\n";
@@ -81,7 +78,7 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 #		print $line."\n";
 		
 		for(my $i=0; $i<length($RESERVED_CHARS); $i++){
-			my $char='/'.substr($RESERVED_CHARS,$i,1);
+			my $char='\\'.substr($RESERVED_CHARS,$i,1);
 			my @cnt=$line=~/([$char])/isg;
 			if($#cnt>=0){
 				warn "@cnt" if $char eq '$';
@@ -94,7 +91,7 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 						for(my $j=0; $j<length($RESERVED_CHARS)-1; $j++){
 							my $ch=substr($RESERVED_CHARS,$j,1);
 							if(index('#~{=',$ch)==-1){
-								add_event_char($evt,'/'.$ch);
+								add_event_char($evt,'\\'.$ch);
 							}
 						}
 					}
@@ -133,7 +130,7 @@ if($errors==0){
 #	close($OutF);
 #	print "\nFile saved!\n";
   while (my($key, $value) = each %hash) {
-  	$value=~s/\///isg;
+  	$value=~s/\\//isg;
   	print "    topics.put(new Integer(Event.$key), \"$value\");\n";
   	delete $hash{$key};   # This is safe
 	}
@@ -149,8 +146,12 @@ sub writeUTF
 {
 	my $param=shift;
 	$param = decode("cp1251", $param);
-	my $len=Unicode::String->new($param);
-	$outbuf.=pack('na*', length($len), $param);
+	my $len2=Unicode::String->new($param);
+	my $len;
+	do{
+		use bytes; $len=length($param); 
+	};
+	$outbuf.=pack('na*', $len, $param);
 #	$outbuf.=$param;
 #	die $outbuf;
 }
