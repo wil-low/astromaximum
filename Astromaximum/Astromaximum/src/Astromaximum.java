@@ -271,11 +271,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
         //#       showDaySummary(grid.selDate);
         //#else
 	reportTodayError();
-	calendar.setTime(summary.selDate);
-	calendar.set(Calendar.YEAR,Astromaximum.startYear);
-	summary.selDate=calendar.getTime();			
-	System.out.println(summary.selDate);
-        //#endif
+       //#endif
       }
 //        log("SDS before");
       summary.moonPhase= Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE,Event.SE_MOON,
@@ -456,6 +452,10 @@ public class Astromaximum extends MIDlet implements CommandListener{
 			"Cannot set today date. Year containing this date is not present in database.",
 			null,AlertType.ERROR);
 		Display.getDisplay(this).setCurrent(noDate,Display.getDisplay(this).getCurrent());
+	calendar.setTime(summary.selDate);
+	calendar.set(Calendar.YEAR,Astromaximum.startYear);
+	summary.selDate=calendar.getTime();			
+	System.out.println(summary.selDate);
  
   }
 //#if "timeBomb" @ protection

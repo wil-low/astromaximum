@@ -8,4 +8,4 @@ use tools;
 	my $OUT='Astromaximum/src/locations.dat';
 	my $i=$#ARGV+1;
 	tools::join_datafiles($i, $OUT, \@ARGV);
-	print "$OUT written";
+	print "$OUT written\n";

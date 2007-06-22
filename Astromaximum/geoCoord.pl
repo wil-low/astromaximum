@@ -2,24 +2,25 @@
 use strict;
 use POSIX;
 #use warnings;
-use Unicode::String;
 use Encode;
 use lib 'D:/Willow/prj/astrology/nomad_prj/'; 
 use lib 'd:/projects/nomad_prj';
 use tools;
 
-if($#ARGV!=0){
-	die "Usage: <country group code>\n";
+if($#ARGV!=0 and $#ARGV!=1){
+	die "Usage: <country group code> [year]\n";
 }
 my $city_inf=$ARGV[0]; # файл со списком городов
 
-$0=~/(.+/)/is;
+$0=~/(.+\/)/is;
 our $mypath=$1;
 our $path=$mypath."GeoAM/geo/";
 
 my $country='';
 my $tz;
 my ($year, $day_count)=tools::get_year($mypath);
+$year=$ARGV[1] if $ARGV[1];
+
 my ($month, $day, $hour, $min)=(1,1,0,0);
 my $tz_ofs=0;
 {
@@ -58,7 +59,7 @@ my @cities;
 	open($InF, "<$mypath".'timezone.inf') or die "No file";
 	my @alltz=<$InF>;
 	close($InF);
-#	die $alltz;
+#	die $alltz[0];
 
 #die get_tz('USA - District of Columbia', 'Washington');
 #=head
@@ -198,7 +199,9 @@ if(! -f "$dir/$city_inf.txt"){
 		next if $cit=~/\#/is;
 		next if $cit!~/\d/is;
 		my @params=split(/\|/is, $cit);
-		$fname=$dir.sprintf('/Data%02d.dat',$i);
+		my $newdir=sprintf('mutter/output/archive/%d/%s',$year,$city_inf);
+		mkdir $newdir unless -d $newdir;
+		$fname=$newdir.sprintf('/Data%02d.dat',$i);
 		$city=$params[0];
 		$city=~s/.+!//is;
 		if(! -f $fname){
@@ -213,6 +216,7 @@ if(! -f "$dir/$city_inf.txt"){
 			if($params[3]=~/USA \- (.+)/is){
 				$city.=", $1";
 			}
+			$city=~s/[\n\r]//isg;
 			writeUTF($city);
 			
 			my $header=pack('SCCCCSa*a*',$year, $month, $day, $hour, $min, $day_count, $outbuf, $dstbuf);
@@ -223,7 +227,9 @@ if(! -f "$dir/$city_inf.txt"){
 			print $OutF $header;
 			close($OutF);
 			
-			my @bins=glob($mypath."mutter/output/geo0-\*.bin");
+			my $geomask=sprintf('mutter/output/archive/%d/geo0-*.bin',$year);
+			my @bins=glob($geomask);
+			die "No files: $geomask" if $#bins<0;
 			my $counter=0;
 			print join(@bins,"\n");
 			foreach my $ff(@bins){
@@ -242,7 +248,8 @@ if(! -f "$dir/$city_inf.txt"){
 sub get_tz{
 	my ($country,$city,$isdie)=@_;
 	$country=~s/.+\$//is;
-	if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n]+\))?\n)/is){
+	$country=~s/[\n\r]//isg;
+	if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n\r]+\))?)/is){
 		my $tzz=$1;
 		$tzz=~/\A(.+?)\n/is;
 		$tzz=$1;
@@ -342,8 +349,11 @@ sub writeUTF
 	my $param=shift;
 	print "$param\n";
 	$param = decode("cp1251", $param);
-	my $len=Unicode::String->new($param);
-	$outbuf.=pack('na*', length($len), $param);
+	my $len=0;
+	{
+		use bytes; $len=length($param);
+	}
+	$outbuf.=pack('na*', $len, $param);
 #	$outbuf.=$param;
 #	die $outbuf;
 }

@@ -984,6 +984,9 @@ class Summary extends Canvas implements CommandListener, Runnable{
         break;
       case 1:
         selDate.setTime(Astromaximum.instance.getMidnight(Options.currentTime()));
+				if(!Astromaximum.dataFile.isDateAvailable(selDate)){
+				Astromaximum.instance.reportTodayError();
+				}
         showDaySummary();
         repaint();
         break;

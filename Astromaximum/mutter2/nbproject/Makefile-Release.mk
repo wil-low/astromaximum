@@ -49,15 +49,15 @@ mutter2: ${OBJECTFILES}
 
 build/Release/GNU-Linux-x86/datafile.o: datafile.cpp 
 	${MKDIR} -p build/Release/GNU-Linux-x86
-	$(COMPILE.cc) -O3 -s -DANSITZ -I../swe -o build/Release/GNU-Linux-x86/datafile.o datafile.cpp
+	$(COMPILE.cc) -O2 -s -DANSITZ -I../swe -o build/Release/GNU-Linux-x86/datafile.o datafile.cpp
 
 build/Release/GNU-Linux-x86/evclass.o: evclass.cpp 
 	${MKDIR} -p build/Release/GNU-Linux-x86
-	$(COMPILE.cc) -O3 -s -DANSITZ -I../swe -o build/Release/GNU-Linux-x86/evclass.o evclass.cpp
+	$(COMPILE.cc) -O2 -s -DANSITZ -I../swe -o build/Release/GNU-Linux-x86/evclass.o evclass.cpp
 
 build/Release/GNU-Linux-x86/main.o: main.cpp 
 	${MKDIR} -p build/Release/GNU-Linux-x86
-	$(COMPILE.cc) -O3 -s -DANSITZ -I../swe -o build/Release/GNU-Linux-x86/main.o main.cpp
+	$(COMPILE.cc) -O2 -s -DANSITZ -I../swe -o build/Release/GNU-Linux-x86/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

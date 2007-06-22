@@ -146,7 +146,6 @@ sub writeUTF
 {
 	my $param=shift;
 	$param = decode("cp1251", $param);
-	my $len2=Unicode::String->new($param);
 	my $len;
 	do{
 		use bytes; $len=length($param); 

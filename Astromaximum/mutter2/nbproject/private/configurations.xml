@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="31">
   <projectmakefile>Makefile</projectmakefile>
-  <defaultConf>0</defaultConf>
+  <defaultConf>1</defaultConf>
   <confs>
     <conf name="Debug" type="1">
       <runprofile version="5">
         <args>2006</args>
-        <rundir>/home/willow/prj/Astromaximum/mutter2</rundir>
+        <rundir></rundir>
         <buildfirst>true</buildfirst>
         <console-type>0</console-type>
         <terminal-type>0</terminal-type>

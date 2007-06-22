@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 #include <fstream>
 #include <algorithm>
+#include "assert.h"
 using namespace std;
 #pragma hdrstop
 
@@ -105,27 +106,33 @@ void DataFile::sortVAE(VAE &work)
 void DataFile::AAA()
 {
   VAE work, assist, vout, work2;
+	
+//  choice(EV_NAVROZ, work, assist, vout, work2);
+//  readSubData("navroz.bin",work);
+//  for(int i=0; i<work.size(); i++){
+//    work[i]->dump();
+//  }
+	
+//	return;
 // -----------------------
-//  printf("year=%d",Event::startYear);
-//  exit(0);
   choice(EV_ASP_EXACT, work, assist, vout, work2);
 
   choice(EV_DEGREE_PASS, work, assist, vout, work2);
   choice(EV_VIA_COMBUSTA, work, assist, vout, work2);
-  choice(EV_ASP_EXACT, work, assist, vout, work2);
+//  choice(EV_ASP_EXACT, work, assist, vout, work2);
   choice(EV_SIGN_ENTER, work, assist, vout, work2);
   choice(EV_VOC, work, assist, vout, work2);
   choice(EV_RETROGRADE, work, assist, vout, work2);
   choice(EV_ECLIPSE, work, assist, vout, work2);
   choice(EV_TITHI, work, assist, vout, work2);
-  choice(EV_NAKSHATRA, work, assist, vout, work2);
   choice(EV_MOON_PHASE, work, assist, vout, work2);
 
 //  choice(EV_RETROGRADE, work, assist, vout, work2);
 // ------------------------
-  choice(EV_RISE, work, assist, vout, work2);
-  choice(EV_DECL_EXACT, work, assist, vout, work2);
-  choice(EV_NAVROZ, work, assist, vout, work2);
+//  choice(EV_NAKSHATRA, work, assist, vout, work2);
+//  choice(EV_RISE, work, assist, vout, work2);
+//  choice(EV_DECL_EXACT, work, assist, vout, work2);
+//  choice(EV_NAVROZ, work, assist, vout, work2);
 //  choice(EV_APHETICS, work, assist, vout, work2);
 
 //  choice(EV_ASP_EXACT, work, assist, vout, work2);
@@ -1136,6 +1143,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
       ev=new Event(tret[0],SE_SUN);
       work.push_back(ev);
       readSubData("signenter00.bin",assist);
+			assert(assist.size()>0);
       for(int i=0; i<assist.size(); i++)
         if(assist[i]->degree==0){
           swe_rise_trans(assist[i]->julianDay,SE_SUN,NULL,EFLAG,SE_CALC_RISE,geopos,0,20,&tret[0],serr);

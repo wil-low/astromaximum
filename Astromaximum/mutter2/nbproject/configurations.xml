@@ -26,7 +26,7 @@
     </logicalFolder>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
-  <defaultConf>0</defaultConf>
+  <defaultConf>1</defaultConf>
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
@@ -88,7 +88,7 @@
         <cCompilerTool>
         </cCompilerTool>
         <ccCompilerTool>
-          <developmentMode>6</developmentMode>
+          <developmentMode>5</developmentMode>
           <stripSymbols>true</stripSymbols>
           <includeDirectories>
             <directoryPath>../swe</directoryPath>
