@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use POSIX;
 
-$0=~/(.+\\)/is;
+$0=~/(.+\/)/is;
 our $path=$1;
 my($InF,$OutF);
 
@@ -17,9 +17,9 @@ sub join_phases
 	my @bodies;
 	my @bins=qw(service zodiac planet opaqplanet aspect);
 	foreach my $it(@bins){
-		$it=$path.'images\\size_png\\'.$it.$size.'.png';
+		$it=$path.'images/size_png/'.$it.$size.'.png';
 	}
-	open($OutF, ">$path".'Astromaximum\\src\\res\\sz'.$size.'.dat') or die "No file";
+	open($OutF, ">$path".'Astromaximum/src/res/sz'.$size.'.dat') or die "No file";
 	binmode($OutF);
 	print $OutF pack('n',$#bins+1);
 	my $i=0;

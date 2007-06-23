@@ -34,6 +34,13 @@ my $tz_ofs=0;
 
 my $sqpath='d:/projects/astro/v2/db/';
 $sqpath='D:/Willow/prj/astrology/v2/db/' unless -d $sqpath;
+$sqpath='../' unless -d $sqpath;
+
+my $sqlite3='/usr/bin/';
+$sqlite3=$sqpath unless -d $sqlite3;
+
+$sqlite3.='sqlite3';
+#die "$sqpath\n$sqlite3\n";
 
 my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
@@ -73,10 +80,10 @@ if(! -f "$dir/$city_inf.txt"){
 	$country='';
 	my $state=0;
 	my $invoke;
-	my $db=$sqpath.'sqlite3 '.$sqpath.'coords.sqb';
+	my $db="$sqlite3 $sqpath".'coords.sqb';
 	my $tmp=$path.'country.tmp';
 	foreach my $cit(@cities){
-		chomp($cit);
+		$cit=~s/[\n\r]//isg;
 		next if $cit=~/\A\s*\Z/is;
 		next if $cit=~/\#/is;
 		if($cit=~s/\@\s*//is){
@@ -86,7 +93,7 @@ if(! -f "$dir/$city_inf.txt"){
 			$cit=~s/\(.+?\)//isg;
 			$cit=~s/[\-\d\+]//isg;
 			my $sql="select id, eng from countries where eng = \'$cit\';";
-			$invoke="echo $sql \| $db > \"$tmp\"";
+			$invoke="echo \"$sql\" \| $db > \"$tmp\"";
 			system($invoke);
 			open($InF, "<$tmp") or die "No file $tmp";
 			my @countries=<$InF>;
@@ -105,7 +112,7 @@ if(! -f "$dir/$city_inf.txt"){
 			else{
 				$cid=0;
 				warn "*****Not found:  $country\n";
-				$invoke="echo $cit >> \"$dir/$city_inf.txt\"";
+				$invoke="echo \"$cit\" >> \"$dir/$city_inf.txt\"";
 		#		print "$invoke\n";
 				system($invoke);
 				next;
@@ -138,7 +145,7 @@ if(! -f "$dir/$city_inf.txt"){
 			$state=$1;
 			$sql="select eng, longit, latit, \'$state\' from cities where eng = \'$cit\' and country_id=$cid limit 1";
 		}
-		$invoke="echo $sql; \| $db > \"$tmp\"";
+		$invoke="echo \"$sql;\" \| $db > \"$tmp\"";
 #		print "$invoke\n";
 		system($invoke);
 		open($InF, "<$tmp") or die "No file $tmp";

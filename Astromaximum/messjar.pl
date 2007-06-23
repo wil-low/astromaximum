@@ -6,7 +6,7 @@ use Digest::Crc32;
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
 
-$0=~/(.+\\)/is;
+$0=~/(.+\/)/is;
 my $jar=$ARGV[0];
 #$jar='D:\Willow\prj\astrology\nomad_prj\Astromaximum\dist\midp2y2007\Astromaximum.jar';
 #$jar='d:\projects\nomad_prj\Astromaximum\dist\midp2y2007\Astromaximum.zip';

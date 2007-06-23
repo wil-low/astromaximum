@@ -317,6 +317,10 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
   sprintf(buf,"output/archive/%d/%s",Event::startYear,fname);
   printf("\nSaving %s...",buf);
   FILE *fout=fopen(buf,"wb");
+	if(!fout){
+		printf("Cannot create file %s",buf);
+		return false;
+	}
   fwrite(&evtype, 1, 1, fout);
   long start=ftell(fout);
   long cumul=v[0]->date[0];

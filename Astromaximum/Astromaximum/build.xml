@@ -100,9 +100,6 @@
     </target>
     
     <target name="tb.install" description="Installing timebomb." if="do.timebomb">
-<!--
-      <echo message="Abil = ${abilities}"/>
--->      
       <exec executable="perl" failonerror="true">
         <arg value="${script.dir}/timebomb.pl"/>
         <arg value="${class.dir}"/>
@@ -111,7 +108,7 @@
     </target>
 
     <target name="post-jar" description="Messing up JAR." unless="no.messjar">
-      <exec executable="C:/perl/bin/perl.exe" failonerror="true">
+      <exec executable="perl" failonerror="true">
         <arg value="../messjar.pl"/>
         <arg value="${dist.dir}/${dist.jar}"/>
       </exec>
@@ -154,7 +151,7 @@
         <length string="${imei.code}" length="15"/>
       </condition>
       <fail unless="valid.imei" message="---- Invalid IMEI! ----"/>
-      <exec executable="C:/perl/bin/perl.exe" failonerror="true">
+      <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../join_common.pl"/>
         <arg value="${class.dir}"/>
         <arg value="${imei.code}"/>

@@ -6,7 +6,7 @@ my @file=("Interpreter","CustomTime");
 my @sign=(pack('N',0x01234567),pack('N',0x89abcdef));
 
 
-$0=~/(.+\\)/is;
+$0=~/(.+\/)/is;
 die "Usage: <classes dir> <timeout>\n" if($#ARGV!=1);
 my $class_dir=$ARGV[0];
 my $arg=$ARGV[1];
@@ -31,7 +31,7 @@ print "Finished.\n";
 sub timebomb_install # time, index
 {
 	my $tm2=int($_[0]/4096);
-	my $class="$class_dir\\".$file[$_[1]].'.class';
+	my $class="$class_dir/".$file[$_[1]].'.class';
 	undef $/ ;
 	open(InF, "<$class") or die "No file $class";
 	binmode(InF);

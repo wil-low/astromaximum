@@ -11,7 +11,7 @@ use warnings;
 #}
 #
 #die ;
-$0=~/(.+\\)/is;
+$0=~/(.+\/)/is;
 our $path=$1;
 my($InF,$OutF);
 
@@ -23,8 +23,8 @@ sub join_phases
 	my $size=shift;
 	my @buf;
 	my @bodies;
-	my @bins=glob($path.'images\\phasesgif\\ph'.$size.'-*.png');
-	open($OutF, ">$path".'Astromaximum\\src\\res\\ph'.$size.'.dat') or die "No file";
+	my @bins=glob($path.'images/phasesgif/ph'.$size.'-*.png');
+	open($OutF, ">$path".'Astromaximum/src/res/ph'.$size.'.dat') or die "No file";
 	binmode($OutF);
 	print $OutF pack('n',$#bins+1);
 	my $i=0;

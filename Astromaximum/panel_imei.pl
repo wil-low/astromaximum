@@ -22,7 +22,7 @@ my @str=split(/\n/,<<END);
 "microedition.hostname"
 END
 
-$0=~/(.+\\)/is;
+$0=~/(.+\/)/is;
 our $path=$1;
 
 my $chunk='cODE';
@@ -34,14 +34,14 @@ for(my $i=0; $i<=$#str; $i++){
 	my $enc=str_encode($1, $i);
 	$imei.=pack('N',length($enc)).$chunk.$enc.pack('N',$crc32->strcrc32($chunk.$enc));
 }
-open(INF, $path."images\\panel.png") or die "No file";
+open(INF, $path."images/panel.png") or die "No file";
 binmode(INF);
 @buf=<INF>;
 close(INF);
 my $body=join('',@buf);
 my ($before, $after)=$body=~/(.+?)(.{4}IDAT.+)/s;
 $body=$before.$imei.$after;
-open(OUTF, ">$path".'Astromaximum\\src\\res\\panel.png') or die "No file";
+open(OUTF, ">$path".'Astromaximum/src/res/panel.png') or die "No file";
 binmode(OUTF);
 print OUTF $body;
 close(OUTF);
