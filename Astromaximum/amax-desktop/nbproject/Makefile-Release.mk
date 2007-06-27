@@ -35,18 +35,19 @@ CXXFLAGS=
 FFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=\
+	`../../../fltk-2.0.x-r5864/fltk2-config \
+	--ldflags`
 
 # Build Targets
-.build-conf: ${BUILD_SUBPROJECTS} dist/Release/GNU-Linux-x86/amax-desktop
+.build-conf: ${BUILD_SUBPROJECTS} amax-desktop
 
-dist/Release/GNU-Linux-x86/amax-desktop: ${OBJECTFILES}
-	${MKDIR} -p dist/Release/GNU-Linux-x86
-	${LINK.cc} -o dist/Release/GNU-Linux-x86/amax-desktop ${OBJECTFILES} ${LDLIBSOPTIONS} 
+amax-desktop: ${OBJECTFILES}
+	${LINK.cc} -o amax-desktop -s ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 build/Release/GNU-Linux-x86/main.o: main.cxx 
 	${MKDIR} -p build/Release/GNU-Linux-x86
-	$(COMPILE.cc) -O2 -o build/Release/GNU-Linux-x86/main.o main.cxx
+	$(COMPILE.cc) -O3 -s -I../../../fltk2 -o build/Release/GNU-Linux-x86/main.o main.cxx
 
 # Subprojects
 .build-subprojects:
@@ -54,7 +55,7 @@ build/Release/GNU-Linux-x86/main.o: main.cxx
 # Clean Targets
 .clean-conf:
 	${RM} -r build/Release
-	${RM} dist/Release/GNU-Linux-x86/amax-desktop
+	${RM} amax-desktop
 
 # Subprojects
 .clean-subprojects:

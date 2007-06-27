@@ -40,7 +40,7 @@ RANLIB=ranlib
 # build
 build: .build-pre .build-impl .build-post
 
-.build-pre:
+.build-pre: MainWindow.cxx 2ndWindow.cxx
 # Add your pre 'build' code here...
 
 .build-post:
@@ -87,6 +87,9 @@ help: .help-pre .help-impl .help-post
 # Add your post 'help' code here...
 
 
+
+.fl.cxx:
+	../../../fltk2/fluid/fluid2 -c $<
 
 # include project implementation makefile
 include nbproject/Makefile-impl.mk

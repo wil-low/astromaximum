@@ -150,7 +150,7 @@
       <condition property="valid.imei">
         <length string="${imei.code}" length="15"/>
       </condition>
-      <fail unless="valid.imei" message="---- Invalid IMEI! ----"/>
+      <fail unless="valid.imei" message="---- Invalid IMEI (${imei.code}) ! ----"/>
       <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../join_common.pl"/>
         <arg value="${class.dir}"/>

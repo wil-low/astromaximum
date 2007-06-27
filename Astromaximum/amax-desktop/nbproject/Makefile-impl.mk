@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=amax-desktop
 
 # Active Configuration
-ACTIVECONF=ReleaseConf
+ACTIVECONF=Release
 CONF=${ACTIVECONF}
 
 # All Configurations
-ALLCONFS=Debug Release DebugConf ReleaseConf 
+ALLCONFS=Debug Release 
 
 
 # build
