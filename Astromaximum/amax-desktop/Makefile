@@ -36,11 +36,15 @@ CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
 
+.SUFFIXES: .fl .cxx .h
+.fl.cxx .fl.h:
+				../../../fltk2/fluid/fluid2 -c $<
+				
 
 # build
 build: .build-pre .build-impl .build-post
 
-.build-pre: MainWindow.cxx 2ndWindow.cxx
+.build-pre:
 # Add your pre 'build' code here...
 
 .build-post:
@@ -86,10 +90,6 @@ help: .help-pre .help-impl .help-post
 .help-post:
 # Add your post 'help' code here...
 
-
-
-.fl.cxx:
-	../../../fltk2/fluid/fluid2 -c $<
 
 # include project implementation makefile
 include nbproject/Makefile-impl.mk

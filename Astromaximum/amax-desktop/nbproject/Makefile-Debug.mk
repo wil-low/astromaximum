@@ -22,7 +22,8 @@ include Makefile
 
 # Object Files
 OBJECTFILES= \
-	build/Debug/GNU-Linux-x86/main.o
+	build/Debug/GNU-Linux-x86/main.o \
+	build/Debug/GNU-Linux-x86/MainWindow.o
 
 # C Compiler Flags
 CFLAGS=
@@ -37,7 +38,8 @@ FFLAGS=
 # Link Libraries and Options
 LDLIBSOPTIONS=\
 	`../../../fltk-2.0.x-r5864/fltk2-config \
-	--ldflags`
+	--ldflags` \
+	-lsqlite3
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS} amax-desktop
@@ -48,6 +50,10 @@ amax-desktop: ${OBJECTFILES}
 build/Debug/GNU-Linux-x86/main.o: main.cxx 
 	${MKDIR} -p build/Debug/GNU-Linux-x86
 	$(COMPILE.cc) -g -I../../../fltk-2.0.x-r5864 -o build/Debug/GNU-Linux-x86/main.o main.cxx
+
+build/Debug/GNU-Linux-x86/MainWindow.o: MainWindow.cxx 
+	${MKDIR} -p build/Debug/GNU-Linux-x86
+	$(COMPILE.cc) -g -I../../../fltk-2.0.x-r5864 -o build/Debug/GNU-Linux-x86/MainWindow.o MainWindow.cxx
 
 # Subprojects
 .build-subprojects:

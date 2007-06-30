@@ -22,7 +22,8 @@ include Makefile
 
 # Object Files
 OBJECTFILES= \
-	build/Release/GNU-Linux-x86/main.o
+	build/Release/GNU-Linux-x86/main.o \
+	build/Release/GNU-Linux-x86/MainWindow.o
 
 # C Compiler Flags
 CFLAGS=
@@ -48,6 +49,10 @@ amax-desktop: ${OBJECTFILES}
 build/Release/GNU-Linux-x86/main.o: main.cxx 
 	${MKDIR} -p build/Release/GNU-Linux-x86
 	$(COMPILE.cc) -O3 -s -I../../../fltk2 -o build/Release/GNU-Linux-x86/main.o main.cxx
+
+build/Release/GNU-Linux-x86/MainWindow.o: MainWindow.cxx 
+	${MKDIR} -p build/Release/GNU-Linux-x86
+	$(COMPILE.cc) -O3 -s -I../../../fltk2 -o build/Release/GNU-Linux-x86/MainWindow.o MainWindow.cxx
 
 # Subprojects
 .build-subprojects:
