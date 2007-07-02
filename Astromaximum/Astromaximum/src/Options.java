@@ -44,7 +44,11 @@ class Options extends GeoList{
   static final int FLG_LOCALTIME=2;
   
   Options(){
-    super(Astromaximum.instance,Choice.EXCLUSIVE);
+    //#if "test" @ protection
+//#     super(Astromaximum.instance,Choice.EXCLUSIVE,"l.dat");
+    //#else
+    super(Astromaximum.instance,Choice.EXCLUSIVE,"locations.dat");
+    //#endif
     String[] sTimeGap={"-2","-1","0","1","2"};
     timeGap=new ChoiceGroup(LocalizationSupport.getMessage("Correction_hr"),
         Choice.POPUP,sTimeGap,null);

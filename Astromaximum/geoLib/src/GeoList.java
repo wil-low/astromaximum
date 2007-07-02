@@ -36,7 +36,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
   protected byte[] curCity=null;
   int total;
   protected final String STORE_NAME="Astromaximum";
-  protected final String LOC="locations.dat";
+  protected String LOC;
   private MIDlet main;
   static long dstStart;
   static long dstEnd;
@@ -44,9 +44,10 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
   static long tzOffset;
   ChoiceGroup cityList;
   
-  public GeoList(MIDlet midlet, int type){
+  public GeoList(MIDlet midlet, int type, String loc){
     super("");
     main=midlet;
+    LOC=loc;
 //    addCommand(new Command(LocalizationSupport.getMessage("Back"),
 //        Command.BACK, 1));
     addCommand(new Command(getMessage("Cancel"),Command.CANCEL, 1));

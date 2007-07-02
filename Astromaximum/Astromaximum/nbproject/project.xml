@@ -9,6 +9,7 @@
             <configuration>midp2y2007release</configuration>
             <configuration>midp2y2007release_logger</configuration>
             <configuration>midp2y2007release_tb</configuration>
+            <configuration>test2006</configuration>
             <configuration>midp2y2007</configuration>
         </configurations>
         <data xmlns="http://www.netbeans.org/ns/j2me-project">

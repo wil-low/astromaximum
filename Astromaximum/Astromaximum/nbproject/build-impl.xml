@@ -403,6 +403,9 @@
             <param name="config.active" value="midp2y2007release_tb"/>
         </antcall>
         <antcall target="${target.to.call}" inheritall="false" inheritrefs="false">
+            <param name="config.active" value="test2006"/>
+        </antcall>
+        <antcall target="${target.to.call}" inheritall="false" inheritrefs="false">
             <param name="config.active" value="midp2y2007"/>
         </antcall>
     </target>

@@ -87,9 +87,12 @@ public class Astromaximum extends MIDlet implements CommandListener{
   static LogBox logBox;
   static Interpreter interpreter;
   static CustomTime customTime;
-  
+
+//#if "test" @ protection
+//#   static String locale="en_EN";
+//#else 
   static String locale="ru_RU";
-  
+//#endif 
   /**
    * Start this MIDlet
    */

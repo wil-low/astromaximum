@@ -21,6 +21,15 @@ else{
 	
 $0=~/(.+\/)/is;
 
+if($ARGV[1]){
+    if($ARGV[1]=~/^\d{15}$/is){
+	$imei=$ARGV[1];
+    }
+    else{
+	die "Invalid IMEI=$ARGV[1] ";
+    }
+}
+
 my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
 our $path=$1;
 

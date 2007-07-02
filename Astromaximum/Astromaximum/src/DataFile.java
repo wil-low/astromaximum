@@ -59,10 +59,11 @@ final class DataFile{
     final Calendar cal=Astromaximum.calendar;
     final DataInputStream is;
     try {
-      //#if _Year == "2006"
-//#     is=new DataInputStream(getClass().getResourceAsStream("/common2006.dat"));
-//#endif
+//#if "test" @ protection
+//#       is= new DataInputStream(getClass().getResourceAsStream("/c.dat"));
+//#else
       is= new DataInputStream(getClass().getResourceAsStream("/common.dat"));
+//#endif
       Astromaximum.startYear=is.readShort();
       cal.set(Calendar.YEAR,Astromaximum.startYear);
       cal.set(Calendar.MONTH, is.readUnsignedByte()-1);

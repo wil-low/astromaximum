@@ -22,6 +22,9 @@ include Makefile
 
 # Object Files
 OBJECTFILES= \
+	build/Release/GNU-Linux-x86/ChronoUI.o \
+	build/Release/GNU-Linux-x86/AspEditUI.o \
+	build/Release/GNU-Linux-x86/LibUI.o \
 	build/Release/GNU-Linux-x86/main.o \
 	build/Release/GNU-Linux-x86/MainWindow.o
 
@@ -45,6 +48,18 @@ LDLIBSOPTIONS=\
 
 amax-desktop: ${OBJECTFILES}
 	${LINK.cc} -o amax-desktop -s ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+build/Release/GNU-Linux-x86/ChronoUI.o: ChronoUI.cxx 
+	${MKDIR} -p build/Release/GNU-Linux-x86
+	$(COMPILE.cc) -O3 -s -I../../../fltk2 -o build/Release/GNU-Linux-x86/ChronoUI.o ChronoUI.cxx
+
+build/Release/GNU-Linux-x86/AspEditUI.o: AspEditUI.cxx 
+	${MKDIR} -p build/Release/GNU-Linux-x86
+	$(COMPILE.cc) -O3 -s -I../../../fltk2 -o build/Release/GNU-Linux-x86/AspEditUI.o AspEditUI.cxx
+
+build/Release/GNU-Linux-x86/LibUI.o: LibUI.cxx 
+	${MKDIR} -p build/Release/GNU-Linux-x86
+	$(COMPILE.cc) -O3 -s -I../../../fltk2 -o build/Release/GNU-Linux-x86/LibUI.o LibUI.cxx
 
 build/Release/GNU-Linux-x86/main.o: main.cxx 
 	${MKDIR} -p build/Release/GNU-Linux-x86

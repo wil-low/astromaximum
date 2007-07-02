@@ -10,6 +10,7 @@
 #include "fltk/FL_VERSION.h"
 #include "fltk/ask.h"
 #include "fltk/draw.h"
+#include "LibUI.h"
 #include <stdio.h>
 #include "sqlite3.h"
 //#include "MainWindow.h"
@@ -75,7 +76,9 @@ int main(int argc, char* argv[]){
 		
 	}
 	brw.end();
-	w.show(argc, argv);
+	LibUI ae;
+	ae.window->show();
+//	w.show(argc, argv);
 	//mw.window->show(argc, argv);
 	return run();
 }

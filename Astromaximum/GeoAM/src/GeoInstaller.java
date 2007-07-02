@@ -27,7 +27,7 @@ public class GeoInstaller extends MIDlet implements CommandListener{
     alert.addCommand(new Command("Cancel",Command.OK,1));
     alert.setCommandListener(this);
     Display.getDisplay(this).setCurrent(alert);
-    gl=new GeoList(this,Choice.MULTIPLE);
+    gl=new GeoList(this,Choice.MULTIPLE,"locations.dat");
     gl.setCommandListener(this);
     gl.addCommand(new Command(gl.getMessage("Install"),
         Command.OK, 1));
