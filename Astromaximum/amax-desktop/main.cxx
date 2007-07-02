@@ -11,7 +11,7 @@
 #include "fltk/ask.h"
 #include "fltk/draw.h"
 #include <stdio.h>
-#include <sqlite3.h>
+#include "sqlite3.h"
 //#include "MainWindow.h"
 using namespace fltk;
 
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
 		printf("%d - %s\n",i,arrayp[i]->name());
 	printf("version %d.%d.%d",FL_MAJOR_VERSION, FL_MINOR_VERSION,FL_PATCH_VERSION);
 	fflush(stdout);
-	Window w(USEDEFAULT,USEDEFAULT,300,380);
+	Window w(USEDEFAULT,USEDEFAULT,300,380,"Здравствуйте");
 	w.begin();
 	sima=SharedImage::get("planet12.gif");
 	Symbol* si=(Symbol*)sima;
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]){
 	Painter pnt(10,80,100,100);
 	Browser brw(10,80,200,200);
 	brw.begin();
-	if(sqlite3_open("/mnt/sdb1/Willow/v2/v2/db/pers-utf.sqb",&sqdb)==SQLITE_OK){
+	if(sqlite3_open("pers-utf.sqb",&sqdb)==SQLITE_OK){
 		printf("opened\n");
 		sqlite3_stmt *pStmt;
 		if(sqlite3_prepare(sqdb,"select name from natal limit 20",-1,&pStmt,0)==SQLITE_OK){

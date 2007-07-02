@@ -36,16 +36,19 @@
         </cCompilerTool>
         <ccCompilerTool>
           <includeDirectories>
-            <directoryPath>../../../fltk-2.0.x-r5864</directoryPath>
+            <directoryPath>../../../fltk2</directoryPath>
           </includeDirectories>
         </ccCompilerTool>
         <fortranCompilerTool>
         </fortranCompilerTool>
         <linkerTool>
           <output>amax-desktop</output>
+          <linkerAddLib>
+            <directoryPath>./</directoryPath>
+          </linkerAddLib>
           <linkerLibItems>
-            <linkerOptionItem>`../../../fltk-2.0.x-r5864/fltk2-config --ldflags`</linkerOptionItem>
-            <linkerLibLibItem>sqlite3</linkerLibLibItem>
+            <linkerOptionItem>`../../../fltk2/fltk2-config --ldflags`</linkerOptionItem>
+            <linkerOptionItem>-lsqlite3</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
