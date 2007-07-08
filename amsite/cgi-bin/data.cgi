@@ -10,8 +10,7 @@ $CGI::DISABLE_UPLOADS = 1;  # no uploads
 use tools;
 
 
-my $dsn = "DBI:mysql:database=amax;host=localhost";
-my $dbh = DBI->connect($dsn, 'root', '');
+my $dbh = tools::db_connect();
 
 #tools::cookie_check($dbh);
 
@@ -23,6 +22,7 @@ my $dig=param($type);
 $dig=~/(\d{4})$/is;
 my $idd=$1;
 my $fn="../files/".param($type).".$type";
+#die $fn;
 if($type && -f $fn){
 	my $sth = $dbh->prepare("UPDATE files SET used=\'t\' WHERE id=$dig AND type=\"$type\"");
 	$sth->execute;

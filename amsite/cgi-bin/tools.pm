@@ -2,26 +2,48 @@ package tools;
 
 use strict;
 use CGI ':standard';
+use DBI;
+
+my $db_name='amax';
+my $db_port=3306;
+
+my $db_superuser='root';
+my $db_superuser_pwd='toor';
+my $db_user='user';
+my $db_user_pwd='user';
+
+our $dir_source='../source';
+our $dir_inbox='../inbox';
+our $dir_files='../files';
+
+sub db_connect{
+	my $dsn = "DBI:mysql:database=$db_name;host=localhost";
+	my $dbh = DBI->connect($dsn, $db_superuser, $db_superuser_pwd);
+	return $dbh;
+}
 
 sub cookie_check{
-	my $session=cookie('session');
 	my $dbh=shift;
+	my $session=cookie('session');
+	$session=shift unless $session;
 	if($session=~/^[0-9a-f]+$/is){
 		my $stat="UPDATE sessions SET tm_end=NOW() WHERE name=\"$session\"";
-		my $sth = $dbh->prepare($stat);
-		my $ra=$sth->execute;
-		my $sth = $dbh->prepare("SELECT user_id from sessions where name=\"$session\"");
-		$sth->execute;
+		my $sth = $dbh->prepare($stat) || die $dbh->errstr;
+		my $ra=$sth->execute || die $dbh->errstr;
+		my $sth = $dbh->prepare("SELECT user_id, customers.name from sessions, customers where sessions.name=\"$session\" and customers.id=user_id") || die $dbh->errstr;
+		$sth->execute || die $dbh->errstr;
 		my @row = $sth->fetchrow_array;
 		$sth->finish;
-		if($ra>0 && $#row>=0){
-			return $row[0];
+		if($#row>=0){
+			return @row;
 		}
 	}
-	print redirect('http://astromaximum/cgi-bin/start.cgi');
-	$dbh->disconnect;
-	exit(0);
+#	print redirect('start.cgi');
+#	$dbh->disconnect;
+#	exit(0);
+	return (0,undef);
 }
+
 
 sub adm_panel{
 	return <<ADM;

@@ -9,8 +9,7 @@ $CGI::POST_MAX=1024 * 10;  # max 100K posts
 $CGI::DISABLE_UPLOADS = 1;  # no uploads
 use tools;
 
-my $dsn = "DBI:mysql:database=amax;host=localhost";
-my $dbh = DBI->connect($dsn, 'root', '');
+my $dbh = tools::db_connect();
 
 tools::cookie_check($dbh);
 

@@ -12,7 +12,6 @@ $CGI::POST_MAX=1024 * 10;  # max 100K posts
 $CGI::DISABLE_UPLOADS = 1;  # no uploads
 
 our $cur_country='';
-our $dsn = "DBI:mysql:database=amax;host=localhost";
 our $dbh;
 
 my $ADDCITY=<<ADDCITY;
@@ -55,51 +54,91 @@ function city_del(){
 };
 ADDCITY
 
-my $content=header().start_html(-title=>'Astromaximum location archives', -script=>$ADDCITY).<<BODY;
-<p align="center"><b>Welcome to Astromaximum site!</b></p>
+open(TEM, "<$tools::dir_source/index.tem");
+my @tem=<TEM>;
+close(TEM);
+my $temm="@tem";
+my $login_user=<<FORM;
+				<h5>Subscribers only:</h5>
+				<form method='post' action='../cgi-bin/start.cgi'>
+					<p align=center><font size=-1>Username:</font>					
+					<input type=text name=user></input></p>
+					<p align=center><font size=-1>Password:</font>					
+					<input type=password name=passwd></input></p>
+					<p align=center>
+					<input type=submit value='Log in'></input></p>
+				</form>
+FORM
 
-<table align=center valign=vcenter border=1>
-	<form method='post' action='start.cgi'>
-		<tr>
-			<td>
-				Username: <input type=text name=user></input>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Password: <input type=password name=passwd></input>
-			</td>
-		</tr>
-		<tr>
-			<td align=center>
-				<input type=submit value='Log in'></input>
-			</td>
-		</tr>
-	</form>
-</table>
-BODY
+my $content=header();
 
-my $usr=param('user');
-if(defined($usr)){
-	$usr=login($usr,param('passwd'));
-	if($usr){
-		my $session=set_cookie($usr);
-		print redirect(-uri=>'http://astromaximum/cgi-bin/geo.cgi', -cookie=>$session);
-	}
-	else{
-		print "$content<br><center><font color=red>Invalid username or password!</font></center>"
+$dbh = tools::db_connect();
+my ($userid, $usr)=tools::cookie_check($dbh);
+$usr=param('user') unless $usr;
+#$content.="<p>Userid=$userid<p>";
+my $logtext;
+if(!$userid){
+	$logtext=$login_user;
+	if(defined($usr)){
+		$usr=login($usr,param('passwd'));
+		if($usr){
+			my $session=set_cookie($usr);
+			print redirect(-uri=>'start.cgi', -cookie=>$session);
+			exit(0);
+		}
+		else{
+			$logtext.="<center><font color=red>Invalid username or password!</font></center>";
+		}
 	}
 }
 else{
-	print $content;
-	print Dump();
+	$logtext="<table width=100%><tr><td>Welcome, $usr</td><td><p align=right><a href='start.cgi?p=logout'>Logout</a></p></td></tr></table>";
+}
+$temm=~s/<\?LOGIN_USER>/$logtext/is;
+$content.=$temm;
+my $page=param('p');
+$page='' unless defined($page);
+my $dyn='';
+if($page eq 'geo'){
+	require geo;
+	$dyn=geo::get_content($dbh, $userid);
+}
+if($page eq 'logout'){
+	print redirect(-uri=>'start.cgi', -cookie=>cookie(-name=>'session',-value=>''));
+	exit(0);
 }
 
-print end_html;
+$dyn="!!home.tem" if $page eq '';
+$dyn="!!features.tem" if $page eq 'feat';
+$dyn="!!links.tem" if $page eq 'links';
+$dyn="!!screens.tem" if $page eq 'scr';
+$dyn="!!contact.tem" if $page eq 'contact';
+$dyn="!!requirements.tem" if $page eq 'req';
+$dyn="!!demo.tem" if $page eq 'demo';
+$dyn="!!test.tem" if $page eq 'test';
+$dyn="!!order.tem" if $page eq 'order';
+
+if($dyn=~s/!!(.+)/$1/is){
+	if(open(TEM, "<$tools::dir_source/$dyn")){
+		@tem=<TEM>;
+		close(TEM);
+		$dyn="@tem";
+		if($dyn=~/<body>(.+?)<\/body>/is){
+			$dyn=$1;
+		}
+	}
+	else{
+		$dyn="<p align=center>$dyn missing</p>";
+	}
+}
+$content=~s/\Q<?DYNAMIC_CONTENT>\E/$dyn/is;
+
+#$content=~s/\Q<?DUMP>/&{\&Dump}/ise;
+print $content;
 
 sub login{ # user, passwd
 	my($usr, $passwd)=@_;
-	$dbh = DBI->connect($dsn, 'root', '');
+	$dbh = tools::db_connect();
 	my $stat="SELECT id FROM customers WHERE name=\"$usr\" AND hash=\"$passwd\"";
 	my $sth = $dbh->prepare($stat);
 	$sth->execute;
@@ -113,7 +152,7 @@ sub login{ # user, passwd
 
 sub set_cookie{
 	my $md5  = Digest->new("MD5");
-	$md5->add(shift.time);
+	$md5->add(shift().time);
 	my $dig=$md5->hexdigest;
 	my $sth = $dbh->prepare("INSERT INTO sessions (name,user_id) VALUES (\"$dig\", $usr)");
 	$sth->execute;

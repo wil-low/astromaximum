@@ -4,12 +4,15 @@ use strict;
 use CGI ':standard';
 use CGI::Carp 'fatalsToBrowser';
 
-our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
-our $zip=q("d:/Program Files/WinRAR/WinRar.exe" a -afzip -r -ep1 %s.r %s/*);
+our $unzip=q(unzip -q %s -d %s );
+#our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
+our $zip=q(wd=`pwd`; cd %s; zip -qrvm $wd/%s.r * > null;cd $wd);
+#our $zip=q(zip -r %s.r %s/*);
+#our $zip=q("d:/Program Files/WinRAR/WinRar.exe" a -afzip -r -ep1 %s.r %s/*);
 
 sub join_datafiles2 # destfile, data_listref
 {
-	open(OUTF, ">$_[0]") or die "No file";
+	open(OUTF, ">$_[0]");
 	my @bins=@{$_[1]};
 	my @buf;
 	binmode(OUTF);
