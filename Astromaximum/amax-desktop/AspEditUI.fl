@@ -11,8 +11,8 @@ class AspEditUI {open
   Function {AspEditUI()} {open
   } {
     {fltk::Window} window {
-      label {Конструктор аспектов} selected
-      xywh {197 216 920 665} resizable visible
+      label {Конструктор аспектов} open selected
+      xywh {207 580 920 665} resizable visible
     } {
       {fltk::Choice} cbSys {open
         xywh {0 5 155 25}

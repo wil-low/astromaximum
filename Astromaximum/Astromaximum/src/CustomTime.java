@@ -22,7 +22,7 @@ import javax.microedition.lcdui.*;
 /*
  * CustomTime.java
  *
- * Created on 29 грудня 2006, 18:42
+ * Created on 29 пїЅпїЅпїЅпїЅпїЅпїЅ 2006, 18:42
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -106,6 +106,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
       }
       lockFlags=newLock;
       for(int i=sel+1; i<histCount; i++){
+//#debug debug
         System.out.println(i);
         history[i-1]=history[i];
       }
@@ -264,7 +265,9 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
       os.write(0xa);
       os.write(0xd);
       int ch = 0;
+//#debug debug
       System.out.print("Available=");
+//#debug debug
       System.out.println(is.available());
 //      while(true) {
 //        ch = is.read();

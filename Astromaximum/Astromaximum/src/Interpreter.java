@@ -297,182 +297,187 @@ class Interpreter extends Canvas implements CommandListener {
     boolean isTopicTitle=false;
     boolean f;
     String s=extractArticle(params);
-    StringBuffer sb=new StringBuffer(s);
-    if(!ignoreAllTopics){
-//    System.out.println("FullText:");
-//    System.out.println(s);
-      char allowed0=0, allowed1=0;
-      isTopicTitle=si.haveTopic((int)params[0]);
-      int topp=topic;
-      if(params[0]==Event.EV_MOON_MOVE){
-        allowed0='@'; 
-      }
-      else{
-        topp=isTopicTitle? topic: 10;
-      }
-      if(topp!=10){
-        allowed1=RESERVED_CHARS.charAt(topp);
-        if(topp!=T_MEDICINE && topp!=T_DECUMB && topp!=T_VACATION && topp!=T_LOVE){
-            allowed0='@';
-        }
-        for(int i=0; i<RESERVED_CHARS.length(); i++){
-          char rc=RESERVED_CHARS.charAt(i);
-          if(allowed0!=rc && allowed1!=rc){
-            for(int j=0; j<sb.length(); j++){
-              if(rc==sb.charAt(j)){
-                sb.deleteCharAt(j--);
-              }
-            }
-          }
-        }
-        s=sb.toString();
-        sb=new StringBuffer();
-        for(int i=0; i<s.length(); i++){
-          char rc=s.charAt(i);
-          if(allowed0==rc || allowed1==rc){
-            int pos=s.indexOf(rc,i+1);
-            sb.append(s.substring(i+1,pos));
-            i=pos;
-          }
-        }
-      }
-      else{
-        s=removeTopic(s,T_LOVE);
-        s=removeTopic(s,T_MEDICINE);
-        s=removeTopic(s,T_DECUMB);
-        sb=new StringBuffer(s);
-      }
-    }
-    for(int i=0; i<sb.length(); i++){
-      if(RESERVED_CHARS.indexOf(sb.charAt(i))>=0){
-        sb.deleteCharAt(i--);
-      }
-    }
-    s=sb.toString();
-    s=s.trim();
-    if(s.length()==0){
-      s=LocalizationSupport.getMessage("Minor_index");
-    }
-//    System.out.println(">"+s+"<");
-    
-//    if(!s.endsWith(".")){
-//      s+=".";
-//    }
-    
-    StringBuffer res=new StringBuffer();
-//#if 1==1    
-    switch((int)params[0]){
-      case Event.EV_MOON_DAY:
-        res.append(LocalizationSupport.getMessage("Moon_day#")).append(params[2]);
-        break;
-      case Event.EV_NAVROZ:
-        if(params[2]>=360){
-          params[2]=359-params[2];
-        }
-        res.append(LocalizationSupport.getMessage("Sun_day#")).append(params[2]);
-        break;
-      case Event.EV_DEG_2ND:
-      case Event.EV_DEGPASS0:
-      case Event.EV_DEGPASS1:
-      case Event.EV_DEGPASS2:
-      case Event.EV_DEGPASS3:
-        res.append(Astromaximum.PLANETS[(int)params[1]]).append(" ")
-            .append(params[3]).append("\u00b0").append(Astromaximum.CONSTELL[(int)params[4]]);
-        if(params[5]>0){
-          res.append(" ").append(LocalizationSupport.getMessage("deg"+Integer.toString((int)params[5])));
-        }
-        break;
-      case Event.EV_TITHI:
-        res.append(LocalizationSupport.getMessage("Tithi")).append(" #").append(params[2]);
-        break;
-      case Event.EV_VOC:
-        res.append(LocalizationSupport.getMessage("VOC"));
-        break;
-      case Event.EV_VIA_COMBUSTA:
-        res.append("Via Combusta");
-        break;
-      case Event.EV_WEEK:
-        res.append(LocalizationSupport.getMessage("wd"+Long.toString(params[2]))).
-            append(" - ").append(LocalizationSupport.getMessage("Day")+" "+
-            LocalizationSupport.getMessage(
-            "of"+Integer.toString(SummItem.weekPlanets[(int)params[2]-1])));
-        break;
-//      case Event.EV_HELP:
-//      case Event.EV_DECUMBITURE:
-//        res="";
-//        break;
-      case Event.EV_SIGN_ENTER:
-        res.append(getFullPlanet(params[1])).append(" ").append(LocalizationSupport.getMessage(
-            "in_")).append(Astromaximum.CONSTELL[(int)params[2]]);
-        break;
-      case Event.EV_ECLIPSE:
-        res.append(LocalizationSupport.getMessage("Eclipse")).append(" ").append(
-            LocalizationSupport.getMessage("of"+Long.toString(params[2])));
-        break;
-      case Event.EV_PLANET_HOUR:
-        res.append(LocalizationSupport.getMessage("Hour")).append(" ").append(
-            LocalizationSupport.getMessage("of"+Long.toString(params[2])));
-        break;
-      case Event.EV_MOON_PHASE:
-//        res.append(LocalizationSupport.getMessage("mph"+Integer.toString((int)params[2])));
-        break;
-      case Event.EV_RISE:
-        res.append("(-40/+28 ").append(LocalizationSupport.getMessage("min."))
-            .append(") ").append(getFullPlanet(params[2])).append(" ")
-            .append(getRiseString((int)params[3]));
-        break;
-      case Event.EV_MOON_MOVE:
-        //        System.out.println(params[4]);
-        res.append(getFullPlanet(params[4])).append(">")
-          .append(params[3] == Event.SE_MOON ? "VOC" : getFullPlanet(params[3]));
-        break;
-      case Event.EV_ASP_EXACT:
-        if(params[1] == Event.SE_MOON){
-          res.append(Astromaximum.PLANETS[(int)params[1]]).append("-")
-              .append(params[4]).append("\u00b0-")
-              .append(Astromaximum.PLANETS[(int)params[2]]);
-        }
-        else{
-          res.append(Astromaximum.PLANETS[(int)params[2]]).append("-")
-              .append(params[5]).append("\u00b0-")
-              .append(Astromaximum.PLANETS[(int)params[3]]).append(" ");
-          res.append(LocalizationSupport.getMessage(params[2]<=Event.SE_MARS?
-            "+-week": "long_aspect"));
-        }
-        break;
-      case Event.EV_RETROGRADE:
-//        System.out.println(params[2]);
-        res.append(getFullPlanet(params[2]));
-        break;
-      case Event.EV_ASP_EXACT_MOON:
-        res.append("\u00b16 "+LocalizationSupport.getMessage("hrs"));
-        break;
-    }
-//#endif   
-    String ss="";
-    if(params[params.length - 2] != 0) {
-      ss = Event.long2String(params[params.length - 2], 0, false);
-    }
-    if(params[0] == Event.EV_TITHI) {
-      ss += " - (" + Event.long2String(params[params.length - 3], 0, false) + ")";
-    }
-    if(params[params.length - 1] != 0){ // 2nd date
-      ss+=" - ";
-      //      if(Astromaximum.sizer.getSize()==0)
-      //        ss+="\n";
-      ss+=Event.long2String(params[params.length-1],0,true);
-    }
-    if(topic!=10 && isTopicTitle){
-      res.append(" <").append(LocalizationSupport.getMessage("fb"+Integer.toString(topic)))
-        .append(">");
-    }
-    if(res.length()>0) {
-      res.append(":  ");
-    }
-    txt=ss+"|"+res.toString()+"|"+s;
-    prepareText();
-//    final String et="iET="+Long.toString(System.currentTimeMillis()-tick);
-//    Astromaximum.log(et);
+    if(s==null){
+      txt=s=LocalizationSupport.getMessage("demo_texts");
+		}
+    else{
+			StringBuffer sb=new StringBuffer(s);
+			if(!ignoreAllTopics){
+	//    System.out.println("FullText:");
+	//    System.out.println(s);
+				char allowed0=0, allowed1=0;
+				isTopicTitle=si.haveTopic((int)params[0]);
+				int topp=topic;
+				if(params[0]==Event.EV_MOON_MOVE){
+					allowed0='@'; 
+				}
+				else{
+					topp=isTopicTitle? topic: 10;
+				}
+				if(topp!=10){
+					allowed1=RESERVED_CHARS.charAt(topp);
+					if(topp!=T_MEDICINE && topp!=T_DECUMB && topp!=T_VACATION && topp!=T_LOVE){
+							allowed0='@';
+					}
+					for(int i=0; i<RESERVED_CHARS.length(); i++){
+						char rc=RESERVED_CHARS.charAt(i);
+						if(allowed0!=rc && allowed1!=rc){
+							for(int j=0; j<sb.length(); j++){
+								if(rc==sb.charAt(j)){
+									sb.deleteCharAt(j--);
+								}
+							}
+						}
+					}
+					s=sb.toString();
+					sb=new StringBuffer();
+					for(int i=0; i<s.length(); i++){
+						char rc=s.charAt(i);
+						if(allowed0==rc || allowed1==rc){
+							int pos=s.indexOf(rc,i+1);
+							sb.append(s.substring(i+1,pos));
+							i=pos;
+						}
+					}
+				}
+				else{
+					s=removeTopic(s,T_LOVE);
+					s=removeTopic(s,T_MEDICINE);
+					s=removeTopic(s,T_DECUMB);
+					sb=new StringBuffer(s);
+				}
+			}
+			for(int i=0; i<sb.length(); i++){
+				if(RESERVED_CHARS.indexOf(sb.charAt(i))>=0){
+					sb.deleteCharAt(i--);
+				}
+			}
+			s=sb.toString();
+			s=s.trim();
+			if(s.length()==0){
+				s=LocalizationSupport.getMessage("Minor_index");
+			}
+	//    System.out.println(">"+s+"<");
+			
+	//    if(!s.endsWith(".")){
+	//      s+=".";
+	//    }
+			
+			StringBuffer res=new StringBuffer();
+	//#if 1==1    
+			switch((int)params[0]){
+				case Event.EV_MOON_DAY:
+					res.append(LocalizationSupport.getMessage("Moon_day#")).append(params[2]);
+					break;
+				case Event.EV_NAVROZ:
+					if(params[2]>=360){
+						params[2]=359-params[2];
+					}
+					res.append(LocalizationSupport.getMessage("Sun_day#")).append(params[2]);
+					break;
+				case Event.EV_DEG_2ND:
+				case Event.EV_DEGPASS0:
+				case Event.EV_DEGPASS1:
+				case Event.EV_DEGPASS2:
+				case Event.EV_DEGPASS3:
+					res.append(Astromaximum.PLANETS[(int)params[1]]).append(" ")
+							.append(params[3]).append("\u00b0").append(Astromaximum.CONSTELL[(int)params[4]]);
+					if(params[5]>0){
+						res.append(" ").append(LocalizationSupport.getMessage("deg"+Integer.toString((int)params[5])));
+					}
+					break;
+				case Event.EV_TITHI:
+					res.append(LocalizationSupport.getMessage("Tithi")).append(" #").append(params[2]);
+					break;
+				case Event.EV_VOC:
+					res.append(LocalizationSupport.getMessage("VOC"));
+					break;
+				case Event.EV_VIA_COMBUSTA:
+					res.append("Via Combusta");
+					break;
+				case Event.EV_WEEK:
+					res.append(LocalizationSupport.getMessage("wd"+Long.toString(params[2]))).
+							append(" - ").append(LocalizationSupport.getMessage("Day")+" "+
+							LocalizationSupport.getMessage(
+							"of"+Integer.toString(SummItem.weekPlanets[(int)params[2]-1])));
+					break;
+	//      case Event.EV_HELP:
+	//      case Event.EV_DECUMBITURE:
+	//        res="";
+	//        break;
+				case Event.EV_SIGN_ENTER:
+					res.append(getFullPlanet(params[1])).append(" ").append(LocalizationSupport.getMessage(
+							"in_")).append(Astromaximum.CONSTELL[(int)params[2]]);
+					break;
+				case Event.EV_ECLIPSE:
+					res.append(LocalizationSupport.getMessage("Eclipse")).append(" ").append(
+							LocalizationSupport.getMessage("of"+Long.toString(params[2])));
+					break;
+				case Event.EV_PLANET_HOUR:
+					res.append(LocalizationSupport.getMessage("Hour")).append(" ").append(
+							LocalizationSupport.getMessage("of"+Long.toString(params[2])));
+					break;
+				case Event.EV_MOON_PHASE:
+	//        res.append(LocalizationSupport.getMessage("mph"+Integer.toString((int)params[2])));
+					break;
+				case Event.EV_RISE:
+					res.append("(-40/+28 ").append(LocalizationSupport.getMessage("min."))
+							.append(") ").append(getFullPlanet(params[2])).append(" ")
+							.append(getRiseString((int)params[3]));
+					break;
+				case Event.EV_MOON_MOVE:
+					//        System.out.println(params[4]);
+					res.append(getFullPlanet(params[4])).append(">")
+						.append(params[3] == Event.SE_MOON ? "VOC" : getFullPlanet(params[3]));
+					break;
+				case Event.EV_ASP_EXACT:
+					if(params[1] == Event.SE_MOON){
+						res.append(Astromaximum.PLANETS[(int)params[1]]).append("-")
+								.append(params[4]).append("\u00b0-")
+								.append(Astromaximum.PLANETS[(int)params[2]]);
+					}
+					else{
+						res.append(Astromaximum.PLANETS[(int)params[2]]).append("-")
+								.append(params[5]).append("\u00b0-")
+								.append(Astromaximum.PLANETS[(int)params[3]]).append(" ");
+						res.append(LocalizationSupport.getMessage(params[2]<=Event.SE_MARS?
+							"+-week": "long_aspect"));
+					}
+					break;
+				case Event.EV_RETROGRADE:
+	//        System.out.println(params[2]);
+					res.append(getFullPlanet(params[2]));
+					break;
+				case Event.EV_ASP_EXACT_MOON:
+					res.append("\u00b16 "+LocalizationSupport.getMessage("hrs"));
+					break;
+			}
+	//#endif   
+			String ss="";
+			if(params[params.length - 2] != 0) {
+				ss = Event.long2String(params[params.length - 2], 0, false);
+			}
+			if(params[0] == Event.EV_TITHI) {
+				ss += " - (" + Event.long2String(params[params.length - 3], 0, false) + ")";
+			}
+			if(params[params.length - 1] != 0){ // 2nd date
+				ss+=" - ";
+				//      if(Astromaximum.sizer.getSize()==0)
+				//        ss+="\n";
+				ss+=Event.long2String(params[params.length-1],0,true);
+			}
+			if(topic!=10 && isTopicTitle){
+				res.append(" <").append(LocalizationSupport.getMessage("fb"+Integer.toString(topic)))
+					.append(">");
+			}
+			if(res.length()>0) {
+				res.append(":  ");
+			}
+			txt=ss+"|"+res.toString()+"|"+s;
+		}
+		prepareText();
+//  final String et="iET="+Long.toString(System.currentTimeMillis()-tick);
+//  Astromaximum.log(et);
     return s.length()>1;
   }
 
@@ -650,9 +655,12 @@ class Interpreter extends Canvas implements CommandListener {
   }
   
   String extractArticle(long[] params){
-    String res="???";
+    String res=null;
     try {
       InputStream is=getClass().getResourceAsStream(Long.toString(params[0])+".txt");
+      if(is==null){
+				return null;
+      }
       interp=new byte[is.available()];
       is.read(interp);
       is=null;

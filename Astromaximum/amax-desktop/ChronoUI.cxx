@@ -9,24 +9,10 @@ fltk::Window* ChronoUI::make_window() {
 		o->shortcut(0xff1b);
 		o->user_data((void*)(this));
 		o->begin();
-		 {fltk::TextDisplay* o = new fltk::TextDisplay(43, 0, 111, 20, "\320\240\320\260\320\264\320\270\320\272\321\201");
+		 {fltk::TextDisplay* o = new fltk::TextDisplay(41, 0, 106, 20, "\320\240\320\260\320\264\320\270\320\272\321\201");
 			o->labeltype(fltk::EMBOSSED_LABEL);
 			o->labelsize(10);
 			o->textsize(10);
-		}
-		 {fltk::Group* o = new fltk::Group(0, 23, 165, 17, "\320\247\320\260\321\201\321\213");
-			o->box(fltk::BORDER_BOX);
-			o->align(fltk::ALIGN_LEFT|fltk::ALIGN_INSIDE);
-			o->begin();
-			new fltk::RepeatButton(55, 1, 15, 15, "@s5@<");
-			new fltk::RepeatButton(70, 1, 15, 15, "@s5@>");
-			 {fltk::Input* o = new fltk::Input(95, 1, 45, 15);
-				o->labelsize(10);
-				o->textsize(10);
-			}
-			new fltk::RepeatButton(140, 1, 24, 8, "@s4@2<");
-			new fltk::RepeatButton(140, 8, 24, 8, "@s4@8<");
-			o->end();
 		}
 		o->end();
 		o->set_non_modal();
@@ -35,5 +21,24 @@ fltk::Window* ChronoUI::make_window() {
 	return  w;
 }
 
-TimeTuner::TimeTuner(int x, int y, long id, const char* label_) {
+ChronoUI::TimeTuner::TimeTuner(int x, int y, long id_, const char* label_) {
+	fltk::Group* w;
+	 {fltk::Group* o = new fltk::Group(0, 0, 130, 20);
+		w = o;
+		o->shortcut(0xff1b);
+		o->user_data((void*)(this));
+		o->begin();
+		new fltk::RepeatButton(37, 3, 18, 15, "@s5@<");
+		new fltk::RepeatButton(55, 3, 18, 15, "@s5@>");
+		 {fltk::Input* o = new fltk::Input(75, 1, 33, 18);
+			o->labelsize(10);
+			o->textsize(10);
+		}
+		new fltk::RepeatButton(110, 3, 18, 8, "@s4@2<");
+		new fltk::RepeatButton(110, 10, 18, 8, "@s4@8<");
+		o->end();
+		o->resizable(o);
+	}
+	id=id_;
+	w->copy_label(label_);
 }

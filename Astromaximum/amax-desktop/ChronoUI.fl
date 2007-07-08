@@ -12,66 +12,45 @@ class ChronoUI {open
   } {
     {fltk::Window} window {
       label {Хронос} open
-      xywh {835 411 165 195} horizontal resizable non_modal visible
+      xywh {886 403 165 195} horizontal resizable non_modal visible
     } {
       {fltk::TextDisplay} {} {
         label {Радикс}
-        xywh {43 0 111 20} labeltype EMBOSSED_LABEL labelsize 10 textsize 10
-      }
-      {fltk::Group} {} {
-        label {Часы} open
-        xywh {0 23 165 17} align 36 box BORDER_BOX
-      } {
-        {fltk::RepeatButton} {} {
-          label {@s5@<}
-          xywh {55 1 15 15}
-        }
-        {fltk::RepeatButton} {} {
-          label {@s5@>}
-          xywh {70 1 15 15}
-        }
-        {fltk::Input} {} {
-          xywh {95 1 45 15} labelsize 10 textsize 10
-        }
-        {fltk::RepeatButton} {} {
-          label {@s4@2<}
-          xywh {140 1 24 8}
-        }
-        {fltk::RepeatButton} {} {
-          label {@s4@8<}
-          xywh {140 8 24 8}
-        }
+        xywh {41 0 106 20} labeltype EMBOSSED_LABEL labelsize 10 textsize 10
       }
     }
   }
-  class TimeTuner {open private
+  class TimeTuner {open selected private
   } {
-    Function {TimeTuner(int x, int y, long id, const char* label_)} {open
+    Function {TimeTuner(int x, int y, long id_, const char* label_)} {open
     } {
       {fltk::Window} {} {open
-        xywh {723 661 130 20}
+        xywh {608 649 130 20} resizable
         class {fltk::Group} visible
       } {
         {fltk::RepeatButton} {} {
           label {@s5@<}
-          xywh {0 3 18 15}
+          xywh {37 3 18 15}
         }
         {fltk::RepeatButton} {} {
           label {@s5@>}
-          xywh {18 3 18 15}
+          xywh {55 3 18 15}
         }
         {fltk::Input} {} {
-          xywh {48 3 53 15} labelsize 10 textsize 10
+          xywh {75 1 33 18} labelsize 10 textsize 10
         }
         {fltk::RepeatButton} {} {
-          label {@s4@2<} selected
-          xywh {101 3 28 8}
+          label {@s4@2<}
+          xywh {110 3 18 8}
         }
         {fltk::RepeatButton} {} {
           label {@s4@8<}
-          xywh {101 10 28 8}
+          xywh {110 10 18 8}
         }
       }
+      code {id=id_;
+w->copy_label(label_);
+��} {}
     }
   }
 } 

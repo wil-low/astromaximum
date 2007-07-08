@@ -110,6 +110,7 @@ class Options extends GeoList{
     hj*=new Random().nextInt()*348;
 //#endif
       cur=new String(rs.getRecord(1));
+//#debug error
       Astromaximum.log(cur);
       for(int i=0; i<cities.length; i++){
         if(cities[i]!=null){

@@ -1,7 +1,7 @@
 /*
  * Event.EV_java
  *
- * Created on 25 грудня 2006, 18:01
+ * Created on 25 пїЅпїЅпїЅпїЅпїЅпїЅ 2006, 18:01
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -1259,6 +1259,7 @@ class SummItem extends TimerTask implements RecordFilter{
       selIndex = nowSelection;
     }
     else{
+//#debug error
       Astromaximum.log("not current!");
       selIndex=0;
     }

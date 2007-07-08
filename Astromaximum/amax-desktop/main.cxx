@@ -7,6 +7,7 @@
 #include "fltk/Button.h"
 #include "fltk/Font.h"
 #include "fltk/SharedImage.h"
+#include "fltk/file_chooser.h"
 #include "fltk/FL_VERSION.h"
 #include "fltk/ask.h"
 #include "fltk/draw.h"
@@ -59,6 +60,7 @@ int main(int argc, char* argv[]){
 	btn.labelcolor(WHITE);
 	btn.label("\xa2\xa1\xa3");
 	w.resizable(&btn);
+	file_chooser ("","*","init");
 	Painter pnt(10,80,100,100);
 	Browser brw(10,80,200,200);
 	brw.begin();

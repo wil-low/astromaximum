@@ -13,9 +13,10 @@ public:
 	fltk::Window* make_window();
 	fltk::Window *window;
 
-class TimeTuner : fltk::Group  {
+class TimeTuner  {
 public:
-	TimeTuner(int x, int y, long id, const char* label_);
+	long id;
+	TimeTuner(int x, int y, long id_, const char* label_);
 };
 };
 #endif

@@ -88,11 +88,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
   static Interpreter interpreter;
   static CustomTime customTime;
 
-//#if "test" @ protection
-//#   static String locale="en_EN";
-//#else 
   static String locale="ru_RU";
-//#endif 
   /**
    * Start this MIDlet
    */
@@ -179,6 +175,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#       logger("customTime");
 //#endif      
 //        System.out.println("Modem="+customTime.askModem());
+//#debug error
       Astromaximum.log("****Total memory = "+Long.toString(Runtime.getRuntime().totalMemory()));
       options.loadHistory();
       System.gc();
@@ -451,15 +448,17 @@ public class Astromaximum extends MIDlet implements CommandListener{
   }
 
   public void reportTodayError() {
-	  final Alert noDate=new Alert("Today: "+ summary.selDate.toString(),
-			"Cannot set today date. Year containing this date is not present in database.",
+	  final Alert noDate=new Alert(LocalizationSupport.getMessage("Today")+": "+ summary.selDate.toString(),
+	    LocalizationSupport.getMessage("no_today"),
 			null,AlertType.ERROR);
+	  noDate.setTimeout(10000);
 		Display.getDisplay(this).setCurrent(noDate,Display.getDisplay(this).getCurrent());
-	calendar.setTime(summary.selDate);
-	calendar.set(Calendar.YEAR,Astromaximum.startYear);
-	summary.selDate=calendar.getTime();			
-	System.out.println(summary.selDate);
- 
+		calendar.setTime(summary.selDate);
+		calendar.set(Calendar.YEAR,Astromaximum.startYear);
+		summary.selDate=calendar.getTime();			
+//#debug error
+		System.out.println(summary.selDate);
+	 
   }
 //#if "timeBomb" @ protection
 //#   static byte[] getArray() {

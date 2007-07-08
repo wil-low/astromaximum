@@ -1299,6 +1299,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
 //      String ext=Integer.toString(IMG_HEIGHT)+".png";
       final int dx= w*10;
       final int dy= h*10;
+//#debug error
       Astromaximum.log(Integer.toString(dy));
       bounds=loadArray("/res/size"+Integer.toString(size)+".dat");
       _bounds=new short[bounds.length];
