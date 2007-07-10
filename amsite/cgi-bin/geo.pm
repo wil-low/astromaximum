@@ -276,11 +276,11 @@ sub create_jar{ # $year, $city_ids
 	#die $cmd;
 	my $asize= -s "$tools::dir_files/$fn.r";
 	$template.="MIDlet-Jar-Size: $asize\n";
-	open(FFF, ">$tools::dir_files/$fn.d");
+	open(FFF, ">$tools::dir_files/$fn.d") or die "$tools::dir_files/$fn.d: $!";
 	print(FFF $template);
 	close(FFF);
 	my $server="http://".server_name();
-	$template=~s%(MIDlet-Jar-URL: ).+?\n%$1$server/cgi-bin/data\?r=$fn\n%is;
+	$template=~s%(MIDlet-Jar-URL: ).+?\n%$1$server/cgi-bin/data.cgi\?r=$fn\n%is;
 	open(FFF, ">$tools::dir_files/$fn.t");
 	print(FFF $template);
 	close(FFF);

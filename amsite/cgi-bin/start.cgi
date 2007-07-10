@@ -59,14 +59,11 @@ my @tem=<TEM>;
 close(TEM);
 my $temm="@tem";
 my $login_user=<<FORM;
-				<h5>Subscribers only:</h5>
 				<form method='post' action='../cgi-bin/start.cgi'>
-					<p align=center><font size=-1>Username:</font>					
-					<input type=text name=user></input></p>
-					<p align=center><font size=-1>Password:</font>					
-					<input type=password name=passwd></input></p>
-					<p align=center>
-					<input type=submit value='Log in'></input></p>
+					<b>Member login:</b>
+					<br>Username <input type="text" name="user"></input>
+					<br>Password <input type="password" name="passwd"></input>
+					<br><input type=submit value='Login'></input>
 				</form>
 FORM
 
@@ -92,7 +89,7 @@ if(!$userid){
 	}
 }
 else{
-	$logtext="<table width=100%><tr><td>Welcome, $usr</td><td><p align=right><a href='start.cgi?p=logout'>Logout</a></p></td></tr></table>";
+	$logtext="Welcome, $usr! &nbsp;&nbsp;<a href='start.cgi?p=logout'>Logout</a>";
 }
 $temm=~s/<\?LOGIN_USER>/$logtext/is;
 $content.=$temm;

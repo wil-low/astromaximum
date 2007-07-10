@@ -37,6 +37,6 @@ if($type && -f $fn){
 	print $data;
 }
 else{
-  print header('text/html','204 No response');
+  print header()."No file $fn";
 }
 $dbh->disconnect;
