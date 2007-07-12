@@ -4,46 +4,51 @@
 <title>Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Andrei Ivushkin">
-<meta name="date" content="2007-07-10T21:46:22+0300">
+<meta name="date" content="2007-07-12T21:45:40+0300">
 <meta name="copyright" content="S&W Axis">
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
 <meta http-equiv="content-style-type" content="text/css">
 <meta http-equiv="expires" content="now">
 <link href="../style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<table cellpadding="0" cellspacing="0" border="1" valign="top" width="100%"  height="100%">
-		<tr height="30%">
+	<table border="1" width="100%" height=100%>
+		<tr height=35%>
 			<td width="20%" align=center valign=top>
-				<img src="/img/logo.png" width="100%" height="10%" border="0" alt="Astromaximum logo"><p>
-				<a href="start.cgi">Home</a><br><br>
-				<a href="start.cgi?p=feat">Features</a><br><br>
-				<a href="start.cgi?p=scr">Screenshots</a><br><br>
-				<a href="start.cgi?p=req">System requirements</a><br><br>
-				<a href="start.cgi?p=contact">Contacts</a><br><br>
-				<a href="start.cgi?p=links">Links</a>
+				<img src="/img/logo.png" border="0" alt="Astromaximum logo">
+				<table style="font-size:smaller;" width=100%><tr align=center>
+				<td><a href="start.cgi?lang=en">English</a></td>
+				<td><a href="start.cgi?lang=ru">Русский</a></td>
+				</tr></table>
+				<br><br>
+				<a href="start.cgi?lang=<?LNG>"><??MAIN></a><br><br>
+				<a href="start.cgi?p=feat&lang=<?LNG>"><??FEAT></a><br><br>
+				<a href="start.cgi?p=scr&lang=<?LNG>"><??SCR></a><br><br>
+				<a href="start.cgi?p=req&lang=<?LNG>"><??REQ></a><br><br>
+				<a href="start.cgi?p=contact&lang=<?LNG>"><??CONTACT></a><br><br>
+				<a href="start.cgi?p=links&lang=<?LNG>"><??LINKS></a><br><br>
 			</td>
-			<td rowspan=3>
+			<td rowspan=3 valign=top>
 				<?DYNAMIC_CONTENT>
 			</td>
 		</tr>
-		<tr valign="top">
-		<td>
-			<div class="login"><?LOGIN_USER></div>
+		<tr>
+		<td height=20%>
+			<center><?LOGIN_USER></center>
 		</td></tr>
-		<tr align=center height=40%>
+		<tr align=center>
 			<td>
-				<p><a href="start.cgi?p=test">Phone compatability test</a>
-				<p><a href="start.cgi?p=demo">Install demo version (2006)</a>
-				<table cellpadding="0" cellspacing="0">
-					<tr><td><a href="start.cgi?p=order">Order full version</a></td><td><span align="center">&nbsp;<img src="/img/paypal.png" alt="PayPal"></span></td></tr>
-				</table>
-				<p><a href="start.cgi?p=geo">Cities database</a>
-				<spacer type=block>
+				<p><a href="start.cgi?p=test&lang=<?LNG>"><??TEST></a></p>
+				<p><a href="start.cgi?p=demo&lang=<?LNG>"><??DEMO></a></p>
+				<p><table cellpadding="0" cellspacing="0">
+					<tr align=center><td><a href="start.cgi?p=order&lang=<?LNG>"><??ORDER></a></td>
+					<td><span align="center">&nbsp;
+					<img src="/img/paypal.png" alt="PayPal"></span></td></tr>
+				</table></p>
+				<p><a href="start.cgi?p=geo&lang=<?LNG>"><??DB></a></p>
 			</td>
 		</tr>
 	</table>

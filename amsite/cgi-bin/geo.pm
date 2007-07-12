@@ -16,10 +16,11 @@ our $cur_state='';
 our $out='';
 our ($dbh, $cnum, $statenum, $defyear, $userid);
 
-sub get_content{
+sub get_content{ # dbh, userid, hashref 
 	$userid=$_[1];
-	return '<br><p align=center>Please log in to access the cities database.</p>' unless $userid; 
+	return '<br><p align=center><??DB_ACCESS></p>' unless $userid; 
 	$dbh=$_[0];
+	my $hashref=$_[2];
 	my $ADDCITY=<<ADDCITY;
 	<script>
 	function city_add(cname,sname){
@@ -91,30 +92,28 @@ ADDCITY
 		-onchange=>"javascript:window.navigate('start.cgi?p=geo&year='+year.value)"
 		)."</td>";
 	$out.="<td rowspan=2 width=25%>".selected_cities()."</td></tr>";
-	$out.="<font color='red'><i>Step 1:</i></font><br><b>Year:</b> ";
+	$out.="<font color='red'><i><??STEP> 1:</i></font><br><b><??YEAR>:</b> ";
 	$out.= hidden(-name=>'sc', -default=>'.');
 	$out.= hidden(-name=>'cid', -default=>$cnum);
 	$out.= hidden(-name=>'stateid', -default=>0);
-	$out.= hidden(-name=>'p', -default=>'geo');
 	$out.= "<tr><td>".country_header().state_header().city_selector()."</td>";
 	
 	$out.= "</tr></table>";
 	$out.= end_form();
-	#print Dump();
-	#print join('.',@sel_cities);
 	
-	if(param('Action') && param('Action') eq 'Get data' && param('sc')=~/\d/){
+	#print join('.',@sel_cities);
+	if(param('Action') eq $$hashref{GET_DATA} && param('sc')=~/\d/){
 		my $id=create_jar($defyear, param('sc'));
 		my $url='data.cgi?r='.$id;
-		$out.= "<p><center><font color='red'><i>Step 4:</i></font>";
-		$out.= "<h4>Download to PC:</h4>";
-		$out.= "<b>JAR link: <a href=\'$url\'>$id</a><br><br>";
+		$out.= "<p><center><font color='red'><i><??STEP> 4:</i></font>";
+		$out.= "<h4><??PC_DL>:</h4>";
+		$out.= "<b><??JAR_LINK>: <a href=\'$url\'>$id</a><br><br>";
 		$url=~s/\?r/\?d/is;
-		$out.= "JAD link: <a href=\'$url\'>$id</a><br><br></b>";
+		$out.= "<??JAD_LINK>: <a href=\'$url\'>$id</a><br><br></b>";
 		$url=~s/\?d/\?t/is;
-		$out.= "<h4>Download to phone:</h4>";
-		$out.= "<b>Direct link: <a href=\'$url\'>$id</a><br>";
-		$out.= "<br><font color='red'>Attention: links are valid within next 2 hours!</font></b></center>";
+		$out.= "<h4><??PHONE_DL>:</h4>";
+		$out.= "<b><??DIRECTLINK>: <a href=\'$url\'>$id</a><br>";
+		$out.= "<br><font color='red'><??VALID_LINKS></font></b></center>";
 	}
 #	print end_html;
 #	$dbh->disconnect;
@@ -123,7 +122,7 @@ ADDCITY
 
 sub country_header{
 #	die "header";
-	my $res="<font color='red'><i>Step 2:</i></font><br><b>Country: </b>";
+	my $res="<font color='red'><i><??STEP> 2:</i></font><br><b><??COUNTRY>: </b>";
 	my $stcou = $dbh->prepare("SELECT countries.id, countries.name FROM countries ORDER BY countries.name")|| die $dbh->errstr;
 	$stcou->execute|| die $dbh->errstr;
 	while(my @row = $stcou->fetchrow_array){
@@ -146,7 +145,7 @@ sub state_header{
 	$stcou->execute|| die $dbh->errstr;
 	my $res='';
 	$cur_state='';
-	my $allst="<a href='#' onclick=\"show_country($cnum,0)\">&lt;All states&gt;</a>&nbsp;\n";
+	my $allst="<a href='#' onclick=\"show_country($cnum,0)\">&lt;<??ALL_STATES>&gt;</a>&nbsp;\n";
 	$allst="<b>$allst</b>" if !$statenum;
 	if($stcou->rows){
 		$res="<hr>$allst";
@@ -188,21 +187,21 @@ sub city_selector{
 	$res.="</div>";
 	$sth->finish;
 	if($i>0){
-		$res.=button(-value=>'Add cities', -onClick=>"city_add(\"$cur_country\",\"$cur_state\")");
+		$res.="<input type=button value='<??ADD_CITIES>' onClick='city_add(\"$cur_country\",\"$cur_state\")'/>";
 	}
 	else{
-		$res.="<i>No cities in database.</i>";
+		$res.="<i><??NO_CITIES></i>";
 	}
 	return $res;
 }
 
 sub selected_cities{
 	my $rs=restored_selection(param('sc'));
-	my $res="<center><b>Selected cities:</b></center>";
+	my $res="<center><b><??SEL_CITIES>:</b></center>";
 #	if($rs){
-		$res.="<div align=right>".button(-value=>'Delete selected', -onClick=>"city_del()")."</div>".
-			"<div id=selcit>".$rs."</div><p align=center><font color='red'><i>Step 3:</i></font> ";
-		$res.=submit('Action','Get data')."</p>";
+		$res.="<div align=right><input type='button'  value='<??DEL_SEL>' onclick='city_del()' /></div>".
+			"<div id=selcit>".$rs."</div><p align=center><font color='red'><i><??STEP> 3:</i></font> ";
+		$res.="<input type=submit name='Action' value='<??GET_DATA>'>"."</p>";
 #	}
 #	else{
 #		$res.="<center><b><i>No cities selected.</i></b></center>";

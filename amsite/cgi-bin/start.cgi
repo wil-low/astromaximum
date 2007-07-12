@@ -13,6 +13,7 @@ $CGI::DISABLE_UPLOADS = 1;  # no uploads
 
 our $cur_country='';
 our $dbh;
+our $lang;
 
 my $ADDCITY=<<ADDCITY;
 function city_add(cname){
@@ -54,24 +55,37 @@ function city_del(){
 };
 ADDCITY
 
-open(TEM, "<$tools::dir_source/index.tem");
-my @tem=<TEM>;
-close(TEM);
-my $temm="@tem";
-my $login_user=<<FORM;
-				<form method='post' action='../cgi-bin/start.cgi'>
-					<b>Member login:</b>
-					<br>Username <input type="text" name="user"></input>
-					<br>Password <input type="password" name="passwd"></input>
-					<br><input type=submit value='Login'></input>
-				</form>
-FORM
-
-my $content=header();
+my %langhash;
+my $content=header(-charset=>'UTF-8');
 
 $dbh = tools::db_connect();
 my ($userid, $usr)=tools::cookie_check($dbh);
 $usr=param('user') unless $usr;
+
+$lang=url_param('lang');
+$lang='en' unless defined($lang);
+open(TEM, "<$tools::dir_source/$lang/lang.txt");
+while(my $line=<TEM>){
+	chomp($line);
+	next if $line!~/=/is;
+	my($key, $value)=split(/=/, $line);
+	$langhash{$key}=$value;
+}
+close(TEM);
+
+my $temm=open_tem("index.tem");
+my $login_user=<<FORM;
+				<font size=-1>
+				<h4><??MEM_LOGIN></h4>
+				<span class=login>
+				<form method='post' action='../cgi-bin/start.cgi?lang=<?LNG>'>
+					<??USERNAME> <input type="text" name="user"></input>
+					<br><??PWD> <input type="password" name="passwd"></input>
+					<br><input type=submit value='<??LOG_IN>'></input>
+				</form></span>
+				<center><?MSG>&nbsp;</center></font>
+FORM
+
 #$content.="<p>Userid=$userid<p>";
 my $logtext;
 if(!$userid){
@@ -80,31 +94,33 @@ if(!$userid){
 		$usr=login($usr,param('passwd'));
 		if($usr){
 			my $session=set_cookie($usr);
-			print redirect(-uri=>'start.cgi', -cookie=>$session);
+			print redirect(-uri=>'start.cgi?lang='.$lang, -cookie=>$session);
 			exit(0);
 		}
 		else{
-			$logtext.="<center><font color=red>Invalid username or password!</font></center>";
+			$logtext=~s/<\?MSG>/<font color=red><??INVALID_LOGIN><\/font>/s;
 		}
 	}
 }
 else{
-	$logtext="Welcome, $usr! &nbsp;&nbsp;<a href='start.cgi?p=logout'>Logout</a>";
+	$logtext="<p align=center><??WELCOME>, $usr!</p><p align=right><a href='start.cgi?p=logout&lang=<?LNG>'><??LOGOUT></a></p>";
 }
 $temm=~s/<\?LOGIN_USER>/$logtext/is;
 $content.=$temm;
-my $page=param('p');
+my $page=url_param('p');
 $page='' unless defined($page);
-my $dyn='';
+
+my $dync;
 if($page eq 'geo'){
 	require geo;
-	$dyn=geo::get_content($dbh, $userid);
+	$dync=geo::get_content($dbh, $userid,\%langhash);
 }
 if($page eq 'logout'){
-	print redirect(-uri=>'start.cgi', -cookie=>cookie(-name=>'session',-value=>''));
+	print redirect(-uri=>'start.cgi?lang='.$lang, -cookie=>cookie(-name=>'session',-value=>''));
 	exit(0);
 }
 
+my $dyn='';
 $dyn="!!home.tem" if $page eq '';
 $dyn="!!features.tem" if $page eq 'feat';
 $dyn="!!links.tem" if $page eq 'links';
@@ -116,22 +132,35 @@ $dyn="!!test.tem" if $page eq 'test';
 $dyn="!!order.tem" if $page eq 'order';
 
 if($dyn=~s/!!(.+)/$1/is){
-	if(open(TEM, "<$tools::dir_source/$dyn")){
-		@tem=<TEM>;
-		close(TEM);
-		$dyn="@tem";
-		if($dyn=~/<body>(.+?)<\/body>/is){
-			$dyn=$1;
-		}
+	$dync=open_tem($dyn);
+	if($dync=~/<body>(.+?)<\/body>/is){
+		$dync=$1;
 	}
 	else{
-		$dyn="<p align=center>$dyn missing</p>";
+		$dync="<p align=center>$lang/$dyn missing</p>";
 	}
 }
-$content=~s/\Q<?DYNAMIC_CONTENT>\E/$dyn/is;
-
-#$content=~s/\Q<?DUMP>/&{\&Dump}/ise;
+$content=~s/\Q<?DYNAMIC_CONTENT>\E/$dync/is;
+$content=~s/\Q<?LNG>\E/$lang/isg;
+$content=~s/<\?\?([^>]+)>/$langhash{$1}/isge;
+$content=~s/\Q<?DUMP>/&{\&Dump}/ise;
 print $content;
+
+sub open_tem{ # *.tem
+	my $dyn=shift();
+	my $fname="$tools::dir_source/$dyn";
+	$fname="$tools::dir_source/$lang/$dyn" unless -f $fname;
+	if(open(TEM, "<$fname")){
+		undef $/;
+		$dyn=<TEM>;
+		$/="\n";
+		close(TEM);
+	}
+	else{
+		$dyn='';
+	}
+	return $dyn;
+}
 
 sub login{ # user, passwd
 	my($usr, $passwd)=@_;
