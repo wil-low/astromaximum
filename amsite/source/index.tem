@@ -4,20 +4,21 @@
 <title>Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Andrei Ivushkin">
-<meta name="date" content="2007-07-12T21:45:40+0300">
+<meta name="date" content="2007-07-16T20:04:01+0300">
 <meta name="copyright" content="S&W Axis">
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta http-equiv="content-style-type" content="text/css">
-<meta http-equiv="expires" content="now">
-<link href="../style.css" rel="stylesheet" type="text/css">
+<!--
+	<link href="../style.css" rel="stylesheet" type="text/css">
+	-->
 </head>
 <body>
 	<table border="1" width="100%" height=100%>
 		<tr height=35%>
-			<td width="20%" align=center valign=top>
+			<td width="22%" align=center valign=top>
 				<img src="/img/logo.png" border="0" alt="Astromaximum logo">
 				<table style="font-size:smaller;" width=100%><tr align=center>
 				<td><a href="start.cgi?lang=en">English</a></td>

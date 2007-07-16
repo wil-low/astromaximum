@@ -48,13 +48,13 @@ sub cookie_check{
 sub adm_panel{
 	return <<ADM;
 	
-<p><a href='geo.cgi'>Geo</a>
+<p><a href='start.cgi?p=geo'>Geo</a>
 &nbsp;&nbsp;<b>Admin:&nbsp;
 <a href='http://localhost/Tools/phpMyAdmin/'>phpMyAdmin</a> 
 <a href='http://localhost/Docs/MySQL4/index.html'>mySQL docs</a> 
 <a href='sessions.cgi'>Sessions</a> 
-<a href='files.cgi'>Files</a> 
-<a href='upload.cgi'>Upload</a>
+<a href='start.cgi?p=files'>Files</a> 
+<a href='start.cgi?p=upload'>Upload</a>
 </b></p>
 ADM
 

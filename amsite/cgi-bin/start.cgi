@@ -59,6 +59,17 @@ my %langhash;
 my $content=header(-charset=>'UTF-8');
 
 $dbh = tools::db_connect();
+my $coo=cookie('nobody');
+if(!$coo){
+	my $voc_end=moon_voc();
+	if(!$voc_end){
+		print $content;
+		print start_html().'<table height=200 align=center><tr><td valign=bottom align=center>Site is closed when Moon is Void of Course.'.
+		 " Please visit us after $voc_end.<br><br>Sorry for inconvenience.</td></tr></table>".end_html();
+		exit;
+	}
+	$content=header(-charset=>'UTF-8', -cookie=>cookie(-name=>'nobody', -value=>'1', expires=>"+1d"));
+}
 my ($userid, $usr)=tools::cookie_check($dbh);
 $usr=param('user') unless $usr;
 
@@ -115,6 +126,14 @@ if($page eq 'geo'){
 	require geo;
 	$dync=geo::get_content($dbh, $userid,\%langhash);
 }
+if($page eq 'upload'){
+	require upload;
+	$dync=upload::get_content($dbh, $userid,\%langhash);
+}
+if($page eq 'files'){
+	require files;
+	$dync=files::get_content($dbh, $userid,\%langhash);
+}
 if($page eq 'logout'){
 	print redirect(-uri=>'start.cgi?lang='.$lang, -cookie=>cookie(-name=>'session',-value=>''));
 	exit(0);
@@ -144,6 +163,7 @@ $content=~s/\Q<?DYNAMIC_CONTENT>\E/$dync/is;
 $content=~s/\Q<?LNG>\E/$lang/isg;
 $content=~s/<\?\?([^>]+)>/$langhash{$1}/isge;
 $content=~s/\Q<?DUMP>/&{\&Dump}/ise;
+$content.="<h1>Usr=$usr</h1>";
 print $content;
 
 sub open_tem{ # *.tem
@@ -185,4 +205,14 @@ sub set_cookie{
 	$sth->finish;
 	$dbh->disconnect;
 	return cookie(-name=>'session',-value=>$dig,-expires=>'+1h');
+}
+
+sub moon_voc{
+	my $now=time();
+	if($now=~/[02468]:\d\d 2007$/is){
+		return undef;
+	}
+	else{
+		return $now;
+	}
 }
