@@ -74,6 +74,7 @@ private:
   void calcDegPass(VAE & vae, int planet);
   void NormAngle(double &a);
 
+	void VOC_generate(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2);
   void registerAspect(VAE & moonvae,VAE &vae, int i, int j);
   void registerDegPass(VAE &dpe, int deg, int body, int interval);
   void release(VAE & v);

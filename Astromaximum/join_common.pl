@@ -49,4 +49,5 @@ foreach my $ff(@bins){
 		$counter=0;
 	}
 }	
-
+my $fsize=-s "$outp/common.dat";
+print "$outp/common.dat size=$fsize.\n";

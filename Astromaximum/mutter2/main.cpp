@@ -41,6 +41,15 @@ int main(int argc, char* argv[])
   scanf("%s",path);
   return 0;
 */
+	if((argc==2)&&(strcmp(argv[1],"--help"))==0){
+		printf("Usage:  mutter2 [options]\n");
+		printf(" options:\n");
+		printf("   asctest <dir> - ascending test for events in dir/*.bin\n");
+		printf("   <year> - calculate ephemeris if none, and common.dat\n");
+		printf("   year <prefix> electio - calculate APHETICS with prefix\n");
+		printf("   year <prefix> <lon> <lat> [electio]- calc locations on coords with prefix\n");
+		exit(0);
+	}
   strcpy(path,argv[0]);
   printf("argv[0] is: %s\n", path);
   char *pos=strrchr(path,'\\');
@@ -159,23 +168,28 @@ int main(int argc, char* argv[])
     VAE work, assist, vout, work2;
     if(strcmp(argv[2],"electio")==0){
 //      df.loadAphetics(aphetics);
-      df.choice(EV_APHETICS, work, assist, vout, work2, argv[2]);
+      df.choice(EV_APHETICS, work, assist, vout, work2, argv[3]);
 //      scanf("%s",buf);
     }
     else{
-      if(argc<5)
-        return NOT_ENOUGH_PARAMS;
-      df.Lon=strtod(argv[3],NULL);
-      df.Lat=strtod(argv[4],NULL);
-  // TODO remove this line
-//      df.stepCount=8000;
-      df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
-      df.calcAscData();
+			if(strcmp(argv[2],"vocsql")==0){
+				
+			}
+			else{
+				if(argc<5)
+					return NOT_ENOUGH_PARAMS;
+				df.Lon=strtod(argv[3],NULL);
+				df.Lat=strtod(argv[4],NULL);
+		// TODO remove this line
+	//      df.stepCount=8000;
+				df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
+				df.calcAscData();
 
-      df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
-      df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
-      if(argc>5 && (strcmp(argv[5],"electio")==0)){
-        df.choice(EV_ASCAPHETICS, work, assist, vout, work2, argv[2]);
+				df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
+				df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
+				if(argc>5 && (strcmp(argv[5],"electio")==0)){
+					df.choice(EV_ASCAPHETICS, work, assist, vout, work2, argv[2]);
+				}
       }
     }
     delete[] ephData;

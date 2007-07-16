@@ -1444,3 +1444,35 @@ bool DataFile::aph_ne(const Event* ev0, const Event* ev1)
   return (ev0->degree != ev1->degree) || (ev0->planetId[0] != ev1->planetId[0])
     || (ev0->planetId[1] != ev1->planetId[1]);
 }
+
+void DataFile::VOC_generate(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2){
+	readSubData("signenter01.bin",work);
+	readSubData("aspects01.bin",assist);
+	double st;
+	st=startJD;
+	for(int i=0; i<work.size(); i++){
+		int sz;
+		sz=select(assist,st,work[i]->julianDay,SE_MOON,true,vout);
+		Event *last;
+		if(sz) last=vout[sz-1];
+		double evstart;
+		evstart=sz? last->julianDay: st;
+		char lastPlt,lastAsp;
+		lastPlt=SE_MOON;
+		if(sz)
+			if(last->planetId[0]==lastPlt)
+				lastPlt=last->planetId[1];
+			else
+				lastPlt=last->planetId[0];
+		lastAsp=0;
+		if(sz)
+			lastAsp=last->degree;
+		Event* ev=new Event(evstart,SE_MOON);
+		ev->date[1]=ev->packDate(work[i]->julianDay);
+		ev->degree=lastAsp; ev->planetId[1]=lastPlt;
+		if(ev->date[0]!=ev->date[1])
+			work2.push_back(ev);
+		st=work[i]->julianDay;
+		vout.clear();
+	}
+}

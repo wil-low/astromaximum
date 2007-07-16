@@ -4,6 +4,7 @@
 <!-- (If you delete it and reopen the project it will be recreated.) -->
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
+    <property name="imei.code" value="359593001109710"/>
     <import file="nbproject/build-impl.xml"/>
     <import file="../jar_or_kzip.xml"/>
     <!--
@@ -80,7 +81,6 @@
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
     <property name="AM.dist" value="dist/midp2y2007release_tb/"/>
 <!--    
-    <property name="imei.code" value="359593001109710"/>
     classpath="${platform.bootclasspath}" 
 --> 
     <target name="pre-init">
@@ -151,6 +151,7 @@
         <length string="${imei.code}" length="15"/>
       </condition>
       <fail unless="valid.imei" message="---- Invalid IMEI (${imei.code}) ! ----"/>
+			<echo message="Execution script   ${basedir}/../join_common.pl ${class.dir} ${imei.code}" />
       <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../join_common.pl"/>
         <arg value="${class.dir}"/>

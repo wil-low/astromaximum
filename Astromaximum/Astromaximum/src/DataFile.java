@@ -302,6 +302,27 @@ final class DataFile{
 //#     return v;
 //#   }
 //#else  
+  
+ //#if 0==1
+//#   Datafile format: (all big-endian)
+//# 		4 bytes - year
+//#     2 bytes - month
+//#     2 bytes - day
+//#     2 bytes - hour
+//#     2 bytes - mins
+//#     2 bytes - days in this year
+//#     
+//#     buffer:
+//#       1 bytes - IMEI digit
+//# 			1 bytes - event type
+//# 			2 bytes - event array length, to skip to the next array
+//# 			event records:
+//# 			  2 bytes - event flags
+//# 			  2 bytes - item count
+//# 			    next data depends on flags
+//#     
+ //#endif    
+  
   Vector readSubData(byte[] buf, int evtype, int planet, boolean isCommon, long dayStart, long dayEnd) {
     final Vector v=new Vector();
     int flag;
@@ -316,13 +337,15 @@ final class DataFile{
       }
       while(true){
         int ch=is.readUnsignedByte();
-        while (evtype != is.readUnsignedByte()) {
+				int rub=is.readUnsignedByte();
+        while (evtype != rub) {
           if(isCommon && Astromaximum.options!=null){
             Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
           }
           skipOff = is.readShort()-3;
           is.skip(skipOff);
           ch=is.readUnsignedByte();
+					rub=is.readUnsignedByte();
         }
         skipOff=is.readShort();
         flag=is.readShort();
