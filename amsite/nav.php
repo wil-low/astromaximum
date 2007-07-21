@@ -1,24 +1,11 @@
 <?php
-include('dbconnect.php');
+include_once('lang.php');
+unset($LOGIN_MSG);
 
-function registered_user(){
-	if($sid=session_id()){
-		echo '<h3>'.$sid.'</h3>';
-	}
-	else{
-		session_start();
-	}
-	$result=mysql_query('SELECT * FROM customers')
-		or die(mysql_error());
-	echo '<table>';
-	while($row=mysql_fetch_array($result)){
-		echo '<tr><td>'.implode('</td><td>',$row).'</td></tr>';
-	}
-	echo '</table>';
-	return 'aivushkin';
-}
-?>
+function emit_nav1(){
+	global $lang_, $i18, $LOGIN_MSG;
 
+echo <<<NAV1
 <table border="1" width="100%" height=100%>
 	<tr height=35%>
 		<td width="22%" align=center valign=top>
@@ -28,59 +15,83 @@ function registered_user(){
 			<td><a href="index.php?lang=ru">Русский</a></td>
 			</tr></table>
 			<br><br>
-			<a href=index.php?<?php echo "$lang_>".$i18['MAIN']?></a><br><br>
-			<a href=feat.php?<?php echo "$lang_>".$i18['FEAT']?></a><br><br>
-			<a href=scr.php?<?php echo "$lang_>".$i18['SCR']?></a><br><br>
-			<a href=req.php?<?php echo "$lang_>".$i18['REQ']?></a><br><br>
-			<a href=contact.php?<?php echo "$lang>".$i18['CONTACT']?></a><br><br>
-			<a href=links.php?<?php echo "$lang_>".$i18['LINKS']?></a><br><br>
+			<a href=index.php?{$lang_}>{$i18['MAIN']}</a><br><br>
+			<a href=feat.php?{$lang_}>{$i18['FEAT']}</a><br><br>
+			<a href=scr.php?{$lang_}>{$i18['SCR']}</a><br><br>
+			<a href=req.php?{$lang_}>{$i18['REQ']}</a><br><br>
+			<a href=contact.php?{$lang_}>{$i18['CONTACT']}</a><br><br>
+			<a href=links.php?{$lang_}>{$i18['LINKS']}</a><br><br>
 		</td>
 		<td rowspan=3 valign=top>
-			<?php echo $content ?>
+NAV1;
+	if(isset($_POST['user'])){
+		if(login($_POST['user'],$_POST['passwd'])){
+		}
+		else{
+			$LOGIN_MSG='INVALID_LOGIN';
+		}
+		unset($_POST['user']);
+	}
+}
+
+function emit_nav2(){
+	global $lang_, $i18, $LOGIN_MSG;
+
+echo <<<NAV2
 		</td>
 	</tr>
 	<tr>
 	<td height=20%>
 	<center>
+NAV2;
 		
-<?php
-if($username=registered_user())
+
+if($_SESSION['username']!='nobody')
 {
-?>
+echo <<<NAV3
+	<p align=center>{$i18['WELCOME']}, {$_SESSION['username']}!</p>
+	<p align=right><a href=logout.php?{$lang_}>{$i18['LOGOUT']}</a></p>
+NAV3;
+}
+else{
+echo <<<NAV4
 	<font size=-1>
-	<h4><?php echo $i18['MEM_LOGIN']?></h4>
+	<h4>{$i18['MEM_LOGIN']}</h4>
 	<span class=login>
-	<form method='post' action=<?php echo $_SERVER['SCRIPT_NAME']."?$lang_"?> >
-		<?php echo $i18['USERNAME']?> <input type="text" name="user"></input>
-		<br><?php echo $i18['PWD']?> <input type="password" name="passwd"></input>
-		<br><input type=submit value='<?php echo $i18['LOG_IN']?>'></input>
+	<form method='post' action={$_SERVER['SCRIPT_NAME']}?{$lang_}>
+		{$i18['USERNAME']} <input type="text" name="user"></input>
+		<br>{$i18['PWD']} <input type="password" name="passwd"></input>
+		<br><input type=submit value={$i18['LOG_IN']}></input>
 	</form></span>
 	<center>
-	<?php 
-		if(isset($_GET['LOGIN_MSG'])){
-			echo $i18['LOGIN_MSG'];
-		}
-	?>
-	&nbsp;</center></font>
-<?php
+NAV4;
 }
-?>
 
+if(isset($LOGIN_MSG)){
+	echo $i18[$LOGIN_MSG];
+	unset($LOGIN_MSG);
+}
+
+echo "&nbsp;</center></font>";
+
+echo <<<NAV5
 	</center>
 	</td></tr>
 	<tr align=center>
 		<td>
-			<p><a href=test.php?<?php echo "$lang_>".$i18['TEST']?></a></p>
-			<p><a href=demo.php?<?php echo "$lang_>".$i18['DEMO']?></a></p>
+			<p><a href=test.php?{$lang_}>{$i18['TEST']}</a></p>
+			<p><a href=demo.php?{$lang_}>{$i18['DEMO']}</a></p>
 			<p><table cellpadding="0" cellspacing="0">
-				<tr align=center><td><a href=order.php?<?php echo "$lang_>".$i18['ORDER']?></a></td>
+				<tr align=center><td><a href=order.php?{$lang_}>{$i18['ORDER']}</a></td>
 				<td><span align="center">&nbsp;
 				<img src="/img/paypal.png" alt="PayPal"></span></td></tr>
 			</table></p>
-			<p><a href=geo.php?<?php echo "$lang_>".$i18['DB']?></a></p>
+			<p><a href=geo.php?{$lang_}>{$i18['DB']}</a></p>
 		</td>
 	</tr>
 </table>
-
-
-
+</body>
+</html>
+NAV5;
+}
+?>

@@ -4,10 +4,10 @@ include('lang.php');
 <!--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">-->
 <html>
 <head>
-<title>About us - Astromaximum</title>
+<title>Requirements - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="">
-<meta name="date" content="2007-07-21T16:44:13+0300">
+<meta name="date" content="2007-07-21T19:06:19+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -23,7 +23,7 @@ include('nav.php');
 emit_nav1();
 ?>
 
-<center><h3>What is Astromaximum?</h3></center>
+<center><h3>Requirements</h3></center>
 
 <?php
 emit_nav2();
