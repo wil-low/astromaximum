@@ -2,10 +2,13 @@
 use strict;
 use POSIX;
 
-our $imei='359593001109710';
+our $imei='000000000000000';
 #our $imei='359308007701623';
 #die sprintf('%x',substr($imei,0,8));
-
+our $dest='.';
+if(scalar(@ARGV)==0){
+    die "Usage: <year> [dest dir] [IMEI]\n";
+}
 my ($year,$month, $day, $hour, $min, $day_count)=($ARGV[0],1,1,0,0,365);
 if($year%100==0){
 	if($year%400==0){
@@ -21,24 +24,24 @@ else{
 	
 $0=~/(.+\/)/is;
 
-if($ARGV[1]){
-    if($ARGV[1]=~/^\d{15}$/is){
-	$imei=$ARGV[1];
+if($ARGV[2]){
+    if($ARGV[2]=~/^\d{15}$/is){
+	$imei=$ARGV[2];
     }
     else{
-	die "Invalid IMEI=$ARGV[1] ";
+	print "Invalid IMEI=$ARGV[2],using $imei\n";
     }
 }
 
+$dest=$ARGV[1] if $ARGV[1];
 my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
 our $path=$1;
 
-my $year=$ARGV[0];
-$path.="archive/$year/";
+$path.="mutter/output/archive/$year/";
 my $InF=undef;
 my $OutF;
 undef $/ ;
-	open($OutF, ">$path".'common.dat') or die "No file";
+	open($OutF, ">$dest/".'common.dat') or die "No file";
 	binmode($OutF);
 	print $OutF $header;
 	close($OutF);
@@ -57,13 +60,13 @@ foreach my $ff(@bins){
 	}
 	next;
 }	
-
+print $dest."/common.dat ($year) saved.\n";
 
 sub writeData
 {
 	my $bintype=shift;
 	my $src=shift;
-	open($OutF, ">>$path".'common.dat') or die "No file";
+	open($OutF, ">>$dest/".'common.dat') or die "No file";
 	binmode($OutF);
 	open($InF, "<$src") or die "No file";
 	binmode($InF);

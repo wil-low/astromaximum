@@ -4,7 +4,7 @@
 <!-- (If you delete it and reopen the project it will be recreated.) -->
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
-    <property name="imei.code" value="359593001109710"/>
+<!--    <property name="imei.code" value="359593001109710"/> -->
     <import file="nbproject/build-impl.xml"/>
     <import file="../jar_or_kzip.xml"/>
     <!--
@@ -88,10 +88,21 @@
         <srcfiles dir= "../arrays" includes="**/size?.txt"/>
         <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
       </uptodate>
+      <antcall target="ask.year"/>
       <antcall target="size.compile"/>
     </target>
    
-  
+		<target name="ask.year" unless="year">
+			<input addproperty="year" message="Enter year:" defaultvalue="${year}"/>
+			<echo message="${year} entered"/>
+      <exec executable="perl" failonerror="true">
+        <arg value="${basedir}/../common_create.pl"/>
+        <arg value="${year}"/>
+        <arg value="${basedir}/src"/>
+        <arg value="${imei.code}"/>
+      </exec>
+		</target>
+		
     <target name="size.compile" description="Size to dat files" unless="size2dat.notRequired">
       <echo message="Invoking size2dat.pl:"/>
       <exec executable="perl" failonerror="true">
@@ -115,9 +126,11 @@
     </target>
      
     <target name="pre-obfuscate" description="Installing timebomb.">
+			<!--
       <antcall target="common.install">
         <param name="class.dir" value="${basedir}/${build.classes.dir}"/>
       </antcall>
+			-->
       <condition property="do.timebomb">
         <equals arg1="${config.active}" arg2="midp2y2007release_tb"/>
       </condition>
@@ -146,11 +159,12 @@
       <echo message="Desktop=${build.desktop}"/>
     </target>
    
+		<!--
     <target name="common.install" if="imei.code">
       <condition property="valid.imei">
         <length string="${imei.code}" length="15"/>
       </condition>
-      <fail unless="valid.imei" message="---- Invalid IMEI (${imei.code}) ! ----"/>
+      <fail unless="valid.imei" message=" Invalid IMEI (${imei.code}) ! "/>
 			<echo message="Execution script   ${basedir}/../join_common.pl ${class.dir} ${imei.code}" />
       <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../join_common.pl"/>
@@ -158,7 +172,7 @@
         <arg value="${imei.code}"/>
       </exec>
     </target>
-
+-->
     <target name="obfuscate" depends="init,compile,obfuscate-check,pre-obfuscate" description="Obfuscate project classes." unless="no.obfusc">
         <dirname file="${obfuscator.srcjar}" property="obfuscator.srcjar.dir"/>
         <dirname file="${obfuscator.destjar}" property="obfuscator.destjar.dir"/>

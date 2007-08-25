@@ -59,6 +59,9 @@ int main(int argc, char* argv[])
   if(pos){
       *(pos+1)=0;
   }
+	else{
+		path[0]=0;
+	}
   strcat(path,"../mutter/");
   chdir(path);
   printf("Current directory is: %s\n", path);

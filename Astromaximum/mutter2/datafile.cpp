@@ -2,6 +2,8 @@
 #include <fstream>
 #include <algorithm>
 #include "assert.h"
+#include "errno.h"
+
 using namespace std;
 #pragma hdrstop
 
@@ -318,7 +320,8 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
   printf("\nSaving %s...",buf);
   FILE *fout=fopen(buf,"wb");
 	if(!fout){
-		printf("Cannot create file %s",buf);
+		int ern=errno;
+		printf("Cannot create file %s: %s",buf,strerror(ern));
 		return false;
 	}
   fwrite(&evtype, 1, 1, fout);
@@ -388,7 +391,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
   sBuf=swapShort(fsize);
   fwrite(&sBuf, 2, 1, fout);
   fclose(fout);
-  printf("Done. \n");
+  printf("Done. ");
   return true;
 }
 
@@ -829,10 +832,9 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
           writeSubData(work2,EV_DEGREE_PASS,EF_CUMUL_DATE_W|EF_DATE|EF_DEGREE,i,fname);
         }
         else{
-          int flag=EF_DEGREE|EF_NEXT_DATE2;
-          if(i<=SE_MARS)
-            flag|=EF_CUMUL_DATE_W;
-          writeSubData(work,EV_DEGREE_PASS,flag,i,fname);
+          if(!writeSubData(work,EV_DEGREE_PASS,EF_CUMUL_DATE_W|EF_DEGREE|EF_NEXT_DATE2,i,fname)){
+						writeSubData(work,EV_DEGREE_PASS,EF_DEGREE|EF_NEXT_DATE2,i,fname);
+					}
         }
         work.clear(); work2.clear(); release(allDegPass);
       }
