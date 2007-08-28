@@ -55,13 +55,14 @@ NAV3;
 }
 else{
 echo <<<NAV4
-	<font size=-1>
 	<h4>{$i18['MEM_LOGIN']}</h4>
 	<span class=login>
 	<form method='post' action={$_SERVER['SCRIPT_NAME']}?{$lang_}>
-		{$i18['USERNAME']} <input type="text" name="user"></input>
-		<br>{$i18['PWD']} <input type="password" name="passwd"></input>
-		<br><input type=submit value={$i18['LOG_IN']}></input>
+		<table cellpadding=0 border=0>
+		<tr><td><font size=-1>{$i18['USERNAME']}</font></td><td><input type="text" name="user"></input></td></tr>
+		<tr><td><font size=-1>{$i18['PWD']}</font></td><td><input type="password" name="passwd"></input></td></tr>
+		<tr><td colspan=2 align=center><input type=submit value={$i18['LOG_IN']}></input></td></tr>
+	</table>
 	</form></span>
 	<center>
 NAV4;
@@ -77,9 +78,9 @@ echo "&nbsp;</center></font>";
 echo <<<NAV5
 	</center>
 	</td></tr>
-	<tr align=center>
+	<tr align=center valign=top>
 		<td>
-			<p><a href=test.php?{$lang_}>{$i18['TEST']}</a></p>
+			<p><br><a href=test.php?{$lang_}>{$i18['TEST']}</a></p>
 			<p><a href=demo.php?{$lang_}>{$i18['DEMO']}</a></p>
 			<p><table cellpadding="0" cellspacing="0">
 				<tr align=center><td><a href=order.php?{$lang_}>{$i18['ORDER']}</a></td>

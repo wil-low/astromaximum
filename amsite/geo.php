@@ -7,7 +7,7 @@ include_once('lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="">
-<meta name="date" content="2007-07-21T19:53:01+0300">
+<meta name="date" content="2007-08-28T20:43:47+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -21,16 +21,23 @@ include_once('lang.php');
 <?php
 include('nav.php');
 emit_nav1();
-if(!$_SESSION['uid']){ 
-	echo "<br><p align=center>".$i18['DB_ACCESS']."</p>";
-	emit_nav2();
-	exit();
-}
 $defyear=2007;
 if(isset($_POST['year'])){
 	$defyear=$_POST['year'];
 }
+$chac=check_access();
+if(!$chac){ 
+	echo "<br><p align=center>".$i18['DB_ACCESS']."</p>";
+	emit_nav2();
+	exit();
+}
+if($chac==1){
 ?>
+<b>Admin:</b> <a href='db_stats.php'>DB stats</a> 
+<?php
+}
+?>
+<h3 align=center><?php echo $i18['DB']?></h3>
 
 <script>
 function city_add(cname,sname){

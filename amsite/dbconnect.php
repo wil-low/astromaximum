@@ -45,4 +45,13 @@ function login($user,$pwd){
 	return $res;
 }
 
-?>
+function check_access(){
+	$user=$_SESSION['uid'];
+	if(!$user){
+		return 0; 
+	}
+	if($user==2){
+		return 1;	
+	}
+	return 2;
+}
