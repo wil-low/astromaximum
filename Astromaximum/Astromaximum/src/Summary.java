@@ -354,6 +354,8 @@ class Summary extends Canvas implements CommandListener, Runnable{
 //    System.out.println(period0);
 //    System.out.println(new Date(period0).toString());
     period1 = period0 +Astromaximum.MSECINDAY-1;
+    period0=period0/1000*1000;
+    period1=period1/1000*1000;
     SummItem si=getItem(Event.EV_ECLIPSE,1);
     si.tag=1;
     SummItem si0=getItem(Event.EV_ECLIPSE,0);
@@ -388,6 +390,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
 //****** VOC
     getItem(Event.EV_VOC).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
         Event.EV_VOC,Event.SE_MOON,false, period0, period1));
+//    Astromaximum.evDump(getItem(Event.EV_VOC).events);
 //****** VIA COMBUSTA
     getItem(Event.EV_VIA_COMBUSTA).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
         Event.EV_VIA_COMBUSTA,Event.SE_MOON,false, period0, period1));
