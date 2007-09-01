@@ -5,6 +5,7 @@ use warnings;
 use lib 'D:/Willow/prj/astrology/nomad_prj'; 
 use lib 'd:/projects/nomad_prj';
 use tools;
+use POSIX;
 
 my @dirs=qw(BALT CA Caribas Caucasus CE EE KAZ MT NE PO RU SA Stans test2006 UA US WE);
 
@@ -32,8 +33,9 @@ $0=~/(.+\\)/is;
 our $path=$1;
 our $sortmode='city';
 
-($year)=tools::get_year($path);
-die "Invalid year record: $year" if $year!~/\d{4}/is;
+
+my $year=POSIX::strftime('%Y', localtime);
+#die "Invalid year record: $year" if $year!~/\d{4}/is;
  
 #	$year=2008;
 my @selected;
