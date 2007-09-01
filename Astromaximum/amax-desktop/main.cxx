@@ -55,10 +55,10 @@ int main(int argc, char* argv[]){
 	Symbol* si=(Symbol*)sima;
 	si->name("planet");
 	Button btn(10,10,100,50);
-	btn.labelfont(font("WinStarTT",0));
-	btn.labelsize(20);
+//	btn.labelfont(font("WinStarTT",0));
+//	btn.labelsize(20);
 	btn.labelcolor(WHITE);
-	btn.label("\xa2\xa1\xa3");
+	btn.label("\xa2\xa1\xa3@planet");
 	w.resizable(&btn);
 	file_chooser ("","*","init");
 	Painter pnt(10,80,100,100);
@@ -79,8 +79,8 @@ int main(int argc, char* argv[]){
 	}
 	brw.end();
 	LibUI ae;
-	ae.window->show();
-//	w.show(argc, argv);
+	//ae.window->show();
+	w.show(argc, argv);
 	//mw.window->show(argc, argv);
 	return run();
 }

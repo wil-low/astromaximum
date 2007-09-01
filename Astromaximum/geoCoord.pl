@@ -185,6 +185,8 @@ if(! -f "$dir/$city_inf.txt"){
 	my $i=0;
 	our $city;
 	undef $/ ;
+	my $newdir=sprintf('mutter/output/archive/%d/%s',$year,$city_inf);
+	mkdir $newdir unless -d $newdir;
 #	foreach my $cit(@cities){
 #		chomp($cit);
 #		next if $cit=~/\A\s*\Z/is;
@@ -206,8 +208,6 @@ if(! -f "$dir/$city_inf.txt"){
 		next if $cit=~/\#/is;
 		next if $cit!~/\d/is;
 		my @params=split(/\|/is, $cit);
-		my $newdir=sprintf('mutter/output/archive/%d/%s',$year,$city_inf);
-		mkdir $newdir unless -d $newdir;
 		$fname=$newdir.sprintf('/Data%02d.dat',$i);
 		$city=$params[0];
 		$city=~s/.+!//is;
@@ -249,6 +249,9 @@ if(! -f "$dir/$city_inf.txt"){
 
 		$i++;
 	}
+	open($InF, ">$newdir/$city_inf.txt");
+	print($InF join('', @cities));
+	close($InF);
 #	my @bins=glob("$dir\\Data*.dat");
 #	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
 
