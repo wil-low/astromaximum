@@ -6,6 +6,7 @@ use lib 'D:/Willow/prj/astrology/nomad_prj';
 use lib 'd:/projects/nomad_prj';
 use tools;
 
+my @dirs=qw(BALT CA Caribas Caucasus CE EE KAZ MT NE PO RU SA Stans test2006 UA US WE);
 
 my %imeis=qw( 
 	sonnenturm 359593001109710 
@@ -18,6 +19,7 @@ my $init_imei=$imeis{'sonnenturm'};
 $init_imei=$imeis{$ARGV[0]} if defined $ARGV[0];
 $init_imei='0' x (15-length($init_imei)).$init_imei;
 
+my @files;
 our $year='';
 our $antpath='d:\\Program Files\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat';
 if(! -f $antpath){
@@ -33,7 +35,7 @@ our $sortmode='city';
 ($year)=tools::get_year($path);
 die "Invalid year record: $year" if $year!~/\d{4}/is;
  
-my @files=get_city_list();
+#	$year=2008;
 my @selected;
 my $debug=0;
 my $kzip=1;
@@ -41,6 +43,13 @@ my $ltime=0;
 
 my $main = new MainWindow(-title=>"Astromaximum Release GUI - $year");
 my $frame0=$main->Frame();
+
+my $frame8=$frame0->Frame();
+my $year_entry=$frame8->Entry(-text=>$year, -width=>5)->pack(-side=>'left');
+$frame8->Button(-text=>"Set year", -command=>\&set_year)->pack(-side=>'left');
+$frame8->pack(-pady=>3);
+
+
 my $imei=$frame0->Entry(-text=>$init_imei);
 my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>[\&do_imei,'midp2y2007release']);
 my $bt_imei_logger=$frame0->Button(-text=>"IMEI logger", -command=>[\&do_imei,'midp2y2007release_logger']);
@@ -117,21 +126,44 @@ $frame3->Button(-text=>"All", -command=>\&do_sel_all,-state=>'disabled')->pack(-
 $frame3->Button(-text=>"Invert", -command=>\&do_sel_invert,-state=>'disabled')->pack(-side=>"left",-fill=>"both", -expand=>1);
 $frame3->Button(-text=>"None", -command=>\&do_sel_none,-state=>'disabled')->pack(-side=>"left",-fill=>"both", -expand=>1);
 
-
-refill_list($lbcities, \@files);
-refill_list($lbsel, \@selected);
+refill_all();
 
 MainLoop();
+
+sub set_year{
+	$year=$year_entry->get();
+	$main->configure(-title=>"Astromaximum Release GUI - $year");
+	refill_all();
+}
+
+sub refill_all{
+	@files=get_city_list();
+	refill_list($lbcities, \@files);
+	refill_list($lbsel, \@selected);
+}
 
 sub comparator {
 	return $a->{$sortmode} cmp $b->{$sortmode};
 }
 
+sub add_props{
+	my($conf, $year, $desc)=@_;
+	$year=~/\d\d(\d\d)/is;
+	open(PROPS, ">$path".'Astromaximum/props.txt') or die "add_props $!";
+	print(PROPS "manifest.midlets=MIDlet-1: Astromaximum '$1,/res/icon.png,Astromaximum\\n\n".
+		"manifest.others=MIDlet-Vendor: S&W Axis\\nMIDlet-Name: Astromaximum$year\\nMIDlet-Description: $desc\\nMIDlet-Version: 1.0\\n\n");
+	close(PROPS);
+	my $res=" -f Astromaximum/build.xml -Dconfig.active=$conf".
+		" -Dfile.reference.Astromaximum-deploy=./deploy -Dyear=$year".
+		" -Dconfigs.$conf.debug.level=";
+	return $res;
+}
+	
 sub do_timebomb {
 	print "timebomb\n";
 	my $conf='midp2y2007release_tb';
 	my $timeout=$lbox->get();
-	my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dfile.reference.Astromaximum-deploy=./deploy -Dtb.timeout=$timeout -Dconfigs.$conf.debug.level=";
+	my $cmd="\"$antpath\" -Dtb.timeout=$timeout ".add_props($conf, $year,'');
 	if($debug){
 		$cmd.="debug";
 	}
@@ -139,7 +171,7 @@ sub do_timebomb {
 		$cmd.="fatal";
 	}
   $cmd.=' -Dneed.kzip=true' if $kzip;
-	$cmd.=" clean deploy";
+	$cmd.=" deploy";
 	print "$cmd\n";
 	my $res=system($cmd);
 	if($res==0){
@@ -155,7 +187,8 @@ sub do_imei { # config_name
 	$code.='0' x (15-length($code));
 	if($code=~/\A\d{15}\Z/is){
 		print "imei\n";
-		my $cmd="\"$antpath\" -f Astromaximum\\build.xml -Dconfig.active=$conf -Dfile.reference.Astromaximum-deploy=./deploy -Dimei.code=$code -Dconfigs.$conf.debug.level=";
+		$year=~/\d\d(\d\d)/is;
+		my $cmd="\"$antpath\" -Dimei.code=$code ".add_props($conf, $year, $code);
 		if($debug){
 			$cmd.="debug";
 		}
@@ -163,7 +196,7 @@ sub do_imei { # config_name
 			$cmd.="fatal";
 		}
 		$cmd.=' -Dneed.kzip=true' if $kzip;
-		$cmd.=" clean deploy";
+		$cmd.=" deploy";
 		print "$cmd\n";
 		my $res=system($cmd);
 		if($res==0){
@@ -233,6 +266,43 @@ sub do_lbunselect {
 }
 
 sub get_city_list {
+	my $arcs=$path."mutter/output/archive/$year/";
+	my @files;
+	my @inis;
+	foreach my $ini (@dirs){
+		my $curtxt=$arcs."$ini/$ini.txt";
+		unless(-f $curtxt){
+			warn "No region: $curtxt\n";
+			next;
+		}
+		if(open(INI,"<$curtxt")){
+			my $i=0;
+			while(my $ci=<INI>){
+				next if $ci=~/\#/is;
+				chomp($ci);
+				$ci=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
+				$ci=~/(.+?)\|.+\|(.+)/is;
+				my($city,$state)=($1,$2);
+				$city=~s/.+!//is;
+				$state=~s/.+\$//is;
+				my $datapath="$arcs$ini/".sprintf('Data%02d.dat', $i++);
+				if(-f $datapath){
+					push(@files, {city=>$city, state=>$state, fname=>$datapath} );
+				}
+				else{
+					warn "No datafile $datapath\n";
+				}
+			}
+			close(INI);
+		}
+		else{
+			 warn "No file $curtxt\n";
+		}
+	}
+	return sort comparator @files;
+}
+
+sub get_city_list2 {
 	my @inis=glob($path."GeoAM\\geo\\*.ini");
 	my @files;
 	foreach my $ini (@inis){

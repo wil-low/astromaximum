@@ -1,0 +1,8 @@
+UA:Kiev
+RU:Moscow
+CE:Vienna
+
+WE:Data00 London
+UA:Data00 Kiev
+RU:Data00 Moscow
+CE:Data10 Vienna

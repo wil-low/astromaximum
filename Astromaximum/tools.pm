@@ -7,7 +7,7 @@ our $rar='d:\Program Files\WinRAR\winrar.exe';
 sub join_datafiles # size, destfile, fname_listref
 {
 	my $size=$_[0];
-	open(OUTF, ">$_[1]") or die "No file";
+	open(OUTF, ">$_[1]") or die "No file $_[1]";
 	my @bins=@{$_[2]};
 	my @buf;
 	my @bodies;

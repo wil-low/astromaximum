@@ -462,8 +462,8 @@ public class Astromaximum extends MIDlet implements CommandListener{
   }
 //#if "timeBomb" @ protection
 //#   static byte[] getArray() {
-//#debug
-//#         System.out.println(Options.optFlags);
+//# ////#debug
+//# //        System.out.println(Options.optFlags);
 //#     int now=(int)(Options.currentTime()/4096);
 //#      Astromaximum.log("Timebomb:");
 //#      Astromaximum.log(Long.toString(GeoList.tzOffset));

@@ -84,24 +84,31 @@
     classpath="${platform.bootclasspath}" 
 --> 
     <target name="pre-init">
+      <loadproperties srcfile="props.txt"/>
       <uptodate property="size2dat.notRequired">
         <srcfiles dir= "../arrays" includes="**/size?.txt"/>
         <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
       </uptodate>
-      <antcall target="ask.year"/>
-      <antcall target="size.compile"/>
-    </target>
-   
-		<target name="ask.year" unless="year">
-			<input addproperty="year" message="Enter year:" defaultvalue="${year}"/>
-			<echo message="${year} entered"/>
+      <antcall target="ask.year"/> 
       <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../common_create.pl"/>
         <arg value="${year}"/>
         <arg value="${basedir}/src"/>
         <arg value="${imei.code}"/>
       </exec>
-		</target>
+      <exec executable="perl" failonerror="true">
+        <arg value="${basedir}/../locations_create.pl"/>
+        <arg value="${year}"/>
+        <arg value="${basedir}/../loclist_default.txt"/>
+        <arg value="${basedir}/src/locations.dat"/>
+      </exec>
+      <antcall target="size.compile"/>
+    </target>
+   
+    <target name="ask.year" unless="year">
+            <input addproperty="year" message="Enter year:" defaultvalue="${year}"/>
+            <echo message="${year} entered"/>
+    </target>
 		
     <target name="size.compile" description="Size to dat files" unless="size2dat.notRequired">
       <echo message="Invoking size2dat.pl:"/>
