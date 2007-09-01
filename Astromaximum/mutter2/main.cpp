@@ -48,6 +48,7 @@ int main(int argc, char* argv[])
 		printf("   <year> - calculate ephemeris if none, and common.dat\n");
 		printf("   year <prefix> electio - calculate APHETICS with prefix\n");
 		printf("   year <prefix> <lon> <lat> [electio]- calc locations on coords with prefix\n");
+		printf("   year view <file.bin> <count> - view events of datafile\n");
 		exit(0);
 	}
   strcpy(path,argv[0]);
@@ -104,6 +105,12 @@ int main(int argc, char* argv[])
     return INVALID_YEAR;
   printf("Year = %d\n",year);
   Event::startYear=year;
+  if((argc==5)&&(strcmp(argv[2],"view")==0)){
+    int count=0;
+    sscanf(argv[4],"%d",&count);
+    df.view(argv[3], count);
+    return 0;
+  }
   double startJD=swe_julday(year-1,12,31,0,SE_GREG_CAL);
   printf("startJD=%f\n",startJD);
   double endJD=swe_julday(year+1,2,1,0,SE_GREG_CAL);

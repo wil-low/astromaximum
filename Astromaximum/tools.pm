@@ -118,7 +118,20 @@ sub get_year {
 	my $year=<FYEAR>;
 	close(FYEAR);
 	chomp($year);
-	return split(/,/is, $year);
+	return ($year, day_count($year));
 }
 
+sub day_count{
+	my $dc=365;
+	my $yr=shift;
+	if($yr%4==0){
+		$dc++;
+	}
+	my $rem=$yr-int($yr/100)*100;
+	$yr=int($yr/100);
+	if($rem==0 and $yr%4>0){
+		$dc--;
+	}
+	return $dc;
+}
 1;

@@ -82,7 +82,7 @@ private:
   void clearSignEnter(VAE & src, VAE & dest);
   void clearViaCombusta(VAE & src, VAE & dest);
   bool writeSubData(const VAE & v, EventType evtype, int evflags, int planet, char* fname);
-  bool readSubData(char* fname, VAE & v);
+  bool readSubData(const char* fname, VAE & v);
   int select(VAE & src, double jdstart, double jdend, char planet, bool both, VAE & dest);
   int getAspIndex(int angle);
   short swapShort(short var);
@@ -106,6 +106,7 @@ public:
     char* prefix="");
   void init(sEphRecord *ephdata, double start, unsigned int count);
   void AAA();
+  void view(const char* fname, int count);
   ~DataFile();
   bool loadAphetics(sAphRecord *data);
   void calcAscData();

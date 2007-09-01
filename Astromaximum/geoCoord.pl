@@ -8,8 +8,10 @@ use lib 'd:/projects/nomad_prj';
 use tools;
 
 if($#ARGV!=0 and $#ARGV!=1){
-	die "Usage: <country group code> [year]\n";
+	die "Usage: <year> <country group code list>\n";
 }
+my $year=shift(@ARGV);
+my $day_count=tools::day_count($year);
 my $city_inf=$ARGV[0]; # файл со списком городов
 
 $0=~/(.+\/)/is;
@@ -18,8 +20,6 @@ our $path=$mypath."GeoAM/geo/";
 
 my $country='';
 my $tz;
-my ($year, $day_count)=tools::get_year($mypath);
-$year=$ARGV[1] if $ARGV[1];
 
 my ($month, $day, $hour, $min)=(1,1,0,0);
 my $tz_ofs=0;

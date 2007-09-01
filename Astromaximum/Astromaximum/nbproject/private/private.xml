@@ -33,16 +33,4 @@
             <line>0</line>
         </file>
     </editor-bookmarks>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/D:/projects/nomad_prj/Astromaximum/build.xml</file>
-        <file>file:/D:/projects/nomad_prj/Astromaximum/nbproject/build-impl.xml</file>
-        <file>file:/D:/projects/nomad_prj/Astromaximum/src/Astromaximum.java</file>
-        <file>file:/D:/projects/nomad_prj/Astromaximum/src/CustomTime.java</file>
-        <file>file:/D:/projects/nomad_prj/Astromaximum/src/DataFile.java</file>
-        <file>file:/D:/projects/nomad_prj/Astromaximum/src/Event.java</file>
-        <file>file:/D:/projects/nomad_prj/Astromaximum/src/Interpreter.java</file>
-        <file>file:/D:/projects/nomad_prj/Astromaximum/src/Options.java</file>
-        <file>file:/D:/projects/nomad_prj/Astromaximum/src/SummItem.java</file>
-        <file>file:/D:/projects/nomad_prj/Astromaximum/src/Summary.java</file>
-    </open-files>
 </project-private>

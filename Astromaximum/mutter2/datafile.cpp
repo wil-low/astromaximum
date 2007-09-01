@@ -71,6 +71,20 @@ struct less_event  {
   }
 };
 
+void DataFile::view(const char* fname, int count){
+  VAE work;
+  readSubData(fname, work);
+  if(count>work.size()){
+    count=work.size();
+  }
+  printf("\nContents of %s (%d of %d):\n", fname, count, work.size());
+  for(int i=0; i<count; i++){
+    work[i]->dump();
+  }
+  release(work);
+  printf("\nFinished\n");
+}
+
 void DataFile::AscendingTest(const char* dirname)
 {
   DIR *dir;
@@ -109,13 +123,15 @@ void DataFile::AAA()
 {
   VAE work, assist, vout, work2;
 	
-//  choice(EV_NAVROZ, work, assist, vout, work2);
-//  readSubData("navroz.bin",work);
-//  for(int i=0; i<work.size(); i++){
-//    work[i]->dump();
-//  }
+/*  choice(EV_DEGREE_PASS, work, assist, vout, work2);
+  release(work);
+  readSubData("degpass06.bin",work);
+  for(int i=0; i<work.size(); i++){
+    work[i]->dump();
+  }
 	
-//	return;
+  return;
+ */
 // -----------------------
   choice(EV_ASP_EXACT, work, assist, vout, work2);
 
@@ -412,7 +428,7 @@ int DataFile::swapInt(int var)
   return res;
 }
 
-bool DataFile::readSubData(char* fname, VAE & v)
+bool DataFile::readSubData(const char* fname, VAE & v)
 {
   char buf[200];
   sprintf(buf,"output/archive/%d/%s",Event::startYear,fname);
@@ -832,7 +848,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
           writeSubData(work2,EV_DEGREE_PASS,EF_CUMUL_DATE_W|EF_DATE|EF_DEGREE,i,fname);
         }
         else{
-          if(!writeSubData(work,EV_DEGREE_PASS,EF_CUMUL_DATE_W|EF_DEGREE|EF_NEXT_DATE2,i,fname)){
+          if(!writeSubData(work,EV_DEGREE_PASS,EF_DEGREE|EF_NEXT_DATE2,i,fname)){
 						writeSubData(work,EV_DEGREE_PASS,EF_DEGREE|EF_NEXT_DATE2,i,fname);
 					}
         }
