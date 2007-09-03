@@ -6,8 +6,8 @@ include_once('lang.php');
 <head>
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
-<meta name="author" content="">
-<meta name="date" content="2007-08-28T20:43:47+0300">
+<meta name="author" content="Unknown">
+<meta name="date" content="2007-09-03T07:21:04+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -211,15 +211,15 @@ function city_del(){
 		if($sc!=","){
 			$id=create_jar($defyear, $sc);
 			$url='data.php?r='.$id;
-			echo "<p><center><font color='red'><i><??STEP> 4:</i></font>";
-			echo "<h4><??PC_DL>:</h4>";
-			echo "<b><??JAR_LINK>: <a href='$url'>$id</a><br><br>";
+			echo "<p><center><font color='red'><i>{$i18['STEP']} 4:</i></font>";
+			echo "<h4>{$i18['PC_DL']}:</h4>";
+			echo "<b>{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";
 			$url=str_replace("?r", "?d", $url);
-			echo "<??JAD_LINK>: <a href='$url'>$id</a><br><br></b>";
+			echo "{$i18['JAD_LINK']}: <a href='$url'>$id</a><br><br></b>";
 			$url=str_replace("?r", "?t", $url);
-			echo "<h4><??PHONE_DL>:</h4>";
-			echo "<b><??DIRECTLINK>: <a href='$url'>$id</a><br>";
-			echo "<br><font color='red'><??VALID_LINKS></font></b></center>";
+			echo "<h4>{$i18['PHONE_DL']}:</h4>";
+			echo "<b>{$i18['DIRECTLINK']}: <a href='$url'>$id</a><br>";
+			echo "<br><font color='red'>{$i18['VALID_LINKS']}></font></b></center>";
 		}
 	}
 	emit_nav2();
@@ -243,22 +243,24 @@ function create_jar($year, $ids){
 	$template=str_replace('<CODE>', $code, $template);
 #	$jad=~s/<DESC>/$desc/isg;
 	$template=str_replace('<JAR>', "$fname.jar", $template);
-/*
-	$cmd=sprintf($amtools::unzip, "$tools::dir_source/template.zip", $srcdir);
-	system($cmd);
-	open(INF, ">$srcdir/META-INF/MANIFEST.MF") or die $!;
-		print INF $template;
-	close(INF);
-	my $stat="SELECT DISTINCT cities.name, data FROM cities, locations ".
-		"WHERE cities.id IN ($ids) AND city_id=cities.id AND year=$year".
-		" ORDER BY cities.name";
+	echo $template;
+	
+	$stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
+		"WHERE cities.id IN (%s) AND city_id=cities.id AND year=%s".
+		" ORDER BY cities.name",$ids,$year);
 #	print $stat;
-	my $sth = $dbh->prepare($stat)|| die $dbh->errstr;
-	$sth->execute|| die $dbh->errstr;
-	my $i=0;
+	my $sth = mysql_query($stat);
 	while(my @row = $sth->fetchrow_array){
 		push(@data, $row[1]);		
 	}
+	
+	$cmd=sprintf($UNZIP, "$DIR_SOURCE/template.zip", "$DIR_SOURCE/$fn");
+	system($cmd);
+/*	
+	open(INF, ">$srcdir/META-INF/MANIFEST.MF") or die $!;
+		print INF $template;
+	close(INF);
+	my $i=0;
 	$sth->finish;
 	amtools::join_datafiles2("$srcdir/locations.dat", \@data);
 	$cmd=sprintf($amtools::zip, $srcdir, "$tools::dir_files/$fn");

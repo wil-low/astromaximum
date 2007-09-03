@@ -19,4 +19,29 @@ function amtools_random($path, $ext){
 	}while(!$flag);
 	return array($fn, $id);
 }
+
+$UNZIP="unzip -qq %s -d %s";
+#our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
+$ZIP="wd=`pwd`; cd %s; zip -qrvm $wd/%s.r * > null;cd $wd";
+#our $zip=q(zip -r %s.r %s/*);
+
+function join_datafiles2($destfile, $a_data) # destfile, data_listref
+{
+	$outf=fopen($destfile,'wb');
+	$count=0;
+	$data='';
+	$a_len=array();
+	foreach ($a_data as $i => $value) {
+    	$data.=file_get_contents($value);
+    	$a_len[$count]=filesize($value);
+		$count++;
+ 	}
+	fwrite($outf, pack('n',$count));
+	foreach ($a_len as $i => $value) {
+		fwrite($outf, pack('n',$value));
+	}
+	fwrite($outf, $data);
+	fclose($outf);
+}
+
 ?>

@@ -6,8 +6,8 @@ include_once('lang.php');
 <head>
 <title>Cities database stats - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
-<meta name="author" content="">
-<meta name="date" content="2007-08-28T21:52:46+0300">
+<meta name="author" content="Unknown">
+<meta name="date" content="2007-09-02T08:55:53+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -44,7 +44,7 @@ if(isset($_POST['mode'])){
 if($mode=='data'){
 ?>
 	<table cellpadding="0" cellspacing="0" border="1">
-	<th>Country</th><th>
+	<th>Country</th><th>Cities</th><th>
 	<?php
 		$sth=mysql_query("SELECT DISTINCT year FROM locations ORDER BY year");
 		while($row=mysql_fetch_row($sth)){
@@ -55,10 +55,14 @@ if($mode=='data'){
 		$sth=mysql_query("SELECT countries.id, countries.name, COUNT(cities.id) FROM countries,cities".
 			" WHERE cities.country_id=countries.id GROUP BY cities.country_id ORDER BY countries.name");
 		while($row=mysql_fetch_row($sth)){
-			echo "<tr><td>{$row[1]}</td>";
+			echo "<tr><td>{$row[1]}</td><td>{$row[2]}</td>";
 			$sth2=mysql_query(sprintf("SELECT COUNT(locations.id) FROM locations,cities WHERE locations.city_id=cities.id AND cities.country_id=%d GROUP BY year ORDER BY year",$row[0]));
 			while($row2=mysql_fetch_row($sth2)){
-				echo "<td>{$row2[0]}</td>\n";
+				$bg='';
+				if($row[2]>$row2[0]){
+					$bg=" style='border-width:2;border-color:red'";
+				}
+				echo "<td{$bg}>{$row2[0]}</td>\n";
 			}
 			mysql_free_result($sth2);
 			echo "</tr>\n";
