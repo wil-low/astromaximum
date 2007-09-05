@@ -4,7 +4,7 @@
 <!-- (If you delete it and reopen the project it will be recreated.) -->
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
-    <property name="year" value="2008"/> 
+    <property name="year" value="2007"/> 
     <import file="nbproject/build-impl.xml"/>
     <import file="../jar_or_kzip.xml"/>
     <!--
@@ -84,6 +84,11 @@
     classpath="${platform.bootclasspath}" 
 --> 
     <target name="pre-init">
+      <exec executable="perl" failonerror="true">
+        <arg value="${basedir}/../release_gui.pl"/>
+        <arg value="${year}"/>
+        <arg value="p"/>
+      </exec>
       <loadproperties srcfile="props.txt"/>
       <uptodate property="size2dat.notRequired">
         <srcfiles dir= "../arrays" includes="**/size?.txt"/>

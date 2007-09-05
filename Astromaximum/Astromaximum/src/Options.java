@@ -356,6 +356,7 @@ class Options extends GeoList{
         DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
         rs.addRecord(cn,0,1);
         rs.addRecord(cn,0,1);
+	istr.skip(2);
         int numRec=istr.readUnsignedShort();
         int rid=-1;
         for(int i=0; i<numRec; i++){

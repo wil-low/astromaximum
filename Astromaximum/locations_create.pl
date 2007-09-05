@@ -18,5 +18,5 @@ require $path.'tools.pm';
 	}
 	close(IN);
 	my $i=scalar(@fn);
-	tools::join_datafiles($i, $ARGV[2], \@fn);
+	tools::join_datafiles($ARGV[0], $i, $ARGV[2], \@fn);
 	print "$ARGV[2] written\n";

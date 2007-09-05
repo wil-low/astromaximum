@@ -4,14 +4,16 @@ use strict;
 
 our $rar='d:\Program Files\WinRAR\winrar.exe';
 
-sub join_datafiles # size, destfile, fname_listref
+sub join_datafiles # year, size, destfile, fname_listref
 {
+	my $year=shift;
 	my $size=$_[0];
 	open(OUTF, ">$_[1]") or die "No file $_[1]";
 	my @bins=@{$_[2]};
 	my @buf;
 	my @bodies;
 	binmode(OUTF);
+	print OUTF pack('n',$year);
 	print OUTF pack('n',$#bins+1);
 	my $i=0;
 	foreach my $ff(@bins){

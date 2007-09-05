@@ -3,29 +3,27 @@
 #include "LibUI.h"
 
 LibUI::LibUI() {
-	fltk::Window* w;
-	 {fltk::Window* o = window = new fltk::Window(575, 445, "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\
-\260");
-		w = o;
-		o->shortcut(0xff1b);
-		o->user_data((void*)(this));
-		o->begin();
-		 {fltk::Group* o = new fltk::Group(0, 0, 190, 445);
-			o->set_vertical();
-			o->box(fltk::BORDER_BOX);
-			o->begin();
-			 {fltk::Browser* o = lbTheme = new fltk::Browser(0, 0, 190, 140);
-			}
-			 {fltk::Browser* o = lbTopic = new fltk::Browser(0, 140, 190, 305);
-				o->set_vertical();
-			}
-			o->end();
-		}
-		 {fltk::Browser* o = lwLib = new fltk::Browser(190, 0, 385, 445);
-			o->set_vertical();
-			fltk::Group::current()->resizable(o);
-			fltk::Group::current()->resizable(o);
-		}
-		o->end();
-	}
+  fltk::Window* w;
+  {fltk::Window* o = window = new fltk::Window(575, 445, "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\260");
+   w = o;
+   o->shortcut(0xff1b);
+   o->user_data((void*)(this));
+   o->begin();
+   {fltk::Group* o = new fltk::Group(0, 0, 190, 445);
+    o->set_vertical();
+    o->box(fltk::BORDER_BOX);
+    o->begin();
+    {fltk::Browser* o = lbTheme = new fltk::Browser(0, 0, 190, 140);
+    }
+    {fltk::Browser* o = lbTopic = new fltk::Browser(0, 140, 190, 305);
+     o->set_vertical();
+    }
+    o->end();
+   }
+   {fltk::Browser* o = lwLib = new fltk::Browser(190, 0, 385, 445);
+    o->set_vertical();
+    fltk::Group::current()->resizable(o);
+   }
+   o->end();
+  }
 }

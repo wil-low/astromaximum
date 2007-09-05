@@ -35,6 +35,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
   protected RecordStore rs;
   protected byte[] curCity=null;
   int total;
+  int year;
   protected final String STORE_NAME="Astromaximum";
   protected String LOC;
   private MIDlet main;
@@ -53,6 +54,8 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     addCommand(new Command(getMessage("Cancel"),Command.CANCEL, 1));
     try {
       DataInputStream dis=new DataInputStream(getClass().getResourceAsStream(LOC));
+      year=dis.readShort();
+      System.out.println("Year="+year);
       total=dis.readShort();
       dis.close();
     } 
@@ -97,14 +100,15 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
   }
 
   public byte[] initDB(boolean canCreate) throws Exception{
+    System.out.println("Searching for "+main.getAppProperty("MIDlet-Vendor")+"Astromaximum"+Integer.toString(year)+STORE_NAME);
     if(rs==null){
-      rs=RecordStore.openRecordStore(STORE_NAME, main.getAppProperty("MIDlet-Vendor"), "Astromaximum2007");
+      rs=RecordStore.openRecordStore(STORE_NAME, main.getAppProperty("MIDlet-Vendor"), "Astromaximum"+Integer.toString(year));
     }
     curCity=rs.getRecord(1);
     RecordEnumeration rece=rs.enumerateRecords(this,null,false);
 //#mdebug info 
-    System.out.println(new String(curCity));
-    System.out.println(rece.numRecords());
+//#     System.out.println(new String(curCity));
+//#     System.out.println(rece.numRecords());
 //#enddebug    
     byte[] nextR;
     nextR = rece.nextRecord();
@@ -120,16 +124,16 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
       dstStart=dis.readInt()*60000L-tzOffset;//
       dstEnd=dis.readInt()*60000L-tzOffset-3600000L;
 //#mdebug info
-      System.out.println(dstStart);
-      System.out.println(new Date(dstStart).toString());
-      System.out.println(dstEnd);
-      System.out.println(new Date(dstEnd).toString());
+//#       System.out.println(dstStart);
+//#       System.out.println(new Date(dstStart).toString());
+//#       System.out.println(dstEnd);
+//#       System.out.println(new Date(dstEnd).toString());
 //#enddebug      
     }
 
 //#mdebug info
-    System.out.print("TZ offset=");
-    System.out.println(tzOffset);
+//#     System.out.print("TZ offset=");
+//#     System.out.println(tzOffset);
 //#enddebug    
     byte[] data=new byte[dis.available()];
     dis.read(data);
@@ -216,10 +220,11 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     try {
       final DataInputStream dis=new DataInputStream(
           getClass().getResourceAsStream(LOC));
-      dis.skip(2);
+      dis.skip(4);
       int off=0;
       for(int i=0; i<index; i++) {
         off += dis.readShort();
+	System.out.println(off);
       }
       final int len=dis.readShort();
       dis.skip(2*(total-index-1)+off);

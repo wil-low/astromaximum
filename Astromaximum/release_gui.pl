@@ -1,10 +1,6 @@
 #!/usr/bin/perl
 use strict;
-use Tk;
 use warnings;
-use lib 'D:/Willow/prj/astrology/nomad_prj'; 
-use lib 'd:/projects/nomad_prj';
-use tools;
 use POSIX;
 
 my @dirs=qw(BALT CA Caribas Caucasus CE EE KAZ MT NE PO RU SA Stans test2006 UA US WE);
@@ -16,28 +12,71 @@ my %imeis=qw(
 );
 
 my $init_imei=$imeis{'sonnenturm'};
+our $year=POSIX::strftime('%Y', localtime);
+our $mode;
+$0=~/(.+[\\\/])/is;
+our $path=$1;
 
-$init_imei=$imeis{$ARGV[0]} if defined $ARGV[0];
+if(defined $ARGV[0]){
+  $year=$ARGV[0];
+  if(defined $ARGV[0]){
+    if($ARGV[1] eq 'i'){
+      $init_imei=$ARGV[2] if defined $ARGV[2];
+      $mode='i';
+      print "Starting do_imei $init_imei...\n";
+    }
+    if($ARGV[1] eq 'in'){
+      $init_imei=$imeis{$ARGV[2]} if defined $ARGV[2];
+      $mode='i';
+      print "Starting do_imei $init_imei...\n";
+    }
+    if($ARGV[1] eq 't'){
+      $mode='t';
+      print "Starting do_timebomb...\n";
+    }
+    if($ARGV[1] eq 'p'){
+      props_txt($year,"<DESC>");
+      exit;
+    }
+  }
+}
 $init_imei='0' x (15-length($init_imei)).$init_imei;
+if(!$mode){
+  print "Usage: release_gui.pl <year> [i|in|t|p] [<imei>]\n\n";
+  print "No parameters - Trying to start GUI...\n\n";
+}
 
 my @files;
-our $year='';
-our $antpath='d:\\Program Files\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat';
-if(! -f $antpath){
-	$antpath='d:\\netbeans-5.5\\ide7\\ant\\bin\\ant.bat';
+our $antpath;
+my @app=(
+  '/home/willow/netbeans-5.5/ide7/ant/bin/ant', 
+  'd:/netbeans-5.5/ide7/ant/bin/ant.bat',
+  'd:/Program Files/netbeans-5.5/ide7/ant/bin/ant.bat'
+);
+foreach (@app){
+  if(-f $_){
+    $antpath=$_;
+    last;
+  }
+}
+if(!$antpath){
+  die "ANT not found in this system!!!\n";
 }
 my @chks;
 my ($is_logger)=(0);
 
-$0=~/(.+\\)/is;
-our $path=$1;
 our $sortmode='city';
 
 
-my $year=POSIX::strftime('%Y', localtime);
 #die "Invalid year record: $year" if $year!~/\d{4}/is;
+if($mode eq 'i'){
+  do_imei('midp2y2007release',$init_imei);
+}
  
+exit if $mode;
 #	$year=2008;
+require Tk;
+require $path.'tools.pm';
 my @selected;
 my $debug=0;
 my $kzip=1;
@@ -53,8 +92,8 @@ $frame8->pack(-pady=>3);
 
 
 my $imei=$frame0->Entry(-text=>$init_imei);
-my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>[\&do_imei,'midp2y2007release']);
-my $bt_imei_logger=$frame0->Button(-text=>"IMEI logger", -command=>[\&do_imei,'midp2y2007release_logger']);
+my $bt_imei=$frame0->Button(-text=>"IMEI", -command=>[\&cb_do_imei,'midp2y2007release']);
+my $bt_imei_logger=$frame0->Button(-text=>"IMEI logger", -command=>[\&cb_do_imei,'midp2y2007release_logger']);
 my $lbox = $frame0->Entry(-text=>'0');
 my $bt_timebomb=$frame0->Button(-text=>"Time Bomb", -command=>\&do_timebomb);
 
@@ -132,6 +171,11 @@ refill_all();
 
 MainLoop();
 
+sub cb_do_imei{
+  do_imei(shift,$imei->get());
+  $main->messageBox(-icon => 'info', -message => "Build successful", -title => 'Message', -type => 'Ok');
+}
+
 sub set_year{
 	$year=$year_entry->get();
 	$main->configure(-title=>"Astromaximum Release GUI - $year");
@@ -148,13 +192,18 @@ sub comparator {
 	return $a->{$sortmode} cmp $b->{$sortmode};
 }
 
+sub props_txt{
+  my($year, $desc)=@_;
+  $year=~/\d\d(\d\d)/is;
+  open(PROPS, ">$path".'Astromaximum/props.txt') or die "add_props $!";
+  print(PROPS "manifest.midlets=MIDlet-1: Astromaximum '$1,/res/icon.png,Astromaximum\\n\n".
+	  "manifest.others=MIDlet-Vendor: S&W Axis\\nMIDlet-Name: Astromaximum$year\\nMIDlet-Description: $desc\\nMIDlet-Version: 1.0\\n\n");
+  close(PROPS);
+}
+
 sub add_props{
 	my($conf, $year, $desc)=@_;
-	$year=~/\d\d(\d\d)/is;
-	open(PROPS, ">$path".'Astromaximum/props.txt') or die "add_props $!";
-	print(PROPS "manifest.midlets=MIDlet-1: Astromaximum '$1,/res/icon.png,Astromaximum\\n\n".
-		"manifest.others=MIDlet-Vendor: S&W Axis\\nMIDlet-Name: Astromaximum$year\\nMIDlet-Description: $desc\\nMIDlet-Version: 1.0\\n\n");
-	close(PROPS);
+	props_txt($year, $desc);
 	my $res=" -f Astromaximum/build.xml -Dconfig.active=$conf".
 		" -Dfile.reference.Astromaximum-deploy=./deploy -Dyear=$year".
 		" -Dconfigs.$conf.debug.level=";
@@ -183,9 +232,9 @@ sub do_timebomb {
 	$main->messageBox(-icon => 'error', -message => "Build failed!", -title => 'Message', -type => 'Ok');
 }
 
-sub do_imei { # config_name
+sub do_imei { # config_name, imei
 	my $conf=shift;
-	my $code=$imei->get();
+	my $code=shift;
 	$code.='0' x (15-length($code));
 	if($code=~/\A\d{15}\Z/is){
 		print "imei\n";
@@ -201,11 +250,9 @@ sub do_imei { # config_name
 		$cmd.=" deploy";
 		print "$cmd\n";
 		my $res=system($cmd);
-		if($res==0){
-			$main->messageBox(-icon => 'info', -message => "Build successful", -title => 'Message', -type => 'Ok');
-			return;
-		}
+		return $res;
 	}
+	return -1;
 	$main->messageBox(-icon => 'error', -message => "Build failed!", -title => 'Message', -type => 'Ok');
 }
 
@@ -222,7 +269,7 @@ sub do_geo {
 			push(@locs, $sc->{city});
 		}
 		mkdir '.temp' unless -d '.temp';
-		tools::join_datafiles($#selected+1, $path.".temp\\locations.dat", \@geo);
+		tools::join_datafiles($year, $#selected+1, $path.".temp\\locations.dat", \@geo);
 		my $code=tools::create_geo("Cities", $geocap, $geod, "GeoAM\\deploy\\", ".temp\\", 1, $year, \@locs);
 		$main->messageBox(-icon => 'info', -message => "Geo build #$code successful", -title => 'Message', -type => 'Ok');
 		return;		
@@ -365,7 +412,7 @@ sub get_abilities { # config
 	else{
 		$conf='abilities';
 	}
-	open(PROP, "<$path".'Astromaximum\\nbproject\\project.properties') or die 'No file';
+	open(PROP, "<$path".'Astromaximum/nbproject/project.properties') or die 'No file';
 	my @lines=<PROP>;
 	close(PROP);
 	@lines=grep(/$conf/, @lines);
