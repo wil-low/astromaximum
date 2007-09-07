@@ -181,6 +181,9 @@ class Event {
    * @param special
    */
   boolean isInPeriod(long start, long end, boolean special) {
+    if(date0==0){
+      return false;
+    }
     final int f0= dateBetween(date0,start,end);
     final int f1= dateBetween(date1,start,end);
 /*    dump();

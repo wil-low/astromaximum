@@ -3,19 +3,17 @@ use strict;
 use POSIX;
 #use warnings;
 use Encode;
-use lib 'D:/Willow/prj/astrology/nomad_prj/'; 
-use lib 'd:/projects/nomad_prj';
-use tools;
 
 if($#ARGV!=0 and $#ARGV!=1){
 	die "Usage: <year> <country group code list>\n";
 }
 my $year=shift(@ARGV);
-my $day_count=tools::day_count($year);
 my $city_inf=$ARGV[0]; # файл со списком городов
 
 $0=~/(.+\/)/is;
 our $mypath=$1;
+require $mypath.'tools.pm';
+my $day_count=tools::day_count($year);
 our $path=$mypath."GeoAM/geo/";
 
 my $country='';
@@ -185,7 +183,7 @@ if(! -f "$dir/$city_inf.txt"){
 	my $i=0;
 	our $city;
 	undef $/ ;
-	my $newdir=sprintf('mutter/output/archive/%d/%s',$year,$city_inf);
+	my $newdir=sprintf('%smutter/output/archive/%d/%s',$mypath,$year,$city_inf);
 	mkdir $newdir unless -d $newdir;
 #	foreach my $cit(@cities){
 #		chomp($cit);
@@ -229,12 +227,12 @@ if(! -f "$dir/$city_inf.txt"){
 			my $header=pack('SCCCCSa*a*',$year, $month, $day, $hour, $min, $day_count, $outbuf, $dstbuf);
 			
 			print "$fname\n";
-			open($OutF, ">$fname") or die "No file";
+			open($OutF, ">$fname") or die "$! $fname";
 			binmode($OutF);
 			print $OutF $header;
 			close($OutF);
 			
-			my $geomask=sprintf('mutter/output/archive/%d/geo0-*.bin',$year);
+			my $geomask=sprintf('%smutter/output/archive/%d/geo0-*.bin',$mypath, $year);
 			my @bins=glob($geomask);
 			die "No files: $geomask" if $#bins<0;
 			my $counter=0;

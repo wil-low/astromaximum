@@ -251,12 +251,16 @@ class Summary extends Canvas implements CommandListener, Runnable{
                 pn = PAGE_WEEK;
               }
             }
+	    if(pageNum==PAGE_PANEL && date.getTime()!=selDate.getTime()){
+              showDaySummary();
+	      return;
+	    }
             setCurPage(pn);
             break;
           case Canvas.KEY_NUM7:
             if(pageNum==PAGE_WEEK && date.getTime()!=selDate.getTime()){
-              System.out.println(date);
-              System.out.println(selDate);
+//              System.out.println(date);
+//              System.out.println(selDate);
               showDaySummary();
               return;
             }
@@ -650,6 +654,8 @@ class Summary extends Canvas implements CommandListener, Runnable{
     for(int i=0; i<24; i++){
       getItem(i < 12 ? Event.EV_DAY_HOURS : Event.EV_NIGHT_HOURS).setEvents(i%12,aev[i]);
     }
+//    System.out.print("NH=");
+//    System.out.println(getItem(Event.EV_NIGHT_HOURS).events.length);
 //#if logger
 //#       Astromaximum.instance.logger(" planetHours");
 //#endif      
@@ -1101,8 +1107,20 @@ class Summary extends Canvas implements CommandListener, Runnable{
   void moveMonth(int delta) {
     int oldMonth=selMonth;
     oldMonth+=delta;
+/*    
+    int year=Astromaximum.calendar.get(Calendar.YEAR);
+    if(oldMonth<Calendar.JANUARY){
+      oldMonth+=12;
+      year--;
+    }
+    if(oldMonth>Calendar.DECEMBER){
+      oldMonth-=12;
+      year++;
+    }
+*/
     if(oldMonth >= Calendar.JANUARY && oldMonth <= Calendar.DECEMBER){
       selMonth=oldMonth;
+//      Astromaximum.calendar.set(Calendar.YEAR, year);
       Astromaximum.calendar.setTime(selDate);
       Astromaximum.calendar.set(Calendar.MONTH,selMonth);
       Astromaximum.calendar.set(Calendar.DAY_OF_MONTH,1);
@@ -1697,7 +1715,15 @@ class Summary extends Canvas implements CommandListener, Runnable{
         break;
       case 27: // Event.EV_WEEK
         moveFocus(delta,1);
-        if(pageNum==PAGE_MONTH){
+	long adj=firstGridDate.getTime();
+	if(delta<0){
+	  adj+=(rowCount*colCount-1)*Astromaximum.MSECINDAY;
+	}
+	while(!Astromaximum.dataFile.isDateAvailable(adj)){
+	  adj+=(delta*Astromaximum.MSECINDAY);
+	}
+	setCell(adj,false);
+/*        if(pageNum==PAGE_MONTH){
           setCell(firstGridDate.getTime()+
                 (delta>0? rowCount/2: rowCount*colCount-rowCount/2-1)*Astromaximum.MSECINDAY,false);
         }
@@ -1705,6 +1731,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
           setCell(firstGridDate.getTime()+
                 (delta>0? 0: rowCount-1)*Astromaximum.MSECINDAY,false);
         }
+ */
         break;
       case 28: // Event.EV_ASP_EXACT
         if(size==2 && dir==2){

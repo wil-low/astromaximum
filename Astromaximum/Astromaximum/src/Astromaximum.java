@@ -294,6 +294,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if logger
 //#       logger("setCell");
 //#endif      
+//      evDump(dataFile.getEvents(Event.EV_RISE, Event.SE_MOON, 0, dataFile.finalJD));
       summary.showDaySummary();
 //#if logger
 //#       logger("showDaySummary");
@@ -451,7 +452,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 	  final Alert noDate=new Alert(LocalizationSupport.getMessage("Today")+": "+ summary.selDate.toString(),
 	    LocalizationSupport.getMessage("no_today"),
 			null,AlertType.ERROR);
-	  noDate.setTimeout(10000);
+	  noDate.setTimeout(3000);
 		Display.getDisplay(this).setCurrent(noDate,Display.getDisplay(this).getCurrent());
 		calendar.setTime(summary.selDate);
 		calendar.set(Calendar.YEAR,Astromaximum.startYear);

@@ -659,7 +659,7 @@ class Interpreter extends Canvas implements CommandListener {
     try {
       InputStream is=getClass().getResourceAsStream(Long.toString(params[0])+".txt");
       if(is==null){
-				return null;
+	return null;
       }
       interp=new byte[is.available()];
       is.read(interp);
