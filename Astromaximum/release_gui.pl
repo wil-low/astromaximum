@@ -10,6 +10,7 @@ my %imeis=qw(
 	moto 11234564 
 	igor 359315001137255 
 );
+our $PRODUCT='AMax_';
 
 my $init_imei=$imeis{'sonnenturm'};
 our $year=POSIX::strftime('%Y', localtime);
@@ -206,9 +207,9 @@ sub props_txt{
   chomp($ver);
   $year=~/\d\d(\d\d)/is;
   open(PROPS, ">$path".'Astromaximum/props.txt') or die "add_props $!";
-  print(PROPS "manifest.midlets=MIDlet-1: Amax$1,/res/icon.png,Astromaximum\\n\n".
-	  "manifest.others=MIDlet-Vendor: S&W Axis\\nMIDlet-Name: Amax$1\\nMIDlet-Description: $desc\\nMIDlet-Version: $ver\\n\n".
-	  "dist.jad=Amax$1.jad\ndist.jar=Amax$1.jar\n");
+  print(PROPS "manifest.midlets=MIDlet-1: $PRODUCT$1,/res/icon.png,Astromaximum\\n\n".
+	  "manifest.others=MIDlet-Vendor: S&W Axis\\nMIDlet-Name: $PRODUCT$1\\nMIDlet-Description: $desc\\nMIDlet-Version: $ver\\n\n".
+	  "dist.jad=$PRODUCT$1.jad\ndist.jar=$PRODUCT$1.jar\n");
   close(PROPS);
 }
 
@@ -258,7 +259,7 @@ sub do_imei { # config_name, imei
 			$cmd.="fatal";
 		}
 		$cmd.=' -Dneed.kzip=true' if $kzip;
-		$cmd.=" deploy";
+		$cmd.=" clean deploy";
 		print "$cmd\n";
 		my $res=system($cmd);
 		return $res;

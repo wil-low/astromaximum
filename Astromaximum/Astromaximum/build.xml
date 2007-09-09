@@ -5,6 +5,8 @@
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
     <property name="year" value="2008"/> 
+    <property name="project.geoLib" value="${basedir}/../geoLib"/>
+    
     <import file="nbproject/build-impl.xml"/>
     <import file="../jar_or_kzip.xml"/>
     <!--
@@ -78,7 +80,6 @@
             <antcall target="for-all-configs"/>
         </target>
     -->    
-    <property name="project.geoLib" value="${basedir}/../geoLib"/>
     <property name="AM.dist" value="dist/midp2y2007release_tb/"/>
 <!--    
     classpath="${platform.bootclasspath}" 
