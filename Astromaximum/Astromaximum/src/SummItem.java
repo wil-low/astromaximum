@@ -1604,6 +1604,7 @@ class SummItem extends TimerTask implements RecordFilter{
           final long date=(i>0)? ev.date1: ev.date0;
           if(ev.isDateBetween(i,fgd,fgd2)){
             final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
+	    places[day]++;
             final int pos= places[day]++;
             x=day% owner.colCount*colWidth+1+leftm;
             y=day/owner.colCount*rowHeight+top+2;
@@ -1614,6 +1615,7 @@ class SummItem extends TimerTask implements RecordFilter{
                 Graphics.TOP|Graphics.LEFT);
             drawImg(osg,Summary.imgService,i*2+1,x+3,y+3,
                 Graphics.TOP|Graphics.LEFT);
+	    places[day]++;
           }
         }
       }

@@ -366,6 +366,7 @@
         <nb-jad jadfile="${dist.dir}/${dist.jad}" jarfile="${dist.dir}/${dist.jar}" url="${deployment.jarurl}" sign="${sign.enabled}" keystore="${sign.keystore}" keystorepassword="${sign.keystore.password}" alias="${sign.alias}" aliaspassword="${sign.alias.password}" encoding="${javac.encoding}"/>
     </target>
     <target name="deploy" depends="init,jar,override-jad,pre-deploy" if="deployment.method" unless="skip.deployment">
+	<echo message="${deployment.scriptfile}"/>
         <fail unless="deployment.scriptfile">Property deployment.${deployment.method}.scriptfile not set. The property should point to an Ant script providing ${deployment.method} deployment.</fail>
         <ant antfile="${deployment.scriptfile}" inheritall="true" inheritrefs="true">
             <property name="deployment.jad" location="${dist.dir}/${dist.jad}"/>

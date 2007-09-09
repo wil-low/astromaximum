@@ -449,17 +449,17 @@ public class Astromaximum extends MIDlet implements CommandListener{
   }
 
   public void reportTodayError() {
-	  final Alert noDate=new Alert(LocalizationSupport.getMessage("Today")+": "+ summary.selDate.toString(),
-	    LocalizationSupport.getMessage("no_today"),
-			null,AlertType.ERROR);
-	  noDate.setTimeout(3000);
-		Display.getDisplay(this).setCurrent(noDate,Display.getDisplay(this).getCurrent());
-		calendar.setTime(summary.selDate);
-		calendar.set(Calendar.YEAR,Astromaximum.startYear);
-		summary.selDate=calendar.getTime();			
+    final Alert noDate=new Alert(LocalizationSupport.getMessage("Today")+": "+ summary.selDate.toString(),
+      LocalizationSupport.getMessage("no_today"),
+      null,AlertType.ERROR);
+    noDate.setTimeout(5000);
+    Display.getDisplay(this).setCurrent(noDate,Display.getDisplay(this).getCurrent());
+    calendar.setTime(summary.selDate);
+    calendar.set(Calendar.YEAR,Astromaximum.startYear);
+    summary.selDate=calendar.getTime();
 //#debug error
-		System.out.println(summary.selDate);
-	 
+    System.out.println(summary.selDate);
+    
   }
 //#if "timeBomb" @ protection
 //#   static byte[] getArray() {
