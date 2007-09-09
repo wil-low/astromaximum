@@ -7,7 +7,7 @@ include_once('lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-09-03T07:21:04+0300">
+<meta name="date" content="2007-09-09T18:13:32+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -32,10 +32,8 @@ if(!$chac){
 	exit();
 }
 if($chac==1){
-?>
-<b>Admin:</b> <a href='db_stats.php'>DB stats</a> 
-<?php
-}
+	emit_admin();
+} 
 ?>
 <h3 align=center><?php echo $i18['DB']?></h3>
 
@@ -216,10 +214,10 @@ function city_del(){
 			echo "<b>{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";
 			$url=str_replace("?r", "?d", $url);
 			echo "{$i18['JAD_LINK']}: <a href='$url'>$id</a><br><br></b>";
-			$url=str_replace("?r", "?t", $url);
+			$url=str_replace("?d", "?t", $url);
 			echo "<h4>{$i18['PHONE_DL']}:</h4>";
 			echo "<b>{$i18['DIRECTLINK']}: <a href='$url'>$id</a><br>";
-			echo "<br><font color='red'>{$i18['VALID_LINKS']}></font></b></center>";
+			echo "<br><font color='red'>{$i18['VALID_LINKS']}</font></b></center>";
 		}
 	}
 	emit_nav2();
@@ -245,39 +243,40 @@ function create_jar($year, $ids){
 	$template=str_replace('<JAR>', "$fname.jar", $template);
 	echo $template;
 	
+	$server="http://".$_SERVER['SERVER_NAME'];
 	$stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
 		"WHERE cities.id IN (%s) AND city_id=cities.id AND year=%s".
 		" ORDER BY cities.name",$ids,$year);
 #	print $stat;
-	my $sth = mysql_query($stat);
-	while(my @row = $sth->fetchrow_array){
-		push(@data, $row[1]);		
+	$sth = mysql_query($stat);
+	$i=0;
+	while($row = mysql_fetch_row($sth)){
+		$data[$i++]=$row[1];		
 	}
-	
+	mysql_free_result($sth);
 	$cmd=sprintf($UNZIP, "$DIR_SOURCE/template.zip", "$DIR_SOURCE/$fn");
+	echo $cmd;
 	system($cmd);
-/*	
-	open(INF, ">$srcdir/META-INF/MANIFEST.MF") or die $!;
-		print INF $template;
-	close(INF);
-	my $i=0;
-	$sth->finish;
-	amtools::join_datafiles2("$srcdir/locations.dat", \@data);
-	$cmd=sprintf($amtools::zip, $srcdir, "$tools::dir_files/$fn");
+	
+	$inf=fopen("$DIR_SOURCE/$fn/META-INF/MANIFEST.MF", 'wb');
+	fwrite($inf, $template);
+	fclose($inf);
+	join_datafiles2("$DIR_SOURCE/$fn/locations.dat", $data);
+	$cmd=sprintf($ZIP, "$DIR_SOURCE/$fn", "$DIR_FILES/$fn");
+	echo "<br>$cmd<br><pre>";
 	system($cmd);
-	#die $cmd;
-	my $asize= -s "$tools::dir_files/$fn.r";
+	echo "</pre>";
+	$asize= filesize("$DIR_FILES/$fn.r");
 	$template.="MIDlet-Jar-Size: $asize\n";
-	open(FFF, ">$tools::dir_files/$fn.d") or die "$tools::dir_files/$fn.d: $!";
-	print(FFF $template);
-	close(FFF);
-	my $server="http://".server_name();
-	$template=~s%(MIDlet-Jar-URL: ).+?\n%$1$server/cgi-bin/data.cgi\?r=$fn\n%is;
-	open(FFF, ">$tools::dir_files/$fn.t");
-	print(FFF $template);
-	close(FFF);
-	system("rm -R $srcdir/*");
-	rmdir $srcdir;
+	$inf=fopen("$DIR_FILES/$fn.d", 'wb');
+	fwrite($inf, $template);
+	fclose($inf);
+	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1$server/data.php?r=$fn\n", $template);
+	$inf=fopen("$DIR_FILES/$fn.t", 'wb');
+	fwrite($inf, $template);
+	fclose($inf);
+	system("rm -R $DIR_SOURCE/$fn");
+/*	
 	my $sql='INSERT INTO files (id, type, user_id, end_tm) VALUES';
 	foreach (('r','d','t')){
 		$sql.=" ($fn, \'$_\', ".$userid.", NOW()+ INTERVAL 2 HOUR),";

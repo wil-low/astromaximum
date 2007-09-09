@@ -2,6 +2,12 @@
 include_once('lang.php');
 unset($LOGIN_MSG);
 
+function emit_admin(){
+	echo <<<ADMIN
+	 <b>Admin:</b> <a href='db_stats.php'>DB stats</a> 
+ADMIN;
+}
+
 function emit_nav1(){
 	global $lang_, $i18, $LOGIN_MSG;
 

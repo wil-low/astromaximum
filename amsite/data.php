@@ -12,7 +12,7 @@ if(check_access()){
 		$type='t';
 	}
 	$dig=$_GET[$type];
-	$idd='qwerty';
+	$idd=substr($dig, -4);
 	$fn="$DIR_FILES/".$dig.".$type";
 	$stat=sprintf(
 		"UPDATE files SET used='t' WHERE id=%s AND type=%s", $dig, quote_smart($type));
@@ -24,7 +24,7 @@ if(check_access()){
 	$data = fread($handle, filesize($fn));
 	fclose($handle);
 	header('Content-type: application/octet-stream');
-	header('Content-Disposition: attachment; filename="cities-$idd.ja$type"');
+	header("Content-Disposition: attachment; filename=\"Cities-$idd.ja$type\"");
 	echo $data;
 }
 ?>

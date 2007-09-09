@@ -22,7 +22,7 @@ function amtools_random($path, $ext){
 
 $UNZIP="unzip -qq %s -d %s";
 #our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
-$ZIP="wd=`pwd`; cd %s; zip -qrvm $wd/%s.r * > null;cd $wd";
+$ZIP='wd=`pwd`; cd %s; zip -rvm $wd/%s.r *;cd $wd';
 #our $zip=q(zip -r %s.r %s/*);
 
 function join_datafiles2($destfile, $a_data) # destfile, data_listref
@@ -32,8 +32,8 @@ function join_datafiles2($destfile, $a_data) # destfile, data_listref
 	$data='';
 	$a_len=array();
 	foreach ($a_data as $i => $value) {
-    	$data.=file_get_contents($value);
-    	$a_len[$count]=filesize($value);
+    	$data.=$value;
+    	$a_len[$count]=strlen($value);
 		$count++;
  	}
 	fwrite($outf, pack('n',$count));

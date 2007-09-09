@@ -7,7 +7,7 @@ include_once('lang.php');
 <title>Cities database stats - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-09-02T08:55:53+0300">
+<meta name="date" content="2007-09-09T17:08:38+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -37,13 +37,14 @@ if(isset($_POST['mode'])){
 	$mode=$_POST['mode'];
 }
 ?>
-<b>Admin:</b> <a href='db_stats.php'>DB stats</a> 
+<a href='geo.php'>Geo</a>
 
-<p><a href='db_stats.php?mode=data'>Datafile summary</a>
+<!-- <p><a href='db_stats.php?mode=data'>Datafile summary</a>-->
 <?php
+	emit_admin();
 if($mode=='data'){
 ?>
-	<table cellpadding="0" cellspacing="0" border="1">
+	<p><table cellpadding="0" cellspacing="0" border="1">
 	<th>Country</th><th>Cities</th><th>
 	<?php
 		$sth=mysql_query("SELECT DISTINCT year FROM locations ORDER BY year");
@@ -60,7 +61,7 @@ if($mode=='data'){
 			while($row2=mysql_fetch_row($sth2)){
 				$bg='';
 				if($row[2]>$row2[0]){
-					$bg=" style='border-width:2;border-color:red'";
+					$bg=" style='border-width:2; color:red'";
 				}
 				echo "<td{$bg}>{$row2[0]}</td>\n";
 			}
