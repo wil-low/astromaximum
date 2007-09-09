@@ -7,7 +7,9 @@ $0=~/(.+\/)/is;
 
 my $path=$1;
 my $InF=undef;
-my @bins=glob('interpret/*.txt');#"$path".
+die "Usage: 2nomad_new.pl <lang>\n" unless defined $ARGV[0];
+my @bins=glob($path."interpret/$ARGV[0]/*.txt");
+die "No files for '$ARGV[0]' language\n" unless scalar(@bins);
 my @buf;
 my $body;
 
@@ -37,7 +39,7 @@ foreach my $ff(@bins){
 	open($InF, "<$ff") or die "No file $ff";
 	@buf=<$InF>;
 	close($InF);
-	print "\n\n**** $ff: *****\n";
+	print "\n**** $ff: *****\n";
 	my $body="@buf";
 	$outbuf=''; my $recnum=0;
 	$buf[0]=~/\!\!type\s*(\w+)/i;

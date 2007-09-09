@@ -17,6 +17,22 @@ our $mode;
 $0=~/(.+[\\\/])/is;
 our $path=$1;
 
+our $antpath;
+my @app=(
+  '/home/willow/netbeans-5.5/ide7/ant/bin/ant', 
+  'd:/netbeans-5.5/ide7/ant/bin/ant.bat',
+  'd:/Program Files/netbeans-5.5/ide7/ant/bin/ant.bat'
+);
+foreach (@app){
+  if(-f $_){
+    $antpath=$_;
+    last;
+  }
+}
+if(!$antpath){
+  die "ANT not found in this system!!!\n";
+}
+
 if(defined $ARGV[0]){
   $year=$ARGV[0];
   if(defined $ARGV[0]){
@@ -44,24 +60,14 @@ $init_imei='0' x (15-length($init_imei)).$init_imei;
 if(!$mode){
   print "Usage: release_gui.pl <year> [i|in|t|p] [<imei>]\n\n";
   print "No parameters - Trying to start GUI...\n\n";
+  print "  i - numeric imei\n";
+  print "  in - named imei\n";
+  print "  t - timebomb\n";
+  print "  p - write props.txt\n";
+  print "\n";
 }
 
 my @files;
-our $antpath;
-my @app=(
-  '/home/willow/netbeans-5.5/ide7/ant/bin/ant', 
-  'd:/netbeans-5.5/ide7/ant/bin/ant.bat',
-  'd:/Program Files/netbeans-5.5/ide7/ant/bin/ant.bat'
-);
-foreach (@app){
-  if(-f $_){
-    $antpath=$_;
-    last;
-  }
-}
-if(!$antpath){
-  die "ANT not found in this system!!!\n";
-}
 my @chks;
 my ($is_logger)=(0);
 
@@ -169,7 +175,7 @@ $frame3->Button(-text=>"None", -command=>\&do_sel_none,-state=>'disabled')->pack
 
 refill_all();
 
-MainLoop();
+Tk::MainLoop();
 
 sub cb_do_imei{
   do_imei(shift,$imei->get());
@@ -194,10 +200,15 @@ sub comparator {
 
 sub props_txt{
   my($year, $desc)=@_;
+  open(VER, "<$path".'Astromaximum/version') or die "version $!";
+  my $ver=<VER>;
+  close(VER);
+  chomp($ver);
   $year=~/\d\d(\d\d)/is;
   open(PROPS, ">$path".'Astromaximum/props.txt') or die "add_props $!";
-  print(PROPS "manifest.midlets=MIDlet-1: Astromaximum '$1,/res/icon.png,Astromaximum\\n\n".
-	  "manifest.others=MIDlet-Vendor: S&W Axis\\nMIDlet-Name: Astromaximum$year\\nMIDlet-Description: $desc\\nMIDlet-Version: 1.0\\n\n");
+  print(PROPS "manifest.midlets=MIDlet-1: Amax$1,/res/icon.png,Astromaximum\\n\n".
+	  "manifest.others=MIDlet-Vendor: S&W Axis\\nMIDlet-Name: Amax$1\\nMIDlet-Description: $desc\\nMIDlet-Version: $ver\\n\n".
+	  "dist.jad=Amax$1.jad\ndist.jar=Amax$1.jar\n");
   close(PROPS);
 }
 
@@ -222,7 +233,7 @@ sub do_timebomb {
 		$cmd.="fatal";
 	}
   $cmd.=' -Dneed.kzip=true' if $kzip;
-	$cmd.=" deploy";
+	$cmd.=" clean deploy";
 	print "$cmd\n";
 	my $res=system($cmd);
 	if($res==0){

@@ -124,7 +124,7 @@
     
     <target name="tb.install" description="Installing timebomb." if="do.timebomb">
       <exec executable="perl" failonerror="true">
-        <arg value="${script.dir}/timebomb.pl"/>
+        <arg value="${basedir}/../timebomb.pl"/>
         <arg value="${class.dir}"/>
         <arg value="${tb.timeout}"/>
       </exec>
