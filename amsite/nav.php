@@ -4,7 +4,10 @@ unset($LOGIN_MSG);
 
 function emit_admin(){
 	echo <<<ADMIN
+	 <a href='geo.php'>Geo</a>
 	 <b>Admin:</b> <a href='db_stats.php'>DB stats</a> 
+	 <a href='upload.php'>Upload</a>
+	 <br><br> 
 ADMIN;
 }
 

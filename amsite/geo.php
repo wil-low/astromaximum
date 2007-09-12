@@ -7,7 +7,7 @@ include_once('lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-09-09T18:13:32+0300">
+<meta name="date" content="2007-09-12T20:46:01+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -241,7 +241,7 @@ function create_jar($year, $ids){
 	$template=str_replace('<CODE>', $code, $template);
 #	$jad=~s/<DESC>/$desc/isg;
 	$template=str_replace('<JAR>', "$fname.jar", $template);
-	echo $template;
+#	echo $template;
 	
 	$server="http://".$_SERVER['SERVER_NAME'];
 	$stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
@@ -255,7 +255,7 @@ function create_jar($year, $ids){
 	}
 	mysql_free_result($sth);
 	$cmd=sprintf($UNZIP, "$DIR_SOURCE/template.zip", "$DIR_SOURCE/$fn");
-	echo $cmd;
+#	echo $cmd;
 	system($cmd);
 	
 	$inf=fopen("$DIR_SOURCE/$fn/META-INF/MANIFEST.MF", 'wb');
@@ -263,12 +263,12 @@ function create_jar($year, $ids){
 	fclose($inf);
 	join_datafiles2("$DIR_SOURCE/$fn/locations.dat", $data);
 	$cmd=sprintf($ZIP, "$DIR_SOURCE/$fn", "$DIR_FILES/$fn");
-	echo "<br>$cmd<br><pre>";
+#	echo "<br>$cmd<br><pre>";
 	system($cmd);
-	echo "</pre>";
+#	echo "</pre>";
+	$inf=fopen("$DIR_FILES/$fn.d", 'wb');
 	$asize= filesize("$DIR_FILES/$fn.r");
 	$template.="MIDlet-Jar-Size: $asize\n";
-	$inf=fopen("$DIR_FILES/$fn.d", 'wb');
 	fwrite($inf, $template);
 	fclose($inf);
 	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1$server/data.php?r=$fn\n", $template);
