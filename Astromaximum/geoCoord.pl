@@ -182,7 +182,7 @@ if(! -f "$dir/$city_inf.txt"){
 #	die "@cities";
 	my $i=0;
 	our $city;
-	undef $/ ;
+#	undef $/ ;
 	my $newdir=sprintf('%smutter/output/archive/%d/%s',$mypath,$year,$city_inf);
 	mkdir $newdir unless -d $newdir;
 #	foreach my $cit(@cities){
@@ -247,9 +247,13 @@ if(! -f "$dir/$city_inf.txt"){
 
 		$i++;
 	}
+#	die join("\n",@cities);
 	open($InF, ">$newdir/$city_inf.txt");
-	print($InF join('', @cities));
+	print($InF join("\n", @cities));
 	close($InF);
+	my $cmd=sprintf('wd=`pwd`; cd %s; zip %s *.txt *.dat; cd $wd', $newdir, $city_inf);
+#	print "$cmd\n";
+	system($cmd);
 #	my @bins=glob("$dir\\Data*.dat");
 #	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
 
@@ -378,6 +382,7 @@ sub data_check
 	$dc_len=unpack('n',$dc_len);
 	read(FILE, $data_city,$dc_len);
 	close(FILE);
+	$data_city=~s/,.+//is;
 	if($data_year==$_[1] and $data_city eq $_[2]){
 		return 1;
 	}
