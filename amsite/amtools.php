@@ -44,4 +44,12 @@ function join_datafiles2($destfile, $a_data) # destfile, data_listref
 	fclose($outf);
 }
 
+function rm_all($dir)
+{
+	foreach(glob("$dir/*.*") as $fname){
+		unlink($fname);
+	}
+	rmdir($dir);
+}
+
 ?>

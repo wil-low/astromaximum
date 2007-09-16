@@ -32,7 +32,7 @@ function quote_smart($value)
 
 function login($user,$pwd){
 	$res=false;
-	$stat=sprintf("SELECT id,name FROM customers WHERE name=%s AND hash=%s",
+	$stat=sprintf("SELECT id,realname FROM customers WHERE name=%s AND hash=%s",
 		quote_smart($user),quote_smart($pwd));
 	$sth=mysql_query($stat);
 	if(mysql_num_rows($sth)==1){
