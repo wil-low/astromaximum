@@ -4,14 +4,24 @@ use POSIX;
 #use warnings;
 use Encode;
 
+$0=~/(.+\/)/is;
+our $mypath=$1;
+our %historic;
+######
+process_historic();
+{
+	my $country='Albania';
+	my $year=2007;
+	print new_gettz($year, $country), "\n";
+	exit;
+}
+
 if($#ARGV!=0 and $#ARGV!=1){
 	die "Usage: <year> <country group code list>\n";
 }
 my $year=shift(@ARGV);
-my $city_inf=$ARGV[0]; # файл со списком городов
+my $city_inf=$ARGV[0]; # пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
-$0=~/(.+\/)/is;
-our $mypath=$1;
 require $mypath.'tools.pm';
 my $day_count=tools::day_count($year);
 our $path=$mypath."GeoAM/geo/";
@@ -390,4 +400,90 @@ sub data_check
 		die "$_[0] contains \"$data_city\" and \"$data_year\"!\n";
 	}
 }
+
+sub process_historic
+{
+use warnings;
+#   data structure
+#	$historic={
+#		'-<RULE>'=>[
+#			{
+#				year=>YEAR_PERIOD,
+#				start=>DST_START,
+#				end=>DST_END,
+#				diff=>DST_DIFF_IN_HOURS
+#			}
+#		],
+#		'<COUNTRY>'=>[
+#			{
+#				ofs=>DST_OFFSET,
+#				rule=>RULE_OF_PERIOD,
+#				end_date=>END_OF_PERIOD,
+#			}
+#		]
+#	}
+
+	open(HIST, "<Timezone/Historic.txt");
+	my $secflag=0;
+	my $secname=''; # section header
+	print "\nHistoric.txt: ";
+	while(my $ln=<HIST>){
+		$ln=~s/[\n\r]//isg;
+		$ln=~s/\#.+//is; # strip comments
+		if($ln=~/^\s*$/is){ # empty line, section end
+			$secflag=0;
+			next;
+		}
+		if(!$secflag){
+			if($ln=~s/^Rule //is){
+				$secflag=1; # rule begins
+				$secname="-$ln";
+				print "R";
+#				$historic{$secname}="[0,1,2]";
+			}
+			else{
+				$secflag=2; # country begins
+				my @linkto=split(/\s*LinkTo\s*/, $ln);
+				if(scalar(@linkto)==2){ # LinkTo clause
+					$historic{$linkto[0]}->{preofs}=">$linkto[1]"; #linking
+					print "L";
+				}
+				else{
+					$secname=$ln; # no link, section continues
+					print "C";
+				}
+			}
+			next;
+		}	
+		if($secflag==1){ # parsing rule section
+			my @row=split(/\t/, $ln);
+			if(scalar(@row)!=3 and scalar(@row)!=4){
+				die "Wrong format: $ln in rule $secname";
+			}
+			my $diff=1;
+			$diff=$row[3] if defined($row[3]);
+			push(@{$historic{$secname}}, 
+				{year=>$row[0], start=>$row[1], end=>$row[2], diff=>$diff});
+#			last;
+		}
+		if($secflag==2){ # parsing country section
+			my @row=split(/\t/, $ln);
+			if(scalar(@row)!=3){
+				die "Wrong format: $ln in country $secname";
+			}
+			push(@{$historic{$secname}}, 
+				{ofs=>$row[0], rule=>$row[1], end_date=>$row[2]});
+#			last;
+		}
+	}
+	close(HIST);
+	print " Ready.\n";
+#	die $historic{'Argentina, Buenos Aires'}->[3]->{end_date};
+}
 	
+sub new_gettz
+{	
+	my($ofs, $start, $end);
+	my($country,$year)=@_;
+	return ($ofs, $start, $end);
+}
