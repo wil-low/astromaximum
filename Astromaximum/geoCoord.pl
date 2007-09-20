@@ -4,18 +4,25 @@ use POSIX;
 #use warnings;
 use Encode;
 
+my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
+my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
+
 $0=~/(.+\/)/is;
 our $mypath=$1;
 our %historic;
 ######
-process_historic();
-{
-	my $country='Albania';
-	my $year=2007;
-	print new_gettz($year, $country), "\n";
-	exit;
+if(1==1){
+	process_historic();
+	{
+		my($tm, $tmstr)=decode_time(2007, 'FirstSunAfter23Mar@0');
+		print ctime2number($tmstr);
+		exit;
+		my $country=shift; #'Albania';
+		my $year=shift; #2007;
+		print "$country in $year:\n",join(" \n",new_gettz($country, $year)), "\n";
+		exit;
+	}
 }
-
 if($#ARGV!=0 and $#ARGV!=1){
 	die "Usage: <year> <country group code list>\n";
 }
@@ -49,9 +56,6 @@ $sqlite3=$sqpath unless -d $sqlite3;
 
 $sqlite3.='sqlite3';
 #die "$sqpath\n$sqlite3\n";
-
-my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
-my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
 
 
 my $dir=$path."$city_inf";
@@ -315,10 +319,16 @@ sub calc_dst{
 	return $buf;
 }
 
+sub ctime2number{
+	$_[0]=~/\w{3} (\w{3}) (\d+) (\d\d):(\d\d):(\d\d) (\d{4})/is;
+	return sprintf("%04d%02d%02d%02d%02d%02d", $6, $mon{$1}+1, $2, $3. $4. $5);
+}
+
 sub decode_time{
 	my $tm=undef;
-	print "$_[0]:\n";
-	$_[0]=~s/\@([\d\+\-\.]+)/\@/is;
+	my ($year, $str)=@_;
+	print "$str:\n";
+	$str=~s/\@([\d\+\-\.]+)/\@/is;
 	my $hr_frac=$1*3600;
 	my $hr=int($hr_frac/3600);
 	$hr_frac-=$hr*3600;
@@ -326,13 +336,13 @@ sub decode_time{
 	$hr_frac-=$mn*60;
 	my $sc=$hr_frac;
 #	die "$hr $mn $sc";
-	if($_[0]=~/(\d+)(\w{3})\@/is){ # 01Apr@3
+	if($str=~/(\d+)(\w{3})\@/is){ # 01Apr@3
 		$tm=POSIX::mktime($sc, $mn, $hr, $1, $mon{$2},$year-1900,0,0,-1);
 #		my ($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = gmtime($tm);
 #		die $wday;
 	}
-	elsif($_[0]=~/last/is){ # LastSunMar@2
-		my @pp=$_[0]=~/last(\w{3})(\w{3})\@/is;
+	elsif($str=~/last/is){ # LastSunMar@2
+		my @pp=$str=~/last(\w{3})(\w{3})\@/is;
 		my $month=$mon{$pp[1]}+1; # next month
 #		print $mon{$pp[1]};
 		$tm=POSIX::mktime($sc, $mn, $hr, 0, $month,$year-1900,0,0,-1);
@@ -344,13 +354,13 @@ sub decode_time{
 #		die $wday;
 #		$tm=POSIX::mktime(0, 0, 0, 10, 1,2007-1900,0,0,-1);#-$tz_ofs;
 	}
-	if($_[0]=~s/first(\w{3})//is){ 
+	if($str=~s/first(\w{3})//is){ 
 		my($after,$week_day,$m)=(1,$wd{$1});
-		if($_[0]=~/after(\d+)(\w{3})\@/is){ # FirstSunAfter18Mar@2
+		if($str=~/after(\d+)(\w{3})\@/is){ # FirstSunAfter18Mar@2
 			($after,$m)=($1+1,$mon{$2},$3);
 		}
 		else{
-			$_[0]=~/(\w{3})\@/is; # FirstSunMar@2
+			$str=~/(\w{3})\@/is; # FirstSunMar@2
 			$m=$mon{$1};
 		}
 		$tm=POSIX::mktime($sc, $mn, $hr, $after, $m,$year-1900,0,0,-1);
@@ -362,8 +372,15 @@ sub decode_time{
 #		$tm=POSIX::mktime(0, 0, 0, 10, 1,2007-1900,0,0,-1);#-$tz_ofs;
 		
 	}
-  print "Date = ", POSIX::ctime($tm);
-	return ($tm+$tz_ofs)/60;
+	my $tmstr=POSIX::ctime($tm);
+	print "Date = $tmstr";
+	$tm=($tm+$tz_ofs)/60;
+	if(wantarray){
+		return ($tm, $tmstr);
+	}
+	else{
+		return $tm;
+	}
 }
 
 sub writeUTF
@@ -426,7 +443,7 @@ use warnings;
 	open(HIST, "<Timezone/Historic.txt");
 	my $secflag=0;
 	my $secname=''; # section header
-	print "\nHistoric.txt: ";
+	print "Historic.txt: ";
 	while(my $ln=<HIST>){
 		$ln=~s/[\n\r]//isg;
 		$ln=~s/\#.+//is; # strip comments
@@ -438,19 +455,20 @@ use warnings;
 			if($ln=~s/^Rule //is){
 				$secflag=1; # rule begins
 				$secname="-$ln";
-				print "R";
+#				print "R";
 #				$historic{$secname}="[0,1,2]";
 			}
 			else{
 				$secflag=2; # country begins
 				my @linkto=split(/\s*LinkTo\s*/, $ln);
 				if(scalar(@linkto)==2){ # LinkTo clause
-					$historic{$linkto[0]}->{preofs}=">$linkto[1]"; #linking
-					print "L";
+					$historic{$linkto[0]}->{ofs}=">$linkto[1]"; #linking
+#					print "L";
 				}
 				else{
+#					$ln=~s/(.+), .+/$1/is; # remove trailing capital
 					$secname=$ln; # no link, section continues
-					print "C";
+#					print "C";
 				}
 			}
 			next;
@@ -483,7 +501,62 @@ use warnings;
 	
 sub new_gettz
 {	
-	my($ofs, $start, $end);
 	my($country,$year)=@_;
-	return ($ofs, $start, $end);
+	my @result;
+	my($ofs, $start, $end, $diff)=(0, 0, 0, 1);
+	my $c_arr=$historic{$country}; # TZ hash
+	die "No TZ for $country!" unless defined $c_arr;
+	if($c_arr->{ofs}=~/^>(.+)/is){ # LinkTo redirect
+		$country=$1;
+		print "LinkTo $country\n";
+		$c_arr=$historic{$country};
+		die "No TZ for $country!" unless defined $c_arr;
+	}
+	foreach my $row(@$c_arr){
+		$end=$row->{end_date};
+		if($year>=$start and $year<=$end){ # we're inside period
+			$ofs=$row->{ofs};
+			my $rule=$row->{rule};
+			if($rule eq '-'){ #no rule
+				if($year==$end){ #year exactly at period's end
+					$end=$row->{end_date};
+				}
+				else{
+					$end=$year;
+				}
+				$start=$year;
+			}
+			else{
+				print "Rule $rule\n";
+				my $r_arr=$historic{-$rule}; # follow rule
+				die "No rule for $rule!" unless defined $r_arr;
+				$start=0;
+				foreach my $rulerow(@$r_arr){
+					my $period=$rulerow->{year};
+					my ($y0, $y1)=split(/-/, $period); # year range
+					$y1=9999 if $y1 eq 'max';
+					if($year>=$y0 and $year<=$y1){ # we're inside period
+						$start=$rulerow->{start};
+						$end=$rulerow->{end};
+						$diff=$rulerow->{diff};
+						last;
+					}
+					elsif(!$y1){	
+						print "$y0\n";
+						if($year<=$y0){ # we're inside period 2
+							last;
+						}
+					}
+					$start=$y1; # probe next period
+				}
+			}
+			last;
+		}
+		$start=$end; # probe next period
+	}
+	if($start==9999){
+		print "Cannot handle - too complicated\n";
+	}
+	push(@result, "$ofs, $start, $end, $diff");
+	return @result;
 }
