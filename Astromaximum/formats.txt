@@ -1,0 +1,74 @@
+This file describes special data formats used in the project.
+
+*** common.dat ***
+
+Purpose - contains **Event record** bundle (location-independent)
+Created by:
+	common_create.pl (gathering into single file) - invoked by build.xml
+Used in:
+	Datafile.java - checking header, loading common data
+	
+Header fields:
+	0x0000	short LB	year
+	0x0002	byte		month
+	0x0003	byte		day
+	0x0004	byte		hour
+	0x0005	byte		minute ^ start of period
+	0x0006	short LB	days in period
+	0x0007  ...			see **Event record**
+
+*** Event record ***
+
+Purpose - holds specific type of events that occur during the year.
+Created by:
+	mutter2/mutter (event calculation)
+Used in:
+	Datafile.java - retrieving events
+	mutter2/mutter - event dumping
+
+Header fields:
+	0x0000	byte		next digit of IMEI, if applicable
+	0x0001	byte		event type (defined in Event.java)
+	0x0002	short LB	data length (used to skip a record)
+	0x0004	short LB	event flags
+	0x0006	byte		planet
+	...					<event data> depend on flags
+
+*** locations.dat ***
+
+Purpose - contains **Event record** bundle (location-dependent)
+Created by:
+	locations_create.pl (gathering into single file) - invoked by build.xml
+Used in:
+	GeoList.java - checking header, loading common data
+	
+Header fields:
+	0x0000	short LB	year
+	0x0002	short LB	record count in bundle
+	0x0004	short LB	<location data length array>
+	...					see **Loc record**
+
+*** Loc record ***
+
+Purpose - contains **Event record** bundle for a certain city.
+Created by:
+	geoCoord.pl (event calculation)
+Used in:
+	Datafile.java - retrieving events
+
+Header fields:
+	0x0000	short LB	year
+	0x0002	byte		month
+	0x0003	byte		day
+	0x0004	byte		hour
+	0x0005	byte		minute ^ start of period
+	0x0006	short LB	days in period
+	0x0008	short LB	city name length
+	0x000a	UTF-8		city name
+## TODO: these field may result in illegal calculations!!!
+			short LB	timezone offset. DST is applicable if 15th bit is set.
+						Real TZofs=(tz-16*60)*60000 msec.
+			short LB	DST start date, if applicable (local time)
+			short LB	DST end date, if applicable (local time)
+	
+

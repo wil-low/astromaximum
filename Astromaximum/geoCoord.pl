@@ -4,31 +4,52 @@ use POSIX;
 #use warnings;
 use Encode;
 
+my $TZ_VER=2;
+
 my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
+
+my ($year, $city_inf, $tzonly)=@ARGV;
 
 $0=~/(.+\/)/is;
 our $mypath=$1;
 our %historic;
-######
-if(1==1){
-	process_historic();
-	{
-		my($tm, $tmstr)=decode_time(2007, 'FirstSunAfter23Mar@0');
-		print ctime2number($tmstr);
-		exit;
-		my $country=shift; #'Albania';
-		my $year=shift; #2007;
-		print "$country in $year:\n",join(" \n",new_gettz($country, $year)), "\n";
-		exit;
+my @cities;
+my $citlist;
+my @alltz;
+if($TZ_VER==2){
+	open(InF, "<$mypath".'Timezone/city.txt') or die "No file $mypath".'Timezone/city.txt';
+	@cities=<InF>;
+	close(InF);
+	open(InF, "<$mypath".'Timezone/city_add.txt') or die "No file $mypath".'Timezone/city_add.txt';
+	@alltz=<InF>;
+	close(InF);
+	push(@cities, @alltz);
+	undef @alltz;
+	foreach (@cities){
+		$_=~s/[\_\^].+/\n/is;
 	}
+	$citlist=join("",@cities);
+	$citlist=~s/\([^\)]+\)//isg;
+	process_historic();
 }
-if($#ARGV!=0 and $#ARGV!=1){
-	die "Usage: <year> <country group code list>\n";
+else{
+	open(InF, "<$mypath".'timezone.inf') or die "No file";
+	@alltz=<InF>;
+	close(InF);
+	open(InF, "<$mypath".'city.inf') or die "No file $mypath".'city.inf';
+	@cities=<InF>;
+	close(InF);
+	$citlist=join("",@cities);
+	$citlist=~s/\([^\)]+\)//isg;
 }
-my $year=shift(@ARGV);
-my $city_inf=$ARGV[0]; # ���� �� ������� �������
 
+
+undef @cities;
+
+if($#ARGV!=0 and scalar(@ARGV)<2){
+	die "Usage: <year> <country group code list> [tzonly]\n";
+}
 require $mypath.'tools.pm';
 my $day_count=tools::day_count($year);
 our $path=$mypath."GeoAM/geo/";
@@ -64,30 +85,13 @@ mkdir $dir unless -d $dir;
 
 our $outbuf;
 our $fname;
-my $InF=undef;
-my $OutF;
-my @cities;
-
-	open($InF, "<$mypath".'city.inf') or die "No file $mypath".'city.inf';
-	@cities=<$InF>;
-	my $citlist=join("",@cities);
-	$citlist=~s/\([^\)]+\)//isg;
-	close($InF);
-#	die $citlist;
-
-	open($InF, "<$mypath".'timezone.inf') or die "No file";
-	my @alltz=<$InF>;
-	close($InF);
-#	die $alltz[0];
-
-#die get_tz('USA - District of Columbia', 'Washington');
 #=head
 if(! -f "$dir/$city_inf.txt"){
 	my $error=0;
-  unlink "$dir/$city_inf.txt";
-	open($InF, "<$path$city_inf.ini") or die "No file $path$city_inf\.ini";
-	@cities=<$InF>;
-	close($InF);
+    unlink "$dir/$city_inf.txt";
+	open(InF, "<$path$city_inf.ini") or die "No file $path$city_inf\.ini";
+	@cities=<InF>;
+	close(InF);
 	my $cid=1;
 	$country='';
 	my $state=0;
@@ -107,9 +111,9 @@ if(! -f "$dir/$city_inf.txt"){
 			my $sql="select id, eng from countries where eng = \'$cit\';";
 			$invoke="echo \"$sql\" \| $db > \"$tmp\"";
 			system($invoke);
-			open($InF, "<$tmp") or die "No file $tmp";
-			my @countries=<$InF>;
-			close($InF);
+			open(InF, "<$tmp") or die "No file $tmp";
+			my @countries=<InF>;
+			close(InF);
 			if($countries[0]=~/(\d+)\|/is){
 				$cid=$1;
 #				print "$country  capital =";
@@ -160,9 +164,9 @@ if(! -f "$dir/$city_inf.txt"){
 		$invoke="echo \"$sql;\" \| $db > \"$tmp\"";
 #		print "$invoke\n";
 		system($invoke);
-		open($InF, "<$tmp") or die "No file $tmp";
-		my @countries=<$InF>;
-		close($InF);
+		open(InF, "<$tmp") or die "No file $tmp";
+		my @countries=<InF>;
+		close(InF);
 		if($countries[0]=~/\|/is){
 			chomp($countries[0]);
 			$countries[0]=~s/\|/$altcit\|/is;
@@ -190,9 +194,9 @@ if(! -f "$dir/$city_inf.txt"){
 	<STDIN>;
 }
 #####################################
-	open($InF, "<$dir/$city_inf.txt") or die "No file";
-	@cities=<$InF>;
-	close($InF);
+	open(InF, "<$dir/$city_inf.txt") or die "No file";
+	@cities=<InF>;
+	close(InF);
 #	die "@cities";
 	my $i=0;
 	our $city;
@@ -223,37 +227,39 @@ if(! -f "$dir/$city_inf.txt"){
 		$fname=$newdir.sprintf('/Data%02d.dat',$i);
 		$city=$params[0];
 		$city=~s/.+!//is;
-		if(! -f $fname){
+		if(! -f $fname or $tzonly){
 			print "\n-----------------------";
 			print "\n******** $city ********";
 			print "\n-----------------------\n";
 			my $tz=get_tz($params[3],$city,1);
 			my $dstbuf=calc_dst($tz);
-			my $invoke=$mypath."mutter2/mutter2 $year geo0- $params[1] $params[2]";# electio";
-			print "$invoke\n";
-			system($invoke);
-			if($params[3]=~/USA \- (.+)/is){
-				$city.=", $1";
+			if(!$tzonly){
+				my $invoke=$mypath."mutter2/mutter2 $year geo0- $params[1] $params[2]";# electio";
+				print "$invoke\n";
+				system($invoke);
+				if($params[3]=~/USA \- (.+)/is){
+					$city.=", $1";
+				}
+				$city=~s/[\n\r]//isg;
+				writeUTF($city);
+
+				my $header=pack('SCCCCSa*a*',$year, $month, $day, $hour, $min, $day_count, $outbuf, $dstbuf);
+
+				print "$fname\n";
+				open(OutF, ">$fname") or die "$! $fname";
+				binmode(OutF);
+				print OutF $header;
+				close(OutF);
+
+				my $geomask=sprintf('%smutter/output/archive/%d/geo0-*.bin',$mypath, $year);
+				my @bins=glob($geomask);
+				die "No files: $geomask" if $#bins<0;
+				my $counter=0;
+				print join(@bins,"\n");
+				foreach my $ff(@bins){
+					tools::writeData($ff, $fname, 0);
+				}	
 			}
-			$city=~s/[\n\r]//isg;
-			writeUTF($city);
-			
-			my $header=pack('SCCCCSa*a*',$year, $month, $day, $hour, $min, $day_count, $outbuf, $dstbuf);
-			
-			print "$fname\n";
-			open($OutF, ">$fname") or die "$! $fname";
-			binmode($OutF);
-			print $OutF $header;
-			close($OutF);
-			
-			my $geomask=sprintf('%smutter/output/archive/%d/geo0-*.bin',$mypath, $year);
-			my @bins=glob($geomask);
-			die "No files: $geomask" if $#bins<0;
-			my $counter=0;
-			print join(@bins,"\n");
-			foreach my $ff(@bins){
-				tools::writeData($ff, $fname, 0);
-			}	
 		}
 		else{
 			data_check($fname, $year, $city);
@@ -261,37 +267,19 @@ if(! -f "$dir/$city_inf.txt"){
 
 		$i++;
 	}
-#	die join("\n",@cities);
-	open($InF, ">$newdir/$city_inf.txt");
-	print($InF join("\n", @cities));
-	close($InF);
-	my $cmd=sprintf('wd=`pwd`; cd %s; zip %s *.txt *.dat; cd $wd', $newdir, $city_inf);
-#	print "$cmd\n";
-	system($cmd);
-#	my @bins=glob("$dir\\Data*.dat");
-#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
-
-sub get_tz{
-	my ($country,$city,$isdie)=@_;
-	$country=~s/.+\$//is;
-	$country=~s/[\n\r]//isg;
-	if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n\r]+\))?)/is){
-		my $tzz=$1;
-		$tzz=~/\A(.+?)\n/is;
-		$tzz=$1;
-		$tzz=~s/(\W)/\\$1/isg;
-		foreach my $li(@alltz){
-			return $li if $li=~/$tzz/is;
+	if(!$tzonly){
+		if(-f "$newdir/$city_inf.zip"){
+			die "$city_inf.zip exists. Please delete it to regenerate";
 		}
+		open(InF, ">$newdir/$city_inf.txt");
+		print(InF join("\n", @cities));
+		close(InF);
+		my $cmd=sprintf('wd=`pwd`; cd %s; zip %s *.txt *.dat; cd $wd', $newdir, $city_inf);
+	#	print "$cmd\n";
+		system($cmd);
+	#	my @bins=glob("$dir\\Data*.dat");
+	#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
 	}
-	if($isdie){
-		die "No TZ for $country, $city!";
-	}
-	else{
-		warn "No TZ for $country, $city!\n";
-	}
-	return undef;
-}
 
 sub calc_dst{
 	my $buf;
@@ -304,10 +292,10 @@ sub calc_dst{
 	$ofs+=(16*60);
 	if($fld[1] && $fld[2]){
 		print 'Start ';
-		my $start_dst=decode_time($fld[1]);
+		my $start_dst=decode_time($year, $fld[1]);
 
 		print 'End ';
-		my $end_dst=decode_time($fld[2]);
+		my $end_dst=decode_time($year, $fld[2]);
 		print "$start_dst,$end_dst\n";
 		$buf=pack('NN',$start_dst,$end_dst);
 	}
@@ -321,13 +309,13 @@ sub calc_dst{
 
 sub ctime2number{
 	$_[0]=~/\w{3} (\w{3}) (\d+) (\d\d):(\d\d):(\d\d) (\d{4})/is;
-	return sprintf("%04d%02d%02d%02d%02d%02d", $6, $mon{$1}+1, $2, $3. $4. $5);
+	return sprintf("%04d%02d%02d%02d%02d%02d", $6, $mon{$1}+1, $2, $3, $4, $5);
 }
 
 sub decode_time{
 	my $tm=undef;
 	my ($year, $str)=@_;
-	print "$str:\n";
+	print "$str: ";
 	$str=~s/\@([\d\+\-\.]+)/\@/is;
 	my $hr_frac=$1*3600;
 	my $hr=int($hr_frac/3600);
@@ -373,7 +361,7 @@ sub decode_time{
 		
 	}
 	my $tmstr=POSIX::ctime($tm);
-	print "Date = $tmstr";
+	print "\t$tmstr";
 	$tm=($tm+$tz_ofs)/60;
 	if(wantarray){
 		return ($tm, $tmstr);
@@ -459,15 +447,16 @@ use warnings;
 #				$historic{$secname}="[0,1,2]";
 			}
 			else{
-				$secflag=2; # country begins
 				my @linkto=split(/\s*LinkTo\s*/, $ln);
 				if(scalar(@linkto)==2){ # LinkTo clause
 					$historic{$linkto[0]}->{ofs}=">$linkto[1]"; #linking
 #					print "L";
 				}
 				else{
+					$secflag=2; # country begins
 #					$ln=~s/(.+), .+/$1/is; # remove trailing capital
 					$secname=$ln; # no link, section continues
+					$secname=~s/\(.+//is; # remove alternate capital name
 #					print "C";
 				}
 			}
@@ -499,64 +488,115 @@ use warnings;
 #	die $historic{'Argentina, Buenos Aires'}->[3]->{end_date};
 }
 	
-sub new_gettz
-{	
-	my($country,$year)=@_;
-	my @result;
-	my($ofs, $start, $end, $diff)=(0, 0, 0, 1);
-	my $c_arr=$historic{$country}; # TZ hash
-	die "No TZ for $country!" unless defined $c_arr;
-	if($c_arr->{ofs}=~/^>(.+)/is){ # LinkTo redirect
-		$country=$1;
-		print "LinkTo $country\n";
-		$c_arr=$historic{$country};
-		die "No TZ for $country!" unless defined $c_arr;
-	}
-	foreach my $row(@$c_arr){
-		$end=$row->{end_date};
-		if($year>=$start and $year<=$end){ # we're inside period
-			$ofs=$row->{ofs};
-			my $rule=$row->{rule};
-			if($rule eq '-'){ #no rule
-				if($year==$end){ #year exactly at period's end
-					$end=$row->{end_date};
-				}
-				else{
-					$end=$year;
-				}
-				$start=$year;
+sub get_tz{
+	my ($country,$city,$isdie)=@_;
+	$country=~s/.+\$//is;
+	$country=~s/[\n\r]//isg;
+	if($TZ_VER==2){
+		my $c_arr;
+		print "$country,$city,$isdie\n";
+		if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n\r]+\))?)/is){
+			$country=$1;
+#			print "\n\n$country\n";
+			$country=~/\A(.+?)\n/is;
+			$country=$1;
+			$c_arr=$historic{$country}; # TZ hash
+			die "No TZ for $country!" unless defined $c_arr;
+		}
+		if(!defined $c_arr){
+#			die $citlist;
+#			print join("<\n", sort(keys(%historic)));
+			if($isdie){
+				die "No TZ for $country, $city!";
 			}
 			else{
-				print "Rule $rule\n";
-				my $r_arr=$historic{-$rule}; # follow rule
-				die "No rule for $rule!" unless defined $r_arr;
-				$start=0;
-				foreach my $rulerow(@$r_arr){
-					my $period=$rulerow->{year};
-					my ($y0, $y1)=split(/-/, $period); # year range
-					$y1=9999 if $y1 eq 'max';
-					if($year>=$y0 and $year<=$y1){ # we're inside period
-						$start=$rulerow->{start};
-						$end=$rulerow->{end};
-						$diff=$rulerow->{diff};
-						last;
+				warn "No TZ for $country, $city!\n";
+				return undef;
+			}
+		}
+		my @result;
+		my($ofs, $start, $end, $diff)=(0, 0, 0, 1);
+		if(ref($c_arr) eq 'HASH' and $c_arr->{ofs}=~/^>(.+)/is){ # LinkTo redirect
+			$country=$1;
+			print "LinkTo $country\n";
+			$c_arr=$historic{$country};
+			die "No TZ for $country!" unless defined $c_arr;
+		}
+		foreach my $row(@$c_arr){
+			if($row->{end_date}=~/(\d{4})/is){ # end year
+				$end=$1;
+			}
+			else{
+				$end=9999; # max
+			}
+			print "\t - $start $end\n";
+			if($year>=$start and $year<$end){ # we're inside period
+				$ofs=$row->{ofs};
+				my $rule=$row->{rule};
+				if($rule eq '-'){ #no rule
+					if($year==$end){ #year exactly at period's end
+						$end=$row->{end_date};
 					}
-					elsif(!$y1){	
-						print "$y0\n";
-						if($year<=$y0){ # we're inside period 2
+					else{
+						$end=$year;
+					}
+					$start=$end=$diff='';
+				}
+				else{
+					print "Rule $rule\n";
+					my $r_arr=$historic{-$rule}; # follow rule
+					die "No rule for $rule!" unless defined $r_arr;
+					$start=0;
+					foreach my $rulerow(@$r_arr){
+						my $period=$rulerow->{year};
+						my ($y0, $y1)=split(/-/, $period); # year range
+						$y1=9999 if $y1 eq 'max';
+						$y1=$y0 unless $y1;
+						if($year>=$y0 and $year<=$y1){ # we're inside period
+							$start=$rulerow->{start};
+							$end=$rulerow->{end};
+							$diff=$rulerow->{diff};
 							last;
 						}
+						$start=$y1; # probe next period
 					}
-					$start=$y1; # probe next period
 				}
+				last;
 			}
-			last;
+			$start=$end; # probe next period
 		}
-		$start=$end; # probe next period
+		if($start==9999){
+			print "Cannot handle - too complicated\n";
+		}
+		$start=~s/(\d+)\(UTC\)/$1+$ofs/e;
+		$end=~s/(\d+)\(UTC\)/$1+$ofs+$diff/e;
+		my @oo=split(/:/, $ofs);
+		$ofs=($oo[0]*3600+$oo[1]*60+$oo[2])/3600;
+#		die $ofs;
+		if(wantarray()){
+			push(@result, "$ofs, $start, $end, $diff");
+			return @result;
+		}
+		else{
+			return "$ofs\t$start\t$end\t$country";
+		}
 	}
-	if($start==9999){
-		print "Cannot handle - too complicated\n";
+	else{
+		if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n\r]+\))?)/is){
+			my $tzz=$1;
+			$tzz=~/\A(.+?)\n/is;
+			$tzz=$1;
+			$tzz=~s/(\W)/\\$1/isg;
+			foreach my $li(@alltz){
+				return $li if $li=~/$tzz/is;
+			}
+		}
+		if($isdie){
+			die "No TZ for $country, $city!";
+		}
+		else{
+			warn "No TZ for $country, $city!\n";
+		}
+		return undef;
 	}
-	push(@result, "$ofs, $start, $end, $diff");
-	return @result;
 }

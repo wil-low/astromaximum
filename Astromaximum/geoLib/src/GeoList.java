@@ -25,8 +25,8 @@
  */
 
 import java.io.*;
-import java.util.Date;
-import java.util.TimeZone;
+//import java.util.Date;
+//import java.util.TimeZone;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.*;

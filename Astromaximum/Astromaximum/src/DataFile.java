@@ -337,7 +337,7 @@ final class DataFile{
       }
       while(true){
         int ch=is.readUnsignedByte();
-				int rub=is.readUnsignedByte();
+		int rub=is.readUnsignedByte();
         while (evtype != rub) {
           if(isCommon && Astromaximum.options!=null){
             Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
@@ -345,7 +345,7 @@ final class DataFile{
           skipOff = is.readShort()-3;
           is.skip(skipOff);
           ch=is.readUnsignedByte();
-					rub=is.readUnsignedByte();
+		  rub=is.readUnsignedByte();
         }
         skipOff=is.readShort();
         flag=is.readShort();
