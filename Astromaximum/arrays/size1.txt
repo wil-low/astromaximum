@@ -1,3 +1,7 @@
+// size file for small screens (height <210)
+// format: 
+//     left, top, width, height, page, subitems-horiz, subitems-vertical, type, 
+//     nleft, int nright, int nup, int ndown
       {1,0,12,10,24,1,1,27,-1,1,-1,1}, //0 PANEL
       {18,0,75,9,760,3,1,13,21,21,-1,1}, //0 EV_WEEK
       {13,0,70,9,6,3,1,24,25,25,27,27}, //0 DATE_GRID

@@ -10,8 +10,8 @@ my %imeis=qw(
 	moto 11234564 
 	igor 359315001137255 
 );
-our $PRODUCT='AMax_';
 
+our $PRODUCT='Astromaximum';
 my $init_imei=$imeis{'sonnenturm'};
 our $year=POSIX::strftime('%Y', localtime);
 our $mode;
@@ -36,6 +36,7 @@ if(!$antpath){
 
 if(defined $ARGV[0]){
   $year=$ARGV[0];
+  
   if(defined $ARGV[0]){
     if($ARGV[1] eq 'i'){
       $init_imei=$ARGV[2] if defined $ARGV[2];
@@ -205,11 +206,12 @@ sub props_txt{
   my $ver=<VER>;
   close(VER);
   chomp($ver);
-  $year=~/\d\d(\d\d)/is;
+  $PRODUCT.=$1 if $year=~/\d\d(\d\d)/is;
+  
   open(PROPS, ">$path".'Astromaximum/props.txt') or die "add_props $!";
-  print(PROPS "manifest.midlets=MIDlet-1: $PRODUCT$1,/res/icon.png,Astromaximum\\n\n".
-	  "manifest.others=MIDlet-Vendor: S&W Axis\\nMIDlet-Name: $PRODUCT$1\\nMIDlet-Description: $desc\\nMIDlet-Version: $ver\\n\n".
-	  "dist.jad=$PRODUCT$1.jad\ndist.jar=$PRODUCT$1.jar\n");
+  print(PROPS "manifest.midlets=MIDlet-1: $PRODUCT,/res/icon.png,Astromaximum\\n\n".
+	  "manifest.others=MIDlet-Vendor: S&W Axis\\nMIDlet-Name: $PRODUCT\\nMIDlet-Description: $desc\\nMIDlet-Version: $ver\\n\n".
+	  "dist.jad=$PRODUCT.jad\ndist.jar=$PRODUCT.jar\n");
   close(PROPS);
 }
 

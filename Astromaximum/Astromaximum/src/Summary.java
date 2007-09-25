@@ -342,6 +342,15 @@ class Summary extends Canvas implements CommandListener, Runnable{
     return Options.currentTime()-tick;
   }
   
+  void recalcPeriods() {
+    period0 =date.getTime();
+    period0-=Event.localOffset(period0);
+//    System.out.println(period0);
+//    System.out.println(new Date(period0).toString());
+    period1 = period0 +Astromaximum.MSECINDAY-1;
+    period0=period0/1000*1000;
+    period1=period1/1000*1000;
+  }
   /**
    * daySummary
    * 
@@ -353,13 +362,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
     final long tick=Options.currentTime();
     rowCount=1;
     date.setTime(date0);//new Date(date.getTime());
-    period0 =date.getTime();
-    period0-=Event.localOffset(period0);
-//    System.out.println(period0);
-//    System.out.println(new Date(period0).toString());
-    period1 = period0 +Astromaximum.MSECINDAY-1;
-    period0=period0/1000*1000;
-    period1=period1/1000*1000;
+    recalcPeriods();
     SummItem si=getItem(Event.EV_ECLIPSE,1);
     si.tag=1;
     SummItem si0=getItem(Event.EV_ECLIPSE,0);
@@ -1072,6 +1075,9 @@ class Summary extends Canvas implements CommandListener, Runnable{
 //#if logger
 //#       Astromaximum.instance.logger("end SetCurPage");
 //#endif      
+    if(pageNum>=PAGE_SUMMARY && pageNum<=PAGE_LAST){
+        recalcPeriods();
+    }
     repaint();
   }
   

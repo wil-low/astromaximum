@@ -4,7 +4,7 @@
 <!-- (If you delete it and reopen the project it will be recreated.) -->
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
-    <property name="year" value="2008"/> 
+    <property name="year" value="2007"/> 
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
     
     <import file="nbproject/build-impl.xml"/>
@@ -90,10 +90,12 @@
 	<arg value="${year}"/>
 	<arg value="p"/>
       </exec>
-      <loadproperties srcfile="props.txt"/>
     </target>
+
     <target name="pre-init">
+      <echo file="props.txt" message=""/>
       <antcall target="need.props" inheritall="true" inheritrefs="true" />
+      <loadproperties srcfile="props.txt"/>
       <uptodate property="size2dat.notRequired">
         <srcfiles dir= "../arrays" includes="**/size?.txt"/>
         <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
@@ -115,8 +117,8 @@
     </target>
    
     <target name="ask.year" unless="year">
-            <input addproperty="year" message="Enter year:" defaultvalue="${year}"/>
-            <echo message="${year} entered"/>
+        <input addproperty="year" message="Enter year:" defaultvalue="${year}"/>
+        <echo message="${year} entered"/>
     </target>
 		
     <target name="size.compile" description="Size to dat files" unless="size2dat.notRequired">
@@ -166,7 +168,6 @@
     <target name="jar" depends="init,preverify,create-jad,set-keystore-password,set-alias-password,pre-jar" description="Build jar and application descriptor.">
       <dirname file="${dist.dir}/${dist.jar}" property="dist.jar.dir"/>
       <mkdir dir="${dist.jar.dir}"/>
-
       <antcall target="make.jar" inheritall="true" inheritrefs="true"/>
       <antcall target="make.kzip" inheritall="true" inheritrefs="true"/>
 
