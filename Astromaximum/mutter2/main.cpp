@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 	else{
 		path[0]=0;
 	}
-  strcat(path,"../mutter/");
+  strcat(path,"../data/");
   chdir(path);
   printf("Current directory is: %s\n", path);
 //  return 0;
@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
   ephData=new sEphRecord [stepCount];
   endJD=startJD;
   int size=sizeof(sEphRecord)*stepCount;
-  sprintf(ephf,"../ephdata%04d.dat",year);
+  sprintf(ephf,"ephdata%04d.dat",year);
 
   FILE *fin=fopen(ephf, "rb");
   int fsz=0;

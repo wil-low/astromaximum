@@ -995,12 +995,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
         Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.options);
         break;
       case 1:
-        selDate.setTime(Astromaximum.instance.getMidnight(Options.currentTime()));
-				if(!Astromaximum.dataFile.isDateAvailable(selDate)){
-				Astromaximum.instance.reportTodayError();
-				}
-        showDaySummary();
-        repaint();
+        setToday();
         break;
       case 5: // back to CustomTime
         Astromaximum.customTime.init(pageNum);
@@ -1019,6 +1014,15 @@ class Summary extends Canvas implements CommandListener, Runnable{
         repaint();
  */
     }
+  }
+  
+  void setToday() {
+    selDate.setTime(Astromaximum.instance.getMidnight(Options.currentTime()));
+    if(!Astromaximum.dataFile.isDateAvailable(selDate)){
+        Astromaximum.instance.reportTodayError();
+    }
+    showDaySummary();
+    repaint();
   }
   
   private static Vector evInCurrentDay(Vector dest, Vector src) {

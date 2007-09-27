@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict;
 #use warnings;
-use Encode;
+#use Encode;
 my ($year, $month, $day, $hour, $min, $day_count)=(2005,12,31,0,0,367);
 $0=~/(.+\/)/is;
 
@@ -147,7 +147,7 @@ my $inp=<STDIN>;
 sub writeUTF
 {
 	my $param=shift;
-	$param = decode("cp1251", $param);
+#	$param = decode("cp1251", $param);
 	my $len;
 	do{
 		use bytes; $len=length($param); 

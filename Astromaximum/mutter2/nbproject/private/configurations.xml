@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="31">
+<configurationDescriptor version="38">
   <projectmakefile>Makefile</projectmakefile>
   <defaultConf>1</defaultConf>
   <confs>
     <conf name="Debug" type="1">
+      <gdbdebugger version="1">
+        <gdb_command>gdb</gdb_command>
+      </gdbdebugger>
       <runprofile version="5">
         <args>--help</args>
         <rundir></rundir>
@@ -13,11 +16,11 @@
         <environment>
         </environment>
       </runprofile>
+    </conf>
+    <conf name="Release" type="1">
       <gdbdebugger version="1">
         <gdb_command>gdb</gdb_command>
       </gdbdebugger>
-    </conf>
-    <conf name="Release" type="1">
       <runprofile version="5">
         <args>2007</args>
         <rundir></rundir>
@@ -27,9 +30,6 @@
         <environment>
         </environment>
       </runprofile>
-      <gdbdebugger version="1">
-        <gdb_command>gdb</gdb_command>
-      </gdbdebugger>
     </conf>
   </confs>
 </configurationDescriptor>

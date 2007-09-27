@@ -13,7 +13,7 @@ require $path.'tools.pm';
 	open(IN, "<$ARGV[1]") or die "error $!: $ARGV[1]\n";
 	while(my $ln=<IN>){
 		if($ln=~/(\w+):(Data\d\d)/is){
-			push(@fn, $path."mutter/output/archive/$ARGV[0]/$1/$2.dat");
+			push(@fn, $path."data/archive/$ARGV[0]/$1/$2.dat");
 		}
 	}
 	close(IN);

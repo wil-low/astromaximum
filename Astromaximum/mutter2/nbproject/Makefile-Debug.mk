@@ -15,16 +15,19 @@ RANLIB=ranlib
 CC=gcc
 CCC=g++
 CXX=g++
-FC=g77
+FC=
 
 # Include project Makefile
 include Makefile
 
+# Object Directory
+OBJECTDIR=build/Debug/GNU-Linux-x86
+
 # Object Files
 OBJECTFILES= \
-	build/Debug/GNU-Linux-x86/datafile.o \
-	build/Debug/GNU-Linux-x86/evclass.o \
-	build/Debug/GNU-Linux-x86/main.o
+	${OBJECTDIR}/datafile.o \
+	${OBJECTDIR}/evclass.o \
+	${OBJECTDIR}/main.o
 
 # C Compiler Flags
 CFLAGS=
@@ -37,9 +40,7 @@ CXXFLAGS=
 FFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=\
-	-L../swe \
-	-lswe
+LDLIBSOPTIONS=-L../swe -lswe
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS} mutter2
@@ -47,17 +48,17 @@ LDLIBSOPTIONS=\
 mutter2: ${OBJECTFILES}
 	${LINK.cc} -o mutter2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-build/Debug/GNU-Linux-x86/datafile.o: datafile.cpp 
-	${MKDIR} -p build/Debug/GNU-Linux-x86
-	$(COMPILE.cc) -g -DANSITZ -I../swe -o build/Debug/GNU-Linux-x86/datafile.o datafile.cpp
+${OBJECTDIR}/datafile.o: datafile.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g3 -gdwarf-2 -DANSITZ -I../swe -o ${OBJECTDIR}/datafile.o datafile.cpp
 
-build/Debug/GNU-Linux-x86/evclass.o: evclass.cpp 
-	${MKDIR} -p build/Debug/GNU-Linux-x86
-	$(COMPILE.cc) -g -DANSITZ -I../swe -o build/Debug/GNU-Linux-x86/evclass.o evclass.cpp
+${OBJECTDIR}/evclass.o: evclass.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g3 -gdwarf-2 -DANSITZ -I../swe -o ${OBJECTDIR}/evclass.o evclass.cpp
 
-build/Debug/GNU-Linux-x86/main.o: main.cpp 
-	${MKDIR} -p build/Debug/GNU-Linux-x86
-	$(COMPILE.cc) -g -DANSITZ -I../swe -o build/Debug/GNU-Linux-x86/main.o main.cpp
+${OBJECTDIR}/main.o: main.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g3 -gdwarf-2 -DANSITZ -I../swe -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

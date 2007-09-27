@@ -329,7 +329,7 @@ sub do_lbunselect {
 }
 
 sub get_city_list {
-	my $arcs=$path."mutter/output/archive/$year/";
+	my $arcs=$path."data/archive/$year/";
 	my @files;
 	my @inis;
 	foreach my $ini (@dirs){

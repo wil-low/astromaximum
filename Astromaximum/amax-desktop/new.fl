@@ -1,0 +1,17 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir  
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+class UserInterface {open
+} {
+  Function {make_window()} {open
+  } {
+    {fltk::Window} {} {open selected
+      xywh {481 387 460 270} resizable visible
+    } {}
+  }
+} 

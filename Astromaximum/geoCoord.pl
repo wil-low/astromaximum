@@ -18,10 +18,10 @@ my @cities;
 my $citlist;
 my @alltz;
 if($TZ_VER==2){
-	open(InF, "<$mypath".'Timezone/city.txt') or die "No file $mypath".'Timezone/city.txt';
+	open(InF, "<$mypath".'city.txt') or die "No file $mypath".'city.txt';
 	@cities=<InF>;
 	close(InF);
-	open(InF, "<$mypath".'Timezone/city_add.txt') or die "No file $mypath".'Timezone/city_add.txt';
+	open(InF, "<$mypath".'city_add.txt') or die "No file $mypath".'city_add.txt';
 	@alltz=<InF>;
 	close(InF);
 	push(@cities, @alltz);
@@ -52,7 +52,7 @@ if($#ARGV!=0 and scalar(@ARGV)<2){
 }
 require $mypath.'tools.pm';
 my $day_count=tools::day_count($year);
-our $path=$mypath."GeoAM/geo/";
+our $path=$mypath."data/archive/";
 
 my $country='';
 my $tz;
@@ -78,17 +78,12 @@ $sqlite3=$sqpath unless -d $sqlite3;
 $sqlite3.='sqlite3';
 #die "$sqpath\n$sqlite3\n";
 
-
-my $dir=$path."$city_inf";
-mkdir $dir unless -d $dir;
-
-
 our $outbuf;
 our $fname;
 #=head
-if(! -f "$dir/$city_inf.txt"){
+if(! -f "$path$city_inf.txt"){
 	my $error=0;
-    unlink "$dir/$city_inf.txt";
+    unlink "$path$city_inf.txt";
 	open(InF, "<$path$city_inf.ini") or die "No file $path$city_inf\.ini";
 	@cities=<InF>;
 	close(InF);
@@ -128,7 +123,7 @@ if(! -f "$dir/$city_inf.txt"){
 			else{
 				$cid=0;
 				warn "*****Not found:  $country\n";
-				$invoke="echo \"$cit\" >> \"$dir/$city_inf.txt\"";
+				$invoke="echo \"$cit\" >> \"$path$city_inf.txt\"";
 		#		print "$invoke\n";
 				system($invoke);
 				next;
@@ -173,7 +168,7 @@ if(! -f "$dir/$city_inf.txt"){
 			my @params=split(/\|/is, $countries[0]);
 			$params[0]=~s/.+!//is;
 			$error++ if !get_tz($params[3],$params[0],0);
-			$invoke="echo \"$countries[0]\" >> \"$dir/$city_inf.txt\"";
+			$invoke="echo \"$countries[0]\" >> \"$path$city_inf.txt\"";
 #			print "$invoke\n";
 			system($invoke);
 		}
@@ -185,23 +180,25 @@ if(! -f "$dir/$city_inf.txt"){
 	}
   unlink $tmp;
   if($error){
-  	unlink "$dir/$city_inf.txt";
+  	unlink "$path$city_inf.txt";
   	die "Please correct $error errors.\n";
   }
   else{
-		warn "Ready. Check coords.\n";
+		print "Ready. Check coords.\nMay I continue calculations (y/n)? ";
 	}
-	<STDIN>;
+	my $ans=<STDIN>;
+	chomp($ans);
+	die "Calculation cancelled.\n" unless $ans eq 'y';
 }
 #####################################
-	open(InF, "<$dir/$city_inf.txt") or die "No file";
+	open(InF, "<$path$city_inf.txt") or die "No file";
 	@cities=<InF>;
 	close(InF);
 #	die "@cities";
 	my $i=0;
 	our $city;
 #	undef $/ ;
-	my $newdir=sprintf('%smutter/output/archive/%d/%s',$mypath,$year,$city_inf);
+	my $newdir=sprintf('%sdata/archive/%d/%s',$mypath,$year,$city_inf);
 	mkdir $newdir unless -d $newdir;
 #	foreach my $cit(@cities){
 #		chomp($cit);
@@ -231,7 +228,7 @@ if(! -f "$dir/$city_inf.txt"){
 			print "\n-----------------------";
 			print "\n******** $city ********";
 			print "\n-----------------------\n";
-			my $tz=get_tz($params[3],$city,1);
+			my $tz=get_tz($params[3],$city,1,1);
 			my $dstbuf=calc_dst($tz);
 			if(!$tzonly){
 				my $invoke=$mypath."mutter2/mutter2 $year geo0- $params[1] $params[2]";# electio";
@@ -251,7 +248,7 @@ if(! -f "$dir/$city_inf.txt"){
 				print OutF $header;
 				close(OutF);
 
-				my $geomask=sprintf('%smutter/output/archive/%d/geo0-*.bin',$mypath, $year);
+				my $geomask=sprintf('%sdata/archive/%d/geo0-*.bin',$mypath, $year);
 				my @bins=glob($geomask);
 				die "No files: $geomask" if $#bins<0;
 				my $counter=0;
@@ -489,12 +486,12 @@ use warnings;
 }
 	
 sub get_tz{
-	my ($country,$city,$isdie)=@_;
+	my ($country,$city,$isdie,$verbose)=@_;
 	$country=~s/.+\$//is;
 	$country=~s/[\n\r]//isg;
 	if($TZ_VER==2){
 		my $c_arr;
-		print "$country,$city,$isdie\n";
+		print "$country,$city,$isdie\n" if $verbose;
 		if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n\r]+\))?)/is){
 			$country=$1;
 #			print "\n\n$country\n";
@@ -510,7 +507,7 @@ sub get_tz{
 				die "No TZ for $country, $city!";
 			}
 			else{
-				warn "No TZ for $country, $city!\n";
+				warn "No TZ for $country, $city!";
 				return undef;
 			}
 		}
@@ -518,7 +515,7 @@ sub get_tz{
 		my($ofs, $start, $end, $diff)=(0, 0, 0, 1);
 		if(ref($c_arr) eq 'HASH' and $c_arr->{ofs}=~/^>(.+)/is){ # LinkTo redirect
 			$country=$1;
-			print "LinkTo $country\n";
+			print "LinkTo $country\n" if $verbose;
 			$c_arr=$historic{$country};
 			die "No TZ for $country!" unless defined $c_arr;
 		}
@@ -529,7 +526,7 @@ sub get_tz{
 			else{
 				$end=9999; # max
 			}
-			print "\t - $start $end\n";
+			print "\t - $start $end\n" if $verbose;
 			if($year>=$start and $year<$end){ # we're inside period
 				$ofs=$row->{ofs};
 				my $rule=$row->{rule};
@@ -543,7 +540,7 @@ sub get_tz{
 					$start=$end=$diff='';
 				}
 				else{
-					print "Rule $rule\n";
+					print "Rule $rule\n" if $verbose;
 					my $r_arr=$historic{-$rule}; # follow rule
 					die "No rule for $rule!" unless defined $r_arr;
 					$start=0;

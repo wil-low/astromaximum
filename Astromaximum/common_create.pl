@@ -37,7 +37,7 @@ $dest=$ARGV[1] if $ARGV[1];
 my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
 our $path=$1;
 
-$path.="mutter/output/archive/$year/";
+$path.="data/archive/$year/";
 my $InF=undef;
 my $OutF;
 undef $/ ;

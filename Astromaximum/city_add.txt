@@ -1,0 +1,19 @@
+@ Belarus, Minsk_BLR
+Gomel'
+@ Estonia, Tallinn_EST
+Narva
+@ Latvia, Riga_LVA
+Liepaja
+@ Lithuania, Vilnius_LTU
+Panevezys
+@ Ukraine, Kiev_UKR
+Kovel'
+Uman'
+Jaremca
+@ Ukraine, Simferopol^UKR
+Izmail
+Kerch
+Yalta
+@ Ukraine, Uzhgorod^UKR
+@ Ukraine, Zaporozje^UKR
+

@@ -262,17 +262,18 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#         logBox.showLog(null);
 //#endif
 //#if perftest=="0"
-      if(!dataFile.isDateAvailable(summary.selDate)){
-        //#if Demo
-        //#       calendar.set(Calendar.YEAR,2006);
-        //#       calendar.set(Calendar.MONTH,Calendar.DECEMBER);
-        //#       calendar.set(Calendar.DAY_OF_MONTH,14);
-        //#       grid.selDate=calendar.getTime();
-        //#       showDaySummary(grid.selDate);
-        //#else
-	reportTodayError();
-       //#endif
-      }
+      
+//      if(!dataFile.isDateAvailable(summary.selDate)){
+//        //#if Demo
+//        //#       calendar.set(Calendar.YEAR,2006);
+//        //#       calendar.set(Calendar.MONTH,Calendar.DECEMBER);
+//        //#       calendar.set(Calendar.DAY_OF_MONTH,14);
+//        //#       grid.selDate=calendar.getTime();
+//        //#       showDaySummary(grid.selDate);
+//        //#else
+//	reportTodayError();
+//       //#endif
+//      }
 //        log("SDS before");
       summary.moonPhase= Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE,Event.SE_MOON,
 	  dataFile.startJD,dataFile.finalJD);
@@ -295,7 +296,8 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#       logger("setCell");
 //#endif      
 //      evDump(dataFile.getEvents(Event.EV_RISE, Event.SE_MOON, 0, dataFile.finalJD));
-      summary.showDaySummary();
+      summary.setToday();
+//      summary.showDaySummary();
 //#if logger
 //#       logger("showDaySummary");
 //#endif      

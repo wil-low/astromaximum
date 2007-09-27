@@ -24,7 +24,7 @@ my ($month, $day, $hour, $min)=(1,1,0,0);
 
 our $outp=$ARGV[0];
 print "imei=$imei, outpath=$outp\n";
-our $path=$mypath."mutter/output/archive/$year/";
+our $path=$mypath."data/archive/$year/";
 
 my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
 

@@ -27,8 +27,8 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=mutter2
 
 # Active Configuration
-ACTIVECONF=Release
-CONF=${ACTIVECONF}
+DEFAULTCONF=Debug
+CONF=${DEFAULTCONF}
 
 # All Configurations
 ALLCONFS=Debug Release 
@@ -111,7 +111,3 @@ ALLCONFS=Debug Release
 	@echo "The active configuration (${ACTIVECONF}) is being used if the configuration is not specified."
 	@echo ""
 
-
-# Enable dependency checking
-.KEEP_STATE:
-.KEEP_STATE_FILE:.make.state.${CONF}

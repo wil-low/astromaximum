@@ -332,7 +332,7 @@ void DataFile::clearViaCombusta(VAE & src, VAE & dest)
 bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int planet, char* fname)
 {
   char buf[200];
-  sprintf(buf,"output/archive/%d/%s",Event::startYear,fname);
+  sprintf(buf,"archive/%d/%s",Event::startYear,fname);
   printf("\nSaving %s...",buf);
   FILE *fout=fopen(buf,"wb");
 	if(!fout){
@@ -431,7 +431,7 @@ int DataFile::swapInt(int var)
 bool DataFile::readSubData(const char* fname, VAE & v)
 {
   char buf[200];
-  sprintf(buf,"output/archive/%d/%s",Event::startYear,fname);
+  sprintf(buf,"archive/%d/%s",Event::startYear,fname);
   printf("\nReading %s...",buf);
   FILE *fin=fopen(buf,"rb");
 

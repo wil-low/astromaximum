@@ -189,7 +189,7 @@
         <arg value="${imei.code}"/>
       </exec>
     </target>
--->
+
     <target name="obfuscate" depends="init,compile,obfuscate-check,pre-obfuscate" description="Obfuscate project classes." unless="no.obfusc">
         <dirname file="${obfuscator.srcjar}" property="obfuscator.srcjar.dir"/>
         <dirname file="${obfuscator.destjar}" property="obfuscator.destjar.dir"/>
@@ -202,7 +202,7 @@
         <unjar src="${obfuscator.destjar}" dest="${obfuscated.classes.dir}"/>
         <antcall target="post-obfuscate" inheritall="true" inheritrefs="true"/>
     </target>
-
+-->
     <target name="pre-preverify">
       <condition property="build.desktop">
         <contains string="${abilities}" substring="build.desktop"/>

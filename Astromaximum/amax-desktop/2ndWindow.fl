@@ -1,0 +1,103 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir fltk::Item 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+class MainWindow {open
+} {
+  Function {MainWindow()} {open
+  } {
+    {fltk::Window} window {
+      label Scythian
+      xywh {523 324 725 445} resizable color 0x8cb0e000
+      extra_code {\#include <fltk/ask.h>
+\#include <stdio.h>} visible
+    } {
+      {fltk::MenuBar} {} {
+        xywh {0 0 725 20}
+      } {
+        {fltk::ItemGroup} {} {
+          label File open
+          } {
+          {fltk::Item} {} {
+            label New
+            callback {fltk::message("How are you?");}
+            }
+          {fltk::Item} {} {
+            label Open
+            }
+          {fltk::Item} {} {
+            label Quit
+            callback {window->hide();}
+            }
+        }
+        {fltk::ItemGroup} {} {
+          label Ephemeris open
+          } {
+          {fltk::Item} {} {
+            label New
+            callback {fltk::message("Ephemeris");}
+            }
+          {fltk::Item} {} {
+            label Open
+            }
+          {fltk::Item} {} {
+            label Quit
+            }
+        }
+      }
+      {fltk::Browser} {} {open
+        xywh {545 20 180 217} align 11
+      } {
+        {fltk::Item} {} {
+          label Planet0
+          }
+        {fltk::Item} {} {
+          label Planet1
+          align 0
+        }
+        {fltk::ValueSlider} {} {
+          xywh {2 34 176 15}
+        }
+        {fltk::Dial} {} {
+          xywh {2 49 176 64}
+        }
+      }
+      {fltk::Browser} {} {open
+        xywh {545 237 180 208} align 11
+      } {
+        {fltk::Item} {} {
+          label Planet0
+          }
+        {fltk::Item} {} {
+          label Planet1
+          align 0
+        }
+        {fltk::ValueSlider} {} {
+          xywh {2 34 176 15}
+        }
+      }
+      {fltk::Browser} {} {open
+        xywh {0 20 545 425}
+        extra_code {const int widths[]={100,50,75};
+const char* lbl[]={"1st", "2nd", "3rd"};
+o->column_widths(widths);
+o->column_labels(lbl);
+fillBrowser(o,30);}
+      } {}
+    }
+  }
+  Function {fillBrowser(fltk::Browser *o, int count)} {selected private return_type void
+  } {
+    code {char buf[20];
+o->begin();
+for(int i=0; i<count; i++){
+	sprintf(buf,"%02d\\t%d",i,i);
+	(new fltk::Item(0))->copy_label(buf);
+}
+o->end();} {}
+  }
+} 
