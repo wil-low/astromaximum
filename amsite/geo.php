@@ -7,7 +7,7 @@ include_once('lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-09-12T20:46:01+0300">
+<meta name="date" content="2007-09-30T12:44:24+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -262,6 +262,12 @@ function create_jar($year, $ids){
 	fwrite($inf, $template);
 	fclose($inf);
 	join_datafiles2("$DIR_SOURCE/$fn/locations.dat", $data);
+	$inf=fopen("$DIR_SOURCE/icons/".substr($year,-1).".png", 'rb');
+	$icon=fread($inf,5000);
+	fclose($inf);
+	$inf=fopen("$DIR_SOURCE/$fn/icon.png", 'wb');
+	fwrite($inf,$icon);
+	fclose($inf);
 	$cmd=sprintf($ZIP, "$DIR_SOURCE/$fn", "$DIR_FILES/$fn");
 #	echo "<br>$cmd<br><pre>";
 	system($cmd);
