@@ -375,10 +375,10 @@ class Options extends GeoList{
         geo=extractCityName(geo).getBytes();
         rs.setRecord(1,geo, 0, geo.length);
 //#debug info
-        System.out.println("RecStore created");
+        System.out.println("RecStore created "+STORE_NAME);
       }
     }
-    Astromaximum.dataFile.geoposData=super.initDB(false);
+    Astromaximum.dataFile.geoposData=super.initDB(true);
     return null;
   }
 

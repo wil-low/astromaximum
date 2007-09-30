@@ -66,7 +66,7 @@ sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, y
 	}
 	my $jad=$$template;
 	if($is_numbered){
-		my $locsz= -s '.temp\\locations.dat';
+		my $locsz= -s '.temp/locations.dat';
 		$locsz=~/(\d{0,4})$/is;
 		$code="-$1";
 		warn $locsz;
@@ -84,23 +84,32 @@ sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, y
 		$i++;
 	}
 #	die $jad;
-	mkdir ".temp\\META-INF\\" unless -d ".temp\\META-INF\\";
-	open(INF, ">.temp\\META-INF\\MANIFEST.MF") or die "No file";
+	mkdir ".temp/META-INF/" unless -d ".temp/META-INF/";
+	open(INF, ">.temp/META-INF/MANIFEST.MF") or die "No file";
 		print INF $jad;
 	close(INF);
 	
-	open(INF, "<GeoAM\\dist\\GeoAM.jar") or die "No file GeoAM\\dist\\GeoAM.jar";
+	$year=~/\d(\d)/is;
+	open(INF, "<images/geo/$1.png");
 	binmode(INF);
 	my @data=<INF>;
-	my $buf=join("",@data);
+	close(INF);
+	open(OUTF, ">.temp/icon.png");
+	binmode(OUTF);
+	print OUTF join("",@data);
+	close(OUTF);
+
+	open(INF, "<GeoAM/dist/GeoAM.jar") or die "No file GeoAM/dist/GeoAM.jar";
+	binmode(INF);
+	@data=<INF>;
 	close(INF);
 	
 	open(INF, ">$destdir$fname.jar");
 	binmode(INF);
-		print INF $buf;
+		print INF join("",@data);
 	close(INF);
-	
-	my $cmd="\"$rar\" a -r -ep1 $destdir$fname\.jar .temp\\*";
+
+	my $cmd="\"$rar\" a -r -ep1 $destdir$fname\.jar .temp/*";
 	print "$cmd\n";
 	system($cmd);
 	

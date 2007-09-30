@@ -92,10 +92,13 @@
       </exec>
     </target>
 
-    <target name="post-compile">
+    <target name="pre-init">
       <echo file="props.txt" message=""/>
       <antcall target="need.props" inheritall="true" inheritrefs="true" />
       <loadproperties srcfile="props.txt"/>
+    </target>
+    
+    <target name="post-compile">
       <uptodate property="size2dat.notRequired">
         <srcfiles dir= "../arrays" includes="**/size?.txt"/>
         <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
@@ -104,14 +107,14 @@
       <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../common_create.pl"/>
         <arg value="${year}"/>
-        <arg value="${basedir}/src"/>
+        <arg value="${build.classes.dir}"/>
         <arg value="${imei.code}"/>
       </exec>
       <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../locations_create.pl"/>
         <arg value="${year}"/>
         <arg value="${basedir}/../loclist_default.txt"/>
-        <arg value="${basedir}/src/locations.dat"/>
+        <arg value="${build.classes.dir}/locations.dat"/>
       </exec>
       <antcall target="size.compile"/>
       <antcall target="color.icon">

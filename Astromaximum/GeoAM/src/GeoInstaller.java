@@ -21,12 +21,12 @@ public class GeoInstaller extends MIDlet implements CommandListener{
   private boolean interrupt=false;
   
   public void startApp() {
-    Alert alert=new Alert("Installer",
-       "Loading list of cities, please wait...",null,AlertType.INFO);
-    alert.setTimeout(Alert.FOREVER);
-    alert.addCommand(new Command("Cancel",Command.OK,1));
-    alert.setCommandListener(this);
-    Display.getDisplay(this).setCurrent(alert);
+//    Alert alert=new Alert("Installer",
+//      "Loading list of cities, please wait...",null,AlertType.INFO);
+//    alert.setTimeout(Alert.FOREVER);
+//    alert.addCommand(new Command("Cancel",Command.OK,1));
+//    alert.setCommandListener(this);
+//    Display.getDisplay(this).setCurrent(alert);
     gl=new GeoList(this,Choice.MULTIPLE,"locations.dat");
     gl.setCommandListener(this);
     gl.addCommand(new Command(gl.getMessage("Install"),
@@ -42,9 +42,9 @@ public class GeoInstaller extends MIDlet implements CommandListener{
       Display.getDisplay(this).setCurrent(gl);
     } 
     catch (Exception ex) {
-       ex.printStackTrace();
-       alert=new Alert("Error",
-           "Astromaximum cities database is not found. Please install Astromaximum first.",
+       Alert alert=new Alert("Error",
+           "Astromaximum cities database is not found. Please install Astromaximum"+
+               Integer.toString(gl.year).substring(2)+" first.",
            null,AlertType.ERROR);
        alert.addCommand(new Command("OK",Command.ITEM,1));
        alert.setTimeout(Alert.FOREVER);
