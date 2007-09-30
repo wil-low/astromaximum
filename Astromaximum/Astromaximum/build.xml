@@ -92,7 +92,7 @@
       </exec>
     </target>
 
-    <target name="pre-init">
+    <target name="post-compile">
       <echo file="props.txt" message=""/>
       <antcall target="need.props" inheritall="true" inheritrefs="true" />
       <loadproperties srcfile="props.txt"/>
@@ -114,6 +114,9 @@
         <arg value="${basedir}/src/locations.dat"/>
       </exec>
       <antcall target="size.compile"/>
+      <antcall target="color.icon">
+        <param name="icons.dir" value="${basedir}/../images/icons"/>
+      </antcall>
     </target>
    
     <target name="ask.year" unless="year">
