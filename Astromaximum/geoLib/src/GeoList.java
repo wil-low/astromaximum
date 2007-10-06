@@ -101,8 +101,14 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
 
   public byte[] initDB(boolean canCreate) throws Exception{
 //    System.out.println(STORE_NAME);
-    rs=RecordStore.openRecordStore(STORE_NAME, main.getAppProperty("MIDlet-Vendor"), 
-            STORE_NAME+Integer.toString(year).substring(2));
+    String platform=System.getProperty("microedition.platform");
+    if(platform!=null && platform.indexOf("wtk")>=0){
+        rs=RecordStore.openRecordStore(STORE_NAME,false);
+    }
+    else{
+        rs=RecordStore.openRecordStore(STORE_NAME, main.getAppProperty("MIDlet-Vendor"), 
+                STORE_NAME+Integer.toString(year).substring(2));
+    }
     curCity=rs.getRecord(1);
     RecordEnumeration rece=rs.enumerateRecords(this,null,false);
 //#mdebug info 

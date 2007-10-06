@@ -80,53 +80,38 @@
             <antcall target="for-all-configs"/>
         </target>
     -->    
-    <property name="AM.dist" value="dist/midp2y2007release_tb/"/>
-<!--    
-    classpath="${platform.bootclasspath}" 
---> 
-    <target name="need.props" unless="build.desktop">
-      <exec executable="perl" failonerror="true">
-	<arg value="${basedir}/../release_gui.pl"/>
-	<arg value="${year}"/>
-	<arg value="p"/>
-      </exec>
-    </target>
 
+
+    <target name="post-jar" description="Copy into common dir">
+	<copy file="${dist.dir}/${dist.jar}" todir="${basedir}/../templates" />
+	<exec executable="perl" failonerror="true">
+	    <arg value="${basedir}/../gen_amax.pl"/>
+	    <arg value="${year}"/>
+	    <arg value="${config.active}"/>
+            <arg value="${basedir}/../loclist_default.txt"/>
+            <arg value="${dist.dir}/${dist.jar}"/>
+	</exec>
+    </target>
+    
+
+<!--
     <target name="pre-init">
       <echo file="props.txt" message=""/>
       <antcall target="need.props" inheritall="true" inheritrefs="true" />
       <loadproperties srcfile="props.txt"/>
     </target>
-    
+-->    
     <target name="post-compile">
       <uptodate property="size2dat.notRequired">
         <srcfiles dir= "../arrays" includes="**/size?.txt"/>
         <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
       </uptodate>
-      <antcall target="ask.year"/> 
-      <exec executable="perl" failonerror="true">
-        <arg value="${basedir}/../common_create.pl"/>
-        <arg value="${year}"/>
-        <arg value="${build.classes.dir}"/>
-        <arg value="${imei.code}"/>
-      </exec>
-      <exec executable="perl" failonerror="true">
-        <arg value="${basedir}/../locations_create.pl"/>
-        <arg value="${year}"/>
-        <arg value="${basedir}/../loclist_default.txt"/>
-        <arg value="${build.classes.dir}/locations.dat"/>
-      </exec>
       <antcall target="size.compile"/>
       <antcall target="color.icon">
         <param name="icons.dir" value="${basedir}/../images/icons"/>
       </antcall>
     </target>
    
-    <target name="ask.year" unless="year">
-        <input addproperty="year" message="Enter year:" defaultvalue="${year}"/>
-        <echo message="${year} entered"/>
-    </target>
-		
     <target name="size.compile" description="Size to dat files" unless="size2dat.notRequired">
       <echo message="Invoking size2dat.pl:"/>
       <exec executable="perl" failonerror="true">
@@ -134,6 +119,7 @@
       </exec>
     </target>
     
+<!--    
     <target name="tb.install" description="Installing timebomb." if="do.timebomb">
       <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../timebomb.pl"/>
@@ -150,11 +136,6 @@
     </target>
      
     <target name="pre-obfuscate" description="Installing timebomb.">
-			<!--
-      <antcall target="common.install">
-        <param name="class.dir" value="${basedir}/${build.classes.dir}"/>
-      </antcall>
-			-->
       <condition property="do.timebomb">
         <equals arg1="${config.active}" arg2="midp2y2007release_tb"/>
       </condition>
@@ -182,33 +163,6 @@
       <echo message="Desktop=${build.desktop}"/>
     </target>
    
-		<!--
-    <target name="common.install" if="imei.code">
-      <condition property="valid.imei">
-        <length string="${imei.code}" length="15"/>
-      </condition>
-      <fail unless="valid.imei" message=" Invalid IMEI (${imei.code}) ! "/>
-			<echo message="Execution script   ${basedir}/../join_common.pl ${class.dir} ${imei.code}" />
-      <exec executable="perl" failonerror="true">
-        <arg value="${basedir}/../join_common.pl"/>
-        <arg value="${class.dir}"/>
-        <arg value="${imei.code}"/>
-      </exec>
-    </target>
-
-    <target name="obfuscate" depends="init,compile,obfuscate-check,pre-obfuscate" description="Obfuscate project classes." unless="no.obfusc">
-        <dirname file="${obfuscator.srcjar}" property="obfuscator.srcjar.dir"/>
-        <dirname file="${obfuscator.destjar}" property="obfuscator.destjar.dir"/>
-        <mkdir dir="${obfuscator.srcjar.dir}"/>
-        <mkdir dir="${obfuscator.destjar.dir}"/>
-        <jar jarfile="${obfuscator.srcjar}" basedir="${build.classes.dir}"/>
-        <property name="obfuscation.custom" value=""/>
-        <nb-obfuscate srcjar="${obfuscator.srcjar}" destjar="${obfuscator.destjar}" obfuscatorclasspath="${obfuscator.classpath}" obfuscationLevel="${obfuscation.level}" extraScript="${obfuscation.custom}"/>
-        <mkdir dir="${obfuscated.classes.dir}"/>
-        <unjar src="${obfuscator.destjar}" dest="${obfuscated.classes.dir}"/>
-        <antcall target="post-obfuscate" inheritall="true" inheritrefs="true"/>
-    </target>
--->
     <target name="pre-preverify">
       <condition property="build.desktop">
         <contains string="${abilities}" substring="build.desktop"/>
@@ -246,4 +200,5 @@
     <target name="run.desktop" if="build.desktop">
       <java jar="${dist.dir}/${dist.jar}" fork="true"/>
     </target>
+-->    
 </project>

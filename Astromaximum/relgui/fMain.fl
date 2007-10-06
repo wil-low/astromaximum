@@ -1,0 +1,151 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir fltk::Item 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {extern void set_year(const char*);} {} 
+
+decl {extern void cb_unselect(MyBrowser*, void*);} {} 
+
+decl {extern void cb_select(MyBrowser*, void*);} {} 
+
+decl {extern void cb_sort(fltk::RadioButton*, void*);} {} 
+
+decl {extern void cb_do_imei(fltk::Button*, void*);} {} 
+
+decl {extern void cb_do_timebomb(fltk::Button*, void*);} {} 
+
+decl {\#include "fltk/events.h"} {} 
+
+decl {\#include "fltk/Browser.h"} {public
+} 
+
+class MyBrowser {open : {public fltk::Browser}
+} {
+  Function {handle(int event)} {open private return_type int attributes virtual
+  } {
+    code {if(event==fltk::PUSH){
+	if(fltk::event_clicks()>1){
+		fltk::event_clicks(0);
+		do_callback();
+		return true;
+	}
+	else{
+		return fltk::Browser::handle(event);
+	}
+}
+else{
+	return fltk::Browser::handle(event);
+}} {selected
+    }
+  }
+  Function {MyBrowser(int x, int y, int w, int h, const char *l):fltk::Browser(x, y, w, h, l)} {open
+  } {
+    code {when(fltk::WHEN_ENTER_KEY_ALWAYS);} {}
+  }
+} 
+
+Function {make_window()} {open
+} {
+  {fltk::Window} {} {open
+    xywh {71 134 950 535} resizable visible
+  } {
+    {fltk::Group} {} {open
+      xywh {210 5 735 525} resizable box THIN_DOWN_BOX buttonbox NO_BOX
+    } {
+      {fltk::Browser} lbSelected {
+        label Selected
+        callback cb_unselect open
+        xywh {5 20 350 505}
+        class MyBrowser
+      } {}
+      {fltk::Browser} lbAvailable {
+        label Available
+        callback cb_select open
+        xywh {360 20 370 505}
+        class MyBrowser
+      } {}
+    }
+    {fltk::Group} {} {open
+      xywh {5 5 200 530}
+    } {
+      {fltk::Group} {} {open
+        xywh {0 0 200 220} box THIN_DOWN_BOX
+      } {
+        {fltk::Input} txtYear {
+          xywh {5 5 85 20}
+        }
+        {fltk::Button} {} {
+          label {Set year}
+          callback {set_year(txtYear->value());}
+          xywh {95 5 95 20}
+        }
+        {fltk::Input} txtImei {
+          label {IMEI:}
+          xywh {35 50 160 25}
+        }
+        {fltk::Button} {} {
+          label IMEI
+          callback cb_do_imei
+          xywh {5 80 85 25}
+        }
+        {fltk::Button} {} {
+          label {IMEI logger}
+          callback cb_do_imei
+          xywh {110 80 85 25}
+          extra_code {o->user_data((void*)1);}
+        }
+        {fltk::Input} txtTimebomb {
+          label {Timeshift, hrs:}
+          xywh {100 125 85 25}
+          extra_code {o->text("0");}
+        }
+        {fltk::Button} {} {
+          label {Time bomb}
+          xywh {35 155 120 25}
+        }
+        {fltk::CheckButton} ckDebug {
+          label Debug
+          xywh {10 195 95 25}
+        }
+        {fltk::CheckButton} ckKzip {
+          label kzip
+          xywh {110 195 65 25}
+        }
+      }
+      {fltk::Group} {} {open
+        xywh {0 225 200 120} resizable
+      } {}
+      {fltk::Group} {} {open
+        xywh {0 350 200 175} box THIN_DOWN_BOX
+      } {
+        {fltk::Group} {} {
+          label {Sort by:} open
+          xywh {5 55 190 35} box FLAT_BOX
+        } {
+          {fltk::RadioButton} {} {
+            label City
+            callback cb_sort
+            xywh {5 5 80 25} value 1
+          }
+          {fltk::RadioButton} {} {
+            label State
+            callback cb_sort
+            xywh {105 5 80 25}
+            extra_code {o->user_data((void*)1);}
+          }
+        }
+        {fltk::Button} {} {
+          label {Generate Geo}
+          xywh {5 135 190 25}
+        }
+        {fltk::Output} lbSize {
+          xywh {5 5 190 25} box NO_BOX color 0xe0e0e000 textsize 10
+        }
+      }
+    }
+  }
+} 

@@ -451,7 +451,9 @@ public class Astromaximum extends MIDlet implements CommandListener{
   }
 
   public void reportTodayError() {
-    final Alert noDate=new Alert(LocalizationSupport.getMessage("Today")+": "+ summary.selDate.toString(),
+    String str=summary.selDate.toString();
+    str=str.substring(0,11)+str.substring(str.length()-4);
+    final Alert noDate=new Alert(LocalizationSupport.getMessage("Today")+" "+ str,
       LocalizationSupport.getMessage("no_today"),
       null,AlertType.ERROR);
     noDate.setTimeout(5000);

@@ -1,0 +1,505 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use POSIX;
+
+our $DIR_TEMPLATE='templates';
+our $DIR_OUTPUT='Astromaximum/deploy';
+our $DIR_TEMP='.temp';
+
+our $UNZIP=q(unzip -q %s -d %s );
+#our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
+our $ZIP=q(wd=`pwd`; cd %s; zip -qrm $wd/%s * ;cd $wd);
+#our $zip=q(zip -r %s.r %s/*);
+#our $zip=q("d:/Program Files/WinRAR/WinRar.exe" a -afzip -r -ep1 %s.r %s/*);
+
+our $path='';
+our $file_sign="\x50\x4B\x03\x04";
+our $fdir_sign="\x50\x4B\x01\x02";
+
+if($0=~/(.+[\\\/])/is){
+    $path=$1;
+}
+
+if(!scalar(@ARGV)){
+    print "This script generates ready-to-use Astromaximum distribution.\n";
+    print "Parameters:\n";
+    print "\t<year>\n";
+    print "\t<config>: [notest|release|tb|demo]\n";
+    print "\t<loclist file>\n";
+    print "\t<output jar>\n";
+    print "\t[imei|timebomb|tb_timeout]\n";
+    exit(1);
+}
+
+require $path.'tools.pm';
+require $path.'Crc32.pm';
+
+our $year=shift(@ARGV);
+our $config=shift(@ARGV);
+our $loclist=shift(@ARGV);
+our $outfile=shift(@ARGV);
+
+die "Invalid year" if $year!~/^\d{4}$/is;
+die "Invalid loclist" if ! -f "$loclist";
+my $dest='';
+print "Processing <$config> for $year using locations from $loclist...\n";
+
+open(INF, "<$path"."Astromaximum/version") or die $!;
+my $version=<INF>;
+close(INF);
+$version=~/(\d+\.\d+\.\d+)/is;
+$version=$1;
+
+$year=~/\d\d(\d\d)/is;
+my $ye=$1;
+
+$outfile=$path."Astromaximum/deploy/Astromaximum$ye.jar" unless $outfile;
+
+if($config=~/tb/is){
+    my $ofs=shift(@ARGV);
+    $ofs=0 unless $ofs;
+    my $delta=shift(@ARGV);
+    $delta=30 unless $delta;
+    unzip("$path$DIR_TEMPLATE/Astromaximum-tb.jar");
+    inject_amdata();
+    do_timebomb($ofs, $delta);
+    common_create($year, "$path$DIR_TEMP/common.dat");
+    locations_create($year, $loclist, "$path$DIR_TEMP/locations.dat");
+    inject_icon();
+    do_jar($ye, $version, $outfile);
+    do_messjar($outfile);
+    exit(0);
+}
+
+if($config=~/(2006|demo)/is){
+    $year=2006;
+    unzip("$path$DIR_TEMPLATE/AstromaximumDemo.jar");
+    inject_amdata();
+    common_create($year, "$path$DIR_TEMP/c.dat");
+    locations_create($year, $loclist, "$path$DIR_TEMP/l.dat");
+#    inject_icon();
+    do_jar($ye, $version, $outfile);
+    do_messjar($outfile);
+    exit(0);
+}
+
+if($config=~/notest$/is){
+    unzip("$path$DIR_TEMPLATE/Astromaximum-notest.jar");
+    common_create($year, "$path$DIR_TEMP/common.dat");
+    locations_create($year, $loclist, "$path$DIR_TEMP/locations.dat");
+    inject_icon();
+    do_jar($ye, $version, $outfile);
+#    do_messjar($outfile);
+    exit(0);
+}
+
+if($config=~/release$/is){
+    my $imei=shift(@ARGV);
+    $imei='0' x 15 unless $imei;
+    unzip("$path$DIR_TEMPLATE/Astromaximum.jar");
+    common_create($year, "$path$DIR_TEMP/common.dat", $imei);
+    locations_create($year, $loclist, "$path$DIR_TEMP/locations.dat");
+    inject_amdata();
+    inject_icon();
+    do_jar($ye, $version, $outfile);
+    do_messjar($outfile);
+    exit(0);
+}
+die "Invalid config";
+
+sub inject_amdata{
+    open(INF,"<$path"."Astromaximum/src/Amdata.class") or die "Cannot open file";
+    binmode(INF);
+    my @body=<INF>;
+    close (INF);
+    open(OUTF,">$path$DIR_TEMP/Amdata.class") or die "Cannot open file";
+    binmode(OUTF);
+    print OUTF join('', @body);
+    close (OutF);
+}
+
+sub inject_icon{
+    $ye=~/(\d)$/is;
+    open(INF,"<$path"."images/icons/$1.png") or die "Cannot open file $path"."images/icons/$1.png";
+    binmode(INF);
+    my @body=<INF>;
+    close (INF);
+    open(OUTF,">$path$DIR_TEMP/res/icon.png") or die "Cannot open file";
+    binmode(OUTF);
+    print OUTF join('', @body);
+    close (OutF);
+}
+
+sub locations_create{
+    if(!$_[0]){
+	die "Usage: locations_create.pl <year> <city list> <dest file>\n";
+    }
+    my @fn;
+    open(IN, "<$_[1]") or die "error $!: $_[1]\n";
+    while(my $ln=<IN>){
+	    if($ln=~/(\w+):(Data\d\d)/is){
+		    push(@fn, $path."data/archive/$_[0]/$1/$2.dat");
+	    }
+    }
+    close(IN);
+    my $i=scalar(@fn);
+    tools::join_datafiles($_[0], $i, $_[2], \@fn);
+    print "$_[2] written\n";
+}
+
+sub common_create{
+    my $imei='000000000000000';
+    #our $imei='359308007701623';
+    #die sprintf('%x',substr($imei,0,8));
+    if(scalar(@_)==0){
+	die "Usage: <year> [dest dir] [IMEI]\n";
+    }
+    my ($year,$month, $day, $hour, $min, $day_count)=($_[0],1,1,0,0,365);
+    if($year%100==0){
+	if($year%400==0){
+	    $day_count++;
+	}
+    }
+    else{
+	if($year%4==0){
+	    $day_count++;
+	}
+    }
+
+
+    if($_[2]){
+	if($_[2]=~/^\d{15}$/is){
+	    $imei=$_[2];
+	}
+	else{
+	    print "Invalid IMEI=$_[2],using $imei\n";
+	}
+    }
+    $dest=$_[1] if $_[1];
+    my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
+    my $path1=$path;
+
+    $path1.="data/archive/$year/";
+    undef $/ ;
+	open(OUTF, ">$dest") or die "$! $dest";
+	binmode(OUTF);
+	print OUTF $header;
+	close(OUTF);
+
+    my @bins=glob("$path1".'*.bin');
+    #my @bins=glob("$path".'retro09.bin');
+    my $counter=0;
+    foreach my $ff(@bins){
+	if($ff=~/(rise|set|navroz|geo|nakshatra|degall|aphetics)/is){
+	    next;
+	}
+    #   die pack('c',substr($imei,$counter++,1));
+	writeData(1, $ff, substr($imei,$counter++,1));
+	if($counter>=length($imei)){
+	    $counter=0;
+	}
+    }	
+    print "$dest ($year) saved.\n";
+
+}
+
+sub writeData
+{
+    my $bintype=shift;
+    my $src=shift;
+    open(OUTF, ">>$dest") or die "$! $dest";
+    binmode(OUTF);
+    open(INF, "<$src") or die "No file $src";
+    binmode(INF);
+    undef $/ ;
+    my $body=<INF>;
+    close(INF);
+    my $imeichar=shift;
+    if(length($body)>8){
+	print OUTF pack('c',$imeichar).$body; 
+#	print "$src\t$bintype\t$imeichar\n";
+    }
+    close(OUTF);
+}
+
+sub do_jar{
+    my($year, $version, $outfile)=@_;
+    open(INF, "<$path$DIR_TEMPLATE/MANIFEST.MF") or die $!;
+    my @data=<INF>;
+    close(INF);
+    my $template=join("",@data);
+    $template=~s/<YEAR>/$ye/isg;
+    $template=~s/<VERSION>/$version/isg;
+#	$jad=~s/<REGION>/$reg/isg;
+#    $template=~s/<CODE>/$code/isg;
+#	$jad=~s/<DESC>/$desc/isg;
+#    $template=~s/<JAR>/$fname\.jar/isg;
+
+    open(INF, ">$path$DIR_TEMP/META-INF/MANIFEST.MF") or die $!;
+	print INF $template;
+	print INF "\r\n";
+    close(INF);
+#    amtools::join_datafiles2("$srcdir/locations.dat", \@data);
+    unlink($outfile) if -f $outfile;
+    my $cmd=sprintf($ZIP, "$path$DIR_TEMP", $outfile);
+    print "Exec: $cmd\n";
+    system($cmd);
+    #die $cmd;
+    my $asize= -s $outfile;
+    $template.="\n\rMIDlet-Jar-Size: $asize\r\n";
+    my $jad=$outfile;
+    $jad=~s/jar/jad/is;
+    $outfile=~s/.+[\/\\]//is;
+    $template.="MIDlet-Jar-URL: $outfile\r\n";
+    open(FFF, ">$jad") or die "$jad: $!";
+    print(FFF $template);
+    print(FFF "\r\n");
+    close(FFF);
+}
+
+sub do_messjar{
+    my ($jar)=@_;
+    print "Messjaring $jar...\n";
+
+    undef $/ ;
+    open(InF, "<$jar") or print "No file";
+    binmode(InF);
+    my $body=<InF>;
+    close(InF);
+
+
+    #=head
+    my $backup=$jar;
+    $backup=~s/\.jar/\.zip/is;
+    open(OutF,">$backup") or die "Cannot open file";
+    binmode(OutF);
+    print OutF $body;
+    close (OutF);
+
+    print "  backup: $backup\n";
+    #=cut
+    #$jar=~s/\.jar/\.zip/is;
+
+
+    $body=mess_compression_local($body);
+    if($body=~s/Amdata\.class/Amaxdata\.dat/sg){
+	$body=mess_add_special_entry($body);
+    }
+    else{
+	print "No Amaxdata found\n";
+    }
+
+    #$body=mess_compression_central($body);
+    #$body=mess_direrase($body);
+
+    open(OutF,">$jar") or die "Cannot open file";
+    binmode(OutF);
+    print OutF $body;
+    close (OutF);
+    print "Finished.\n";
+}
+
+
+sub mess_compression_local {
+    my $body=shift;
+    $body=~s/(.+?)($file_sign)/$2/is;
+    my $out=$1;
+    my $count=0;
+    while($body=~s/($file_sign.+?)($file_sign)/$2/is){
+	my $sect=$1;
+	my $seed=pack('c',int(rand(6)));
+	if($sect!~/(META\-INF|Amaxdata|icon\.png)/s){
+	    $sect=~s/($file_sign.{4})./$1$seed/is;
+	    ++$count;
+	}
+	$out.=$sect;
+    }
+    $out.=$body;
+    print "  mess_compression_local - $count times\n";	
+    return $out;
+}	
+
+sub mess_add_special_entry {
+    my $body=shift;
+    $body=~/(.+?Amaxdata\.dat)(.+?)($file_sign.+)/is;
+    my($before, $inn, $after)=($1,$2,$3);
+#   die $after;
+    $after=~s/($fdir_sign.+)//is;
+    $body=$1;
+    my $inn_sz=length($inn);
+    $inn.=$after;
+#   die $body;
+    my $start=0;
+    my @apos; my @acrc;
+    my $old=0;
+    my $ind=index($after,$file_sign,$start);
+    do{
+	push(@apos,$ind-$old);
+	push(@acrc,unpack('L',substr($after, $ind+0xe, 4)));
+	$start=$ind+1;
+#	print "$ind\n";
+	$old=$ind;
+	$ind=index($after,$file_sign,$start);
+    }while($ind>=0 and $#apos<10); # only first 10 files recorded
+    $ind=0;
+    substr($inn,0,1)=pack('c',$#apos+1);
+
+    while($#apos>=0){
+	my $p=shift(@apos);
+	print "$p, ";
+	substr($inn,$ind*6+1,6)=pack('nN',$p, shift(@acrc)^$p);
+	$ind++;
+    }
+    $ind*=6+1;
+no warnings;
+    while($ind<$inn_sz){
+	substr($inn,$ind++,1)=pack('c',rand(256));
+    }	
+use warnings;
+    my $crc32=new Digest::Crc32();
+    my $crc=pack('L',$crc32->strcrc32($inn));
+    my $sz=length($inn);
+    $sz=pack('LL',$sz,$sz);
+    $before=~s/(.+$file_sign.{4}).(.{5}).{12}/$1\0$2$crc$sz/s;
+    $body=~s/.(.{5}).{12}(.{18}Amaxdata\.dat)/\0$1$crc$sz$2/s;
+    return $before.$inn.$body;
+}
+
+sub mess_compression_central {
+    my $body=shift;
+    $body=~s/(.+?)($fdir_sign)/$2/is;
+    my $out=$1;
+    my $count=0;
+    while($body=~s/($fdir_sign.+?)($fdir_sign)/$2/is){
+	my $sect=$1;
+	my $seed=pack('c',9);
+	if($sect!~/META\-INF/s){
+	    $sect=~s/($fdir_sign.{6})./$1$seed/is;
+	    ++$count;
+	}
+	$out.=$sect;
+    }
+    $out.=$body;
+    print "  mess_compression_central - $count times\n";	
+    return $out;
+}	
+
+sub mess_direrase {
+	my $body=shift;
+	$body=~s/(.+?)($file_sign)/$2/is;
+	my $out=$1;
+	my $count=0;
+	while($body=~s/($file_sign.+?)($file_sign)/$2/is){
+	    my $sect=$1;
+	    if($sect=~/\A.{22}\0{4}.+\Z/s){
+		++$count;
+	    }
+	    else{
+		$out.=$sect;
+	    }
+	}
+	$out.=$body;
+	$body=$out;
+	$body=~s/(.+?)($fdir_sign)/$2/is;
+	$out=$1;
+	while($body=~s/($fdir_sign.+?)($fdir_sign)/$2/is){
+		my $sect=$1;
+		if($sect=~/\A.{24}\0{4}.+\Z/s){
+			next;
+		}
+	}
+	$out.=$body;
+	print "  mess_direrase - $count times\n";	
+	return $out;
+}
+
+sub unzip{
+    rm_all("$path$DIR_TEMP");
+    my $cmd=sprintf($UNZIP, $_[0], "$path$DIR_TEMP");
+    print "Exec: $cmd\n";
+    system($cmd);
+}
+
+sub do_timebomb{
+    my($ofs, $delta)=@_;
+    my ($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = localtime();
+    $hour+=$ofs;
+    my @sign=(pack('N',0x01234567),pack('N',0x89abcdef));
+    my $tm2=POSIX::mktime($sec, $min, $hour, $mday, $m,$y,0,0,-1)*1000;
+    #		$tz_ofs=$tm-$tm2;
+
+    print "Installing time bomb: $ofs hours, delta = $delta min...\n\n";
+    #print POSIX::strftime( "Current time is %B %d, %Y - %H:%M:%S GMT\n", $sec,$min,$hour,$mday,$m,$y,$wday );
+    print "Begin time:  ", timebomb_install($tm2,$sign[0]);
+
+    #print POSIX::strftime( "Deadline time is  %B %d, %Y - %H:%M:%S GMT\n", $sec,$min,$hour,$mday,$m,$y,$wday );
+    $tm2=POSIX::mktime($sec, $min+$delta, $hour, $mday, $m,$y,0,0,-1)*1000;
+    print "  End time:  ", timebomb_install($tm2,$sign[1]);
+
+    print "Finished.\n";
+
+}
+
+
+sub join_datafiles2 # destfile, data_listref
+{
+    open(OUTF, ">$_[0]");
+    my @bins=@{$_[1]};
+    my @buf;
+    binmode(OUTF);
+    print OUTF pack('n',$#bins+1);
+    my $i=0;
+    foreach (@bins){
+        print OUTF pack('n',length($_));
+    }
+    foreach (@bins){
+        print OUTF $_;
+    }
+    close(OUTF);
+}
+
+sub rm_all{ #dir to erase
+    my $dir=shift;
+    foreach (glob("$dir/*")){
+	if(-f $_){
+	    unlink $_;
+	}
+	else{
+	    rm_all($_);
+	}
+    }
+    rmdir($dir);
+}
+
+sub timebomb_install # time, sign
+{
+    my $tm2=int($_[0]/4096);
+    my @classes=glob("$path$DIR_TEMP/*.class");
+    foreach my $class(@classes){
+	open(InF, "<$class") or die "No file $class";
+	binmode(InF);
+	my @data=<InF>;
+	close(InF);
+	my $body=join('', @data);
+	my $hextm=pack("N",$tm2);
+    #	print $tm2,',',unpack("H*",$hextm);
+	my $pos=index($body, $_[1]);
+	if($pos>=0){
+	    substr($body, $pos, length($hextm))=$hextm;
+	    open(InF, ">$class") or die "No file $class";
+	    binmode(InF);
+	    print InF $body;
+	    close(InF);
+	    my($sec,$min,$hour,$mday,$m,$y,$wday,$yday);
+	    if($ARGV[2]){
+		($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = gmtime($tm2*4.096);
+	    }
+	    else{
+		($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = localtime($tm2*4.096);
+	    }
+	    return POSIX::strftime( "%B %d, %Y - %H:%M:%S ", $sec,$min,$hour,$mday,$m,$y,$wday).' 0x'.unpack("H*",$hextm)."\n";
+	}
+    }
+    return "Operation failed!!!\n";
+}
