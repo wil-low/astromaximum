@@ -38,7 +38,7 @@ RANLIB=ranlib
 
 .SUFFIXES: .fl .cxx .h
 .fl.cxx .fl.h:
-				../../../fltk2/fluid/fluid2 -c $<
+				/home/willow/src/fltk2/fluid/fluid2 -c $<
 				
 
 # build

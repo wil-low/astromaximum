@@ -4,11 +4,11 @@
 <!-- (If you delete it and reopen the project it will be recreated.) -->
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
-    <property name="year" value="2007"/> 
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
+    <property name="year" value="2007"/>
     
     <import file="nbproject/build-impl.xml"/>
-    <import file="../jar_or_kzip.xml"/>
+<!--    <import file="../jar_or_kzip.xml"/> -->
     <!--
 
     There exist several targets which are by default empty and which can be
@@ -84,15 +84,18 @@
 
     <target name="post-jar" description="Copy into common dir">
 	<copy file="${dist.dir}/${dist.jar}" todir="${basedir}/../templates" />
+        <antcall target="gen.amax" inheritall="true" inheritrefs="true" />
+    </target>
+    
+    <target name="gen.amax" unless="rebuild.only">
 	<exec executable="perl" failonerror="true">
 	    <arg value="${basedir}/../gen_amax.pl"/>
-	    <arg value="${year}"/>
 	    <arg value="${config.active}"/>
+	    <arg value="${year}"/>
             <arg value="${basedir}/../loclist_default.txt"/>
             <arg value="${dist.dir}/${dist.jar}"/>
 	</exec>
     </target>
-    
 
 <!--
     <target name="pre-init">
@@ -107,9 +110,11 @@
         <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
       </uptodate>
       <antcall target="size.compile"/>
-      <antcall target="color.icon">
-        <param name="icons.dir" value="${basedir}/../images/icons"/>
-      </antcall>
+<!--
+        <antcall target="color.icon">
+            <param name="icons.dir" value="${basedir}/../images/icons"/>
+        </antcall>
+-->      
     </target>
    
     <target name="size.compile" description="Size to dat files" unless="size2dat.notRequired">

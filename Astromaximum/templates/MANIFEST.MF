@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-MIDlet-1: Astromaximum<YEAR>,/res/icon.png,Astromaximum
+MIDlet-1: <PRODUCT>,/res/icon.png,Astromaximum
 MicroEdition-Configuration: CLDC-1.0
-MIDlet-Vendor: S&W Axis
+MIDlet-Vendor: <VENDOR>
 MIDlet-Version: <VERSION>
-MIDlet-Name: Astromaximum<YEAR>
+MIDlet-Name: <PRODUCT>
 MicroEdition-Profile: MIDP-2.0

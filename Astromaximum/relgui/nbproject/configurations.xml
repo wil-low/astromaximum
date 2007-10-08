@@ -9,6 +9,7 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>fMain.fl</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -47,6 +48,9 @@
       </compileType>
       <item path="fMain.cxx">
         <itemTool>1</itemTool>
+      </item>
+      <item path="fMain.fl">
+        <itemTool>3</itemTool>
       </item>
       <item path="fMain.h">
         <itemTool>3</itemTool>
@@ -87,6 +91,9 @@
       </compileType>
       <item path="fMain.cxx">
         <itemTool>1</itemTool>
+      </item>
+      <item path="fMain.fl">
+        <itemTool>3</itemTool>
       </item>
       <item path="fMain.h">
         <itemTool>3</itemTool>

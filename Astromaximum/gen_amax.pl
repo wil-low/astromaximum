@@ -1,17 +1,6 @@
 #!/usr/bin/perl
 use strict;
-use warnings;
 use POSIX;
-
-our $DIR_TEMPLATE='templates';
-our $DIR_OUTPUT='Astromaximum/deploy';
-our $DIR_TEMP='.temp';
-
-our $UNZIP=q(unzip -q %s -d %s );
-#our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
-our $ZIP=q(wd=`pwd`; cd %s; zip -qrm $wd/%s * ;cd $wd);
-#our $zip=q(zip -r %s.r %s/*);
-#our $zip=q("d:/Program Files/WinRAR/WinRar.exe" a -afzip -r -ep1 %s.r %s/*);
 
 our $path='';
 our $file_sign="\x50\x4B\x03\x04";
@@ -21,13 +10,15 @@ if($0=~/(.+[\\\/])/is){
     $path=$1;
 }
 
+require $path.'genconst.pm';
+
 if(!scalar(@ARGV)){
-    print "This script generates ready-to-use Astromaximum distribution.\n";
+    print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
     print "Parameters:\n";
+    print "\t<config>: [rebuild|notest|release|tb|demo]\n";
     print "\t<year>\n";
-    print "\t<config>: [notest|release|tb|demo]\n";
     print "\t<loclist file>\n";
-    print "\t<output jar>\n";
+    print "\t<output jar>, or '-' for default\n";
     print "\t[imei|timebomb|tb_timeout]\n";
     exit(1);
 }
@@ -35,61 +26,93 @@ if(!scalar(@ARGV)){
 require $path.'tools.pm';
 require $path.'Crc32.pm';
 
-our $year=shift(@ARGV);
 our $config=shift(@ARGV);
+our $year=shift(@ARGV);
 our $loclist=shift(@ARGV);
 our $outfile=shift(@ARGV);
 
-die "Invalid year" if $year!~/^\d{4}$/is;
-die "Invalid loclist" if ! -f "$loclist";
+if($config eq 'rebuild'){
+    print "Rebuilding all configs...\n";
+    my $antpath;
+    my @app=(
+      '/home/willow/netbeans-5.5.1/ide7/ant/bin/ant', 
+      'd:/netbeans-5.5/ide7/ant/bin/ant.bat',
+      'd:/Program Files/netbeans-5.5.1/ide7/ant/bin/ant.bat'
+    );
+    foreach (@app){
+      if(-f $_){
+        $antpath=$_;
+        last;
+      }
+    }
+    if(!$antpath){
+      die "ANT not found in this system!!!\n";
+    }
+    my @conf=qw(midp2y2007notest midp2y2007notest_logger midp2y2007release 
+        midp2y2007release_logger midp2y2007release_tb test2006);
+    foreach(@conf){
+        print "\n--------------------------------\n";
+        print "--- Config $_ ---\n";
+        print "--------------------------------\n";
+        my $cmd="\"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Drebuild.only=true clean jar";
+        print "$cmd\n";
+        die "BUILD ERROR"if system($cmd);
+    }
+    exit(0);
+}
+
+die "Invalid year '$year'" if $year!~/^\d{4}$/is;
+die "Invalid loclist '$loclist'" if ! -f "$loclist";
 my $dest='';
-print "Processing <$config> for $year using locations from $loclist...\n";
 
-open(INF, "<$path"."Astromaximum/version") or die $!;
-my $version=<INF>;
-close(INF);
-$version=~/(\d+\.\d+\.\d+)/is;
-$version=$1;
-
+if($config=~/(2006|demo)/is){
+    $year=2006;
+}
 $year=~/\d\d(\d\d)/is;
 my $ye=$1;
 
-$outfile=$path."Astromaximum/deploy/Astromaximum$ye.jar" unless $outfile;
+unless($outfile=~/\.jar/is){
+    die "Invalid filename: '$outfile'" unless $outfile eq '-';
+    $outfile=$path."Astromaximum/deploy/$const::PRODUCT$ye.jar" ;
+    print "Outfile is '-', setting to $outfile\n";
+}
+
+print "Processing <$config> for $year using locations from $loclist...\n";
 
 if($config=~/tb/is){
     my $ofs=shift(@ARGV);
     $ofs=0 unless $ofs;
     my $delta=shift(@ARGV);
     $delta=30 unless $delta;
-    unzip("$path$DIR_TEMPLATE/Astromaximum-tb.jar");
+    unzip("$path$const::DIR_TEMPLATE/Astromaximum-tb.jar");
     inject_amdata();
     do_timebomb($ofs, $delta);
-    common_create($year, "$path$DIR_TEMP/common.dat");
-    locations_create($year, $loclist, "$path$DIR_TEMP/locations.dat");
+    common_create($year, "$path$const::DIR_TEMP/common.dat");
+    locations_create($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
     inject_icon();
-    do_jar($ye, $version, $outfile);
+    do_jar("$const::PRODUCT$ye", $outfile);
     do_messjar($outfile);
     exit(0);
 }
 
 if($config=~/(2006|demo)/is){
     $year=2006;
-    unzip("$path$DIR_TEMPLATE/AstromaximumDemo.jar");
+    unzip("$path$const::DIR_TEMPLATE/AstromaximumDemo.jar");
     inject_amdata();
-    common_create($year, "$path$DIR_TEMP/c.dat");
-    locations_create($year, $loclist, "$path$DIR_TEMP/l.dat");
+    common_create($year, "$path$const::DIR_TEMP/c.dat");
+    locations_create($year, $loclist, "$path$const::DIR_TEMP/l.dat");
 #    inject_icon();
-    do_jar($ye, $version, $outfile);
+    do_jar("AstromaximumDemo", $outfile);
     do_messjar($outfile);
     exit(0);
 }
 
 if($config=~/notest$/is){
-    unzip("$path$DIR_TEMPLATE/Astromaximum-notest.jar");
-    common_create($year, "$path$DIR_TEMP/common.dat");
-    locations_create($year, $loclist, "$path$DIR_TEMP/locations.dat");
+    unzip("$path$const::DIR_TEMPLATE/Astromaximum-notest.jar");
+    common_create($year, "$path$const::DIR_TEMP/common.dat");
+    locations_create($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
     inject_icon();
-    do_jar($ye, $version, $outfile);
+    do_jar("$const::PRODUCT$ye", $outfile);
 #    do_messjar($outfile);
     exit(0);
 }
@@ -97,12 +120,12 @@ if($config=~/notest$/is){
 if($config=~/release$/is){
     my $imei=shift(@ARGV);
     $imei='0' x 15 unless $imei;
-    unzip("$path$DIR_TEMPLATE/Astromaximum.jar");
-    common_create($year, "$path$DIR_TEMP/common.dat", $imei);
-    locations_create($year, $loclist, "$path$DIR_TEMP/locations.dat");
+    unzip("$path$const::DIR_TEMPLATE/Astromaximum.jar");
+    common_create($year, "$path$const::DIR_TEMP/common.dat", $imei);
+    locations_create($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
     inject_amdata();
     inject_icon();
-    do_jar($ye, $version, $outfile);
+    do_jar("$const::PRODUCT$ye", $outfile);
     do_messjar($outfile);
     exit(0);
 }
@@ -113,7 +136,7 @@ sub inject_amdata{
     binmode(INF);
     my @body=<INF>;
     close (INF);
-    open(OUTF,">$path$DIR_TEMP/Amdata.class") or die "Cannot open file";
+    open(OUTF,">$path$const::DIR_TEMP/Amdata.class") or die "Cannot open file";
     binmode(OUTF);
     print OUTF join('', @body);
     close (OutF);
@@ -125,7 +148,7 @@ sub inject_icon{
     binmode(INF);
     my @body=<INF>;
     close (INF);
-    open(OUTF,">$path$DIR_TEMP/res/icon.png") or die "Cannot open file";
+    open(OUTF,">$path$const::DIR_TEMP/res/icon.png") or die "Cannot open file";
     binmode(OUTF);
     print OUTF join('', @body);
     close (OutF);
@@ -200,7 +223,7 @@ sub common_create{
 	    $counter=0;
 	}
     }	
-    print "$dest ($year) saved.\n";
+    print "$dest ($year) written\n";
 
 }
 
@@ -224,28 +247,26 @@ sub writeData
 }
 
 sub do_jar{
-    my($year, $version, $outfile)=@_;
-    open(INF, "<$path$DIR_TEMPLATE/MANIFEST.MF") or die $!;
+    my($prod, $outfile)=@_;
+    open(INF, "<$path$const::DIR_TEMPLATE/MANIFEST.MF") or die $!;
     my @data=<INF>;
     close(INF);
     my $template=join("",@data);
-    $template=~s/<YEAR>/$ye/isg;
-    $template=~s/<VERSION>/$version/isg;
-#	$jad=~s/<REGION>/$reg/isg;
+    $template=~s/<PRODUCT>/$prod/isg;
+    $template=~s/<VERSION>/$const::VERSION/isg;
+    $template=~s/<VENDOR>/$const::VENDOR/isg;
 #    $template=~s/<CODE>/$code/isg;
 #	$jad=~s/<DESC>/$desc/isg;
 #    $template=~s/<JAR>/$fname\.jar/isg;
 
-    open(INF, ">$path$DIR_TEMP/META-INF/MANIFEST.MF") or die $!;
+    open(INF, ">$path$const::DIR_TEMP/META-INF/MANIFEST.MF") or die $!;
 	print INF $template;
 	print INF "\r\n";
     close(INF);
-#    amtools::join_datafiles2("$srcdir/locations.dat", \@data);
     unlink($outfile) if -f $outfile;
-    my $cmd=sprintf($ZIP, "$path$DIR_TEMP", $outfile);
+    my $cmd=sprintf($const::ZIP, "$path$const::DIR_TEMP", $outfile);
     print "Exec: $cmd\n";
-    system($cmd);
-    #die $cmd;
+    die "\tERROR: creating archive" if system($cmd);
     my $asize= -s $outfile;
     $template.="\n\rMIDlet-Jar-Size: $asize\r\n";
     my $jad=$outfile;
@@ -352,11 +373,9 @@ sub mess_add_special_entry {
 	$ind++;
     }
     $ind*=6+1;
-no warnings;
     while($ind<$inn_sz){
 	substr($inn,$ind++,1)=pack('c',rand(256));
     }	
-use warnings;
     my $crc32=new Digest::Crc32();
     my $crc=pack('L',$crc32->strcrc32($inn));
     my $sz=length($inn);
@@ -386,39 +405,39 @@ sub mess_compression_central {
 }	
 
 sub mess_direrase {
-	my $body=shift;
-	$body=~s/(.+?)($file_sign)/$2/is;
-	my $out=$1;
-	my $count=0;
-	while($body=~s/($file_sign.+?)($file_sign)/$2/is){
-	    my $sect=$1;
-	    if($sect=~/\A.{22}\0{4}.+\Z/s){
-		++$count;
-	    }
-	    else{
-		$out.=$sect;
-	    }
-	}
-	$out.=$body;
-	$body=$out;
-	$body=~s/(.+?)($fdir_sign)/$2/is;
-	$out=$1;
-	while($body=~s/($fdir_sign.+?)($fdir_sign)/$2/is){
-		my $sect=$1;
-		if($sect=~/\A.{24}\0{4}.+\Z/s){
-			next;
-		}
-	}
-	$out.=$body;
-	print "  mess_direrase - $count times\n";	
-	return $out;
+    my $body=shift;
+    $body=~s/(.+?)($file_sign)/$2/is;
+    my $out=$1;
+    my $count=0;
+    while($body=~s/($file_sign.+?)($file_sign)/$2/is){
+        my $sect=$1;
+        if($sect=~/\A.{22}\0{4}.+\Z/s){
+            ++$count;
+        }
+        else{
+            $out.=$sect;
+        }
+    }
+    $out.=$body;
+    $body=$out;
+    $body=~s/(.+?)($fdir_sign)/$2/is;
+    $out=$1;
+    while($body=~s/($fdir_sign.+?)($fdir_sign)/$2/is){
+        my $sect=$1;
+        if($sect=~/\A.{24}\0{4}.+\Z/s){
+            next;
+        }
+    }
+    $out.=$body;
+    print "  mess_direrase - $count times\n";	
+    return $out;
 }
 
 sub unzip{
-    rm_all("$path$DIR_TEMP");
-    my $cmd=sprintf($UNZIP, $_[0], "$path$DIR_TEMP");
+    rm_all("$path$const::DIR_TEMP");
+    my $cmd=sprintf($const::UNZIP, $_[0], "$path$const::DIR_TEMP");
     print "Exec: $cmd\n";
-    system($cmd);
+    die "\tERROR: missing template $_[0]?\n\tPlease do rebuild.\n" if system($cmd);
 }
 
 sub do_timebomb{
@@ -475,7 +494,7 @@ sub rm_all{ #dir to erase
 sub timebomb_install # time, sign
 {
     my $tm2=int($_[0]/4096);
-    my @classes=glob("$path$DIR_TEMP/*.class");
+    my @classes=glob("$path$const::DIR_TEMP/*.class");
     foreach my $class(@classes){
 	open(InF, "<$class") or die "No file $class";
 	binmode(InF);
