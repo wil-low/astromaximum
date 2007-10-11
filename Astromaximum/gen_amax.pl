@@ -67,6 +67,9 @@ my $dest='';
 
 if($config=~/(2006|demo)/is){
     $year=2006;
+    unless($outfile=~/\.jar/is){
+	$outfile=$path."Astromaximum/deploy/$const::PRODUCT".'Demo.jar' ;
+    }
 }
 $year=~/\d\d(\d\d)/is;
 my $ye=$1;

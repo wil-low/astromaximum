@@ -463,6 +463,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
     getItem(Event.EV_MOON_DAY).setEvents(mdd);
 //****** TITHI
     final Vector tith=new Vector();
+//#debug    
     System.out.println("Tithi!");
     Astromaximum.dataFile.getEventsOnPeriod(tith,Event.EV_TITHI,Event.SE_MOON,
         false, period0, period1,0);
