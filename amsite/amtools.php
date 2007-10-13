@@ -23,7 +23,7 @@ function amtools_random($path, $ext){
 $UNZIP="unzip %s -d %s > /dev/null";
 $UNTAR="tar xvf %s -C %s";
 #our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
-$ZIP='wd=`pwd`; cd %s; zip -qrm $wd/%s.r *;cd $wd';
+$ZIP='cd %s; zip -rm ../../%s.r *';
 #our $zip=q(zip -r %s.r %s/*);
 
 function join_datafiles2($destfile, $a_data) # destfile, data_listref

@@ -256,7 +256,7 @@ function create_jar($year, $ids){
 	mysql_free_result($sth);
 	$cmd=sprintf($UNZIP, "$DIR_SOURCE/template.zip", "$DIR_SOURCE/$fn");
 #	echo $cmd;
-	system($cmd);
+	exec($cmd);
 	
 	$inf=fopen("$DIR_SOURCE/$fn/META-INF/MANIFEST.MF", 'wb');
 	fwrite($inf, $template);
@@ -269,9 +269,13 @@ function create_jar($year, $ids){
 	fwrite($inf,$icon);
 	fclose($inf);
 	$cmd=sprintf($ZIP, "$DIR_SOURCE/$fn", "$DIR_FILES/$fn");
-#	echo "<br>$cmd<br><pre>";
-	system($cmd);
-#	echo "</pre>";
+	echo "<br>$cmd<br>";
+	$outp=array();
+	exec($cmd, $outp);
+	usleep(500000);
+	print_r($outp);
+//	emit_nav2();
+//	exit();
 	$inf=fopen("$DIR_FILES/$fn.d", 'wb');
 	$asize= filesize("$DIR_FILES/$fn.r");
 	$template.="MIDlet-Jar-Size: $asize\n";
@@ -281,7 +285,7 @@ function create_jar($year, $ids){
 	$inf=fopen("$DIR_FILES/$fn.t", 'wb');
 	fwrite($inf, $template);
 	fclose($inf);
-	system("rm -R $DIR_SOURCE/$fn");
+	exec("rm -R $DIR_SOURCE/$fn");
 /*	
 	my $sql='INSERT INTO files (id, type, user_id, end_tm) VALUES';
 	foreach (('r','d','t')){
