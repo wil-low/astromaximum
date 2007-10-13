@@ -506,3 +506,4 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#endif
 }
 
+

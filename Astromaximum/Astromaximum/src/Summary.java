@@ -1850,3 +1850,4 @@ class Summary extends Canvas implements CommandListener, Runnable{
 //#endif  
 }
 
+

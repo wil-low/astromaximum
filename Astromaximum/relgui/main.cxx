@@ -10,6 +10,9 @@
 #include <time.h>
 #include <algorithm>
 using namespace std;
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
 
 fltk::Window *wnd=(fltk::Window *)0;
 const int IMEI_LEN=15;
@@ -133,20 +136,23 @@ void get_city_list(LocRec &v) {
 				continue;
 			}
 			int ii=0;
-			char *city, *state;
+			char *city, *state, *ind;
 			while(fgets(cur_txt, 1000, intxt)){
 				if(strstr(cur_txt, "#"))
 					continue;
-				*(strchrnul(cur_txt, '\r'))=0;
-				*(strchrnul(cur_txt, '\n'))=0;
-				state=rindex(cur_txt, '|')+1;
-				*(index(cur_txt, '|'))=0;
+				if(ind=strchr(cur_txt, '\r'))
+					*ind=0;
+				if(ind=strchr(cur_txt, '\n'))
+					*ind=0;
+				state=strrchr(cur_txt, '|')+1;
+				if(ind=strchr(cur_txt, '|'))
+					*ind=0;
 				city=cur_txt;
-				char* ind=index(cur_txt, '!');
+				ind=strchr(cur_txt, '!');
 				if(ind){
 					city=ind+1;
 				}
-				ind=index(state, '$');
+				ind=strchr(state, '$');
 				if(ind){
 					state=ind+1;
 				}
@@ -276,6 +282,7 @@ int run_exe(const char *cmd){
 
 	printf("Cmd=%s\n", cmd);
     int result=system(cmd);
+#endif // _WIN32
 	printf("Result=%d\n", result);
 	if(result){
 		fltk::alert("gen_max.pl error occured.");
@@ -283,7 +290,6 @@ int run_exe(const char *cmd){
 	else{
 		fltk::message("gen_max.pl completed successfully.");
 	}
-#endif // _WIN32
 	wnd->activate(1);
 	return result;
 }

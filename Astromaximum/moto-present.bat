@@ -15,4 +15,4 @@
 @rem ***************************************************************
 d:
 cd "\Program Files\Motorola\Motorola Java ME SDK v6.3 for Motorola OS Products\EmulatorA.3\bin" 
-d:\PROGRA~1\Motorola\MOTORO~1.3FO\EMULAT~1.3\bin\jblend.exe -Xdescriptor:"D:\projects\nomad_prj\Astromaximum\deploy\Astromaximum.jad" -Xdevice:E1000_E1000R
+d:\PROGRA~1\Motorola\MOTORO~1.3FO\EMULAT~1.3\bin\jblend.exe -Xdescriptor:"D:\projects\nomad_prj\Astromaximum\deploy\Astromaximum07.jad" -Xdevice:E1000_E1000R

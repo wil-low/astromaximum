@@ -94,7 +94,7 @@ Function {make_window()} {open
         }
         {fltk::Button} bSetYear {
           label {Set year}
-          callback {set_year(txtYear->text());} selected
+          callback {set_year(txtYear->text());}
           xywh {109 5 85 20}
         }
         {fltk::Button} {} {
@@ -150,7 +150,7 @@ Function {make_window()} {open
         xywh {0 225 200 150} resizable
       } {
         {fltk::Output} lbLoclist {
-          xywh {0 8 200 18} textsize 8
+          xywh {0 8 200 18} textsize 9
         }
         {fltk::Button} {} {
           label Load
@@ -191,8 +191,8 @@ Function {make_window()} {open
           label {Generate Geo}
           xywh {5 120 190 25}
         }
-        {fltk::Output} lbSize {
-          xywh {5 20 190 25} box NO_BOX color 0xe0e0e000 textsize 10
+        {fltk::Output} lbSize {selected
+          xywh {5 20 190 25} textsize 9
         }
       }
     }
