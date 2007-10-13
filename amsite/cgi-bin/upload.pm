@@ -26,6 +26,7 @@ sub get_content{ # dbh, userid, hashref
 	  	close($fh);
 	  	my $d=join('',@data);
 	  	my ($dir,$fn)=amtools::random($tools::dir_inbox);
+			return system($dir);
 	  	mkdir $dir;
 	  	my $arc="$dir/arc.zip";
 	  	open(FFF, ">$arc");
@@ -33,7 +34,7 @@ sub get_content{ # dbh, userid, hashref
 	  	$out.=(FFF $d);
 	  	close(FFF);
 			my $cmd=sprintf($amtools::unzip, $arc, $dir);
-			system($cmd);
+
 			unlink $arc;
 			my @fn=glob("$dir/*.txt");
 			error("TXT must be exactly one file in archive", $dir) if $#fn!=0;

@@ -141,6 +141,7 @@ sub country_header{
 }
 
 sub state_header{
+	$cnum=0 unless $cnum;
 	my $stcou = $dbh->prepare("SELECT DISTINCT states.id, states.name FROM states,countries WHERE country_id=$cnum ORDER BY states.name")|| die $dbh->errstr;
 	$stcou->execute|| die $dbh->errstr;
 	my $res='';

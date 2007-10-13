@@ -4,11 +4,11 @@ use strict;
 use CGI ':standard';
 use DBI;
 
-my $db_name='amax';
+my $db_name='usr_web42_1';
 my $db_port=3306;
 
-my $db_superuser='root';
-my $db_superuser_pwd='toor';
+my $db_superuser='web42';
+my $db_superuser_pwd='vSZBWppx';
 my $db_user='user';
 my $db_user_pwd='user';
 

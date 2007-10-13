@@ -1,10 +1,10 @@
 <?php
 $DB_SERVER='localhost';
-$DB_NAME='amax';
+$DB_NAME='usr_web42_1';
 $DB_PORT='3306';
 
-$DB_SUPERUSER='root';
-$DB_SUPERUSER_PWD='toor';
+$DB_SUPERUSER='web42';
+$DB_SUPERUSER_PWD='vSZBWppx';
 $DB_USER='user';
 $DB_USER_PWD='user';
 

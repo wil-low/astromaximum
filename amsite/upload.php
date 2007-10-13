@@ -6,7 +6,7 @@ include_once('lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-09-16T17:29:53+0300">
+<meta name="date" content="2007-10-13T16:17:05+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -33,7 +33,7 @@ include_once('amtools.php');
 ?>
 	<form method="post" action="upload.php" enctype="multipart/form-data">
 		<input type="file" name="uploaded_file" value="starting value" size="50" maxlength="80" />
-		<input type="hidden" name="MAX_FILE_SIZE" value="200000" />
+<!--		<input type="hidden" name="MAX_FILE_SIZE" value="200000" />-->
 		<br><input type="submit" name="Action" value="Upload geodata" />
 	</form>
 <?php	
@@ -44,7 +44,7 @@ include_once('amtools.php');
 	else{
 		$fname=$_FILES['uploaded_file']['name'];
 		$ext=substr($fname,-4);
-		if(strcmp($ext,'.zip') && strcmp($ext,'.zip')){
+		if(strcmp($ext,'.TAR') && strcmp($ext,'.tar')){
 			upload_error("Invalid archive: '$fname'",'');
 		} 
 		$fh = $_FILES['uploaded_file']['tmp_name'];
@@ -52,10 +52,17 @@ include_once('amtools.php');
   	list($dir,$fn)=amtools_random($DIR_INBOX,'');
   	mkdir($dir);
 		$cmd=sprintf($UNZIP, $fh, $dir);
-		system($cmd);
+		$res=exec($cmd);
+//		echo "<pre>$res</pre>";
+/*		if(!$res){
+			echo "System(unzip) failure<br>";
+			echo 'safe_mode = ' . ini_get('safe_mode') . "<br>";
+			echo 'safe_mode_exec_dir = ' . ini_get('safe_mode_exec_dir') . "<br>";
+		}		
+*/
 		$fn=glob("$dir/*.txt");
 		if(count($fn)!=1){
-			error("TXT must be exactly one file in archive", $dir);
+			upload_error("TXT must be exactly one file in archive $dir/*.txt, not ".count($fn), $dir);
 		}
 		echo("<b>Reading $fn[0]</b><br><table style='font-size:9pt' border=1><tr><th>City</th>".
 			"<th>Country</th><th>State</th><th>Year</th><th>TXT</th><th>Cities DB</th></tr>");
@@ -70,6 +77,9 @@ include_once('amtools.php');
 		$sthlocins = "INSERT INTO locations(year,city_id,data) VALUES(%s,%s,%s)";
 		$findex=fopen($fn[0],"r");
   	$fn=glob("$dir/Data*.dat");
+//  	echo count($fn);
+//		emit_nav2();
+//		exit();
 		list($cou_count,$cit_count,$locins_count,$locupd_count,$state_count,$i)=array(0,0,0,0,0,0);
 		$matches=array();
 		while (!feof($findex)) {

@@ -93,7 +93,7 @@ function city_del(){
 <select name="year" onchange="javascript:document.forms.namedItem('main').submit()">
 <?php
 	$years=array(2005,2006,2007,2008);
-	foreach($years as &$y){
+	foreach($years as $y){
 		$sel='';
 		if($y==$defyear){
 			$sel='selected=1 ';

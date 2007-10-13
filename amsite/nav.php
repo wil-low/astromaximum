@@ -11,9 +11,15 @@ function emit_admin(){
 ADMIN;
 }
 
-function emit_nav1(){
-	global $lang_, $i18, $LOGIN_MSG;
+function microtime_float()
+{
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
+}
 
+function emit_nav1(){
+	global $lang_, $i18, $LOGIN_MSG, $START_TIME;
+	$START_TIME=microtime_float();
 echo <<<NAV1
 <table border="1" width="100%" height=100%>
 	<tr height=35%>
@@ -44,7 +50,7 @@ NAV1;
 }
 
 function emit_nav2(){
-	global $lang_, $i18, $LOGIN_MSG;
+	global $lang_, $i18, $LOGIN_MSG, $START_TIME;
 
 echo <<<NAV2
 		</td>
@@ -83,6 +89,7 @@ if(isset($LOGIN_MSG)){
 }
 
 echo "&nbsp;</center></font>";
+$exec_time=microtime_float()-$START_TIME;
 
 echo <<<NAV5
 	</center>
@@ -100,6 +107,7 @@ echo <<<NAV5
 		</td>
 	</tr>
 </table>
+<small>Execution took $exec_time msec.</small>
 </body>
 </html>
 NAV5;
