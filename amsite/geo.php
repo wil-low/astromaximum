@@ -7,7 +7,7 @@ include_once('lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-09-30T12:44:24+0300">
+<meta name="date" content="2007-10-15T21:41:33+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -16,6 +16,7 @@ include_once('lang.php');
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
 <meta http-equiv="content-style-type" content="text/css">
 <meta http-equiv="expires" content="0">
+<link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <?php
@@ -85,9 +86,10 @@ function city_del(){
 };
 </script>
 <form method="post" action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
-<table width=100% border=1><tr valign=top><td>
+<table class=geo border="1" width="100%">
+<tr><td colspan=4>
 <font color='red'><i><?php echo $i18['STEP']?> 1:</i></font>
-<br><b><?php echo $i18['YEAR']?>:</b> 
+<b><?php echo $i18['YEAR']?> </b> 
 <input type="hidden" name="cid" value=""  />
 <input type="hidden" name="stateid" value="0"  />
 <select name="year" onchange="javascript:document.forms.namedItem('main').submit()">
@@ -101,8 +103,112 @@ function city_del(){
 		echo "<option value=$y $sel>$y</option>\n";
 	}
 ?>
-</select></td>
-<td rowspan=2 width=25%><center><b><?php echo $i18['SEL_CITIES']?>:</b></center>
+</select></td></tr>
+<tr>
+<td colspan=4><font color='red'><i><?php echo $i18['STEP']?> 2:</i></font>
+<b><?php echo $i18['COUNTRY']?></b></td>
+</tr>
+<tr><td width=15% class=geo>
+<?php
+	$cnum=0;
+	if(isset($_POST['cid'])){
+		$cnum=$_POST['cid'];
+	}
+	$sth=mysql_query("SELECT countries.id, countries.name FROM countries ORDER BY countries.name");
+	while($row=mysql_fetch_row($sth)){
+		if(!$cnum){
+			$cnum=$row[0];
+			$_POST['cid']=$cnum;
+		}
+		if($row[0]==$cnum){
+			$cur_country=$row[1];
+			$row[1]="<font color=red>$row[1]</font>" ;
+		}
+		echo "<a href='#' onclick='showc({$row[0]},0)'>{$row[1]}</a><br>\n";
+	}
+	mysql_free_result($sth);
+	echo "</td>";
+	$stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
+		"countries WHERE country_id=%s ORDER BY states.name",quote_smart($cnum));
+	$sth=mysql_query($stat);	
+	$cur_state='';
+	$allst="<i>".$i18['ALL_STATES']."</i><br>";
+	$statenum=0;
+	if(isset($_POST['stateid'])){
+		$statenum=$_POST['stateid'];
+	}
+	if(!$statenum){
+		$allst="<font color=red>$allst</font>";
+	}
+	$state_count=mysql_num_rows($sth);
+	if($state_count){
+		echo "<td width=16% class=geo><a href='#' onclick=\"showc(".$cnum.",0)\">".$allst."</a>&nbsp;\n";
+		while($row = mysql_fetch_row($sth)){
+#			if(!$statenum){
+#				$statenum=$row[0];
+#				param('stateid',$statenum);
+#			}
+			if($row[0]==$statenum){
+				$cur_state=$row[1];
+				$row[1]="<font color=red>$row[1]</font>" ;
+			}
+			echo "<br><a href='#' onclick=\"showc($cnum,$row[0])\">$row[1]</a>\n"; 
+		}
+	}
+	else{
+			echo "<td width=1></td>\n";
+	}
+	mysql_free_result($sth);
+
+	$andst='';
+	if($statenum){
+		$andst=sprintf(" AND state_id=%s",quote_smart($statenum));
+	}
+	$stat=sprintf(
+		"SELECT cities.id, cities.name FROM cities,countries".
+		",locations". # year condition
+		" WHERE country_id=%s AND countries.id=country_id".
+		" AND city_id=cities.id %s AND year=%s". # year condition
+		" ORDER BY cities.name",quote_smart($cnum), $andst, quote_smart($defyear));
+	$sth = mysql_query($stat);
+	if($state_count){
+		$city_cols=3;
+	}
+	else{
+		$city_cols=4;
+	}
+	$i=mysql_num_rows($sth); $j=0;
+	$city_rows=$i/$city_cols;
+	echo "</td></td><td class=geo>";
+	if($i>0){
+		echo "<input type=button value='{$i18['ADD_CITIES']}' onClick='city_add(\"$cur_country\",\"$cur_state\")'/><br><br>";
+	}
+	echo "<div id=chkcit><table width=100%><tr>";
+	for($cc=0; $cc<$city_cols; $cc++){
+		echo "<td class=geo>";
+		while($row = mysql_fetch_row($sth)){
+			echo "<input type=checkbox id=$row[0] value='$row[1]'>$row[1]</input><br>\n"; 
+			$j++;
+			if($j>=$city_rows){
+				$j=0;
+				break;
+			}
+		}
+		echo "</td>";
+	}
+	echo "</tr></table></div>";
+	mysql_free_result($sth);
+	if($i>0){
+		echo "<br><input type=button value='{$i18['ADD_CITIES']}' onClick='city_add(\"$cur_country\",\"$cur_state\")'/>";
+	}
+	else{
+		echo "<i>{$i18['NO_CITIES']}</i>";
+	}
+
+?>
+</td>
+<td width=25% class=geo>
+<center><b><?php echo $i18['SEL_CITIES']?>:</b></center>
 <div align=right><input type='button'  value='Delete selected' onclick='city_del()' /></div>
 <div id=selcit>
 <?php
@@ -123,83 +229,7 @@ function city_del(){
 <p align=center><font color='red'><i>Step 3:</i></font>
 <input type="hidden" name="sc" value="<?php echo $sc ?>"  /> 
 <input type=submit name='Action' value='Get data'></p></td></tr>
-<tr><td><font color='red'><i><?php echo $i18['STEP']?> 2:</i></font>
-<br><b><?php echo $i18['COUNTRY']?>: </b>
-
-<?php
-	$cnum=0;
-	if(isset($_POST['cid'])){
-		$cnum=$_POST['cid'];
-	}
-	$sth=mysql_query("SELECT countries.id, countries.name FROM countries ORDER BY countries.name");
-	while($row=mysql_fetch_row($sth)){
-		if(!$cnum){
-			$cnum=$row[0];
-			$_POST['cid']=$cnum;
-		}
-		if($row[0]==$cnum){
-			$cur_country=$row[1];
-			$row[1]="<font color=red>$row[1]</font>" ;
-		}
-		echo "<a href='#' onclick='showc({$row[0]},0)'>{$row[1]}</a>&nbsp;\n";
-	}
-	mysql_free_result($sth);
-	$stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
-		"countries WHERE country_id=%s ORDER BY states.name",quote_smart($cnum));
-	$sth=mysql_query($stat);	
-	$cur_state='';
-	$allst="&lt;".$i18['ALL_STATES']."&gt;";
-	$statenum=0;
-	if(isset($_POST['stateid'])){
-		$statenum=$_POST['stateid'];
-	}
-	if(!$statenum){
-		$allst="<font color=red>$allst</font>";
-	}
-	if(mysql_num_rows($sth)){
-		echo "<hr><a href='#' onclick=\"showc(".$cnum.",0)\">".$allst."</a>&nbsp;\n";
-		while($row = mysql_fetch_row($sth)){
-#			if(!$statenum){
-#				$statenum=$row[0];
-#				param('stateid',$statenum);
-#			}
-			if($row[0]==$statenum){
-				$cur_state=$row[1];
-				$row[1]="<font color=red>$row[1]</font>" ;
-			}
-			echo "<a href='#' onclick=\"showc($cnum,$row[0])\">$row[1]</a>&nbsp;\n"; 
-		}
-	}
-	mysql_free_result($sth);
-
-	$andst='';
-	if($statenum){
-		$andst=sprintf(" AND state_id=%s",quote_smart($statenum));
-	}
-	$stat=sprintf(
-		"SELECT cities.id, cities.name FROM cities,countries".
-		",locations". # year condition
-		" WHERE country_id=%s AND countries.id=country_id".
-		" AND city_id=cities.id %s AND year=%s". # year condition
-		" ORDER BY cities.name",quote_smart($cnum), $andst, quote_smart($defyear));
-	$sth = mysql_query($stat);
-	echo "<hr><div id=chkcit>";
-	$i=0;
-	while($row = mysql_fetch_row($sth)){
-		echo "<input type=checkbox id=$row[0] value='$row[1]'>$row[1]</input>\n"; 
-		$i++;
-	}
-	echo "</div>";
-	mysql_free_result($sth);
-	if($i>0){
-		echo "<input type=button value='{$i18['ADD_CITIES']}' onClick='city_add(\"$cur_country\",\"$cur_state\")'/>";
-	}
-	else{
-		echo "<i>{$i18['NO_CITIES']}</i>";
-	}
-
-?>
-</td></tr></table>
+</table>
 </form>
 
 <?php
@@ -269,11 +299,8 @@ function create_jar($year, $ids){
 	fwrite($inf,$icon);
 	fclose($inf);
 	$cmd=sprintf($ZIP, "$DIR_SOURCE/$fn", "$DIR_FILES/$fn");
-	echo "<br>$cmd<br>";
-	$outp=array();
-	exec($cmd, $outp);
-	usleep(500000);
-	print_r($outp);
+	exec($cmd);
+//	usleep(500000);
 //	emit_nav2();
 //	exit();
 	$inf=fopen("$DIR_FILES/$fn.d", 'wb');

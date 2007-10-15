@@ -1,3 +1,11 @@
-.login {
-	text-align: right;
+table {
+	font-size:12px;
+}
+
+.geo {
+	vertical-align:top;
+}
+
+a {
+	color: blue;
 }

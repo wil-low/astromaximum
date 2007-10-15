@@ -29,7 +29,7 @@ include('lang.php');
 <title>About us - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="">
-<meta name="date" content="2007-09-16T18:26:35+0300">
+<meta name="date" content="2007-10-15T18:25:39+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -37,6 +37,7 @@ include('lang.php');
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
 <meta http-equiv="content-style-type" content="text/css">
+<link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 

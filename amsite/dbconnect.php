@@ -1,13 +1,24 @@
 <?php
-$DB_SERVER='localhost';
-$DB_NAME='usr_web42_1';
-$DB_PORT='3306';
-
-$DB_SUPERUSER='web42';
-$DB_SUPERUSER_PWD='vSZBWppx';
-$DB_USER='user';
-$DB_USER_PWD='user';
-
+if(strcmp($_SERVER['SERVER_NAME'],"localhost")==0){
+	$DB_SERVER='localhost';
+	$DB_NAME='amax';
+	$DB_PORT='3306';
+	
+	$DB_SUPERUSER='root';
+	$DB_SUPERUSER_PWD='toor';
+	$DB_USER='user';
+	$DB_USER_PWD='user';
+}
+else{
+	$DB_SERVER='localhost';
+	$DB_NAME='usr_web42_1';
+	$DB_PORT='3306';
+	
+	$DB_SUPERUSER='web42';
+	$DB_SUPERUSER_PWD='vSZBWppx';
+	$DB_USER='user';
+	$DB_USER_PWD='user';
+}
 $DIR_SOURCE='source';
 $DIR_INBOX='inbox';
 $DIR_FILES='files';
@@ -41,6 +52,10 @@ function login($user,$pwd){
 		$_SESSION['username']=$row[1];
 		$res=true;
 	}
+/*	else{
+		sleep(2);
+	}
+*/
 	mysql_free_result($sth);
 	return $res;
 }

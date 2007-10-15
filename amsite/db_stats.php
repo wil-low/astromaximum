@@ -7,7 +7,7 @@ include_once('lang.php');
 <title>Cities database stats - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-09-12T21:21:54+0300">
+<meta name="date" content="2007-10-15T20:27:38+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -16,6 +16,7 @@ include_once('lang.php');
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
 <meta http-equiv="content-style-type" content="text/css">
 <meta http-equiv="expires" content="0">
+<link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <?php
