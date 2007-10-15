@@ -24,7 +24,7 @@ echo <<<NAV1
 <table border="1" width="100%" height=100%>
 	<tr height=35%>
 		<td width="22%" align=center valign=top>
-			<img src="/img/logo.png" border="0" alt="Astromaximum logo">
+			<img src="img/logo.png" border="0" alt="Astromaximum logo">
 			<table style="font-size:smaller;" width=100%><tr align=center>
 			<td><a href="index.php?lang=en">English</a></td>
 			<td><a href="index.php?lang=ru">Русский</a></td>
@@ -101,7 +101,7 @@ echo <<<NAV5
 			<p><table cellpadding="0" cellspacing="0">
 				<tr align=center><td><a href=order.php?{$lang_}>{$i18['ORDER']}</a></td>
 				<td><span align="center">&nbsp;
-				<img src="/img/paypal.png" alt="PayPal"></span></td></tr>
+				<img src="img/paypal.png" alt="PayPal"></span></td></tr>
 			</table></p>
 			<p><a href=geo.php?{$lang_}>{$i18['DB']}</a></p>
 		</td>

@@ -44,7 +44,7 @@ include_once('amtools.php');
 	else{
 		$fname=$_FILES['uploaded_file']['name'];
 		$ext=substr($fname,-4);
-		if(strcmp($ext,'.TAR') && strcmp($ext,'.tar')){
+		if(strcmp($ext,'.ZIP') && strcmp($ext,'.zip')){
 			upload_error("Invalid archive: '$fname'",'');
 		} 
 		$fh = $_FILES['uploaded_file']['tmp_name'];
