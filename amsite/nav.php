@@ -2,10 +2,16 @@
 include_once('lang.php');
 unset($LOGIN_MSG);
 
+$langs=array(
+	"en"=>'English', 
+//	"de"=>'Deutsch', 
+	"ru"=>'Русский'
+);
+
 function emit_admin(){
+	global $lang_, $i18;
 	echo <<<ADMIN
-	 <a href='geo.php'>Geo</a>
-	 <b>Admin:</b> <a href='db_stats.php'>DB stats</a> 
+	 &nbsp; <b>Admin:</b> <a href='db_stats.php'>{$i18['DB_STATS']}</a> 
 	 <a href='upload.php'>Upload</a>
 	 <br><br> 
 ADMIN;
@@ -18,23 +24,35 @@ function microtime_float()
 }
 
 function emit_nav1(){
-	global $lang_, $i18, $LOGIN_MSG, $START_TIME;
+	global $lang_, $i18, $LOGIN_MSG, $START_TIME, $langs;
 	$START_TIME=microtime_float();
 echo <<<NAV1
 <table border="1" width="100%" height=100% class=smalltxt>
 	<tr height=20%>
 		<td width="10%" valign=top>
-			<img src="img/logo.png" border="0" alt="Astromaximum logo">
 			<div align=center>
-			<br>
-			<form action=index.php name=lng>
+			<img src="img/logo.png" border="0" alt="Astromaximum logo">
+			<br><br>
+			<form action={$_SERVER['SCRIPT_NAME']} name=lng>
 			<select name="lang" onchange="javascript:document.forms.namedItem('lng').submit()">
-			<option value="en">English</option>
-			<option value="de">Deutsch</option>
-			<option value="ru">Русский</option>
-			</select>
-			</form></div>
 NAV1;
+if(isset($_GET['lang'])){
+	$lng=$_GET['lang'];
+}
+else{
+	$lng='en';
+}
+foreach ($langs as $i => $value) {
+	if(strcmp($i, $lng)==0){
+		$selected=' selected';
+	}
+	else{
+		$selected='';
+	}
+  echo "<option value='{$i}'{$selected}>{$value}</option>\n";
+}
+
+echo "</select></form></div>";
 // entrance for clients
 	if(isset($_POST['user'])){
 		if(login($_POST['user'],$_POST['passwd'])){
@@ -63,14 +81,14 @@ echo <<<NAV4
 		<table width=20%>
 		<tr>
 			<td>{$i18['USERNAME']}</td>
-			<td><input type="text" name="user"></input></td>
+			<td><input type="text" name="user" size="10"></input></td>
 			<td rowspan="2">
 			<center><input type=submit value="{$i18['DB']}"></input>
 			</center></td>
 		</tr>
 		<tr>
 			<td>{$i18['PWD']}</td>
-			<td><input type="password" name="passwd"></input></td>
+			<td><input type="password" name="passwd" size="10"></input></td>
 		</tr>
 	</table>
 	</form></span>
@@ -97,6 +115,8 @@ echo <<<NAV5
 	</td></tr>
 	<tr align=center valign=top>
 		<td>
+			<p><br><a href=index.php?{$lang_}>{$i18['INSTR']}</a></p>
+			<p><a href=geo.php?{$lang_}>{$i18['DB']}</a></p>
 			<p><br><a href=test.php?{$lang_}>{$i18['TEST']}</a></p>
 			<p><a href=demo.php?{$lang_}>{$i18['DEMO']}</a></p>
 			<p><table cellpadding="0" cellspacing="0">

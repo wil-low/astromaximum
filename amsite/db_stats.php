@@ -7,7 +7,7 @@ include_once('lang.php');
 <title>Cities database stats - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-10-15T20:27:38+0300">
+<meta name="date" content="2007-10-17T19:31:59+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -49,6 +49,7 @@ if($mode=='data'){
 		$sth=mysql_query("SELECT DISTINCT year FROM locations ORDER BY year");
 		while($row=mysql_fetch_row($sth)){
 			echo $row[0]."</th><th>";
+			$a_years[]=$row[0];
 		}
 		echo "</th></tr>";
 		mysql_free_result($sth);
@@ -56,15 +57,18 @@ if($mode=='data'){
 			" WHERE cities.country_id=countries.id GROUP BY cities.country_id ORDER BY countries.name");
 		while($row=mysql_fetch_row($sth)){
 			echo "<tr><td>{$row[1]}</td><td>{$row[2]}</td>";
-			$sth2=mysql_query(sprintf("SELECT COUNT(locations.id) FROM locations,cities WHERE locations.city_id=cities.id AND cities.country_id=%d GROUP BY year ORDER BY year",$row[0]));
-			while($row2=mysql_fetch_row($sth2)){
-				$bg='';
-				if($row[2]>$row2[0]){
-					$bg=" style='border-width:2; color:red'";
+			foreach($a_years as $i=>$value){
+				$sth2=mysql_query(sprintf("select count(locations.id) from locations, cities where year=%d".
+					" and locations.city_id=cities.id and cities.country_id=%d", $value, $row[0]));
+				while($row2=mysql_fetch_row($sth2)){
+					$bg='';
+					if($row[2]>$row2[0]){
+						$bg=" style='border-width:2; color:red'";
+					}
+					echo "<td{$bg}>{$row2[0]}</td>\n";
 				}
-				echo "<td{$bg}>{$row2[0]}</td>\n";
+				mysql_free_result($sth2);
 			}
-			mysql_free_result($sth2);
 			echo "</tr>\n";
 		}
 		mysql_free_result($sth);

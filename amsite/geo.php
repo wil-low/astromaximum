@@ -7,7 +7,7 @@ include_once('lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-10-15T21:41:33+0300">
+<meta name="date" content="2007-10-17T18:28:55+0300">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -28,7 +28,7 @@ if(isset($_POST['year'])){
 }
 $chac=check_access();
 if(!$chac){ 
-	echo "<br><p align=center>".$i18['DB_ACCESS']."</p>";
+	echo "<br><p align=center>{$i18['DB_ACCESS']}</p>";
 	emit_nav2();
 	exit();
 }
@@ -105,8 +105,32 @@ function city_del(){
 ?>
 </select></td></tr>
 <tr>
-<td colspan=4><font color='red'><i><?php echo $i18['STEP']?> 2:</i></font>
-<b><?php echo $i18['COUNTRY']?></b></td>
+<td colspan=3><font color='red'><i><?php echo $i18['STEP']?> 2:</i></font>
+<b><?php echo $i18['CHOICE']?></b></td>
+<td width=25% rowspan=2 class=geo>
+<center><b><?php echo $i18['SEL_CITIES']?>:</b></center>
+<div align=right><input type='button'  value='<?php echo $i18['DEL_SEL']?>' onclick='city_del()' /></div>
+<div id=selcit>
+<?php
+	$sc=',';
+	if(isset($_POST['sc'])){
+		$sc=$_POST['sc'];
+	}
+	$sc1=trim($sc,",");
+	if($sc1){
+		$stat="SELECT cities.id, cities.name, countries.name FROM cities,countries WHERE cities.id IN ($sc1) and countries.id=country_id ORDER BY countries.name,cities.name";
+		$sth = mysql_query($stat);
+		while($row = mysql_fetch_row($sth)){
+			echo "<input type=checkbox name=sss id=$row[0]></input>$row[1], $row[2]<br>\n";	
+		}
+	}
+?>
+</div>
+<p align=center><font color='red'><i><?php echo $i18['STEP']?> 3:</i></font>
+<input type="hidden" name="sc" value="<?php echo $sc ?>"  /> 
+<input type=submit name='Action' value='<?php echo $i18['GET_DATA'] ?>'></p></td>
+
+
 </tr>
 <tr><td width=15% class=geo>
 <?php
@@ -181,7 +205,7 @@ function city_del(){
 	$city_rows=$i/$city_cols;
 	echo "</td></td><td class=geo>";
 	if($i>0){
-		echo "<input type=button value='{$i18['ADD_CITIES']}' onClick='city_add(\"$cur_country\",\"$cur_state\")'/><br><br>";
+		echo "<center><input type=button value='{$i18['ADD_CITIES']}' onClick='city_add(\"$cur_country\",\"$cur_state\")'/></center><br><br>";
 	}
 	echo "<div id=chkcit><table width=100%><tr>";
 	for($cc=0; $cc<$city_cols; $cc++){
@@ -198,37 +222,13 @@ function city_del(){
 	}
 	echo "</tr></table></div>";
 	mysql_free_result($sth);
-	if($i>0){
-		echo "<br><input type=button value='{$i18['ADD_CITIES']}' onClick='city_add(\"$cur_country\",\"$cur_state\")'/>";
-	}
-	else{
+	if(!$i){
 		echo "<i>{$i18['NO_CITIES']}</i>";
 	}
 
 ?>
 </td>
-<td width=25% class=geo>
-<center><b><?php echo $i18['SEL_CITIES']?>:</b></center>
-<div align=right><input type='button'  value='Delete selected' onclick='city_del()' /></div>
-<div id=selcit>
-<?php
-	$sc=',';
-	if(isset($_POST['sc'])){
-		$sc=$_POST['sc'];
-	}
-	$sc1=trim($sc,",");
-	if($sc1){
-		$stat="SELECT cities.id, cities.name, countries.name FROM cities,countries WHERE cities.id IN ($sc1) and countries.id=country_id ORDER BY countries.name,cities.name";
-		$sth = mysql_query($stat);
-		while($row = mysql_fetch_row($sth)){
-			echo "<input type=checkbox name=sss id=$row[0]></input>$row[1], $row[2]<br>\n";	
-		}
-	}
-?>
-</div>
-<p align=center><font color='red'><i>Step 3:</i></font>
-<input type="hidden" name="sc" value="<?php echo $sc ?>"  /> 
-<input type=submit name='Action' value='Get data'></p></td></tr>
+</tr>
 </table>
 </form>
 
