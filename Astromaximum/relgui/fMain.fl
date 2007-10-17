@@ -61,7 +61,7 @@ decl {extern void cb_clear_loclist(fltk::Button*, void*);} {}
 Function {make_window()} {open
 } {
   {fltk::Window} {} {open
-    xywh {155 128 950 535} resizable visible
+    xywh {55 152 950 535} hide resizable
   } {
     {fltk::Group} {} {open
       xywh {210 5 735 525} box THIN_DOWN_BOX buttonbox NO_BOX
@@ -79,7 +79,7 @@ Function {make_window()} {open
         class MyBrowser
       } {}
     }
-    {fltk::Group} {} {open
+    {fltk::Group} {} {open selected
       xywh {5 5 204 530}
     } {
       {fltk::Group} {} {open
@@ -88,8 +88,7 @@ Function {make_window()} {open
         {fltk::Input} txtYear {
           callback {if(bSetYear->active())
     set_year(txtYear->text());}
-          xywh {5 5 85 20}
-          extra_code {o->when(fltk::WHEN_ENTER_KEY);}
+          xywh {5 5 85 20} when ENTER_KEY
           class {fltk::IntInput}
         }
         {fltk::Button} bSetYear {
@@ -105,8 +104,7 @@ Function {make_window()} {open
         {fltk::Input} txtImei {
           label {IMEI:}
           callback cb_imei_changed
-          xywh {35 55 160 25}
-          extra_code {o->when(fltk::WHEN_CHANGED);}
+          xywh {35 55 160 25} when CHANGED
           class {fltk::IntInput}
         }
         {fltk::Button} bImei {
@@ -191,7 +189,7 @@ Function {make_window()} {open
           label {Generate Geo}
           xywh {5 120 190 25}
         }
-        {fltk::Output} lbSize {selected
+        {fltk::Output} lbSize {
           xywh {5 20 190 25} textsize 9
         }
       }
