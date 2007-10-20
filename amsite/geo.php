@@ -256,16 +256,15 @@ function create_jar($year, $ids){
 	global $DIR_FILES, $DIR_SOURCE;
 	$ids=trim($ids,',');
 	include_once('amtools.php');
-	list($dir,$fn)=amtools_random($DIR_FILES,'.r');
-	
+	$ye=substr($year,-2);
+	list($dir,$fn)=amtools_random($ye, $DIR_FILES,'.r');
 	$srcdir="/tmp/$fn";
 	mkdir($srcdir);
 	$infile=fopen("$DIR_SOURCE/template.jad","rb");
 	$template = fread($infile, 1000000);
 	fclose($infile);
 	$code="-".substr($fn,-4);
-	$fname="Cities$code";
-	$ye=substr($year,-2);
+	$fname="Cities'$ye$code";
 	$template=str_replace('<YEAR>', $ye, $template);
 #	$jad=~s/<REGION>/$reg/isg;
 	$template=str_replace('<CODE>', $code, $template);
@@ -291,14 +290,15 @@ function create_jar($year, $ids){
 	$inf=fopen("$DIR_SOURCE/$fn/META-INF/MANIFEST.MF", 'wb');
 	fwrite($inf, $template);
 	fclose($inf);
-	join_datafiles2("$DIR_SOURCE/$fn/locations.dat", $data);
+	join_datafiles2($year, "$DIR_SOURCE/$fn/locations.dat", $data);
 	$inf=fopen("$DIR_SOURCE/icons/".substr($year,-1).".png", 'rb');
 	$icon=fread($inf,5000);
 	fclose($inf);
 	$inf=fopen("$DIR_SOURCE/$fn/icon.png", 'wb');
 	fwrite($inf,$icon);
 	fclose($inf);
-	$cmd=sprintf($ZIP, "$DIR_SOURCE/$fn", "$DIR_FILES/$fn");
+	$cmd=sprintf($ZIP, "$DIR_SOURCE/$fn", "../../$DIR_FILES/$fn.r");
+	echo $cmd;
 	exec($cmd);
 //	usleep(500000);
 //	emit_nav2();
@@ -308,7 +308,7 @@ function create_jar($year, $ids){
 	$template.="MIDlet-Jar-Size: $asize\n";
 	fwrite($inf, $template);
 	fclose($inf);
-	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1$server/data.php?r=$fn\n", $template);
+	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1$server/dl/data.php?r=$fn\n", $template);
 	$inf=fopen("$DIR_FILES/$fn.t", 'wb');
 	fwrite($inf, $template);
 	fclose($inf);

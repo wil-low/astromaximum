@@ -1,10 +1,11 @@
 <?php
-function amtools_random($path, $ext){
+function amtools_random($ye,$path, $ext){
 	do{
 		$id=''; $flag=1;
 		for($i=0; $i<12; $i++){
 			$id.=(int)(rand(0,9));
 		}
+		$id=$ye.$id;
 		$fn="$path/$id$ext";
 		if($ext){
 			if(is_file($fn)){
@@ -23,10 +24,11 @@ function amtools_random($path, $ext){
 $UNZIP="unzip %s -d %s > /dev/null";
 $UNTAR="tar xvf %s -C %s";
 #our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
-$ZIP='sh source/dozip.sh %s ../../%s.r *';
+#$ZIP='sh source/dozip.sh %s %s';
+$ZIP="cd %s; ../../zip -vrm %s *";
 #our $zip=q(zip -r %s.r %s/*);
 
-function join_datafiles2($destfile, $a_data) # destfile, data_listref
+function join_datafiles2($year, $destfile, $a_data) # year, destfile, data_listref
 {
 	$outf=fopen($destfile,'wb');
 	$count=0;
@@ -37,6 +39,7 @@ function join_datafiles2($destfile, $a_data) # destfile, data_listref
     	$a_len[$count]=strlen($value);
 		$count++;
  	}
+	fwrite($outf, pack('n',$year));
 	fwrite($outf, pack('n',$count));
 	foreach ($a_len as $i => $value) {
 		fwrite($outf, pack('n',$value));

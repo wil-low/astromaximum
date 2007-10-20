@@ -13,6 +13,7 @@ if(true /*|| check_access()*/){
 	}
 	$dig=$_GET[$type];
 	$idd=substr($dig, -4);
+	$ye=substr($dig, 0,2);
 	$fn="$DIR_FILES/".$dig.".$type";
 	$stat=sprintf(
 		"UPDATE files SET used='t' WHERE id=%s AND type='%s'", $dig, $type);
@@ -31,7 +32,7 @@ if(true /*|| check_access()*/){
 //		echo filesize($fn); 
 		header('Content-type: application/java-archive');
 	}
-	header('Content-Disposition: attachment; filename="Cities-'.$idd.'.ja'.$type.'"', false);
+	header('Content-Disposition: attachment; filename="Cities'."'$ye-".$idd.'.ja'.$type.'"', false);
 	echo $data;
 
 }
