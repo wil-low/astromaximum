@@ -267,7 +267,7 @@ sub do_jar{
 	print INF "\r\n";
     close(INF);
     unlink($outfile) if -f $outfile;
-    my $cmd=sprintf($const::ZIP, "$path$const::DIR_TEMP", $outfile);
+    my $cmd=$path.sprintf($const::ZIP, $outfile, "$path$const::DIR_TEMP");
     print "Exec: $cmd\n";
     die "\tERROR: creating archive" if system($cmd);
     my $asize= -s $outfile;
