@@ -7,13 +7,13 @@
             <line>211</line>
         </file>
         <file>
-            <url>src/Astromaximum.java</url>
-            <line>297</line>
-        </file>
-        <file>
             <url>src/SummItem.java</url>
             <line>464</line>
             <line>1575</line>
+        </file>
+        <file>
+            <url>src/Astromaximum.java</url>
+            <line>297</line>
         </file>
         <file>
             <url>src/DataFile.java</url>

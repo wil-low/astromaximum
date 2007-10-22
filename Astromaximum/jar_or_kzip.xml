@@ -46,4 +46,22 @@
       <fileset dir=".temp"/>
     </delete>
   </target>  
+
+    <target name="copy.template" description="Copy into common dir">
+	<echo message="dsf"/>
+	<copy file="${dist.dir}/${dist.jar}" todir="${basedir}/../templates" />
+	<antcall target="gen.amax" inheritall="true" inheritrefs="true" />
+    </target>
+
+    <target name="gen.amax" unless="rebuild.only">
+	<echo message="${rebuild.only}"/>
+	<exec executable="perl" failonerror="true">
+	    <arg value="${basedir}/../gen_amax.pl"/>
+	    <arg value="${gen.conf}"/>
+	    <arg value="${year}"/>
+	    <arg value="${basedir}/../loclist_default.txt"/>
+	    <arg value="${dist.dir}/${dist.jar}"/>
+	</exec>
+    </target>
+
 </project>

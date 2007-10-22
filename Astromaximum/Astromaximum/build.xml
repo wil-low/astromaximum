@@ -8,7 +8,7 @@
     <property name="year" value="2007"/>
     
     <import file="nbproject/build-impl.xml"/>
-<!--    <import file="../jar_or_kzip.xml"/> -->
+    <import file="../jar_or_kzip.xml"/> 
     <!--
 
     There exist several targets which are by default empty and which can be
@@ -81,22 +81,6 @@
         </target>
     -->    
 
-
-    <target name="post-jar" description="Copy into common dir">
-	<copy file="${dist.dir}/${dist.jar}" todir="${basedir}/../templates" />
-        <antcall target="gen.amax" inheritall="true" inheritrefs="true" />
-    </target>
-    
-    <target name="gen.amax" unless="rebuild.only">
-	<exec executable="perl" failonerror="true">
-	    <arg value="${basedir}/../gen_amax.pl"/>
-	    <arg value="${config.active}"/>
-	    <arg value="${year}"/>
-            <arg value="${basedir}/../loclist_default.txt"/>
-            <arg value="${dist.dir}/${dist.jar}"/>
-	</exec>
-    </target>
-
 <!--
     <target name="pre-init">
       <echo file="props.txt" message=""/>
@@ -124,6 +108,12 @@
       </exec>
     </target>
     
+
+    <target name="post-jar" description="Copy into common dir">
+	<antcall target="copy.template" inheritall="true" inheritrefs="true">
+	    <param name="gen.conf" value="${config.active}"/>
+	</antcall>
+    </target>
 <!--    
     <target name="tb.install" description="Installing timebomb." if="do.timebomb">
       <exec executable="perl" failonerror="true">

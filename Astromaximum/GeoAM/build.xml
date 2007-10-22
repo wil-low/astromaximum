@@ -4,7 +4,10 @@
 <!-- (If you delete it and reopen the project it will be recreated.) -->
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
+    <property name="project.geoLib" value="${basedir}/../geoLib"/>
+    <property name="year" value="2007"/>
     <import file="nbproject/build-impl.xml"/>
+    <import file="../jar_or_kzip.xml"/> 
     <!--
 
     There exist several targets which are by default empty and which can be
@@ -77,4 +80,11 @@
         </target>
 
     -->
+    
+    <target name="post-jar" description="Copy into common dir">
+	<antcall target="copy.template" inheritall="true" inheritrefs="true">
+	    <param name="gen.conf" value="geo-${config.active}"/>
+	</antcall>
+    </target>
+
 </project>

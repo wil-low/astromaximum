@@ -6,10 +6,9 @@ our $path='';
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
 
-if($0=~/(.+[\\\/])/is){
-    $path=$1;
-}
-
+my $path=`pwd`;
+chomp($path);
+$path.="/";
 require $path.'genconst.pm';
 
 if(!scalar(@ARGV)){
@@ -58,6 +57,13 @@ if($config eq 'rebuild'){
         print "$cmd\n";
         die "BUILD ERROR"if system($cmd);
     }
+    my $conf="DefaultConfiguration";
+    print "\n--------------------------------\n";
+    print "--- Config geo: $conf ---\n";
+    print "--------------------------------\n";
+    my $cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Dconfig.active=$_ -Drebuild.only=true clean jar";
+    print "$cmd\n";
+    die "BUILD ERROR"if system($cmd);
     exit(0);
 }
 
@@ -71,8 +77,15 @@ if($config=~/(2006|demo)/is){
 	$outfile=$path."Astromaximum/deploy/$const::PRODUCT".'Demo.jar' ;
     }
 }
+
 $year=~/\d\d(\d\d)/is;
 my $ye=$1;
+
+if($config=~/geo-$/is){
+    unless($outfile=~/\.jar/is){
+	$outfile=$path."Astromaximum/deploy/Geo$ye.jar";
+    }
+}
 
 unless($outfile=~/\.jar/is){
     die "Invalid filename: '$outfile'" unless $outfile eq '-';
@@ -82,6 +95,8 @@ unless($outfile=~/\.jar/is){
 
 print "Processing <$config> for $year using locations from $loclist...\n";
 
+rm_all("$path$const::DIR_TEMP");
+
 if($config=~/tb/is){
     my $ofs=shift(@ARGV);
     $ofs=0 unless $ofs;
@@ -90,9 +105,9 @@ if($config=~/tb/is){
     unzip("$path$const::DIR_TEMPLATE/Astromaximum-tb.jar");
     inject_amdata();
     do_timebomb($ofs, $delta);
-    common_create($year, "$path$const::DIR_TEMP/common.dat");
-    locations_create($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
-    inject_icon();
+    inject_common($year, "$path$const::DIR_TEMP/common.dat");
+    inject_locations($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
+    inject_icon("res/");
     do_jar("$const::PRODUCT$ye", $outfile);
     do_messjar($outfile);
     exit(0);
@@ -102,9 +117,9 @@ if($config=~/(2006|demo)/is){
     $year=2006;
     unzip("$path$const::DIR_TEMPLATE/AstromaximumDemo.jar");
     inject_amdata();
-    common_create($year, "$path$const::DIR_TEMP/c.dat");
-    locations_create($year, $loclist, "$path$const::DIR_TEMP/l.dat");
-#    inject_icon();
+    inject_common($year, "$path$const::DIR_TEMP/c.dat");
+    inject_locations($year, $loclist, "$path$const::DIR_TEMP/l.dat");
+    inject_icon("res/");
     do_jar("AstromaximumDemo", $outfile);
     do_messjar($outfile);
     exit(0);
@@ -112,9 +127,9 @@ if($config=~/(2006|demo)/is){
 
 if($config=~/notest$/is){
     unzip("$path$const::DIR_TEMPLATE/Astromaximum-notest.jar");
-    common_create($year, "$path$const::DIR_TEMP/common.dat");
-    locations_create($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
-    inject_icon();
+    inject_common($year, "$path$const::DIR_TEMP/common.dat");
+    inject_locations($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
+    inject_icon("res/");
     do_jar("$const::PRODUCT$ye", $outfile);
 #    do_messjar($outfile);
     exit(0);
@@ -124,17 +139,41 @@ if($config=~/release$/is){
     my $imei=shift(@ARGV);
     $imei='0' x 15 unless $imei;
     unzip("$path$const::DIR_TEMPLATE/Astromaximum.jar");
-    common_create($year, "$path$const::DIR_TEMP/common.dat", $imei);
-    locations_create($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
+    inject_common($year, "$path$const::DIR_TEMP/common.dat", $imei);
+    inject_locations($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
     inject_amdata();
-    inject_icon();
+    inject_icon("res/");
     do_jar("$const::PRODUCT$ye", $outfile);
     do_messjar($outfile);
     exit(0);
 }
+
+if($config=~/geo-$/is){
+    unzip("$path$const::DIR_TEMPLATE/GeoAM.jar");
+    inject_locations($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
+    inject_icon();
+    do_jar("Geo$ye", $outfile);
+    do_messjar($outfile);
+    exit(0);
+}
+
 die "Invalid config";
 
+sub copy_file{
+    open(INF,"<$_[0]") or die "Cannot open file $_[0]: $!";
+    binmode(INF);
+    my @body=<INF>;
+    close (INF);
+    open(OUTF,">$_[1]") or die "Cannot open file $_[1]: $!";
+    binmode(OUTF);
+    print OUTF join('', @body);
+    close (OutF);
+    print "cp-> $_[1]\n";
+}
+
 sub inject_amdata{
+    copy_file($path."Astromaximum/src/Amdata.class", "$path$const::DIR_TEMP/Amdata.class");
+    return;
     open(INF,"<$path"."Astromaximum/src/Amdata.class") or die "Cannot open file";
     binmode(INF);
     my @body=<INF>;
@@ -145,21 +184,22 @@ sub inject_amdata{
     close (OutF);
 }
 
-sub inject_icon{
+sub inject_icon{ #subdir
     $ye=~/(\d)$/is;
     open(INF,"<$path"."images/icons/$1.png") or die "Cannot open file $path"."images/icons/$1.png";
     binmode(INF);
     my @body=<INF>;
     close (INF);
-    open(OUTF,">$path$const::DIR_TEMP/res/icon.png") or die "Cannot open file";
+    open(OUTF,">$path$const::DIR_TEMP/$_[0]"."icon.png") or die "Cannot open file $!";
     binmode(OUTF);
     print OUTF join('', @body);
     close (OutF);
+    print "$const::DIR_TEMP/res/icon.png written\n";
 }
 
-sub locations_create{
+sub inject_locations{
     if(!$_[0]){
-	die "Usage: locations_create.pl <year> <city list> <dest file>\n";
+	die "Usage: inject_locations.pl <year> <city list> <dest file>\n";
     }
     my @fn;
     open(IN, "<$_[1]") or die "error $!: $_[1]\n";
@@ -174,7 +214,7 @@ sub locations_create{
     print "$_[2] written\n";
 }
 
-sub common_create{
+sub inject_common{
     my $imei='000000000000000';
     #our $imei='359308007701623';
     #die sprintf('%x',substr($imei,0,8));
@@ -266,8 +306,7 @@ sub do_jar{
 	print INF $template;
 	print INF "\r\n";
     close(INF);
-    unlink($outfile) if -f $outfile;
-    my $cmd=$path.sprintf($const::ZIP, $outfile, "$path$const::DIR_TEMP");
+    my $cmd=sprintf($const::ZIP, "$path$const::DIR_TEMP", $outfile);
     print "Exec: $cmd\n";
     die "\tERROR: creating archive" if system($cmd);
     my $asize= -s $outfile;
@@ -438,9 +477,10 @@ sub mess_direrase {
 
 sub unzip{
     rm_all("$path$const::DIR_TEMP");
+    copy_file($_[0], $outfile);
     my $cmd=sprintf($const::UNZIP, $_[0], "$path$const::DIR_TEMP");
     print "Exec: $cmd\n";
-    die "\tERROR: missing template $_[0]?\n\tPlease do rebuild.\n" if system($cmd);
+    system($cmd);
 }
 
 sub do_timebomb{
