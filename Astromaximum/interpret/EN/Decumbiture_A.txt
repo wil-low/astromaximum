@@ -1,0 +1,18 @@
+!!type EV_DECUMBITURE
+!!params 1
+!!planet –1
+//Dynamics of acute diseases for about one month, not longer.The course of the disease is foretold according to both the state of the sick and the aspects of the Moon, whether they are good or evil. 
+
+[000]%0%#The beginning of the disease. |For the beginning take the time when the disease has somehow shown itself: the subject has either taken to his bedor felt badly; or when the first symptoms of the disease or injury on the body were revealed. #
+[045]/diagnosis/%1%#+12/-12 hours. | The disease can be discussed. Bad feeling of the patient as well as bad aspects give directions to severe crisis. For a very acute disease it is the coming of crisis. | On this day do not leave the sick without looking after.# 
+[060]%2%#+12/-12 hours. | The disease usually releaves; the opposite one tells about a serious sickness.# 
+[090]/Crisis/%3%#+/-12 hours. Crisis. |The danger increases if bad aspects of the Moon is near. Good aspects promise soon recovery. Good state of the sick points to recovery. | On this day do not leave the sick without looking after.# 
+[120]%4%#+12/-12 hours. |Improvement of the state, but the recovery can be told about only when the disease will remind about itself. |The disease as a rule releases; the opposite one tells about a serious sickness.#
+[135]/Diagnosis/%5%#+/-12 hours. The disease can be discussed. Bad feeling of the patient as well as bad aspects give directions to severe crisis.# 
+[180]/Crisis/%6%#+/-12 hours. Crisis. |The danger increases if bad aspects of the Moon is near. Good aspects promise soon recovery. Good state of the sick points to complete recovery. | On this day do not leave the sick without looking after.# 
+[225]/Diagnosis/%7%#+/-12 hours. | The disease can be discussed. Bad feeling of the patient as well as bad aspects give directions to severe crisis.# 
+[240]%8%#+12/-12 hours. |Improvement of the state, but the recovery can be told about only when the disease will remind about itself. |The disease as a rule releases; the opposite one tells about a serious sickness.#
+[270]/Crisis/%9%#+/-12 hours. Crisis. |The danger increases if bad aspects of the Moon is near. Good aspects promise soon recovery. Good state of the sick points to complete recovery. | On this day do not leave the sick without looking after.#
+[300]%10%#+12/-12 hours. |Improvement of the state, but the recovery can be told about only when the disease will remind about itself during the next crisis. |The disease as a rule releases; if not, -hard crisis may be expected.# 
+[325]/Diagnosis/%11%#+/-12 hours. | The disease can be discussed. Bad feeling of the patient tells about a serious disease# 
+[360]/Crisis/%12%#+/- 1 day and night. |It inevitably must be the end of any acute disease. If the disease doe not end the acute disease turns into a chronic one.# 

@@ -8,9 +8,12 @@ my $TZ_VER=2;
 
 my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
-
-my ($year, $city_inf, $tzonly)=@ARGV;
-
+my $tzonly=0;
+my $year=shift(@ARGV);
+if($ARGV[0] eq 'tzonly'){
+	$tzonly=1;
+	shift(@ARGV);
+}
 $0=~/(.+\/)/is;
 our $mypath=$1;
 our %historic;
@@ -48,12 +51,12 @@ else{
 undef @cities;
 
 if($#ARGV!=0 and scalar(@ARGV)<2){
-	die "Usage: <year> <country group code list> [tzonly]\n";
+	die "Usage: <year> [tzonly] <country group code list>\n";
 }
 require $mypath.'tools.pm';
 my $day_count=tools::day_count($year);
 our $path=$mypath."data/archive/";
-
+my $city_inf=shift(@ARGV);
 my $country='';
 my $tz;
 
@@ -83,7 +86,7 @@ our $fname;
 #=head
 if(! -f "$path$city_inf.txt"){
 	my $error=0;
-    unlink "$path$city_inf.txt";
+	unlink "$path$city_inf.txt";
 	open(InF, "<$path$city_inf.ini") or die "No file $path$city_inf\.ini";
 	@cities=<InF>;
 	close(InF);
@@ -148,7 +151,7 @@ if(! -f "$path$city_inf.txt"){
 #			die $st_name;
 			$state=~/(.+),/is;
 			$state=$1;
-			$sql="select cities.eng, longit, latit, \'$state\' from cities,counties where cities.eng = \'$cit\' and country_id=$cid and county_id=counties.id and counties.eng=\'$st_name\'";
+			$sql="select cities.eng, longit, latit, '$state' from cities,counties where cities.eng = '$cit' and country_id=$cid and county_id=counties.id and counties.eng=\'$st_name\'";
 			print "$sql\n";
 		}
 		else{	
@@ -199,6 +202,7 @@ if(! -f "$path$city_inf.txt"){
 	our $city;
 #	undef $/ ;
 	my $newdir=sprintf('%sdata/archive/%d/%s',$mypath,$year,$city_inf);
+	my $arcdir=$mypath.'data';
 	mkdir $newdir unless -d $newdir;
 #	foreach my $cit(@cities){
 #		chomp($cit);
@@ -265,15 +269,17 @@ if(! -f "$path$city_inf.txt"){
 		$i++;
 	}
 	if(!$tzonly){
-		if(-f "$newdir/$city_inf.zip"){
+		if(-f "$arcdir/$year-$city_inf.zip"){
 			die "$city_inf.zip exists. Please delete it to regenerate";
 		}
 		open(InF, ">$newdir/$city_inf.txt");
 		print(InF join("\n", @cities));
 		close(InF);
+		unlink("$newdir/$city_inf.zip");
 		my $cmd=sprintf('wd=`pwd`; cd %s; zip %s *.txt *.dat; cd $wd', $newdir, $city_inf);
-	#	print "$cmd\n";
+		#print "$cmd\n";
 		system($cmd);
+		rename("$newdir/$city_inf.zip", "$arcdir/$year-$city_inf.zip") or die $!."$newdir/$city_inf", "$arcdir/$year-$city_inf.zip";
 	#	my @bins=glob("$dir\\Data*.dat");
 	#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
 	}
