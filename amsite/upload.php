@@ -6,7 +6,7 @@ include_once('lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-10-17T20:38:55+0300">
+<meta name="date" content="2007-10-28T09:21:07+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -93,7 +93,7 @@ function up_geodata($fname, $ext){
 	global $DIR_INBOX, $UNZIP;
 	check_ext($fname, $ext);
 	$fh = $_FILES['uploaded_file']['tmp_name'];
-	list($dir,$fn)=amtools_random($DIR_INBOX,'');
+	list($dir,$fn)=amtools_random(0,$DIR_INBOX,'');
 	mkdir($dir);
 	$cmd=sprintf($UNZIP, $fh, $dir);
 	$res=exec($cmd);

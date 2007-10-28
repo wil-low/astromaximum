@@ -23,7 +23,7 @@ $DIR_SOURCE='source';
 $DIR_INBOX='inbox';
 $DIR_FILES='files';
 
-mysql_pconnect( $DB_SERVER, $DB_SUPERUSER, $DB_SUPERUSER_PWD );
+$conn=mysql_connect( $DB_SERVER, $DB_SUPERUSER, $DB_SUPERUSER_PWD );
 mysql_select_db( $DB_NAME);
 
     // Функция экранирования переменных
