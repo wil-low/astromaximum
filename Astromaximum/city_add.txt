@@ -1,11 +1,58 @@
 @ Belarus, Minsk_BLR
 Gomel'
+
+@ Canada - Quebec, Montreal^CAN
+Quebec
+@ Canada - Newfoundland, Saint Johnes^CAN
+St John
+
+@ Czech Republic, Prague_CZE
+Ceske Budejovice
+
+@ Denmark, Copenhagen
+Copenhagen
+
+@ England, London_GBR
+Halifax
+
 @ Estonia, Tallinn_EST
 Narva
+
+@ Greece, Athens_GRC
+Iraklion
+
+@ Hungary, Budapest_HUN
+Kecskemet
+Pecs
+Tatabanya
+
+@ Kuwait, Kuwait City_KWT
+Al-Kuwayt
+
 @ Latvia, Riga_LVA
 Liepaja
+
 @ Lithuania, Vilnius_LTU
 Panevezys
+
+@ Poland, Warsaw_POL
+Przemysl
+Zielona Gora
+Jelenia Gora
+Lodz
+Krakow
+
+@ Romania, Bucharest_ROU
+Alexandria
+
+@ Russia  +3, Moscow_RUS
+Bryansk
+@ Russia  +5, Ekaterinburg^RUS
+Tyumen
+
+@ Saudi Arabia, Riyadh_SAU
+Jeddah
+
 @ Ukraine, Kiev_UKR
 Kovel'
 Uman'

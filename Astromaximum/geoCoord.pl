@@ -16,6 +16,7 @@ if($ARGV[0] eq 'tzonly'){
 }
 $0=~/(.+\/)/is;
 our $mypath=$1;
+require $mypath.'tz_patches.pm';
 our %historic;
 my @cities;
 my $citlist;
@@ -54,9 +55,11 @@ if($#ARGV!=0 and scalar(@ARGV)<2){
 	die "Usage: <year> [tzonly] <country group code list>\n";
 }
 require $mypath.'tools.pm';
+do_patch(\$citlist);
+
 my $day_count=tools::day_count($year);
 our $path=$mypath."data/archive/";
-my $city_inf=shift(@ARGV);
+our $city_inf;
 my $country='';
 my $tz;
 
@@ -83,161 +86,161 @@ $sqlite3.='sqlite3';
 
 our $outbuf;
 our $fname;
-#=head
-if(! -f "$path$city_inf.txt"){
-	my $error=0;
-	unlink "$path$city_inf.txt";
-	open(InF, "<$path$city_inf.ini") or die "No file $path$city_inf\.ini";
-	@cities=<InF>;
-	close(InF);
-	my $cid=1;
-	$country='';
-	my $state=0;
-	my $invoke;
-	my $db="$sqlite3 $sqpath".'coords.sqb';
-	my $tmp=$path.'country.tmp';
-	foreach my $cit(@cities){
-		$cit=~s/[\n\r]//isg;
-		next if $cit=~/\A\s*\Z/is;
-		next if $cit=~/\#/is;
-		if($cit=~s/\@\s*//is){
-	#		die if $country;
-			$country=$cit;
-			$cit=~s/(\s-|\,).+//is;
-			$cit=~s/\(.+?\)//isg;
-			$cit=~s/[\-\d\+]//isg;
-			my $sql="select id, eng from countries where eng = \'$cit\';";
-			$invoke="echo \"$sql\" \| $db > \"$tmp\"";
+foreach $city_inf(@ARGV){
+	print "---- $city_inf ----\n";
+	process_ini();
+}
+
+sub process_ini{
+	if(! -f "$path$city_inf.txt"){
+		my $error=0;
+		unlink "$path$city_inf.txt";
+		open(InF, "<$path$city_inf.ini") or die "No file $path$city_inf\.ini";
+		@cities=<InF>;
+		close(InF);
+		my $cid=1;
+		$country='';
+		my $state=0;
+		my $invoke;
+		my $db="$sqlite3 $sqpath".'coords.sqb';
+		my $tmp=$path.'country.tmp';
+		foreach my $cit(@cities){
+			$cit=~s/[\n\r]//isg;
+			next if $cit=~/\A\s*\Z/is;
+			next if $cit=~/\#/is;
+			if($cit=~s/\@\s*//is){
+		#		die if $country;
+				$cit=~s/.+\$//is;
+				$country=$cit;
+				$cit=~s/(\s-|\,).+//is;
+				$cit=~s/\(.+?\)//isg;
+				$cit=~s/[\-\d\+]//isg;
+				my $sql="select id, eng from countries where eng = \'$cit\';";
+				$invoke="echo \"$sql\" \| $db > \"$tmp\"";
+				system($invoke);
+				open(InF, "<$tmp") or die "No file $tmp";
+				my @countries=<InF>;
+				close(InF);
+				if($countries[0]=~/(\d+)\|/is){
+					$cid=$1;
+	#				print "$country  capital =";
+					$cit=$country;
+					$cit=~s/\(.+?\)//isg;
+					$cit=~s/.+,\s*//is;
+					$cit=~s/\A\s+//is;
+					$cit=~s/\s+\Z//is;
+					print "$cit\n";
+					next;
+				}
+				else{
+					$cid=0;
+					warn "*****Not found:  $country";
+					$invoke="echo \"$cit\" >> \"$path$city_inf.txt\"";
+			#		print "$invoke\n";
+					system($invoke);
+					next;
+				}
+			}
+			next if $cit=~/\#/is;
+			$cit=~s/\'/\'\'/isg;
+			$cit=~s/(\!.+)//is;
+			my $altcit=$1;
+			my $state=$country;
+			my $sql;
+			if($state=~/USA \- (.+)/is){
+				my $st_name=$1;
+				if($state=~/(.+?)\*(.+)/is){
+					$st_name=$2;
+					$state=$1;
+				}
+				else{
+					$st_name=~/(.+),/is;
+					$st_name=$1;
+				}
+	#			die $st_name;
+				$state=~/(.+),/is;
+				$state=$1;
+				$sql="select cities.eng, longit, latit, '$state' from cities,counties where cities.eng = '$cit' and country_id=$cid and county_id=counties.id and counties.eng=\'$st_name\'";
+#				print "$sql\n";
+			}
+			else{	
+				$state=~/(.+),/is;
+				$state=$1;
+				$sql="select eng, longit, latit, \'$state\' from cities where eng = \'$cit\' and country_id=$cid limit 1";
+			}
+			$invoke="echo \"$sql;\" \| $db > \"$tmp\"";
 			system($invoke);
 			open(InF, "<$tmp") or die "No file $tmp";
 			my @countries=<InF>;
 			close(InF);
-			if($countries[0]=~/(\d+)\|/is){
-				$cid=$1;
-#				print "$country  capital =";
-				$cit=$country;
-				$cit=~s/\(.+?\)//isg;
-				$cit=~s/.+,\s*//is;
-				$cit=~s/\A\s+//is;
-				$cit=~s/\s+\Z//is;
-				print "$cit\n";
-				next;
-			}
-			else{
-				$cid=0;
-				warn "*****Not found:  $country\n";
-				$invoke="echo \"$cit\" >> \"$path$city_inf.txt\"";
-		#		print "$invoke\n";
+			if($countries[0]=~/\|/is){
+				chomp($countries[0]);
+				$countries[0]=~s/\|/$altcit\|/is;
+				my @params=split(/\|/is, $countries[0]);
+				$params[0]=~s/.+!//is;
+				$error++ if !get_tz($params[3],$params[0],1,1);
+				$invoke="echo \"$countries[0]\" >> \"$path$city_inf.txt\"";
+	#			print "$invoke\n";
 				system($invoke);
-				next;
-			}
-		}
-		next if $cit=~/\#/is;
-		$cit=~s/\'/\'\'/isg;
-		$cit=~s/(\!.+)//is;
-		my $altcit=$1;
-		my $state=$country;
-		my $sql;
-		if($state=~/USA \- (.+)/is){
-			my $st_name=$1;
-			if($state=~/(.+?)\*(.+)/is){
-				$st_name=$2;
-				$state=$1;
 			}
 			else{
-				$st_name=~/(.+),/is;
-				$st_name=$1;
-			}
-#			die $st_name;
-			$state=~/(.+),/is;
-			$state=$1;
-			$sql="select cities.eng, longit, latit, '$state' from cities,counties where cities.eng = '$cit' and country_id=$cid and county_id=counties.id and counties.eng=\'$st_name\'";
-			print "$sql\n";
-		}
-		else{	
-			$state=~/(.+),/is;
-			$state=$1;
-			$sql="select eng, longit, latit, \'$state\' from cities where eng = \'$cit\' and country_id=$cid limit 1";
-		}
-		$invoke="echo \"$sql;\" \| $db > \"$tmp\"";
-#		print "$invoke\n";
-		system($invoke);
-		open(InF, "<$tmp") or die "No file $tmp";
-		my @countries=<InF>;
-		close(InF);
-		if($countries[0]=~/\|/is){
-			chomp($countries[0]);
-			$countries[0]=~s/\|/$altcit\|/is;
-			my @params=split(/\|/is, $countries[0]);
-			$params[0]=~s/.+!//is;
-			$error++ if !get_tz($params[3],$params[0],0);
-			$invoke="echo \"$countries[0]\" >> \"$path$city_inf.txt\"";
-#			print "$invoke\n";
-			system($invoke);
-		}
-		else{
-			warn "*** $cit ($state) not found\n";
-			$error++;
-		}
-		
-	}
-  unlink $tmp;
-  if($error){
-  	unlink "$path$city_inf.txt";
-  	die "Please correct $error errors.\n";
-  }
-  else{
-		print "Ready. Check coords.\nMay I continue calculations (y/n)? ";
-	}
-	my $ans=<STDIN>;
-	chomp($ans);
-	die "Calculation cancelled.\n" unless $ans eq 'y';
-}
-#####################################
-	open(InF, "<$path$city_inf.txt") or die "No file";
-	@cities=<InF>;
-	close(InF);
-#	die "@cities";
-	my $i=0;
-	our $city;
-#	undef $/ ;
-	my $newdir=sprintf('%sdata/archive/%d/%s',$mypath,$year,$city_inf);
-	my $arcdir=$mypath.'data';
-	mkdir $newdir unless -d $newdir;
-#	foreach my $cit(@cities){
-#		chomp($cit);
-#		next if $cit=~/\A\s*\Z/is;
-#		$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
-#		next if $cit=~/\#/is;
-#		next if $cit!~/\d/is;
-#		my @params=split(/\|/is, $cit);
-#		if(! -f $fname){
-#			$city=$params[0];
-#			$city=~s/.+!//is;
-#			get_tz($params[3],$city);
-#		}		
-#	}
-	foreach my $cit(@cities){
-		$outbuf='';
-		chomp($cit);
-		$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
-		next if $cit=~/\A\s*\Z/is;
-		next if $cit=~/\#/is;
-		next if $cit!~/\d/is;
-		my @params=split(/\|/is, $cit);
-		$fname=$newdir.sprintf('/Data%02d.dat',$i);
-		$city=$params[0];
-		$city=~s/.+!//is;
-		if(! -f $fname or $tzonly){
-			print "\n-----------------------";
-			print "\n******** $city ********";
-			print "\n-----------------------\n";
-			my $tz=get_tz($params[3],$city,1,1);
-			my $dstbuf=calc_dst($tz);
-			if(!$tzonly){
-				my $invoke=$mypath."mutter2/mutter2 $year geo0- $params[1] $params[2]";# electio";
 				print "$invoke\n";
-				system($invoke);
+				warn "*** $cit ($state) not found";
+				$error++;
+			}
+
+		}
+	  unlink $tmp;
+	  if($error){
+		unlink "$path$city_inf.txt";
+		die "Please correct $error errors.\n";
+	  }
+	  else{
+			print "Ready. Check coords.\nMay I continue calculations (y/n)? ";
+		}
+		my $ans=<STDIN>;
+		chomp($ans);
+		die "Calculation cancelled.\n" unless $ans eq 'y';
+	}
+	#####################################
+		open(InF, "<$path$city_inf.txt") or die "No file";
+		@cities=<InF>;
+		close(InF);
+	#	die "@cities";
+		my $i=0;
+		our $city;
+	#	undef $/ ;
+		my $newdir=sprintf('%sdata/archive/%d/%s',$mypath,$year,$city_inf);
+		my $arcdir=$mypath.'data';
+		mkdir $newdir unless -d $newdir;
+	#	foreach my $cit(@cities){
+	#		chomp($cit);
+	#		next if $cit=~/\A\s*\Z/is;
+	#		$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
+	#		next if $cit=~/\#/is;
+	#		next if $cit!~/\d/is;
+	#		my @params=split(/\|/is, $cit);
+	#		if(! -f $fname){
+	#			$city=$params[0];
+	#			$city=~s/.+!//is;
+	#			get_tz($params[3],$city);
+	#		}		
+	#	}
+		foreach my $cit(@cities){
+			$outbuf='';
+			chomp($cit);
+			$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
+			next if $cit=~/\A\s*\Z/is;
+			next if $cit=~/\#/is;
+			next if $cit!~/\d/is;
+			my @params=split(/\|/is, $cit);
+			$fname=$newdir.sprintf('/Data%02d.dat',$i);
+			$city=$params[0];
+			$city=~s/.+!//is;
+			if(! -f $fname or $tzonly){
+				print "\n******** $city ********\n";
+				my $tz=get_tz($params[3],$city,1,1);
+				my $dstbuf=calc_dst($tz);
 				if($params[3]=~/USA \- (.+)/is){
 					$city.=", $1";
 				}
@@ -245,49 +248,61 @@ if(! -f "$path$city_inf.txt"){
 				writeUTF($city);
 
 				my $header=pack('SCCCCSa*a*',$year, $month, $day, $hour, $min, $day_count, $outbuf, $dstbuf);
+				if(!$tzonly){
+					my $invoke=$mypath."mutter2/mutter2 $year geo0- $params[1] $params[2]";# electio";
+					print "$invoke\n";
+					system($invoke);
 
-				print "$fname\n";
-				open(OutF, ">$fname") or die "$! $fname";
-				binmode(OutF);
-				print OutF $header;
-				close(OutF);
+	#				print "$fname\n";
+					open(OutF, ">$fname") or die "$! $fname";
+					binmode(OutF);
+					print OutF $header;
+					close(OutF);
 
-				my $geomask=sprintf('%sdata/archive/%d/geo0-*.bin',$mypath, $year);
-				my @bins=glob($geomask);
-				die "No files: $geomask" if $#bins<0;
-				my $counter=0;
-				print join(@bins,"\n");
-				foreach my $ff(@bins){
-					tools::writeData($ff, $fname, 0);
-				}	
+					my $geomask=sprintf('%sdata/archive/%d/geo0-*.bin',$mypath, $year);
+					my @bins=glob($geomask);
+					die "No files: $geomask" if $#bins<0;
+					my $counter=0;
+					print join(@bins,"\n");
+					foreach my $ff(@bins){
+						tools::writeData($ff, $fname, 0);
+					}	
+				}
+				else{
+					tz_check($fname, $header, "$year-$city");
+				}
 			}
-		}
-		else{
-			data_check($fname, $year, $city);
-		}
+			else{
+				data_check($fname, $year, $city);
+			}
 
-		$i++;
-	}
-	if(!$tzonly){
-		if(-f "$arcdir/$year-$city_inf.zip"){
-			die "$city_inf.zip exists. Please delete it to regenerate";
+			$i++;
 		}
-		open(InF, ">$newdir/$city_inf.txt");
-		print(InF join("\n", @cities));
-		close(InF);
-		unlink("$newdir/$city_inf.zip");
-		my $cmd=sprintf('wd=`pwd`; cd %s; zip %s *.txt *.dat; cd $wd', $newdir, $city_inf);
-		#print "$cmd\n";
-		system($cmd);
-		rename("$newdir/$city_inf.zip", "$arcdir/$year-$city_inf.zip") or die $!."$newdir/$city_inf", "$arcdir/$year-$city_inf.zip";
-	#	my @bins=glob("$dir\\Data*.dat");
-	#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
-	}
+	#	if(!$tzonly){
+			if(-f "$arcdir/$year/$city_inf.zip"){
+				print "$year/$city_inf.zip exists. Please delete it to regenerate.\n";
+			}
+			else{
+				open(InF, ">$newdir/$city_inf.txt");
+				print(InF join("\n", @cities));
+				close(InF);
+				unlink("$newdir/$city_inf.zip");
+				my $cmd=sprintf('wd=`pwd`; cd %s; zip %s *.txt *.dat; cd $wd', $newdir, $city_inf);
+				#print "$cmd\n";
+				system($cmd);
+				mkdir("$arcdir/$year");
+				rename("$newdir/$city_inf.zip", "$arcdir/$year/$city_inf.zip") or die $!."$newdir/$city_inf", "$arcdir/$year/$city_inf.zip";
+				print "Written $arcdir/$year/$city_inf.zip\n";
+			#	my @bins=glob("$dir\\Data*.dat");
+			#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
+	#		}
+		}
+}
 
 sub calc_dst{
 	my $buf;
 	my @fld=$_[0]=~/([\d\+\-\.]+)\s+(?:(\S+\@\S+)\s+(\S+\@\S+)\s+)?(.+)/is;
-	print join('|',@fld)."\n";
+	print join('|',@fld).",\t";
 #	die "\n$#fld";
 #	die "Invalid TZ: $_[0]\n" if !$fld[1] || $fld[2];
 	my $ofs=$fld[0]*60;
@@ -313,6 +328,27 @@ sub calc_dst{
 sub ctime2number{
 	$_[0]=~/\w{3} (\w{3}) (\d+) (\d\d):(\d\d):(\d\d) (\d{4})/is;
 	return sprintf("%04d%02d%02d%02d%02d%02d", $6, $mon{$1}+1, $2, $3, $4, $5);
+}
+
+sub tz_check{
+	my($fname, $header, $comment)=@_;
+	my $hlen=length($header);
+	open(InF1, "<$fname") or die "$! $fname";
+	binmode(InF1);
+	my @data=<InF1>;
+	close(InF1);
+	my $body=join('', @data);
+	$body=~/^(.{$hlen})/s;
+	my $oldhdr=$1;
+	if($oldhdr ne $header){
+		warn("*** $comment: Replaced header in $fname");
+		print "old: ".unpack("H*",$oldhdr)."\nnew: ".unpack("H*",$header)."\n";
+		$body=~s/^.{$hlen}/$header/s;
+		open(OutF, ">$fname") or die "$! $fname";
+		binmode(OutF);
+		print OutF $body;
+		close(OutF);
+	}
 }
 
 sub decode_time{
@@ -377,7 +413,7 @@ sub decode_time{
 sub writeUTF
 {
 	my $param=shift;
-	print "$param\n";
+#	print "$param\n";
 	$param = decode("cp1251", $param);
 	my $len=0;
 	{
@@ -436,6 +472,7 @@ use warnings;
 	my $secname=''; # section header
 	print "Historic.txt: ";
 	while(my $ln=<HIST>){
+		do_patch(\$ln);
 		$ln=~s/[\n\r]//isg;
 		$ln=~s/\#.+//is; # strip comments
 		if($ln=~/^\s*$/is){ # empty line, section end
@@ -460,6 +497,9 @@ use warnings;
 #					$ln=~s/(.+), .+/$1/is; # remove trailing capital
 					$secname=$ln; # no link, section continues
 					$secname=~s/\(.+//is; # remove alternate capital name
+					$secname=~s/\s+$//is;
+					$secname=~s/^\s+//is;
+#					print ">$secname<\n";
 #					print "C";
 				}
 			}
@@ -488,7 +528,7 @@ use warnings;
 	}
 	close(HIST);
 	print " Ready.\n";
-#	die $historic{'Argentina, Buenos Aires'}->[3]->{end_date};
+#	die $historic{'Yemen, Sana�a'};
 }
 	
 sub get_tz{
@@ -500,11 +540,10 @@ sub get_tz{
 		print "$country,$city,$isdie\n" if $verbose;
 		if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n\r]+\))?)/is){
 			$country=$1;
-#			print "\n\n$country\n";
-			$country=~/\A(.+?)\n/is;
+			$country=~/\A(.+?)\s*\n/is;
 			$country=$1;
 			$c_arr=$historic{$country}; # TZ hash
-			die "No TZ for $country!" unless defined $c_arr;
+#			die "No TZ for $country!" unless defined $c_arr;
 		}
 		if(!defined $c_arr){
 #			die $citlist;
