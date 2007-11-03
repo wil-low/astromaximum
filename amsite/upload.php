@@ -201,7 +201,10 @@ function up_geodata($fname, $ext){
 		}
 		$citid=0;
 //			echo(sprintf($sthcit,quote_smart($name),$couid,$stateid).'<br>');
-		$sth=mysql_query(sprintf($sthcit,quote_smart($name),$couid,$stateid));
+		$qq=sprintf($sthcit,quote_smart($name),$couid,$stateid);
+//		echo "~$qq~\n";
+		$sth=mysql_query($qq);
+//		echo mysql_error();
 		if(!mysql_num_rows($sth)){
 			$sth=mysql_query(sprintf($sthcitins,quote_smart($name),$couid,$stateid));
 			$citid=mysql_insert_id();

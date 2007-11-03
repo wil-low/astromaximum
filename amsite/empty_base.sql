@@ -27,7 +27,7 @@ CREATE TABLE `cities` (
   `state_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `name` (`name`,`country_id`,`state_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COMMENT='Holds city names';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds city names';
 
 --
 -- Dumping data for table `cities`
@@ -49,7 +49,7 @@ CREATE TABLE `countries` (
   `name` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COMMENT='Holds country names';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds country names';
 
 --
 -- Dumping data for table `countries`
@@ -76,7 +76,7 @@ CREATE TABLE `customers` (
   `subscr_date` date default NULL,
   PRIMARY KEY  (`id`),
   KEY `name` (`name`,`realname`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COMMENT='Holds customer data';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds customer data';
 
 --
 -- Dumping data for table `customers`
@@ -103,7 +103,7 @@ CREATE TABLE `files` (
   `deleted` binary(1) NOT NULL default 'f',
   PRIMARY KEY  (`id`,`type`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COMMENT='Generated files';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Generated files';
 
 --
 -- Dumping data for table `files`
@@ -127,7 +127,7 @@ CREATE TABLE `locations` (
   `data` blob NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `year` (`year`,`city_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COMMENT='Holds calculated geodata';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds calculated geodata';
 
 --
 -- Dumping data for table `locations`
@@ -149,7 +149,7 @@ CREATE TABLE `source` (
   `data` blob default NULL,
   `comment` varchar(20) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COMMENT='Holds binary resources';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds binary resources';
 
 --
 -- Dumping data for table `source`
@@ -173,7 +173,7 @@ CREATE TABLE `sessions` (
   `tm_start` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `tm_end` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY  (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COMMENT='Durability of user sessions';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Durability of user sessions';
 
 --
 -- Dumping data for table `sessions`
@@ -196,7 +196,7 @@ CREATE TABLE `states` (
   `country_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `name` (`name`,`country_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COMMENT='Holds state names';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds state names';
 
 --
 -- Dumping data for table `states`
