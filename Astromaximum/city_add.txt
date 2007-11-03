@@ -1,66 +1,33 @@
-@ Belarus, Minsk_BLR
-Gomel'
+@ Armenia, Yerevan
+Kadzaran
 
-@ Canada - Quebec, Montreal^CAN
-Quebec
-@ Canada - Newfoundland, Saint Johnes^CAN
-St John
+@ Azerbaijan, Baku
+Dzhalilabad
+Zardob
 
-@ Czech Republic, Prague_CZE
-Ceske Budejovice
-
-@ Denmark, Copenhagen
-Copenhagen
-
-@ England, London_GBR
-Halifax
-
-@ Estonia, Tallinn_EST
+@ Estonia, Tallinn
 Narva
 
-@ Greece, Athens_GRC
-Iraklion
+@ Lithuania, Vilnius
+Druskininkai
 
-@ Hungary, Budapest_HUN
-Kecskemet
-Pecs
-Tatabanya
-
-@ Kuwait, Kuwait City_KWT
-Al-Kuwayt
-
-@ Latvia, Riga_LVA
-Liepaja
-
-@ Lithuania, Vilnius_LTU
-Panevezys
-
-@ Poland, Warsaw_POL
+@ Poland, Warsaw
+Jelenia Góra
 Przemysl
-Zielona Gora
-Jelenia Gora
-Lodz
-Krakow
 
-@ Romania, Bucharest_ROU
+@ Romania, Bucharest
 Alexandria
 
-@ Russia  +3, Moscow_RUS
-Bryansk
-@ Russia  +5, Ekaterinburg^RUS
-Tyumen
+@ Turkmenistan, Ashgabat
+Kushka
 
-@ Saudi Arabia, Riyadh_SAU
-Jeddah
-
-@ Ukraine, Kiev_UKR
-Kovel'
-Uman'
-Jaremca
-@ Ukraine, Simferopol^UKR
+@ Ukraine, Kiev
 Izmail
-Kerch
+Kovel
+Uman
+Yaremche
+@ Ukraine, Simferopol^UKR
 Yalta
-@ Ukraine, Uzhgorod^UKR
-@ Ukraine, Zaporozje^UKR
 
+@ Uzbekistan, Tashkent
+Termez

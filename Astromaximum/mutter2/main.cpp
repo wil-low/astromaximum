@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
   int year;
   if(sscanf(argv[1],"%4d",&year)!=1)
     return INVALID_YEAR;
-  printf("Year = %d\n",year);
+  printf("Year = %d\t",year);
   Event::startYear=year;
   if((argc==5)&&(strcmp(argv[2],"view")==0)){
     int count=0;
@@ -112,15 +112,15 @@ int main(int argc, char* argv[])
     return 0;
   }
   double startJD=swe_julday(year-1,12,31,0,SE_GREG_CAL);
-  printf("startJD=%f\n",startJD);
+  printf("startJD=%f\t",startJD);
   double endJD=swe_julday(year+1,2,1,0,SE_GREG_CAL);
 
 
 //  double endJD=swe_julday(year,2,1,0,SE_GREG_CAL);
 
 
-  int dayCount=endJD-startJD;
-  unsigned int stepCount=dayCount/MINUTE_STEP;
+  int dayCount=(int)(endJD-startJD);
+  unsigned int stepCount=(int)(dayCount/MINUTE_STEP);
   printf("Steps = %d\n", stepCount);
   double data[6]; char serr[255],ephf[255];
   ephData=new sEphRecord [stepCount];

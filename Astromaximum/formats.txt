@@ -71,4 +71,24 @@ Header fields:
 			short LB	DST start date, if applicable (local time)
 			short LB	DST end date, if applicable (local time)
 	
+*** data/archive/*.ini ***
+
+Purpose - contains location sets to be calculated and loaded into DB.
+Created by:
+	manually
+Used in:
+	geoCoord.pl - generating datafiles by mutter2/mutter
+
+Hints:
+    The main problem is to write correct names of city, its state (if applicable)
+    and country. User has to provide alternative names in order to query
+    correct coords from coords.sqb database and timezone info from city.txt.
+@ country in COORDS$country, [state]
+    city name in COORDS!city name in city.txt
+
+    In case if city is a capital of state or country and contains non-ASCII letters,
+    its name must be corrected in tz_patches.pm.
+    If it is an ordinary city, it must be included into add_city.txt
+
+    Country name should not contain braces.
 

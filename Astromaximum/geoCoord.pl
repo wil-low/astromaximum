@@ -17,6 +17,9 @@ if($ARGV[0] eq 'tzonly'){
 $0=~/(.+\/)/is;
 our $mypath=$1;
 require $mypath.'tz_patches.pm';
+if($#ARGV!=0 and scalar(@ARGV)<2){
+	die "Usage: <year> [tzonly] <country group code list>|<all>\n";
+}
 our %historic;
 my @cities;
 my $citlist;
@@ -51,9 +54,6 @@ else{
 
 undef @cities;
 
-if($#ARGV!=0 and scalar(@ARGV)<2){
-	die "Usage: <year> [tzonly] <country group code list>\n";
-}
 require $mypath.'tools.pm';
 do_patch(\$citlist);
 
@@ -86,9 +86,22 @@ $sqlite3.='sqlite3';
 
 our $outbuf;
 our $fname;
-foreach $city_inf(@ARGV){
-	print "---- $city_inf ----\n";
-	process_ini();
+
+if($ARGV[0] eq 'all'){
+	print "Making all...\n";
+	my @ini=glob($path."*.ini");
+	foreach $city_inf(@ini){
+		$city_inf=~/.+[\/\\](.+?)\.ini/is;
+		$city_inf=$1;
+		print "---- $city_inf ----\n";
+		process_ini();
+	}
+}
+else{
+	foreach $city_inf(@ARGV){
+		print "---- $city_inf ----\n";
+		process_ini();
+	}
 }
 
 sub process_ini{
@@ -110,11 +123,16 @@ sub process_ini{
 			next if $cit=~/\#/is;
 			if($cit=~s/\@\s*//is){
 		#		die if $country;
-				$cit=~s/.+\$//is;
 				$country=$cit;
+				$country=~s/.+\$//is;
+				if($cit=~s/(.+)\$//is){
+				    $cit=$1;
+				}
 				$cit=~s/(\s-|\,).+//is;
 				$cit=~s/\(.+?\)//isg;
 				$cit=~s/[\-\d\+]//isg;
+				$cit=~s/^\s+//is;
+				$cit=~s/\s+$//is;
 				my $sql="select id, eng from countries where eng = \'$cit\';";
 				$invoke="echo \"$sql\" \| $db > \"$tmp\"";
 				system($invoke);
@@ -129,14 +147,14 @@ sub process_ini{
 					$cit=~s/.+,\s*//is;
 					$cit=~s/\A\s+//is;
 					$cit=~s/\s+\Z//is;
-					print "$cit\n";
+#					print "$cit\n";
 					next;
 				}
 				else{
 					$cid=0;
-					warn "*****Not found:  $country";
+					print "$invoke\n";
+					warn "\n*****Country not found:  $country";
 					$invoke="echo \"$cit\" >> \"$path$city_inf.txt\"";
-			#		print "$invoke\n";
 					system($invoke);
 					next;
 				}
@@ -176,7 +194,9 @@ sub process_ini{
 			if($countries[0]=~/\|/is){
 				chomp($countries[0]);
 				$countries[0]=~s/\|/$altcit\|/is;
+				$countries[0]=~s/\'\'/\'/isg;
 				my @params=split(/\|/is, $countries[0]);
+
 				$params[0]=~s/.+!//is;
 				$error++ if !get_tz($params[3],$params[0],1,1);
 				$invoke="echo \"$countries[0]\" >> \"$path$city_inf.txt\"";
@@ -185,7 +205,7 @@ sub process_ini{
 			}
 			else{
 				print "$invoke\n";
-				warn "*** $cit ($state) not found";
+				warn "*** $cit ($state) not found in Janus DB";
 				$error++;
 			}
 
@@ -199,6 +219,7 @@ sub process_ini{
 			print "Ready. Check coords.\nMay I continue calculations (y/n)? ";
 		}
 		my $ans=<STDIN>;
+		print ">$ans<";
 		chomp($ans);
 		die "Calculation cancelled.\n" unless $ans eq 'y';
 	}
@@ -251,8 +272,9 @@ sub process_ini{
 				if(!$tzonly){
 					my $invoke=$mypath."mutter2/mutter2 $year geo0- $params[1] $params[2]";# electio";
 					print "$invoke\n";
-					system($invoke);
-
+					my $res=system($invoke);
+					die "Cancelled, result=$res" if $res;
+					
 	#				print "$fname\n";
 					open(OutF, ">$fname") or die "$! $fname";
 					binmode(OutF);
@@ -279,15 +301,16 @@ sub process_ini{
 			$i++;
 		}
 	#	if(!$tzonly){
-			if(-f "$arcdir/$year/$city_inf.zip"){
-				print "$year/$city_inf.zip exists. Please delete it to regenerate.\n";
-			}
-			else{
+			unlink "$arcdir/$year/$city_inf.zip";
+#			if(-f "$arcdir/$year/$city_inf.zip"){
+#				print "$year/$city_inf.zip exists. Please delete it to regenerate.\n";
+#			}
+#			else{
 				open(InF, ">$newdir/$city_inf.txt");
 				print(InF join("\n", @cities));
 				close(InF);
 				unlink("$newdir/$city_inf.zip");
-				my $cmd=sprintf('wd=`pwd`; cd %s; zip %s *.txt *.dat; cd $wd', $newdir, $city_inf);
+				my $cmd=sprintf('wd=`pwd`; cd %s; zip -q %s *.txt *.dat; cd $wd', $newdir, $city_inf);
 				#print "$cmd\n";
 				system($cmd);
 				mkdir("$arcdir/$year");
@@ -296,7 +319,7 @@ sub process_ini{
 			#	my @bins=glob("$dir\\Data*.dat");
 			#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
 	#		}
-		}
+#		}
 }
 
 sub calc_dst{
@@ -427,22 +450,39 @@ sub writeUTF
 sub data_check
 {
 	#in: fname, year, cityname
-	my ($data_year, $dc_len, $data_city);
+	my ($data_year, $dc_len, $data_city, $body);
+#	print " data_check(".join(',', @_).")\n";
 	open(FILE, "<$_[0]");
+	binmode(FILE);
 	read(FILE, $data_year,4);
 	$data_year=unpack('S',$data_year);
 	seek(FILE,8,0);
 	read(FILE, $dc_len,2);
 	$dc_len=unpack('n',$dc_len);
 	read(FILE, $data_city,$dc_len);
+	seek(FILE, 0, 0);
+	read(FILE, $body, 100000);
 	close(FILE);
+	if($data_year!=$_[1]){
+		print "$_[0] contains \"$data_year\" instead of $_[1]!\n";
+		die;
+	}
 	$data_city=~s/,.+//is;
-	if($data_year==$_[1] and $data_city eq $_[2]){
-		return 1;
+#	print "\t$data_city\n";
+	if($data_city ne $_[2]){
+		print "$_[0] contains \"$data_city\" ";
+		print "instead of \"$_[2]\"! Replace (y/n)?\n";
+		my $ans=<STDIN>;
+		chomp($ans);
+		die if $ans ne 'y';
+		$dc_len=pack('n', length($_[2]));
+		$body=~s/..$data_city/$dc_len$_[2]/s;
+		open(FILE, ">$_[0]") or die $!;
+		binmode(FILE);
+		print FILE $body;
+		close(FILE);
 	}
-	else{
-		die "$_[0] contains \"$data_city\" and \"$data_year\"!\n";
-	}
+	return 1;
 }
 
 sub process_historic
@@ -537,7 +577,7 @@ sub get_tz{
 	$country=~s/[\n\r]//isg;
 	if($TZ_VER==2){
 		my $c_arr;
-		print "$country,$city,$isdie\n" if $verbose;
+		print "$country,$city,$isdie\t" if $verbose;
 		if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n\r]+\))?)/is){
 			$country=$1;
 			$country=~/\A(.+?)\s*\n/is;
@@ -549,6 +589,7 @@ sub get_tz{
 #			die $citlist;
 #			print join("<\n", sort(keys(%historic)));
 			if($isdie){
+				unlink "$path$city_inf.txt";
 				die "No TZ for $country, $city!";
 			}
 			else{
@@ -571,11 +612,12 @@ sub get_tz{
 			else{
 				$end=9999; # max
 			}
-			print "\t - $start $end\n" if $verbose;
+#			print "\t - $start $end\n" if $verbose;
 			if($year>=$start and $year<$end){ # we're inside period
 				$ofs=$row->{ofs};
 				my $rule=$row->{rule};
 				if($rule eq '-'){ #no rule
+					print "-\n" if $verbose;
 					if($year==$end){ #year exactly at period's end
 						$end=$row->{end_date};
 					}

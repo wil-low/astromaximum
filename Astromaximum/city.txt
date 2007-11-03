@@ -7,19 +7,19 @@ Mazar-i-Sharif
 Shindand
 Zaranj
 @ Albania, Tirana_ALB
-Durr�s
+Durrës
 Elbasan
-Kor��
-Shkod�r
-Vlor�
+Korçë
+Shkodër
+Vlorë
 @ Algeria, Algiers_DZA
 Annaba
 Batna
-Beja�a
+Bejaïa
 Biskra
 Blida
 Bou Saada
-B�char
+Béchar
 Constantine
 Djelfa
 El Golea
@@ -32,13 +32,13 @@ Mecheria
 Mostaganem
 Oran
 Ouargla
-Sidi-bel-Abb�s
+Sidi-bel-Abbès
 Skikda
-S�tif
+Sétif
 Tiaret
 Tlemcen
 Touggourt
-T�bessa
+Tébessa
 @ American Samoa (USA), Pago Pago_ASM
 @ Andorra, Andorra La Vella_AND
 @ Angola, Luanda_AGO
@@ -50,29 +50,29 @@ Matala
 @ Antarctica (AUS), Casey^ATA
 @ Antarctica (AUS), Davis^ATA
 @ Antarctica (AUS), Mawson^ATA
-@ Antarctica (FRA), Dumont-d�Urville^ATA
+@ Antarctica (FRA), Dumont-d´Urville^ATA
 @ Antarctica (FRA), Kerguelen Islands^TFA
 @ Antarctica (GBR), Rothera^ATA
 @ Antarctica (JAP), Syowa^ATA
 @ Antarctica (RUS), Vostok^ATA
 @ Antarctica (USA), McMurdo^ATA
 @ Antarctica (USA), Palmer^ATA
-@ Antigua and Barbuda (USA), Saint John�s_ATG
+@ Antigua and Barbuda (USA), Saint John´s_ATG
 @ Argentina, Buenos Aires_ARG
 Avellaneda
-Bah�a Blanca
+Bahía Blanca
 Concordia
 Corrientes
 Formosa
-General San Mart�n
+General San Martín
 La Matanza
 La Plata
-Lan�s
+Lanús
 Lomas de Zamora
 Mar del Plata
-Mor�n
-Neuqu�n
-Paran�
+Morón
+Neuquén
+Paraná
 Posadas
 Quilmes
 Resistencia
@@ -82,18 +82,18 @@ Salta
 San Fernando del Valle
 San Isidro
 San Luis
-San Nicol�s de los Arroyos
+San Nicolás de los Arroyos
 Santa Fe
 Santiago del Estero
-Vicente L�pez
+Vicente López
 @ Argentina, Catamarca^ARG
 Comodoro Rivadavia
-@ Argentina, C�rdoba^ARG
+@ Argentina, Córdoba^ARG
 @ Argentina, La Rioja^ARG
 @ Argentina, Mendoza^ARG
 @ Argentina, Rio Gallegos^ARG
 @ Argentina, San Juan^ARG
-@ Argentina, San Miguel de Tucum�n^ARG
+@ Argentina, San Miguel de Tucumán^ARG
 @ Argentina, San Salvador de Jujuy^ARG
 @ Argentina, Ushuaia^ARG
 @ Armenia, Yerevan_ARM
@@ -223,15 +223,15 @@ Solegorsk
 Vitebsk
 @ Belgium - Flanders, Brussels_BEL
 Antwerpen (Anvers)
-Br�gge
+Brügge
 Genk
 Gent
 Hasselt
 Kortrijk
-La Louvi�re
+La Louvière
 @ Belgium - Wallonia, Namur^BEL
 Charleroi
-Li�ge
+Liège
 Mons
 @ Belize, Belmopan_BLZ
 Belize
@@ -249,7 +249,7 @@ Parakou
 Cobija
 Cochabamba
 Oruro
-Potos�
+Potosí
 Santa Cruz de la Sierra
 Sucre
 Tarija
@@ -276,97 +276,97 @@ Tsabong
 Tshane
 @ Brazil - Acre, Rio Branco^BRA
 Cruzeiro do Sul
-Feij�
+Feijó
 Sena Madureira
-Tarauac�
-@ Brazil - Alagoas, Macei�^BRA
+Tarauacá
+@ Brazil - Alagoas, Maceió^BRA
 Arapiraca
-@ Brazil - Amap�, Macap�^BRA
-Amap�
+@ Brazil - Amapá, Macapá^BRA
+Amapá
 Laranjal do Jari
 Santana
 @ Brazil - Bahia, Salvador^BRA
 Alagoinhas
 Barreiras
-Cama�ari
-Eun�polis
+Camaçari
+Eunápolis
 Feira de Santana
-Ilh�us
+Ilhéus
 Itabuna
 Jacobina
-Jequi�
+Jequié
 Juazeiro
 Lauro de Freitas
 Paulo Afonso
 Senhor do Bonfim
 Teixeira de Freitas
-Vit�ria da Conquista
-@ Brazil - Cear�, Fortaleza^BRA
+Vitória da Conquista
+@ Brazil - Ceará, Fortaleza^BRA
 Caucaia
 Crato
 Itapipoca
 Juazeiro do Norte
-Maracana�
+Maracanaú
 Maranguape
 Sobral
 @ Brazil - Distrito Federal, Brasilia_BRA
 @ Brazil - East Amazonas, Manaus^BRA
 Autazes
 Borba
-B�ca do Acre
-Coar�
+Bôca do Acre
+Coarí
 Floriano Peixoto
 Fonte Boa
-Humait�
+Humaitá
 Iranduba
 Itacoatiara
-Juta�
-L�brea
+Jutaí
+Lábrea
 Manacapuru
-Manicor�
-Mau�s
+Manicoré
+Maués
 Parintins
-Tef�
-@ Brazil - East Par�, Bel�m^BRA
+Tefé
+@ Brazil - East Pará, Belém^BRA
 Abaetetuba
 Ananindeua
-Bragan�a
-Camet�
+Bragança
+Cametá
 Castanhal
-Marab�
-@ Brazil - Esp�rito Santo, Vit�ria^BRA
+Marabá
+@ Brazil - Espírito Santo, Vitória^BRA
 Cachoeiro de Itapemirim
 Cariacica
 Colatina
 Linhares
 Serra
-S�o Mateus
+São Mateus
 Vila Velha
-@ Brazil - Goi�s, Goi�nia^BRA
-An�polis
-Aparecida de Goi�nia
+@ Brazil - Goiás, Goiânia^BRA
+Anápolis
+Aparecida de Goiânia
 Itumbiara
-Luzi�nia
+Luziânia
 Rio Verde
 Santo Antonio do Descoberto
-@ Brazil - Maranh�o, Sao Lu�s^BRA
-A�ail�ndia
+@ Brazil - Maranhão, Sao Luís^BRA
+Açailândia
 Bacabal
 Barra do Corda
 Caxias
-Cod�
+Codó
 Imperatriz
 Pinheiro
 Santa Luzia
-S�o Jos� de Ribamar
+São José de Ribamar
 Timon
 @ Brazil - Mato Grosso do Sul, Campo Grande^BRA
-Corumb�
+Corumbá
 Dourados
-Tr�s Lagoas
-@ Brazil - Mato Grosso, Cuiab�^BRA
-Rondon�polis
-V�rzea Grande
+Três Lagoas
+@ Brazil - Mato Grosso, Cuiabá^BRA
+Rondonópolis
+Várzea Grande
 @ Brazil - Minas Gerais, Belo Horizonte^BRA
 Araguari
 Barbacena
@@ -375,9 +375,9 @@ Caratinga
 Conselheiro Lafaiete
 Contagem
 Coronel Fabriciano
-Divin�polis
+Divinópolis
 Governador Valadares
-Ibirit�
+Ibirité
 Ipatinga
 Itabira
 Juiz de Fora
@@ -385,27 +385,27 @@ Montes Claros
 Passos
 Patos de Minas
 Pouso Alegre
-Po�os de Caldas
-Ribeir�o das Neves
-Sabar�
+Poços de Caldas
+Ribeirão das Neves
+Sabará
 Santa Luzia
 Sete Lagoas
-Te�filo Otoni
+Teófilo Otoni
 Uberaba
-Uberl�ndia
+Uberlândia
 Varginha
-@ Brazil - Paran�, Curitiba^BRA
+@ Brazil - Paraná, Curitiba^BRA
 Apucarana
 Cascavel
 Colombo
-Foz do Igua�u
+Foz do Iguaçu
 Guarapuava
 Londrina
-Maring�
-Paranagu�
+Maringá
+Paranaguá
 Ponta Grossa
-S�o Jos� dos Pinhais
-@ Brazil - Para�ba, Jo�o Pessoa^BRA
+São José dos Pinhais
+@ Brazil - Paraíba, João Pessoa^BRA
 Bayeux
 Campina Grande
 Patos
@@ -416,147 +416,147 @@ Cabo de Santo Agostinho
 Camaragibe
 Caruaru
 Garanhuns
-Jaboat�o dos Guararapes
+Jaboatão dos Guararapes
 Olinda
 Paulista
 Petrolina
-Vit�ria de Santo Ant�o
-@ Brazil - Piau�, Teresina^BRA
+Vitória de Santo Antão
+@ Brazil - Piauí, Teresina^BRA
 Campo Maior
-Parna�ba
+Parnaíba
 Picos
 Piripiri
 @ Brazil - Rio Grande do Norte, Natal^BRA
-Mossor�
+Mossoró
 Parnamirim
-S�o Gon�alo do Amarante
+São Gonçalo do Amarante
 @ Brazil - Rio Grande do Sul, Caxias do Sul^BRA
 Alvorada
-Bag�
+Bagé
 Cachoeirinha
 Canoas
-Gravata�
+Gravataí
 Novo Hamburgo
 Passo Fundo
 Pelotas
 Porto Alegre
 Rio Grande
 Santa Cruz do Sul
-Santa Mar�a
+Santa María
 Sao Leopoldo
 Sapucaia do Sul
 Uruguaiana
-Viam�o
+Viamão
 @ Brazil - Rio de Janeiro, Rio de Janeiro^BRA
 Barra Mansa
 Belford Roxo
 Cabo Frio
 Campos dos Goytacazes
 Duque de Caxias
-Itabora�
-Itagua�
-Maca�
-Mag�
-Nil�polis
-Niter�i
+Itaboraí
+Itaguaí
+Macaé
+Magé
+Nilópolis
+Niterói
 Nova Friburgo
-Novo Igua�u
-Petr�polis
+Novo Iguaçu
+Petrópolis
 Queimados
 Resende
-S�o Gon�alo
-S�o Jo�o de Meriti
-Teres�polis
+São Gonçalo
+São João de Meriti
+Teresópolis
 Volta Redonda
-@ Brazil - Rond�nia, Porto Velho^BRA
+@ Brazil - Rondônia, Porto Velho^BRA
 Ariquemes
 Cacoal
-Ji-Paran�
+Ji-Paraná
 Vila Murtinho
 @ Brazil - Roraima, Boa Vista^BRA
-@ Brazil - Santa Catarina, Florian�polis^BRA
+@ Brazil - Santa Catarina, Florianópolis^BRA
 Blumenau
-Chapec�
-Crici�ma
-Itaja�
-Jaragu� do Sul
+Chapecó
+Criciúma
+Itajaí
+Jaraguá do Sul
 Joinville
 Lages
-S�o Jos�
-@ Brazil - Sao Paulo, S�o Paulo^BRA
+São José
+@ Brazil - Sao Paulo, São Paulo^BRA
 Americana
 Araras
 Araraquara
-Ara�atuba
+Araçatuba
 Atibaia
 Barretos
 Barueri
 Bauru
 Botucatu
-Bragan�a Paulista
+Bragança Paulista
 Campinas
-Carapicu�ba
+Carapicuíba
 Catanduva
 Cotia
-Cubat�o
+Cubatão
 Diadema
 Embu
 Ferraz de Vasconcelos
 Franca
 Francisco Morato
 Franco da Rocha
-Guaratinguet�
-Guaruj�
+Guaratinguetá
+Guarujá
 Guarulhos
-Hortol�ndia
+Hortolândia
 Indaiatuba
 Itapecerica da Serra
 Itapetininga
 Itapevi
 Itaquaquecetuba
 Itu
-Jacare�
-Ja�
-Jundia�
+Jacareí
+Jaú
+Jundiaí
 Limeira
-Mar�lia
-Mau�
+Marília
+Mauá
 Moji das Cruzes
-Moji-Gua�u
+Moji-Guaçu
 Osasco
 Pindamonhangaba
 Piracicaba
 Praia Grande
 Presidente Prudente
-Ribeir�o Pires
-Ribeir�o Preto
+Ribeirão Pires
+Ribeirão Preto
 Rio Claro
-Santa B�rbara d�Oeste
-Santo Andr�
+Santa Bárbara d´Oeste
+Santo André
 Santos
 Sorocaba
-Sumar�
+Sumaré
 Suzano
-S�o Bernardo do Campo
-S�o Caetano do Sul
-S�o Carlos
-S�o Jos� do Rio Preto
-S�o Jos� dos Campos
-S�o Vicente
-Tabo�o da Serra
-Taubat�
+São Bernardo do Campo
+São Caetano do Sul
+São Carlos
+São José do Rio Preto
+São José dos Campos
+São Vicente
+Taboão da Serra
+Taubaté
 @ Brazil - Sergipe, Aracaju^BRA
 Itabaiana
 Lagarto
 Nossa Senhora do Socorro
-@ Brazil - Tocantins, Aragua�na^BRA
+@ Brazil - Tocantins, Araguaína^BRA
 Palmas
-@ Brazil - West Amazonas, Eirunep�^BRA
+@ Brazil - West Amazonas, Eirunepé^BRA
 Atalaia do Norte
 Benjamin Constant
 Envira
 Ipixuna
-@ Brazil - West Par�, Santar�m^BRA
+@ Brazil - West Pará, Santarém^BRA
 Altamira
 Itaituba
 @ British Indian Ocean Territory, Diego Garcia_IOT
@@ -592,16 +592,16 @@ Kitega
 Muyinga
 Ngozi
 @ Cambodia, Phnom Penh_KHM
-Batd�mb�ng
-Krong Ka�h Kong
-Kr�ch�h
-K�mp�ng Cham
-K�mp�ng Sa�m
-K�mp�t
+Batdâmbâng
+Krong Kaôh Kong
+Krâchéh
+Kâmpóng Cham
+Kâmpóng Saôm
+Kâmpôt
 Pursat
-Siemr�ab
-Tr�ng
-@ Cameroon, Yaound�_CMR
+Siemréab
+Trêng
+@ Cameroon, Yaoundé_CMR
 Bafoussam
 Bamenda
 Douala
@@ -630,7 +630,7 @@ Brandon
 @ Canada - New Brunswick, Fredericton^CAN
 Moncton
 Saint John
-@ Canada - Newfoundland, Saint John�s^CAN
+@ Canada - Newfoundland, Saint John´s^CAN
 @ Canada - Northwest Territories, Inuvik^CAN
 @ Canada - Northwest Territories, Yellowknife^CAN
 @ Canada - Nova Scotia, Halifax^CAN
@@ -676,9 +676,9 @@ Chicoutimi
 Gatineau
 Laval
 Longueuil
-Qu�bec
+Québec
 Sherbrooke
-Trois-Rivi�res
+Trois-Rivières
 @ Canada - Saskatchewan, Denare Beach^CAN
 @ Canada - Saskatchewan, Lloydminster^CAN
 @ Canada - Saskatchewan, Regina^CAN
@@ -687,7 +687,7 @@ Saskatoon
 @ Canada - Yukon, Dawson^CAN
 @ Canada - Yukon, Whitehorse^CAN
 @ Canary Islands, Las Palmas_ESP
-San Crist�bal de La Laguna
+San Cristóbal de La Laguna
 Santa Cruz de Tenerife
 Telde
 @ Cape Verde, Praia_CPV
@@ -701,8 +701,8 @@ Birao
 Bossangoa
 Bouar
 Nola
-@ Chad, N�Djamena_TCD
-Ab�ch�
+@ Chad, N´Djamena_TCD
+Abéché
 Aozou
 Bongor
 Doba
@@ -714,25 +714,25 @@ Sarh
 @ Chile, Santiago_CHL
 Antofagasta
 Arica
-Chill�n
+Chillán
 Coihaique
-Concepci�n
-Copiap�
+Concepción
+Copiapó
 Iquique
 La Serena
 Osorno
 Puente Alto
 Puerto Montt
 Punta Arenas
-Quilpu�
+Quilpué
 Rancagua
 San Bernardo
 Talca
 Talcahuano
 Temuco
 Valdivia
-Valpara�so
-Vi�a del Mar
+Valparaíso
+Viña del Mar
 @ China, Beijing_CHN
 Anlu
 Anqing
@@ -820,7 +820,7 @@ Jinxi
 Jinzhou
 Jisou
 Jiujiang
-Ji�an
+Ji´an
 Kaifeng
 Langfang
 Lengshuijiang
@@ -840,10 +840,10 @@ Longyan
 Loudi
 Luohe
 Luoyang
-Lu�an
+Lu´an
 Macheng
 Manzhouli
-Ma�anshan
+Ma´anshan
 Meizhou
 Nanchang
 Nangong
@@ -888,7 +888,7 @@ Shouzhou
 Sifen
 Suzhou
 Taiyan
-Tai�an
+Tai´an
 Tangshan
 Tianjin
 Tianmen
@@ -1017,10 +1017,10 @@ Xichang
 Xifeng
 Xining
 Xinzhu
-Xi�an
+Xi´an
 Yangjiang
-Yan�an
-Ya�an
+Yan´an
+Ya´an
 Yibin
 Yinchuan
 Yulin
@@ -1038,7 +1038,7 @@ Beian
 Beidong
 Bodong
 Daqing
-Da�an
+Da´an
 Dunhua
 Changchun
 Fujin
@@ -1086,7 +1086,7 @@ Turpan
 Zhanjiang
 @ Christmas Island (AUS), The Settlement_CXR
 @ Cocos (Keeling) Islands (AUS)^CCK
-@ Colombia, Bogot�_COL
+@ Colombia, Bogotá_COL
 Arauca
 Armenia
 Barrancabermeja
@@ -1097,36 +1097,36 @@ Buenaventura
 Cali
 Cartagena
 Cartago
-Ci�naga
-C�cuta
+Ciénaga
+Cúcuta
 Dos Quebradas
 Envigado
 Florencia
 Floridablanca
-Ibagu�
-Itag�i
+Ibagué
+Itagüi
 Leticia
 Manizales
-Medell�n
-Mit�
+Medellín
+Mitú
 Mocoa
-Monter�a
+Montería
 Neiva
 Palmira
 Pasto
 Pereira
-Popay�n
-Puerto Carre�o
-Quibd�
-R�ohacha
-San Andr�s
-San Andr�s Islands
+Popayán
+Puerto Carreño
+Quibdó
+Ríohacha
+San Andrés
+San Andrés Islands
 San Jose del Guaviare
 Santa Marta
 Sincelejo
 Soacha
 Soledad
-Tulu�
+Tuluá
 Tumaco
 Tunja
 Turbo
@@ -1176,12 +1176,12 @@ Yangambi
 Loubomo
 Pointe Noire
 @ Cook Islands (NZL), Avarua_COK
-@ Costa Rica, San Jos�_CRI
+@ Costa Rica, San José_CRI
 Alajuela
 Cartago
 Heredia
 Liberia
-Lim�n
+Limón
 Puntarenas
 @ Croatia, Zagreb_HRV
 Dubrovnik
@@ -1199,16 +1199,16 @@ Vukovar
 Zadar
 @ Cuba, Havana_CUB
 Bayamo
-Camag�ey
+Camagüey
 Cienfuegos
-Guant�namo
-Holgu�n
+Guantánamo
+Holguín
 Las Tunas
 Manzanillo
 Mariel
 Matanzas
 Nuevitas
-Pinar del R�o
+Pinar del Río
 Santa Clara
 Santiago de Cuba
 Victoria de las Tunas
@@ -1217,16 +1217,16 @@ Kyrenia
 Larnaca
 Limassol
 Paphos
-Rizok�rpason
+Rizokárpason
 @ Czech Republic, Prague_CZE
 Brno
-Cesk� Budejovice
-Dec�n
+Ceské Budejovice
+Decín
 Frydek-Mistek
-Hav�rov
-Hradec Kr�lov�
+Havírov
+Hradec Králové
 Karlovy Vary
-Karvin�
+Karviná
 Kladno
 Liberec
 Most
@@ -1236,30 +1236,30 @@ Ostrava
 Pardubice
 Plzen
 Teplice
-Zl�n
-�st� nad Labem
-@ Denmark, Copenhagen (K�benhavn)_DNK
+Zlín
+Ústí nad Labem
+@ Denmark, Copenhagen (København)_DNK
 Esbjerg
-Helsing�r
+Helsingør
 Horsens
 Kolding
 Odense
 Randers
 Roskilde
 Vejle
-�lborg
-�rhus
+Ålborg
+Århus
 @ Djibouti, Djibouti_DJI
 @ Dominica, Roseau_DMA
 @ Dominican Republic, Santo Domingo_DOM
 Barahona
-Elias Pi�a
+Elias Piña
 La Romana
 La Vega
 Monte Cristi
 Pedernales
 Puerto Plata
-San Pedro de Macor�s
+San Pedro de Macorís
 Santiago
 @ Easter Island, Hanga Roa_CHL
 Mataveri
@@ -1275,19 +1275,19 @@ Portoviejo
 Santo Domingo de los Colorados
 @ Egypt, Cairo_EGY
 Alexandria
-Assy�t
+Assyût
 Aswan
 Banha
 Beni-Suef
-Damanh�r
+Damanhûr
 El-Mahalla El-Kubra
-Faiy�m
+Faiyûm
 Giza
 Ismailia
 Kafr-El-Dwar
 Kena
 Luxer
-Mans�ra
+Mansûra
 Menia
 Port Said
 Shebin-El-Kom
@@ -1357,7 +1357,7 @@ Havant
 Horsham
 Ipswich
 Kingston upon Hull
-King�s Lynn
+King´s Lynn
 Knowsley
 Lancaster
 Leeds
@@ -1433,14 +1433,14 @@ Assab
 Keren
 Massawa
 @ Estonia, Tallinn_EST
-J�geva
-Kohtla-J�rve
-P�rnu
+Jõgeva
+Kohtla-Järve
+Pärnu
 Rapla
 Tartu
 Valga
 Viljandi
-V�ru
+Võru
 @ Ethiopia, Addis Ababa_ETH
 Ankober
 Awassa
@@ -1469,17 +1469,17 @@ Werder
 @ Falkland Islands (GBR), Stanley_FLK
 @ Falkland Islands (GBR), Goose Green^FLK
 Port Howard
-@ Faroe Islands (DNK), T�rshavn_FRO
+@ Faroe Islands (DNK), Tórshavn_FRO
 @ Fiji Islands, Suva_FJI
 Labasa
 Lautoka
 Nadi
-@ Finland - �land Islands, Mariehamn^ALA
+@ Finland - Åland Islands, Mariehamn^ALA
 @ Finland, Helsinki_FIN
 Espoo
-H�meenlinna
+Hämeenlinna
 Joensuu
-Jyv�skyl�
+Jyväskylä
 Kotka
 Kuopio
 Lahti
@@ -1495,7 +1495,7 @@ Aix-en-Provence
 Ajaccio
 Amiens
 Angers
-Besan�on
+Besançon
 Bordeaux
 Boulogne-Billancourt
 Brest
@@ -1516,7 +1516,7 @@ Nancy
 Nantes
 Nice
 Nimes
-Orl�ans
+Orléans
 Perpignan
 Reims
 Rennes
@@ -1536,7 +1536,7 @@ Villeurbanne
 @ GMT^   
 @ Gabon, Libreville_GAB
 Franceville
-Lambar�n�
+Lambaréné
 Mayumba
 Oyem
 Port Gentil
@@ -1569,16 +1569,16 @@ Darmstadt
 Dortmund
 Dresden
 Duisburg
-D�sseldorf
+Düsseldorf
 Erfurt
 Erlangen
 Essen
 Frankfurt am Main
 Freiburg im Breisgau
-F�rth
+Fürth
 Gelsenkirchen
 Gera
-G�ttingen
+Göttingen
 Hagen
 Halle
 Hamburg
@@ -1597,25 +1597,25 @@ Kassel
 Kiel
 Koblenz
 Krefeld
-K�ln (Cologne)
+Köln (Cologne)
 Leipzig
 Leverkusen
 Ludwigshafen
-L�beck
+Lübeck
 Magdeburg
 Mainz
 Mannheim
 Moers
-Munich (M�nchen)
-M�nchengladbach
-M�lheim an der Ruhr
-M�nster
+Munich (München)
+Mönchengladbach
+Mülheim an der Ruhr
+Münster
 Neuss
-N�rnberg
+Nürnberg
 Oberhausen
 Offenbach am Main
 Oldenburg
-Osnabr�ck
+Osnabrück
 Paderborn
 Pforzheim
 Potsdam
@@ -1624,7 +1624,7 @@ Regensburg
 Remscheid
 Reutlingen
 Rostock
-Saarbr�cken
+Saarbrücken
 Salzgitter
 Schwerin
 Siegen
@@ -1635,7 +1635,7 @@ Wiesbaden
 Witten
 Wolfsburg
 Wuppertal
-W�rzburg
+Würzburg
 Zwickau
 @ Ghana, Accra_GHA
 Cape Coast
@@ -1649,24 +1649,24 @@ Tema
 Yendi
 @ Gibraltar (GBR), Gibraltar_GIB
 @ Greece, Athens_GRC
-Calith�a
-Ir�klion
+Calithèa
+Iráklion
 Larissa
 Piraeus
-P�trai
-P�rist�ri
+Pátrai
+Péristéri
 Thessaloniki
-V�los
+Vólos
 @ Greenland (DNK), Danmarkshavn^GRL
 @ Greenland (DNK), Ittoqqortoormiit (Scoresbysund)^GRL
-@ Greenland (DNK), Nuuk (Godth�b)_GRL
+@ Greenland (DNK), Nuuk (Godthåb)_GRL
 Godhavn
 @ Greenland (DNK), Pituffik (Thule)^GRL
-@ Grenada, Saint George�s_GRD
-@ Guadeloupe (FRA), Pointe-�-Pitre_GLP
+@ Grenada, Saint George´s_GRD
+@ Guadeloupe (FRA), Pointe-à-Pitre_GLP
 @ Guam (USA), Agana_GUM
 @ Guatemala, Guatemala_GTM
-Amatitl�n
+Amatitlán
 Chinautla
 Esquintla
 Mixco
@@ -1674,22 +1674,22 @@ Quetzaltenango
 Villanueva
 @ Guernsey, St. Peter Port_GGY
 @ Guinea, Conakry_GIN
-Bok�
+Boké
 Kankan
 Kindia
-Lab�
-Nz�r�kor�
+Labé
+Nzérékoré
 Siguiri
 @ Guinea-Bissau, Bissau_GNB
 @ Guyana, Georgetown_GUY
 Linden
 New Amsterdam
 @ Haiti, Port-au-Prince_HTI
-Cap-Ha�tien
-Gona�ves
+Cap-Haïtien
+Gonaïves
 Hinche
 Jacmel
-J�r�mie
+Jérémie
 Les Cayes
 Port-de-Paix
 Saint-Marc
@@ -1697,12 +1697,12 @@ Saint-Marc
 @ Honduras, Tegucigalpa_HND
 Choluteca
 Comayagua
-Danl�
+Danlí
 El Progreso
 Juticalpa
 La Ceiba
 Olanchito
-Puerto Cort�s
+Puerto Cortés
 San Pedro Sula
 Siguatepeque
 Tela
@@ -1713,29 +1713,29 @@ Tsuen Wan
 Tuen Mun
 @ Howland Island, Itascatown^USA
 @ Hungary, Budapest_HUN
-B�k�scsaba
+Békéscsaba
 Debrecen
 Eger
-Gy�r
-H�dmez�v�s�rhely
-Kaposv�r
-Kecskem�t
+Györ
+Hódmezövásárhely
+Kaposvár
+Kecskemét
 Miskolc
-Ny�regyh�za
-P�cs
-Salg�tarj�n
+Nyíregyháza
+Pécs
+Salgótarján
 Szeged
-Szeksz�rd
+Szekszárd
 Szolnok
 Szombathely
-Sz�kesfeh�rv�r
-Tatab�nya
-Veszpr�m
+Székesfehérvár
+Tatabánya
+Veszprém
 Zalaegerszeg
 @ Iceland, Reykjavik_ISL
 Akureyri
 Husavik
-H�fn
+Höfn
 Keflavik
 @ India, New Delhi_IND
 Abohar
@@ -2157,7 +2157,7 @@ Zanjan
 Adhamiya
 Amarah
 Basra
-Ba�Qubah
+Ba´Qubah
 Diwaniya
 Hillah
 Irbil
@@ -2199,54 +2199,54 @@ Aosta-Aoste
 Bari
 Bologna
 Bolzano
-Br�scia
-B�rgamo
-Cat�nia
-C�gliari
+Bréscia
+Bérgamo
+Catánia
+Cágliari
 Ferrara
 Florence (Firenze)
 Forli
-F�ggia
+Fóggia
 Genua (Genova)
-La Sp�zia
+La Spézia
 Latina
 Lecce
 Livorno
 Messina
 Milan (Milano)
 Monza
-M�dena
+Módena
 Naples (Napoli)
 Novara
 Palermo
 Parma
-Per�gia
+Perúgia
 Pescara
 Piacenza
 Pisa
 Prato
-P�dova
+Pádova
 Ravenna
-R�ggio di Calabria
-R�ggio Emilia
-R�mini
+Réggio di Calabria
+Réggio Emilia
+Rímini
 Salerno
 Siracusa
-S�ssari
+Sássari
 Terni
 Torre del Greco
 Trento
 Treviso
 Trieste
 Turin (Torino)
-T�ranto
+Táranto
 Udine
 Venice (Venezia)
 Verona
 Vicenza
-@ Ivory Coast (C�te d�Ivoire), Abidjan_CIV
+@ Ivory Coast (Côte d´Ivoire), Abidjan_CIV
 Abengourou
-Bouak�
+Bouaké
 Daloa
 Dimbokro
 Ferkessedougou
@@ -2484,10 +2484,10 @@ Zama
 Aqabah
 Irbid
 Karak
-Ma�an
+Ma´an
 Russiefa
 Zarqa
-@ Juan Fern�ndez Islands, San Juan Bautista_CHL
+@ Juan Fernández Islands, San Juan Bautista_CHL
 @ Kazakhstan, Aqtau (Shevchenko)^KAZ
 Gurjev (Atyrau)
 @ Kazakhstan, Aqtobe (Aktyubinsk)^KAZ
@@ -2507,7 +2507,7 @@ Rudny
 Semipalatinsk (Semey)
 Taldyqorghan
 Temirtau
-Ust-Kamenogorsk (�skemen)
+Ust-Kamenogorsk (Öskemen)
 @ Kazakhstan, Kzyl-Orda^KAZ
 @ Kazakhstan, Uralsk (Oral)^KAZ
 @ Kenya, Nairobi_KEN
@@ -2543,17 +2543,17 @@ Sary-Tas
 Talas
 Tokmak
 @ Laos, Vientiane_LAO
-Ban Nal�
+Ban Nalé
 Luang Namtha
 Luang Prabang
 Pakse
-Ph�ngsali
+Phôngsali
 Savannakhet
 @ Latvia, Riga_LVA
 Daugavpils
 Jelgava
 Jurmala
-Liep�ja
+Liepãja
 @ Lebanon, Beirut_LBN
 Sidon
 Sur
@@ -2648,7 +2648,7 @@ Koulikoro
 Koutiala
 Mopti
 Sikasso
-S�gou
+Ségou
 Taoudenni
 Timbuktu (Tombouctou)
 @ Malta, Valletta_MLT
@@ -2663,21 +2663,21 @@ Victoria
 @ Mauritania, Nouakchott_MRT
 Atar
 Bir Mogrein
-Ka�di
+Kaédi
 Nouadhibou
-N�ma
+Néma
 Tidjikja
 @ Mauritius, Port Louis_MUS
 Beau Bassin
 Curepipe
-Mah�bourg
+Mahébourg
 Quatre Bornes
 Triolet
 Vacoas Phoenix
 @ Mayotte, Mamoutzou_MYT
-@ Mexico, Canc�n QTR^MEX
+@ Mexico, Cancún QTR^MEX
 @ Mexico, Chihuahua CHI^MEX
-Ciudad Ju�rez CHI
+Ciudad Juárez CHI
 @ Mexico, Ciudad Victoria TAM^MEX
 Ciudad Madero TAM
 Matamoros TAM
@@ -2685,20 +2685,20 @@ Nuevo Laredo TAM
 Reynosa TAM
 Tampico TAM
 @ Mexico, Hermosillo SON^MEX
-Ciudad Obreg�n SON
+Ciudad Obregón SON
 Guaymas SON
 Nogales SON
 @ Mexico, Jalapa VER^MEX
 Coatzacoalcos VER
-C�rdoba VER
-Minatitl�n VER
+Córdoba VER
+Minatitlán VER
 Oaxaca OAX
 Orizaba VER
 Poza Rica VER
 Veracruz VER
 @ Mexico, La Paz BCS^MEX
-@ Mexico, Mazatl�n SIN^MEX
-Culiac�n SIN
+@ Mexico, Mazatlán SIN^MEX
+Culiacán SIN
 Los Mochis SIN
 Tepic NAY
 @ Mexico, Mexico City DF_MEX
@@ -2706,29 +2706,29 @@ Acapulco GRO
 Aguascalientes AGS
 Celaya GTO
 Chilpancingo GRO
-Ciudad L�pez Mateos MEX
+Ciudad López Mateos MEX
 Colima COL
 Cuautla MOR
 Cuernavaca MOR
 Ecatepec MEX
 Guadalajara JAL
 Irapuato GTO
-Le�n GTO
+León GTO
 Morelia MIC
 Naucalpan MEX
-Netzahualc�yotl MEX
+Netzahualcóyotl MEX
 Pachuca HGO
 Puebla PUE
-Quer�taro QRO
+Querétaro QRO
 Salamanca GTO
-San Luis Potos� SLP
-San Nicol�s de los Garza GRO
-Tehuac�n PUE
+San Luis Potosí SLP
+San Nicolás de los Garza GRO
+Tehuacán PUE
 Tlalnepantla MEX
 Tlaquepaque JAL
 Tlaxcala TLA
 Toluca MEX
-Tonal� JAL
+Tonalá JAL
 Uruapan MIC
 Zacatecas ZAC
 Zamora MIC
@@ -2736,18 +2736,18 @@ Zapopan JAL
 @ Mexico, Monterrey NLN^MEX
 Durango DGO
 Guadalupe NLN
-G�mez Palacio DGO
+Gómez Palacio DGO
 Monclova COA
 Saltillo COA
-Torre�n COA
-@ Mexico, M�rida YUC^MEX
+Torreón COA
+@ Mexico, Mérida YUC^MEX
 Campeche CAM
 @ Mexico, Tijuana BCN^MEX
 Ensenada BCN
 Mexicali BCN
 @ Mexico, Villahermosa TAB^MEX
 Tapachula CHS
-Tuxtla Guti�rrez CHS
+Tuxtla Gutiérrez CHS
 @ Micronesia, Kosrae^FSM
 @ Micronesia, Moen (Chuuk Islands)^FSM
 @ Micronesia, Palikir (Pohnpei)_FSM
@@ -2785,18 +2785,18 @@ Beni-Mellal
 Casablanca
 El Jadida
 Essaouira
-F�s
+Fès
 Khouribga
-K�nitra
+Kénitra
 Marrakech
-Mekn�s
+Meknès
 Mohammedia
 Nador
 Oujda
 Safi
 Tanger
 Taza
-T�touan
+Tétouan
 @ Mozambique, Maputo_MOZ
 Beira
 Inhambane
@@ -2835,7 +2835,7 @@ Nepalganj
 Patan
 Pokhara
 @ Netherlands Antilles - Bonaire, Kralendijk^ANT
-@ Netherlands Antilles - Cura�ao, Willemstad_ANT
+@ Netherlands Antilles - Curaçao, Willemstad_ANT
 @ Netherlands, Amsterdam_NLD
 Almere
 Amersfoort
@@ -2857,14 +2857,14 @@ Leiden
 Maastricht
 Nijmegen
 Rotterdam
-The Hague (�s-Gravenhage)
+The Hague (´s-Gravenhage)
 Tilburg
 Utrecht
 Zaanstad
 Zaanstreek
 Zoetermeer
-�s-Hertogenbosch
-@ New Caledonia (FRA), Noum�a_NCL
+´s-Hertogenbosch
+@ New Caledonia (FRA), Nouméa_NCL
 @ New Zealand, Chatham Island^NZL
 @ New Zealand, Wellington_NZL
 Auckland
@@ -2883,7 +2883,7 @@ Waitakere
 @ Nicaragua, Managua_NIC
 Chinandega
 Jinotega
-Le�n
+León
 Masaya
 Matagalpa
 @ Niger, Niamey_NER
@@ -2973,7 +2973,7 @@ Wonsan
 @ Norway, Oslo_NOR
 Arendal
 Bergen
-Bod�
+Bodø
 Drammen
 Fredrikstad
 Hamar
@@ -2986,13 +2986,13 @@ Sandnes
 Sarpsborg
 Skien
 Stavanger
-Troms�
+Tromsø
 Trondheim
-T�nsberg
-�lesund
+Tønsberg
+Ålesund
 @ Oman, Muscat_OMN
 Nizwa
-Sama�il
+Sama´il
 @ Pakistan, Islamabad_PAK
 Bahawalpur
 Chiniot
@@ -3035,11 +3035,11 @@ Nablus
 Qalqiliya
 Tubas
 Tulkarm
-@ Panama, Panam� City_PAN
-Chitr�
-Col�n
+@ Panama, Panamá City_PAN
+Chitré
+Colón
 David
-Penonom�
+Penonomé
 San Miguelito
 Santiago
 @ Papua New Guinea, Port Moresby_PNG
@@ -3050,15 +3050,15 @@ Madang
 Rabaul
 Wewak
 @ Paracel Islands, Duncan Island^CHN
-@ Paraguay, Asunci�n_PRY
-Caazap�
+@ Paraguay, Asunción_PRY
+Caazapá
 Ciudad del Este
-Concepci�n
-Doctor Pedro P. Pe�a
-Encarnaci�n
+Concepción
+Doctor Pedro P. Peña
+Encarnación
 Fernando de la Mora
 Fuerte Olimpo
-Lambar�
+Lambaré
 Pedro Juan Caballero
 Pilar
 San Lorenzo
@@ -3074,7 +3074,7 @@ Chimbote
 Chincha Alta
 Cuzco
 Huancayo
-Hu�nuco
+Huánuco
 Ica
 Iquitos
 Juliaca
@@ -3145,24 +3145,24 @@ Bialystok
 Bielsko-Biala
 Bydgoszcz
 Bytom
-Chorz�w
+Chorzów
 Czestochowa
-Dabrowa G�rnicza
+Dabrowa Górnicza
 Elblag
 Gdansk
 Gdynia
 Gliwice
-Gorz�w Wielkopolski
+Gorzów Wielkopolski
 Grudziadz
-Jastrzebie-Zdr�j
+Jastrzebie-Zdrój
 Kalisz
 Katowice
 Kielce
 Koszalin
-Krak�w
+Kraków
 Legnica
 Lublin
-L�dz
+Lódz
 Olsztyn
 Opole
 Plock
@@ -3170,44 +3170,44 @@ Poznan
 Radom
 Ruda Slaska
 Rybnik
-Rzesz�w
+Rzeszów
 Slupsk
 Sosnowiec
 Szczecin
-Tarn�w
+Tarnów
 Torun
 Tychy
 Walbrzych
 Wloclawek
 Wroclaw
 Zabrze
-Zielona G�ra
+Zielona Góra
 @ Portugal, Lisbon (Lisboa)_PRT
 Amadora
 Aveiro
 Beja
 Braga
-Bragan�a
+Bragança
 Castelo Branco
-Co�mbra
+Coímbra
 Faro
 Guarda
 Leiria
 Portalegre
 Porto (Oporto)
-Santar�m
-Set�bal
+Santarém
+Setúbal
 Viana do Castelo
 Vila Real
 Viseu
-�vora
+Évora
 @ Puerto Rico (USA), San Juan_PRI
 Aguadilla
 Arecibo
-Bayam�n
+Bayamón
 Caguas
 Carolina
-Mayag�ez
+Mayagüez
 Ponce
 @ Qatar, Doha_QAT
 Al Wakrah
@@ -3419,7 +3419,7 @@ Zyrjanka
 @ Russia +12, Anadyr^RUS
 @ Russia +12, Petropavlovsk-Kamchatsky^RUS
 @ Rwanda, Kigali_RWA
-Butar�
+Butaré
 Byumba
 Cyangugu
 Gisenyi
@@ -3428,25 +3428,27 @@ Kibungo
 Kibuye
 Ruhengeri
 @ Saba Island (NLD), The Bottom^ANT
+@ Saint Barthélemy (FRA), Gustavia_BLM
 @ Saint Helena (GBR), Jamestown_SHN
 @ Saint Kitts and Nevis, Basseterre_KNA
 Charlestown
 @ Saint Lucia, Castries_LCA
-Soufri�re
+Soufrière
 Vieux Fort
+@ Saint Martin (FRA), Marigot_MAF
 @ Saint Pierre and Miquelon (FRA), Saint-Pierre_SPM
 @ Saint Vincent Grenadines, Kingstown_VCT
 Calliaqua
 @ Samoa, Apia_WSM
 @ San Marino, San Marino_SMR
-@ Sao Tome and Principe, S�o Tom�_STP
+@ Sao Tome and Principe, São Tomé_STP
 @ Saudi Arabia, Riyadh_SAU
 Dammam
 Hufuf
 Jeddah
 Mecca
 Medina
-Ta�if
+Ta´if
 @ Scotland, Glasgow_GBR
 Aberdeen
 Dundee
@@ -3466,7 +3468,7 @@ Louga
 Rufisque
 Saint Louis
 Tambacounda
-Thi�s
+Thiès
 Ziguinchor
 @ Serbia, Belgrade_SRB
 Bor
@@ -3490,15 +3492,15 @@ Makeni
 Pepel
 Shenge
 @ Singapore, Singapore_SGP
-@ Sint Maarten (NLD), Philipsburg^ANT
+@ Sint Maarten (NLD), Philipsburg_ANT
 @ Sint Eustatius (NLD), Oranjestad^ANT
 @ Slovakia, Bratislava_SVK
-Kom�rno
+Komárno
 Kosice
 Lucenec
 Nitra
 Presov
-Trenc�n
+Trencín
 Trnava
 Zilina
 @ Slovenia, Ljubljana_SVN
@@ -3597,12 +3599,12 @@ Yosu
 @ Spain, Ceuta^ESP
 @ Spain, Madrid_ESP
 Albacete
-Alcal� de Henares
-Alcorc�n
+Alcalá de Henares
+Alcorcón
 Algeciras
 Alicante
-Almer�a
-Avil�s
+Almería
+Avilés
 Badajoz
 Badalona
 Baracaldo
@@ -3610,33 +3612,33 @@ Barcelona
 Bilbao
 Burgos
 Cartagena
-Castell�n de la Plana
-C�ceres
-C�diz
-C�rdoba
+Castellón de la Plana
+Cáceres
+Cádiz
+Córdoba
 Dos Hermanas
 Elche
 Ferrol
 Fuenlabrada
 Getafe
-Gij�n
+Gijón
 Granada
 Hospitalet
 Huelva
-Ja�n
-J�rez de la Frontera
-La Coru�a
-Legan�s
-Le�n
-Logro�o
+Jaén
+Jérez de la Frontera
+La Coruña
+Leganés
+León
+Logroño
 Lugo
-L�rida
+Lérida
 Marbella
-Matar�
+Mataró
 Melilla
 Murcia
-M�laga
-M�stoles
+Málaga
+Móstoles
 Orense
 Oviedo
 Palencia
@@ -3646,7 +3648,7 @@ Reus
 Sabadell
 Salamanca
 San Fernando
-San Sebasti�n
+San Sebastián
 Santa Coloma de Gramanet
 Santander
 Santiago de Compostela
@@ -3692,23 +3694,23 @@ Nhlangano
 Piggs Peak
 Siteki
 @ Sweden, Stockholm_SWE
-Bor�s
-G�teborg
+Borås
+Göteborg
 Helsingborg
-J�nk�ping
-Link�ping
-Malm�
-Norrk�ping
+Jönköping
+Linköping
+Malmö
+Norrköping
 Uppsala
-V�ster�s
-�rebro
+Västerås
+Örebro
 @ Switzerland, Bern_CHE
 Basel
-Geneva (Gen�ve)
+Geneva (Genève)
 Lausanne
 Luzern
 Winterthur
-Z�rich
+Zürich
 @ Syria, Damascus_SYR
 Al Kamishli
 Al Rakka
@@ -3816,13 +3818,13 @@ Udon Thani
 Uttaradit
 Yasothon
 @ Timor-Leste (East Timor), Dili_TLS
-@ Togo, Lom�_TGO
-Atakpam�
+@ Togo, Lomé_TGO
+Atakpamé
 Dapango
-Kpalim�
-Sokod�
+Kpalimé
+Sokodé
 @ Tokelau (NZL), Fakaofo_TKL
-@ Tonga, Nuku�alofa_TON
+@ Tonga, Nuku´alofa_TON
 Neiafu
 Pangai
 @ Trinidad and Tobago, Port of Spain_TTO
@@ -3836,10 +3838,10 @@ Scarborough
 Ariana
 Bizerte
 El Kef
-Gab�s
+Gabès
 Gafsa
 Kasserine
-M�denine
+Médenine
 Nabeul
 Sfax
 Sousse
@@ -3860,7 +3862,7 @@ Bursa
 Denizli
 Diyarbakir
 Edirne
-El�zig
+Elâzig
 Erzurum
 Eskisehir
 Gaziantep
@@ -3870,15 +3872,15 @@ Isparta
 Istanbul
 Izmir
 Izmit
-I�el
-Karab�k
+Içel
+Karabük
 Karaman Maras
 Kayseri
 Kilis
 Kirikkale
 Kocaeli
 Konya
-K�tahya
+Kütahya
 Malatya
 Manisa
 Mersin
@@ -3893,9 +3895,9 @@ Urfa
 Usak
 Van
 Zonguldak
-�orum
+Çorum
 @ Turkmenistan, Ashgabat_TKM
-Chardzhou (Ch�rjew)
+Chardzhou (Chärjew)
 Mary
 Nebitdag
 Tashauz (Dashhowuz)
@@ -4385,7 +4387,7 @@ Florissant
 Independence
 Joplin
 Kansas City
-Lee�s Summit
+Lee´s Summit
 Springfield
 St. Charles
 St. Joseph
@@ -4767,17 +4769,17 @@ Sevastopol
 Berdyansk
 Melitopol
 @ United Arab Emirates, Abu Dhabi_ARE
-Al A�n
+Al Aïn
 Dubai
 Sharjah
 @ Uruguay, Montevideo_URY
 Las Piedras
 Mercedes
-Paysand�
+Paysandú
 Punta del Este
 Rivera
 Salto
-San Jos� de Mayo
+San José de Mayo
 Treinta y Tres
 @ Uzbekistan, Samarkand^UZB
 Bukhara
@@ -4803,22 +4805,22 @@ Barinas
 Barquisimeto
 Baruta
 Cabimas
-Car�pano
+Carúpano
 Catia la Mar
 Ciudad Bolivar
 Ciudad Guayana
 Coro
-Cuman�
+Cumaná
 Guanare
 Guarenas
 Los Teques
 Maracaibo
 Maracay
-Matur�n
-M�rida
+Maturín
+Mérida
 Petare
 Puerto Cabello
-San Crist�bal
+San Cristóbal
 San Fernando de Apure
 Turmero
 Valencia
@@ -4834,7 +4836,7 @@ Dalat
 Haiphong
 Ho Chi Minh City (Saigon)
 Hon Gai
-Hu�
+Hué
 Longxuyen
 Mytho
 Namdinh
@@ -4857,10 +4859,10 @@ Swansea
 Wrexham
 @ Wallis and Futuna (FRA), Mata-Utu_WLF
 @ West Timor, Kupang_IDN
-@ Western Sahara, El Aai�n_ESH
+@ Western Sahara, El Aaiún_ESH
 Dakhla
 Semara
-@ Yemen, Sana�a_YEM
+@ Yemen, Sana´a_YEM
 Aden
 Hodeidah
 Taiz

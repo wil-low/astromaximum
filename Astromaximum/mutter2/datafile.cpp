@@ -60,7 +60,7 @@ DataFile::DataFile()
 void DataFile::init(sEphRecord *ephdata, double start, unsigned int count)
 {
   Event::startJD=start;
-  startJD=start; dayCount=count; stepCount=count/MINUTE_STEP;
+  startJD=start; dayCount=count; stepCount=(int)(count/MINUTE_STEP);
   ephData=ephdata;
 }
 
@@ -206,7 +206,7 @@ void DataFile::calcAspExact(VAE & moonvae,VAE & vae)
         }
       }
       if(c%10000==0)
-        printf("%d...",c/10000); fflush(stdout);
+        printf("\b\b%02d",c/10000); fflush(stdout);
     }
   for(int i=0; i<PLANET_COUNT; i++)
     for(int j=0; j<PLANET_COUNT; j++)
@@ -237,13 +237,13 @@ void DataFile::calcDegPass(VAE & vae, int planet)
   double endJD=startJD+dayCount;
   Event *ev=new Event(startJD,planet);
   ev->date[1]=ev->packDate(endJD);
-  ev->degree=ephData[0].data[planet];
+  ev->degree=(int)ephData[0].data[planet];
   vae.push_back(ev);
   int lastd=ev->degree;
   double cur=startJD;
   for(int i=1; i<stepCount; i++){
     cur+=MINUTE_STEP;
-    int dgr=ephData[i].data[planet];
+    int dgr=(int)ephData[i].data[planet];
     if(lastd!=dgr){
       ev->date[1]=ev->packDate(cur);
       ev=new Event(cur,planet);
@@ -333,7 +333,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
 {
   char buf[200];
   sprintf(buf,"archive/%d/%s",Event::startYear,fname);
-  printf("\nSaving %s...",buf);
+  printf("\n%s: ",buf);
   FILE *fout=fopen(buf,"wb");
 	if(!fout){
 		int ern=errno;
@@ -351,7 +351,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
   int sz=v.size();
   sBuf=swapShort(sz);
   fwrite(&sBuf, 2, 1, fout);
-  printf("%u records...",v.size());
+  printf("%u records",v.size());
   int PERIOD=24*60*60;
   if(evtype==EV_ASCAPHETICS) PERIOD=2*60*60;
 //  if(evtype==EV_ASTRORISE) PERIOD=6*60*60;
@@ -407,7 +407,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
   sBuf=swapShort(fsize);
   fwrite(&sBuf, 2, 1, fout);
   fclose(fout);
-  printf("Done. ");
+  printf(" saved.");
   return true;
 }
 
@@ -432,7 +432,7 @@ bool DataFile::readSubData(const char* fname, VAE & v)
 {
   char buf[200];
   sprintf(buf,"archive/%d/%s",Event::startYear,fname);
-  printf("\nReading %s...",buf);
+  printf("\nReading %s: ",buf);
   FILE *fin=fopen(buf,"rb");
 
   if(!fin)
@@ -515,7 +515,6 @@ bool DataFile::readSubData(const char* fname, VAE & v)
   }
   v[v.size()-1]->date[1]=Event::packDate(startJD+dayCount);
   fclose(fin);
-  printf("Done.");
   return true;
 err:
   fclose(fin);
@@ -695,12 +694,12 @@ void DataFile::doAphetics(VAE &work)
   
   for(int i=0; i<stepCount; i++){
     for(int j=SE_SUN; j<=SE_SATURN; j++){
-      int dj=ephData[i].data[j];
+      int dj=(int)ephData[i].data[j];
       int sj=dj/30;
       // sign reception
       int k=OWN_SIGN_REVERSE[sj];
       if(k>j){
-        int dk=ephData[i].data[k];
+        int dk=(int)ephData[i].data[k];
         int sk=dk/30;
         if((sk==OWN_SIGN[0][j])||(sk==OWN_SIGN[1][j])){
           balls[i].data[j]|=(1<<AF_RECSIGN);
@@ -710,7 +709,7 @@ void DataFile::doAphetics(VAE &work)
       // exalt. reception
       k=EXALTATION_REVERSE[sj];
       if((k!=100) && (k>j)){
-        int dk=ephData[i].data[k];
+        int dk=(int)ephData[i].data[k];
         int sk=dk/30;
         if(sk==EXALTATION[j]){
           balls[i].data[j]|=(1<<AF_RECEXALT);
@@ -856,7 +855,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
       }
       break;
     case EV_RISE:
-      printf("RiseSets & moon days...");
+      printf("RiseSets & moon days:  ");
       sprintf(fname,"new01.bin");
       double novol, ddd[6]; novol=startJD-31; int ii; ii=0;
       if(!readSubData(fname, vout)){
@@ -875,7 +874,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
           novol+=MINUTE_STEP;
           ++ii;
           if(ii%10000==0)
-            printf("%d...",ii/10000); fflush(stdout);
+            printf("\b\b%02d",ii/10000); fflush(stdout);
 
         }
         writeSubData(vout,EV_STATUS,0,SE_MOON,fname);
@@ -934,14 +933,22 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
           }
           select(work,startJD,startJD+dayCount,-1,false,assist);
           if(!writeSubData(assist,EV_RISE,EF_CUMUL_DATE_B|EF_NEXT_DATE2,j,fname))
-            writeSubData(assist,EV_RISE,EF_CUMUL_DATE_W|EF_NEXT_DATE2,j,fname);
+            if(!writeSubData(assist,EV_RISE,EF_CUMUL_DATE_W|EF_NEXT_DATE2,j,fname))
+		if(writeSubData(assist,EV_RISE,EF_NEXT_DATE2,j,fname)){
+		    printf("Fatal error overflow\n");
+		    exit(5);
+		}
           assist.clear();
         }
         sprintf(fname,"%sset%02u.bin",prefix,j);
         assist.clear();
         select(work2,startJD,startJD+dayCount,-1,false,assist);
         if(!writeSubData(assist,EV_SET,EF_CUMUL_DATE_B,j,fname))
-          writeSubData(assist,EV_SET,EF_CUMUL_DATE_W,j,fname);
+          if(!writeSubData(assist,EV_SET,EF_CUMUL_DATE_W,j,fname))
+	      if(!writeSubData(assist,EV_SET,0,j,fname)){
+		printf("Fatal error overflow\n");
+		exit(5);
+	      }
         assist.clear();
         release(work);
         release(work2);
@@ -1011,7 +1018,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
       scanf("%s",fname);
 */      break;
     case EV_RETROGRADE:
-      printf("Retrograde and avg speed...");
+      printf("Retrograde and avg speed:  ");
       bool isRetro, isFaster;
       double data[6];
       for(int body=SE_SUN; body<=SE_PLUTO; body++){
@@ -1045,7 +1052,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             }
           endJD+=MINUTE_STEP;
           if(i%10000==0)
-            printf("%d...",i/10000); fflush(stdout);
+            printf("\b\b%02d",i/10000); fflush(stdout);
         }
         if(ev){  //was retrograde
           ev->date[1]=ev->packDate(endJD);
@@ -1084,13 +1091,13 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
       }
       break;
     case EV_TITHI:
-      printf("Tithi...");
+      printf("Tithi:  ");
       int tith; tith=-1;
       st=startJD;
       for(int i=0; i<stepCount; i++){
         double delta=ephData[i].data[SE_MOON]-ephData[i].data[SE_SUN];
         NormAngle(delta);
-        int new_tith=delta/12+1;
+        int new_tith=(int)(delta/12)+1;
         if(tith!=new_tith){
           ev=new Event(st,SE_MOON);
           tith=new_tith;
@@ -1099,17 +1106,17 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
         }
         st+=MINUTE_STEP;
         if(i%10000==0)
-          printf("%d...",i/10000); fflush(stdout);
+          printf("\b\b%02d",i/10000); fflush(stdout);
       }
       sprintf(fname,"tithi.bin");
       writeSubData(work,EV_TITHI,EF_CUMUL_DATE_W|EF_NEXT_DATE2|EF_DEGREE|EF_SHORT_DEGREE,SE_MOON,fname);
       break;
     case EV_NAKSHATRA:
-      printf("Nakshatra...");
+      printf("Nakshatra:  ");
       tith=-1;
       st=startJD;
       for(int i=0; i<stepCount; i++){
-        int new_tith=ephData[i].data[SE_MOON]*28./360.+1;
+        int new_tith=(int)(ephData[i].data[SE_MOON]*28./360.)+1;
         if(tith!=new_tith){
           ev=new Event(st,SE_MOON);
           tith=new_tith;
@@ -1118,13 +1125,13 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
         }
         st+=MINUTE_STEP;
         if(i%10000==0)
-          printf("%d...",i/10000); fflush(stdout);
+          printf("\b\b%02d",i/10000); fflush(stdout);
       }
       sprintf(fname,"nakshatra.bin");
       writeSubData(work,EV_NAKSHATRA,EF_CUMUL_DATE_W|EF_NEXT_DATE2|EF_DEGREE|EF_SHORT_DEGREE,SE_MOON,fname);
       break;
     case EV_DECL_EXACT:
-      printf("Declination...");
+      printf("Declination:  ");
       st=startJD; double decl; bool flag;
       flag=false; ev=NULL;
       for(int i=0; i<stepCount; i++){
@@ -1144,19 +1151,19 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
           }
         st+=MINUTE_STEP;
         if(i%10000==0)
-          printf("%d...",i/10000); fflush(stdout);
+          printf("\b\b%02d",i/10000); fflush(stdout);
       }
       sprintf(fname,"decl.bin");
       writeSubData(work,EV_DECL_EXACT,EF_DATE,-1,fname);
       break;
     case EV_NAVROZ:
-      printf("Navroz...");
+      printf("Navroz..."); fflush(stdout);
       st=startJD-dayCount; int deg;
       deg=-1; ev=NULL;
       do{
         swe_calc_ut(st, SE_SUN, EFLAG, data, serr);
         if(deg!=int(data[0])){
-          deg=data[0];
+          deg=(int)data[0];
           if(!deg) break;
         }
         st+=MINUTE_STEP;
@@ -1286,8 +1293,8 @@ int DataFile::calcAphetics(aphRecord *balls, const Event *ev)
 
 void DataFile::addBalls(aphRecord *balls, const Event *ev, int value)
 {
-  int ind0=(ev->julianDay-startJD)/MINUTE_STEP;
-  int ind1=(ev->calcJD(ev->date[1])-startJD)/MINUTE_STEP+0.5;
+  int ind0=(int)((ev->julianDay-startJD)/MINUTE_STEP);
+  int ind1=(int)((ev->calcJD(ev->date[1])-startJD)/MINUTE_STEP+0.5);
   int planet=ev->planetId[0];
   if(value){
     for(int i=ind0; i<ind1; i++){
@@ -1356,14 +1363,14 @@ void DataFile::calcAscData()
   double cusps[13], ascmc[10];
   sAscRecord *myascData=new sAscRecord[stepCount];
   double endJD=startJD;
-  printf("\n AscData for %.2f, %.2f: ", Lat, Lon);
+  printf("\n AscData for %.2f, %.2f:    ", Lat, Lon);
   for(int i=0; i<stepCount; i++){
     swe_houses(endJD, Lat, Lon, 'P', cusps, ascmc);
     myascData[i].data[0]=cusps[1];  //asc
     myascData[i].data[1]=cusps[7];  //dsc
     endJD+=MINUTE_STEP;
     if(i%10000==0)
-      printf("%d...",i/10000); fflush(stdout); 
+      printf("\b\b%02d",i/10000); fflush(stdout); 
   }
   ascData=myascData;
 }
@@ -1382,7 +1389,7 @@ void DataFile::doAscAphetics(VAE &work)
   int ascsign[2], ascplt[2]; 
   for(int i=0; i<stepCount; i++){
     for(int j=0; j<2; j++){
-      ascsign[j]=ascData[i].data[j]/30;
+      ascsign[j]=(int)(ascData[i].data[j]/30);
       ascplt[j]=OWN_SIGN_REVERSE[ascsign[j]];
       evcur[j]=eventContains(vaes[ascplt[j]],endJD);
     };
