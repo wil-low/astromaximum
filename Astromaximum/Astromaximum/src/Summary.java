@@ -1380,7 +1380,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
 //#endif      
     selItem=0;
     moveFocus(1,1);
-//    Display.getDisplay(this).setCurrent(summary);
+//    disp.setCurrent(summary);
     Astromaximum.options.addImeiChar(this);
   }
   
@@ -1782,20 +1782,20 @@ class Summary extends Canvas implements CommandListener, Runnable{
       cmds[i]=null;
     }
     if(mode==0){
-      cmds[0]=new Command(LocalizationSupport.getMessage("Help"), Command.SCREEN, 0);
-      cmds[1]=new Command(LocalizationSupport.getMessage("Today"), Command.SCREEN, 1);
-      cmds[2]=new Command(LocalizationSupport.getMessage("Week"), Command.SCREEN, 2);
-      cmds[3]=new Command(LocalizationSupport.getMessage("Month"), Command.SCREEN, 3);
-      cmds[4]=new Command(LocalizationSupport.getMessage("Options"),Command.SCREEN,4);
-      cmds[6]=new Command(LocalizationSupport.getMessage("No_theme"), Command.SCREEN, 6);
+      cmds[0]=new Command(Astromaximum.getstr(90), Command.SCREEN, 0);//Help
+      cmds[1]=new Command(Astromaximum.getstr(91), Command.SCREEN, 1);//Today
+      cmds[2]=new Command(Astromaximum.getstr(151), Command.SCREEN, 2);//Week
+      cmds[3]=new Command(Astromaximum.getstr(19), Command.SCREEN, 3);//Month
+      cmds[4]=new Command(Astromaximum.getstr(92),Command.SCREEN,4);//Options
+      cmds[6]=new Command(Astromaximum.getstr(93), Command.SCREEN, 6);//No theme
       //#ifdef ELECTIO
-//#       cmds[7]=new Command(LocalizationSupport.getMessage("Aphetics"),Command.SCREEN,7);
+//#       cmds[7]=new Command(Astromaximum.getstr("Aphetics"),Command.SCREEN,7);
       //#endif
     }
     if(mode==1){
-      cmds[5]=new Command(LocalizationSupport.getMessage("Ch_decumb"), Command.SCREEN, 5);
+      cmds[5]=new Command(Astromaximum.getstr(149), Command.SCREEN, 5);//Set date decumb
     }
-    cmds[6]=new Command(LocalizationSupport.getMessage("No_theme"), Command.SCREEN, 6);
+    cmds[6]=new Command(Astromaximum.getstr(93), Command.SCREEN, 6);//No theme
     for(int i=0; i<cmds.length; i++){
       if(cmds[i]!=null){
         addCommand(cmds[i]);

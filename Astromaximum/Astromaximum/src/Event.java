@@ -83,7 +83,8 @@ class Event {
   static final int EV_APHETICS=47;
   static final int EV_FAST=48;
   static final int EV_ASCAPHETICS=49;
-  static final int EV_LAST=50;  // last - do not use
+  static final int EV_MSG=50;
+  static final int EV_LAST=51;  // last - do not use
   
 //#if "imeiCheck" @ protection
   static int hj;
@@ -216,7 +217,7 @@ class Event {
     final int goodbad=getDegType();
     System.out.print("  degree="+Integer.toString(dgr));
     if(goodbad != 0) {
-      System.out.print(" " + (goodbad == 2 ? LocalizationSupport.getMessage("good") : LocalizationSupport.getMessage("bad")));
+      System.out.print(" " + (goodbad == 2 ? "good" : "bad"));
     }
     System.out.print("  planets "+Integer.toString(planet0)+" - "+
         Integer.toString(planet1)+"\n");

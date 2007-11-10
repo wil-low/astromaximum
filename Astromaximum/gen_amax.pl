@@ -6,7 +6,9 @@ our $path='';
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
 
-my $path=`pwd`;
+$0=~/(.+)[\\\/]/is;
+my $path=$1;
+#my $path=`pwd`;
 chomp($path);
 $path.="/";
 require $path.'genconst.pm';

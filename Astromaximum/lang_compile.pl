@@ -7,11 +7,16 @@ $0=~/(.+\/)/is;
 
 my $path=$1;
 my $InF=undef;
-die "Usage: 2nomad_new.pl <lang>\n" unless defined $ARGV[0];
+die "Usage: 2nomad_new.pl <lang> [config]\n" unless defined $ARGV[0];
 my @bins=glob($path."interpret/$ARGV[0]/*.txt");
 die "No files for '$ARGV[0]' language\n" unless scalar(@bins);
 my @buf;
 my $body;
+
+my @demo_allowed=qw(
+  EV_VOC EV_SIGN_ENTER EV_MOON_MOVE EV_ASP_EXACT_MOON EV_DEGPASS0 EV_DEGPASS1
+  EV_DEGPASS2 EV_DEGPASS3 EV_RETROGRADE EV_MSG
+);
 
 our %eventType=qw(EV_VOC 0 EV_SIGN_ENTER 1 EV_ASP_EXACT 2 EV_RISE 3 EV_DEGREE_PASS 4 
 	EV_VIA_COMBUSTA 5 EV_RETROGRADE 6 EV_ECLIPSE 7 EV_TITHI 8 EV_NAKSHATRA 9 EV_SET 10
@@ -22,16 +27,30 @@ our %eventType=qw(EV_VOC 0 EV_SIGN_ENTER 1 EV_ASP_EXACT 2 EV_RISE 3 EV_DEGREE_PA
   EV_DECUMBITURE 32 EV_DECUMB_ASPECT 33 EV_DECUMB_BEGIN 34 EV_SUN_DEGREE_LARGE 35 
   EV_MOON_SIGN_LARGE 36 EV_HELP 37 EV_ASP_EXACT_MOON 38 EV_DEGPASS0 39 EV_DEGPASS1 40
   EV_DEGPASS2 41 EV_DEGPASS3 42 EV_HELP0 43 EV_HELP1 44 EV_ASTRORISE 45 EV_ASTROSET 46
-  EV_APHETICS 47 EV_FAST 48 EV_ASCAPHETICS 49 EV_LAST 50
+  EV_APHETICS 47 EV_FAST 48 EV_ASCAPHETICS 49 EV_MSG 50 EV_LAST 51
   );
-	
+
+my %demo_events;
+my $demo=$ARGV[1]=~/(demo|^test)/is;
+if($demo){
+  print "Demo mode: filtering events\n";
+  foreach(@demo_allowed){
+    my $id=$eventType{$_};
+    die "Unknown demo event <$_>, $id" unless defined($id);
+    $demo_events{$_}=$id;
+  }
+}
+else{
+  %demo_events=%eventType;
+}
+
 our %eventFlags=qw(EF_PLANET1 2 EF_PLANET2 4 EF_DEGREE 8 EF_SHORT_DEGREE 64);
 
 my %hash;
 
-	my @clean=glob($path."Astromaximum/src/*.txt");
+	my @clean=glob($path."Astromaximum/src/*");
 	foreach (@clean){
-		unlink $_ if $_=~/\/\d+\.txt$/is;
+		unlink $_ if $_=~/[\/\\]\d+$/is;
 	}
   our $output=''; our $paramcount=0; our $outbuf; our $errors=0; 
 #die $eventType{'EV_VOC'};  
@@ -48,6 +67,10 @@ foreach my $ff(@bins){
 	if($eventType{$evt}!~/^\d+$/){
 		print "Event $evt not defined in $ff! Skipped\n";
 		next;
+	}
+	unless(defined($demo_events{$evt})){
+	  print "skipped from demo\n";
+	  next;
 	}
 	$buf[1]=~/\!\!params\s*(\d+)/i;
 	$paramcount=$1;
@@ -78,30 +101,31 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 		$line=~s/.*?%(.*?)%\s*//is;
 		write_record($1);
 #		print $line."\n";
-		
-		for(my $i=0; $i<length($RESERVED_CHARS); $i++){
-			my $char='\\'.substr($RESERVED_CHARS,$i,1);
-			my @cnt=$line=~/([$char])/isg;
-			if($#cnt>=0){
-				warn "@cnt" if $char eq '$';
-				if($#cnt%2 !=1){
-					print "\n  not matched - $1 in\n   $line \n";
-					++$errors;
-				}
-				else{
-					if($char eq '\@'){
-						for(my $j=0; $j<length($RESERVED_CHARS)-1; $j++){
-							my $ch=substr($RESERVED_CHARS,$j,1);
-							if(index('#~{=',$ch)==-1){
-								add_event_char($evt,'\\'.$ch);
-							}
-						}
-					}
-					else{
-						add_event_char($evt,$char);
-					}
-				}
-			}
+		if($evt ne 'EV_MSG'){
+		  for(my $i=0; $i<length($RESERVED_CHARS); $i++){
+			  my $char='\\'.substr($RESERVED_CHARS,$i,1);
+			  my @cnt=$line=~/([$char])/isg;
+			  if($#cnt>=0){
+				  warn "@cnt" if $char eq '$';
+				  if($#cnt%2 !=1){
+					  print "\n  not matched - $1 in\n   $line \n";
+					  ++$errors;
+				  }
+				  else{
+					  if($char eq '\@'){
+						  for(my $j=0; $j<length($RESERVED_CHARS)-1; $j++){
+							  my $ch=substr($RESERVED_CHARS,$j,1);
+							  if(index('#~{=',$ch)==-1){
+								  add_event_char($evt,'\\'.$ch);
+							  }
+						  }
+					  }
+					  else{
+						  add_event_char($evt,$char);
+					  }
+				  }
+			  }
+		  }
 		}
 		writeUTF($line);
 		$recnum++;
@@ -116,7 +140,7 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 	print "$len, $planet\n";
 	$output=pack('nNcnna*',$eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
 #	die $output;
-	open(OF, ">$path"."Astromaximum/src/$eventType{$evt}.txt") or die "No file";
+	open(OF, ">$path"."Astromaximum/src/$eventType{$evt}") or die "No file";
 	binmode(OF);
 	print OF $output;
 	close(OF);
@@ -131,6 +155,7 @@ if($errors==0){
 #	print $OutF $output;
 #	close($OutF);
 #	print "\nFile saved!\n";
+  exit(0) if $demo;
   while (my($key, $value) = each %hash) {
   	$value=~s/\\//isg;
   	print "    topics.put(new Integer(Event.$key), \"$value\");\n";

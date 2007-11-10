@@ -2,7 +2,7 @@
 use strict;
 use POSIX;
 #use warnings;
-use Encode;
+#use Encode;
 
 my $TZ_VER=2;
 
@@ -25,10 +25,10 @@ my @cities;
 my $citlist;
 my @alltz;
 if($TZ_VER==2){
-	open(InF, "<$mypath".'city.txt') or die "No file $mypath".'city.txt';
+	open(InF, "<$mypath".'data/tz/city.txt') or die "No file $mypath".'data/tz/city.txt';
 	@cities=<InF>;
 	close(InF);
-	open(InF, "<$mypath".'city_add.txt') or die "No file $mypath".'city_add.txt';
+	open(InF, "<$mypath".'data/tz/city_add.txt') or die "No file $mypath".'data/tz/city_add.txt';
 	@alltz=<InF>;
 	close(InF);
 	push(@cities, @alltz);
@@ -58,6 +58,8 @@ require $mypath.'tools.pm';
 do_patch(\$citlist);
 
 my $day_count=tools::day_count($year);
+mkdir $mypath."data/archive";
+mkdir $mypath."data/ephdata";
 our $path=$mypath."data/archive/";
 our $city_inf;
 my $country='';
@@ -89,7 +91,7 @@ our $fname;
 
 if($ARGV[0] eq 'all'){
 	print "Making all...\n";
-	my @ini=glob($path."*.ini");
+	my @ini=glob($mypath."data/*.ini");
 	foreach $city_inf(@ini){
 		$city_inf=~/.+[\/\\](.+?)\.ini/is;
 		$city_inf=$1;
@@ -108,7 +110,7 @@ sub process_ini{
 	if(! -f "$path$city_inf.txt"){
 		my $error=0;
 		unlink "$path$city_inf.txt";
-		open(InF, "<$path$city_inf.ini") or die "No file $path$city_inf\.ini";
+		open(InF, "<$mypath"."data/$city_inf.ini") or die "No file $path"."data/$city_inf\.ini";
 		@cities=<InF>;
 		close(InF);
 		my $cid=1;
@@ -219,7 +221,7 @@ sub process_ini{
 			print "Ready. Check coords.\nMay I continue calculations (y/n)? ";
 		}
 		my $ans=<STDIN>;
-		print ">$ans<";
+#		print ">$ans<";
 		chomp($ans);
 		die "Calculation cancelled.\n" unless $ans eq 'y';
 	}
@@ -229,6 +231,7 @@ sub process_ini{
 		close(InF);
 	#	die "@cities";
 		my $i=0;
+		my $hrepl=0;
 		our $city;
 	#	undef $/ ;
 		my $newdir=sprintf('%sdata/archive/%d/%s',$mypath,$year,$city_inf);
@@ -291,7 +294,7 @@ sub process_ini{
 					}	
 				}
 				else{
-					tz_check($fname, $header, "$year-$city");
+					$hrepl+=tz_check($fname, $header, "$year-$city");
 				}
 			}
 			else{
@@ -320,6 +323,7 @@ sub process_ini{
 			#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
 	#		}
 #		}
+		print "\nHeaders replaced: $hrepl.\n" if $tzonly;
 }
 
 sub calc_dst{
@@ -361,6 +365,8 @@ sub tz_check{
 	my @data=<InF1>;
 	close(InF1);
 	my $body=join('', @data);
+#	my $citylen=unpack("n",substr($body,8,2));
+#	die "$citylen, $comment, $fname";
 	$body=~/^(.{$hlen})/s;
 	my $oldhdr=$1;
 	if($oldhdr ne $header){
@@ -371,7 +377,9 @@ sub tz_check{
 		binmode(OutF);
 		print OutF $body;
 		close(OutF);
+		return 1;
 	}
+	return 0;
 }
 
 sub decode_time{
@@ -437,7 +445,7 @@ sub writeUTF
 {
 	my $param=shift;
 #	print "$param\n";
-	$param = decode("cp1251", $param);
+#	$param = decode("cp1251", $param);
 	my $len=0;
 	{
 		use bytes; $len=length($param);
@@ -507,7 +515,7 @@ use warnings;
 #		]
 #	}
 
-	open(HIST, "<Timezone/Historic.txt");
+	open(HIST, "<data/tz/Historic.txt");
 	my $secflag=0;
 	my $secname=''; # section header
 	print "Historic.txt: ";
@@ -580,10 +588,14 @@ sub get_tz{
 		print "$country,$city,$isdie\t" if $verbose;
 		if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n\r]+\))?)/is){
 			$country=$1;
-			$country=~/\A(.+?)\s*\n/is;
-			$country=$1;
+			if($country=~/\A(.+?)\s*\n/is){
+			  $country=$1;
+			}
 			$c_arr=$historic{$country}; # TZ hash
 #			die "No TZ for $country!" unless defined $c_arr;
+		}
+		else{
+		  die "No TZ for $country!";
 		}
 		if(!defined $c_arr){
 #			die $citlist;

@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
   ephData=new sEphRecord [stepCount];
   endJD=startJD;
   int size=sizeof(sEphRecord)*stepCount;
-  sprintf(ephf,"ephdata%04d.dat",year);
+  sprintf(ephf,"ephdata/ephdata%04d.dat",year);
 
   FILE *fin=fopen(ephf, "rb");
   int fsz=0;

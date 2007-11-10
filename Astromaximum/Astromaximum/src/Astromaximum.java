@@ -41,6 +41,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
   static final int GRAY_COLOR = 0xe0e0e0;
   static final String URL="www.astromaximum.com";
   static int LOGGER_SLEEP = 2000;
+  static Display disp;
 
 //#if "imeiCheck" @ protection
   static int hj;
@@ -49,13 +50,13 @@ public class Astromaximum extends MIDlet implements CommandListener{
   static int startYear=0;
   static final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));//TimeZone.getDefault());
   static boolean firstRun=true;
-  
+  static private Hashtable locHash=new Hashtable();
   // midlet instance reference
   static Astromaximum instance;
   static final long MSECINDAY=86400*1000;
-  private final String[] monthKeys={"January","February","March","April","May","June",
-  "July","August","September","October","November","December"
-  };
+//  private final String[] monthKeys={"January","February","March","April","May","June",
+//  "July","August","September","October","November","December"
+//  };
   static final String[] months=new String[12];
   static final String[] CONSTELL={
     "Ari","Tau","Gem","Cnc","Leo","Vir","Lib","Sco","Sgr","Cap","Aqu","Psc"
@@ -93,6 +94,9 @@ public class Astromaximum extends MIDlet implements CommandListener{
    * Start this MIDlet
    */
   public void startApp(){
+    disp=Display.getDisplay(this);
+//#debug
+    long start=System.currentTimeMillis();
     if(firstRun){
 //        System.gc();
       try{
@@ -113,14 +117,18 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if logger
 //#       long beforeLS=Runtime.getRuntime().freeMemory();
 //#endif      
-        LocalizationSupport.initLocalizationSupport(locale);
+//        LocalizationSupport.initLocalizationSupport(locale);
 //#if logger
 //#       long afterLS=Runtime.getRuntime().freeMemory();
 //#endif      
         interpreter =new Interpreter();
+	interpreter.addCommand(new Command(getstr(94), Command.BACK, 1));//back
+	interpreter.addCommand(new Command(getstr(140), Command.BACK, 2));//text font
+	interpreter.addCommand(new Command(getstr(90), Command.BACK, 3));//help
+
 //#if logger
 //#       interpreter.isLogged=true;
-//#       Display.getDisplay(this).setCurrent(interpreter);
+//#       disp.setCurrent(interpreter);
 //#       logger("Total heap="+Long.toString(Runtime.getRuntime().totalMemory())+
 //#           "|before LocSupport="+Long.toString(beforeLS)+
 //#           "|after LocSupport="+Long.toString(afterLS));
@@ -137,17 +145,17 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#endif        
         summary.run();
   //#ifndef logger
-        Display.getDisplay(this).setCurrent(summary);
+        disp.setCurrent(summary);
   //#endif      
 //#endif
 //#if logger
 //#       logger("after summary run");
 //#endif        
         for(int i=0; i < 12; i++) {
-          months[i] = LocalizationSupport.getMessage(monthKeys[i]);
+          months[i] = getstr(7+i);
         }
         for(int i=0; i < 7; i++) {
-          dow[i] = LocalizationSupport.getMessage(dowKeys[i]);
+          dow[i] = getstr(20+i);
         }
         
         logBox =new LogBox();
@@ -201,7 +209,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#         Interpreter instance = new Interpreter();
 //#         Alert alert=new Alert("Test","",null, AlertType.INFO);
 //#         alert.setTimeout(Alert.FOREVER);
-//#         Display.getDisplay(this).setCurrent(alert);
+//#         disp.setCurrent(alert);
 //#         long tick=System.currentTimeMillis();
 //#         for(int h=0; h<11; h++){
 //#           alert.setString(Integer.toString(h));
@@ -234,7 +242,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#         long tm[]=new long[31];
 //#         Alert alert=new Alert("Test","",null, AlertType.INFO);
 //#         alert.setTimeout(Alert.FOREVER);
-//#         Display.getDisplay(this).setCurrent(alert);
+//#         disp.setCurrent(alert);
 //#         
 //#         for(int i=0; i<31; i++){
 //#           tm[i]=summary.changeDay(1);
@@ -280,8 +288,11 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if logger
 //#       logger("moonPhase");
 //#endif      
-        Vector nav=dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 1, dataFile.finalJD);
+        Vector nav=dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 0, dataFile.finalJD);
 //        evDump(nav);
+	if(nav.size()!=2){
+	  throw new Exception("Navroz event count != 2");
+	}
         nav.copyInto(summary.aNavroz);
 //      dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 1, dataFile.finalJD).copyInto(summary.aNavroz);
 //#if logger
@@ -307,26 +318,31 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#         Thread.currentThread().sleep(3000);
 //#         interpreter.isLogged=false;
 //#       }
-//#       Display.getDisplay(this).setCurrent(summary);
+//#       disp.setCurrent(summary);
 //#endif      
       firstRun =false;
 //#endif
     
     } 
     catch(Exception oome){
-//#mdebug debug
+///#mdebug debug
        Astromaximum.log("****Total memory = "+Long.toString(Runtime.getRuntime().totalMemory()));
        Astromaximum.log(oome.toString());
        logBox.showLog(null);
        oome.printStackTrace();
 //        quit();
-//#enddebug       
+///#enddebug       
     }
     }  
     summary.repaint();
+//#mdebug
+    System.out.print("Initialization took ");
+    System.out.print(System.currentTimeMillis()-start);
+    System.out.println(" msec.");
+//#enddebug    
     summary.startRealtime();
 //    log("SDS after");
-//      Display.getDisplay(this).setCurrent(summary);
+//      disp.setCurrent(summary);
   }
   
   public void pauseApp() {
@@ -442,22 +458,23 @@ public class Astromaximum extends MIDlet implements CommandListener{
   public void commandAction(Command c, Displayable d) {
     switch(c.getCommandType()){
       case Command.SCREEN:
+	disp.setCurrent(summary);
         break;
       case Command.OK:
         quit();
       case Command.BACK:
-        Display.getDisplay(instance).setCurrent(options);
+        disp.setCurrent(options);
     }
   }
 
   public void reportTodayError() {
     String str=summary.selDate.toString();
     str=str.substring(0,11)+str.substring(str.length()-4);
-    final Alert noDate=new Alert(LocalizationSupport.getMessage("Today")+" "+ str,
-      LocalizationSupport.getMessage("no_today"),
-      null,AlertType.ERROR);
+    final Alert noDate=new Alert(getstr(91)+" "+ str, getstr(111), null,AlertType.ERROR);
     noDate.setTimeout(5000);
-    Display.getDisplay(this).setCurrent(noDate,Display.getDisplay(this).getCurrent());
+    noDate.addCommand(new Command("OK",Command.SCREEN,1));
+    noDate.setCommandListener(this);
+    disp.setCurrent(noDate);
     calendar.setTime(summary.selDate);
     calendar.set(Calendar.YEAR,Astromaximum.startYear);
     summary.selDate=calendar.getTime();
@@ -465,6 +482,23 @@ public class Astromaximum extends MIDlet implements CommandListener{
     System.out.println(summary.selDate);
     
   }
+  
+  public static String getstr(int id){
+    Integer key=new Integer(id);
+    if(locHash.containsKey(key)){
+      return (String)locHash.get(key);
+    }
+    String str=interpreter.extractArticle(new long[]{Event.EV_MSG,0,id});
+    if(str==null){
+      System.out.println("?? "+Integer.toString(id)+" ??");
+      System.exit(1);
+    }
+    else{
+      locHash.put(key, str);
+    }
+    return str;
+  }
+  
 //#if "timeBomb" @ protection
 //#   static byte[] getArray() {
 //# ////#debug

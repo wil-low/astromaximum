@@ -20,14 +20,14 @@
 import javax.microedition.lcdui.*;
 
 class LogBox extends List implements CommandListener{
-  static final String EMPTY=LocalizationSupport.getMessage("<Empty>");
+  static final String EMPTY=Astromaximum.getstr(119);//Empty
   private Displayable invoker;
   static private byte[] buf=new byte[8];
   LogBox() {
-    super(LocalizationSupport.getMessage("Log"), Choice.IMPLICIT);
+    super(Astromaximum.getstr(95), Choice.IMPLICIT);//Log
     append(EMPTY,null);
-    addCommand(new Command(LocalizationSupport.getMessage("Back"), Command.BACK, 1));
-    addCommand(new Command(LocalizationSupport.getMessage("Clear"), Command.STOP, 1));
+    addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 1));//Back
+    addCommand(new Command(Astromaximum.getstr(96), Command.STOP, 1));//Clear
     setCommandListener(this);
   }
   

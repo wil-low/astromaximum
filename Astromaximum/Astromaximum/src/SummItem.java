@@ -167,13 +167,13 @@ class SummItem extends TimerTask implements RecordFilter{
         selIndex=1;
         final int weekDay=cal.get(Calendar.DAY_OF_WEEK);
         if(Astromaximum.locale!="ru_RU"){
-          str=Astromaximum.dow[weekDay-1]+" "+
+          str=Astromaximum.getstr(weekDay-1)+" "+
               Astromaximum.months[cal.get(Calendar.MONTH)].substring(0,3)+
               " "+Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+
               " '"+Integer.toString(cal.get(Calendar.YEAR)).substring(2,4);
         }
         else{
-          str=Astromaximum.dow[weekDay-1]+" "+
+          str=Astromaximum.getstr(weekDay-1)+" "+
               Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+" "+
               Astromaximum.months[cal.get(Calendar.MONTH)].substring(0,3)+" '"+
               Integer.toString(cal.get(Calendar.YEAR)).substring(2,4);
@@ -297,7 +297,7 @@ class SummItem extends TimerTask implements RecordFilter{
     if(events.length == 0) {
       if(type==Event.EV_ASP_EXACT && isSelected){
         osg.setColor(0);
-        osg.drawString(LocalizationSupport.getMessage("weekm"), left+width/2,
+        osg.drawString(Astromaximum.getstr(146), left+width/2,//Week mode
             top+height-2, Graphics.BASELINE|Graphics.HCENTER);
       }
       return;
@@ -386,11 +386,11 @@ class SummItem extends TimerTask implements RecordFilter{
                 Graphics.VCENTER|Graphics.HCENTER);
             break;
           case 8:
-            osg.drawString(LocalizationSupport.getMessage("Tithi"),getX(0, XCENTER),top+height-1,
+            osg.drawString(Astromaximum.getstr(122),getX(0, XCENTER),top+height-1,//Tithi
                 Graphics.BASELINE | Graphics.HCENTER);
-            osg.drawString(LocalizationSupport.getMessage("S.D."),getX(1, XCENTER),top+height-1,
+            osg.drawString(Astromaximum.getstr(127),getX(1, XCENTER),top+height-1,//S.D.
                 Graphics.BASELINE | Graphics.HCENTER);
-            osg.drawString(LocalizationSupport.getMessage("M.D."),getX(2, XCENTER),top+height-1,
+            osg.drawString(Astromaximum.getstr(128),getX(2, XCENTER),top+height-1,//M.D.
                 Graphics.BASELINE | Graphics.HCENTER);
             drawImg(osg,Summary.imgAspect,10,getX(3, XCENTER),y,
                 Graphics.VCENTER|Graphics.HCENTER);
@@ -796,8 +796,7 @@ class SummItem extends TimerTask implements RecordFilter{
         break;
       case Event.EV_DECUMBITURE:
         osg.drawString(/*Event.long2String(events[0].date0,false,false)+" "+*/
-            LocalizationSupport.getMessage("dec"+
-            Integer.toString(Summary.decumbKeys[events[0].planet0])),
+            Astromaximum.getstr(60+Summary.decumbKeys[events[0].planet0]),//dec
             left+3,top+height-2,Graphics.LEFT|Graphics.BASELINE);
         break;
       case Event.EV_DECUMB_ASPECT:
@@ -943,8 +942,8 @@ class SummItem extends TimerTask implements RecordFilter{
     int y2=top+height/2-1;
     int cus0=0;
     int now0=0;
-    String s1=LocalizationSupport.getMessage("rise")+" ";
-    String s2=LocalizationSupport.getMessage("set")+" ";
+    String s1=Astromaximum.getstr(84)+" ";//rise
+    String s2=Astromaximum.getstr(85)+" ";//set
     long d1=events[0].date0;
     long d2=events[0].date1;
     
@@ -1139,17 +1138,17 @@ class SummItem extends TimerTask implements RecordFilter{
   
   private String getStatus() {
     if(type == Event.EV_FAST_BUTTON){
-      return LocalizationSupport.getMessage("fb"+Integer.toString(tag));
+      return Astromaximum.getstr(50+tag);//fb
     }
     if(type == Event.EV_PANEL){
-      return LocalizationSupport.getMessage("Topics");
+      return Astromaximum.getstr(102);//topics
     }
     if(type == Event.EV_WEEK){
-      return LocalizationSupport.getMessage("Day")+" "+LocalizationSupport.getMessage(
-          "of"+Integer.toString(weekPlanets[events[1].planet0-1]));
+      return Astromaximum.getstr(27)+" "+Astromaximum.getstr( //Day, of_
+          40+weekPlanets[events[1].planet0-1]);
     }
     if(type == Event.EV_SUN_RISE || type == Event.EV_MOON_RISE){
-      return LocalizationSupport.getMessage("pltonaxis");
+      return Astromaximum.getstr(145);//Planets in axes
     }
     String s="";
     final Event sel=getSelEvent();

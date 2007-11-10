@@ -1,0 +1,183 @@
+!!type  EV_MSG
+!!params 1
+!!planet –1
+
+// Localization strings for Astromaximum interface - English
+
+%0%  Sunday
+%1%  Monday
+%2%  Tuesday
+%3%  Wednesday
+%4%  Thursday
+%5%  Friday
+%6%  Saturday
+
+%7%  January
+%8%  February
+%9%  March
+%10% April
+%11% May
+%12% June
+%13% July
+%14% August
+%15% September
+%16% October
+%17% November
+%18% December
+
+%19% Month
+
+%20% Su
+%21% Mo
+%22% Tu
+%23% We
+%24% Th
+%25% Fr
+%26% Sa
+
+%27% Day
+%28% Hours
+%29% Minutes
+
+%30% Sun
+%31% Moon
+%32% Mercury
+%33% Venus
+%34% Mars
+%35% Jupiter
+%36% Saturn
+%37% Uranus
+%38% Neptun
+%39% Pluto
+
+%40% of Sun
+%41% of Moon
+%42% of Mercury
+%43% of Venus
+%44% of Mars
+%45% of Jupiter
+%46% of Saturn
+// %47% of Uranus
+// %48% of Neptun
+// %49% of Pluto
+
+%50% Business activities
+%51% Trading/Finances
+%52% Licensing/Registration
+%53% Employment
+%54% Realty/Agriculture
+%55% Vacations/Education
+%56% Medicine
+%57% Disease progress
+%58% Love/Ritual
+
+%60% begin
+%61% diagn
+%62% improvement
+%63% crisis
+%64% final
+
+%70% New Moon
+%71% 1st quarter
+%72% Full moon
+%73% Last quarter
+
+//asc
+%80% rise 
+//mc
+%81% zenith
+//dsc
+%82% set
+//ic
+%83% nadir
+
+//rise
+%84% rise
+//set
+%85% set
+
+%86% Ascending Node
+%87% Black Moon
+%88% White Moon
+
+%90% Help
+%91% Today
+%92% Options
+%93% W/o theme
+%94% Back
+%95% Log
+%96% Clear
+%97% Cancel
+%98% Select
+%99% Add
+
+%100% Delete
+%101% History
+%102% Topics
+%103% Local time
+%104% Use all texts
+%105% Cities
+%106% Screen
+%107% Auto
+%108% Delete city
+%109% Error
+
+%110% Some interpretation texts are unavailable in the demo.
+%111% "Today" service is applicable when the current year matches installed one.
+%112% Hours or minutes are missing
+%113% Invalid minute:
+%114% Invalid hour:
+%115% Enter date:
+%116% Date entered is not in valid range!
+%117% Lock/Unlock
+%118% Correction, hr
+%119% <Empty>
+
+%120% Sun day #
+%121% Moon day #
+%122% Tithi
+%123% Moon Void Of Course
+%124% ±week
+%125% long aspect
+%126% Minor index
+%127% S.D.
+%128% M.D.
+%129% min.
+%130% From 
+%131% from 
+%132% to 
+%133% in
+%134% bad degree
+%135% good degree
+%136% day of week
+%137% hours
+%138% Hour
+%139% Enter time:
+%140% Text font
+%141% Date:
+%142% Disease date:
+%143% Eclipse
+%144% Calendar
+%145% Planets on axes
+%146% Week mode
+%147% Aphetics
+%148% Confirm
+%149% Set date
+%150% Sun day 
+%151% Week
+
+//%161% bad
+//%162% good
+
+
+
+?Interpret=Interpret
+?voc=voc
+
+?Searching...=Searching...
+
+
+__degree\==  degree\=
+
+Ready.=Ready.
+

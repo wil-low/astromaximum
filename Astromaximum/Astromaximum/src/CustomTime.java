@@ -65,9 +65,9 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     }
     cmds=new Command[]{
       new Command("OK",Command.OK,1),
-      new Command(LocalizationSupport.getMessage("Lock/Unlock"),Command.ITEM,2),
-      new Command(LocalizationSupport.getMessage("Delete"),Command.ITEM,3),
-      new Command(LocalizationSupport.getMessage("Cancel"),Command.CANCEL,4),
+      new Command(Astromaximum.getstr(117),Command.ITEM,2),
+      new Command(Astromaximum.getstr(100),Command.ITEM,3),
+      new Command(Astromaximum.getstr(97),Command.CANCEL,4),
     };
     setCommandListener(this);
     setItemStateListener(this);
@@ -168,14 +168,14 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     switch(pn){
       case Summary.PAGE_PANEL:
       case Summary.PAGE_DECUMB:
-        tit=LocalizationSupport.getMessage("Disease_date");
+        tit=Astromaximum.getstr(142);
         sDate="";//Event.long2String((Astromaximum.summary.period0+
           //Astromaximum.summary.period0)>>1,0,false).substring(0,5);
         decumbDate=dateField.getDate().getTime();
         decumbDate-=Event.localOffset(decumbDate);
         break;
       default:  
-        tit=LocalizationSupport.getMessage("Date");
+        tit=Astromaximum.getstr(141);
 
         sDate=Event.long2String((Astromaximum.summary.period0+
           Astromaximum.summary.period0)>>1,0,false).substring(0,5);
@@ -204,8 +204,8 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     if(addHistory){
       tmp-=Event.localOffset(tmp);
       if(!Astromaximum.dataFile.isDateAvailable(tmp)){
-        Alert alert=new Alert(LocalizationSupport.getMessage("Error"),
-            LocalizationSupport.getMessage("Date_unavail"), null, AlertType.ERROR);
+        Alert alert=new Alert(Astromaximum.getstr(109),
+            Astromaximum.getstr(116), null, AlertType.ERROR);
         Display.getDisplay(Astromaximum.instance).setCurrent(alert,this);
         return false;
       }
@@ -234,7 +234,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
       }
     }
     else{
-      timeField.setLabel(LocalizationSupport.getMessage("Enter_time:"));
+      timeField.setLabel(Astromaximum.getstr(139));
       append(timeField);
       addCommand(cmds[0]);
       addCommand(cmds[3]);

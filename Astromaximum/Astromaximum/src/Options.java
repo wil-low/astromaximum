@@ -50,30 +50,30 @@ class Options extends GeoList{
     super(Astromaximum.instance,Choice.EXCLUSIVE,"locations.dat");
     //#endif
     String[] sTimeGap={"-2","-1","0","1","2"};
-    timeGap=new ChoiceGroup(LocalizationSupport.getMessage("Correction_hr"),
+    timeGap=new ChoiceGroup(Astromaximum.getstr(118),//Correction_hr
         Choice.POPUP,sTimeGap,null);
     timeGap.setSelectedIndex(2,true);
     
-    String[] sLayout={LocalizationSupport.getMessage("Auto"),"1","2","3"};
-    layout=new ChoiceGroup(LocalizationSupport.getMessage("Screen"),
+    String[] sLayout={Astromaximum.getstr(107),"1","2","3"};//Auto
+    layout=new ChoiceGroup(Astromaximum.getstr(106),//Screen
         Choice.POPUP,sLayout,null);
 
     String[] sOpt={
-      LocalizationSupport.getMessage("uat"),
-      LocalizationSupport.getMessage("Local_time"),
+      Astromaximum.getstr(104),//Use all texts
+      Astromaximum.getstr(103),//Local time
     };
     optFlags=OPT_FLAGS;
-    setTitle(LocalizationSupport.getMessage("Options"));
+    setTitle(Astromaximum.getstr(92));//Options
     setCommandListener(this);
     addCommand(new Command("OK",Command.OK, 1));
-    addCommand(new Command(LocalizationSupport.getMessage("Delete_city"),Command.ITEM, 2));
+    addCommand(new Command(Astromaximum.getstr(108),Command.ITEM, 2));//Del city
 //    addCommand(new Command("Reset storage",Command.ITEM, 3));
     optList=new ChoiceGroup(null,Choice.MULTIPLE,
         sOpt,null);
     insert(0,layout);
     insert(0,timeGap);
     insert(0,optList);
-    cityList.setLabel(LocalizationSupport.getMessage("Cities"));
+    cityList.setLabel(Astromaximum.getstr(105));//Cities
   }
 //#if "imeiCheck" @ protection
   static int hj;
@@ -213,11 +213,11 @@ class Options extends GeoList{
         if(!sel.equals(curCity) && cityList.size()>1){
           oldc=new String(curCity);
           curCity=sel.getBytes();
-          Alert alert=new Alert(LocalizationSupport.getMessage("Confirm"),
-              LocalizationSupport.getMessage("Delete_city")+" "+sel+"?",null,
+          Alert alert=new Alert(Astromaximum.getstr(148),//Confirm
+              Astromaximum.getstr(108)+" "+sel+"?",null,//Delete_city
               AlertType.CONFIRMATION);
           alert.addCommand(new Command("OK",Command.OK,1));
-          alert.addCommand(new Command(LocalizationSupport.getMessage("Cancel"),
+          alert.addCommand(new Command(Astromaximum.getstr(97),//Cancel
               Command.CANCEL,1));
           alert.setCommandListener(this);
           Display.getDisplay(Astromaximum.instance).setCurrent(alert);
@@ -324,9 +324,9 @@ class Options extends GeoList{
     } catch(NullPointerException npe){}
   }
 
-  protected String getMessage(String string) {
-    return LocalizationSupport.getMessage(string);
-  }
+//  protected String getMessage(String string) {
+//    return LocalizationSupport.getMessage(string);
+//  }
 
   void resetStorage() {
     try {
