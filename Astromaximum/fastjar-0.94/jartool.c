@@ -330,7 +330,7 @@ int main(int argc, char **argv){
   /* create the jarfile */
   if(action == ACTION_CREATE){
     if(file){
-      jarfd = creat(jarfile, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+      jarfd = creat(jarfile, S_IRUSR | S_IWUSR);
 
       if(jarfd < 0){
         fprintf(stderr, "Error opening %s for writing!\n", jarfile);
@@ -1326,7 +1326,7 @@ int add_file_to_jar(int jfd, int ffd, char *fname, struct stat *statbuf){
 #ifdef DEBUG    
           printf("Making directory..\n");
 #endif
-          if(mkdir(tmp_buff, 0755) < 0){
+          if(mkdir(tmp_buff) < 0){
             perror("mkdir");
             exit(1);
           }

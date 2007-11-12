@@ -269,7 +269,7 @@ class Event {
     final StringBuffer s=new StringBuffer();
         
     if(hoursOnly==0) {
-      if(Astromaximum.locale!="ru_RU"){
+      if(Astromaximum.locale!="Ru"){
         s.append(to2String(Astromaximum.calendar.get(Calendar.MONTH) + 1)).
             append("/").
             append(to2String(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH)));

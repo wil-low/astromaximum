@@ -671,7 +671,7 @@ class Interpreter extends Canvas implements CommandListener {
       while(recnum > 0){
 	boolean f=true;
 	for(int j=0; j<paramcount; j++){
-	  final int rsh=dis.readShort();
+	  final int rsh=dis.readUnsignedShort();
 	  if(params[j+2]!=rsh){
 	    f=false;
 	    dis.skip(2*(paramcount-j-1));

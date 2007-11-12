@@ -12,16 +12,16 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=gcc
-CCC=g++
-CXX=g++
+CC=gcc.exe
+CCC=g++.exe
+CXX=g++.exe
 FC=
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Release/GNU-Linux-x86
+OBJECTDIR=build/Release/MinGW-Linux-x86
 
 # Object Files
 OBJECTFILES= \

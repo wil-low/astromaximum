@@ -142,14 +142,16 @@
     </target>
 
     <target name="jar" depends="init,preverify,create-jad,set-keystore-password,set-alias-password,pre-jar" description="Build jar and application descriptor.">
-      <dirname file="${dist.dir}/${dist.jar}" property="dist.jar.dir"/>
-      <mkdir dir="${dist.jar.dir}"/>
-      <antcall target="make.jar" inheritall="true" inheritrefs="true"/>
-      <antcall target="make.kzip" inheritall="true" inheritrefs="true"/>
-
-      <nb-jad jadfile="${dist.dir}/${dist.jad}" jarfile="${dist.dir}/${dist.jar}" url="${dist.jar}" sign="${sign.enabled}" keystore="${sign.keystore}" keystorepassword="${sign.keystore.password}" alias="${sign.alias}" aliaspassword="${sign.alias.password}" encoding="${javac.encoding}"/>
-      <antcall target="post-jar" inheritall="true" inheritrefs="true"/>
-      <echo message="Desktop=${build.desktop}"/>
+        <dirname file="${dist.dir}/${dist.jar}" property="dist.jar.dir"/>
+        <mkdir dir="${dist.jar.dir}"/>
+        <jar compress="${jar.compress}" jarfile="${dist.dir}/${dist.jar}" manifest="${build.dir}/manifest.mf" manifestencoding="UTF-8">
+            <fileset dir="${preverify.classes.dir}"/>
+            <fileset dir="${obfuscated.classes.dir}">
+                <exclude name="**/*.class"/>
+            </fileset>
+        </jar>
+        <nb-jad jadfile="${dist.dir}/${dist.jad}" jarfile="${dist.dir}/${dist.jar}" url="${dist.jar}" sign="${sign.enabled}" keystore="${sign.keystore}" keystorepassword="${sign.keystore.password}" alias="${sign.alias}" aliaspassword="${sign.alias.password}" encoding="${javac.encoding}"/>
+        <antcall target="post-jar" inheritall="true" inheritrefs="true"/>
     </target>
    
     <target name="pre-preverify">

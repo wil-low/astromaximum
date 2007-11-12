@@ -79,8 +79,8 @@ public class Astromaximum extends MIDlet implements CommandListener{
     calendar.set(Calendar.SECOND,0);
     return calendar.getTime().getTime();
   }
-  private final String[] dowKeys={"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
-  static final String[] dow=new String[7];
+//  private final String[] dowKeys={"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+//  static final String[] dow=new String[7];
   // displayable object
   static Options options;
   static Summary summary;
@@ -89,7 +89,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
   static Interpreter interpreter;
   static CustomTime customTime;
 
-  static String locale="ru_RU";
+  static String locale=null;
   /**
    * Start this MIDlet
    */
@@ -125,7 +125,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 	interpreter.addCommand(new Command(getstr(94), Command.BACK, 1));//back
 	interpreter.addCommand(new Command(getstr(140), Command.BACK, 2));//text font
 	interpreter.addCommand(new Command(getstr(90), Command.BACK, 3));//help
-
+        locale=getstr(255);
 //#if logger
 //#       interpreter.isLogged=true;
 //#       disp.setCurrent(interpreter);
@@ -153,9 +153,6 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#endif        
         for(int i=0; i < 12; i++) {
           months[i] = getstr(7+i);
-        }
-        for(int i=0; i < 7; i++) {
-          dow[i] = getstr(20+i);
         }
         
         logBox =new LogBox();

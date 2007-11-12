@@ -288,12 +288,16 @@ int run_exe(const char *cmd){
 #  endif // _DEBUG
     }
 
-    int result=CreateProcess(NULL, command, NULL, NULL, FALSE,
+    DWORD result=CreateProcess(NULL, command, NULL, NULL, FALSE,
                   NORMAL_PRIORITY_CLASS, NULL, NULL, &suInfo, &prInfo);
-	
-    delete command;
-    delete copy_of_icommand;
-	
+		if(result){
+	    delete command;
+	    delete copy_of_icommand;
+			WaitForSingleObject(prInfo.hProcess,INFINITE);
+			GetExitCodeProcess(prInfo.hProcess, &result);
+	    CloseHandle(prInfo.hProcess);
+	    CloseHandle(prInfo.hThread);
+	  }
 #else // NON _WIN32 systems.
 
 	printf("Cmd=%s\n", cmd);

@@ -6,6 +6,8 @@ our $path='';
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
 
+our $winda=$^O=~/Win/is;
+
 $0=~/(.+)[\\\/]/is;
 my $path=$1;
 #my $path=`pwd`;
@@ -63,20 +65,21 @@ if($config eq 'rebuild'){
     print "\n--------------------------------\n";
     print "--- Config geo: $conf ---\n";
     print "--------------------------------\n";
-    my $cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Dconfig.active=$_ -Drebuild.only=true clean jar";
+    my $cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Drebuild.only=true clean jar";
     print "$cmd\n";
     die "BUILD ERROR"if system($cmd);
     exit(0);
 }
 
 die "Invalid year '$year'" if $year!~/^\d{4}$/is;
-die "Invalid loclist '$loclist'" if ! -f "$loclist";
+$loclist=ensure_slash($loclist);
+die "Invalid loclist '$loclist'" if ! -f $loclist;
 my $dest='';
 
 if($config=~/(2006|demo)/is){
     $year=2006;
     unless($outfile=~/\.jar/is){
-	$outfile=$path."Astromaximum/deploy/$const::PRODUCT".'Demo.jar' ;
+			$outfile=$path."Astromaximum/deploy/$const::PRODUCT".'Demo.jar' ;
     }
 }
 
@@ -94,7 +97,7 @@ unless($outfile=~/\.jar/is){
     $outfile=$path."Astromaximum/deploy/$const::PRODUCT$ye.jar" ;
     print "Outfile is '-', setting to $outfile\n";
 }
-
+$outfile=ensure_slash($outfile);
 print "Processing <$config> for $year using locations from $loclist...\n";
 
 rm_all("$path$const::DIR_TEMP");
@@ -133,7 +136,7 @@ if($config=~/notest$/is){
     inject_locations($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
     inject_icon("res/");
     do_jar("$const::PRODUCT$ye", $outfile);
-#    do_messjar($outfile);
+    do_messjar($outfile);
     exit(0);
 }
 
@@ -161,6 +164,12 @@ if($config=~/geo-$/is){
 
 die "Invalid config";
 
+sub ensure_slash{
+	$_[0]=~s/\//\\/isg if $winda;
+	return $_[0];
+}
+
+
 sub copy_file{
     open(INF,"<$_[0]") or die "Cannot open file $_[0]: $!";
     binmode(INF);
@@ -174,8 +183,8 @@ sub copy_file{
 }
 
 sub inject_amdata{
-    copy_file($path."Astromaximum/src/Amdata.class", "$path$const::DIR_TEMP/Amdata.class");
     return;
+    copy_file($path."Astromaximum/src/Amdata.class", "$path$const::DIR_TEMP/Amdata.class");
     open(INF,"<$path"."Astromaximum/src/Amdata.class") or die "Cannot open file";
     binmode(INF);
     my @body=<INF>;
@@ -201,13 +210,14 @@ sub inject_icon{ #subdir
 
 sub inject_locations{
     if(!$_[0]){
-	die "Usage: inject_locations.pl <year> <city list> <dest file>\n";
+			die "Usage: inject_locations.pl <year> <city list> <dest file>\n";
     }
     my @fn;
     open(IN, "<$_[1]") or die "error $!: $_[1]\n";
     while(my $ln=<IN>){
 	    if($ln=~/(\w+):(Data\d\d)/is){
-		    push(@fn, $path."data/archive/$_[0]/$1/$2.dat");
+	    	my $dfile=ensure_slash($path."data/archive/$_[0]/$1/$2.dat");
+		    push(@fn, $dfile);
 	    }
     }
     close(IN);
@@ -249,7 +259,6 @@ sub inject_common{
     my $path1=$path;
 
     $path1.="data/archive/$year/";
-    undef $/ ;
 	open(OUTF, ">$dest") or die "$! $dest";
 	binmode(OUTF);
 	print OUTF $header;
@@ -280,8 +289,8 @@ sub writeData
     binmode(OUTF);
     open(INF, "<$src") or die "No file $src";
     binmode(INF);
-    undef $/ ;
-    my $body=<INF>;
+    my @data=<INF>;
+    my $body=join('', @data);
     close(INF);
     my $imeichar=shift;
     if(length($body)>8){
@@ -308,18 +317,18 @@ sub do_jar{
 	print INF $template;
 	print INF "\r\n";
     close(INF);
-    my $cmd=sprintf($const::ZIP, "$path$const::DIR_TEMP", $outfile);
+    my $cmd=ensure_slash(const::JAR($path, $outfile, "$path$const::DIR_TEMP"));
     print "Exec: $cmd\n";
     die "\tERROR: creating archive" if system($cmd);
     my $asize= -s $outfile;
-    $template.="\n\rMIDlet-Jar-Size: $asize\r\n";
+    $template.="\nMIDlet-Jar-Size: $asize\n";
     my $jad=$outfile;
     $jad=~s/jar/jad/is;
     $outfile=~s/.+[\/\\]//is;
-    $template.="MIDlet-Jar-URL: $outfile\r\n";
+    $template.="MIDlet-Jar-URL: $outfile\n";
     open(FFF, ">$jad") or die "$jad: $!";
     print(FFF $template);
-    print(FFF "\r\n");
+    print(FFF "\n");
     close(FFF);
 }
 
@@ -327,11 +336,11 @@ sub do_messjar{
     my ($jar)=@_;
     print "Messjaring $jar...\n";
 
-    undef $/ ;
-    open(InF, "<$jar") or print "No file";
-    binmode(InF);
-    my $body=<InF>;
-    close(InF);
+    open(INF, "<$jar") or print "No file";
+    binmode(INF);
+    my @data=<INF>;
+    my $body=join('', @data);
+    close(INF);
 
 
     #=head
@@ -387,6 +396,7 @@ sub mess_compression_local {
 
 sub mess_add_special_entry {
     my $body=shift;
+    print "  add_special_entry\n";	
     $body=~/(.+?Amaxdata\.dat)(.+?)($file_sign.+)/is;
     my($before, $inn, $after)=($1,$2,$3);
 #   die $after;
@@ -400,12 +410,12 @@ sub mess_add_special_entry {
     my $old=0;
     my $ind=index($after,$file_sign,$start);
     do{
-	push(@apos,$ind-$old);
-	push(@acrc,unpack('L',substr($after, $ind+0xe, 4)));
-	$start=$ind+1;
-#	print "$ind\n";
-	$old=$ind;
-	$ind=index($after,$file_sign,$start);
+			push(@apos,$ind-$old);
+			push(@acrc,unpack('L',substr($after, $ind+0xe, 4)));
+			$start=$ind+1;
+		#	print "$ind\n";
+			$old=$ind;
+			$ind=index($after,$file_sign,$start);
     }while($ind>=0 and $#apos<10); # only first 10 files recorded
     $ind=0;
     substr($inn,0,1)=pack('c',$#apos+1);
@@ -541,20 +551,20 @@ sub timebomb_install # time, sign
     my $tm2=int($_[0]/4096);
     my @classes=glob("$path$const::DIR_TEMP/*.class");
     foreach my $class(@classes){
-	open(InF, "<$class") or die "No file $class";
-	binmode(InF);
-	my @data=<InF>;
-	close(InF);
+	open(INF, "<$class") or die "No file $class";
+	binmode(INF);
+	my @data=<INF>;
+	close(INF);
 	my $body=join('', @data);
 	my $hextm=pack("N",$tm2);
     #	print $tm2,',',unpack("H*",$hextm);
 	my $pos=index($body, $_[1]);
 	if($pos>=0){
 	    substr($body, $pos, length($hextm))=$hextm;
-	    open(InF, ">$class") or die "No file $class";
-	    binmode(InF);
-	    print InF $body;
-	    close(InF);
+	    open(INF, ">$class") or die "No file $class";
+	    binmode(INF);
+	    print INF $body;
+	    close(INF);
 	    my($sec,$min,$hour,$mday,$m,$y,$wday,$yday);
 	    if($ARGV[2]){
 		($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = gmtime($tm2*4.096);

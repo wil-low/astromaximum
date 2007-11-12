@@ -166,14 +166,14 @@ class SummItem extends TimerTask implements RecordFilter{
         cal.setTime(new Date(events[1].date0));
         selIndex=1;
         final int weekDay=cal.get(Calendar.DAY_OF_WEEK);
-        if(Astromaximum.locale!="ru_RU"){
-          str=Astromaximum.getstr(weekDay-1)+" "+
+        if(Astromaximum.locale!="Ru"){
+          str=Astromaximum.getstr(weekDay-1+20)+" "+
               Astromaximum.months[cal.get(Calendar.MONTH)].substring(0,3)+
               " "+Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+
               " '"+Integer.toString(cal.get(Calendar.YEAR)).substring(2,4);
         }
         else{
-          str=Astromaximum.getstr(weekDay-1)+" "+
+          str=Astromaximum.getstr(weekDay-1+20)+" "+
               Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+" "+
               Astromaximum.months[cal.get(Calendar.MONTH)].substring(0,3)+" '"+
               Integer.toString(cal.get(Calendar.YEAR)).substring(2,4);
@@ -1667,7 +1667,7 @@ class SummItem extends TimerTask implements RecordFilter{
         else {
           osg.setColor(0);
         }
-        osg.drawString(Astromaximum.dow[Astromaximum.calendar.get(Calendar.DAY_OF_WEEK)-1],
+        osg.drawString(Astromaximum.getstr(20+Astromaximum.calendar.get(Calendar.DAY_OF_WEEK)-1),
             xx+owner.IMG_WIDTH,yy-1,Graphics.BASELINE | Graphics.HCENTER);
         if(!nodrawNums[cnt++]){
           osg.drawString(Integer.toString(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH)),
@@ -1851,7 +1851,7 @@ class SummItem extends TimerTask implements RecordFilter{
     if(owner.size>1){
       for(int i=0; i<7; i++){
         osg.setColor(i == 0 ? 0xb00000: 0);
-        osg.drawString(Astromaximum.dow[i],
+        osg.drawString(Astromaximum.getstr(20+i),
             leftm+colWidth*i+colWidth/2,top,Graphics.BASELINE | Graphics.HCENTER);
       }
     }
