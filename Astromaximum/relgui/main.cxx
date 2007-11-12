@@ -16,6 +16,7 @@ using namespace std;
 
 fltk::Window *wnd=(fltk::Window *)0;
 const int IMEI_LEN=15;
+const char LOCL_TEMP[]=".locl.txt";
 char path[256];
 int year=0;
 bool sortbystate=false;
@@ -45,7 +46,7 @@ void move_record(LocRec &src, LocRec &dest, int index){
 }
 
 void cb_sort(fltk::RadioButton *chk, void*) {
-	printf("%s\n", chk->label());
+//	printf("%s\n", chk->label());
 	sortbystate=(int)chk->user_data()==1;
 	do_sort();
 }
@@ -112,25 +113,26 @@ void get_city_list(LocRec &v) {
 	struct dirent **namelist;
 	char cur_txt[1000];
 	char ini[100];
+	const char dir[]="data/archive";
 	City rec;
-	int n = fltk::filename_list(".", &namelist, 0);
+	int n = fltk::filename_list(dir, &namelist, 0);
 	if (!n)
 		perror("scandir");
 	else {
 		for(int i=0; i<n; i++) {
-			strcpy(cur_txt, namelist[i]->d_name);
+			strcpy(ini, namelist[i]->d_name);
 			free(namelist[i]);
-			if(!fltk::filename_match(cur_txt, "*.ini")){
+			sprintf(cur_txt, "%s/%s", dir, ini);
+			if(!fltk::filename_match(cur_txt, "*.txt")){
 				continue;
 			}
-			strcpy(ini, cur_txt);
 			*(fltk::filename_ext(ini))=0;
-			strcpy(fltk::filename_ext(cur_txt), ".txt");
+/*			strcpy(fltk::filename_ext(cur_txt), ".txt");
 			if(!fltk::filename_exist(cur_txt)){
 				printf("No region: %s\n", cur_txt);
 				continue;
 			}
-			FILE *intxt=fopen(cur_txt, "r");
+*/			FILE *intxt=fopen(cur_txt, "r");
 			if(!intxt){
 				perror("txt open");
 				continue;
@@ -158,14 +160,16 @@ void get_city_list(LocRec &v) {
 				}
 //		printf("\nC: %s\tS: %s", city, state);
 				char dpath[1000];
-				sprintf(dpath, "%04d/%s/Data%02d.dat", year, ini, ii++);
+				sprintf(dpath, "%s/%04d/%s/Data%02d.dat", dir, year, ini, ii);
 				if(fltk::filename_exist(dpath)){
+					sprintf(dpath,"%s:Data%02d %s", ini, ii, city);
 					rec.city=city; rec.state=state; rec.datapath=dpath;
 					v.push_back(rec);
 				}
 				else{
 					printf("No datafile %s\n", dpath);
 				}
+				ii++;
 			}
 		}
 		free(namelist);
@@ -192,22 +196,34 @@ static void cb_SetYear(fltk::Button*, void*) {
 
 void cb_do_demo(fltk::Button*, void*){
 	char cmd[200];
-	sprintf(cmd, "perl ../../gen_amax.pl demo %d %s -",
-		year, lbLoclist->text());
+	sprintf(cmd, "perl %s/gen_amax.pl demo %d %s -",
+		path, year, lbLoclist->text());
+	int result=run_exe(cmd);
+}
+
+void cb_do_geo(fltk::Button*, void*){
+	FILE *locl=fopen(LOCL_TEMP, "w");
+	for(int i=0; i<selected.size(); i++){
+		fprintf(locl,"%s\n", selected[i].datapath.c_str());
+	}
+	fclose(locl);
+	char cmd[200];
+	sprintf(cmd, "perl %s/gen_amax.pl geo- %d %s -",
+		path, year, LOCL_TEMP);
 	int result=run_exe(cmd);
 }
 
 void cb_do_timebomb(fltk::Button*, void*){
 	char cmd[200];
-	sprintf(cmd, "perl ../../gen_amax.pl tb %d %s - %s %s",
-		year, lbLoclist->text(), txtTimeOffset->text(), txtTimeDelta->text());
+	sprintf(cmd, "perl %s/gen_amax.pl tb %d %s - %s %s",
+		path, year, lbLoclist->text(), txtTimeOffset->text(), txtTimeDelta->text());
 	int result=run_exe(cmd);
 }
 
 void cb_do_imei(fltk::Button*, void*){
 	char cmd[200];
-	sprintf(cmd, "perl ../../gen_amax.pl release %d %s - %s",
-		year, lbLoclist->text(), txtImei->text());
+	sprintf(cmd, "perl %s/gen_amax.pl release %d %s - %s",
+		path, year, lbLoclist->text(), txtImei->text());
 	int result=run_exe(cmd);
 }
 
@@ -298,31 +314,20 @@ int main(int argc, char** argv) {
 	char ystr[5];
 	time_t t;
 	struct tm *tmp;
+	char fullpath[256];
 	
 	t = time(NULL);
 	tmp = localtime(&t);
 	year=tmp->tm_year+1900;
 	sprintf(ystr, "%04d", year);
-	
-	strcpy(path, argv[0]);
-	printf("argv[0] is: %s\n", path);
-	char *pos=strrchr(path, '\\');
-	if(!pos){
-		pos=strrchr(path, '/');
-	}
-	if(pos){
-		*(pos+1)=0;
-	}
-	else{
-		path[0]=0;
-	}
-	strcat(path, "../data/archive/");
+	int len=fltk::filename_absolute(path, 255, "", NULL);
+	strcat(path, "..");
 	chdir(path);
 	printf("Current directory is: %s\n", path);
 	wnd=make_window();
 	txtYear->text(ystr);
 	txtImei->text("359593001109710");
-	lbLoclist->text("../../loclist_default.txt");
+	lbLoclist->text("loclist_default.txt");
 	cb_SetYear(0, 0);
 	cb_imei_changed(txtImei, 0);
 	wnd->x(50);	wnd->y(50);

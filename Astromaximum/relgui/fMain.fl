@@ -20,6 +20,8 @@ decl {extern void cb_do_timebomb(fltk::Button*, void*);} {}
 
 decl {extern void cb_do_demo(fltk::Button*, void*);} {} 
 
+decl {extern void cb_do_geo(fltk::Button*, void*);} {} 
+
 decl {\#include "fltk/events.h"} {} 
 
 decl {\#include "fltk/Browser.h"} {public
@@ -61,7 +63,7 @@ decl {extern void cb_clear_loclist(fltk::Button*, void*);} {}
 Function {make_window()} {open
 } {
   {fltk::Window} {} {open
-    xywh {55 152 950 535} hide resizable
+    xywh {55 152 950 535} resizable visible
   } {
     {fltk::Group} {} {open
       xywh {210 5 735 525} box THIN_DOWN_BOX buttonbox NO_BOX
@@ -79,7 +81,7 @@ Function {make_window()} {open
         class MyBrowser
       } {}
     }
-    {fltk::Group} {} {open selected
+    {fltk::Group} {} {open
       xywh {5 5 204 530}
     } {
       {fltk::Group} {} {open
@@ -187,6 +189,7 @@ Function {make_window()} {open
         }
         {fltk::Button} {} {
           label {Generate Geo}
+          callback cb_do_geo selected
           xywh {5 120 190 25}
         }
         {fltk::Output} lbSize {
