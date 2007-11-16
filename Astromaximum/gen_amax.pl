@@ -12,7 +12,7 @@ $0=~/(.+)[\\\/]/is;
 my $path=$1;
 #my $path=`pwd`;
 chomp($path);
-$path.="/";
+$path.="/" if $path;
 require $path.'genconst.pm';
 
 if(!scalar(@ARGV)){

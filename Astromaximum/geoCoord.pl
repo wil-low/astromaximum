@@ -18,7 +18,7 @@ $0=~/(.+\/)/is;
 our $mypath=$1;
 require $mypath.'tz_patches.pm';
 if($#ARGV!=0 and scalar(@ARGV)<2){
-	die "Usage: <year> [tzonly] <country group code list>|<all>\n";
+	die "Usage: <year> [tzonly] <country group code list>|<all>|<common>\n";
 }
 our %historic;
 my @cities;
@@ -98,6 +98,15 @@ if($ARGV[0] eq 'all'){
 		print "---- $city_inf ----\n";
 		process_ini();
 	}
+	exit(0);
+}
+if($ARGV[0] eq 'common'){
+	print "Making common...\n";
+	my $invoke=$mypath."mutter2/mutter2 $year";# electio";
+	print "$invoke\n";
+	my $res=system($invoke);
+	die "Cancelled, result=$res" if $res;
+	exit(0);
 }
 else{
 	foreach $city_inf(@ARGV){
@@ -119,10 +128,19 @@ sub process_ini{
 		my $invoke;
 		my $db="$sqlite3 $sqpath".'coords.sqb';
 		my $tmp=$path.'country.tmp';
+		my $contin='';
 		foreach my $cit(@cities){
 			$cit=~s/[\n\r]//isg;
 			next if $cit=~/\A\s*\Z/is;
 			next if $cit=~/\#/is;
+			if($cit=~s/&([A-Z]{3})//is){
+			  $contin=$1;
+			  die "Invalid continent: $contin" unless $contin=~/^(AFR|ASI|EAS|SAS|SEA|CAR|CAM|EUR|EEU|WEE|MIE|NAM|OCE|SAM)$/is;
+			  next;
+			}
+			if(!$contin){
+			  die "No continent in $cit";
+			}
 			if($cit=~s/\@\s*//is){
 		#		die if $country;
 				$country=$cit;
@@ -180,13 +198,13 @@ sub process_ini{
 	#			die $st_name;
 				$state=~/(.+),/is;
 				$state=$1;
-				$sql="select cities.eng, longit, latit, '$state' from cities,counties where cities.eng = '$cit' and country_id=$cid and county_id=counties.id and counties.eng=\'$st_name\'";
+				$sql="select cities.eng, longit, latit, '$state','$contin' from cities,counties where cities.eng = '$cit' and country_id=$cid and county_id=counties.id and counties.eng=\'$st_name\'";
 #				print "$sql\n";
 			}
 			else{	
 				$state=~/(.+),/is;
 				$state=$1;
-				$sql="select eng, longit, latit, \'$state\' from cities where eng = \'$cit\' and country_id=$cid limit 1";
+				$sql="select eng, longit, latit, \'$state\','$contin' from cities where eng = \'$cit\' and country_id=$cid limit 1";
 			}
 			$invoke="echo \"$sql;\" \| $db > \"$tmp\"";
 			system($invoke);
