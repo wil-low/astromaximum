@@ -305,10 +305,13 @@ sub do_jar{
     open(INF, "<$path$const::DIR_TEMPLATE/MANIFEST.MF") or die $!;
     my @data=<INF>;
     close(INF);
+    my $mainclass=$const::PRODUCT;
+    $mainclass='GeoInstaller' if $prod=~/geo/is;
     my $template=join("",@data);
     $template=~s/<PRODUCT>/$prod/isg;
     $template=~s/<VERSION>/$const::VERSION/isg;
     $template=~s/<VENDOR>/$const::VENDOR/isg;
+    $template=~s/<MAINCLASS>/$mainclass/isg;
 #    $template=~s/<CODE>/$code/isg;
 #	$jad=~s/<DESC>/$desc/isg;
 #    $template=~s/<JAR>/$fname\.jar/isg;
