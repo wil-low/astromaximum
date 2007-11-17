@@ -7,7 +7,7 @@ include_once('lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-10-17T18:28:55+0300">
+<meta name="date" content="2007-11-17T16:54:40+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -35,6 +35,7 @@ if(!$chac){
 if($chac==1){
 	emit_admin();
 } 
+$sc='';
 ?>
 <h3 align=center><?php echo $i18['DB']?></h3>
 
@@ -85,6 +86,31 @@ function city_del(){
 	}
 };
 </script>
+<?php
+	if(isset($_POST['Action']) && ($_POST['Action']==$i18['GET_DATA']) && 
+			isset($_POST['sc'])){
+		$sth=get_selected_cities('sc');
+		if($sth){
+			echo "<p>You have selected:</p>";
+			while($row = mysql_fetch_row($sth)){
+				echo "$row[1], $row[2]; \n";	
+			}
+			include_once('amtools.php');
+			$id=create_jar($defyear, $sc);
+			$url='data.php?r='.$id;
+			echo "<center><h4>{$i18['PC_DL']}:</h4>";
+			echo "<b>{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";
+			$url=str_replace("?r", "?d", $url);
+			echo "{$i18['JAD_LINK']}: <a href='$url'>$id</a><br><br></b>";
+			$url=str_replace("?d", "?t", $url);
+			echo "<h4>{$i18['PHONE_DL']}:</h4>";
+			echo "<b>{$i18['DIRECTLINK']}: <a href='$url'>$id</a><br>";
+			echo "<br><font color='red'>{$i18['VALID_LINKS']}</font></b></center>";
+		}
+		emit_nav2();
+		exit(0);
+	}
+?>
 <form method="post" action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
 <table class=geo border="1" width="100%">
 <tr><td colspan=4>
@@ -112,14 +138,8 @@ function city_del(){
 <div align=right><input type='button'  value='<?php echo $i18['DEL_SEL']?>' onclick='city_del()' /></div>
 <div id=selcit>
 <?php
-	$sc=',';
-	if(isset($_POST['sc'])){
-		$sc=$_POST['sc'];
-	}
-	$sc1=trim($sc,",");
-	if($sc1){
-		$stat="SELECT cities.id, cities.name, countries.name FROM cities,countries WHERE cities.id IN ($sc1) and countries.id=country_id ORDER BY countries.name,cities.name";
-		$sth = mysql_query($stat);
+	$sth=get_selected_cities('sc');
+	if($sth){
 		while($row = mysql_fetch_row($sth)){
 			echo "<input type=checkbox name=sss id=$row[0]></input>$row[1], $row[2]<br>\n";	
 		}
@@ -233,97 +253,20 @@ function city_del(){
 </form>
 
 <?php
-	if(isset($_POST['Action']) && ($_POST['Action']==$i18['GET_DATA']) && 
-			isset($_POST['sc'])){
-		$sc=$_POST['sc'];
-		if($sc!=","){
-			$id=create_jar($defyear, $sc);
-			$url='data.php?r='.$id;
-			echo "<p><center><font color='red'><i>{$i18['STEP']} 4:</i></font>";
-			echo "<h4>{$i18['PC_DL']}:</h4>";
-			echo "<b>{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";
-			$url=str_replace("?r", "?d", $url);
-			echo "{$i18['JAD_LINK']}: <a href='$url'>$id</a><br><br></b>";
-			$url=str_replace("?d", "?t", $url);
-			echo "<h4>{$i18['PHONE_DL']}:</h4>";
-			echo "<b>{$i18['DIRECTLINK']}: <a href='$url'>$id</a><br>";
-			echo "<br><font color='red'>{$i18['VALID_LINKS']}</font></b></center>";
-		}
-	}
 	emit_nav2();
 
-function create_jar($year, $ids){
-	global $DIR_FILES, $DIR_SOURCE;
-	$ids=trim($ids,',');
-	include_once('amtools.php');
-	$ye=substr($year,-2);
-	list($dir,$fn)=amtools_random($ye, $DIR_FILES,'.r');
-	$srcdir="/tmp/$fn";
-	mkdir($srcdir);
-	$infile=fopen("$DIR_SOURCE/template.jad","rb");
-	$template = fread($infile, 1000000);
-	fclose($infile);
-	$code="-".substr($fn,-4);
-	$fname="Cities'$ye$code";
-	$template=str_replace('<YEAR>', $ye, $template);
-#	$jad=~s/<REGION>/$reg/isg;
-	$template=str_replace('<CODE>', $code, $template);
-#	$jad=~s/<DESC>/$desc/isg;
-	$template=str_replace('<JAR>', "$fname.jar", $template);
-#	echo $template;
-	
-	$server="http://".$_SERVER['SERVER_NAME'];
-	$stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
-		"WHERE cities.id IN (%s) AND city_id=cities.id AND year=%s".
-		" ORDER BY cities.name",$ids,$year);
-#	print $stat;
-	$sth = mysql_query($stat);
-	$i=0;
-	while($row = mysql_fetch_row($sth)){
-		$data[$i++]=$row[1];		
+function get_selected_cities($param)
+{
+	global $sc;
+	$sc=',';
+	if(isset($_POST[$param])){
+		$sc=$_POST[$param];
 	}
-	mysql_free_result($sth);
-	$cmd=sprintf($UNZIP, "$DIR_SOURCE/template.zip", "$DIR_SOURCE/$fn");
-#	echo $cmd;
-	exec($cmd);
-	
-	$inf=fopen("$DIR_SOURCE/$fn/META-INF/MANIFEST.MF", 'wb');
-	fwrite($inf, $template);
-	fclose($inf);
-	join_datafiles2($year, "$DIR_SOURCE/$fn/locations.dat", $data);
-	$inf=fopen("$DIR_SOURCE/icons/".substr($year,-1).".png", 'rb');
-	$icon=fread($inf,5000);
-	fclose($inf);
-	$inf=fopen("$DIR_SOURCE/$fn/icon.png", 'wb');
-	fwrite($inf,$icon);
-	fclose($inf);
-	$cmd=sprintf($ZIP, "$DIR_SOURCE/$fn", "../../$DIR_FILES/$fn.r");
-	echo $cmd;
-	exec($cmd);
-//	usleep(500000);
-//	emit_nav2();
-//	exit();
-	$inf=fopen("$DIR_FILES/$fn.d", 'wb');
-	$asize= filesize("$DIR_FILES/$fn.r");
-	$template.="MIDlet-Jar-Size: $asize\n";
-	fwrite($inf, $template);
-	fclose($inf);
-	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1$server/dl/data.php?r=$fn\n", $template);
-	$inf=fopen("$DIR_FILES/$fn.t", 'wb');
-	fwrite($inf, $template);
-	fclose($inf);
-	exec("rm -R $DIR_SOURCE/$fn");
-/*	
-	my $sql='INSERT INTO files (id, type, user_id, end_tm) VALUES';
-	foreach (('r','d','t')){
-		$sql.=" ($fn, \'$_\', ".$userid.", NOW()+ INTERVAL 2 HOUR),";
+	$sc1=trim($sc,",");
+	if($sc1){
+		$stat="SELECT cities.id, cities.name, countries.name FROM cities,countries WHERE cities.id IN ($sc1) and countries.id=country_id ORDER BY countries.name,cities.name";
+		return mysql_query($stat);
 	}
-	$sql=~s/,$//is;
-	$sth = $dbh->prepare($sql)|| die $dbh->errstr;
-	$sth->execute|| die $dbh->errstr;
-	$sth->finish;
-*/	
-	return $fn;
-}
-	
+	return null;
+}	
 ?>

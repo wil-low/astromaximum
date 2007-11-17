@@ -6,7 +6,7 @@ include_once('lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-10-28T09:21:07+0200">
+<meta name="date" content="2007-11-16T21:22:45+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -113,7 +113,7 @@ function up_geodata($fname, $ext){
 	$sthcou = "SELECT countries.id FROM countries WHERE countries.name=%s";
 	$sthcit = "SELECT cities.id FROM cities,countries WHERE cities.name=%s AND country_id=%s AND state_id=%s";
 	$sthstate = "SELECT states.id FROM states,countries WHERE states.name=%s AND country_id=%s";
-	$sthcouins = "INSERT INTO countries(name) VALUES (%s)";
+	$sthcouins = "INSERT INTO countries(name,continent) VALUES (%s,%s)";
 	$sthstateins = "INSERT INTO states(name,country_id) VALUES (%s,%s)";
 	$sthcitins = "INSERT INTO cities(name,country_id,state_id) VALUES (%s,%s,%s)";
 	$sthloc = "SELECT id FROM locations WHERE year=%s AND city_id=%s";
@@ -133,13 +133,14 @@ function up_geodata($fname, $ext){
 		$cc=preg_replace('/\#.+/is','',$cc);
   	list($name, $country, $yr, $txtchk, $status, $state)=array('','',0,'','','');
 		$rec=explode('|', $cc);
-		if(count($rec)!=4){
+		if(count($rec)!=5){
 			continue;
 		}
 		$name=$rec[0];
+		$continent=$rec[4];
+		$continent=preg_replace('/[\n\r]/is','',$continent);
 		$name=preg_replace("/.+?\!/is",'',$name,1);
 		$country=$rec[3];
-		$country=preg_replace('/[\n\r]/is','',$country);
 		$country=preg_replace('/.+?\$/is','',$country,1);
 		$state='';
 		if(preg_match('/ - (.+)/is',$country,$matches)){
@@ -178,7 +179,9 @@ function up_geodata($fname, $ext){
 		$couid=0;
 		$sth=mysql_query(sprintf($sthcou,quote_smart($country)));
 		if(!mysql_num_rows($sth)){
-			$sth=mysql_query(sprintf($sthcouins,quote_smart($country)));
+			$que=sprintf($sthcouins,quote_smart($country),quote_smart($continent));
+//			echo $que;
+			$sth=mysql_query($que);
 			$couid=mysql_insert_id();
 			$country="<font color=red>$country</font>";
 			++$cou_count;

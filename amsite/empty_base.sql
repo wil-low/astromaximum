@@ -47,6 +47,7 @@ DROP TABLE IF EXISTS `countries`;
 CREATE TABLE `countries` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL default '',
+  `continent` enum('AFR','ASI','EAS','SAS','SEA','CAR','CAM','EUR','EEU','WEE','MIE','NAM','OCE','SAM'),
   PRIMARY KEY  (`id`),
   KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds country names';
@@ -238,3 +239,57 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+
+--
+-- Table structure for table `source`
+--
+
+DROP TABLE IF EXISTS `source`;
+CREATE TABLE `source` (
+  `id` int(11) NOT NULL auto_increment,
+  `data` blob default NULL,
+  `comment` varchar(20) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds binary resources';
+
+--
+-- Dumping data for table `source`
+--
+
+
+/*!40000 ALTER TABLE `source` DISABLE KEYS */;
+LOCK TABLES `source` WRITE;
+INSERT INTO `source` VALUES (1,NULL,'tjar'),(2,NULL,'tjad'),(3,NULL,'demo');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `source` ENABLE KEYS */;
+
+/*
+--
+-- Table structure for table `divisions`
+--
+
+DROP TABLE IF EXISTS `divisions`;
+CREATE TABLE `divisions` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(50) default NULL,
+  `depth` integer NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds subdividions';
+
+--
+-- Dumping data for table `divisions`
+--
+
+--/*!40000 ALTER TABLE `divisions` DISABLE KEYS */;
+LOCK TABLES `divisions` WRITE;
+INSERT INTO `divisions` VALUES (1,'Midwest',1),
+			(2,'Mountain',1),
+			(3,'Pacific',1),
+			(4,'South',1),
+			(5,'Northeast',1),
+			(6,'Territories',1),
+			(6,'Territories',1),
+;
+UNLOCK TABLES;
+--/*!40000 ALTER TABLE `divisions` ENABLE KEYS */;
+*/
