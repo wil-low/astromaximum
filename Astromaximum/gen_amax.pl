@@ -39,9 +39,9 @@ if($config eq 'rebuild'){
     my $antpath;
     my @app=(
       '/home/willow/nb6beta2/java1/ant/bin/ant', 
-      '/home/willow/netbeans-5.5.1/ide7/ant/bin/ant', 
-      'd:/netbeans-5.5/ide7/ant/bin/ant.bat',
-      'd:/Program Files/netbeans-5.5.1/ide7/ant/bin/ant.bat'
+#      '/home/willow/netbeans-5.5.1/ide7/ant/bin/ant', 
+#      'd:/netbeans-5.5/ide7/ant/bin/ant.bat',
+#      'd:/Program Files/netbeans-5.5.1/ide7/ant/bin/ant.bat'
     );
     foreach (@app){
       if(-f $_){
@@ -317,11 +317,11 @@ sub do_jar{
 #	$jad=~s/<DESC>/$desc/isg;
 #    $template=~s/<JAR>/$fname\.jar/isg;
 
-    open(INF, ">$path$const::DIR_TEMP/META-INF/MANIFEST.MF") or die $!;
+    open(INF, ">$path/MANIFEST.MF") or die $!;
 	print INF $template;
 	print INF "\r\n";
     close(INF);
-    my $cmd=ensure_slash(const::JAR($path, $outfile, "$path$const::DIR_TEMP"));
+    my $cmd=ensure_slash(const::JAR($path, $outfile, "$path/MANIFEST.MF", "$path$const::DIR_TEMP"));
     print "Exec: $cmd\n";
     die "\tERROR: creating archive" if system($cmd);
     my $asize= -s $outfile;
