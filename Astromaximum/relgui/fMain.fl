@@ -121,8 +121,8 @@ Function {make_window()} {open
           extra_code {o->user_data((void*)1);}
         }
         {fltk::Input} txtTimeOffset {
-          label {Timeshift, hrs:}
-          xywh {5 130 95 25} align 1
+          label {Timeshift, hrs:} selected
+          xywh {5 130 95 25} align 1 deactivate
           extra_code {o->text("0");}
           class {fltk::IntInput}
         }
@@ -189,7 +189,7 @@ Function {make_window()} {open
         }
         {fltk::Button} {} {
           label {Generate Geo}
-          callback cb_do_geo selected
+          callback cb_do_geo
           xywh {5 120 190 25}
         }
         {fltk::Output} lbSize {

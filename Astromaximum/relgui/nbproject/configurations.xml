@@ -28,20 +28,25 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>GNU</compilerSet>
+        <compilerSet>MinGW</compilerSet>
         <cRequired>false</cRequired>
         <cppRequired>true</cppRequired>
         <fortranRequired>false</fortranRequired>
         <platform>2</platform>
       </toolsSet>
       <compileType>
+        <cCompilerTool>
+          <commandlineTool>gcc</commandlineTool>
+        </cCompilerTool>
         <ccCompilerTool>
+          <commandlineTool>g++</commandlineTool>
           <includeDirectories>
             <directoryPath>../../../fltk2</directoryPath>
           </includeDirectories>
         </ccCompilerTool>
         <linkerTool>
           <output>relgui</output>
+          <commandlineTool>g++</commandlineTool>
           <linkerLibItems>
             <linkerOptionItem>`../../../fltk2/fltk2-config --ldflags`</linkerOptionItem>
           </linkerLibItems>
@@ -65,7 +70,7 @@
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <compilerSet>GNU</compilerSet>
+        <compilerSet>MinGW</compilerSet>
         <cRequired>false</cRequired>
         <cppRequired>true</cppRequired>
         <fortranRequired>false</fortranRequired>

@@ -8,9 +8,9 @@
 //# 
 //# class CustomTime extends Frame{
 //#else
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+//import java.io.ByteArrayOutputStream;
+//import java.io.DataInputStream;
+//import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -143,7 +143,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
       return;
     }
     if (c.getCommandType() == Command.OK){
-      Astromaximum.summary.isShowCustom=true;
+      Summary.isShowCustom=true;
 //#if timeHistory
       if(!setTime(showHistory)){
         return;
@@ -177,8 +177,8 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
       default:  
         tit=Astromaximum.getstr(141);
 
-        sDate=Event.long2String((Astromaximum.summary.period0+
-          Astromaximum.summary.period0)>>1,0,false).substring(0,5);
+        sDate=Event.long2String((Summary.period0+
+          Summary.period0)>>1,0,false).substring(0,5);
 //        sDate=Event.long2String(tm,0,false);
     }
     setTitle(tit+" "+sDate);

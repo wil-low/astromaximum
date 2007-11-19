@@ -193,7 +193,7 @@ class Options extends GeoList{
         catch(Exception e){
           e.printStackTrace();
         }
-        if(Astromaximum.summary.size!=layout.getSelectedIndex()){
+        if(Summary.size!=layout.getSelectedIndex()){
           Astromaximum.summary.items=null;
           Astromaximum.summary.pageNum=Summary.PAGE_SUMMARY;
           Astromaximum.summary.selItem=1;
@@ -389,10 +389,10 @@ class Options extends GeoList{
       dos.writeByte(optFlags);
       dos.writeByte(timeGap.getSelectedIndex());
       dos.writeByte(layout.getSelectedIndex());
-      dos.writeShort(Astromaximum.customTime.histCount);
+      dos.writeShort(CustomTime.histCount);
       dos.writeInt(Astromaximum.customTime.lockFlags);
-      for(int i=0; i<Astromaximum.customTime.histCount; i++){
-        dos.writeLong(Astromaximum.customTime.history[i]);
+      for(int i=0; i<CustomTime.histCount; i++){
+        dos.writeLong(CustomTime.history[i]);
       }
       dos=null;
       rs.setRecord(2,baos.toByteArray(), 0, baos.size());
@@ -416,11 +416,11 @@ class Options extends GeoList{
       optFlags=dis.readByte();
       timeGap.setSelectedIndex(dis.readByte(),true);
       layout.setSelectedIndex(dis.readByte(),true);
-      Astromaximum.customTime.histCount=dis.readUnsignedShort();
+      CustomTime.histCount=dis.readUnsignedShort();
       Astromaximum.customTime.lockFlags=dis.readInt();
-      for(int i=0; i<Astromaximum.customTime.histCount; i++){
+      for(int i=0; i<CustomTime.histCount; i++){
         long tt=dis.readLong();
-        Astromaximum.customTime.history[i]=tt;
+        CustomTime.history[i]=tt;
         String str=Event.long2String(tt,0,false);
         if((Astromaximum.customTime.lockFlags&(1<<i))!=0){
           str+="*";
@@ -429,7 +429,7 @@ class Options extends GeoList{
       }
     } 
     catch (Exception ex) {
-      Astromaximum.customTime.histCount=Astromaximum.customTime.lockFlags=0;
+      CustomTime.histCount=Astromaximum.customTime.lockFlags=0;
       Astromaximum.customTime.cg.deleteAll();
       timeGap.setSelectedIndex(2,true);
       layout.setSelectedIndex(0,true);

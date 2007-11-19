@@ -3,6 +3,7 @@ use strict;
 use POSIX;
 #use warnings;
 #use Encode;
+our $winda=$^O=~/Win/is;
 
 my $TZ_VER=2;
 
@@ -14,7 +15,7 @@ if($ARGV[0] eq 'tzonly'){
 	$tzonly=1;
 	shift(@ARGV);
 }
-$0=~/(.+\/)/is;
+$0=~/(.+[\/\\])/is;
 our $mypath=$1;
 require $mypath.'tz_patches.pm';
 if($#ARGV!=0 and scalar(@ARGV)<2){
@@ -331,11 +332,11 @@ sub process_ini{
 				print(InF join("\n", @cities));
 				close(InF);
 				unlink("$newdir/$city_inf.zip");
-				my $cmd=sprintf('wd=`pwd`; cd %s; zip -q %s *.txt *.dat; cd $wd', $newdir, $city_inf);
-				#print "$cmd\n";
+				my $cmd=ensure_slash(sprintf('cd %s & zip -q %s *.txt *.dat & cd %s', $newdir, $city_inf, $mypath));
+#				print "$cmd\n";
 				system($cmd);
-				mkdir("$arcdir/$year");
-				rename("$newdir/$city_inf.zip", "$arcdir/$year/$city_inf.zip") or die $!."$newdir/$city_inf", "$arcdir/$year/$city_inf.zip";
+				mkdir(ensure_slash("$arcdir/$year"));
+				rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!."$newdir/$city_inf", "$arcdir/$year/$city_inf.zip";
 				print "Written $arcdir/$year/$city_inf.zip\n";
 			#	my @bins=glob("$dir\\Data*.dat");
 			#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
@@ -713,4 +714,9 @@ sub get_tz{
 		}
 		return undef;
 	}
+}
+
+sub ensure_slash{
+	$_[0]=~s/\//\\/isg if $winda;
+	return $_[0];
 }

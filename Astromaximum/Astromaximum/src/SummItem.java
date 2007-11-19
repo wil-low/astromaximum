@@ -166,7 +166,7 @@ class SummItem extends TimerTask implements RecordFilter{
         cal.setTime(new Date(events[1].date0));
         selIndex=1;
         final int weekDay=cal.get(Calendar.DAY_OF_WEEK);
-        if(Astromaximum.locale!="Ru"){
+        if(!Astromaximum.locale.equals("Ru")){
           str=Astromaximum.getstr(weekDay-1+20)+" "+
               Astromaximum.months[cal.get(Calendar.MONTH)].substring(0,3)+
               " "+Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+
@@ -363,8 +363,8 @@ class SummItem extends TimerTask implements RecordFilter{
             break;
           case 6:
             for(int i=0; i<4; i++){
-              owner.drawPhase(osg,getX(i+1, XCENTER)-owner.IMG_HEIGHT/2,
-                  y-owner.IMG_HEIGHT/2,owner.IMG_HEIGHT,i);
+              owner.drawPhase(osg,getX(i+1, XCENTER)-Summary.IMG_HEIGHT/2,
+                  y-Summary.IMG_HEIGHT/2,Summary.IMG_HEIGHT,i);
 //              drawImg(osg,Summary.imgPhase,i,getX(i+1, XCENTER),y,
 //                  Graphics.VCENTER|Graphics.HCENTER);
             }
@@ -478,8 +478,8 @@ class SummItem extends TimerTask implements RecordFilter{
               Graphics.VCENTER | Graphics.HCENTER);
         }
         else{
-          owner.drawPhase(osg,left+width/2-owner.IMG_HEIGHT/2,
-              top+height/2-owner.IMG_HEIGHT/2,owner.IMG_HEIGHT,events[0].planet1);
+          owner.drawPhase(osg,left+width/2-Summary.IMG_HEIGHT/2,
+              top+height/2-Summary.IMG_HEIGHT/2,Summary.IMG_HEIGHT,events[0].planet1);
 //          drawImg(osg,Summary.imgPhase,events[0].planet1,
 //              left+width/2,top+height/2,Graphics.VCENTER | Graphics.HCENTER);
         }
@@ -577,7 +577,7 @@ class SummItem extends TimerTask implements RecordFilter{
           if(type == Event.EV_NIGHT_HOURS) {
             plt += 13;
           }
-          if(events[i].date1>=owner.period1){
+          if(events[i].date1>=Summary.period1){
             int xx=getX(i, XLEFT)+2;
             osg.fillRect(xx,top+2,getX(i, XRIGHT)-xx-2,height-3);
           }
@@ -694,7 +694,7 @@ class SummItem extends TimerTask implements RecordFilter{
         break;
       case Event.EV_ECLIPSE:
         try{
-          int xxx=left-owner.IMG_WIDTH*3/2;
+          int xxx=left-Summary.IMG_WIDTH*3/2;
           int plt=tag & 1;
           if((tag&6) != 6){ 
             drawImg(osg,Summary.imgPlanet,plt,xxx,top+1,
@@ -707,12 +707,12 @@ class SummItem extends TimerTask implements RecordFilter{
             pll=2;
           }
           else{
-            xxx=left+width/2-owner.IMG_HEIGHT/2;
+            xxx=left+width/2-Summary.IMG_HEIGHT/2;
           }
           if((tag & 2)!=0){
             owner.drawPhase(osg,xxx,
-                top+height/2-owner.IMG_HEIGHT/2,
-                owner.IMG_HEIGHT,pll);
+                top+height/2-Summary.IMG_HEIGHT/2,
+                Summary.IMG_HEIGHT,pll);
           }
         } 
         catch(NullPointerException npe){}
@@ -841,20 +841,20 @@ class SummItem extends TimerTask implements RecordFilter{
           int si0=ev.degree & 0xf, si1=(ev.degree & 0xf0)>>4;
           drawImg(osg,Summary.imgZodiac,si0,x-3,y,Graphics.TOP|Graphics.RIGHT);
           drawImg(osg,Summary.imgZodiac,si1,x+3,y,Graphics.TOP|Graphics.LEFT);
-          osg.drawString(Event.long2String(ev.date0,1,false),x-3-owner.IMG_WIDTH*2,y,
+          osg.drawString(Event.long2String(ev.date0,1,false),x-3-Summary.IMG_WIDTH*2,y,
               Graphics.TOP|Graphics.RIGHT);
-          osg.drawString(Event.long2String(ev.date1,1,true),x+3+owner.IMG_WIDTH*2,y,
+          osg.drawString(Event.long2String(ev.date1,1,true),x+3+Summary.IMG_WIDTH*2,y,
               Graphics.TOP|Graphics.LEFT);
-          y+=2+owner.IMG_WIDTH;
+          y+=2+Summary.IMG_WIDTH;
           boolean peregr=(ev.planet0 & 0x80)!=0;
           drawImg(osg,peregr? Summary.imgOpaq: Summary.imgPlanet,
-              OWN_SIGN_REVERSE[si0]+(peregr? 13: 0),x-3-owner.IMG_WIDTH,y,Graphics.TOP|Graphics.RIGHT);
+              OWN_SIGN_REVERSE[si0]+(peregr? 13: 0),x-3-Summary.IMG_WIDTH,y,Graphics.TOP|Graphics.RIGHT);
           peregr=(ev.planet1 & 0x80)!=0;
           drawImg(osg,peregr? Summary.imgOpaq: Summary.imgPlanet,
-              OWN_SIGN_REVERSE[si1]+(peregr? 13: 0),x+3+owner.IMG_WIDTH,y,Graphics.TOP|Graphics.LEFT);
-          osg.drawString(Integer.toString((ev.planet0 & 0x7f)-64),x-3-owner.IMG_WIDTH*4,y,
+              OWN_SIGN_REVERSE[si1]+(peregr? 13: 0),x+3+Summary.IMG_WIDTH,y,Graphics.TOP|Graphics.LEFT);
+          osg.drawString(Integer.toString((ev.planet0 & 0x7f)-64),x-3-Summary.IMG_WIDTH*4,y,
               Graphics.TOP|Graphics.LEFT);
-          osg.drawString(Integer.toString((ev.planet1 & 0x7f)-64),x+3+owner.IMG_WIDTH*4,y,
+          osg.drawString(Integer.toString((ev.planet1 & 0x7f)-64),x+3+Summary.IMG_WIDTH*4,y,
               Graphics.TOP|Graphics.RIGHT);
           si0=(ev.degree>>8) & 0xff;
           if(si0<8){
@@ -975,7 +975,7 @@ class SummItem extends TimerTask implements RecordFilter{
       if(now0 == 1) {
         osg.setColor(Astromaximum.RUBY_COLOR);
       }
-      if(owner.isShowCustom && cus0 == 1) {
+      if(Summary.isShowCustom && cus0 == 1) {
         osg.setColor(Astromaximum.CUST_COLOR);
       }
       osg.drawString(s1+Event.long2String(d1,1,false),
@@ -986,7 +986,7 @@ class SummItem extends TimerTask implements RecordFilter{
       if(now0 == 2) {
         osg.setColor(Astromaximum.RUBY_COLOR);
       }
-      if(owner.isShowCustom && cus0 == 2) {
+      if(Summary.isShowCustom && cus0 == 2) {
         osg.setColor(Astromaximum.CUST_COLOR);
       }
       osg.drawString(s2+Event.long2String(d2,1,false),
@@ -1248,7 +1248,7 @@ class SummItem extends TimerTask implements RecordFilter{
 //#endif  
     if(deg2>30){
       deg2=0;
-      Astromaximum.instance.log("wrong tithi");
+      Astromaximum.log("wrong tithi");
     }
     tithi =Astromaximum.extractImg(deg2,"/res/ph"+Integer.toString(Summary.moonPhaseH)+".dat");
   }
@@ -1547,8 +1547,8 @@ class SummItem extends TimerTask implements RecordFilter{
         for(Enumeration e= owner.moonPhase.elements(); e.hasMoreElements();){
           eclipse=(Event)e.nextElement();
           if(eclipse.isDateBetween(0,ld,ld2)){
-            owner.drawPhase(osg,leftm+owner.IMG_WIDTH*5/2,
-                yy-owner.IMG_HEIGHT,owner.IMG_HEIGHT,eclipse.planet1);
+            owner.drawPhase(osg,leftm+Summary.IMG_WIDTH*5/2,
+                yy-Summary.IMG_HEIGHT,Summary.IMG_HEIGHT,eclipse.planet1);
 //                  drawImg(osg,Summary.imgPhase,eclipse.planet1,xx+owner.IMG_WIDTH*2,yy,
 //                      Graphics.BOTTOM | Graphics.LEFT);
             nodrawNums[cnt]=true;
@@ -1641,7 +1641,7 @@ class SummItem extends TimerTask implements RecordFilter{
       long date=ev.date0;
       if(ev.isDateBetween(0,fgd,fgd2)){
         final int day=(int)((date-fgd)/Astromaximum.MSECINDAY);
-        places[day]+=(owner.size==2? 3:3);
+        places[day]+=(Summary.size==2? 3:3);
         final int x=colWidth+(2- places[day])*(Summary.IMG_HEIGHT+1)-1;
         y=day/ owner.colCount*rowHeight+top+3;
         drawAspect(osg,ev,x,y,Graphics.TOP);
@@ -1657,7 +1657,7 @@ class SummItem extends TimerTask implements RecordFilter{
     for(int row=0; row< owner.rowCount; row++){
       for(int col=0; col< owner.colCount; col++){
         int xx=leftm;
-        xx+=owner.IMG_WIDTH*2;
+        xx+=Summary.IMG_WIDTH*2;
         int yy=(row+1)*rowHeight + top + 1;
         Astromaximum.calendar.setTime(cur);
         yy-=rowHeight/2;
@@ -1668,10 +1668,10 @@ class SummItem extends TimerTask implements RecordFilter{
           osg.setColor(0);
         }
         osg.drawString(Astromaximum.getstr(20+Astromaximum.calendar.get(Calendar.DAY_OF_WEEK)-1),
-            xx+owner.IMG_WIDTH,yy-1,Graphics.BASELINE | Graphics.HCENTER);
+            xx+Summary.IMG_WIDTH,yy-1,Graphics.BASELINE | Graphics.HCENTER);
         if(!nodrawNums[cnt++]){
           osg.drawString(Integer.toString(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH)),
-              xx + (owner.IMG_WIDTH),yy,
+              xx + (Summary.IMG_WIDTH),yy,
               (Graphics.TOP) | Graphics.HCENTER);
         }
         final long start=cur.getTime();
@@ -1815,7 +1815,7 @@ class SummItem extends TimerTask implements RecordFilter{
       }
       // @todo Retrograde drawing
 //          if(!weekMode){
-        if(owner.size>1){
+        if(Summary.size>1){
           y-=osg.getFont().getHeight();
         }
         drawImg(osg,Summary.imgPlanet,ev.planet0,x,y,
@@ -1848,7 +1848,7 @@ class SummItem extends TimerTask implements RecordFilter{
         cur.setTime(start + Astromaximum.MSECINDAY);
       }
     }
-    if(owner.size>1){
+    if(Summary.size>1){
       for(int i=0; i<7; i++){
         osg.setColor(i == 0 ? 0xb00000: 0);
         osg.drawString(Astromaximum.getstr(20+i),

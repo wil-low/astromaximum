@@ -21,7 +21,7 @@ FC=
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Debug/GNU-Linux-x86
+OBJECTDIR=build/Debug/MinGW-Linux-x86
 
 # Object Files
 OBJECTFILES= \
@@ -45,7 +45,7 @@ LDLIBSOPTIONS=`../../../fltk2/fltk2-config --ldflags`
 .build-conf: ${BUILD_SUBPROJECTS} relgui
 
 relgui: ${OBJECTFILES}
-	${LINK.cc} -o relgui ${OBJECTFILES} ${LDLIBSOPTIONS} 
+	g++ -o relgui ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/main.o: main.cxx 
 	${MKDIR} -p ${OBJECTDIR}

@@ -14,7 +14,7 @@ our $UNZIP=q(unzip  %s -x *META-INF* -d %s );
 #our $zip=q("d:/Program Files/WinRAR/WinRar.exe" a -afzip -r -ep1 %s.r %s/*);
 
 sub JAR{
-	my ($jarpath, $out, $manifest, $srcdir)=@_;
+	my ($jarpath, $out, $manifest, $srcdir, $winda)=@_;
 	$jarpath=~s/[\\\/]+$//is;
 	my $jarchiver='jar';
 	$jarchiver='fastjar' unless $winda;
