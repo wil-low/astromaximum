@@ -28,7 +28,7 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>MinGW</compilerSet>
+        <compilerSet>GNU</compilerSet>
         <cRequired>false</cRequired>
         <cppRequired>true</cppRequired>
         <fortranRequired>false</fortranRequired>
@@ -65,7 +65,7 @@
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <compilerSet>MinGW</compilerSet>
+        <compilerSet>GNU</compilerSet>
         <cRequired>false</cRequired>
         <cppRequired>true</cppRequired>
         <fortranRequired>false</fortranRequired>

@@ -146,6 +146,7 @@ void get_city_list(LocRec &v) {
 					*ind=0;
 				if(ind=strchr(cur_txt, '\n'))
 					*ind=0;
+				cur_txt[strlen(cur_txt)-4]='-';
 				state=strrchr(cur_txt, '|')+1;
 				if(ind=strchr(cur_txt, '|'))
 					*ind=0;

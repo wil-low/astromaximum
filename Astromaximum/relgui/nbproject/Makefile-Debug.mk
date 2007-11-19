@@ -2,7 +2,7 @@
 # Gererated Makefile - do not edit!
 #
 # Edit the Makefile in the project folder instead (../Makefile). Each target
-# has a -pre and a -post target defined where you can add custumized code.
+# has a -pre and a -post target defined where you can add customized code.
 #
 # This makefile implements configuration specific macros and targets.
 
@@ -12,16 +12,16 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=gcc.exe
-CCC=g++.exe
-CXX=g++.exe
+CC=gcc
+CCC=g++
+CXX=g++
 FC=
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Debug/MinGW-Linux-x86
+OBJECTDIR=build/Debug/GNU-Linux-x86
 
 # Object Files
 OBJECTFILES= \
@@ -49,11 +49,11 @@ relgui: ${OBJECTFILES}
 
 ${OBJECTDIR}/main.o: main.cxx 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g3 -gdwarf-2 -I../../../fltk2 -o ${OBJECTDIR}/main.o main.cxx
+	$(COMPILE.cc) -g -I../../../fltk2 -o ${OBJECTDIR}/main.o main.cxx
 
 ${OBJECTDIR}/fMain.o: fMain.cxx 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g3 -gdwarf-2 -I../../../fltk2 -o ${OBJECTDIR}/fMain.o fMain.cxx
+	$(COMPILE.cc) -g -I../../../fltk2 -o ${OBJECTDIR}/fMain.o fMain.cxx
 
 # Subprojects
 .build-subprojects:

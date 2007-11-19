@@ -2,16 +2,6 @@
 <project xmlns="http://www.netbeans.org/ns/project/1">
     <type>org.netbeans.modules.kjava.j2meproject</type>
     <configuration>
-        <configurations xmlns="http://www.netbeans.org/ns/project-configurations/1">
-            <configuration>Desktop</configuration>
-            <configuration>midp2y2007notest</configuration>
-            <configuration>midp2y2007notest_logger</configuration>
-            <configuration>midp2y2007release</configuration>
-            <configuration>midp2y2007release_logger</configuration>
-            <configuration>midp2y2007release_tb</configuration>
-            <configuration>test2006</configuration>
-            <configuration>midp2y2007</configuration>
-        </configurations>
         <data xmlns="http://www.netbeans.org/ns/j2me-project">
             <name>Nomad</name>
             <minimum-ant-version>1.6</minimum-ant-version>

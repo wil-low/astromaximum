@@ -38,6 +38,7 @@ if($config eq 'rebuild'){
     print "Rebuilding all configs...\n";
     my $antpath;
     my @app=(
+      '/home/willow/nb6beta2/java1/ant/bin/ant', 
       '/home/willow/netbeans-5.5.1/ide7/ant/bin/ant', 
       'd:/netbeans-5.5/ide7/ant/bin/ant.bat',
       'd:/Program Files/netbeans-5.5.1/ide7/ant/bin/ant.bat'
