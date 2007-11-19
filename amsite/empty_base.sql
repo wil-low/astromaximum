@@ -281,7 +281,7 @@ CREATE TABLE `divisions` (
 --
 
 --/*!40000 ALTER TABLE `divisions` DISABLE KEYS */;
-LOCK TABLES `divisions` WRITE;
+/*LOCK TABLES `divisions` WRITE;
 INSERT INTO `divisions` VALUES (1,'Midwest',1),
 			(2,'Mountain',1),
 			(3,'Pacific',1),
@@ -291,5 +291,5 @@ INSERT INTO `divisions` VALUES (1,'Midwest',1),
 			(6,'Territories',1),
 ;
 UNLOCK TABLES;
---/*!40000 ALTER TABLE `divisions` ENABLE KEYS */;
 */
+--/*!40000 ALTER TABLE `divisions` ENABLE KEYS */;

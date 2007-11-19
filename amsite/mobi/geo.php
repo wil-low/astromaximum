@@ -1,5 +1,5 @@
 <?php
-	include_once('../dbconnect.php');
+	include_once('../dl/dbconnect.php');
 	$fd = fopen("continents.txt", 'r');
 	while (!feof($fd)) {
 		$buffer = fgets($fd, 4096);
@@ -23,9 +23,9 @@
 		}
 	}
 	if($level==4){
-		include_once('../amtools.php');
+		include_once('../dl/amtools.php');
 		$fn=create_jar($defyear, $p[3]);
-		header("Location: ../data.php?t=$fn");
+		header("Location: ../dl/data.php?t=$fn");
 		exit();
 	}
 	$entity='';
@@ -71,8 +71,8 @@
 <div id="ftr">
 <pre>
 <?php
-	print_r($_GET);
-	print_r($_POST);
+//	print_r($_GET);
+//	print_r($_POST);
 ?>
 </pre>
 </div>
@@ -124,7 +124,7 @@
 				",locations WHERE country_id=%s AND countries.id=country_id".
 				" AND city_id=cities.id %s AND year=%s". # year condition
 				" ORDER BY cities.name",quote_smart($params[1]), $andst, quote_smart($defyear));
-			echo "$query<br>";
+//			echo "$query<br>";
 			$sth=mysql_query($query);
 			while($row = mysql_fetch_row($sth)){
 				$keys[$i]=$row[0]; $values[$i]=$row[1];
