@@ -188,7 +188,7 @@ public class PhoneTest extends MIDlet implements CommandListener {
 	  cal.get(Calendar.HOUR_OF_DAY)+":"+
 	  cal.get(Calendar.MINUTE)+" "+
           cal.get(Calendar.DAY_OF_MONTH)+"."+
-	  cal.get(Calendar.MONTH)+"."+
+	  (cal.get(Calendar.MONTH)+1)+"."+
 	  cal.get(Calendar.YEAR);
       
       imeiList.append(strDate, null);

@@ -501,12 +501,11 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //# ////#debug
 //# //        System.out.println(Options.optFlags);
 //#     int now=(int)(Options.currentTime()/4096);
-//# //     Astromaximum.log("Timebomb:");
-//# //     Astromaximum.log(Long.toString(GeoList.tzOffset));
-//#  //    Astromaximum.log(Long.toString(GeoList.localOffset));
-//# //     Astromaximum.log(new Date((long)Interpreter.hj*4096).toString());
-//# //     Astromaximum.log(new Date((long)now*4096).toString());
-//# //     Astromaximum.log(new Date((long)CustomTime.hj*4096).toString());
+//#      Astromaximum.log("Timebomb:");
+//#      Astromaximum.log(Long.toString(GeoList.tzOffset));
+//#      Astromaximum.log(new Date((long)Interpreter.hj*4096).toString());
+//#      Astromaximum.log(new Date((long)now*4096).toString());
+//#      Astromaximum.log(new Date((long)CustomTime.hj*4096).toString());
 //#     int mul=(CustomTime.hj-now)*(now-Interpreter.hj);
 //# //    System.out.println(mul);
 //#     if(mul==0){
