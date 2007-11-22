@@ -2,35 +2,57 @@
 use strict;
 use POSIX;
 
-our $path='';
+our $path;
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
 
 our $winda=$^O=~/Win/is;
 
+our %eventType=qw(EV_VOC 0 EV_SIGN_ENTER 1 EV_ASP_EXACT 2 EV_RISE 3 EV_DEGREE_PASS 4 
+	EV_VIA_COMBUSTA 5 EV_RETROGRADE 6 EV_ECLIPSE 7 EV_TITHI 8 EV_NAKSHATRA 9 EV_SET 10
+	EV_DECL_EXACT 11 EV_NAVROZ 12 EV_WEEK 13 EV_PLANET_HOUR 14 EV_STATUS 15 EV_SUN_RISE 16 
+	EV_MOON_RISE 17 EV_MOON_MOVE 18 EV_SEL_DEGREES 19 EV_DAY_HOURS 20 EV_NIGHT_HOURS 21 
+  EV_SUN_DAY 22 EV_MOON_DAY 23 EV_GRID_DATE 24 EV_MOON_PHASE 25 EV_ZODIAC_SIGN 26 
+  EV_PANEL 27 EV_FAST_BUTTON 28 EV_DEG_2ND 29 EV_WEEK_GRID 30 EV_MONTH_GRID 31 
+  EV_DECUMBITURE 32 EV_DECUMB_ASPECT 33 EV_DECUMB_BEGIN 34 EV_SUN_DEGREE_LARGE 35 
+  EV_MOON_SIGN_LARGE 36 EV_HELP 37 EV_ASP_EXACT_MOON 38 EV_DEGPASS0 39 EV_DEGPASS1 40
+  EV_DEGPASS2 41 EV_DEGPASS3 42 EV_HELP0 43 EV_HELP1 44 EV_ASTRORISE 45 EV_ASTROSET 46
+  EV_APHETICS 47 EV_FAST 48 EV_ASCAPHETICS 49 EV_MSG 50 EV_LAST 51
+  );
+
+our %eventFlags=qw(EF_PLANET1 2 EF_PLANET2 4 EF_DEGREE 8 EF_SHORT_DEGREE 64);
+our $output=''; our $paramcount=0; our $outbuf; our $errors=0; 
+our %hash;
+
 $0=~/(.+)[\\\/]/is;
-my $path=$1;
+$path=$1;
 #my $path=`pwd`;
 chomp($path);
-$path.="/" if $path;
-require $path.'genconst.pm';
+if(!$path){
+    $path='.';
+}
+require "$path/genconst.pm";
 
 if(!scalar(@ARGV)){
     print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
     print "Parameters:\n";
     print "\t<config>: [rebuild|notest|release|tb|demo]\n";
     print "\t<year>\n";
+    print "\t<lang>\n";
     print "\t<loclist file>\n";
     print "\t<output jar>, or '-' for default\n";
     print "\t[imei|timebomb|tb_timeout]\n";
     exit(1);
 }
 
-require $path.'tools.pm';
-require $path.'Crc32.pm';
+require "$path/tools.pm";
+require "$path/Crc32.pm";
+
+our $TEST_YEAR=2007; # default year for Demo
 
 our $config=shift(@ARGV);
 our $year=shift(@ARGV);
+our $lang=shift(@ARGV);
 our $loclist=shift(@ARGV);
 our $outfile=shift(@ARGV);
 
@@ -61,7 +83,7 @@ if($config eq 'rebuild'){
         print "--------------------------------\n";
         my $cmd="\"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Drebuild.only=true clean jar";
         print "$cmd\n";
-        die "BUILD ERROR"if system($cmd);
+        die "BUILD ERROR" if system($cmd);
     }
     my $conf="DefaultConfiguration";
     print "\n--------------------------------\n";
@@ -79,9 +101,9 @@ die "Invalid loclist '$loclist'" if ! -f $loclist;
 my $dest='';
 
 if($config=~/(2006|demo)/is){
-    $year=2006;
+    $year=$TEST_YEAR;
     unless($outfile=~/\.jar/is){
-			$outfile=$path."Astromaximum/deploy/$const::PRODUCT".'Demo.jar' ;
+	$outfile="$path/Astromaximum/deploy/$const::PRODUCT".'Demo.jar' ;
     }
 }
 
@@ -90,30 +112,31 @@ my $ye=$1;
 
 if($config=~/geo-$/is){
     unless($outfile=~/\.jar/is){
-	$outfile=$path."Astromaximum/deploy/Geo$ye.jar";
+	$outfile="$path/Astromaximum/deploy/Geo$ye.jar";
     }
 }
 
 unless($outfile=~/\.jar/is){
     die "Invalid filename: '$outfile'" unless $outfile eq '-';
-    $outfile=$path."Astromaximum/deploy/$const::PRODUCT$ye.jar" ;
+    $outfile="$path/Astromaximum/deploy/$const::PRODUCT$ye.jar" ;
     print "Outfile is '-', setting to $outfile\n";
 }
 $outfile=ensure_slash($outfile);
-print "Processing <$config> for $year using locations from $loclist...\n";
+print "Processing <$config> for $year lang=$lang using locations from $loclist...\n";
 
-rm_all("$path$const::DIR_TEMP");
+rm_all("$path/$const::DIR_TEMP");
 
 if($config=~/tb/is){
     my $ofs=shift(@ARGV);
     $ofs=0 unless $ofs;
     my $delta=shift(@ARGV);
     $delta=30 unless $delta;
-    unzip("$path$const::DIR_TEMPLATE/Astromaximum-tb.jar");
+    unzip("$path/$const::DIR_TEMPLATE/Astromaximum-tb.jar");
+    inject_lang($lang); 
     inject_amdata();
     do_timebomb($ofs, $delta);
-    inject_common($year, "$path$const::DIR_TEMP/common.dat");
-    inject_locations($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
+    inject_common($year, "$path/$const::DIR_TEMP/common.dat");
+    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
     inject_icon("res/");
     do_jar("$const::PRODUCT$ye", $outfile);
     do_messjar($outfile);
@@ -122,10 +145,11 @@ if($config=~/tb/is){
 
 if($config=~/(2006|demo)/is){
     $year=2006;
-    unzip("$path$const::DIR_TEMPLATE/AstromaximumDemo.jar");
+    unzip("$path/$const::DIR_TEMPLATE/AstromaximumDemo.jar");
+    inject_lang($lang, 'demo'); 
     inject_amdata();
-    inject_common($year, "$path$const::DIR_TEMP/c.dat");
-    inject_locations($year, $loclist, "$path$const::DIR_TEMP/l.dat");
+    inject_common($year, "$path/$const::DIR_TEMP/c.dat");
+    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
     inject_icon("res/");
     do_jar("AstromaximumDemo", $outfile);
     do_messjar($outfile);
@@ -133,9 +157,10 @@ if($config=~/(2006|demo)/is){
 }
 
 if($config=~/notest$/is){
-    unzip("$path$const::DIR_TEMPLATE/Astromaximum-notest.jar");
-    inject_common($year, "$path$const::DIR_TEMP/common.dat");
-    inject_locations($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
+    unzip("$path/$const::DIR_TEMPLATE/Astromaximum-notest.jar");
+    inject_lang($lang); 
+    inject_common($year, "$path/$const::DIR_TEMP/common.dat");
+    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
     inject_icon("res/");
     do_jar("$const::PRODUCT$ye", $outfile);
     do_messjar($outfile);
@@ -145,9 +170,25 @@ if($config=~/notest$/is){
 if($config=~/release$/is){
     my $imei=shift(@ARGV);
     $imei='0' x 15 unless $imei;
-    unzip("$path$const::DIR_TEMPLATE/Astromaximum.jar");
-    inject_common($year, "$path$const::DIR_TEMP/common.dat", $imei);
-    inject_locations($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
+    unzip("$path/$const::DIR_TEMPLATE/Astromaximum.jar");
+    inject_lang($lang); 
+    inject_common($year, "$path/$const::DIR_TEMP/common.dat", $imei);
+    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
+    inject_amdata();
+    inject_icon("res/");
+    do_jar("$const::PRODUCT$ye", $outfile);
+    do_messjar($outfile);
+    exit(0);
+}
+
+if($config=~/release_logger$/is){
+    my $imei=shift(@ARGV);
+    $imei='0' x 15 unless $imei;
+    unzip("$path/$const::DIR_TEMPLATE/Astromaximum-logger.jar");
+    inject_lang($lang); 
+    die "logger";
+    inject_common($year, "$path/$const::DIR_TEMP/common.dat", $imei);
+    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
     inject_amdata();
     inject_icon("res/");
     do_jar("$const::PRODUCT$ye", $outfile);
@@ -156,8 +197,8 @@ if($config=~/release$/is){
 }
 
 if($config=~/geo-$/is){
-    unzip("$path$const::DIR_TEMPLATE/GeoAM.jar");
-    inject_locations($year, $loclist, "$path$const::DIR_TEMP/locations.dat");
+    unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
+    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
     inject_icon();
     do_jar("Geo$ye", $outfile);
     do_messjar($outfile);
@@ -167,8 +208,8 @@ if($config=~/geo-$/is){
 die "Invalid config";
 
 sub ensure_slash{
-	$_[0]=~s/\//\\/isg if $winda;
-	return $_[0];
+    $_[0]=~s/\//\\/isg if $winda;
+    return $_[0];
 }
 
 
@@ -186,12 +227,12 @@ sub copy_file{
 
 sub inject_amdata{
     return;
-    copy_file($path."Astromaximum/src/Amdata.class", "$path$const::DIR_TEMP/Amdata.class");
-    open(INF,"<$path"."Astromaximum/src/Amdata.class") or die "Cannot open file";
+    copy_file("$path/Astromaximum/src/Amdata.class", "$path/$const::DIR_TEMP/Amdata.class");
+    open(INF,"<$path/Astromaximum/src/Amdata.class") or die "Cannot open file";
     binmode(INF);
     my @body=<INF>;
     close (INF);
-    open(OUTF,">$path$const::DIR_TEMP/Amdata.class") or die "Cannot open file";
+    open(OUTF,">$path/$const::DIR_TEMP/Amdata.class") or die "Cannot open file";
     binmode(OUTF);
     print OUTF join('', @body);
     close (OutF);
@@ -199,11 +240,11 @@ sub inject_amdata{
 
 sub inject_icon{ #subdir
     $ye=~/(\d)$/is;
-    open(INF,"<$path"."images/icons/$1.png") or die "Cannot open file $path"."images/icons/$1.png";
+    open(INF,"<$path/images/icons/$1.png") or die "Cannot open file $path/images/icons/$1.png";
     binmode(INF);
     my @body=<INF>;
     close (INF);
-    open(OUTF,">$path$const::DIR_TEMP/$_[0]"."icon.png") or die "Cannot open file $!";
+    open(OUTF,">$path/$const::DIR_TEMP/$_[0]"."icon.png") or die "Cannot open file $!";
     binmode(OUTF);
     print OUTF join('', @body);
     close (OutF);
@@ -218,7 +259,7 @@ sub inject_locations{
     open(IN, "<$_[1]") or die "error $!: $_[1]\n";
     while(my $ln=<IN>){
 	    if($ln=~/(\w+):(Data\d\d)/is){
-	    	my $dfile=ensure_slash($path."data/archive/$_[0]/$1/$2.dat");
+	    	my $dfile=ensure_slash("$path/data/archive/$_[0]/$1/$2.dat");
 		    push(@fn, $dfile);
 	    }
     }
@@ -260,14 +301,14 @@ sub inject_common{
     my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
     my $path1=$path;
 
-    $path1.="data/archive/$year/";
+    $path1.="/data/archive/$year";
 	open(OUTF, ">$dest") or die "$! $dest";
 	binmode(OUTF);
 	print OUTF $header;
 	close(OUTF);
 
-    my @bins=glob("$path1".'*.bin');
-    #my @bins=glob("$path".'retro09.bin');
+    my @bins=glob("$path1/*.bin");
+    #my @bins=glob("$path/retro09.bin");
     my $counter=0;
     foreach my $ff(@bins){
 	if($ff=~/(rise|set|navroz|geo|nakshatra|degall|aphetics)/is){
@@ -304,7 +345,7 @@ sub writeData
 
 sub do_jar{
     my($prod, $outfile)=@_;
-    open(INF, "<$path$const::DIR_TEMPLATE/MANIFEST.MF") or die $!;
+    open(INF, "<$path/$const::DIR_TEMPLATE/MANIFEST.MF") or die $!;
     my @data=<INF>;
     close(INF);
     my $mainclass=$const::PRODUCT;
@@ -318,11 +359,11 @@ sub do_jar{
 #	$jad=~s/<DESC>/$desc/isg;
 #    $template=~s/<JAR>/$fname\.jar/isg;
 
-    open(INF, ">$path/MANIFEST.MF") or die $!;
+    open(INF, ">$path/MANIFEST.MF") or die "$path/MANIFEST.MF $!";
 	print INF $template;
 	print INF "\r\n";
     close(INF);
-    my $cmd=ensure_slash(const::JAR($path, $outfile, "$path/MANIFEST.MF", "$path$const::DIR_TEMP", $winda));
+    my $cmd=ensure_slash(const::JAR("$path/", $outfile, "$path/MANIFEST.MF", "$path/$const::DIR_TEMP", $winda));
     print "Exec: $cmd\n";
     die "\tERROR: creating archive" if system($cmd);
     my $asize= -s $outfile;
@@ -493,9 +534,9 @@ sub mess_direrase {
 }
 
 sub unzip{
-    rm_all("$path$const::DIR_TEMP");
+    rm_all("$path/$const::DIR_TEMP");
     copy_file($_[0], $outfile);
-    my $cmd=sprintf($const::UNZIP, $_[0], "$path$const::DIR_TEMP");
+    my $cmd=sprintf($const::UNZIP, $_[0], "$path/$const::DIR_TEMP");
     print "Exec: $cmd\n";
     system($cmd);
 }
@@ -554,7 +595,7 @@ sub rm_all{ #dir to erase
 sub timebomb_install # time, sign
 {
     my $tm2=int($_[0]/4096);
-    my @classes=glob("$path$const::DIR_TEMP/*.class");
+    my @classes=glob("$path/$const::DIR_TEMP/*.class");
     foreach my $class(@classes){
 	open(INF, "<$class") or die "No file $class";
 	binmode(INF);
@@ -580,5 +621,182 @@ sub timebomb_install # time, sign
 	    return POSIX::strftime( "%B %d, %Y - %H:%M:%S ", $sec,$min,$hour,$mday,$m,$y,$wday).' 0x'.unpack("H*",$hextm)."\n";
 	}
     }
-    return "Operation failed!!!\n";
+    die "Operation failed!!!\n";
+}
+
+sub inject_lang{ # lang, isdemo
+    my($lang, $demo)=@_;
+    my $dest="$path/$const::DIR_TEMP";
+    my @bins=glob("$path/interpret/$lang/*.txt");
+    die "No files for '$lang' language\n" unless scalar(@bins);
+    my @buf;
+    my $body;
+
+    my @demo_allowed=qw(
+      EV_VOC EV_SIGN_ENTER EV_MOON_MOVE EV_ASP_EXACT_MOON EV_DEGPASS0 EV_DEGPASS1
+      EV_DEGPASS2 EV_DEGPASS3 EV_RETROGRADE EV_MSG
+    );
+
+
+    my %demo_events;
+    if($demo){
+      print "Demo mode: filtering events\n";
+      foreach(@demo_allowed){
+        my $id=$eventType{$_};
+        die "Unknown demo event <$_>, $id" unless defined($id);
+        $demo_events{$_}=$id;
+      }
+    }
+    else{
+      %demo_events=%eventType;
+    }
+
+
+    print "Cleaning $dest dir\n";
+            my @clean=glob("$dest/*");
+            foreach (@clean){
+                    unlink $_ if $_=~/[\/\\]\d+$/is;
+            }
+    #die $eventType{'EV_VOC'};  
+    foreach my $ff(@bins){
+            open(InF, "<$ff") or die "No file $ff";
+            @buf=<InF>;
+            close(InF);
+            print "\n**** $ff: *****\n";
+            my $body="@buf";
+            $outbuf=''; my $recnum=0;
+            $buf[0]=~/\!\!type\s*(\w+)/i;
+            my $evt=$1;
+
+            if($eventType{$evt}!~/^\d+$/){
+                    print "Event $evt not defined in $ff! Skipped\n";
+                    next;
+            }
+            unless(defined($demo_events{$evt})){
+              print "skipped from demo\n";
+              next;
+            }
+            $buf[1]=~/\!\!params\s*(\d+)/i;
+            $paramcount=$1;
+            $buf[2]=~/\!\!planet\s*(.+)/i;
+            my $planet=$1;
+
+=head
+            my $i=0;
+            foreach my $ln(@buf){
+                    $ln=~s/\/\/.+//isg;
+                    if($ln=~s/\A(\s*\d+)/$1 %$i%/is){
+                            $i++; 
+                    }
+            }
+            die "@buf";
+=cut
+
+    my $RESERVED_CHARS='*^$}>{~#@=';
+
+            foreach my $ln(@buf){
+                    my $line=$ln;
+                    $line=~s/\/\/.+//is;
+                    next if $line!~/%[\d\s\,\-]+%/;
+    #		next if $line=~/\A\s*\Z/is;
+    #		print "$line\n";
+                    $line=~s/\s*\Z//is;
+                    $line=~s/\.+\Z//is;
+                    $line=~s/.*?%(.*?)%\s*//is;
+                    write_record($1);
+    #		print $line."\n";
+                    if($evt ne 'EV_MSG'){
+                      for(my $i=0; $i<length($RESERVED_CHARS); $i++){
+                              my $char='\\'.substr($RESERVED_CHARS,$i,1);
+                              my @cnt=$line=~/([$char])/isg;
+                              if($#cnt>=0){
+                                      warn "@cnt" if $char eq '$';
+                                      if($#cnt%2 !=1){
+                                              print "\n  not matched - $1 in\n   $line \n";
+                                              ++$errors;
+                                      }
+                                      else{
+                                              if($char eq '\@'){
+                                                      for(my $j=0; $j<length($RESERVED_CHARS)-1; $j++){
+                                                              my $ch=substr($RESERVED_CHARS,$j,1);
+                                                              if(index('#~{=',$ch)==-1){
+                                                                      add_event_char($evt,'\\'.$ch);
+                                                              }
+                                                      }
+                                              }
+                                              else{
+                                                      add_event_char($evt,$char);
+                                              }
+                                      }
+                              }
+                      }
+                    }
+                    writeUTF($line);
+                    $recnum++;
+            }
+            my $len;
+    #	warn $outbuf;
+    #	exit();
+            do{
+                    use bytes; $len=length($outbuf)+11; 
+            };
+    #	die $flag;	 
+            print "$len, $planet\n";
+            $output=pack('nNcnna*',$eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
+    #	die $output;
+            open(OF, ">$dest/$eventType{$evt}") or die "No file";
+            binmode(OF);
+            print OF $output;
+            close(OF);
+            $output='';
+            $outbuf='';
+
+    }
+    if($errors==0){
+      exit(0) if $demo;
+      while (my($key, $value) = each %hash) {
+            $value=~s/\\//isg;
+            print "    topics.put(new Integer(Event.$key), \"$value\");\n";
+            delete $hash{$key};   # This is safe
+            }
+
+    }
+    else{
+            print "\n-------- $errors error(s) found. Compilation aborted! --------\n";
+    }
+
+    #my $inp=<STDIN>;
+}
+
+sub writeUTF
+{
+	my $param=shift;
+#	$param = decode("cp1251", $param);
+	my $len;
+	do{
+		use bytes; $len=length($param); 
+	};
+	$outbuf.=pack('na*', $len, $param);
+#	$outbuf.=$param;
+#	die $outbuf;
+}
+
+sub write_record
+{
+	my $par=shift;
+	my @params=split(/,/,$par);
+	if($paramcount>0 && $#params+1!=$paramcount){
+		print "\n  parameters should be $paramcount in $par , not $#params\n";
+		++$errors;
+	}
+	for(my $i=0; $i<$paramcount; $i++){
+		$outbuf.=pack('n',$params[$i]);
+	}
+}
+
+sub add_event_char
+{
+	if($hash{$_[0]}!~/$_[1]/is){
+		$hash{$_[0]}.=$_[1];
+	}
 }

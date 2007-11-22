@@ -21,7 +21,7 @@ FC=
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Release/MinGW-Linux-x86
+OBJECTDIR=build/Release/GNU-Linux-x86
 
 # Object Files
 OBJECTFILES= \

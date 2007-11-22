@@ -5,7 +5,7 @@
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
-    <property name="year" value="2007"/>
+    <property name="year" value="2008"/>
     <property name="lang" value="RU"/>
     
     <import file="nbproject/build-impl.xml"/>
@@ -88,11 +88,6 @@
         <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
       </uptodate>
       <antcall target="size.compile"/>
-      <exec executable="perl" failonerror="true">
-        <arg value="${basedir}/../lang_compile.pl"/>
-        <arg value="${lang}"/>
-        <arg value="${config.active}"/>
-      </exec>
     </target>
    
     <target name="size.compile" description="Size to dat files" unless="size2dat.notRequired">
@@ -109,38 +104,6 @@
 	</antcall>
     </target>
 <!--    
-    <target name="tb.install" description="Installing timebomb." if="do.timebomb">
-      <exec executable="perl" failonerror="true">
-        <arg value="${basedir}/../timebomb.pl"/>
-        <arg value="${class.dir}"/>
-        <arg value="${tb.timeout}"/>
-      </exec>
-    </target>
-
-    <target name="post-jar" description="Messing up JAR." unless="no.messjar">
-      <exec executable="perl" failonerror="true">
-        <arg value="../messjar.pl"/>
-        <arg value="${dist.dir}/${dist.jar}"/>
-      </exec>
-    </target>
-     
-    <target name="pre-obfuscate" description="Installing timebomb.">
-      <condition property="do.timebomb">
-        <equals arg1="${config.active}" arg2="midp2y2007release_tb"/>
-      </condition>
-      <condition property="no.messjar">
-        <equals arg1="${config.active}" arg2="midp2y2007notest"/>
-      </condition>
-      <antcall target="tb.install">
-        <param name="script.dir" value="../"/>
-        <param name="class.dir" value="${build.classes.dir}"/>
-      </antcall>
-    </target>
-    
-    <target name="pre-jar" description="Injecting Amdata." unless="no.messjar">
-      <copy file="${src.dir}/Amdata.class" todir="${preverify.classes.dir}"/>
-    </target>
-
     <target name="jar" depends="init,preverify,create-jad,set-keystore-password,set-alias-password,pre-jar" description="Build jar and application descriptor.">
         <dirname file="${dist.dir}/${dist.jar}" property="dist.jar.dir"/>
         <mkdir dir="${dist.jar.dir}"/>

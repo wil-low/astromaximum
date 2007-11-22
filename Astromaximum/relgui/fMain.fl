@@ -98,6 +98,15 @@ Function {make_window()} {open
           callback {set_year(txtYear->text());}
           xywh {109 5 85 20}
         }
+        {fltk::PopupMenu} pbLang {
+          callback {o->label(o->get_item()->label());} selected
+          xywh {5 28 85 25} align 48
+          extra_code {o->add("EN");
+o->add("RU");
+o->add("UA");
+o->value(1);
+o->label(o->get_item()->label());}
+        } {}
         {fltk::Button} {} {
           label Demo
           callback cb_do_demo
@@ -121,7 +130,7 @@ Function {make_window()} {open
           extra_code {o->user_data((void*)1);}
         }
         {fltk::Input} txtTimeOffset {
-          label {Timeshift, hrs:} selected
+          label {Timeshift, hrs:}
           xywh {5 130 95 25} align 1 deactivate
           extra_code {o->text("0");}
           class {fltk::IntInput}

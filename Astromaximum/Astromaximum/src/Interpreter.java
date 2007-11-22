@@ -168,7 +168,7 @@ class Interpreter extends Canvas implements CommandListener {
 	  res.append("Via Combusta");
 	  break;
 	case Event.EV_WEEK:
-	  res.append(Astromaximum.getstr(1+(int)params[2])).
+	  res.append(Astromaximum.getstr((int)params[2]-1)).
 	      append(" - ").append(Astromaximum.getstr(27)+" "+ //wd_, day
 	      Astromaximum.getstr(40+SummItem.weekPlanets[(int)params[2]-1]));//of_
 	  break;

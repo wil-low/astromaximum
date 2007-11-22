@@ -106,3 +106,11 @@ Continent keys:
     NAM - North America
     OCE - Oceania (Australia/New Zealand)
     SAM - South America
+
+
+Errors while running:
+    1 - 1st getstr failed - invalid message langfile
+    6 - options.resetStorage failed again
+    1501 - in Summary when getting Sun day - RMS contains invalid common file
+        (of different year etc)
+    

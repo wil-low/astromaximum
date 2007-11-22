@@ -1096,8 +1096,8 @@ class SummItem extends TimerTask implements RecordFilter{
 //        return new long[]{Event.EV_MOON_ASP_EXACT,plt,evi.planet1,asp,dgr,d0,0};
       case Event.EV_MOON_MOVE:
         if(dgr == 200){
-          int id1=-1;
-          int id2=-1;
+          int id1=255;
+          int id2=255;
           int counter=0;
           for (Enumeration e = moonMoveVec.elements() ; e.hasMoreElements() ;) {
             final Event ev=(Event)e.nextElement();
@@ -1106,7 +1106,7 @@ class SummItem extends TimerTask implements RecordFilter{
               if(dat<=d0){
                 id1=counter;
               }
-              if(id2 == -1 && dat >= d1){
+              if(id2 == 255 && dat >= d1){
                 id2=counter;
               }
             }
@@ -1117,7 +1117,7 @@ class SummItem extends TimerTask implements RecordFilter{
           plt=e0.planet1;
           final int plt2=e1.planet1;
           if(plt2 == Event.SE_MOON) {
-            plt = -1;
+            plt = 255;
           }
           return new long[]{t,1,plt,plt2,e0.planet1,e0.date0,e1.date0};
         } 

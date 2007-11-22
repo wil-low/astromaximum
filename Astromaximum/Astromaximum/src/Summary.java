@@ -446,6 +446,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
       pltDaySun = Astromaximum.getSignDegree(pltDaySun);
     }
 //****** SUN DAY
+    Astromaximum.errCode=1501; // XXX
     Event ev=new Event(Astromaximum.dataFile.getEventOnPeriod(
         Event.EV_RISE,Event.SE_SUN,true, period0, period1));
     ev.setDegree(pltDaySun);

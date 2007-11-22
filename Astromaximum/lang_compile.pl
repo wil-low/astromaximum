@@ -7,7 +7,7 @@ $0=~/(.+\/)/is;
 
 my $path=$1;
 my $InF=undef;
-die "Usage: 2nomad_new.pl <lang> [config]\n" unless defined $ARGV[0];
+die "Usage: 2nomad_new.pl <lang> <destdir> [demo]\n" unless defined $ARGV[0];
 my @bins=glob($path."interpret/$ARGV[0]/*.txt");
 die "No files for '$ARGV[0]' language\n" unless scalar(@bins);
 my @buf;
@@ -31,7 +31,7 @@ our %eventType=qw(EV_VOC 0 EV_SIGN_ENTER 1 EV_ASP_EXACT 2 EV_RISE 3 EV_DEGREE_PA
   );
 
 my %demo_events;
-my $demo=$ARGV[1]=~/(demo|^test)/is;
+my $demo=$ARGV[2] eq 'demo';
 if($demo){
   print "Demo mode: filtering events\n";
   foreach(@demo_allowed){
@@ -47,8 +47,8 @@ else{
 our %eventFlags=qw(EF_PLANET1 2 EF_PLANET2 4 EF_DEGREE 8 EF_SHORT_DEGREE 64);
 
 my %hash;
-
-	my @clean=glob($path."Astromaximum/src/*");
+print "Cleaning $ARGV[1] dir\n";
+	my @clean=glob("$ARGV[1]/*");
 	foreach (@clean){
 		unlink $_ if $_=~/[\/\\]\d+$/is;
 	}
@@ -140,7 +140,7 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 	print "$len, $planet\n";
 	$output=pack('nNcnna*',$eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
 #	die $output;
-	open(OF, ">$path"."Astromaximum/src/$eventType{$evt}") or die "No file";
+	open(OF, ">$ARGV[1]/$eventType{$evt}") or die "No file";
 	binmode(OF);
 	print OF $output;
 	close(OF);
@@ -149,12 +149,6 @@ my $RESERVED_CHARS='*^$}>{~#@=';
 	
 }
 if($errors==0){
-#	our $OutF=undef;
-#	open($OutF, ">$path".'..\Astromaximum\src\interp.txt') or die "No file";
-#	binmode($OutF);
-#	print $OutF $output;
-#	close($OutF);
-#	print "\nFile saved!\n";
   exit(0) if $demo;
   while (my($key, $value) = each %hash) {
   	$value=~s/\\//isg;
@@ -167,7 +161,7 @@ else{
 	print "\n-------- $errors error(s) found. Compilation aborted! --------\n";
 }
 
-my $inp=<STDIN>;
+#my $inp=<STDIN>;
 
 sub writeUTF
 {

@@ -58,6 +58,7 @@
 	    <arg value="${basedir}/../gen_amax.pl"/>
 	    <arg value="${gen.conf}"/>
 	    <arg value="${year}"/>
+	    <arg value="${lang}"/>
 	    <arg value="${basedir}/../loclist_default.txt"/>
 	    <arg value="${basedir}/${dist.dir}/${dist.jar}"/>
 	</exec>
