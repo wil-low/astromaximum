@@ -69,6 +69,8 @@ fltk::FloatInput *txtTimeDelta=(fltk::FloatInput *)0;
 
 fltk::CheckButton *ckDebug=(fltk::CheckButton *)0;
 
+fltk::CheckButton *ckMessjar=(fltk::CheckButton *)0;
+
 fltk::CheckButton *ckKzip=(fltk::CheckButton *)0;
 
 fltk::Output *lbLoclist=(fltk::Output *)0;
@@ -95,10 +97,10 @@ fltk::Window* make_window() {
 			}
 			o->end();
 		}
-		 {fltk::Group* o = new fltk::Group(5, 5, 204, 530);
+		 {fltk::Group* o = new fltk::Group(5, 5, 206, 530);
 			o->set_vertical();
 			o->begin();
-			 {fltk::Group* o = new fltk::Group(0, 0, 204, 220);
+			 {fltk::Group* o = new fltk::Group(0, 0, 206, 220);
 				o->set_vertical();
 				o->box(fltk::THIN_DOWN_BOX);
 				o->begin();
@@ -145,10 +147,13 @@ fltk::Window* make_window() {
 					o->callback((fltk::Callback*)cb_do_timebomb);
 					o->align(fltk::ALIGN_WRAP);
 				}
-				 {fltk::CheckButton* o = ckDebug = new fltk::CheckButton(10, 195, 95, 25, "Debug");
+				 {fltk::CheckButton* o = ckDebug = new fltk::CheckButton(5, 195, 65, 25, "Debug");
 					o->deactivate();
 				}
-				 {fltk::CheckButton* o = ckKzip = new fltk::CheckButton(110, 195, 65, 25, "kzip");
+				 {fltk::CheckButton* o = ckMessjar = new fltk::CheckButton(70, 195, 72, 25, "Messjar");
+					o->set_flag(fltk::STATE);
+				}
+				 {fltk::CheckButton* o = ckKzip = new fltk::CheckButton(145, 195, 56, 25, "kzip");
 					o->deactivate();
 				}
 				o->end();

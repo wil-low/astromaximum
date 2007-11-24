@@ -2,17 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1">
         <file>
-            <url>src/Astromaximum.java</url>
-            <line>302</line>
+            <url>src/SummItem.java</url>
+            <line>464</line>
+            <line>1574</line>
         </file>
         <file>
             <url>src/DataFile.java</url>
             <line>306</line>
-        </file>
-        <file>
-            <url>src/SummItem.java</url>
-            <line>464</line>
-            <line>1574</line>
         </file>
         <file>
             <url>src/CustomTime.java</url>
@@ -22,7 +18,11 @@
         <file>
             <url>src/Summary.java</url>
             <line>431</line>
-            <line>1043</line>
+            <line>1044</line>
+        </file>
+        <file>
+            <url>src/Astromaximum.java</url>
+            <line>314</line>
         </file>
     </editor-bookmarks>
 </project-private>

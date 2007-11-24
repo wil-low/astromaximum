@@ -34,6 +34,7 @@ extern fltk::FloatInput* txtTimeDelta;
 extern void cb_do_timebomb(fltk::Button*, void*);
 #include <fltk/CheckButton.h>
 extern fltk::CheckButton* ckDebug;
+extern fltk::CheckButton* ckMessjar;
 extern fltk::CheckButton* ckKzip;
 #include <fltk/Output.h>
 extern fltk::Output* lbLoclist;

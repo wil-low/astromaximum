@@ -21,6 +21,9 @@ Przemysl
 @ Romania, Bucharest
 Alexandria
 
+@ Russia  +3, Moscow_RUS
+Tuapse
+
 @ Turkmenistan, Ashgabat
 Kushka
 
@@ -31,6 +34,21 @@ Uman
 Yaremche
 @ Ukraine, Simferopol^UKR
 Yalta
+
+@ USA - Georgia, Atlanta_USA
+Waycross
+@ USA - Michigan, Lansing_USA
+Escanaba
+Marquette
+Traverse City
+@ USA - Minnesota, St. Paul_USA
+Mankato
+Moorhead
+@ USA - South Carolina, Columbia_USA
+Florence
+Hemingway
+@ USA - Wisconsin, Madison_USA
+Wausau
 
 @ Uzbekistan, Tashkent
 Termez

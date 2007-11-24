@@ -123,15 +123,16 @@ void DataFile::AAA()
 {
   VAE work, assist, vout, work2;
 	
-/*  choice(EV_DEGREE_PASS, work, assist, vout, work2);
+/*
+  choice(EV_MOON_PHASE, work, assist, vout, work2);
   release(work);
-  readSubData("degpass06.bin",work);
-  for(int i=0; i<work.size(); i++){
+  readSubData("phase01.bin",work);
+  for(int i=0; i<2; i++){
     work[i]->dump();
   }
 	
   return;
- */
+*/
 // -----------------------
   choice(EV_ASP_EXACT, work, assist, vout, work2);
 
@@ -1204,7 +1205,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
           idx=i;
           break;
         }
-      idx%=4;
+      idx=4-(idx%4);
       for(int i=0; i<assist.size(); i++){
         assist[i]->planetId[1]=idx%4;
         idx++;

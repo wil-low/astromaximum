@@ -82,10 +82,10 @@ Function {make_window()} {open
       } {}
     }
     {fltk::Group} {} {open
-      xywh {5 5 204 530}
+      xywh {5 5 206 530}
     } {
       {fltk::Group} {} {open
-        xywh {0 0 204 220} box THIN_DOWN_BOX
+        xywh {0 0 206 220} box THIN_DOWN_BOX
       } {
         {fltk::Input} txtYear {
           callback {if(bSetYear->active())
@@ -99,7 +99,7 @@ Function {make_window()} {open
           xywh {109 5 85 20}
         }
         {fltk::PopupMenu} pbLang {
-          callback {o->label(o->get_item()->label());} selected
+          callback {o->label(o->get_item()->label());}
           xywh {5 28 85 25} align 48
           extra_code {o->add("EN");
 o->add("RU");
@@ -130,7 +130,7 @@ o->label(o->get_item()->label());}
           extra_code {o->user_data((void*)1);}
         }
         {fltk::Input} txtTimeOffset {
-          label {Timeshift, hrs:}
+          label {Timeshift, hrs:} selected
           xywh {5 130 95 25} align 1 deactivate
           extra_code {o->text("0");}
           class {fltk::IntInput}
@@ -148,11 +148,15 @@ o->label(o->get_item()->label());}
         }
         {fltk::CheckButton} ckDebug {
           label Debug
-          xywh {10 195 95 25} deactivate
+          xywh {5 195 65 25} deactivate
+        }
+        {fltk::CheckButton} ckMessjar {
+          label Messjar
+          xywh {70 195 72 25} value 1
         }
         {fltk::CheckButton} ckKzip {
           label kzip
-          xywh {110 195 65 25} deactivate
+          xywh {145 195 56 25} deactivate
         }
       }
       {fltk::Group} {} {open

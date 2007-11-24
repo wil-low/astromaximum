@@ -2,7 +2,7 @@
 # Gererated Makefile - do not edit!
 #
 # Edit the Makefile in the project folder instead (../Makefile). Each target
-# has a -pre and a -post target defined where you can add custumized code.
+# has a -pre and a -post target defined where you can add customized code.
 #
 # This makefile implements configuration specific macros and targets.
 
@@ -50,15 +50,15 @@ mutter2: ${OBJECTFILES}
 
 ${OBJECTDIR}/datafile.o: datafile.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g3 -gdwarf-2 -DANSITZ -I../swe -o ${OBJECTDIR}/datafile.o datafile.cpp
+	$(COMPILE.cc) -g -DANSITZ -I../swe -o ${OBJECTDIR}/datafile.o datafile.cpp
 
 ${OBJECTDIR}/evclass.o: evclass.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g3 -gdwarf-2 -DANSITZ -I../swe -o ${OBJECTDIR}/evclass.o evclass.cpp
+	$(COMPILE.cc) -g -DANSITZ -I../swe -o ${OBJECTDIR}/evclass.o evclass.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g3 -gdwarf-2 -DANSITZ -I../swe -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -DANSITZ -I../swe -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

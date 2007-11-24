@@ -17,6 +17,7 @@ if($ARGV[0] eq 'tzonly'){
 }
 $0=~/(.+[\/\\])/is;
 our $mypath=$1;
+$mypath='./' unless $mypath;
 require $mypath.'tz_patches.pm';
 if($#ARGV!=0 and scalar(@ARGV)<2){
 	die "Usage: <year> [tzonly] <country group code list>|<all>|<common>\n";
@@ -332,11 +333,11 @@ sub process_ini{
 				print(InF join("\n", @cities));
 				close(InF);
 				unlink("$newdir/$city_inf.zip");
-				my $cmd=ensure_slash(sprintf('cd %s & zip -q %s *.txt *.dat & cd %s', $newdir, $city_inf, $mypath));
+				my $cmd=ensure_slash(sprintf('cd %s ; zip -q %s *.txt *.dat ; cd ../../../../', $newdir, $city_inf));
 #				print "$cmd\n";
 				system($cmd);
 				mkdir(ensure_slash("$arcdir/$year"));
-				rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!."$newdir/$city_inf", "$arcdir/$year/$city_inf.zip";
+				rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!." $newdir/$city_inf.zip";
 				print "Written $arcdir/$year/$city_inf.zip\n";
 			#	my @bins=glob("$dir\\Data*.dat");
 			#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
@@ -605,7 +606,7 @@ sub get_tz{
 	if($TZ_VER==2){
 		my $c_arr;
 		print "$country,$city,$isdie\t" if $verbose;
-		if($citlist=~/\@ ($country[^\@]+?$city(?: \([^\n\r]+\))?)/is){
+		if($citlist=~/\@ (\Q$country\E[^\@]+?$city(?: \([^\n\r]+\))?)/is){
 			$country=$1;
 			if($country=~/\A(.+?)\s*\n/is){
 			  $country=$1;
@@ -614,7 +615,8 @@ sub get_tz{
 #			die "No TZ for $country!" unless defined $c_arr;
 		}
 		else{
-		  die "No TZ for $country!";
+		  print "No TZ for $country!\n";
+                  exit;
 		}
 		if(!defined $c_arr){
 #			die $citlist;
