@@ -111,6 +111,8 @@ Continent keys:
 Errors while running:
     1 - 1st getstr failed - invalid message langfile
     6 - options.resetStorage failed again
+    11 - ambuiquity when creating RMS (device-specific), see GeoList.initDB().
+        This shouldn't occur at mobile device, only at emulator.
     1501 - in Summary when getting Sun day - RMS contains invalid location file
         of different year etc. This shouldn't occur at mobile device, only at
         WTK.

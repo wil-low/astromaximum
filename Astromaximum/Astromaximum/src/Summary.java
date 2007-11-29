@@ -141,6 +141,11 @@ class Summary extends Canvas implements CommandListener, Runnable{
       final int y=graphics.getClipY();
       final int w=graphics.getClipWidth();
       final int h=graphics.getClipHeight();
+      String ver=Astromaximum.instance.getAppProperty("MIDlet-Version");
+      if(ver!=null){
+        ver="Astromaximum v."+ver;
+      }
+      graphics.drawString(ver, w/2, moonY-2, Graphics.BOTTOM|Graphics.HCENTER);
 //#ifdef imgPhase
       graphics.setClip(moonX,moonY,img.getWidth(),img.getHeight());
       graphics.drawImage(img,moonX,moonY,Graphics.LEFT|Graphics.TOP);
@@ -847,7 +852,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
             Astromaximum.customTime.init(pageNum);
             return;
           default:
-            Astromaximum.interpreter.topic=si.tag;
+            Interpreter.topic=si.tag;
         }
         setCurPage(PAGE_SUMMARY);
         break;
@@ -994,7 +999,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
         break;
       case 4:
         Astromaximum.options.init();
-        Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.options);
+        Astromaximum.disp.setCurrent(Astromaximum.options);
         break;
       case 1:
         setToday();
@@ -1418,7 +1423,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
   
   
   void calcDecumbiture(){
-    Astromaximum.interpreter.topic=Interpreter.T_DECUMB;
+    Interpreter.topic=Interpreter.T_DECUMB;
     long startDate=Astromaximum.customTime.decumbDate;
     gatherSummary(Astromaximum.instance.getMidnight(startDate));
     Vector moonSign=new Vector();
