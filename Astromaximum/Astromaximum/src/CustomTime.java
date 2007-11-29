@@ -11,13 +11,8 @@
 //import java.io.ByteArrayOutputStream;
 //import java.io.DataInputStream;
 //import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
-import javax.microedition.io.CommConnection;
-import javax.microedition.io.Connector;
 import javax.microedition.lcdui.*;
 /*
  * CustomTime.java
@@ -36,17 +31,17 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
 //#if "timeBomb" @ protection
 //#   static int hj=0x89abcdef;
 //#endif
-  int invoker=Event.EV_ASP_EXACT_MOON;
+  private int invoker=Event.EV_ASP_EXACT_MOON;
   final DateField timeField;
   final DateField dateField;
   long decumbDate;
   int lockFlags;
   final ChoiceGroup cg;
-  static final int HIST_COUNT=8;
-  static long[] history=new long[HIST_COUNT];
+  private static final int HIST_COUNT=8;
+  static final long[] history=new long[HIST_COUNT];
   static int histCount=0;
   private boolean showHistory;
-  private Command[] cmds;
+  private final Command[] cmds;
   /** Creates a new instance of CustomTime */
   CustomTime() {
     super("");
@@ -162,7 +157,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     }
   }
   
-  void setTimePrompt(int pn, long tm) {
+  void setTimePrompt(int pn) {
     invoker=pn;
     String tit, sDate;
     switch(pn){
@@ -215,7 +210,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
   }
 
   void init(int pn) {
-    setTimePrompt(Astromaximum.summary.pageNum,timeField.getDate().getTime());
+    setTimePrompt(Astromaximum.summary.pageNum);
 //#if timeHistory
     deleteAll();
     for(int i=0; i<4; i++){
@@ -242,7 +237,8 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
 //#endif
     Display.getDisplay(Astromaximum.instance).setCurrent(this);
   }
-  
+
+/*
   String askModem(){
      String port1;
      String ports = System.getProperty("microedition.commports");
@@ -282,7 +278,7 @@ final class CustomTime extends Form implements CommandListener,ItemStateListener
     }
      return port1;
   }
-  
+*/  
   boolean arrangeHistory()
   {
     for(int i=0; i<histCount; i++){

@@ -42,14 +42,14 @@ final class DataFile{
 //  static final int NDF_COMMON = 2;
 //  static final int NDF_GEOPOS = 3;
   long startJD, finalJD;
-  int dayCount;
+  private int dayCount;
 //  private final Vector cache=new Vector();
-  byte[] commonData;
+  private byte[] commonData;
   byte[] geoposData;
   static Vector ids=new Vector();
   
 //  private int curRec=-1;
-  Vector eclipses=null;
+private Vector eclipses=null;
   /**
    * DataFile
    *
@@ -129,8 +129,12 @@ final class DataFile{
   /**
    * readSubData
    *
+   * @param buf
    * @param evtype int
    * @param planet int
+   * @param isCommon
+   * @param dayStart
+   * @param dayEnd
    * @return Vector
    * @noinspection MagicNumber
    */
@@ -328,7 +332,7 @@ final class DataFile{
     int flag;
     int skipOff;
     Event last=new Event(0,0);
-    int fnext_date2=0;
+    int fnext_date2;
     int PERIOD=(evtype==Event.EV_ASCAPHETICS)? 2*60: 24*60;
     try {
       final DataInputStream is=new DataInputStream(new ByteArrayInputStream(buf));
@@ -499,7 +503,6 @@ final class DataFile{
    * @param planet int
    * @param dayStart long
    * @param dayEnd long
-   * @return int
    * @param special
    * @param value
    */
@@ -551,6 +554,8 @@ final class DataFile{
    *
    * @param evtype int
    * @param planet int
+   * @param dayStart
+   * @param dayEnd
    * @return Vector
    */
   Vector getEvents(int evtype, int planet, long dayStart, long dayEnd) {
@@ -630,7 +635,8 @@ final class DataFile{
   /**
    * 
    * @param today 
-   * @return 
+   * @param delta
+   * @return
    */
   Event todayEclipse(long today, int delta) {
 //    today+=Event.localOffset(today);

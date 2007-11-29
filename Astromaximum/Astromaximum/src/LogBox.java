@@ -22,7 +22,7 @@ import javax.microedition.lcdui.*;
 class LogBox extends List implements CommandListener{
   static final String EMPTY=Astromaximum.getstr(119);//Empty
   private Displayable invoker;
-  static private byte[] buf=new byte[8];
+  static private final byte[] buf=new byte[8];
   LogBox() {
     super(Astromaximum.getstr(95), Choice.IMPLICIT);//Log
     append(EMPTY,null);

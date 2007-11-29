@@ -94,7 +94,9 @@ class Event {
   long date0, date1;
   short degree=127;
   
-  /** @noinspection NestedAssignment*/
+  /** @param dat
+   * @param planet
+   * @noinspection NestedAssignment*/
   Event(long dat, int planet) {
     planet0=(byte)planet;
     date0 = date1=dat;

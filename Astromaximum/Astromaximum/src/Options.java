@@ -29,19 +29,19 @@ import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 class Options extends GeoList{
-  static ChoiceGroup optList;
-  static ChoiceGroup timeGap;
+  private static ChoiceGroup optList;
+  private static ChoiceGroup timeGap;
   static ChoiceGroup layout;
 //#if localtime  
 //#   static byte OPT_FLAGS=1;
 //#else
-      static byte OPT_FLAGS=0;
+      private static final byte OPT_FLAGS=0;
 //#endif  
   static byte optFlags;
   private static long localOffset;
   private String oldc, initCity;
   static final int FLG_ALLTEXT=1;
-  static final int FLG_LOCALTIME=2;
+  private static final int FLG_LOCALTIME=2;
   
   Options(){
     //#if "test" @ protection
@@ -105,7 +105,7 @@ class Options extends GeoList{
 //#     dateField1.setPreferredSize(117, 50);
 //#else
     String[] cities=getAvailableCities();
-    String cur="";
+    String cur;
 //#if "imeiCheck" @ protection
     hj*=new Random().nextInt()*348;
 //#endif
@@ -225,7 +225,8 @@ class Options extends GeoList{
       }
   }
   
-  /** @noinspection UnusedParameters*/
+  /** @param obj
+   * @noinspection UnusedParameters*/
   void addImeiChar(Object obj) {
 //#debug debug
     Astromaximum.log("App IMEI="+imei);
@@ -302,7 +303,7 @@ class Options extends GeoList{
 //     }
 //#endif
   }
-  StringBuffer imei;
+  private StringBuffer imei;
   
   void addImeiChar(char c){
     if(imei==null) {
@@ -394,13 +395,11 @@ class Options extends GeoList{
       for(int i=0; i<CustomTime.histCount; i++){
         dos.writeLong(CustomTime.history[i]);
       }
-      dos=null;
       rs.setRecord(2,baos.toByteArray(), 0, baos.size());
 //#mdebug info
       System.out.println("history lock");
       System.out.println(Integer.toBinaryString(Astromaximum.customTime.lockFlags));
 //#enddebug      
-      baos=null;
     } 
     catch (Exception ex) {
       ex.printStackTrace();

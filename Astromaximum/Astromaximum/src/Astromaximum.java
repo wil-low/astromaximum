@@ -50,7 +50,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
   static int startYear=0;
   static final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));//TimeZone.getDefault());
   static boolean firstRun=true;
-  static private Hashtable locHash=new Hashtable();
+  static private final Hashtable locHash=new Hashtable();
   // midlet instance reference
   static Astromaximum instance;
   static final long MSECINDAY=86400*1000;
@@ -70,6 +70,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
    * getMidnight
    * 
    * 
+   * @param time
    * @return Date
    */
   long getMidnight(long time) {
@@ -132,7 +133,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#           "|before LocSupport="+Long.toString(beforeLS)+
 //#           "|after LocSupport="+Long.toString(afterLS));
 //#endif      
-        summary =new Summary("/res/ph50.dat",30,2);
+        summary =new Summary();
 //#if logger
 //#       logger(summary.toString());
 //#endif        
@@ -378,7 +379,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
   /**
    * Stop the MIDlet
    */
-  static void quit() {
+  private static void quit() {
     Display.getDisplay(instance).setCurrent(null);
     options.shutdown();
     instance.destroyApp(true);
@@ -414,7 +415,10 @@ public class Astromaximum extends MIDlet implements CommandListener{
     return (Event) v.elementAt(idx);
   }
   
-  /** @noinspection BooleanMethodNameMustStartWithQuestion*/
+  /** @param date1
+   * @param delta
+   * @noinspection BooleanMethodNameMustStartWithQuestion
+   * @return*/
   long changeDate(Date date1, int delta) {
     long tmp=date1.getTime();
     tmp += MSECINDAY *delta;
@@ -437,7 +441,6 @@ public class Astromaximum extends MIDlet implements CommandListener{
       dis.read(pngdata);
       dis.close();
       res=Image.createImage(pngdata,0,len);
-      pngdata=null;
     } catch (IOException ex) {
 //      ex.printStackTrace();
     }
@@ -447,7 +450,8 @@ public class Astromaximum extends MIDlet implements CommandListener{
 
   
 //#mdebug info
-  /** @noinspection StaticMethodOnlyUsedInOneClass*/
+  /** @param events
+   * @noinspection StaticMethodOnlyUsedInOneClass*/
   static void evDump(Event[] events) {
     System.out.println("**Array dump**");
     for(int i=0; i<events.length; i++) {

@@ -23,8 +23,8 @@ class Interpreter extends Canvas implements CommandListener {
 //#   static int hj=0x01234567;
 //#endif
   private boolean helpMode;
-  private int HMARGIN;
-  private int VMARGIN;
+  private final int HMARGIN;
+  private final int VMARGIN;
   static final String[] riseKeys={"asc","mc","dsc","ic"};
   private int curX, curY, topLine=0, lineCount;
   private int fontSize, lineHeight;
@@ -33,13 +33,12 @@ class Interpreter extends Canvas implements CommandListener {
   static final int T_LICENSE=2;
   static final int T_EMPLOY=3;
   static final int T_REALTY=4;
-  static final int T_VACATION=5;
-  static final int T_MEDICINE=6;
+  private static final int T_VACATION=5;
+  private static final int T_MEDICINE=6;
   static final int T_DECUMB=7;
-  static final int T_LOVE=8;
-  byte[] interp;
+  private static final int T_LOVE=8;
   String txt="";
-  static String RESERVED_CHARS="}$>*^{~#=@\0";
+  static final String RESERVED_CHARS="}$>*^{~#=@\0";
   static int topic=10;
   boolean isLogged=false;
   
@@ -60,6 +59,7 @@ class Interpreter extends Canvas implements CommandListener {
    * @return boolean
    * @noinspection InfiniteLoopStatement
    * @param si
+   * @param ignoreAllTopics
    */
 
   boolean findText(SummItem si, boolean ignoreAllTopics) {
@@ -70,7 +70,6 @@ class Interpreter extends Canvas implements CommandListener {
       return false;
     }
     boolean isTopicTitle=false;
-    boolean f;
     String s=extractArticle(params);
     if(s==null){
       txt=s=Astromaximum.getstr(110);//demo texts
@@ -168,9 +167,9 @@ class Interpreter extends Canvas implements CommandListener {
 	  res.append("Via Combusta");
 	  break;
 	case Event.EV_WEEK:
-	  res.append(Astromaximum.getstr((int)params[2]-1)).
-	      append(" - ").append(Astromaximum.getstr(27)+" "+ //wd_, day
-	      Astromaximum.getstr(40+SummItem.weekPlanets[(int)params[2]-1]));//of_
+        res.append(Astromaximum.getstr((int) params[2] - 1)).
+            append(" - ").append(Astromaximum.getstr(27)).append(" ").
+            append(Astromaximum.getstr(40 + SummItem.weekPlanets[(int) params[2] - 1]));//of_
 	  break;
 	  //      case Event.EV_HELP:
 	  //      case Event.EV_DECUMBITURE:
@@ -220,7 +219,7 @@ class Interpreter extends Canvas implements CommandListener {
 	  res.append(getFullPlanet(params[2]));
 	  break;
 	case Event.EV_ASP_EXACT_MOON:
-	  res.append("\u00b16 "+Astromaximum.getstr(137));
+        res.append("\u00b16 ").append(Astromaximum.getstr(137));
 	  break;
       }
       //#endif
@@ -296,23 +295,22 @@ class Interpreter extends Canvas implements CommandListener {
   protected void paint(Graphics graphics) {
     graphics.setColor(Astromaximum.CURRENT_MONTH_COLOR);
     graphics.fillRect(0,0,graphics.getClipWidth(),graphics.getClipHeight());
-    Graphics osg=graphics;
 //#ifdef UseBuffer
 //#     osg=Summary.offScreenBuffer.getGraphics();
 //#endif
-    osg.setColor(Astromaximum.CURRENT_MONTH_COLOR);
-    osg.fillRect(0,0,osg.getClipWidth(),osg.getClipHeight());
-    osg.setColor(0);
-    Font oldFont=osg.getFont();
-    osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_PLAIN,fontSize));
-    lineHeight=osg.getFont().getHeight();
+    graphics.setColor(Astromaximum.CURRENT_MONTH_COLOR);
+    graphics.fillRect(0,0,graphics.getClipWidth(),graphics.getClipHeight());
+    graphics.setColor(0);
+    Font oldFont=graphics.getFont();
+    graphics.setFont(Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_PLAIN,fontSize));
+    lineHeight=graphics.getFont().getHeight();
     curY=topLine; curX=0;
     graphics.translate(HMARGIN-graphics.getTranslateX(),VMARGIN-graphics.getTranslateY());
-    drawArticle(osg,txt);
+    drawArticle(graphics,txt);
 //#ifdef UseBuffer
 //#     graphics.drawImage(Summary.offScreenBuffer, 0, 0, Graphics.LEFT | Graphics.TOP);
 //#endif
-    osg.setFont(oldFont);
+    graphics.setFont(oldFont);
   }
   
   private void drawArticle(Graphics osg, String string) {
@@ -327,14 +325,13 @@ class Interpreter extends Canvas implements CommandListener {
     int len=s.length();
     if(len==0)
       return;
-    boolean isLastSpace=false;
+    boolean isLastSpace;
     int width=getWidth()-HMARGIN*2;
     char[] ca=new char[len];
     s.getChars(0,len,ca,0);
     int spaceW=fnt.charWidth(' ');
-    int start=0, i, cw=0; char curc=0;
+    int start=0, i, cw; char curc=0;
     while(start<len){
-      boolean crlf=false;
       for(i=start; i<len; i++){
 	curc=ca[i];
 	if(curc==' ' || curc=='|'){
@@ -426,14 +423,14 @@ class Interpreter extends Canvas implements CommandListener {
   
   String extractArticle(long[] params){
     String res=null;
-    try {
+    byte[] interp;
+      try {
       InputStream is=getClass().getResourceAsStream(Long.toString(params[0]));
       if(is==null){
 	return null;
       }
-      interp=new byte[is.available()];
+      interp =new byte[is.available()];
       is.read(interp);
-      is=null;
       DataInputStream dis=new DataInputStream(
 	  new ByteArrayInputStream(interp));
 //      while(true){
@@ -464,7 +461,6 @@ class Interpreter extends Canvas implements CommandListener {
 	}
 	if(f){
 	  res=dis.readUTF();
-	  dis=null;
 	  break;
 	}
 	dis.skip(dis.readUnsignedShort());
@@ -474,7 +470,6 @@ class Interpreter extends Canvas implements CommandListener {
     } catch (IOException ex) {
 //      Astromaximum.log(ex.toString());
     }
-    interp=null;
     return res;
   }
 //#endif

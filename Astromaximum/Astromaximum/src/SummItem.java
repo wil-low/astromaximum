@@ -20,7 +20,6 @@
 //#else
 import javax.microedition.lcdui.*;
 //#if MIDP == "2.0"
-import javax.microedition.lcdui.game.Sprite;
 //#endif
 import java.util.*;
 import javax.microedition.rms.RecordFilter;
@@ -35,7 +34,7 @@ class SummItem extends TimerTask implements RecordFilter{
   private short[] widths;
   private int rowCount=1;
   byte tag;
-  short[] nav=null;
+  private short[] nav=null;
   Event[] events;
   final int left;
   final int top;
@@ -50,7 +49,7 @@ class SummItem extends TimerTask implements RecordFilter{
 //#if "imeiCheck" @ protection
   static int hj;
 //#endif
-  String str;
+private String str;
   private static Image tithi;
   static final Vector moonMoveVec=new Vector();
   private static final long DEGREE_DELTA_MSEC1=-40*60*1000;
@@ -58,14 +57,14 @@ class SummItem extends TimerTask implements RecordFilter{
   static Summary owner;
   private static final int[] ASP_ANGLES={0,180,90,120,60,45,30,15,72,150};
   
-  static final int[] OWN_SIGN_REVERSE=
+  private static final int[] OWN_SIGN_REVERSE=
   {
     Event.SE_MARS,Event.SE_VENUS,Event.SE_MERCURY,Event.SE_MOON,Event.SE_SUN,Event.SE_MERCURY,
     Event.SE_VENUS,Event.SE_MARS,Event.SE_JUPITER,Event.SE_SATURN,Event.SE_SATURN,Event.SE_JUPITER
   };
   
   static final byte[] weekPlanets={0,1,4,2,5,3,6};
-  static Hashtable topics = new Hashtable();  
+  private static final Hashtable topics = new Hashtable();
   static{
     topics.put(new Integer(Event.EV_MOON_DAY), "}#");
     topics.put(new Integer(Event.EV_ASP_EXACT), "~*^$}>@");
@@ -108,6 +107,10 @@ class SummItem extends TimerTask implements RecordFilter{
    * @param left
    * @param h
    * @param type
+   * @param nleft
+   * @param nright
+   * @param nup
+   * @param ndown
    * @noinspection AssignmentToMethodParameter,NestedAssignment */
   SummItem(int left, int top, int w, int h, int page, int widCount, int rowCount, int type,
       int nleft, int nright, int nup, int ndown) {
@@ -248,7 +251,8 @@ class SummItem extends TimerTask implements RecordFilter{
   /** @noinspection ValueOfIncrementOrDecrementUsed,ProhibitedExceptionCaught
    * @param osg
    * @param isSelected
-   * @param now */
+   * @param now
+   * @param isCus */
   void render(Graphics osg, boolean isSelected, long now, boolean isCus) {
 //    if((page%2)>0) // on 1st page
     if(owner.pageNum!=Summary.PAGE_PANEL && type!=Event.EV_RISE){
@@ -429,7 +433,7 @@ class SummItem extends TimerTask implements RecordFilter{
         }
         break;
       case Event.EV_SUN_RISE:
-        drawRiseSetCell(osg, now, isCus);
+        drawRiseSetCell(osg, now);
         break;
       case Event.EV_SUN_DEGREE_LARGE:
         Event ev=events[0];
@@ -452,7 +456,7 @@ class SummItem extends TimerTask implements RecordFilter{
         }
         break;
       case Event.EV_MOON_RISE:
-        drawRiseSetCell(osg, now,isCus);
+        drawRiseSetCell(osg, now);
         break;
       case Event.EV_MOON_SIGN_LARGE:
         ev=events[0]; xr=getX(0, XLEFT);
@@ -863,9 +867,6 @@ class SummItem extends TimerTask implements RecordFilter{
         }
         break;
     }
-    if(widths.length == 0) {
-      return;
-    }
   }
   
   void setEvents(Vector _events) {
@@ -877,16 +878,17 @@ class SummItem extends TimerTask implements RecordFilter{
   
   void setEvents(Event[] _events) {
     events=new Event[_events.length];
-    for(int i=0; i<events.length; i++) {
-      events[i] = _events[i];
-    }
+    System.arraycopy(_events, 0, events, 0, events.length);
   }
 
   void setEvents(int index, Event evt) {
     events[index]=evt;
   }
   
-  /** @noinspection AssignmentToMethodParameter*/
+  /** @param x
+   * @param y
+   * @noinspection AssignmentToMethodParameter
+   * @return*/
   boolean checkSelection(int x, int y) {
     final boolean chk= x >= left && x <= left + width && y >= top && y <= top + height;
     if(chk){
@@ -934,10 +936,9 @@ class SummItem extends TimerTask implements RecordFilter{
    * drawRiseSetCell
    *
    * @param osg Graphics
-   * @param custom
    * @param now
    */
-  private void drawRiseSetCell(Graphics osg, long now, boolean isCustom) {
+  private void drawRiseSetCell(Graphics osg, long now) {
     int y1=top+1;
     int y2=top+height/2-1;
     int cus0=0;
@@ -1086,18 +1087,11 @@ class SummItem extends TimerTask implements RecordFilter{
       case Event.EV_ASP_EXACT:
         return new long[]{Event.EV_ASP_EXACT,-1,plt,evi.planet1,getBadGoodAspect(dgr),dgr,d0,0};
       case Event.EV_DECUMB_ASPECT:
-        int asp= getAspIndex(dgr);
-        if(asp >= 3) {
-          asp = 2;
-        } else if(asp != 0) {
-          asp = 1;
-        }
         return new long[]{Event.EV_ASP_EXACT_MOON,plt,evi.planet1,getBadGoodAspect(dgr),dgr,d0,0};
-//        return new long[]{Event.EV_MOON_ASP_EXACT,plt,evi.planet1,asp,dgr,d0,0};
       case Event.EV_MOON_MOVE:
         if(dgr == 200){
-          int id1=255;
-          int id2=255;
+          int id1=-1;
+          int id2=-1;
           int counter=0;
           for (Enumeration e = moonMoveVec.elements() ; e.hasMoreElements() ;) {
             final Event ev=(Event)e.nextElement();
@@ -1106,7 +1100,7 @@ class SummItem extends TimerTask implements RecordFilter{
               if(dat<=d0){
                 id1=counter;
               }
-              if(id2 == 255 && dat >= d1){
+              if(id2 == -1 && dat >= d1){
                 id2=counter;
               }
             }
@@ -1167,7 +1161,6 @@ class SummItem extends TimerTask implements RecordFilter{
         case Event.EV_ECLIPSE:
           s = sel.getDateString(0, 0);
           break;
-        case Event.EV_WEEK:
         default:
           hrOnly=0;
           if(sel.date0==sel.date1) {
@@ -1309,7 +1302,7 @@ class SummItem extends TimerTask implements RecordFilter{
     if(delta>20){
       return delta;
     }
-    owner.moveFocus(delta,dir);
+    owner.moveFocus(delta);
     SummItem si=owner.getSelectedItem();
     if(si.isEmpty()){
       return -1;
@@ -1491,7 +1484,7 @@ class SummItem extends TimerTask implements RecordFilter{
     fgd2=fgd+ owner.rowCount*Astromaximum.MSECINDAY;
     for(int row=0; row< owner.rowCount; row++){
       for(int col=0; col< owner.colCount; col++){
-        int fontColor=0;
+//        int fontColor=0;
         int fillColor=Astromaximum.DIMMED_COLOR;
         Astromaximum.calendar.setTime(cur);
         if (owner.selMonth == Astromaximum.calendar.get(Calendar.MONTH)) {
@@ -1507,7 +1500,7 @@ class SummItem extends TimerTask implements RecordFilter{
           if(fillColor != 0){
             if(type== Event.EV_MONTH_GRID)
               fillColor=Astromaximum.GRAY_COLOR;
-            fontColor=0;
+//            fontColor=0;
           } 
           else {
             fillColor = Astromaximum.BACK_COLOR;
@@ -1560,8 +1553,8 @@ class SummItem extends TimerTask implements RecordFilter{
         cur.setTime(start + Astromaximum.MSECINDAY);
         if(now >= start && now < cur.getTime()){
           osg.setColor(Astromaximum.RED_COLOR);
-          osg.drawRect(col * colWidth + 0+leftm, row * rowHeight + top + 1,
-              colWidth - 0, rowHeight - 1);
+          osg.drawRect(col * colWidth +leftm, row * rowHeight + top + 1,
+                  colWidth, rowHeight - 1);
         }
         ++cnt;
       }
@@ -1704,7 +1697,7 @@ class SummItem extends TimerTask implements RecordFilter{
     fgd=Summary.period0; fgd2=Summary.period1;
     for(int row=0; row< owner.rowCount; row++){
       for(int col=0; col< owner.colCount; col++){
-        int fontColor=0;
+//        int fontColor=0;
         int fillColor=Astromaximum.DIMMED_COLOR;
         Astromaximum.calendar.setTime(cur);
         if (owner.selMonth == Astromaximum.calendar.get(Calendar.MONTH)) {
@@ -1712,10 +1705,10 @@ class SummItem extends TimerTask implements RecordFilter{
         }
         long ld=cur.getTime();
         ld-=Event.localOffset(ld);
-        final long ld2=ld+Astromaximum.MSECINDAY;
+//        final long ld2=ld+Astromaximum.MSECINDAY;
         Event eclipse= Astromaximum.dataFile.todayEclipse(ld,0);
         if(eclipse!=null){
-          fontColor=Astromaximum.SELECTION_COLOR;
+//          fontColor=Astromaximum.SELECTION_COLOR;
           fillColor=0;
           nodrawNums[cnt]=true;
         }
@@ -1725,7 +1718,7 @@ class SummItem extends TimerTask implements RecordFilter{
           if(fillColor != 0){
             if(type== Event.EV_MONTH_GRID)
               fillColor=Astromaximum.GRAY_COLOR;
-            fontColor=0;
+//            fontColor=0;
           } 
           else {
             fillColor = Astromaximum.BACK_COLOR;
@@ -1751,8 +1744,8 @@ class SummItem extends TimerTask implements RecordFilter{
         cur.setTime(start + Astromaximum.MSECINDAY);
         if(now >= start && now < cur.getTime()){
           osg.setColor(Astromaximum.RED_COLOR);
-          osg.drawRect(col * colWidth + 0+leftm, row * rowHeight + top + 1,
-              colWidth - 0, rowHeight - 1);
+          osg.drawRect(col * colWidth +leftm, row * rowHeight + top + 1,
+                  colWidth, rowHeight - 1);
         }
         ++cnt;
       }
