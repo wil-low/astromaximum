@@ -1152,9 +1152,10 @@ private String str;
       switch(type){
         case Event.EV_MOON_MOVE:
           final int sind=selIndex;
-          if(sel.date0==sel.date1) {
+          if((sel.date0==sel.date1) || (sel.planet0==sel.planet1)) {
             s = sel.getDateString(0, (sind != 0 && sind != events.length - 1)? 1:0);
-          } else {
+          } 
+          else {
             s = sel.getDateString(0, hrOnly) + tire + sel.getDateString(1, hrOnly);
           }
           break;

@@ -30,7 +30,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
 //#   static Image offScreenBuffer;
 //#endif
   static int moonPhaseH;
-  static private SummItem timerTask;
+//  static private SummItem timerTask;
 //  private SummItem prevPH;
   private short[] bounds;
   private short[] _bounds;
@@ -506,7 +506,7 @@ class Summary extends Canvas implements CommandListener, Runnable{
     for (Enumeration e = asp.elements() ; e.hasMoreElements() ;){
       ev=(Event)e.nextElement();
       ev.planet1=Event.SE_MOON;
-      ev.date1=ev.date0;
+//      ev.date1=ev.date0;
     }
     mergeEvents(SummItem.moonMoveVec,asp,true);
     asp.removeAllElements();
@@ -536,11 +536,12 @@ class Summary extends Canvas implements CommandListener, Runnable{
     int sz=asp.size();
     int idx=1;
     for(int i=0; i<sz-1; i++){
-      final long dd=Astromaximum.evAt(asp,idx-1).date1;
+      Event evprev=Astromaximum.evAt(asp,idx-1);
+      long dd=(evprev.planet0==evprev.planet1)? evprev.date0: evprev.date1;
       ev=new Event(dd,-1);
       ev.setDegree(200);
       ev.date1=Astromaximum.evAt(asp,idx).date0;
-      ev.planet0=Astromaximum.evAt(asp,idx-1).planet1;
+      ev.planet0=evprev.planet1;
       ev.planet1=Astromaximum.evAt(asp,idx).planet1;
 //      ev.dump();
       asp.insertElementAt(ev,idx);

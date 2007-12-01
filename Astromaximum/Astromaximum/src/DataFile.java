@@ -400,8 +400,7 @@ private Vector eclipses=null;
 //////////////
         if(fcumul_date_b!=0){
           if(i!=0){
-            byte d=is.readByte();
-            cumul=d;
+            cumul=is.readByte();
             date+=(cumul+PERIOD)*60;
           }
           else{
@@ -410,8 +409,7 @@ private Vector eclipses=null;
         }
         else if(fcumul_date_w!=0){
           if(i!=0){
-            short d=is.readShort();
-            cumul=d;
+            cumul=is.readShort();
             date+=(cumul+PERIOD)*60;
           }
           else{
@@ -437,9 +435,6 @@ private Vector eclipses=null;
         else{
           mydate1=mydate0;
         }
-
-    
-        
 //        if(mydate>=dayStart){
         if(fplanet1!=0) {
           myplanet0= is.readByte();
