@@ -680,19 +680,7 @@ sub inject_lang{ # lang, isdemo
             $paramcount=$1;
             $buf[2]=~/\!\!planet\s*(.+)/i;
             my $planet=$1;
-
-=head
-            my $i=0;
-            foreach my $ln(@buf){
-                    $ln=~s/\/\/.+//isg;
-                    if($ln=~s/\A(\s*\d+)/$1 %$i%/is){
-                            $i++; 
-                    }
-            }
-            die "@buf";
-=cut
-
-    my $RESERVED_CHARS='*^$}>{~#@=';
+            my $RESERVED_CHARS='*^$}>{~#@=';
 
             foreach my $ln(@buf){
                     my $line=$ln;
@@ -701,7 +689,7 @@ sub inject_lang{ # lang, isdemo
     #		next if $line=~/\A\s*\Z/is;
     #		print "$line\n";
                     $line=~s/\s*\Z//is;
-                    $line=~s/\.+\Z//is;
+                    $line=~s/\.+\Z//is if $evt ne 'EV_MSG';
                     $line=~s/.*?%(.*?)%\s*//is;
                     write_record($1);
     #		print $line."\n";

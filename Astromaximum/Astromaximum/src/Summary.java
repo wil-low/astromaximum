@@ -83,7 +83,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
     static Image imgOpaq;
     Vector moonPhase;
     final Event[] aNavroz = new Event[2];
-    private final Command[] cmds = new Command[8];
+    private final Command[] cmds = new Command[9];
     static Image imgPanelSmall;
 
     /**
@@ -1000,6 +1000,9 @@ class Summary extends Canvas implements CommandListener, Runnable {
             case 5: // back to CustomTime
                 Astromaximum.customTime.init(pageNum);
                 break;
+            case 7:
+                Astromaximum.disp.setCurrent(new About());
+                break;
 /*      case 1:
         if(pageNum==PAGE_DECUMB){
 //          Astromaximum.interpreter.topic=9;
@@ -1787,6 +1790,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
             cmds[3] = new Command(Astromaximum.getstr(19), Command.SCREEN, 3);//Month
             cmds[4] = new Command(Astromaximum.getstr(92), Command.SCREEN, 4);//Options
             cmds[6] = new Command(Astromaximum.getstr(93), Command.SCREEN, 6);//No theme
+            cmds[7] = new Command(Astromaximum.getstr(152), Command.SCREEN, 7);//No theme
             //#ifdef ELECTIO
 //#       cmds[7]=new Command(Astromaximum.getstr("Aphetics"),Command.SCREEN,7);
             //#endif

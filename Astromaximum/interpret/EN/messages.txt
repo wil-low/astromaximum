@@ -165,6 +165,10 @@
 %149% Set date
 %150% Sun day 
 %151% Week
+%152% Website
+%153% At the site
+%154% you can download more cities and read astrological reference.
+%155% Go
 
 %255% En
 

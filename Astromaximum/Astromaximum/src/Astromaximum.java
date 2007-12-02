@@ -5,6 +5,7 @@
 //# import java.awt.event.WindowEvent;
 //#else
 
+import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 //#endif
@@ -43,7 +44,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     static final int BORDER_COLOR = 0xa0a0a0;
     static final int TOPIC_COLOR = 0xd0d0d0;
     static final int GRAY_COLOR = 0xe0e0e0;
-    static final String URL = "www.astromaximum.com";
+    static final String URL = "http://astromaximum.mobi/";
     static int LOGGER_SLEEP = 2000;
     static Display disp;
 

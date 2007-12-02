@@ -89,15 +89,16 @@ foreach my $ff(@bins){
 =cut
 
 my $RESERVED_CHARS='*^$}>{~#@=';
+        print ">>>>$evt<\n";
 
 	foreach my $ln(@buf){
 		my $line=$ln;
 		$line=~s/\/\/.+//is;
 		next if $line!~/%[\d\s\,\-]+%/;
 #		next if $line=~/\A\s*\Z/is;
-#		print "$line\n";
+		print "$line\n";
 		$line=~s/\s*\Z//is;
-		$line=~s/\.+\Z//is;
+		$line=~s/\.+\Z//is if $evt ne 'EV_MSG';
 		$line=~s/.*?%(.*?)%\s*//is;
 		write_record($1);
 #		print $line."\n";
