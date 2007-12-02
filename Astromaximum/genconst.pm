@@ -5,7 +5,7 @@ our $DIR_OUTPUT='Astromaximum/deploy';
 our $DIR_TEMP='.temp';
 our $PRODUCT='Astromaximum';
 our $VENDOR='S&W Axis';
-our $VERSION='1.0.012';
+our $VERSION='1.0.013';
 
 our $UNZIP=q(unzip  %s -x *META-INF* -d %s );
 #our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );

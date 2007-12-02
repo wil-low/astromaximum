@@ -2,6 +2,7 @@
 //#ifdef build.desktop
 //# package com.sw_axis;
 //#else
+
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -9,91 +10,90 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
+
 //#endif
 /**
  * <p>Title: Astromaximum</p>
- * 
+ * <p/>
  * <p>Description: </p>
- * 
+ * <p/>
  * <p>Copyright: Copyright (c) 2006</p>
- * 
+ * <p/>
  * <p>Company: Wiland Inc.</p>
- * 
- * 
+ *
  * @author Andrei Ivushkin
  * @version 1.0
  * @noinspection CastToConcreteClass
  */
-final class DataFile{
+final class DataFile {
 //#ifndef build.desktop
-  
-  private static final int EF_DATE=0x1; // contains 2nd date - 4b
-  private static final int EF_PLANET1=0x2; // contains 1nd planet - 1b
-  private static final int EF_PLANET2=0x4; // contains 2nd planet - 1b
-  private static final int EF_DEGREE=0x8; // contains degree or angle - 2b
-  private static final int EF_CUMUL_DATE_B=0x10; // date are cumulative from 1st 4b - 1b
-  private static final int EF_CUMUL_DATE_W=0x20; // date are cumulative from 1st 4b - 2b
-  private static final int EF_SHORT_DEGREE=0x40; // contains angle 0..180 - 1b
-  private static final int EF_NEXT_DATE2=0x80; // 2nd date is 1st in next event
-//#if "imeiCheck" @ protection
-  static int hj=-2000;
+
+    private static final int EF_DATE = 0x1; // contains 2nd date - 4b
+    private static final int EF_PLANET1 = 0x2; // contains 1nd planet - 1b
+    private static final int EF_PLANET2 = 0x4; // contains 2nd planet - 1b
+    private static final int EF_DEGREE = 0x8; // contains degree or angle - 2b
+    private static final int EF_CUMUL_DATE_B = 0x10; // date are cumulative from 1st 4b - 1b
+    private static final int EF_CUMUL_DATE_W = 0x20; // date are cumulative from 1st 4b - 2b
+    private static final int EF_SHORT_DEGREE = 0x40; // contains angle 0..180 - 1b
+    private static final int EF_NEXT_DATE2 = 0x80; // 2nd date is 1st in next event
+    //#if "imeiCheck" @ protection
+    static int hj = -2000;
 //#endif
 //  static final int NDF_CACHE = 1;
 //  static final int NDF_COMMON = 2;
-//  static final int NDF_GEOPOS = 3;
-  long startJD, finalJD;
-  private int dayCount;
-//  private final Vector cache=new Vector();
-  private byte[] commonData;
-  byte[] geoposData;
-  static Vector ids=new Vector();
-  
-//  private int curRec=-1;
-private Vector eclipses=null;
-  /**
-   * DataFile
-   *
-   *
-   */
-  DataFile() {
-    final Calendar cal=Astromaximum.calendar;
-    final DataInputStream is;
-    try {
+    //  static final int NDF_GEOPOS = 3;
+    long startJD, finalJD;
+    private int dayCount;
+    //  private final Vector cache=new Vector();
+    private byte[] commonData;
+    byte[] geoposData;
+    static Vector ids = new Vector();
+
+    //  private int curRec=-1;
+    private Vector eclipses = null;
+
+    /**
+     * DataFile
+     */
+    DataFile() {
+        final Calendar cal = Astromaximum.calendar;
+        final DataInputStream is;
+        try {
 //#if "test" @ protection
 //#       is= new DataInputStream(getClass().getResourceAsStream("/c.dat"));
 //#else
-      is= new DataInputStream(getClass().getResourceAsStream("/common.dat"));
+            is = new DataInputStream(getClass().getResourceAsStream("/common.dat"));
 //#endif
-      Astromaximum.startYear=is.readShort();
-      cal.set(Calendar.YEAR,Astromaximum.startYear);
-      cal.set(Calendar.MONTH, is.readUnsignedByte()-1);
-      cal.set(Calendar.DAY_OF_MONTH, is.readUnsignedByte());
-      cal.set(Calendar.HOUR_OF_DAY, is.readUnsignedByte());
-      cal.set(Calendar.MINUTE, is.readUnsignedByte());
-      cal.set(Calendar.SECOND,0);
-      startJD=cal.getTime().getTime();
+            Astromaximum.startYear = is.readShort();
+            cal.set(Calendar.YEAR, Astromaximum.startYear);
+            cal.set(Calendar.MONTH, is.readUnsignedByte() - 1);
+            cal.set(Calendar.DAY_OF_MONTH, is.readUnsignedByte());
+            cal.set(Calendar.HOUR_OF_DAY, is.readUnsignedByte());
+            cal.set(Calendar.MINUTE, is.readUnsignedByte());
+            cal.set(Calendar.SECOND, 0);
+            startJD = cal.getTime().getTime();
 //      System.out.println(Event.long2String(startJD,false,false));
-      dayCount= is.readShort();
-      finalJD=startJD+dayCount*Astromaximum.MSECINDAY;
+            dayCount = is.readShort();
+            finalJD = startJD + dayCount * Astromaximum.MSECINDAY;
 //#debug info 
-      System.out.println(dayCount);
-      commonData=new byte[is.available()];
+            System.out.println(dayCount);
+            commonData = new byte[is.available()];
 //#debug debug 
-      System.out.println(is.available());
-      is.read(commonData);
-      is.close();
-    } 
-    catch (IOException e){
-    }
-    
-    eclipses=getEvents(Event.EV_ECLIPSE,Event.SE_SUN,startJD,finalJD);
-    final Vector tmp=getEvents(Event.EV_ECLIPSE,Event.SE_MOON,startJD,finalJD);
-    for(int i=0; i<tmp.size(); i++) {
-      eclipses.addElement(tmp.elementAt(i));
-    }
+            System.out.println(is.available());
+            is.read(commonData);
+            is.close();
+        }
+        catch (IOException e) {
+        }
+
+        eclipses = getEvents(Event.EV_ECLIPSE, Event.SE_SUN, startJD, finalJD);
+        final Vector tmp = getEvents(Event.EV_ECLIPSE, Event.SE_MOON, startJD, finalJD);
+        for (int i = 0; i < tmp.size(); i++) {
+            eclipses.addElement(tmp.elementAt(i));
+        }
 //#debug error
-    System.out.println(Runtime.getRuntime().freeMemory());
-  }
+        System.out.println(Runtime.getRuntime().freeMemory());
+    }
 
 //  void fillCache(){
 //    cacheData(Event.EV_RISE,Event.SE_SUN);
@@ -124,20 +124,20 @@ private Vector eclipses=null;
 //  private short readShort(DataInputStream is) throws IOException {
 //    return (short)(is.readByte() & 0xff | (is.readByte() & 0xff) << 8);
 //  }
-  
-  
-  /**
-   * readSubData
-   *
-   * @param buf
-   * @param evtype int
-   * @param planet int
-   * @param isCommon
-   * @param dayStart
-   * @param dayEnd
-   * @return Vector
-   * @noinspection MagicNumber
-   */
+
+
+    /**
+     * readSubData
+     *
+     * @param buf
+     * @param evtype   int
+     * @param planet   int
+     * @param isCommon
+     * @param dayStart
+     * @param dayEnd
+     * @return Vector
+     * @noinspection MagicNumber
+     */
 //#ifndef optRead
 //#   Vector readSubData(byte[] buf, int evtype, int planet, boolean isCommon, long dayStart, long dayEnd) {
 //#     final Vector v=new Vector();
@@ -306,8 +306,8 @@ private Vector eclipses=null;
 //#     return v;
 //#   }
 //#else  
-  
- //#if 0==1
+
+    //#if 0==1
 //#   Datafile format: (all big-endian)
 //# 		4 bytes - year
 //#     2 bytes - month
@@ -325,327 +325,316 @@ private Vector eclipses=null;
 //# 			  2 bytes - item count
 //# 			    next data depends on flags
 //#     
- //#endif    
-  
-  Vector readSubData(byte[] buf, int evtype, int planet, boolean isCommon, long dayStart, long dayEnd) {
-    final Vector v=new Vector();
-    int flag;
-    int skipOff;
-    Event last=new Event(0,0);
-    int fnext_date2;
-    int PERIOD=(evtype==Event.EV_ASCAPHETICS)? 2*60: 24*60;
-    try {
-      final DataInputStream is=new DataInputStream(new ByteArrayInputStream(buf));
-      if(Astromaximum.options!=null){
-        Astromaximum.options.addImeiChar();
-      }
-      while(true){
-        int ch=is.readUnsignedByte();
-		int rub=is.readUnsignedByte();
-        while (evtype != rub) {
-          if(isCommon && Astromaximum.options!=null){
-            Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
-          }
-          skipOff = is.readShort()-3;
-          is.skip(skipOff);
-          ch=is.readUnsignedByte();
-		  rub=is.readUnsignedByte();
-        }
-        skipOff=is.readShort();
-        flag=is.readShort();
-        if(planet == is.readByte()){
+    //#endif
+
+    Vector readSubData(byte[] buf, int evtype, int planet, boolean isCommon, long dayStart, long dayEnd) {
+        final Vector v = new Vector();
+        int flag;
+        int skipOff;
+        Event last = new Event(0, 0);
+        int fnext_date2;
+        int PERIOD = (evtype == Event.EV_ASCAPHETICS) ? 2 * 60 : 24 * 60;
+        try {
+            final DataInputStream is = new DataInputStream(new ByteArrayInputStream(buf));
+            if (Astromaximum.options != null) {
+                Astromaximum.options.addImeiChar();
+            }
+            while (true) {
+                int ch = is.readUnsignedByte();
+                int rub = is.readUnsignedByte();
+                while (evtype != rub) {
+                    if (isCommon && Astromaximum.options != null) {
+                        Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
+                    }
+                    skipOff = is.readShort() - 3;
+                    is.skip(skipOff);
+                    ch = is.readUnsignedByte();
+                    rub = is.readUnsignedByte();
+                }
+                skipOff = is.readShort();
+                flag = is.readShort();
+                if (planet == is.readByte()) {
 //          Astromaximum.instance.log("Found!",false);
-          break;
-        } 
-        else {
-          is.skip(skipOff - 6);
-        }
-      }
-      final int count=is.readShort();
-      int fcumul_date_b=(flag & EF_CUMUL_DATE_B);
-      int fcumul_date_w=(flag & EF_CUMUL_DATE_W);
-      int fdate=(flag & EF_DATE);
-      int fplanet1=(flag & EF_PLANET1);
-      int fplanet2=(flag & EF_PLANET2);
-      int fdegree=(flag & EF_DEGREE);
-      int fshort_degree=(flag & EF_SHORT_DEGREE);
-      fnext_date2=(flag & EF_NEXT_DATE2);
-      
-      byte myplanet0=(byte)planet, myplanet1=-1;
-      int mydgr=127;
-      long mydate0,mydate1;
-      int skips=0;
-      if(fdate!=0){
-        skips+=4;
-      }
-      if(fplanet1!=0){
-        ++skips;
-      }
-      if(fplanet2!=0){
-        ++skips;
-      }
-      if(fdegree!=0){
-        ++skips;
-        if (fshort_degree==0) {
-          ++skips;
-        }
-      }
-      int cumul; long date=0;
-      long sJD=startJD, fJD=finalJD;
-      if(planet==Event.SE_MOON){
+                    break;
+                } else {
+                    is.skip(skipOff - 6);
+                }
+            }
+            final int count = is.readShort();
+            int fcumul_date_b = (flag & EF_CUMUL_DATE_B);
+            int fcumul_date_w = (flag & EF_CUMUL_DATE_W);
+            int fdate = (flag & EF_DATE);
+            int fplanet1 = (flag & EF_PLANET1);
+            int fplanet2 = (flag & EF_PLANET2);
+            int fdegree = (flag & EF_DEGREE);
+            int fshort_degree = (flag & EF_SHORT_DEGREE);
+            fnext_date2 = (flag & EF_NEXT_DATE2);
+
+            byte myplanet0 = (byte) planet, myplanet1 = -1;
+            int mydgr = 127;
+            long mydate0, mydate1;
+            int skips = 0;
+            if (fdate != 0) {
+                skips += 4;
+            }
+            if (fplanet1 != 0) {
+                ++skips;
+            }
+            if (fplanet2 != 0) {
+                ++skips;
+            }
+            if (fdegree != 0) {
+                ++skips;
+                if (fshort_degree == 0) {
+                    ++skips;
+                }
+            }
+            int cumul;
+            long date = 0;
+            long sJD = startJD, fJD = finalJD;
+            if (planet == Event.SE_MOON) {
 //        fJD+=31*Astromaximum.MSECINDAY;
-      }
+            }
 //      Astromaximum.instance.log("Count="+Integer.toString(count),true);
-      for(int i=0; i<count; i++){
+            for (int i = 0; i < count; i++) {
 //////////////
-        if(fcumul_date_b!=0){
-          if(i!=0){
-            cumul=is.readByte();
-            date+=(cumul+PERIOD)*60;
-          }
-          else{
-            date=is.readInt();
-          }
-        }
-        else if(fcumul_date_w!=0){
-          if(i!=0){
-            cumul=is.readShort();
-            date+=(cumul+PERIOD)*60;
-          }
-          else{
-            date=is.readInt();
-          }
-        }
-        else{
-            date=is.readInt();
-        }
-        
+                if (fcumul_date_b != 0) {
+                    if (i != 0) {
+                        cumul = is.readByte();
+                        date += (cumul + PERIOD) * 60;
+                    } else {
+                        date = is.readInt();
+                    }
+                } else if (fcumul_date_w != 0) {
+                    if (i != 0) {
+                        cumul = is.readShort();
+                        date += (cumul + PERIOD) * 60;
+                    } else {
+                        date = is.readInt();
+                    }
+                } else {
+                    date = is.readInt();
+                }
+
 //#if "imeiCheck" @ protection
-        mydate0=(date*1000)+hj;
+                mydate0 = (date * 1000) + hj;
 //#else        
 //#         mydate0=date*1000;
 //#endif
-        if(fdate!=0) {
+                if (fdate != 0) {
 //#if "imeiCheck" @ protection
-          mydate1= ((long)is.readInt() *1000)+hj;
+                    mydate1 = ((long) is.readInt() * 1000) + hj;
 //#else   
 //#           mydate1=  ((long)is.readInt() * 1000);
 //#endif
-        }
-        else{
-          mydate1=mydate0;
-        }
+                } else {
+                    mydate1 = mydate0;
+                }
 //        if(mydate>=dayStart){
-        if(fplanet1!=0) {
-          myplanet0= is.readByte();
-        }
-        if(fplanet2!=0) {
-          myplanet1= is.readByte();
-        }
-        if(fdegree!=0) {
-          if (fshort_degree!=0) {
-            mydgr=is.readUnsignedByte();
-          } 
-          else {
-            mydgr=is.readShort();
-          }
-        }
-        if(fnext_date2!=0) {
-          last.date1=mydate0;
+                if (fplanet1 != 0) {
+                    myplanet0 = is.readByte();
+                }
+                if (fplanet2 != 0) {
+                    myplanet1 = is.readByte();
+                }
+                if (fdegree != 0) {
+                    if (fshort_degree != 0) {
+                        mydgr = is.readUnsignedByte();
+                    } else {
+                        mydgr = is.readShort();
+                    }
+                }
+                if (fnext_date2 != 0) {
+                    last.date1 = mydate0;
 //            lastE.date1=mydate;
-        }
-        if(evtype==Event.EV_RETROGRADE){
-          if(mydate0<sJD){
-            mydate0=sJD;
-          }
-          else if(mydate1>fJD){
-            mydate1=fJD;
-          }
-        }
+                }
+                if (evtype == Event.EV_RETROGRADE) {
+                    if (mydate0 < sJD) {
+                        mydate0 = sJD;
+                    } else if (mydate1 > fJD) {
+                        mydate1 = fJD;
+                    }
+                }
 
-        if(last.isInPeriod(dayStart,dayEnd,false)) {
+                if (last.isInPeriod(dayStart, dayEnd, false)) {
 //          v.addElement(last);
-          v.addElement(new Event(last));
-        }
-        else{
-          if(v.size()>0){
-            break;
-          }
+                    v.addElement(new Event(last));
+                } else {
+                    if (v.size() > 0) {
+                        break;
+                    }
 //          is.skip(skips);
-        }
-        last.planet0=myplanet0;
-        last.planet1=myplanet1;
-        last.degree=(short)mydgr;
-        last.date0=mydate0;
-        last.date1=mydate1;
-      }
-      if(last.isInPeriod(dayStart,dayEnd,false)) {
-        v.addElement(last);
+                }
+                last.planet0 = myplanet0;
+                last.planet1 = myplanet1;
+                last.degree = (short) mydgr;
+                last.date0 = mydate0;
+                last.date1 = mydate1;
+            }
+            if (last.isInPeriod(dayStart, dayEnd, false)) {
+                v.addElement(last);
 //        v.addElement(new Event(last));
-      }
-    } 
-    catch (IOException ex) {
+            }
+        }
+        catch (IOException ex) {
+        }
+        return v;
     }
-    return v;
-  }
 //#endif
 
-  /**
-   * getEventsOnDay
-   *
-   * @param v Vector
-   * @param evtype int
-   * @param planet int
-   * @param dayStart long
-   * @param dayEnd long
-   * @param special
-   * @param value
-   */
-  void getEventsOnPeriod(Vector v, int evtype, int planet, boolean special,
-      long dayStart, long dayEnd, int value) {
-    boolean flag=false;
-    final Vector tmp=getEvents(evtype,planet, dayStart, dayEnd);
+    /**
+     * getEventsOnDay
+     *
+     * @param v        Vector
+     * @param evtype   int
+     * @param planet   int
+     * @param dayStart long
+     * @param dayEnd   long
+     * @param special
+     * @param value
+     */
+    void getEventsOnPeriod(Vector v, int evtype, int planet, boolean special,
+                           long dayStart, long dayEnd, int value) {
+        boolean flag = false;
+        final Vector tmp = getEvents(evtype, planet, dayStart, dayEnd);
 //    if(planet==9){
 //      Astromaximum.evDump(tmp);
 //    }
-    for (Enumeration e = tmp.elements() ; e.hasMoreElements() ;) {
-      final Event ev=(Event)e.nextElement();
-      if(ev.isInPeriod(dayStart,dayEnd,special)){
-        flag=true;
-        if(value > 0) {
-          ev.setDegree(value);
-        }
-        v.addElement(ev);
-      } 
-      else
-        if(flag) {
-          break;
+        for (Enumeration e = tmp.elements(); e.hasMoreElements();) {
+            final Event ev = (Event) e.nextElement();
+            if (ev.isInPeriod(dayStart, dayEnd, special)) {
+                flag = true;
+                if (value > 0) {
+                    ev.setDegree(value);
+                }
+                v.addElement(ev);
+            } else if (flag) {
+                break;
+            }
         }
     }
-  }
-  
- 
-  
-  void getAspectsOnPeriod(Vector v, int planet, long dayStart, long dayEnd) {
-    boolean flag=false;
-    final Vector tmp=getEvents(Event.EV_ASP_EXACT, planet == Event.SE_MOON ? Event.SE_MOON : -1, dayStart, dayEnd);
-    for (Enumeration e = tmp.elements() ; e.hasMoreElements() ;) {
-      final Event ev=(Event)e.nextElement();
-      if(planet == -1 || ev.planet0 == planet || ev.planet1 == planet){
-        if(ev.isDateBetween(0,dayStart,dayEnd)){
+
+
+    void getAspectsOnPeriod(Vector v, int planet, long dayStart, long dayEnd) {
+        boolean flag = false;
+        final Vector tmp = getEvents(Event.EV_ASP_EXACT, planet == Event.SE_MOON ? Event.SE_MOON : -1, dayStart, dayEnd);
+        for (Enumeration e = tmp.elements(); e.hasMoreElements();) {
+            final Event ev = (Event) e.nextElement();
+            if (planet == -1 || ev.planet0 == planet || ev.planet1 == planet) {
+                if (ev.isDateBetween(0, dayStart, dayEnd)) {
 //          ev.dump();
-          flag=true;
-          v.addElement(ev);
-        }
-      } 
-      else
-        if(flag) {
-          break;
+                    flag = true;
+                    v.addElement(ev);
+                }
+            } else if (flag) {
+                break;
+            }
         }
     }
-  }
-  /**
-   * getEvents
-   *
-   * @param evtype int
-   * @param planet int
-   * @param dayStart
-   * @param dayEnd
-   * @return Vector
-   */
-  Vector getEvents(int evtype, int planet, long dayStart, long dayEnd) {
+
+    /**
+     * getEvents
+     *
+     * @param evtype   int
+     * @param planet   int
+     * @param dayStart
+     * @param dayEnd
+     * @return Vector
+     */
+    Vector getEvents(int evtype, int planet, long dayStart, long dayEnd) {
 //    for (Enumeration e = cache.elements() ; e.hasMoreElements() ;) {
 //      final EventCache ev = (EventCache) e.nextElement();
 //      if(ev.planet == planet && ev.eventType == evtype){
 //        return ev.events;
 //      }
 //    }
-    switch(evtype){
-      case Event.EV_ASTRORISE:
-      case Event.EV_ASTROSET:
-      case Event.EV_RISE:
-      case Event.EV_SET:
-      case Event.EV_NAVROZ:
-      case Event.EV_ASCAPHETICS:
-        return readSubData(geoposData,evtype, planet,false,dayStart,dayEnd);
-      default:
-        return readSubData(commonData,evtype, planet,true,dayStart,dayEnd);
+        switch (evtype) {
+            case Event.EV_ASTRORISE:
+            case Event.EV_ASTROSET:
+            case Event.EV_RISE:
+            case Event.EV_SET:
+            case Event.EV_NAVROZ:
+            case Event.EV_ASCAPHETICS:
+                return readSubData(geoposData, evtype, planet, false, dayStart, dayEnd);
+            default:
+                return readSubData(commonData, evtype, planet, true, dayStart, dayEnd);
 //        return readSubData(commonData,evtype, planet,true,dayStart,dayEnd);
+        }
     }
-  }
-  
-  Event getEventOnPeriod(int evtype, int planet, boolean special, long dayStart, long dayEnd) {
-    final Vector tmp=getEvents(evtype,planet,dayStart,dayEnd);
+
+    Event getEventOnPeriod(int evtype, int planet, boolean special, long dayStart, long dayEnd) {
+        final Vector tmp = getEvents(evtype, planet, dayStart, dayEnd);
 //    final Vector tmp=getEvents(evtype,planet,startJD,finalJD);
-    for (Enumeration e = tmp.elements() ; e.hasMoreElements() ;) {
-      final Event ev=(Event)e.nextElement();
-      if(ev.isInPeriod(dayStart,dayEnd,special)){
+        for (Enumeration e = tmp.elements(); e.hasMoreElements();) {
+            final Event ev = (Event) e.nextElement();
+            if (ev.isInPeriod(dayStart, dayEnd, special)) {
 //        if(evtype==Event.EV_DEGREE_PASS)
 //          ev.dump();
-        return ev;
-      }
+                return ev;
+            }
+        }
+        return null;
     }
-    return null;
-  }
 
-  /*
-  private void cacheData(int event, int planet) {
-    final Vector v = readSubData(event, planet);
-    if (v.size() > 0){
-      cache.addElement(new EventCache(v, event, planet));
-//      System.out.println("Cashed "+Integer.toString(v.size())+" events for "+
-//          Integer.toString(event)+"/"+Integer.toString(planet));
+    /*
+    private void cacheData(int event, int planet) {
+      final Vector v = readSubData(event, planet);
+      if (v.size() > 0){
+        cache.addElement(new EventCache(v, event, planet));
+  //      System.out.println("Cashed "+Integer.toString(v.size())+" events for "+
+  //          Integer.toString(event)+"/"+Integer.toString(planet));
+      }
+  //    else
+  //      System.out.println("Cache not found for "+Integer.toString(event)+"/"+
+  //          Integer.toString(planet));
     }
-//    else
-//      System.out.println("Cache not found for "+Integer.toString(event)+"/"+
-//          Integer.toString(planet));
-  }
-  */
+    */
 // --Commented out by Inspection START (1/12/07 1:44 PM):
 //  int getDayCount() {
 //    return dayCount;
 //  }
 // --Commented out by Inspection STOP (1/12/07 1:44 PM)
-  
-  /** @noinspection AccessStaticViaInstance
-   * @return
-   * @param date*/
-  boolean isDateAvailable(long date) {
-    long fin=startJD+dayCount*Astromaximum.MSECINDAY;
+
+    /**
+     * @param date
+     * @return
+     * @noinspection AccessStaticViaInstance
+     */
+    boolean isDateAvailable(long date) {
+        long fin = startJD + dayCount * Astromaximum.MSECINDAY;
 //#mdebug debug    
-    System.out.println(Event.long2String(date,0,false)+" "+Long.toString(date));
-    System.out.println(Event.long2String(startJD,0,false)+" "+Long.toString(startJD));
-    System.out.println(Event.long2String(fin,0,false)+" "+Long.toString(fin));
+        System.out.println(Event.long2String(date, 0, false) + " " + Long.toString(date));
+        System.out.println(Event.long2String(startJD, 0, false) + " " + Long.toString(startJD));
+        System.out.println(Event.long2String(fin, 0, false) + " " + Long.toString(fin));
 //#enddebug    
-    return Event.dateBetween(date,startJD-Event.localOffset(startJD),
-        fin-Event.localOffset(fin))==0;
+        return Event.dateBetween(date, startJD - Event.localOffset(startJD),
+                fin - Event.localOffset(fin)) == 0;
 //    return true;
-  }
-  
-  boolean isDateAvailable(Date date) {
-    return isDateAvailable(date.getTime());
-  }
-  
- 
-  /**
-   * 
-   * @param today 
-   * @param delta
-   * @return
-   */
-  Event todayEclipse(long today, int delta) {
-//    today+=Event.localOffset(today);
-    final long today_end=today+Astromaximum.MSECINDAY*(delta+1);
-    today-=Astromaximum.MSECINDAY*delta;
-    for(Enumeration e=eclipses.elements(); e.hasMoreElements();){
-      final Event ecl=(Event)e.nextElement();
-      if(ecl.isDateBetween(0,today,today_end)) {
-        return ecl;
-      }
     }
-    return null;
-  }
-  
+
+    boolean isDateAvailable(Date date) {
+        return isDateAvailable(date.getTime());
+    }
+
+
+    /**
+     * @param today
+     * @param delta
+     * @return
+     */
+    Event todayEclipse(long today, int delta) {
+//    today+=Event.localOffset(today);
+        final long today_end = today + Astromaximum.MSECINDAY * (delta + 1);
+        today -= Astromaximum.MSECINDAY * delta;
+        for (Enumeration e = eclipses.elements(); e.hasMoreElements();) {
+            final Event ecl = (Event) e.nextElement();
+            if (ecl.isDateBetween(0, today, today_end)) {
+                return ecl;
+            }
+        }
+        return null;
+    }
+
 //  public void cacheData(int event, int planet) {
 //    Vector v =null;// readSubData(geoposData, event, planet);
 //    if (v.size() > 0){
@@ -654,7 +643,7 @@ private Vector eclipses=null;
 //      System.out.println("Cached "+Integer.toString(v.size()));
 //    }
 //  }
-  
+
 //  private final class EventCache {
 //    final Vector events;
 //    final int eventType;

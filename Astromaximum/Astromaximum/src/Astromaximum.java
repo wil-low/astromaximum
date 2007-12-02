@@ -4,13 +4,17 @@
 //# import java.awt.event.WindowAdapter;
 //# import java.awt.event.WindowEvent;
 //#else
+
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 //#endif
 import java.io.*;
 import java.util.*;
+
 //#define perftest="0"
-/** @noinspection CastToConcreteClass*/
+/**
+ * @noinspection CastToConcreteClass
+ */
 //#ifdef build.desktop
 //# public class Astromaximum extends Frame{
 //#   public Astromaximum() {
@@ -27,85 +31,86 @@ import java.util.*;
 //#   }                         
 //#     
 //#else
-public class Astromaximum extends MIDlet implements CommandListener{
-  static final int BACK_COLOR = 0xb0b0b0;
-  static final int SELECTION_COLOR = 0xffffff;
-  static final int SEA_COLOR = 0x009bd5;
-  static final int BLUE_COLOR = 0x006ff4;
-  static final int DIMMED_COLOR = 0x909090;
-  static final int RUBY_COLOR = 0xb00000;
-  static final int RED_COLOR = 0xf00000;
-  static final int CURRENT_MONTH_COLOR = 0xc0c0c0;
-  static final int BORDER_COLOR = 0xa0a0a0;
-  static final int TOPIC_COLOR = 0xd0d0d0;
-  static final int GRAY_COLOR = 0xe0e0e0;
-  static final String URL="www.astromaximum.com";
-  static int LOGGER_SLEEP = 2000;
-  static Display disp;
+public class Astromaximum extends MIDlet implements CommandListener {
+    static final int BACK_COLOR = 0xb0b0b0;
+    static final int SELECTION_COLOR = 0xffffff;
+    static final int SEA_COLOR = 0x009bd5;
+    static final int BLUE_COLOR = 0x006ff4;
+    static final int DIMMED_COLOR = 0x909090;
+    static final int RUBY_COLOR = 0xb00000;
+    static final int RED_COLOR = 0xf00000;
+    static final int CURRENT_MONTH_COLOR = 0xc0c0c0;
+    static final int BORDER_COLOR = 0xa0a0a0;
+    static final int TOPIC_COLOR = 0xd0d0d0;
+    static final int GRAY_COLOR = 0xe0e0e0;
+    static final String URL = "www.astromaximum.com";
+    static int LOGGER_SLEEP = 2000;
+    static Display disp;
 
-//#if "imeiCheck" @ protection
-  static int hj;
-//#endif
-  static int errCode=0;
-  static int startYear=0;
-  static final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));//TimeZone.getDefault());
-  static boolean firstRun=true;
-  static private final Hashtable locHash=new Hashtable();
-  // midlet instance reference
-  static Astromaximum instance;
-  static final long MSECINDAY=86400*1000;
+    //#if "imeiCheck" @ protection
+    static int hj;
+    //#endif
+    static int errCode = 0;
+    static int startYear = 0;
+    static final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));//TimeZone.getDefault());
+    static boolean firstRun = true;
+    static private final Hashtable locHash = new Hashtable();
+    // midlet instance reference
+    static Astromaximum instance;
+    static final long MSECINDAY = 86400 * 1000;
 //  private final String[] monthKeys={"January","February","March","April","May","June",
 //  "July","August","September","October","November","December"
-//  };
-  static final String[] months=new String[12];
-  static final String[] CONSTELL={
-    "Ari","Tau","Gem","Cnc","Leo","Vir","Lib","Sco","Sgr","Cap","Aqu","Psc"
-  };
-  static final String[] PLANETS={
-    "SO","MO","ME","VE","MA","JU","SA","UR","NE","PL","KN","BM","WM"
-  };
-  static final int CUST_COLOR=0xf0;
-  
-  /**
-   * getMidnight
-   * 
-   * 
-   * @param time
-   * @return Date
-   */
-  long getMidnight(long time) {
-    calendar.setTime(new Date(time+Event.localOffset(time)));
-    calendar.set(Calendar.HOUR_OF_DAY,0);
-    calendar.set(Calendar.MINUTE,0);
-    calendar.set(Calendar.SECOND,0);
-    return calendar.getTime().getTime();
-  }
-  static Options options;
-  static Summary summary;
-  static DataFile dataFile;
-  static LogBox logBox;
-  static Interpreter interpreter;
-  static CustomTime customTime;
+    //  };
+    static final String[] months = new String[12];
+    static final String[] CONSTELL = {
+            "Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqu", "Psc"
+    };
+    static final String[] PLANETS = {
+            "SO", "MO", "ME", "VE", "MA", "JU", "SA", "UR", "NE", "PL", "KN", "BM", "WM"
+    };
+    static final int CUST_COLOR = 0xf0;
 
-  static String locale=null;
-  /**
-   * Start this MIDlet
-   */
-  public void startApp(){
-    disp=Display.getDisplay(this);
+    /**
+     * getMidnight
+     *
+     * @param time
+     * @return Date
+     */
+    long getMidnight(long time) {
+        calendar.setTime(new Date(time + Event.localOffset(time)));
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime().getTime();
+    }
+
+    static Options options;
+    static Summary summary;
+    static DataFile dataFile;
+    static LogBox logBox;
+    static Interpreter interpreter;
+    static CustomTime customTime;
+
+    static String locale = null;
+
+    /**
+     * Start this MIDlet
+     */
+    public void startApp() {
+        disp = Display.getDisplay(this);
 //#debug
-    long start=System.currentTimeMillis();
-    if(firstRun){
+        long start = System.currentTimeMillis();
+        if (firstRun) {
 //        System.gc();
-      try{
-        instance = this;
+            try {
+                instance = this;
 //      InputStream iis=getClass().getResourceAsStream("/Amaxdata.dat");
 //      try {
 //        System.out.println(iis.available());
 //      } catch (IOException ex) {
 //        ex.printStackTrace();
 //      }
-      
+
 //#if "timeBomb" @ protection
 //#mdebug debug
 //#      System.out.println(Integer.toHexString(Interpreter.hj));
@@ -119,13 +124,13 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#if logger
 //#       long afterLS=Runtime.getRuntime().freeMemory();
 //#endif      
-        interpreter =new Interpreter();
-        errCode=1; // XXX
-	interpreter.addCommand(new Command(getstr(94), Command.BACK, 1));//back
-	interpreter.addCommand(new Command(getstr(140), Command.BACK, 2));//text font
-	interpreter.addCommand(new Command(getstr(90), Command.BACK, 3));//help
-        locale=getstr(255);
-        errCode=101; // XXX
+                interpreter = new Interpreter();
+                errCode = 1; // XXX
+                interpreter.addCommand(new Command(getstr(94), Command.BACK, 1));//back
+                interpreter.addCommand(new Command(getstr(140), Command.BACK, 2));//text font
+                interpreter.addCommand(new Command(getstr(90), Command.BACK, 3));//help
+                locale = getstr(255);
+                errCode = 101; // XXX
 //#if logger
 //#       interpreter.isLogged=true;
 //#       disp.setCurrent(interpreter);
@@ -133,70 +138,70 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#           "|before LocSupport="+Long.toString(beforeLS)+
 //#           "|after LocSupport="+Long.toString(afterLS));
 //#endif      
-        summary =new Summary();
+                summary = new Summary();
 //#if logger
 //#       logger(summary.toString());
 //#endif        
 //#if perftest=="0"
-        errCode=2; // XXX
-        summary.setMoonXY(summary.getWidth()>>1,summary.getHeight()>>1,
-            Graphics.HCENTER|Graphics.VCENTER);
+                errCode = 2; // XXX
+                summary.setMoonXY(summary.getWidth() >> 1, summary.getHeight() >> 1,
+                        Graphics.HCENTER | Graphics.VCENTER);
 //#if logger
 //#       logger("before summary run");
 //#endif        
-        errCode=3; // XXX
-        summary.run();
-  //#ifndef logger
-        disp.setCurrent(summary);
-  //#endif      
+                errCode = 3; // XXX
+                summary.run();
+                //#ifndef logger
+                disp.setCurrent(summary);
+                //#endif
 //#endif
 //#if logger
 //#       logger("after summary run");
 //#endif        
-        for(int i=0; i < 12; i++) {
-          months[i] = getstr(7+i);
-        }
-        
-        logBox =new LogBox();
-        errCode=4; // XXX
+                for (int i = 0; i < 12; i++) {
+                    months[i] = getstr(7 + i);
+                }
+
+                logBox = new LogBox();
+                errCode = 4; // XXX
 //#if logger
 //#       logger(logBox.toString());
 //#endif        
-        //    sizer.setSize(logBox.getWidth(), logBox.getHeight());
-        log("TZ id="+TimeZone.getDefault().getID());
-        options = new Options();
-        dataFile = new DataFile();
+                //    sizer.setSize(logBox.getWidth(), logBox.getHeight());
+                log("TZ id=" + TimeZone.getDefault().getID());
+                options = new Options();
+                dataFile = new DataFile();
 //#if logger
 //#       logger("dataFile");
 //#endif      
-        errCode=5; // XXX
-        try {
-          options.initDB(true);
-        } 
-        catch (Exception ex) {
-          errCode=6; // XXX
-          options.resetStorage();
-        }
+                errCode = 5; // XXX
+                try {
+                    options.initDB(true);
+                }
+                catch (Exception ex) {
+                    errCode = 6; // XXX
+                    options.resetStorage();
+                }
 //#if logger
 //#       logger("initDB");
 //#endif      
-      errCode=7; // XXX
-      customTime =new CustomTime();
+                errCode = 7; // XXX
+                customTime = new CustomTime();
 //#if logger
 //#       logger("customTime");
 //#endif      
 //        System.out.println("Modem="+customTime.askModem());
 //#debug error
-      errCode=8; // XXX
-      Astromaximum.log("****Total memory = "+Long.toString(Runtime.getRuntime().totalMemory()));
-      options.loadHistory();
-      errCode=9; // XXX
+                errCode = 8; // XXX
+                Astromaximum.log("****Total memory = " + Long.toString(Runtime.getRuntime().totalMemory()));
+                options.loadHistory();
+                errCode = 9; // XXX
 //      System.gc();
 //        dataFile.fillCache();
 //        log("Options");
 //          System.out.println(Runtime.getRuntime().freeMemory());
 //#debug error
-        System.out.println("Interpreter");
+                System.out.println("Interpreter");
 //        log("customTime");
 //          System.out.println(Runtime.getRuntime().freeMemory());
 //#if perftest == "2"
@@ -275,7 +280,7 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#         logBox.showLog(null);
 //#endif
 //#if perftest=="0"
-      
+
 //      if(!dataFile.isDateAvailable(summary.selDate)){
 //        //#if Demo
 //        //#       calendar.set(Calendar.YEAR,2006);
@@ -288,43 +293,43 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //       //#endif
 //      }
 //        log("SDS before");
-      errCode=10; // XXX
-      summary.moonPhase= Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE,Event.SE_MOON,
-	  dataFile.startJD,dataFile.finalJD);
+                errCode = 10; // XXX
+                summary.moonPhase = Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE, Event.SE_MOON,
+                        dataFile.startJD, dataFile.finalJD);
 //#if logger
 //#       logger("moonPhase");
 //#endif      
-        errCode=11; // XXX
-        Vector nav=dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 0, dataFile.finalJD);
+                errCode = 11; // XXX
+                Vector nav = dataFile.getEvents(Event.EV_NAVROZ, Event.SE_SUN, 0, dataFile.finalJD);
 //        evDump(nav);
-	if(nav.size()!=2){
-          errCode=12; // XXX
-	  throw new Exception("Navroz event count != 2");
-	}
-        nav.copyInto(summary.aNavroz);
+                if (nav.size() != 2) {
+                    errCode = 12; // XXX
+                    throw new Exception("Navroz event count != 2");
+                }
+                nav.copyInto(summary.aNavroz);
 //      dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 1, dataFile.finalJD).copyInto(summary.aNavroz);
 //#if logger
 //#       logger("Navroz");
 //#endif      
-      errCode=13; // XXX
-      summary.changeSize();
+                errCode = 13; // XXX
+                summary.changeSize();
 //#if logger
 //#       logger("changeSize");
 //#endif      
-      errCode=14; // XXX
-      summary.setCell(getMidnight(summary.selDate.getTime()),true);
+                errCode = 14; // XXX
+                summary.setCell(getMidnight(summary.selDate.getTime()), true);
 //#if logger
 //#       logger("setCell");
 //#endif      
 //      evDump(dataFile.getEvents(Event.EV_RISE, Event.SE_MOON, 0, dataFile.finalJD));
-      errCode=15; // XXX
-      summary.setToday();
+                errCode = 15; // XXX
+                summary.setToday();
 //      summary.showDaySummary();
 //#if logger
 //#       logger("showDaySummary");
 //#endif      
-      errCode=16; // XXX
-      summary.stop();
+                errCode = 16; // XXX
+                summary.stop();
 //#if logger
 //#       if(interpreter.isLogged){
 //#         Thread.currentThread().sleep(3000);
@@ -332,189 +337,191 @@ public class Astromaximum extends MIDlet implements CommandListener{
 //#       }
 //#       disp.setCurrent(summary);
 //#endif      
-      errCode=17; // XXX
-      firstRun =false;
+                errCode = 17; // XXX
+                firstRun = false;
 //#endif
-    
-    } 
-    catch(Exception oome){
+
+            }
+            catch (Exception oome) {
 ///#mdebug debug
-       Astromaximum.log("errCode="+Integer.toString(errCode));
-       Astromaximum.log(oome.toString());
-       logBox.showLog(null);
-       oome.printStackTrace();
+                Astromaximum.log("errCode=" + Integer.toString(errCode));
+                Astromaximum.log(oome.toString());
+                logBox.showLog(null);
+                oome.printStackTrace();
 //        quit();
 ///#enddebug       
-    }
-    }  
-    summary.repaint();
+            }
+        }
+        summary.repaint();
 //#mdebug
-    System.out.print("Initialization took ");
-    System.out.print(System.currentTimeMillis()-start);
-    System.out.println(" msec.");
+        System.out.print("Initialization took ");
+        System.out.print(System.currentTimeMillis() - start);
+        System.out.println(" msec.");
 //#enddebug    
-    summary.startRealtime();
+        summary.startRealtime();
 //    log("SDS after");
 //      disp.setCurrent(summary);
-  }
-  
-  public void pauseApp() {
-    /**@todo Implement pauseApp behavior here*/
-  }
-  
-  /**
-   * Clean up any resources
-   *
-   * @param unconditional boolean
-   */
-  public void destroyApp(boolean unconditional) {
-    dataFile=null;
-    summary=null;
-    interpreter=null;
-    customTime=null;
-    logBox=null;
-    options=null;
-  }
-  
-  /**
-   * Stop the MIDlet
-   */
-  private static void quit() {
-    Display.getDisplay(instance).setCurrent(null);
-    options.shutdown();
-    instance.destroyApp(true);
-    instance.notifyDestroyed();
-  }
-  
-  
-  /**
-   * log
-   *
-   * @param string String
-   */
-  static void log(String string) {
-///#mdebug debug    
-     if(Astromaximum.logBox.getString(0).equals(LogBox.EMPTY)) {
-       Astromaximum.logBox.delete(0);
-     }
-     Astromaximum.logBox.append(string,null);
-     while(Astromaximum.logBox.size() > 30) {
-       Astromaximum.logBox.delete(0);
-     }
-     System.out.println(string);
-///#enddebug
-  }
-  
-  
-  static int getSignDegree(int absDegree) {
-    return absDegree%30+1;
-  }
-  
-  
-  static Event evAt(Vector v, int idx) {
-    return (Event) v.elementAt(idx);
-  }
-  
-  /** @param date1
-   * @param delta
-   * @noinspection BooleanMethodNameMustStartWithQuestion
-   * @return*/
-  long changeDate(Date date1, int delta) {
-    long tmp=date1.getTime();
-    tmp += MSECINDAY *delta;
-    return (dataFile.isDateAvailable(tmp))? tmp: 0;
-  }
-  
-  static Image extractImg(int index, String string) {
-    Image res=null;
-    try {
-      final DataInputStream dis=new DataInputStream(
-          instance.getClass().getResourceAsStream(string));
-      int off=0;
-      final int all=dis.readUnsignedShort();
-      for(int i=0; i<index; i++) {
-        off += dis.readShort();
-      }
-      final int len=dis.readShort();
-      dis.skip(2*(all-index-1)+off);
-      byte[] pngdata=new byte[len+1];
-      dis.read(pngdata);
-      dis.close();
-      res=Image.createImage(pngdata,0,len);
-    } catch (IOException ex) {
-//      ex.printStackTrace();
     }
-    return res;
-  }
-  
 
-  
-//#mdebug info
-  /** @param events
-   * @noinspection StaticMethodOnlyUsedInOneClass*/
-  static void evDump(Event[] events) {
-    System.out.println("**Array dump**");
-    for(int i=0; i<events.length; i++) {
-      if (events[i] != null) {
-        events[i].dump();
-      } else {
-        System.out.println("null");
-      }
+    public void pauseApp() {
+        /**@todo Implement pauseApp behavior here*/
     }
-  }
-  
-  static void evDump(Vector events) {
-    System.out.print("Dump events= ");
-    System.out.println(events.size());
-    for(Enumeration e=events.elements(); e.hasMoreElements();)
-      ((Event)e.nextElement()).dump();
-  }
+
+    /**
+     * Clean up any resources
+     *
+     * @param unconditional boolean
+     */
+    public void destroyApp(boolean unconditional) {
+        dataFile = null;
+        summary = null;
+        interpreter = null;
+        customTime = null;
+        logBox = null;
+        options = null;
+    }
+
+    /**
+     * Stop the MIDlet
+     */
+    private static void quit() {
+        Display.getDisplay(instance).setCurrent(null);
+        options.shutdown();
+        instance.destroyApp(true);
+        instance.notifyDestroyed();
+    }
+
+
+    /**
+     * log
+     *
+     * @param string String
+     */
+    static void log(String string) {
+///#mdebug debug    
+        if (Astromaximum.logBox.getString(0).equals(LogBox.EMPTY)) {
+            Astromaximum.logBox.delete(0);
+        }
+        Astromaximum.logBox.append(string, null);
+        while (Astromaximum.logBox.size() > 30) {
+            Astromaximum.logBox.delete(0);
+        }
+        System.out.println(string);
+///#enddebug
+    }
+
+
+    static int getSignDegree(int absDegree) {
+        return absDegree % 30 + 1;
+    }
+
+
+    static Event evAt(Vector v, int idx) {
+        return (Event) v.elementAt(idx);
+    }
+
+    /**
+     * @param date1
+     * @param delta
+     * @return
+     * @noinspection BooleanMethodNameMustStartWithQuestion
+     */
+    long changeDate(Date date1, int delta) {
+        long tmp = date1.getTime();
+        tmp += MSECINDAY * delta;
+        return (dataFile.isDateAvailable(tmp)) ? tmp : 0;
+    }
+
+    static Image extractImg(int index, String string) {
+        Image res = null;
+        try {
+            final DataInputStream dis = new DataInputStream(
+                    instance.getClass().getResourceAsStream(string));
+            int off = 0;
+            final int all = dis.readUnsignedShort();
+            for (int i = 0; i < index; i++) {
+                off += dis.readShort();
+            }
+            final int len = dis.readShort();
+            dis.skip(2 * (all - index - 1) + off);
+            byte[] pngdata = new byte[len + 1];
+            dis.read(pngdata);
+            dis.close();
+            res = Image.createImage(pngdata, 0, len);
+        } catch (IOException ex) {
+//      ex.printStackTrace();
+        }
+        return res;
+    }
+
+
+    //#mdebug info
+    /**
+     * @param events
+     * @noinspection StaticMethodOnlyUsedInOneClass
+     */
+    static void evDump(Event[] events) {
+        System.out.println("**Array dump**");
+        for (int i = 0; i < events.length; i++) {
+            if (events[i] != null) {
+                events[i].dump();
+            } else {
+                System.out.println("null");
+            }
+        }
+    }
+
+    static void evDump(Vector events) {
+        System.out.print("Dump events= ");
+        System.out.println(events.size());
+        for (Enumeration e = events.elements(); e.hasMoreElements();)
+            ((Event) e.nextElement()).dump();
+    }
 //#enddebug
 
-  public void commandAction(Command c, Displayable d) {
-    switch(c.getCommandType()){
-      case Command.SCREEN:
-	disp.setCurrent(summary);
-        break;
-      case Command.OK:
-        quit();
-      case Command.BACK:
-        disp.setCurrent(options);
+    public void commandAction(Command c, Displayable d) {
+        switch (c.getCommandType()) {
+            case Command.SCREEN:
+                disp.setCurrent(summary);
+                break;
+            case Command.OK:
+                quit();
+            case Command.BACK:
+                disp.setCurrent(options);
+        }
     }
-  }
 
-  public void reportTodayError() {
-    String str=summary.selDate.toString();
-    str=str.substring(0,11)+str.substring(str.length()-4);
-    final Alert noDate=new Alert(getstr(91)+" "+ str, getstr(111), null,AlertType.ERROR);
-    noDate.setTimeout(5000);
-    noDate.addCommand(new Command("OK",Command.SCREEN,1));
-    noDate.setCommandListener(this);
-    disp.setCurrent(noDate);
-    calendar.setTime(summary.selDate);
-    calendar.set(Calendar.YEAR,Astromaximum.startYear);
-    summary.selDate=calendar.getTime();
+    public void reportTodayError() {
+        String str = summary.selDate.toString();
+        str = str.substring(0, 11) + str.substring(str.length() - 4);
+        final Alert noDate = new Alert(getstr(91) + " " + str, getstr(111), null, AlertType.ERROR);
+        noDate.setTimeout(5000);
+        noDate.addCommand(new Command("OK", Command.SCREEN, 1));
+        noDate.setCommandListener(this);
+        disp.setCurrent(noDate);
+        calendar.setTime(summary.selDate);
+        calendar.set(Calendar.YEAR, Astromaximum.startYear);
+        summary.selDate = calendar.getTime();
 //#debug error
-    System.out.println(summary.selDate);
-    
-  }
-  
-  public static String getstr(int id){
-    Integer key=new Integer(id);
-    if(locHash.containsKey(key)){
-      return (String)locHash.get(key);
+        System.out.println(summary.selDate);
+
     }
-    String str=interpreter.extractArticle(new long[]{Event.EV_MSG,0,id});
-    if(str==null){
-      System.out.println("?? "+Integer.toString(id)+" ??");
-      System.exit(1);
+
+    public static String getstr(int id) {
+        Integer key = new Integer(id);
+        if (locHash.containsKey(key)) {
+            return (String) locHash.get(key);
+        }
+        String str = interpreter.extractArticle(new long[]{Event.EV_MSG, 0, id});
+        if (str == null) {
+            System.out.println("?? " + Integer.toString(id) + " ??");
+            System.exit(1);
+        } else {
+            locHash.put(key, str);
+        }
+        return str;
     }
-    else{
-      locHash.put(key, str);
-    }
-    return str;
-  }
-  
+
 //#if "timeBomb" @ protection
 //#   static byte[] getArray() {
 //# ////#debug
