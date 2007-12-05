@@ -25,7 +25,7 @@
 	if($level==4){
 		include_once('amtools.php');
 		$fn=create_jar($defyear, $p[3]);
-		header("Location: dl/data.php?t=$fn");
+		header("Location: data.php?t=$fn");
 		exit();
 	}
 	$entity='';
