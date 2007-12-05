@@ -23,10 +23,7 @@ function amtools_random($ye,$path, $ext){
 
 $UNZIP="unzip %s -d %s -x *META-INF* > /dev/null";
 $UNTAR="tar xvf %s -C %s";
-#our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
 $ZIP="fastjar %s ";
-//$ZIP="cd %s; ../../zip -vrm %s *";
-#our $zip=q(zip -r %s.r %s/*);
 
 function jar($jarpath, $out, $manifest, $srcdir)
 {
@@ -117,7 +114,7 @@ function create_jar($year, $ids){
 	$template.="MIDlet-Jar-Size: $asize\n";
 	fwrite($inf, $template);
 	fclose($inf);
-	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1$server/dl/data.php?r=$fn\n", $template);
+	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1$server/data.php?r=$fn\n", $template);
 	$inf=fopen("$dfil/$fn.t", 'wb');
 	fwrite($inf, $template);
 	fclose($inf);

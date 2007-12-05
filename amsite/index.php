@@ -13,6 +13,6 @@
 <div id="hdr" class="hdr"></div>
 <div id="cont"><hr/>
 <a href="year.php">Download a city</a><br/>
-<a href="lang.php">Astro help</a><br/>
+<a href="html/ru/0_0.xhtml">Astro help</a><br/>
 <a href="about.xhtml">About Astromaximum</a><hr/></div>
 <div id="ftr"></div></body></html>

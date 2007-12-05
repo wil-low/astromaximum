@@ -1,5 +1,5 @@
 <?php
-include_once('lang.php');
+include_once('../lang.php');
 ?>
 
 <html>
@@ -95,9 +95,9 @@ function city_del(){
 			while($row = mysql_fetch_row($sth)){
 				echo "$row[1], $row[2]; \n";	
 			}
-			include_once('amtools.php');
+			include_once('../amtools.php');
 			$id=create_jar($defyear, $sc);
-			$url='data.php?r='.$id;
+			$url='../data.php?r='.$id;
 			echo "<center><h4>{$i18['PC_DL']}:</h4>";
 			echo "<b>{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";
 			$url=str_replace("?r", "?d", $url);
