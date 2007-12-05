@@ -19,9 +19,9 @@ else{
 	$DB_USER='user';
 	$DB_USER_PWD='user';
 }
-$DIR_SOURCE='source';
-$DIR_INBOX='inbox';
-$DIR_FILES='files';
+$DIR_SOURCE='dl/source';
+$DIR_INBOX='dl/inbox';
+$DIR_FILES='dl/files';
 
 $conn=mysql_connect( $DB_SERVER, $DB_SUPERUSER, $DB_SUPERUSER_PWD );
 mysql_select_db( $DB_NAME);

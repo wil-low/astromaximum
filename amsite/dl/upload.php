@@ -15,7 +15,7 @@ include_once('lang.php');
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
 <meta http-equiv="content-style-type" content="text/css">
 <meta http-equiv="expires" content="0">
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="../style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <?php
@@ -30,7 +30,7 @@ if(!$chac){
 if($chac==1){
 	emit_admin();
 } 
-include_once('amtools.php');
+include_once('../amtools.php');
 ?>
 	<form method="post" action="upload.php" enctype="multipart/form-data">
 		Upload what: 

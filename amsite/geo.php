@@ -1,272 +1,145 @@
 <?php
-include_once('lang.php');
+	include_once('dbconnect.php');
+	$fd = fopen("continents.txt", 'r');
+	while (!feof($fd)) {
+		$buffer = fgets($fd, 4096);
+		list($key,$value)=explode("\t",$buffer);
+		$cont[trim($value)]=$key;
+	}
+	fclose($fd);
+	$LVL_MAX=3;
+	$level=0;
+	if(isset($_GET['lvl'])){
+		$level=$_GET['lvl'];
+	}
+	$defyear=date('Y');
+	if(isset($_GET['y'])){
+		$defyear=$_GET['y'];
+	}
+	for($i=0; $i<=$level; $i++){
+		$p[$i]=0;
+		if(isset($_GET["p$i"])){
+			$p[$i]=$_GET["p$i"];
+		}
+	}
+	if($level==4){
+		include_once('amtools.php');
+		$fn=create_jar($defyear, $p[3]);
+		header("Location: dl/data.php?t=$fn");
+		exit();
+	}
+	$entity='';
+	if(isset($_GET['ent'])){
+		$entity=urldecode($_GET['ent']);
+	}
+	$_POST["n$level"]=$entity;
+	$lvl_title=array('Continent', 'Country', 'State', 'City');
+	echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 ?>
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Cities database - Astromaximum</title>
-<meta name="generator" content="Bluefish 1.0.7">
-<meta name="author" content="Unknown">
-<meta name="date" content="2007-11-17T16:54:40+0200">
-<meta name="copyright" content="">
-<meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
-<meta http-equiv="content-style-type" content="text/css">
-<meta http-equiv="expires" content="0">
-<link href="style.css" rel="stylesheet" type="text/css">
+<?php
+	$res=db_query($level, $p);
+?>
+<title><?php echo "Select $lvl_title[$level]" ?></title>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
+<meta http-equiv="Cache-Control" content="max-age=0"/>
+<link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
+<div class="hdr">
 <?php
-include('nav.php');
-emit_nav1();
-$defyear=2007;
-if(isset($_POST['year'])){
-	$defyear=$_POST['year'];
-}
-$chac=check_access();
-if(!$chac){ 
-	echo "<br><p align=center>{$i18['DB_ACCESS']}</p>";
-	emit_nav2();
-	exit();
-}
-if($chac==1){
-	emit_admin();
-} 
-$sc='';
-?>
-<h3 align=center><?php echo $i18['DB']?></h3>
-
-<script>
-function city_add(cname,sname){
-	selc=document.getElementById("selcit");
-	out="";
-	frm=document.forms.namedItem("main");
-	sc=frm.elements.namedItem("sc");
-	for(i=0; i<frm.elements.length; i++){
-		opt=frm.elements.item(i);
-		if(opt.type=="checkbox" && opt.checked && sc.value.indexOf(","+opt.id+",")<0){
-			out=out+"<input type=checkbox name=sss id="+opt.id+">"+opt.value;
-//			if(sname!=""){
-//				out=out+", "+sname;
-//			}
-			out=out+", "+cname+"</input><br>";
-			sc.value=sc.value+opt.id+",";
-		}
-	}
-	selc.innerHTML=selc.innerHTML+out;
-};
-
-function showc(country,state){
-	frm=document.forms.namedItem("main");
-	if(frm.elements.namedItem('cid').value!=country || frm.elements.namedItem('stateid').value!=state){
-		frm.elements.namedItem('stateid').value=state;
-		frm.elements.namedItem('cid').value=country;
-		frm.submit();
-	}
-};
-
-function city_del(){
-	frm=document.forms.namedItem("main");
-	sc=frm.elements.namedItem("sc");
-	oldsc=sc.value;
-	sc.value=",";
-	for(i=0; i<frm.elements.length; i++){
-		opt=frm.elements.item(i);
-		if(opt.type!="checkbox") continue;
-		if( opt.name!="sss") continue;
-		if(!opt.checked){
-			sc.value=sc.value+opt.id+",";
-		}
-	}
-	if(oldsc!=sc.value){
-		frm.submit();
-	}
-};
-</script>
-<?php
-	if(isset($_POST['Action']) && ($_POST['Action']==$i18['GET_DATA']) && 
-			isset($_POST['sc'])){
-		$sth=get_selected_cities('sc');
-		if($sth){
-			echo "<p>You have selected:</p>";
-			while($row = mysql_fetch_row($sth)){
-				echo "$row[1], $row[2]; \n";	
-			}
-			include_once('amtools.php');
-			$id=create_jar($defyear, $sc);
-			$url='data.php?r='.$id;
-			echo "<center><h4>{$i18['PC_DL']}:</h4>";
-			echo "<b>{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";
-			$url=str_replace("?r", "?d", $url);
-			echo "{$i18['JAD_LINK']}: <a href='$url'>$id</a><br><br></b>";
-			$url=str_replace("?d", "?t", $url);
-			echo "<h4>{$i18['PHONE_DL']}:</h4>";
-			echo "<b>{$i18['DIRECTLINK']}: <a href='$url'>$id</a><br>";
-			echo "<br><font color='red'>{$i18['VALID_LINKS']}</font></b></center>";
-		}
-		emit_nav2();
-		exit(0);
+	for($i=0; $i<$level; $i++){
+		echo make_anchor($i, $p, $lvl_title[$i], $defyear).'&nbsp;';
 	}
 ?>
-<form method="post" action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
-<table class=geo border="1" width="100%">
-<tr><td colspan=4>
-<font color='red'><i><?php echo $i18['STEP']?> 1:</i></font>
-<b><?php echo $i18['YEAR']?> </b> 
-<input type="hidden" name="cid" value=""  />
-<input type="hidden" name="stateid" value="0"  />
-<select name="year" onchange="javascript:document.forms.namedItem('main').submit()">
+</div><br>
+<div id="cont">
 <?php
-	$years=array(2005,2006,2007,2008);
-	foreach($years as $y){
-		$sel='';
-		if($y==$defyear){
-			$sel='selected=1 ';
-		}
-		echo "<option value=$y $sel>$y</option>\n";
+	if($entity){
+		echo "$entity:<br>";
+	}
+	$cnt=count($res[0]);
+	for($i=0; $i<$cnt; $i++){
+		$newparam=$p;
+		$newparam[$level]=$res[0][$i];
+		echo make_anchor($level+1, $newparam, $res[1][$i], $defyear)."<br>\n";	
 	}
 ?>
-</select></td></tr>
-<tr>
-<td colspan=3><font color='red'><i><?php echo $i18['STEP']?> 2:</i></font>
-<b><?php echo $i18['CHOICE']?></b></td>
-<td width=25% rowspan=2 class=geo>
-<center><b><?php echo $i18['SEL_CITIES']?>:</b></center>
-<div align=right><input type='button'  value='<?php echo $i18['DEL_SEL']?>' onclick='city_del()' /></div>
-<div id=selcit>
+</div><br>
+<div id="ftr">
+<pre>
 <?php
-	$sth=get_selected_cities('sc');
-	if($sth){
-		while($row = mysql_fetch_row($sth)){
-			echo "<input type=checkbox name=sss id=$row[0]></input>$row[1], $row[2]<br>\n";	
-		}
-	}
+//	print_r($_GET);
+//	print_r($_POST);
 ?>
+</pre>
 </div>
-<p align=center><font color='red'><i><?php echo $i18['STEP']?> 3:</i></font>
-<input type="hidden" name="sc" value="<?php echo $sc ?>"  /> 
-<input type=submit name='Action' value='<?php echo $i18['GET_DATA'] ?>'></p></td>
-
-
-</tr>
-<tr><td width=15% class=geo>
-<?php
-	$cnum=0;
-	if(isset($_POST['cid'])){
-		$cnum=$_POST['cid'];
-	}
-	$sth=mysql_query("SELECT countries.id, countries.name FROM countries ORDER BY countries.name");
-	while($row=mysql_fetch_row($sth)){
-		if(!$cnum){
-			$cnum=$row[0];
-			$_POST['cid']=$cnum;
-		}
-		if($row[0]==$cnum){
-			$cur_country=$row[1];
-			$row[1]="<font color=red>$row[1]</font>" ;
-		}
-		echo "<a href='#' onclick='showc({$row[0]},0)'>{$row[1]}</a><br>\n";
-	}
-	mysql_free_result($sth);
-	echo "</td>";
-	$stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
-		"countries WHERE country_id=%s ORDER BY states.name",quote_smart($cnum));
-	$sth=mysql_query($stat);	
-	$cur_state='';
-	$allst="<i>".$i18['ALL_STATES']."</i><br>";
-	$statenum=0;
-	if(isset($_POST['stateid'])){
-		$statenum=$_POST['stateid'];
-	}
-	if(!$statenum){
-		$allst="<font color=red>$allst</font>";
-	}
-	$state_count=mysql_num_rows($sth);
-	if($state_count){
-		echo "<td width=16% class=geo><a href='#' onclick=\"showc(".$cnum.",0)\">".$allst."</a>&nbsp;\n";
-		while($row = mysql_fetch_row($sth)){
-#			if(!$statenum){
-#				$statenum=$row[0];
-#				param('stateid',$statenum);
-#			}
-			if($row[0]==$statenum){
-				$cur_state=$row[1];
-				$row[1]="<font color=red>$row[1]</font>" ;
-			}
-			echo "<br><a href='#' onclick=\"showc($cnum,$row[0])\">$row[1]</a>\n"; 
-		}
-	}
-	else{
-			echo "<td width=1></td>\n";
-	}
-	mysql_free_result($sth);
-
-	$andst='';
-	if($statenum){
-		$andst=sprintf(" AND state_id=%s",quote_smart($statenum));
-	}
-	$stat=sprintf(
-		"SELECT cities.id, cities.name FROM cities,countries".
-		",locations". # year condition
-		" WHERE country_id=%s AND countries.id=country_id".
-		" AND city_id=cities.id %s AND year=%s". # year condition
-		" ORDER BY cities.name",quote_smart($cnum), $andst, quote_smart($defyear));
-	$sth = mysql_query($stat);
-	if($state_count){
-		$city_cols=3;
-	}
-	else{
-		$city_cols=4;
-	}
-	$i=mysql_num_rows($sth); $j=0;
-	$city_rows=$i/$city_cols;
-	echo "</td></td><td class=geo>";
-	if($i>0){
-		echo "<center><input type=button value='{$i18['ADD_CITIES']}' onClick='city_add(\"$cur_country\",\"$cur_state\")'/></center><br><br>";
-	}
-	echo "<div id=chkcit><table width=100%><tr>";
-	for($cc=0; $cc<$city_cols; $cc++){
-		echo "<td class=geo>";
-		while($row = mysql_fetch_row($sth)){
-			echo "<input type=checkbox id=$row[0] value='$row[1]'>$row[1]</input><br>\n"; 
-			$j++;
-			if($j>=$city_rows){
-				$j=0;
-				break;
-			}
-		}
-		echo "</td>";
-	}
-	echo "</tr></table></div>";
-	mysql_free_result($sth);
-	if(!$i){
-		echo "<i>{$i18['NO_CITIES']}</i>";
-	}
-
-?>
-</td>
-</tr>
-</table>
-</form>
+</body>
+</html>
 
 <?php
-	emit_nav2();
-
-function get_selected_cities($param)
-{
-	global $sc;
-	$sc=',';
-	if(isset($_POST[$param])){
-		$sc=$_POST[$param];
+	function db_query($level, $params)
+	{
+		global $cont, $level, $defyear;
+		$i=0; $keys=$values=array();
+		if($level==0){ // continent
+			foreach ($cont as $value => $key) {
+				$keys[$i]=$key; $values[$i]=$value;
+				$i++;
+			}
+		}
+		if($level==1){ // country
+			$query=sprintf("SELECT * from countries where continent=%s ORDER BY name", quote_smart($params[0]));
+//			echo "$query<br>";
+			$sth=mysql_query($query);
+			while($row = mysql_fetch_row($sth)){
+				$keys[$i]=$row[0]; $values[$i]=$row[1];
+				$i++;
+			}
+		}
+		if($level==2){ // state
+			$query=sprintf("SELECT DISTINCT states.id, states.name FROM states,countries WHERE ".
+				"country_id=%s ORDER BY states.name",quote_smart($params[1]));
+//			echo "$query<br>";
+			$sth=mysql_query($query);
+			if(mysql_num_rows($sth)){
+				while($row = mysql_fetch_row($sth)){
+					$keys[$i]=$row[0]; $values[$i]=$row[1];
+					$i++;
+				}
+			}
+			else{
+				$level++;
+			}
+		}
+		if($level==3){ // city
+			$andst='';
+			if($params[2]){
+				$andst=sprintf(" AND state_id=%s",quote_smart($params[2]));
+			}
+			$query=sprintf(
+				"SELECT cities.id, cities.name FROM cities,countries".
+				",locations WHERE country_id=%s AND countries.id=country_id".
+				" AND city_id=cities.id %s AND year=%s". # year condition
+				" ORDER BY cities.name",quote_smart($params[1]), $andst, quote_smart($defyear));
+//			echo "$query<br>";
+			$sth=mysql_query($query);
+			while($row = mysql_fetch_row($sth)){
+				$keys[$i]=$row[0]; $values[$i]=$row[1];
+				$i++;
+			}
+		}
+		return array($keys, $values);
 	}
-	$sc1=trim($sc,",");
-	if($sc1){
-		$stat="SELECT cities.id, cities.name, countries.name FROM cities,countries WHERE cities.id IN ($sc1) and countries.id=country_id ORDER BY countries.name,cities.name";
-		return mysql_query($stat);
+	
+	function make_anchor($level, $params, $text, $year)
+	{
+		$str="<a href=\"".$_SERVER['PHP_SELF']."?lvl=$level&y=$year&ent=".urlencode($text);
+		for($j=0; $j<$level; $j++){
+			$str.="&p$j=$params[$j]";
+		}
+		return $str."\">$text</a>&nbsp;";
 	}
-	return null;
-}	
 ?>

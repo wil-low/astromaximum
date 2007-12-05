@@ -9,3 +9,26 @@ table {
 a {
 	color: blue;
 }
+
+.hdr
+{
+}
+
+.comment
+{
+	font-style:italic;
+}
+
+.alert
+{
+	font-style:bold;
+}
+
+img
+{
+	padding-bottom:-2pt;
+}
+
+.sidepad
+{
+}

@@ -1,6 +1,6 @@
 <?php
 //include_once('lang.php');
-include_once('dbconnect.php');
+include_once('../dbconnect.php');
 if(true /*|| check_access()*/){
 	if(isset($_GET['r'])){
 		$type='r';

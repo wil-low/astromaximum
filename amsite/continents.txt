@@ -1,0 +1,13 @@
+AFR	Africa
+EAS	East Asia
+SAS	South Asia
+SEA	Southeast Asia
+CAR	Caribbean
+CAM	Central America
+EUR	Europe
+EEU	Eastern Europe
+WEE	Western Europe, Skandinavia, and UK
+MIE	Middle East
+NAM	North America
+OCE	Oceania (Australia/New Zealand)
+SAM	South America

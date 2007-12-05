@@ -1,53 +1,18 @@
 <?php
-/*  
-	function authenticate() {
-    header('WWW-Authenticate: Basic realm="Test Authentication System"');
-    header('HTTP/1.0 401 Unauthorized');
-    echo "You must enter correct username & password\n";
-    exit;
-  }
- 
-  if (!isset($_SERVER['PHP_AUTH_USER']) ||
-      ($_POST['SeenBefore'] == 1 && $_POST['OldAuth'] == $_SERVER['PHP_AUTH_USER'])) {
-   authenticate();
-  } 
-  else {
-   echo "<p>Welcome: {$_SERVER['PHP_AUTH_USER']}<br />";
-   echo "Previous login: {$_REQUEST['OldAuth']}";
-   echo "<form action='{$_SERVER['PHP_SELF']}' METHOD='post'>\n";
-   echo "<input type='hidden' name='SeenBefore' value='1' />\n";
-   echo "<input type='hidden' name='OldAuth' value='{$_SERVER['PHP_AUTH_USER']}' />\n";
-   echo "<input type='submit' value='Re-authorize' />\n";
-   echo "</form></p>\n";
-  }
-*/
-include('lang.php');
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
 ?>
-<!--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">-->
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>About us - Astromaximum</title>
-<meta name="generator" content="Bluefish 1.0.7">
-<meta name="author" content="">
-<meta name="date" content="2007-10-15T18:25:39+0300">
-<meta name="copyright" content="">
-<meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
-<meta http-equiv="content-style-type" content="text/css">
-<link href="style.css" rel="stylesheet" type="text/css">
+<title>Astromaximum.mobi</title>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
+<meta http-equiv="Cache-Control" content="max-age=30"/>
+<link rel="stylesheet" type="text/css" href="html/style.css"/>
 </head>
 <body>
-
-<?php
-include('nav.php');
-emit_nav1();
-?>
-
-<center><h3>What is Astromaximum?</h3></center>
-
-<?php
-emit_nav2();
-?>
+<div id="hdr" class="hdr"></div>
+<div id="cont"><hr/>
+<a href="year.php">Download a city</a><br/>
+<a href="lang.php">Astro help</a><br/>
+<a href="about.xhtml">About Astromaximum</a><hr/></div>
+<div id="ftr"></div></body></html>
