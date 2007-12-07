@@ -254,9 +254,11 @@ sub process_ini{
 		my $hrepl=0;
 		our $city;
 	#	undef $/ ;
-		my $newdir=sprintf('%sdata/archive/%d/%s',$mypath,$year,$city_inf);
+		my $newdir=ensure_slash(sprintf('%sdata/archive/%d/%s',$mypath,$year,$city_inf));
 		my $arcdir=$mypath.'data';
-		mkdir $newdir unless -d $newdir;
+		if(!-d $newdir){
+			mkdir $newdir or die $!;
+		}
 	#	foreach my $cit(@cities){
 	#		chomp($cit);
 	#		next if $cit=~/\A\s*\Z/is;
@@ -293,7 +295,7 @@ sub process_ini{
 
 				my $header=pack('SCCCCSa*a*',$year, $month, $day, $hour, $min, $day_count, $outbuf, $dstbuf);
 				if(!$tzonly){
-					my $invoke=$mypath."mutter2/mutter2 $year geo0- $params[1] $params[2]";# electio";
+					my $invoke=ensure_slash($mypath."mutter2/mutter2 $year geo0- $params[1] $params[2]");# electio";
 					print "$invoke\n";
 					my $res=system($invoke);
 					die "Cancelled, result=$res" if $res;
@@ -333,8 +335,14 @@ sub process_ini{
 				print(InF join("\n", @cities));
 				close(InF);
 				unlink("$newdir/$city_inf.zip");
-				my $cmd=ensure_slash(sprintf('cd %s ; zip -q %s *.txt *.dat ; cd ../../../../', $newdir, $city_inf));
-#				print "$cmd\n";
+				my $cmd;
+				if($winda){
+					$cmd=ensure_slash(sprintf('cd %s & ../../../zip  %s *.txt *.dat & cd ../../../../', $newdir, $city_inf));
+				}
+				else{
+					$cmd=ensure_slash(sprintf('cd %s ; zip -q %s *.txt *.dat ; cd ../../../../', $newdir, $city_inf));
+				}
+				print "$cmd\n";
 				system($cmd);
 				mkdir(ensure_slash("$arcdir/$year"));
 				rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!." $newdir/$city_inf.zip";

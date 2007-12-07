@@ -23,6 +23,8 @@ bool sortbystate=false;
 
 LocRec selected, avail;
 
+char* add_messjar_switch(char* str);
+    
 void refresh_lbsize() {
 	int sz=selected.size();
 	if(!sz){
@@ -199,7 +201,7 @@ void cb_do_demo(fltk::Button*, void*){
 	char cmd[200];
 	sprintf(cmd, "perl %s/gen_amax.pl demo %d %s %s -",
 		path, year, pbLang->label(), lbLoclist->text());
-	int result=run_exe(cmd);
+	int result=run_exe(add_messjar_switch(cmd));
 }
 
 void cb_do_geo(fltk::Button*, void*){
@@ -211,7 +213,7 @@ void cb_do_geo(fltk::Button*, void*){
 	char cmd[200];
 	sprintf(cmd, "perl %s/gen_amax.pl geo- %d %s %s -",
 		path, year, pbLang->label(), LOCL_TEMP);
-	int result=run_exe(cmd);
+	int result=run_exe(add_messjar_switch(cmd));
 }
 
 void cb_do_timebomb(fltk::Button*, void*){
@@ -219,14 +221,14 @@ void cb_do_timebomb(fltk::Button*, void*){
 	sprintf(cmd, "perl %s/gen_amax.pl tb %d %s %s - %s %s",
 		path, year, pbLang->label(), lbLoclist->text(), 
                 txtTimeOffset->text(), txtTimeDelta->text());
-	int result=run_exe(cmd);
+	int result=run_exe(add_messjar_switch(cmd));
 }
 
 void cb_do_imei(fltk::Button*, void*){
 	char cmd[200];
 	sprintf(cmd, "perl %s/gen_amax.pl release %d %s %s - %s",
 		path, year, pbLang->label(), lbLoclist->text(), txtImei->text());
-	int result=run_exe(cmd);
+	int result=run_exe(add_messjar_switch(cmd));
 }
 
 void cb_load_loclist(fltk::Button*, void* udata){
@@ -240,6 +242,13 @@ void cb_save_loclist(fltk::Button*, void* udata){
 
 void cb_clear_loclist(fltk::Button*, void* udata){
 	
+}
+
+char* add_messjar_switch(char* str){
+    if(!ckMessjar->value()){
+        strcat(str, " nomessjar");
+    }
+    return str;
 }
 
 int run_exe(const char *cmd){

@@ -84,7 +84,7 @@ Function {make_window()} {open
     {fltk::Group} {} {open
       xywh {5 5 206 530}
     } {
-      {fltk::Group} {} {open
+      {fltk::Group} {} {open selected
         xywh {0 0 206 220} box THIN_DOWN_BOX
       } {
         {fltk::Input} txtYear {
@@ -130,7 +130,7 @@ o->label(o->get_item()->label());}
           extra_code {o->user_data((void*)1);}
         }
         {fltk::Input} txtTimeOffset {
-          label {Timeshift, hrs:} selected
+          label {Timeshift, hrs:}
           xywh {5 130 95 25} align 1 deactivate
           extra_code {o->text("0");}
           class {fltk::IntInput}
@@ -152,11 +152,7 @@ o->label(o->get_item()->label());}
         }
         {fltk::CheckButton} ckMessjar {
           label Messjar
-          xywh {70 195 72 25} value 1
-        }
-        {fltk::CheckButton} ckKzip {
-          label kzip
-          xywh {145 195 56 25} deactivate
+          xywh {125 195 72 25} value 1
         }
       }
       {fltk::Group} {} {open

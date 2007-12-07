@@ -42,6 +42,7 @@ if(!scalar(@ARGV)){
     print "\t<loclist file>\n";
     print "\t<output jar>, or '-' for default\n";
     print "\t[imei|timebomb|tb_timeout]\n";
+    print "\t[nomessjar]\n";
     exit(1);
 }
 
@@ -94,6 +95,10 @@ if($config eq 'rebuild'){
     die "BUILD ERROR"if system($cmd);
     exit(0);
 }
+our $messjar=1;
+
+my $argv="@ARGV";
+$messjar=0 if $argv=~/nomessjar/is;
 
 die "Invalid year '$year'" if $year!~/^\d{4}$/is;
 $loclist=ensure_slash($loclist);
@@ -379,6 +384,10 @@ sub do_jar{
 }
 
 sub do_messjar{
+    if(!$messjar){
+        print "Messjar disabled by user\n";
+        return;
+    }
     my ($jar)=@_;
     print "Messjaring $jar...\n";
 
@@ -741,7 +750,7 @@ sub inject_lang{ # lang, isdemo
 
     }
     if($errors==0){
-      exit(0) if $demo;
+      return if $demo;
       while (my($key, $value) = each %hash) {
             $value=~s/\\//isg;
             print "    topics.put(new Integer(Event.$key), \"$value\");\n";

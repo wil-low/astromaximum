@@ -6,9 +6,9 @@
 #include "fltk/IntInput.h"
 
 class MyBrowser : public fltk::Browser  {
-	virtual int handle(int event);
+  virtual int handle(int event);
 public:
-	MyBrowser(int x, int y, int w, int h, const char *l);
+  MyBrowser(int x, int y, int w, int h, const char *l);
 };
 #include <fltk/Window.h>
 #include <fltk/Group.h>
@@ -35,7 +35,6 @@ extern void cb_do_timebomb(fltk::Button*, void*);
 #include <fltk/CheckButton.h>
 extern fltk::CheckButton* ckDebug;
 extern fltk::CheckButton* ckMessjar;
-extern fltk::CheckButton* ckKzip;
 #include <fltk/Output.h>
 extern fltk::Output* lbLoclist;
 extern void cb_load_loclist(fltk::Button*, void*);
