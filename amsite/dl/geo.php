@@ -16,7 +16,22 @@ include_once('../lang.php');
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
 <meta http-equiv="content-style-type" content="text/css">
 <meta http-equiv="expires" content="0">
-<link href="../style.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+body,td,th {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #000000;
+	font-size: 10pt;
+}
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+<link href="../../style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <?php
@@ -27,17 +42,19 @@ if(isset($_POST['year'])){
 	$defyear=$_POST['year'];
 }
 $chac=check_access();
+/*
 if(!$chac){ 
 	echo "<br><p align=center>{$i18['DB_ACCESS']}</p>";
 	emit_nav2();
 	exit();
 }
+*/
 if($chac==1){
 	emit_admin();
 } 
 $sc='';
 ?>
-<h3 align=center><?php echo $i18['DB']?></h3>
+<!-- <h3 align=center><?php echo $i18['DB']?></h3> -->
 
 <script>
 function city_add(cname,sname){

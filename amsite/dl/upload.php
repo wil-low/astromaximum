@@ -93,7 +93,8 @@ function up_geodata($fname, $ext){
 	global $DIR_INBOX, $UNZIP;
 	check_ext($fname, $ext);
 	$fh = $_FILES['uploaded_file']['tmp_name'];
-	list($dir,$fn)=amtools_random(0,$DIR_INBOX,'');
+	list($dir,$fn)=amtools_random(0,'inbox','');
+	echo "$dir";
 	mkdir($dir);
 	$cmd=sprintf($UNZIP, $fh, $dir);
 	$res=exec($cmd);
