@@ -46,95 +46,75 @@ echo <<<NAV1
   <tr>
     <td valign="top"><table width="1011" height="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
       <tr>
-        <td height="127" colspan="2" valign="top"><table width="100%" height="127"  border="0" cellpadding="0" cellspacing="0">
-          <tr>
-            <td><img src="../../img/top1.gif" width="44" height="120"></td>
-            <td><img src="../../img/top2.gif" width="545" height="120"></td>
-            <td><img src="../../img/top3.jpg" width="248" height="120"></td>
-            <td><img src="../../img/top4.jpg" width="175" height="120"></td>
-          </tr>
-          <tr align="left" valign="top">
-            <td colspan="4"><img src="../../img/lin-goris.gif" width="1011" height="7"></td>
-          </tr>
-        </table></td>
-      </tr>
-      <tr>
         <td width="7" background="img/lin-vert.gif"><img src="../../img/spacer.gif" width="7" height="8"></td>
         <td valign="top"><table width="1003" height="100%"  border="0" cellpadding="0" cellspacing="0">
           <tr>
-            <td width="237" height="30" align="right" valign="middle" class="gr-1">
-            <a href="{$_SERVER['PHP_SELF']}?">DE</a> 
-            <a href="{$_SERVER['PHP_SELF']}?lang=en">ENG</a> 
-            <a href="{$_SERVER['PHP_SELF']}?lang=ru">RU</a>
-            </td>
-            <td width="766" align="right" valign="middle"><img src="../../img/sonne-kl.gif" width="12" height="11" align="middle"> &nbsp;&nbsp;&nbsp;<img src="../../img/mond-kl.gif" width="12" height="11" align="middle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="70" height="20" align="middle">
-                <param name="movie" value="img/klock.swf">
-                <param name="quality" value="high">
-                <embed src="../../img/klock.swf" width="70" height="20" align="middle" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash"></embed>
-              </object>
-              &nbsp;&nbsp;</td>
-          </tr>
-          <tr>
-            <td colspan="2"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td width="17"><img src="../../img/spacer.gif" width="17" height="1"></td>
-                <td valign="top"><table width="220" border="0" cellspacing="0" cellpadding="0">
-                  <tr align="left" valign="top">
-                    <td height="20" colspan="3"><img src="../../img/ecke.gif" width="20" height="20"><img src="../../img/ecke-gor.gif" width="199" height="4" align="top"><img src="../../img/ecke-right.gif" width="1" height="20"></td>
-                  </tr>
-                  <tr>
-                    <td width="4" rowspan="2" background="../../img/ecke-vert.gif"><img src="../../img/spacer.gif" width="4" height="1"></td>
-                    <td class="txt-ramka" align="left">
-NAV1;
-if($_SESSION['username']!='nobody')
-{
-echo <<<NAV3
-	<p align=center>{$i18['WELCOME']}, {$_SESSION['username']}!</p>
-	<p align=right><a href=logout.php?{$lang_}>{$i18['LOGOUT']}</a></p>
-NAV3;
-}
-else{
-echo <<<NAV4
-<!--	<h4>{$i18['MEM_LOGIN']}</h4> -->
-                    <form action="geo.php?lang={$lng}" method="post" name="log">
-                      &nbsp;<input name="user" type="text" size="15" maxlength="15">&nbsp;{$i18['USERNAME']}<br>
-                      &nbsp;<input name="password" type="password" size="15" maxlength="15">&nbsp;{$i18['PWD']}
-                      <p align="center">
-                      <input type="submit" value="Авторизация">
-<!--   <a href="{$_SERVER['REQUEST_URI']}" class="red" onclick="javascript: form.submit()">Авторизация</a> -->
-</p></form>
-NAV4;
-}
-if(isset($LOGIN_MSG)){
-	echo $i18[$LOGIN_MSG];
-	unset($LOGIN_MSG);
-}
-// entrance for clients end
-echo <<<NAV1_1
-                    </td>
-                    <td width="1" rowspan="2" bgcolor="#000000"><img src="../../img/spacer.gif" width="1" height="1"></td>
-                  </tr>
-                  <tr>
-                    <td valign="bottom"><img src="../../img/black.gif" width="215" height="1"></td>
-                  </tr>
-                </table><img src="../../img/spacer.gif" width="1" height="10">                
+            <td colspan="2" valign="top">
+            <img src="../../img/spacer.gif" width="1" height="10">                
                 <table width="220" border="0" cellspacing="0" cellpadding="0">
                   <tr align="left" valign="top">
                     <td height="20" colspan="3"><img src="../../img/ecke.gif" width="20" height="20"><img src="../../img/ecke-gor.gif" width="199" height="4" align="top"><img src="../../img/ecke-right.gif" width="1" height="20"></td>
                     </tr>
                   <tr>
                     <td width="4" rowspan="2" background="../../img/ecke-vert.gif"><img src="../../img/spacer.gif" width="4" height="1"></td>
-                    <td class="txt-ramka" align="left">&nbsp;
-<!--                    <a href="#" class="nav">зМБЧОБС</a><br>
-                      &nbsp;<a href="#" class="nav">пРЙУБОЙЕ РТПЗТБННЩ</a><br>
-                      &nbsp;<a href="#" class="nav">бУФТП-ЙОУФТХЛГЙЙ</a><br>
-                      &nbsp;<a href="#" class="nav">чЩВПТ ЗПТПДБ</a><br>
-&nbsp;<img src="../../img/spacer.gif" width="1" height="20"><a href="#" class="nav">уЛБЮБФШ ДЕНП-ЧЕТУЙА</a><br>
-&nbsp;<a href="#" class="nav">лХРЙФШ <span class="gr-0">ASTROMAXIMUM</span></a><br>
-&nbsp;<img src="../../img/spacer.gif" width="1" height="20"><a href="#" class="nav">юбчП</a><br>
-&nbsp;<a href="#" class="nav">лПОФБЛФ</a><br>-->
-<p>&nbsp;</p></td>
+                    <td class="txt-ramka" align="left">
+                    <table border="0">
+                    <tr>
+                    	<td width="100">
+												<img src="img/europe.png" alt="Europe" height="88" width="88" border="1">
+											</td>
+											<td>
+												<div align=center>Europe:</div>
+												<a href=# class="nav">Nothern</a><br><a href=# class="nav">Western</a><br>
+												<a href=# class="nav">Southern</a><br><a href=# class="nav">Eastern</a><br>
+											</td></tr>										
+                    <tr>
+                    	<td width="25%">
+												<img src="img/america.png" alt="America" height="88" width="88" border="1">
+											</td>
+											<td>
+												<div align=center>America:</div>
+												<a href=# class="nav">Nothern</a><br><a href=# class="nav">Central</a><br>
+												<a href=# class="nav">Southern</a><br><a href=# class="nav">Caribbeans</a><br>
+											</td></tr>
+                    <tr>
+                    	<td width="25%">
+												<img src="img/asia1.png" alt="Asia" height="88" width="88" border="1">
+											</td>
+											<td>
+												<div align=center>Asia:</div>
+												<a href=# class="nav">Western</a><br><a href=# class="nav">Central</a><br>
+												<a href=# class="nav">Southern</a>
+											</td></tr>										
+                    <tr>
+                    	<td width="25%">
+												<img src="img/asia2.png" alt="Asia" height="88" width="88" border="1">
+											</td>
+											<td>
+												<div align=center>Asia:</div>
+												<a href=# class="nav">Eastern</a><br><a href=# class="nav">Southeastern</a><br>
+											</td></tr>										
+                    <tr>
+                    	<td width="25%">
+												<img src="img/australia.png" alt="Australia" height="88" width="88" border="1">
+											</td>
+											<td>
+												<div align=center>Australia:</div>
+												<a href=# class="nav">Southeastern Asia</a><br><a href=# class="nav">Australia</a><br>
+												<a href=# class="nav">Polinesia</a>
+											</td></tr>										
+                    <tr>
+                    	<td width="25%">
+												<img src="img/africa.png" alt="Africa" height="88" width="88" border="1">
+											</td>
+											<td>
+												<div align=center>Africa:</div>
+												<a href=# class="nav">Nothern</a><br><a href=# class="nav">Western</a><br>
+												<a href=# class="nav">Middle</a><br><a href=# class="nav">Eastern</a><br>
+												<a href=# class="nav">Southern</a>
+											</td></tr>
+											</table>
+											</td>
                     <td width="1" rowspan="2" bgcolor="#000000"><img src="../../img/spacer.gif" width="1" height="1"></td>
                   </tr>
                   <tr>
@@ -142,14 +122,8 @@ echo <<<NAV1_1
                   </tr>
                 </table>
                 
-NAV1_1;
+NAV1;
 
-
-if(isset($LOGIN_MSG)){
-	echo $i18[$LOGIN_MSG];
-	unset($LOGIN_MSG);
-}
-// entrance for clients end
 
 	echo	"<td valign=top width=\"100%\">";
 }

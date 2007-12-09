@@ -58,7 +58,7 @@ function rm_all($dir)
 	rmdir($dir);
 }
 
-function create_jar($year, $ids){
+function create_jar($year, $ids, $named_midlet){
 	global $DIR_FILES, $DIR_SOURCE, $UNZIP, $ZIP;
 	$mypath=dirname(__FILE__);
 	$dfil="$mypath/$DIR_FILES";
@@ -68,17 +68,6 @@ function create_jar($year, $ids){
 	list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
 	$srcdir="/tmp/$fn";
 	mkdir($srcdir);
-	$infile=fopen("$dsrc/template.jad","rb");
-	$template = fread($infile, 1000000);
-	fclose($infile);
-	$code="-".substr($fn,-4);
-	$fname="Cities'$ye$code";
-	$template=str_replace('<YEAR>', $ye, $template);
-#	$jad=~s/<REGION>/$reg/isg;
-	$template=str_replace('<CODE>', $code, $template);
-#	$jad=~s/<DESC>/$desc/isg;
-	$template=str_replace('<JAR>', "$fname.jar", $template);
-#	echo $template;
 	
 	$server="http://".$_SERVER['SERVER_NAME'];
 	$stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
@@ -87,10 +76,29 @@ function create_jar($year, $ids){
 //	print $stat;
 	$sth = mysql_query($stat);
 	$i=0;
+	$midlet_name='';
 	while($row = mysql_fetch_row($sth)){
 		$data[$i++]=$row[1];		
+		if($named_midlet){
+			$midlet_name=$row[0];
+		}
 	}
 	mysql_free_result($sth);
+	$infile=fopen("$dsrc/template.jad","rb");
+	$template = fread($infile, 1000000);
+	fclose($infile);
+	if($named_midlet){
+		$fname="$midlet_name'$ye";
+	}
+	else{
+		$code="-".substr($fn,-4);
+		$fname="Cities'$ye$code";
+	}
+	$template=str_replace('<NAME>', $fname, $template);
+#	$jad=~s/<DESC>/$desc/isg;
+	$template=str_replace('<JAR>', "$fname.jar", $template);
+#	echo $template;
+
 	$cmd=sprintf($UNZIP, "$dsrc/template.zip", "$dsrc/$fn");
 	exec($cmd);
 	$inf=fopen("/tmp/$fn.MF", 'wb');
@@ -114,7 +122,7 @@ function create_jar($year, $ids){
 	$template.="MIDlet-Jar-Size: $asize\n";
 	fwrite($inf, $template);
 	fclose($inf);
-	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1$server/data.php?r=$fn\n", $template);
+	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1http://astromaximum.de/mobi/data.php?r=$fn\n", $template);
 	$inf=fopen("$dfil/$fn.t", 'wb');
 	fwrite($inf, $template);
 	fclose($inf);
