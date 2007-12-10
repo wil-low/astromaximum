@@ -106,7 +106,7 @@ function city_del(){
 ?>
 <form method="post" action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
 <table class=geo border=1 width=100% cellspacing=0 cellpadding=0>
-<tr><td colspan=6>&nbsp;</td></tr>
+<tr><td colspan=7>&nbsp;</td></tr>
 <tr><td width=11% align=center><font color=red>1</font>. World region (<a href=#>all countries</a>)
 </td>
 <td width=11% align=center><font color=red>2</font>. Country
@@ -127,7 +127,7 @@ function city_del(){
 			$cur_country=$row[1];
 			$selflag=' selected';
 		}
-		$lb1.="<option onclick='showc({$row[0]},0)'{$selflag}>{$row[1]}\n";
+		$lb1.="<option onclick='javascript:showc({$row[0]},0)'{$selflag}>{$row[1]}\n";
 	}
 ?>
 </td>
@@ -160,10 +160,12 @@ function city_del(){
 	mysql_free_result($sth);
 ?>	
 </td>
-<td width=22% align=center><font color=red>4</font>. City
+<td width=20% align=center><font color=red>4</font>. City
 </td>
-<td width=22% align=center><font color=red>5</font>. 
-<input type=submit name='Action' value='Make midlet'></p></td>
+<td width=20% align=center><font color=red>5</font>. 
+Selected cities
+</td>
+<td width=20% align=center><b><font size=+3><?php echo $defyear ?></font></b>
 </td>
 </tr>
 <tr><td width=188>
@@ -223,13 +225,13 @@ function city_del(){
 				<a href=# class="nav">Southern</a>
 			</td></tr>
 			</table></td>
-<td width=22% align=center valign=bottom><!-- 1st listbox -->
-<select size=33 style="width:100%; height:100%">
+<td width=20% align=center valign=bottom><!-- 1st listbox -->
+<select size=34 style="width:100%">
 <?php echo $lb1 ?>
 </select>
 </td>
-<td width=22% align=center valign=bottom><!-- 2nd listbox -->
-<select size=33 style="width:100%; height:100%">
+<td width=20% align=center valign=bottom><!-- 2nd listbox -->
+<select size=34 style="width:100%">
 <?php echo $lb2 ?>
 </select>
 </td>
@@ -247,9 +249,9 @@ function city_del(){
 	$sth = mysql_query($stat);
 ?>
 <td align=center valign=bottom>
-<div align=right><input type=button style="margin-bottom:2pt" value='Add >>' onClick='<?php echo "city_add(\"$cur_country\",\"$cur_state\")" ?>'/>
-&nbsp;&nbsp;</div>
-<select id=chkcit size=33 multiple style="width:100%">
+<div align=right><input type=button size=9 style="font-family:Verdana" value='Insert >>' onclick='<?php echo "city_add(\"$cur_country\",\"$cur_state\")" ?>'/>
+</div>
+<select id=chkcit size=34 multiple style="width:100%">
 <?php
 	while($row = mysql_fetch_row($sth)){
 		echo "<option value=$row[0]>$row[1]\n"; 
@@ -262,10 +264,10 @@ function city_del(){
 <input type="hidden" name="cid" value=""  />
 <input type="hidden" name="stateid" value="0"  />
 <input type="hidden" name="sc" value="<?php echo $sc ?>"  />
-<div align=left>
-&nbsp;&nbsp;<input type=button style="margin-bottom:2pt" value='<< Remove' onClick='city_del()'/>
+<div align=left valign=top>
+<input type=button size=9 value='<< Remove' style="font-family:Verdana" onclick='city_del()'/>
 </div>
-<select id=selcit size=33 style="width:100%">
+<select id=selcit size=34 style="width:100%">
 <?php
 	$sth=get_selected_cities('sc');
 	if($sth){
@@ -275,7 +277,10 @@ function city_del(){
 	}
 ?>
 </select>
-</td></tr>
+</td>
+<td align=center valign=top cellpadding=1><input type=submit style="font-family:Verdana" name='Action' value='Make midlet'>
+</td>
+</tr>
 </table>
 </form>
 </body>
