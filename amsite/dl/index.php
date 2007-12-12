@@ -1,5 +1,8 @@
 <?php
 include_once('../lang.php');
+$useimg=0;
+$step=1;
+$max_cities=20;
 ?>
 
 <html>
@@ -7,7 +10,7 @@ include_once('../lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-12-10T21:01:13+0200">
+<meta name="date" content="2007-12-12T18:11:56+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -20,6 +23,7 @@ include_once('../lang.php');
 function city_add(cname,sname){
 	selc=document.getElementById("selcit");
 	out="";
+	count=selc.length;
 	frm=document.forms.namedItem("main");
 	sc=frm.elements.namedItem("sc");
 	slct=document.getElementById("chkcit");
@@ -28,6 +32,11 @@ function city_add(cname,sname){
 		if(opt.selected && sc.value.indexOf(","+opt.value+",")<0){
 			out=out+"<option value="+opt.value+">"+opt.text+", "+cname+"\n";	
 			sc.value=sc.value+opt.value+",";
+			count++;
+		}
+		if(count><?php echo $max_cities ?>){
+			alert("Sorry, you may select up to <?php echo $max_cities ?> cities.");
+			break;
 		}
 		opt.selected=false;
 	}
@@ -104,12 +113,15 @@ function city_del(){
 		exit(0);
 	}
 ?>
+&nbsp;<a href="../">Home</a>
 <form method="post" action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
 <table class=geo border=1 width=100% cellspacing=0 cellpadding=0>
-<tr><td colspan=7>&nbsp;</td></tr>
-<tr><td width=11% align=center><font color=red>1</font>. World region (<a href=#>all countries</a>)
+<tr>
+<?php if($useimg){ ?>
+<td width=11% align=center><font color=red><?php echo $step++ ?></font>. World region (<a href=#>all countries</a>)
 </td>
-<td width=11% align=center><font color=red>2</font>. Country
+<?php } ?>
+<td width=11% align=center><font color=red><?php echo $step++ ?></font>. Country
 <?php
 // First listbox
 	$cnum=0; $lb1='';
@@ -127,11 +139,11 @@ function city_del(){
 			$cur_country=$row[1];
 			$selflag=' selected';
 		}
-		$lb1.="<option onclick='javascript:showc({$row[0]},0)'{$selflag}>{$row[1]}\n";
+		$lb1.="<option value=$row[0]{$selflag}>{$row[1]}\n";
 	}
 ?>
 </td>
-<td width=11% align=center><font color=red>3</font>. State
+<td width=11% align=center><font color=red><?php echo $step++ ?></font>. State
 <?php
 	$stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
 		"countries WHERE country_id=%s ORDER BY states.name",quote_smart($cnum));
@@ -148,27 +160,29 @@ function city_del(){
 	}
 	$state_count=mysql_num_rows($sth);
 
-	$lb2.="<option onclick=\"showc(".$cnum.",0)\"$selflag>&gt;&gt;".$allst."&lt;&lt;\n";
+	$lb2.="<option value=0 $selflag>&gt;&gt;".$allst."&lt;&lt;\n";
 	while($row = mysql_fetch_row($sth)){
 		$selflag='';
 		if($row[0]==$statenum){
 			$cur_state=$row[1];
 			$selflag=' selected';
 		}
-		$lb2.="<option onclick=\"showc($cnum,$row[0])\"$selflag>$row[1]\n"; 
+		$lb2.="<option value=$row[0]$selflag>$row[1]\n"; 
 	}
 	mysql_free_result($sth);
 ?>	
 </td>
-<td width=20% align=center><font color=red>4</font>. City
+<td width=20% align=center><font color=red><?php echo $step++ ?></font>. City
 </td>
-<td width=20% align=center><font color=red>5</font>. 
+<td width=20% align=center><font color=red><?php echo $step++ ?></font>. 
 Selected cities
 </td>
 <td width=20% align=center><b><font size=+3><?php echo $defyear ?></font></b>
 </td>
 </tr>
-<tr><td width=188>
+<tr>
+<?php if($useimg){ ?>
+	<td width=188>
     <table border="0">
     <tr>
     	<td width="100">
@@ -225,14 +239,17 @@ Selected cities
 				<a href=# class="nav">Southern</a>
 			</td></tr>
 			</table></td>
+<?php } ?>			
 <td width=20% align=center valign=bottom><!-- 1st listbox -->
-<select size=34 style="width:100%">
+<select size=34 onchange="showc(item(selectedIndex).value,0)" style="width:100%">
 <?php echo $lb1 ?>
 </select>
 </td>
 <td width=20% align=center valign=bottom><!-- 2nd listbox -->
-<select size=34 style="width:100%">
-<?php echo $lb2 ?>
+<?php
+ echo "<select size=34 onchange=\"showc($cnum,item(selectedIndex).value)\" style=\"width:100%\">";
+ echo $lb2 
+?>
 </select>
 </td>
 <?php
@@ -267,7 +284,7 @@ Selected cities
 <div align=left valign=top>
 <input type=button size=9 value='<< Remove' style="font-family:Verdana" onclick='city_del()'/>
 </div>
-<select id=selcit size=34 style="width:100%">
+<select id=selcit size=34 multiple style="width:100%">
 <?php
 	$sth=get_selected_cities('sc');
 	if($sth){
