@@ -144,7 +144,7 @@ if($config=~/tb/is){
     inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
     inject_icon("res/");
     do_jar("$const::PRODUCT$ye", $outfile);
-    do_messjar($outfile);
+#    do_messjar($outfile);
     exit(0);
 }
 

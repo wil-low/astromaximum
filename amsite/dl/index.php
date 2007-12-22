@@ -1,6 +1,7 @@
 <?php
 include_once('../lang.php');
-$useimg=0;
+$useimg=1;
+$useregions=0;
 $step=1;
 $max_cities=20;
 ?>
@@ -26,11 +27,16 @@ function city_add(cname,sname){
 	count=selc.length;
 	frm=document.forms.namedItem("main");
 	sc=frm.elements.namedItem("sc");
-	slct=document.getElementById("chkcit");
-	for(i=0; i<slct.length; i++){
-		opt=slct.item(i);
+	var slct=document.getElementById("chkcit");
+	for(var i=0; i<slct.length; i++){
+		var opt=slct.item(i);
 		if(opt.selected && sc.value.indexOf(","+opt.value+",")<0){
-			out=out+"<option value="+opt.value+">"+opt.text+", "+cname+"\n";	
+			var newopt=document.createElement("option");
+			var newtext=document.createTextNode(opt.text+", "+cname);
+//		alert(newopt);return;
+			newopt.value=opt.value;
+			newopt.appendChild(newtext);
+			selc.appendChild(newopt);
 			sc.value=sc.value+opt.value+",";
 			count++;
 		}
@@ -40,8 +46,7 @@ function city_add(cname,sname){
 		}
 		opt.selected=false;
 	}
-	selc.innerHTML=selc.innerHTML+out;
-};
+}
 
 function showc(country,state){
 	frm=document.forms.namedItem("main");
@@ -50,7 +55,7 @@ function showc(country,state){
 		frm.elements.namedItem('cid').value=country;
 		frm.submit();
 	}
-};
+}
 
 function city_del(){
 	selc=document.getElementById("selcit");
@@ -59,13 +64,15 @@ function city_del(){
 	sc.value=","; out='';
 	for(i=0; i<selc.length; i++){
 		opt=selc.item(i);
-		if(!opt.selected){
+		if(opt.selected){
+			selc.removeChild(opt);
+			i--;
+		}
+		else{
 			sc.value=sc.value+opt.value+",";
-			out=out+"<option value="+opt.value+">"+opt.text+"\n";	
 		}
 	}
-	selc.innerHTML=out;
-};
+}
 </script>
 </head>
 <body>
@@ -76,7 +83,7 @@ function city_del(){
 	}
 	$chac=check_access();
 	/*
-	if(!$chac){ 
+	if(!$chac){
 		echo "<br><p align=center>{$i18['DB_ACCESS']}</p>";
 		emit_nav2();
 		exit();
@@ -84,17 +91,17 @@ function city_del(){
 	*/
 	if($chac==1){
 		emit_admin();
-	} 
+	}
 	$sc=',';
 	if(isset($_POST['sc'])){
 		$sc=$_POST['sc'];
 	}
 	if(isset($_POST['Action']) && isset($_POST['sc'])){
 		$sth=get_selected_cities('sc');
-		if($sth){
+		if(strlen($sth)>0){
 			echo "<h4>You have selected following cities:</h4>\n<ol>";
 			while($row = mysql_fetch_row($sth)){
-				echo "<li>$row[1], $row[2]</li>\n";	
+				echo "<li>$row[1], $row[2]</li>\n";
 			}
 			echo "</ol>\n";
 			include_once('../amtools.php');
@@ -109,17 +116,19 @@ function city_del(){
 			echo "{$i18['DIRECTLINK']}: <a href='$url'>$id</a><br>";
 			echo "<br><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
 			echo "<a href={$_SERVER['PHP_SELF']}>Back</a>";
+			exit(0);
 		}
-		exit(0);
 	}
 ?>
-&nbsp;<a href="../">Home</a>
-<form method="post" action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
+<form method="post" border=1 action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
 <table class=geo border=1 width=100% cellspacing=0 cellpadding=0>
 <tr>
 <?php if($useimg){ ?>
-<td width=11% align=center><font color=red><?php echo $step++ ?></font>. World region (<a href=#>all countries</a>)
-</td>
+<td width=11% align=center>
+<?php if($useregions){ ?>
+<font color=red><?php echo $step++ ?></font>. World region (<a href=#>all countries</a>)
+<?php } ?>
+&nbsp;</td>
 <?php } ?>
 <td width=11% align=center><font color=red><?php echo $step++ ?></font>. Country
 <?php
@@ -147,7 +156,7 @@ function city_del(){
 <?php
 	$stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
 		"countries WHERE country_id=%s ORDER BY states.name",quote_smart($cnum));
-	$sth=mysql_query($stat);	
+	$sth=mysql_query($stat);
 	$cur_state=''; $lb2='';
 	$allst="<i>".$i18['ALL_STATES']."</i><br>";
 	$statenum=0;
@@ -167,14 +176,14 @@ function city_del(){
 			$cur_state=$row[1];
 			$selflag=' selected';
 		}
-		$lb2.="<option value=$row[0]$selflag>$row[1]\n"; 
+		$lb2.="<option value=$row[0]$selflag>$row[1]\n";
 	}
 	mysql_free_result($sth);
-?>	
+?>
 </td>
 <td width=20% align=center><font color=red><?php echo $step++ ?></font>. City
 </td>
-<td width=20% align=center><font color=red><?php echo $step++ ?></font>. 
+<td width=20% align=center><font color=red><?php echo $step++ ?></font>.
 Selected cities
 </td>
 <td width=20% align=center><b><font size=+3><?php echo $defyear ?></font></b>
@@ -183,6 +192,7 @@ Selected cities
 <tr>
 <?php if($useimg){ ?>
 	<td width=188>
+<?php	if($useregions){ ?>
     <table border="0">
     <tr>
     	<td width="100">
@@ -192,7 +202,7 @@ Selected cities
 				<div align=center>Europe:</div>
 				<a href=# class="nav">Nothern</a><br><a href=# class="nav">Western</a><br>
 				<a href=# class="nav">Southern</a><br><a href=# class="nav">Eastern</a><br>
-			</td></tr>										
+			</td></tr>
     <tr>
     	<td width="25%">
 				<img src="img/america.png" alt="America" height="88" width="88" border="1">
@@ -210,7 +220,7 @@ Selected cities
 				<div align=center>Asia:</div>
 				<a href=# class="nav">Western</a><br><a href=# class="nav">Central</a><br>
 				<a href=# class="nav">Southern</a>
-			</td></tr>										
+			</td></tr>
     <tr>
     	<td width="25%">
 				<img src="img/asia2.png" alt="Asia" height="88" width="88" border="1">
@@ -218,7 +228,7 @@ Selected cities
 			<td>
 				<div align=center>Asia:</div>
 				<a href=# class="nav">Eastern</a><br><a href=# class="nav">Southeastern</a><br>
-			</td></tr>										
+			</td></tr>
     <tr>
     	<td width="25%">
 				<img src="img/australia.png" alt="Australia" height="88" width="88" border="1">
@@ -227,7 +237,7 @@ Selected cities
 				<div align=center>Australia:</div>
 				<a href=# class="nav">Southeastern Asia</a><br><a href=# class="nav">Australia</a><br>
 				<a href=# class="nav">Polinesia</a>
-			</td></tr>										
+			</td></tr>
     <tr>
     	<td width="25%">
 				<img src="img/africa.png" alt="Africa" height="88" width="88" border="1">
@@ -238,17 +248,30 @@ Selected cities
 				<a href=# class="nav">Middle</a><br><a href=# class="nav">Eastern</a><br>
 				<a href=# class="nav">Southern</a>
 			</td></tr>
-			</table></td>
-<?php } ?>			
+			</table>
+<?php }
+	else{
+?>
+<table border="0">
+	<tr><td><img src="img/europe.png" alt="Europe" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="img/america.png" alt="America" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="img/asia1.png" alt="Asia" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="img/asia2.png" alt="Asia" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="img/australia.png" alt="Australia" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="img/africa.png" alt="Africa" height="88" width="88" border="1"></td></tr>
+</table>
+<?php } ?>
+		</td>
+<?php } ?>
 <td width=20% align=center valign=bottom><!-- 1st listbox -->
-<select size=34 onchange="showc(item(selectedIndex).value,0)" style="width:100%">
+<select size=34 onchange="showc(item(selectedIndex).value,0);" class=lb>
 <?php echo $lb1 ?>
 </select>
 </td>
 <td width=20% align=center valign=bottom><!-- 2nd listbox -->
 <?php
- echo "<select size=34 onchange=\"showc($cnum,item(selectedIndex).value)\" style=\"width:100%\">";
- echo $lb2 
+ echo "<select size=34 onchange=\"showc($cnum,item(selectedIndex).value);\" class=lb>";
+ echo $lb2
 ?>
 </select>
 </td>
@@ -266,12 +289,12 @@ Selected cities
 	$sth = mysql_query($stat);
 ?>
 <td align=center valign=bottom>
-<div align=right><input type=button size=9 style="font-family:Verdana" value='Insert >>' onclick='<?php echo "city_add(\"$cur_country\",\"$cur_state\")" ?>'/>
+<div align=right><input type=button size=9 style="font-family:Verdana" value='Insert &gt;&gt;' onclick='<?php echo "city_add(\"$cur_country\",\"$cur_state\");" ?>'/>
 </div>
-<select id=chkcit size=34 multiple style="width:100%">
+<select id=chkcit size=34 multiple class=lb>
 <?php
 	while($row = mysql_fetch_row($sth)){
-		echo "<option value=$row[0]>$row[1]\n"; 
+		echo "<option value=$row[0]>$row[1]\n";
 	}
 	mysql_free_result($sth);
 ?>
@@ -282,20 +305,21 @@ Selected cities
 <input type="hidden" name="stateid" value="0"  />
 <input type="hidden" name="sc" value="<?php echo $sc ?>"  />
 <div align=left valign=top>
-<input type=button size=9 value='<< Remove' style="font-family:Verdana" onclick='city_del()'/>
+<input type=button size=9 value='&lt;&lt; Remove' style="font-family:Verdana" onclick='city_del();'/>
 </div>
-<select id=selcit size=34 multiple style="width:100%">
+<select id=selcit size=34 multiple class=lb>
 <?php
 	$sth=get_selected_cities('sc');
 	if($sth){
 		while($row = mysql_fetch_row($sth)){
-			echo "<option value=$row[0]>$row[1], $row[2]\n";	
+			echo "<option value=$row[0]>$row[1], $row[2]\n";
 		}
 	}
 ?>
 </select>
 </td>
 <td align=center valign=top cellpadding=1><input type=submit style="font-family:Verdana" name='Action' value='Make midlet'>
+<br><br><a href="../">Home</a>
 </td>
 </tr>
 </table>
@@ -317,6 +341,6 @@ function get_selected_cities($param)
 		return mysql_query($stat);
 	}
 	return null;
-}	
+}
 ?>
 

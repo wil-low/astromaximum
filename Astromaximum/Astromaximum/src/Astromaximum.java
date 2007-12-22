@@ -5,7 +5,6 @@
 //# import java.awt.event.WindowEvent;
 //#else
 
-import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 //#endif

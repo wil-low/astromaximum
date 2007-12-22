@@ -1,13 +1,16 @@
-table{
-	font-size:12px;
-}
-
 .geo {
 	vertical-align:top;
 }
 
 a {
 	color: blue;
+}
+
+.lb{
+	width:100%;
+	font-size:12px;
+	font-family:Verdana;
+	height:400pt;
 }
 
 .hdr
