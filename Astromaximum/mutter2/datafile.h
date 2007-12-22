@@ -107,6 +107,7 @@ public:
   void init(sEphRecord *ephdata, double start, unsigned int count);
   void AAA();
   void view(const char* fname, int count);
+  void dump_location(const char* fname, int num);
   ~DataFile();
   bool loadAphetics(sAphRecord *data);
   void calcAscData();

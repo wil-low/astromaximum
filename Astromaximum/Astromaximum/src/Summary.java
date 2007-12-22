@@ -1216,16 +1216,16 @@ class Summary extends Canvas implements CommandListener, Runnable {
         getItem(Event.EV_GRID_DATE).setEvents(1, new Event(selDate.getTime(), -1));
         getItem(Event.EV_GRID_DATE).initString();
         period0 = firstGridDate.getTime();
-        if (period0 < Astromaximum.dataFile.startJD) {
-            period0 = Astromaximum.dataFile.startJD;
-        }
+//        if (period0 < Astromaximum.dataFile.startJD) {
+//            period0 = Astromaximum.dataFile.startJD;
+//        }
 //    System.out.println("gatherMonth");
         period1 = period0 + cells * Astromaximum.MSECINDAY;
         period0 -= Event.localOffset(period0);
         period1 -= Event.localOffset(period1);
-        if (period1 > Astromaximum.dataFile.finalJD) {
-            period1 = Astromaximum.dataFile.finalJD;
-        }
+//        if (period1 > Astromaximum.dataFile.finalJD) {
+//            period1 = Astromaximum.dataFile.finalJD;
+//        }
 //    System.out.println(firstGridDate.toString());
         mRetro.removeAllElements();
         for (int i = Event.SE_MERCURY; i <= Event.SE_PLUTO; i++) {

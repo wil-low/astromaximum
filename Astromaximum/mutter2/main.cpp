@@ -41,14 +41,15 @@ int main(int argc, char* argv[])
   scanf("%s",path);
   return 0;
 */
-	if((argc==2)&&(strcmp(argv[1],"--help"))==0){
+	if((argc==1)||(strcmp(argv[1],"--help"))==0){
 		printf("Usage:  mutter2 [options]\n");
 		printf(" options:\n");
 		printf("   asctest <dir> - ascending test for events in dir/*.bin\n");
 		printf("   <year> - calculate ephemeris if none, and common.dat\n");
-		printf("   year <prefix> electio - calculate APHETICS with prefix\n");
-		printf("   year <prefix> <lon> <lat> [electio]- calc locations on coords with prefix\n");
-		printf("   year view <file.bin> <count> - view events of datafile\n");
+		printf("   <year> <prefix> electio - calculate APHETICS with prefix\n");
+		printf("   <year> <prefix> <lon> <lat> [electio]- calc locations on coords with prefix\n");
+		printf("   <year> view <file.bin> <count> - view events of datafile\n");
+		printf("   <year> dump <country> <filenum> - dump sections of location file\n");
 		exit(0);
 	}
   strcpy(path,argv[0]);
@@ -109,6 +110,13 @@ int main(int argc, char* argv[])
     int count=0;
     sscanf(argv[4],"%d",&count);
     df.view(argv[3], count);
+    printf("\nFinished\n");
+    return 0;
+  }
+  if((argc==5)&&(strcmp(argv[2],"dump")==0)){
+    int num=0;
+    sscanf(argv[4],"%d",&num);
+    df.dump_location(argv[3], num);
     return 0;
   }
   double startJD=swe_julday(year-1,12,31,0,SE_GREG_CAL);

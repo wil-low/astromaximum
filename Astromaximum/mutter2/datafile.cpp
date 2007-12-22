@@ -85,6 +85,94 @@ void DataFile::view(const char* fname, int count){
   printf("\nFinished\n");
 }
 
+void DataFile::dump_location(const char* fname, int num){
+  const char TMPFILE[]="~tmp";
+  char fn[200];
+  sprintf(fn, "archive/%d/%s/Data%02d.dat", Event::startYear, fname, num);
+  FILE *fin=fopen(fn,"rb");
+
+  if(!fin)
+    return;
+  vector<pair<int, int> > secofs;
+  while(true){  
+      secofs.clear();
+      printf("\n\nSections of %s :", fn);
+      fseek(fin,8,SEEK_SET);
+      int name_len;
+      fread(&name_len, 2, 1, fin);
+      name_len=(unsigned short)swapShort(name_len);
+      fseek(fin,name_len,SEEK_CUR);
+      fread(&name_len, 2, 1, fin);
+      name_len=(unsigned short)swapShort(name_len);
+      if(!(name_len & 0x80)){
+          fseek(fin,8,SEEK_CUR); 
+      }
+      int i=0;
+      char evtype;
+      int section_len;
+      while(true){
+        name_len=ftell(fin);
+        if(fseek(fin,1,SEEK_CUR)) break;
+        printf("\n%02d - %5d (0x%04x): ", i++, name_len, name_len);
+        section_len=0;
+        fread(&evtype, 1, 1, fin);
+        printf("event=%d", evtype);
+        fread(&section_len, 2, 1, fin);
+        section_len=swapShort(section_len);
+        if(section_len<=3) break;
+        secofs.push_back(pair<int, int>(name_len, section_len));
+        fseek(fin,section_len-3,SEEK_CUR);
+      }
+      printf(" - unused");
+      secofs.pop_back();
+      while(true){
+          printf("\n\nEnter section # to view, 's' for section list, 'q' to quit: ");
+          scanf("%s", fn);
+          if(strcmp(fn, "q")==0){
+              fclose(fin);
+              return;
+          }
+          if(strcmp(fn, "s")==0) break;
+          if(sscanf(fn, "%d", &i) && i>=0 && i<secofs.size()){
+            break;
+          }
+      }
+      if(strcmp(fn, "s")==0) continue;
+      int ii=secofs[i].first;
+      fseek(fin,ii+1,SEEK_SET);
+      char buf[10000];
+      int fsize=fread(buf, 1, secofs[i].second, fin);
+      FILE *fout=fopen(".tmp","wb");
+      fwrite(buf, 1, fsize, fout);
+      fclose(fout);
+      view("../../.tmp", 1000000);
+  }
+/*  
+  while (true) {
+      int ch = is.readUnsignedByte();
+      int rub = is.readUnsignedByte();
+      while (evtype != rub) {
+          if (isCommon && Astromaximum.options != null) {
+              Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
+          }
+          skipOff = is.readShort() - 3;
+          is.skip(skipOff);
+          ch = is.readUnsignedByte();
+          rub = is.readUnsignedByte();
+      }
+      skipOff = is.readShort();
+      flag = is.readShort();
+      if (planet == is.readByte()) {
+//          Astromaximum.instance.log("Found!",false);
+          break;
+      } else {
+          is.skip(skipOff - 6);
+      }
+  }
+*/  
+  fclose(fin);
+}
+
 void DataFile::AscendingTest(const char* dirname)
 {
   DIR *dir;
@@ -122,17 +210,18 @@ void DataFile::sortVAE(VAE &work)
 void DataFile::AAA()
 {
   VAE work, assist, vout, work2;
-	
-/*
+/*	
   choice(EV_MOON_PHASE, work, assist, vout, work2);
   release(work);
-  readSubData("phase01.bin",work);
+  year=2008;
+  readSubData("retro04.bin",work);
   for(int i=0; i<2; i++){
     work[i]->dump();
   }
 	
   return;
 */
+
 // -----------------------
   choice(EV_ASP_EXACT, work, assist, vout, work2);
 
@@ -441,7 +530,7 @@ bool DataFile::readSubData(const char* fname, VAE & v)
   fseek(fin,0,SEEK_END);
   long realsz=ftell(fin);
   fseek(fin,0,SEEK_SET);
-  EventType evtype;
+  char evtype;
   fread(&evtype, 1, 1, fin);
   long fsize=0;
   int evflags=0, recCount=0;
@@ -514,7 +603,7 @@ bool DataFile::readSubData(const char* fname, VAE & v)
         v[v.size()-1]->date[1]=ev->date[0];
     v.push_back(ev);
   }
-  v[v.size()-1]->date[1]=Event::packDate(startJD+dayCount);
+//  v[v.size()-1]->date[1]=Event::packDate(startJD+dayCount);
   fclose(fin);
   return true;
 err:

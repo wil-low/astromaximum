@@ -395,8 +395,15 @@
                 </uptodate>
             </or>
         </condition>
+        <uptodate property="obfuscation.up-to-date" targetfile="${obfuscator.destjar}">
+            <srcfiles dir="${buildsystem.baton}"/>
+        </uptodate>
     </target>
-    <target name="proguard" depends="proguard-init" description="Obfuscate project classes." unless="no.obfusc">
+    <target name="skip-obfuscation" depends="proguard-init" if="obfuscation.up-to-date">
+        <fail unless="obfuscated.classes.dir">Must set obfuscated.classes.dir</fail>
+        <nb-overrideproperty name="buildsystem.baton" value="${obfuscated.classes.dir}"/>
+    </target>
+    <target name="proguard" depends="skip-obfuscation" description="Obfuscate project classes." unless="no.obfusc">
         <fail unless="obfuscated.classes.dir">Must set obfuscated.classes.dir</fail>
         <fail unless="obfuscator.srcjar">Must set obfuscator.srcjar</fail>
         <fail unless="obfuscator.destjar">Must set obfuscator.destjar</fail>
@@ -885,7 +892,6 @@
     </target>
     <!--nsicom-run-->
     <target name="nsicom-run" if="nsicom-platform.trigger">
-        <taskdef name="nsicomExecDeploy" classname="org.netbeans.modules.j2me.cdc.project.nsicom.NSIcomExecDeployTask" classpath="${libs.nsicom-ant-utils.classpath}:${libs.ActiveSync.classpath}:"/>
         <nsicomExecDeploy home="${platform.home}" mainclass="${main.class}" args="${application.args}" jvmargs="${run.jvmargs}" device="${platform.device}" profile="${platform.profile}" xlet="${main.class.xlet}" applet="${main.class.applet}" verbose="${nsicom.application.runverbose}" hostip="${nsicom.application.monitorhost}" runondevice="${nsicom.application.runremote}" remotevmlocation="${nsicom.remotevm.location}" remoteDataLocation="${nsicom.remoteapp.location}">
             <fileset dir="${dist.dir}">
                 <exclude name="javadoc/**"/>
@@ -1002,7 +1008,7 @@
     <target name="javadoc" depends="preprocess">
         <fail unless="dist.javadoc.dir">Must set dist.javadoc.dir</fail>
         <mkdir dir="${dist.javadoc.dir}"/>
-        <javadoc source="${javac.source}" destdir="${dist.javadoc.dir}" bootclasspath="${platform.bootclasspath}" notree="${javadoc.notree}" use="${javadoc.use}" nonavbar="${javadoc.nonavbar}" noindex="${javadoc.noindex}" splitindex="${javadoc.splitindex}" author="${javadoc.author}" version="${javadoc.version}" windowtitle="${javadoc.windowtitle}" private="${javadoc.private}" encoding="${javac.encoding}">
+        <javadoc source="${javac.source}" destdir="${dist.javadoc.dir}" bootclasspath="${platform.bootclasspath}" notree="${javadoc.notree}" use="${javadoc.use}" nonavbar="${javadoc.nonavbar}" noindex="${javadoc.noindex}" splitindex="${javadoc.splitindex}" author="${javadoc.author}" version="${javadoc.version}" windowtitle="${javadoc.windowtitle}" private="${javadoc.private}" encoding="${javac.encoding}" docencoding="${javac.encoding}" charset="${javac.encoding}">
             <classpath>
                 <path path="${libs.classpath}"/>
             </classpath>
