@@ -333,6 +333,11 @@ final class DataFile {
         int skipOff;
         Event last = new Event(0, 0);
         int fnext_date2;
+//    if(planet==10){
+//      System.out.println(new Date(dayStart));
+//      System.out.println(new Date(dayEnd));
+//    }
+        
         int PERIOD = (evtype == Event.EV_ASCAPHETICS) ? 2 * 60 : 24 * 60;
         try {
             final DataInputStream is = new DataInputStream(new ByteArrayInputStream(buf));
@@ -446,6 +451,7 @@ final class DataFile {
                 }
                 if (fnext_date2 != 0) {
                     last.date1 = mydate0;
+                    mydate1 = finalJD;
 //            lastE.date1=mydate;
                 }
                 if (evtype == Event.EV_RETROGRADE) {
@@ -470,6 +476,7 @@ final class DataFile {
                 last.degree = (short) mydgr;
                 last.date0 = mydate0;
                 last.date1 = mydate1;
+//                if(planet==10) last.dump();
             }
             if (last.isInPeriod(dayStart, dayEnd, false)) {
                 v.addElement(last);
@@ -497,9 +504,6 @@ final class DataFile {
                            long dayStart, long dayEnd, int value) {
         boolean flag = false;
         final Vector tmp = getEvents(evtype, planet, dayStart, dayEnd);
-//    if(planet==9){
-//      Astromaximum.evDump(tmp);
-//    }
         for (Enumeration e = tmp.elements(); e.hasMoreElements();) {
             final Event ev = (Event) e.nextElement();
             if (ev.isInPeriod(dayStart, dayEnd, special)) {

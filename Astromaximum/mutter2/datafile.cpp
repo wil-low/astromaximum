@@ -211,6 +211,12 @@ void DataFile::AAA()
 {
   VAE work, assist, vout, work2;
 /*	
+  calcDegPass(work, 10);
+  clearDegPass(work, assist, 10, vout);
+  for(int i=0; i<assist.size(); i++){
+    assist[i]->dump();
+  }
+  return;
   choice(EV_MOON_PHASE, work, assist, vout, work2);
   release(work);
   year=2008;

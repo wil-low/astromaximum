@@ -25,8 +25,8 @@ OBJECTDIR=build/Release/GNU-Linux-x86
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/datafile.o \
 	${OBJECTDIR}/evclass.o \
+	${OBJECTDIR}/datafile.o \
 	${OBJECTDIR}/main.o
 
 # C Compiler Flags
@@ -48,13 +48,13 @@ LDLIBSOPTIONS=-L../swe -lswe
 mutter2: ${OBJECTFILES}
 	${LINK.cc} -o mutter2 -s ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/datafile.o: datafile.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -O2 -s -DANSITZ -I../swe -o ${OBJECTDIR}/datafile.o datafile.cpp
-
 ${OBJECTDIR}/evclass.o: evclass.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -O2 -s -DANSITZ -I../swe -o ${OBJECTDIR}/evclass.o evclass.cpp
+
+${OBJECTDIR}/datafile.o: datafile.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -O2 -s -DANSITZ -I../swe -o ${OBJECTDIR}/datafile.o datafile.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
