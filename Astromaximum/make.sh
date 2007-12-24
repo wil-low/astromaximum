@@ -1,4 +1,19 @@
 #!/bin/sh
+DEST=gen_mobi
+SOURCE=$DEST/source
+rm -r $DEST
+mkdir $DEST $SOURCE
+echo "#!/usr/bin/perl" | cat - tools.pm genconst.pm gen_amax.pl > $DEST/gen_amax.cgi
+chmod +x $DEST/gen_amax.cgi
+cp templates/AstromaximumDemo.jar $SOURCE
+cp templates/Astromaximum-tb.jar $SOURCE
+cp templates/MANIFEST.MF $SOURCE
+svn export --force interpret $SOURCE/interpret
+svn export --force images/icons $SOURCE/icons
+cp htaccess $SOURCE/interpret/.htaccess
+
+exit
+
 echo "Size_join"
 perl size_join.pl
 echo "."

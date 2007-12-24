@@ -1,7 +1,13 @@
 #!/usr/bin/perl
+package main;
 use strict;
 use POSIX;
+use CGI;
 
+my $islocal=$0=~/\.pl$/is;;
+if(!$islocal){
+	$const::DIR_TEMPLATE='source';
+}
 our $path;
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
@@ -31,23 +37,33 @@ chomp($path);
 if(!$path){
     $path='.';
 }
-require "$path/genconst.pm";
+my $jar_path=$path;
+if($islocal){
+	require "$path/genconst.pm";
 
-if(!scalar(@ARGV)){
-    print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
-    print "Parameters:\n";
-    print "\t<config>: [rebuild|notest|release|tb|demo]\n";
-    print "\t<year>\n";
-    print "\t<lang>\n";
-    print "\t<loclist file>\n";
-    print "\t<output jar>, or '-' for default\n";
-    print "\t[imei|timebomb|tb_timeout]\n";
-    print "\t[nomessjar]\n";
-    exit(1);
+	if(!scalar(@ARGV)){
+	    print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
+	    print "Parameters:\n";
+	    print "\t<config>: [rebuild|notest|release|tb|demo]\n";
+	    print "\t<year>\n";
+	    print "\t<lang>\n";
+	    print "\t<loclist file>\n";
+	    print "\t<output jar>, or '-' for default\n";
+	    print "\t[imei|timebomb|tb_timeout]\n";
+	    print "\t[nomessjar]\n";
+	    exit(1);
+	}
+
+	require "$path/tools.pm";
+	require "$path/Crc32.pm";
 }
-
-require "$path/tools.pm";
-require "$path/Crc32.pm";
+else{
+	my $id;
+	($const::DIR_TEMP, $id)=random('source');
+	$jar_path.='/../';
+	$const::DIR_INTERPRET='source/'.$const::DIR_INTERPRET;
+	$const::DIR_IMG='source/icons';
+}
 
 our $TEST_YEAR=2007; # default year for Demo
 
@@ -57,7 +73,7 @@ our $lang=shift(@ARGV);
 our $loclist=shift(@ARGV);
 our $outfile=shift(@ARGV);
 
-if($config eq 'rebuild'){
+if($islocal and ($config eq 'rebuild')){
     print "Rebuilding all configs...\n";
     my $antpath;
     my @app=(
@@ -101,8 +117,10 @@ my $argv="@ARGV";
 $messjar=0 if $argv=~/nomessjar/is;
 
 die "Invalid year '$year'" if $year!~/^\d{4}$/is;
-$loclist=ensure_slash($loclist);
-die "Invalid loclist '$loclist'" if ! -f $loclist;
+if($islocal){
+	$loclist=ensure_slash($loclist);
+	die "Invalid loclist '$loclist'" if ! -f $loclist;
+}
 my $dest='';
 
 if($config=~/(2006|demo)/is){
@@ -131,7 +149,7 @@ print "Processing <$config> for $year lang=$lang using locations from $loclist..
 
 rm_all("$path/$const::DIR_TEMP");
 
-if($config=~/tb/is){
+if($config=~/tb$/is){
     my $ofs=shift(@ARGV);
     $ofs=0 unless $ofs;
     my $delta=shift(@ARGV);
@@ -145,11 +163,10 @@ if($config=~/tb/is){
     inject_icon("res/");
     do_jar("$const::PRODUCT$ye", $outfile);
 #    do_messjar($outfile);
-    exit(0);
 }
 
 if($config=~/(2006|demo)/is){
-    $year=2006;
+#    $year=2006;
     unzip("$path/$const::DIR_TEMPLATE/AstromaximumDemo.jar");
     inject_lang($lang, 'demo'); 
     inject_amdata();
@@ -158,59 +175,57 @@ if($config=~/(2006|demo)/is){
     inject_icon("res/");
     do_jar("AstromaximumDemo", $outfile);
     do_messjar($outfile);
-    exit(0);
 }
 
-if($config=~/notest$/is){
-    unzip("$path/$const::DIR_TEMPLATE/Astromaximum-notest.jar");
-    inject_lang($lang); 
-    inject_common($year, "$path/$const::DIR_TEMP/common.dat");
-    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-    inject_icon("res/");
-    do_jar("$const::PRODUCT$ye", $outfile);
-    do_messjar($outfile);
-    exit(0);
+if($islocal){
+	if($config=~/notest$/is){
+	    unzip("$path/$const::DIR_TEMPLATE/Astromaximum-notest.jar");
+	    inject_lang($lang); 
+	    inject_common($year, "$path/$const::DIR_TEMP/common.dat");
+	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
+	    inject_icon("res/");
+	    do_jar("$const::PRODUCT$ye", $outfile);
+	    do_messjar($outfile);
+	}
+
+	if($config=~/release$/is){
+	    my $imei=shift(@ARGV);
+	    $imei='0' x 15 unless $imei;
+	    unzip("$path/$const::DIR_TEMPLATE/Astromaximum.jar");
+	    inject_lang($lang); 
+	    inject_common($year, "$path/$const::DIR_TEMP/common.dat", $imei);
+	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
+	    inject_amdata();
+	    inject_icon("res/");
+	    do_jar("$const::PRODUCT$ye", $outfile);
+	    do_messjar($outfile);
+	}
+
+	if($config=~/release_logger$/is){
+	    my $imei=shift(@ARGV);
+	    $imei='0' x 15 unless $imei;
+	    unzip("$path/$const::DIR_TEMPLATE/Astromaximum-logger.jar");
+	    inject_lang($lang); 
+	    inject_common($year, "$path/$const::DIR_TEMP/common.dat", $imei);
+	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
+	    inject_amdata();
+	    inject_icon("res/");
+	    do_jar("$const::PRODUCT$ye", $outfile);
+	    do_messjar($outfile);
+	}
+
+	if($config=~/geo-$/is){
+	    unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
+	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
+	    inject_icon();
+	    do_jar("Geo$ye", $outfile);
+	    do_messjar($outfile);
+	}
+
+	die "Invalid config";
 }
 
-if($config=~/release$/is){
-    my $imei=shift(@ARGV);
-    $imei='0' x 15 unless $imei;
-    unzip("$path/$const::DIR_TEMPLATE/Astromaximum.jar");
-    inject_lang($lang); 
-    inject_common($year, "$path/$const::DIR_TEMP/common.dat", $imei);
-    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-    inject_amdata();
-    inject_icon("res/");
-    do_jar("$const::PRODUCT$ye", $outfile);
-    do_messjar($outfile);
-    exit(0);
-}
-
-if($config=~/release_logger$/is){
-    my $imei=shift(@ARGV);
-    $imei='0' x 15 unless $imei;
-    unzip("$path/$const::DIR_TEMPLATE/Astromaximum-logger.jar");
-    inject_lang($lang); 
-    die "logger";
-    inject_common($year, "$path/$const::DIR_TEMP/common.dat", $imei);
-    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-    inject_amdata();
-    inject_icon("res/");
-    do_jar("$const::PRODUCT$ye", $outfile);
-    do_messjar($outfile);
-    exit(0);
-}
-
-if($config=~/geo-$/is){
-    unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
-    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-    inject_icon();
-    do_jar("Geo$ye", $outfile);
-    do_messjar($outfile);
-    exit(0);
-}
-
-die "Invalid config";
+#rm_all("$path/$const::DIR_TEMP");
 
 sub ensure_slash{
     $_[0]=~s/\//\\/isg if $winda;
@@ -245,7 +260,7 @@ sub inject_amdata{
 
 sub inject_icon{ #subdir
     $ye=~/(\d)$/is;
-    open(INF,"<$path/images/icons/$1.png") or die "Cannot open file $path/images/icons/$1.png";
+    open(INF,"<$path/$const::DIR_IMG/$1.png") or die "Cannot open file $path/$const::DIR_IMG/$1.png";
     binmode(INF);
     my @body=<INF>;
     close (INF);
@@ -368,7 +383,7 @@ sub do_jar{
 	print INF $template;
 	print INF "\r\n";
     close(INF);
-    my $cmd=ensure_slash(const::JAR("$path/", $outfile, "$path/MANIFEST.MF", "$path/$const::DIR_TEMP", $winda));
+    my $cmd=ensure_slash(const::JAR($jar_path, $outfile, "$path/MANIFEST.MF", "$path/$const::DIR_TEMP", $winda));
     print "Exec: $cmd\n";
     die "\tERROR: creating archive" if system($cmd);
     my $asize= -s $outfile;
@@ -543,8 +558,6 @@ sub mess_direrase {
 }
 
 sub unzip{
-    rm_all("$path/$const::DIR_TEMP");
-    copy_file($_[0], $outfile);
     my $cmd=sprintf($const::UNZIP, $_[0], "$path/$const::DIR_TEMP");
     print "Exec: $cmd\n";
     system($cmd);
@@ -636,7 +649,7 @@ sub timebomb_install # time, sign
 sub inject_lang{ # lang, isdemo
     my($lang, $demo)=@_;
     my $dest="$path/$const::DIR_TEMP";
-    my @bins=glob("$path/interpret/$lang/*.txt");
+    my @bins=glob("$path/$const::DIR_INTERPRET/$lang/*.txt");
     die "No files for '$lang' language\n" unless scalar(@bins);
     my @buf;
     my $body;
@@ -797,3 +810,23 @@ sub add_event_char
 		$hash{$_[0]}.=$_[1];
 	}
 }
+
+sub random # path, extension if file, undef if dir
+{
+	my ($fn,$id,$flag);
+	do{
+		$id=''; $flag=1;
+		for(my $i=0; $i<12; $i++){
+			$id.=int(rand(10));
+		}
+		$fn="$_[0]/$id$_[1]";
+		if($_[1]){
+			$flag=0 if -f $fn;
+		}
+		else{
+			$flag=0 if -d $fn;
+		}
+	}while(!$flag);
+	return ($fn, $id);
+}
+

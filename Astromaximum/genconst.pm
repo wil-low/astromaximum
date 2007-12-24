@@ -3,6 +3,8 @@ package const;
 our $DIR_TEMPLATE='templates';
 our $DIR_OUTPUT='Astromaximum/deploy';
 our $DIR_TEMP='.temp';
+our $DIR_IMG='images/icons';
+our $DIR_INTERPRET='interpret';
 our $PRODUCT='Astromaximum';
 our $VENDOR='S&W Axis';
 our $VERSION='1.0.016';
@@ -20,5 +22,12 @@ sub JAR{
 	$jarchiver='fastjar' unless $winda;
 	return sprintf("%s/%s cvfm %s %s -C %s .", $jarpath, $jarchiver, $out, $manifest, $srcdir);
 }
+
+our @default_city_ids=(
+    319, #London
+    307, #New York
+    273, #Kiev
+    186, #Moscow    
+);
 
 1;
