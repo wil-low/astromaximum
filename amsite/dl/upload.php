@@ -6,7 +6,7 @@ include_once('../lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-11-16T21:22:45+0200">
+<meta name="date" content="2007-12-24T18:22:42+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -20,15 +20,15 @@ include_once('../lang.php');
 <body>
 <?php
 include_once('nav.php');
+
+emit_nav1();
 $chac=check_access();
 if(!$chac){ 
-	echo "<br><p align=center>".$i18['DB_ACCESS'];
-        emit_nav1();
-        echo "</p>";
+	echo "<p align=center>".$i18['DB_ACCESS'];
+  echo "</p>";
 	emit_nav2();
 	exit();
 }
-emit_nav1();
 
 if($chac==1){
 	emit_admin();

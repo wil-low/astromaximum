@@ -12,7 +12,7 @@ $max_cities=20;
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-12-12T18:11:56+0200">
+<meta name="date" content="2007-12-24T18:13:17+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -83,7 +83,7 @@ function city_del(){
 		$defyear=$_POST['year'];
 	}
 	$chac=check_access();
-	emit_nav1();
+//	emit_nav1();
 	/*
 	if(!$chac){
 		echo "<br><p align=center>{$i18['DB_ACCESS']}</p>";

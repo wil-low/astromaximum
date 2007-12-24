@@ -141,6 +141,13 @@ function create_jar($year, $ids, $named_midlet){
 	return $fn;
 }
 
+function get_year(){
+	$current_year=date("Y");
+	if(date("n")==12){
+		$current_year++;
+	};
+	return $current_year;
+}
 function is_mobile(){
 // Lightweight device detection http://dev.mobi/node/472
     $mobile_browser = '0';
