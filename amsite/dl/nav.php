@@ -1,6 +1,6 @@
 <?php
 include_once('../lang.php');
-unset($LOGIN_MSG);
+$invalid_login=0;
 
 $langs=array(
 	"en"=>'English', 
@@ -11,7 +11,8 @@ $langs=array(
 function emit_admin(){
 	global $lang_, $i18;
 	echo <<<ADMIN
-	 &nbsp; <b>Admin:</b> <a href='db_stats.php'>{$i18['DB_STATS']}</a> 
+	 &nbsp; <b>Admin:</b> <a href='index.php'>Download</a> 
+        <a href='db_stats.php'>{$i18['DB_STATS']}</a> 
 	 <a href='upload.php'>Upload</a>
 	 <br><br> 
 ADMIN;
@@ -24,14 +25,15 @@ function microtime_float()
 }
 
 function emit_nav1(){
-	global $lang_, $i18, $LOGIN_MSG, $START_TIME, $langs;
+	global $lang_, $i18, $invalid_login, $START_TIME, $langs;
 	$START_TIME=microtime_float();
 // entrance for clients
 	if(isset($_POST['user']) && isset($_POST['passwd'])){
 		if(login($_POST['user'],$_POST['passwd'])){
+			$invalid_login=0;
 		}
 		else{
-			$LOGIN_MSG='INVALID_LOGIN';
+			$invalid_login=1;
 		}
 		unset($_POST['user']);
 	}
@@ -41,91 +43,30 @@ function emit_nav1(){
 	else{
 		$lng='en';
 	} 
-echo <<<NAV1
-<table width="1013" border="0" align="center" cellpadding="1" cellspacing="0" bgcolor="#000000">
-  <tr>
-    <td valign="top"><table width="1011" height="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-      <tr>
-        <td width="7" background="img/lin-vert.gif"><img src="../../img/spacer.gif" width="7" height="8"></td>
-        <td valign="top"><table width="1003" height="100%"  border="0" cellpadding="0" cellspacing="0">
-          <tr>
-            <td colspan="2" valign="top">
-            <img src="../../img/spacer.gif" width="1" height="10">                
-                <table width="220" border="0" cellspacing="0" cellpadding="0">
-                  <tr align="left" valign="top">
-                    <td height="20" colspan="3"><img src="../../img/ecke.gif" width="20" height="20"><img src="../../img/ecke-gor.gif" width="199" height="4" align="top"><img src="../../img/ecke-right.gif" width="1" height="20"></td>
-                    </tr>
-                  <tr>
-                    <td width="4" rowspan="2" background="../../img/ecke-vert.gif"><img src="../../img/spacer.gif" width="4" height="1"></td>
-                    <td class="txt-ramka" align="left">
-                    <table border="0">
-                    <tr>
-                    	<td width="100">
-												<img src="img/europe.png" alt="Europe" height="88" width="88" border="1">
-											</td>
-											<td>
-												<div align=center>Europe:</div>
-												<a href=# class="nav">Nothern</a><br><a href=# class="nav">Western</a><br>
-												<a href=# class="nav">Southern</a><br><a href=# class="nav">Eastern</a><br>
-											</td></tr>										
-                    <tr>
-                    	<td width="25%">
-												<img src="img/america.png" alt="America" height="88" width="88" border="1">
-											</td>
-											<td>
-												<div align=center>America:</div>
-												<a href=# class="nav">Nothern</a><br><a href=# class="nav">Central</a><br>
-												<a href=# class="nav">Southern</a><br><a href=# class="nav">Caribbeans</a><br>
-											</td></tr>
-                    <tr>
-                    	<td width="25%">
-												<img src="img/asia1.png" alt="Asia" height="88" width="88" border="1">
-											</td>
-											<td>
-												<div align=center>Asia:</div>
-												<a href=# class="nav">Western</a><br><a href=# class="nav">Central</a><br>
-												<a href=# class="nav">Southern</a>
-											</td></tr>										
-                    <tr>
-                    	<td width="25%">
-												<img src="img/asia2.png" alt="Asia" height="88" width="88" border="1">
-											</td>
-											<td>
-												<div align=center>Asia:</div>
-												<a href=# class="nav">Eastern</a><br><a href=# class="nav">Southeastern</a><br>
-											</td></tr>										
-                    <tr>
-                    	<td width="25%">
-												<img src="img/australia.png" alt="Australia" height="88" width="88" border="1">
-											</td>
-											<td>
-												<div align=center>Australia:</div>
-												<a href=# class="nav">Southeastern Asia</a><br><a href=# class="nav">Australia</a><br>
-												<a href=# class="nav">Polinesia</a>
-											</td></tr>										
-                    <tr>
-                    	<td width="25%">
-												<img src="img/africa.png" alt="Africa" height="88" width="88" border="1">
-											</td>
-											<td>
-												<div align=center>Africa:</div>
-												<a href=# class="nav">Nothern</a><br><a href=# class="nav">Western</a><br>
-												<a href=# class="nav">Middle</a><br><a href=# class="nav">Eastern</a><br>
-												<a href=# class="nav">Southern</a>
-											</td></tr>
-											</table>
-											</td>
-                    <td width="1" rowspan="2" bgcolor="#000000"><img src="../../img/spacer.gif" width="1" height="1"></td>
-                  </tr>
-                  <tr>
-                    <td valign="bottom"><img src="../../img/black.gif" width="215" height="1"></td>
-                  </tr>
-                </table>
-                
+if($invalid_login || ($_SESSION['uid']==0)){
+    echo <<<NAV1
+    <form action="{$_SERVER['REQUEST_URI']}" method="post" name="log">
+    <table align=center>
+    <tr align=center>
+        <td>{$i18['USERNAME']}</td><td><input name="user" type="text" size="15" maxlength="15"></td>
+    </tr>
+    <tr align=center>
+        <td>{$i18['PWD']}</td><td><input name="passwd" type="password" size="15" maxlength="15"></td>
+    </tr>
+    <tr align=center>
+        <td colspan=2><input type="submit" value="Авторизация"></td>
+    </tr></table>
+    </form>
 NAV1;
-
-
-	echo	"<td valign=top width=\"100%\">";
+}
+else{
+    echo "Welcome, {$_SESSION['username']}! (<a href='logout.php'>logout</a>)<br><br>";
+}
+/*
+print_r($_POST);
+echo "<br>";
+print_r($_SESSION);
+*/
 }
 
 function emit_nav2(){

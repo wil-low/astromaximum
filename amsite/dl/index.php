@@ -1,5 +1,6 @@
 <?php
-include_once('../lang.php');
+include_once('../dbconnect.php');
+include_once('nav.php');
 $useimg=1;
 $useregions=0;
 $step=1;
@@ -82,6 +83,7 @@ function city_del(){
 		$defyear=$_POST['year'];
 	}
 	$chac=check_access();
+	emit_nav1();
 	/*
 	if(!$chac){
 		echo "<br><p align=center>{$i18['DB_ACCESS']}</p>";

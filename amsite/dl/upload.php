@@ -20,13 +20,16 @@ include_once('../lang.php');
 <body>
 <?php
 include_once('nav.php');
-emit_nav1();
 $chac=check_access();
 if(!$chac){ 
-	echo "<br><p align=center>".$i18['DB_ACCESS']."</p>";
+	echo "<br><p align=center>".$i18['DB_ACCESS'];
+        emit_nav1();
+        echo "</p>";
 	emit_nav2();
 	exit();
 }
+emit_nav1();
+
 if($chac==1){
 	emit_admin();
 } 
@@ -94,7 +97,7 @@ function up_geodata($fname, $ext){
 	check_ext($fname, $ext);
 	$fh = $_FILES['uploaded_file']['tmp_name'];
 	list($dir,$fn)=amtools_random(0,'inbox','');
-	echo "$dir";
+//	echo "$dir";
 	mkdir($dir);
 	$cmd=sprintf($UNZIP, $fh, $dir);
 	$res=exec($cmd);
