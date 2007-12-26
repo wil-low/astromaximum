@@ -58,32 +58,40 @@ function rm_all($dir)
 	rmdir($dir);
 }
 
-function create_jar($year, $ids, $named_midlet){
-	global $DIR_FILES, $DIR_SOURCE, $UNZIP, $ZIP;
-	$mypath=dirname(__FILE__);
-	$dfil="$mypath/$DIR_FILES";
-	$dsrc="$mypath/$DIR_SOURCE";
+function select_cities($year, $ids, $destfile){
 	$ids=trim($ids,',');
-	$ye=substr($year,-2);
-	list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
-	$srcdir="/tmp/$fn";
-	mkdir($srcdir);
-	
-	$server="http://".$_SERVER['SERVER_NAME'];
+	$dir=dirname($destfile);
+	if(!is_dir($dir)) mkdir($dir);
 	$stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
 		"WHERE cities.id IN (%s) AND city_id=cities.id AND year=%s".
 		" ORDER BY cities.name",$ids,$year);
-//	print $stat;
 	$sth = mysql_query($stat);
 	$i=0;
-	$midlet_name='';
 	while($row = mysql_fetch_row($sth)){
 		$data[$i++]=$row[1];		
-		if($named_midlet){
+		if(!isset($midlet_name)){
 			$midlet_name=$row[0];
 		}
 	}
 	mysql_free_result($sth);
+	join_datafiles2($year, $destfile, $data);
+	return $midlet_name;
+}
+
+function create_jar($year, $ids, $template_jar, $isdemo, $named_midlet, $common_file){
+	global $DIR_FILES, $DIR_SOURCE, $UNZIP, $ZIP;
+	$mypath=dirname(__FILE__);
+	$dfil="$mypath/$DIR_FILES";
+	$dsrc="$mypath/$DIR_SOURCE";
+	$ye=substr($year,-2);
+	list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
+	$srcdir="$dsrc/$fn";
+//	mkdir($srcdir);
+//	echo $srcdir;
+	$server="http://".$_SERVER['SERVER_NAME'];
+	$locfile='locations.dat';
+	if($isdemo) $locfile='l.dat';
+	$midlet_name=select_cities($year, $ids, "$dsrc/$fn/$locfile");
 	$infile=fopen("$dsrc/template.jad","rb");
 	$template = fread($infile, 1000000);
 	fclose($infile);
@@ -99,12 +107,21 @@ function create_jar($year, $ids, $named_midlet){
 	$template=str_replace('<JAR>', "$fname.jar", $template);
 #	echo $template;
 
-	$cmd=sprintf($UNZIP, "$dsrc/template.zip", "$dsrc/$fn");
+	$cmd=sprintf($UNZIP, $template_jar, "$dsrc/$fn");
 	exec($cmd);
 	$inf=fopen("/tmp/$fn.MF", 'wb');
 	fwrite($inf, $template);
 	fclose($inf);
-	join_datafiles2($year, "$dsrc/$fn/locations.dat", $data);
+	if(is_file($common_file)){
+		$infile=fopen($common_file,"rb");
+		$cfile = fread($infile, 1000000);
+		fclose($infile);
+		$comfile='common.dat';
+		if($isdemo) $comfile='c.dat';
+		$inf=fopen("$dsrc/$fn/$comfile", 'wb');
+		fwrite($inf, $cfile);
+		fclose($inf);
+	}
 	$inf=fopen("$dsrc/icons/".substr($year,-1).".png", 'rb');
 	$icon=fread($inf,5000);
 	fclose($inf);
