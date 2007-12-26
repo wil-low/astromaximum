@@ -2,7 +2,6 @@
 package main;
 use strict;
 use POSIX;
-use CGI;
 
 my $islocal=$0=~/\.pl$/is;;
 if(!$islocal){
@@ -38,13 +37,14 @@ if(!$path){
     $path='.';
 }
 my $jar_path=$path;
+
 if($islocal){
 	require "$path/genconst.pm";
 
 	if(!scalar(@ARGV)){
 	    print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
 	    print "Parameters:\n";
-	    print "\t<config>: [rebuild|notest|release|tb|demo]\n";
+	    print "\t<config>: [rebuild|notest|release|tb|demo|join]\n";
 	    print "\t<year>\n";
 	    print "\t<lang>\n";
 	    print "\t<loclist file>\n";
@@ -56,6 +56,7 @@ if($islocal){
 
 	require "$path/tools.pm";
 	require "$path/Crc32.pm";
+	rm_all("$path/$const::DIR_TEMP");
 }
 else{
 	my $id;
@@ -66,12 +67,16 @@ else{
 }
 
 our $TEST_YEAR=2007; # default year for Demo
-
 our $config=shift(@ARGV);
 our $year=shift(@ARGV);
 our $lang=shift(@ARGV);
 our $loclist=shift(@ARGV);
 our $outfile=shift(@ARGV);
+
+if($islocal and ($config eq 'join')){
+	inject_common($year, "$path/$year.comm");
+	exit(0);
+}
 
 if($islocal and ($config eq 'rebuild')){
     print "Rebuilding all configs...\n";
@@ -147,7 +152,7 @@ unless($outfile=~/\.jar/is){
 $outfile=ensure_slash($outfile);
 print "Processing <$config> for $year lang=$lang using locations from $loclist...\n";
 
-rm_all("$path/$const::DIR_TEMP");
+my $done=0;
 
 if($config=~/tb$/is){
     my $ofs=shift(@ARGV);
@@ -162,6 +167,7 @@ if($config=~/tb$/is){
     inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
     inject_icon("res/");
     do_jar("$const::PRODUCT$ye", $outfile);
+    $done=1;
 #    do_messjar($outfile);
 }
 
@@ -175,6 +181,7 @@ if($config=~/(2006|demo)/is){
     inject_icon("res/");
     do_jar("AstromaximumDemo", $outfile);
     do_messjar($outfile);
+    $done=1;
 }
 
 if($islocal){
@@ -186,6 +193,7 @@ if($islocal){
 	    inject_icon("res/");
 	    do_jar("$const::PRODUCT$ye", $outfile);
 	    do_messjar($outfile);
+	    $done=1;
 	}
 
 	if($config=~/release$/is){
@@ -199,6 +207,7 @@ if($islocal){
 	    inject_icon("res/");
 	    do_jar("$const::PRODUCT$ye", $outfile);
 	    do_messjar($outfile);
+	    $done=1;
 	}
 
 	if($config=~/release_logger$/is){
@@ -212,6 +221,7 @@ if($islocal){
 	    inject_icon("res/");
 	    do_jar("$const::PRODUCT$ye", $outfile);
 	    do_messjar($outfile);
+	    $done=1;
 	}
 
 	if($config=~/geo-$/is){
@@ -220,12 +230,13 @@ if($islocal){
 	    inject_icon();
 	    do_jar("Geo$ye", $outfile);
 	    do_messjar($outfile);
+	    $done=1;
 	}
 
-	die "Invalid config";
+	die "Invalid config" if !$done;
 }
 
-#rm_all("$path/$const::DIR_TEMP");
+rm_all("$path/$const::DIR_TEMP");
 
 sub ensure_slash{
     $_[0]=~s/\//\\/isg if $winda;
@@ -272,6 +283,7 @@ sub inject_icon{ #subdir
 }
 
 sub inject_locations{
+  if($islocal){
     if(!$_[0]){
 			die "Usage: inject_locations.pl <year> <city list> <dest file>\n";
     }
@@ -279,14 +291,15 @@ sub inject_locations{
     open(IN, "<$_[1]") or die "error $!: $_[1]\n";
     while(my $ln=<IN>){
 	    if($ln=~/(\w+):(Data\d\d)/is){
-	    	my $dfile=ensure_slash("$path/data/archive/$_[0]/$1/$2.dat");
+		my $dfile=ensure_slash("$path/data/archive/$_[0]/$1/$2.dat");
 		    push(@fn, $dfile);
 	    }
     }
     close(IN);
     my $i=scalar(@fn);
     tools::join_datafiles($_[0], $i, $_[2], \@fn);
-    print "$_[2] written\n";
+	  print "$_[2] written\n";
+  }
 }
 
 sub inject_common{

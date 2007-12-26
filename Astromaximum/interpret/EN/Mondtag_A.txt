@@ -1,0 +1,67 @@
+﻿!!type EV_MOON_DAY
+!!params 1
+!!planet 1
+// MD Moon Days
+// According to Albert the Great
+
+
+%1% }The day is unfavourable for everything.}|Night dreams are for joy.|#The one fallen ill will on this day will lie for a long time but will recover.#
+
+%2% }Good for travellers, for requests, for the beginning of building and planting}, for continuing the family; the theft will be revealed soon, the thieves will be caught.|Dreams do not mean anything.|#The disease is short-term.#
+
+%3% }The day is unhappy. You shouldn’t begin anything.}|Neither sow nor plant. Dreams do not have a meaning.|#The started disease is dangerous.#
+
+%4% }favourable for all enterprises if they are thoroughly thought over}; for finding lost things and water constructions.|Good dreams will come true and bad ones won’t.|#Diseases are dangerous.#
+
+%5% }The day is unhappy.} The criminal will not avoid punishment.|Dreams are doubtful.|#The disease is extremely dangerous.#
+
+%6% }The day is happy for many things.} The beginners will succeed in their studies. The lost thing will be found, thieves will be caught soon.|Dreams must remain in secret.|#The fallen ill will recover soon.#
+
+%7% }The day is happy.} The robbers will be caught soon.|Dreams come true.|#Diseases are easily curable.#
+
+%8% }The day is happy for travellers.}|Dreams are truthful.|#The started disease is dangerous.#
+
+%9% }The day is good for old affairs, unhappy for the new ones.}|Dreams come true.|#The started disease is difficult but not mortal.#
+
+%10% }The day is happy for all enterprises.|(+)for registration of enterprises.} Sadness is short-term.|Dreams are not valid. |#The fallen ill will die if he is not given urgent help.#
+
+%11% }The day is happy for trips and movings.}|#For women the started disease is dangerous.#
+
+%12% }The day is very unfavourable, it is better not to undertake anything.}|Dreams come true.|#The started disease is extremely dangerous.#
+
+%13% }The day is unhappy, it is better not to undertake anything.}|Dreams come true.|#The fallen ill will be sick for a long time.#
+
+%14% }The day is happy.|(+)for registration of enterprises.}|Dreams are doubtful.|#The disease will not leave serious consequences.#
+
+%15% }The day is neither good nor bad. It is possible to conclude small deals and start an enterprise, the beginning of which is not great.}|Dreams are probable.|#The happening disease is not dangerous.#
+
+%16% }The day is happy, especially in trade.}|Dreams are truthful.|#The disease is curable, positive mind of the sick will assist in treatment.#
+
+%17% }The day is unhappy. You must not undertake anything on it.} family quarrels and unprofitable changes.|Dreams come true on the third day.|#Diseases are hard or curable.#
+
+%18% }The day is rather happy.}|Dreams come true.|#The started disease is dangerous.# 
+
+%19% }The day is dangerous. You must not start going anywhere on it.}Do not visit drunk people. Better to remain at home.|Dreams come true soon.|#The started disease will stop soon.#
+
+%20% }The day is happy for all enterprises.|(+)for registration of enterprises.}|Dreams are not reliable.|#The started disease is a long-term one.#
+
+%21% }The day is happy for different entertainments and for economy.|(+)for the registration of an enterprise.} The lost thin on this day will soon be found. The thieves will be caught soon.|Dreams do not mean anything.|#The disease will appear threatening, but curable.#
+
+%22% }The day is unhappy. Nothing to be started.}|Dreams come true.|#Diseases are rather dangerous.#
+
+%23% }The day is happy for reaching honours.}|Dreams are empty.|#Diseases are long-term, but not dangerous.#
+
+%24% }The day is neutral.}|Dreams are not valid.|#Diseases are long-term but not dangerous.# 
+
+%25% }The day is equivocal.}|#The diseases are extremely dangerous.#
+
+%26% }The day is unfavourable for enterprises, nothing should be started.}|Dreams come true.|#For the ones falling ill it is extremely dangerous.#
+
+%27% }The day is happy for everything.}|Dreams are not reliable.|#Diseases are changeable.#
+
+%28% }The day is happy, every affair will succeed.}|Dreams are empty.|#The disease is not dangerous.#
+
+%29% }(-)The day is extremely unhappy for everything.|(-)for registration of enterprises.}|Dreams are truthful.|#The sick ones however recover on it.# 
+
+%30% }The day is equivocal.}|Dreams are truthful, their coming true will bring much joy.|#Only immediate help will save the one fallen ill.#
+

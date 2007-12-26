@@ -23,11 +23,4 @@ sub JAR{
 	return sprintf("%s/%s cvfm %s %s -C %s .", $jarpath, $jarchiver, $out, $manifest, $srcdir);
 }
 
-our @default_city_ids=(
-    319, #London
-    307, #New York
-    273, #Kiev
-    186, #Moscow    
-);
-
 1;

@@ -1,0 +1,19 @@
+﻿!!type EV_RETROGRADE
+!!params 1
+!!planet -1
+
+[3]Mercury %2% @Doubtful deals, misunderstandings.|(-)for signing documents: mistakes, deception are possible; (-)for purchase of traffic vehicles, means of connection and the beginning of studies;|(+)for "the second attempt", reconsideration, remaking, detection of mistakes; republishing, renegotiation a contract. new ideas look optimistic, but have no real projects.|--|(-)for affairs and registration of enterprises of Mercury: trade, calculations, measurements, teaching and upbringing; science, doctor’s practice, barber’s craft (together with mars), book trade; trips, deceptions, mediation, correspondence, rhetorics, debates; orators, secretaries, clerks, thieves; certificates and press (together with Jupiter); telephone companies, transport, means of transport (together with mars), science, journalistics, commerce.@
+
+[4]Venus %3% @(-)for acquaintances, property and financial activities, expensive purchases. Not the best time for money circulation.|(+)for concluding relations and termination of financing. You may return debts.|--|(-)for affairs and registration of enterprises of Venus: arts, colouring and sewing crafts, gift and decorations shops, ladies’ saloons and everything connected with women and beauty; perfumery (together with Neptune); love affairs, friendship, games of chance; wall paper men, designers, cloth, pearl, gold and silver traders; art of a painter, jeweller, tailor, fine arts.@
+
+[5]Mars %4% @It is badly to buy instruments, industrial equipment, a car; to begin aggressive business or a war against competitors; bringing an action may turn against the plaintiff. It is badly to start doing sports.|--|(-)for affairs and registration of enterprises of Mars: military and weapons aspect; crafts of a carpenter, cutter, currier, tin-smith, butcher, baker, vet and surgeon; mechanic engineer.|sports shops and events; forge, guarding agency. Competitiveness.@
+
+[6]Jupiter %5% @It is badly to get one’s discharge, you will find a job not in the nearest future; do not take money on the security.|(-)for the first trip abroad;|(-)for registration of enterprises, large financial losses are possible.|--|(-)for affairs and registration of enterprises of Jupiter: credits (together with Neptune); banking; publishing and certificates (together with Mercury); good governing, barristers, court, senate, university; grapes, silver and gold scrap trade; prayers, charity, explanation of dreams; law, sociology; far trips and everything connected with abroad.@
+
+[7]Saturn %6% @(-)for affairs and registration of enterprises of Saturn: building, architecture, land cultivation, farming, mining, tanning, agricultural production, metals, coal, leather and wool trade; hard labour, allocation of inheritance, antiques; capture; politics (together with the Sun); technologies.@
+
+[8]Uranus %7% @Hinders new affairs, whose second director is Uranus: aviation, astrology, electronics; progressive technologies (together with Saturn); inventions, television (together with Mercury).@
+
+[9]Neptune %8% @Hinders new affairs whose second director is Neptune: acting (together with Venus); drugstores (together with Mercury); chemistry, oil, gas, photography (together with Venus); detective agency (together with Mars).@
+
+[10]Pluto %9% @ Hinders new affairs whose second director is Pluto: taxes and inspections of any kind (together with Jupiter); insurances (Together with mercury); propaganda.@

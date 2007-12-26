@@ -1,0 +1,46 @@
+﻿!!type EV_RISE
+!!params 2
+!!planet -1
+
+
+[Sunrise]
+
+[1]%0,1% }(-)levels all promises}; the situation worsens, if the Sun rises with another planet.|The given position is not so harmful, if the Sun is in Aries or in Leo and in good aspects.|--|#Good sign for the one falling ill.#~|--|dangerous time for childbirth, especially if the child is a boy.~
+[2]%1,1% }Favours buying/selling; in the rest, the period is unfavourable almost for everything, especially (-)for trips.}|--|It is bad if the Sun rises together with Mars or Saturn; but it is not bad if it rises together with Jupiter or Venus|--|#Good sign for the one falling ill.#~|--|dangerous time for childbirth, especially if it is a girl.~
+[3]%2,1% }Destroys bad influence.}|*(+)for hiring.*|it is bad, if it rises together with the Sun.|--|~Changeable childbirth.~
+[4]%3,1% }Will secure risky actions.|(+)for trips. Destroys bad influences, but it is bad if it rises together with the Sun}|--|#Good sign for the one falling ill.#~|--|Promises smooth childbirth;|treatment is favourable; (+)for cosmetic procedures.~
+[5]%4,1% }Opposition and proneness to conflict.|(-)for the beginning of cooperation, unions, unifications.}^|For constructions – threat of fire.^|--|(-)for marriage.|--|#starting disease will be quick and severe; the sick one will harm himself with self-treatment.#~|--|Dangerous time for childbirth.~
+[6]%5,1% }Will secure risky actions.|(+)for the beginning of cooperation, unions, unifications; (+)to search for disposal of an influential person, strengthen the reputation of an enterprise;|(+)for trips.}|*(+)for the beginning of work at a new place.*|--|Destroys bad influences, but it is bad, if it rises together with the Sun|--|#Good sign for the one falling ill.#~|--|Standard childbirth;|(+)for cosmetic procedures.~
+[7]%6,1% }(-)for most affairs; (-)for trips –danger to harm oneself.}|^(-)for the beginning of building.^|--|#Starting disease is dangerous or long-term.#~|--|starting in this time delivery will need stimulation;|(-)for cosmetic procedures.~
+
+
+[Zenith]
+
+[1]%0,2% }The influence is very favourable. Chances for success of the enterprise started in this time, are much more promising.|(+)strengthen the reputation of an enterprise.}*|it is good to begin work at a new place.*|--|neutralizes many negative indices.|--|(+)for marriage.
+[2]%1,2% }(+)for public activity;|(+)to search for disposal of an influential person.}|--|#Good sign for the one falling ill.#
+[3]%2,2% }(+)for affairs connected with information and communications.}
+[4]%3,2% }(+)for trips.|Good image.}|--|#For the one falling ill it means the proper medicine.#~|--|(+)for taking in medicines.~
+[5]%4,2% }Proneness to conflict, aggressive running business.|(-)for the beginning of cooperation, unions, unifications.}|^(-)for the beginning of building.^|--|(-)for marriage.|--|#The one falling ill has difficulties in choosing an effective medicine.#
+[6]%5,2% }(+)for the beginning of cooperation, unions, unifications;|(+)for trips.}|--|(+)for marriage.|--|#For the one falling ill it means the proper medicine.#~|--|(+)for taking in medicines.~
+[7]%6,2% }(-)for most affairs.}|--|# The one falling ill will have difficulties in choosing an effective medicine.#~|--|(-)for cosmetic procedures.~
+
+
+[Sunset]
+
+[1]%0,3% }The starting enterprise will be soon given up.|(-)to search for a disposal of an influential person.}|--|(-)for marriage.
+[2]%1,3% }(+)for business partnership and public activities;|(-)for trips.}|--|#Good sign for the one falling ill.#
+[3]%2,3% }(-)the starting affair may suffer from deception or slander;|(-)for trips: quarrels and deception.}
+[4]%3,3% }(+)for partnership;|(+)for trips.}|--|(+)for marriage.
+[5]%4,3% }Opposition and proneness to conflict, evil intention, deception.|(-)for beginning of cooperation, unions, unifications.|(-)for trips -danger.}|^(-)for beginning of building and moving.^|--|(-)for marriage.|--|#Treatment will be effective for the disease starting at this time if you change a doctor.#~|--|(-)for cosmetic procedures.~
+[6]%5,3% }(+) for beginning of cooperation, unions, unifications;|(-)disapproval of the community or complications with the law.|(+) for trips.}
+[7]%6,3% }Evil intention, deception.|(-)for most affairs.|(-)for trips and move.}|--|(-)for marriage.|--|#the starting disease will be a prolonged one if you will not change a doctor.#~(-)|--|for cosmetic procedures.~
+
+[Nadir]
+[1]%0,4% }(+)for individual creative initiatives.}
+[2]%1,4% }(-)for financial activity.}|--|Emotional instability and rapid development of relations.|--|#Good sign for the one falling ill.#
+[3]%2,4% }Business proposals and promises may appear to be an idle talk.|(-)for financial activity.|(+)studies and improvement of qualification.}|--|(-)for marriage.
+[4]%3,4% }(+)for all beginnings;|(+)for trips.}|--|#You may hope for soon recovery having a disease started at this time.#
+[5]%4,4% } Opposition and proneness to conflict.|(-) for beginning of cooperation, unions, unifications.}|^(-)for beginning of building.^ |--|(-)for marriage
+[6]%5,4% }Chance for success.|(+)for beginning of cooperation, unions, unifications;|(+)for trips.}|--|# You may hope for soon recovery having a disease started at this time.# 
+[7]%6,4% }(-)Constant obstacles and complications.}|^(-)for the beginning of building.^|--|~(-)for cosmetic procedures.~
+

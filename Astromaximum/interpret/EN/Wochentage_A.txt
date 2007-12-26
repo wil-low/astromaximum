@@ -1,0 +1,17 @@
+﻿!!type EV_WEEK
+!!params 1
+!!planet -1
+%2% }(+)for concluding agreements;|(-)for active actions, making decisions.}|{(-)for far trips, especially to the east.{|^(+)for buying land for building on it, founding a house, repair, agricultural works, planting.^|--|days of the week begin with sunrise.|--|~(+)for preparing medicines and surgery.~=|--|(+)for marriage, new clothes, fortune telling, rituals aimed at prosperity.=
+
+%3% }(+)for removing obstacles;|(-)for deals; legal proceedings, hiring, truce.|(-)business purchase.} $Do not lend money.$|^(-)for the beginning of building, repair.^|{(-)for education, trips, especially in northern direction.{|--|Days of the week begin with sunrise.|--|~(+)for planned surgery and preparing medicines.~=|--|(-)for marriage, christening, new clothes.=
+
+%4% }(+)for new affairs; acquaintances, commerce, concluding agreements;|(-)for aggressive actions.}|^(+)for repair, buying land for building.^|{(+)for studying; (-)for the travel in northern direction.{|--|Days of the week begin with the sunrise.|--|~(+)for surgery, treatment, taking in medicines.~=|--|(+)for marriage.=
+
+%5% }(+)for any affairs, especially for trade.|(-)for aggressive actions, destruction of something.}|^It is good to buy land for building on it, begin repair; (+)for sowing and reaping.^|{(+)for studies; (-)for travel in southern direction.{|--|Days of the week begin with sunrise.|--|=(+)for marriage, power and glory rituals.=
+
+%6% }(+)for any affairs; especially for career, agreements and trade, acquaintances;|(-)for debates, abrogation of partnership relations and agreements.}|{(-)for travel in western direction.{|^(+)for housework; (-)to kill animals.^|--|Days of the week begin with sunrise.|--|=(+)acquaintances, marriage, rituals aimed at stopping quarrels and attraction of luck. It is good to put new things on.=
+
+%7% }^(+)for building, rent, buying and selling of real estate, field works.^|(-)for most affairs which do not concern Saturn, especially (-)for a trial, agreements, expenditures, hiring.}|{(-)for studies, travels, especially to the east.{ $Do not lend money.$|--|Days of the week begin with sunrise.|--|~(+)for planned surgery;|(-)for intensive treatment and preparing medicines.~=|--|(-)for new garments; (+)longevity rituals.=
+
+%1% }(+)for career, commerce, power actions, festivities;|(-)for the beginning of a new affair, oaths, reconciliation.}|^(-)for laying the foundation, moving; prohibition for economic and house works.^|{(-)for travel in western direction.{ |--|days of the week begin with sunrise.|--|~(+)for preparing medicines;|(-)for surgery.~=|--|(-)for marriage, new garments; (+)for rituals aimed at luck.=
+
