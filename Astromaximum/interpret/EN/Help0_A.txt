@@ -1,0 +1,39 @@
+!!type EV_HELP0
+!!params 1
+!!planet -1
+//Planets °
+%10%SO Sun.|Jewellery production and coinage (together with Venus); public meetings; governor, mayor, sheriff, head of department, administrator; gifts; politics (together with Saturn); management (together with Jupiter).|--|If (±4 days) the Sun is aspected unfavourably by Mars or Saturn, in this hour it is worth to abstain from activities being under its direction.
+%11%MO Moon.|Embassies and diplomatic representatives (together with Jupiter); book-keeping and medicine (together with Mercury); hotel and restaurant business (together with Venus); agency on real estate (together with Saturn), laundry, bath-house; fishing, beverages production and trade (together with Neptune), raw oil; nurses, housekeepers, family.|--|Everything mentioned is unfavourable to do if the Moon is on the Burnt Road (VC), or in conjunction with the Sun.
+%12%ME Mercury.|Trade, calculations, measurements, teaching and upbringing; science, doctor’s practice, barber’s craft (together with Mars), book trade; journeys, deceptions, mediation, correspondence, rhetoric, debates; orators, secretaries, clerks, thieves; certificates and press (together with Jupiter); telephone companies, transport; means of transport (together with Mars); science, journalistics, commerce.|--|Everything mentioned is unfavourable to do, if Mercury is retrograde or in conjunction with the Sun.
+%13%VE Venus- "little happiness".|Arts, colouring and sewing crafts, gift and jewellery shops, ladies saloons and everything connected with women and beauty; perfumery (together with Neptune); love affairs, friendship, games of chance; wall paper specialists, designers, cloth, pearl, gold and silver traders,; art of a painter, jeweller, tailor, fine arts.|--| Everything mentioned is unfavourable to do, if Venus is retrograde or in conjunction with the Sun.
+%14%MA Mars- "little unhappiness".|Aspects of Mars are considered bad for the Moon  –conjunction, quadrature, opposition.|--|Mars affairs: military and armoury craft; carpenter, cutter, leather-dresser, tin-smith, butcher, baker, vet and surgeon crafts; engineer -mechanic.|Sports shops and enterprises; forge, guarding agency; thefts, burglary, robbery. competitiveness.|--| Everything mentioned is unfavourable to do, if Mars is retrograde or in conjunction with the Sun.
+%15%JU Jupiter- "great happiness".|Credits (together with Neptune); banking business; publishing business and certificates (together with Mercury); good governing, barristers, court, senate, university; grapes, silver and gold scrap trade; prayers, charity, dreams interpretation; jurisprudence, sociology; far trips and everything connected with abroad. |--| The above mentioned is unfavourable to do, if Jupiter is retrograde or in conjunction with the Sun.
+%16%SA Saturn- "great unhappiness".| Aspects of Saturn are considered bad for the Moon  –conjunction, quadrature, opposition.|--|Saturn affairs: building, architecture, agriculture, farming, mining, tanning, agricultural products, metals, coal, leather and wool trade; hard labour, allocation of inheritance, antiques; captivity; policy (together with the Sun); technologies. |--| Everything mentioned is unfavourable to do, if Saturn is retrograde or in conjunction with the Sun.
+%20%UR Uranus.|Second ruler of affairs: aviation, astrology, electronics; advanced technologies (together with Saturn); inventions, television (together with Mercury).
+%21%NE Neptune.| Second ruler of affairs: acting (together with Venus); drug stores (together with Mercury); chemistry, oil, gas; photography (together with Venus); detective agency (together with Mars).
+%22%PL Pluto.| Second ruler of affairs: taxes and inspections of any kind (together with Jupiter); insurance (together with Mercury); robbery (together with Mars); propaganda.
+%23%Lunar Node -Mean Lunar Node.
+%24%Dark Moon -Lilith or the Dark Moon is either the apogee ("aphelion") of the lunar orbital ellipse or, for some people, its empty focal point.
+%25%White Moon -this is a 'hypothetical' second moon of the earth (or a third one, after the “Black Moon") of obscure provenance. Many Russian astrologers use it.
+
+
+//Sign of the zodiac
+%30%Ari: Aries 21.03 -19.04|1st decanat 21.03 -30.03|2nd decanat 31.03 -09.04|3rd decanat 10.04 -19.04|Element Fire. Good position for the Sun and Mars.|Bad position for Venus and Saturn, thus, also for the affairs, directed by these planets.
+%31%Tau: Тaurus 20.04 -20.05|1st decanat 20.04 -29.04|2nd decanat 30.04 -09.05|3rd decanat 10.05 -20.05|Element Land. Good position for Venus and Moon.| Bad position for Mars, thus, also for the affairs, directed by this planet.
+%32%Gem: Gemini 21.05 -20.06|1st decanat 21.05 -31.05|2nd decanat 01.06 -10.06|3rd decanat 11.06 -20.06|Element Air. Good position for Mercury.| Bad position for Jupiter, thus, also for the affairs, directed by this planet.
+%33%Cnc: Cancer 21.06 -22.07|1st decanat 21.06 -02.07|2nd decanat 02.07 -12.07|3rd decanat 12.07 -22.07|Element Water. Good position for the Moon and Jupiter.| Bad position for Saturn and Mars, thus, also for the affairs, directed by these planets.
+%34%Leo: Leo 23.07 -22.08|1st decanat 23.07 -02.08|2nd decanat 03.08 -12.08|3rd decanat 13.08 -22.08|Element Fire. Good position for the Sun.| Bad position for Saturn, thus, also for the affairs, directed by this planet.
+%35%Vir: Virgo 23.08 -22.09|1st decanat 23.08 -02.09|2nd decanat 03.09 -12.09|3rd decanat 13.09 -22.09|Element Land. Good position for Mercury.| Bad position for Venus and Jupiter, thus, also for the affairs, directed by these planets.
+%40%Lib: Libra 23.09 -22.10|1st decanat 23.09 -02.10|2nd decanat 03.10 -12.10|3rd decanat 13.10 -22.10|Element Air. Good position for Venus and Saturn.| Bad position for Mars and Sun, thus, also for the affairs, directed by these planets.
+%41%Sco: Scorpio 23.10 -21.11|1st decanat 23.10 -01.11|2nd decanat 02.11 -11.11|3rd decanat 12.11 -21.11|Element Water. Good position for Mars.| Bad position for Venus and Moon, thus, also for the affairs, directed by these planets.
+%42%Sgr: Sagittarius 22.11 -21.12|1st decanat 22.11 -01.12|2nd decanat 02.12 -11.12|3rd decanat 12.12 -21.12|Element Fire. Good position for Jupiter.| Bad position for Mercury, thus, also for the affairs, directed by this planet.
+%43%Cap: Capricorn 22.12 -19.01|1st decanat 22.12 -31.12|2nd decanat 01.01 -10.01|3rd decanat 10.01 -19.01|Element Land. Good position for Saturn and Mars.| Bad position for the Moon and Jupiter, thus, also for the affairs, directed by these planets.
+%44%Aqu: Aquarius 20.01 -19.02|1st decanat 20.01 -30.01|2nd decanat 31.01 -09.02|3rd decanat 10.02 -19.02|Element Air. Good position for Saturn.| Bad position for the Sun, thus, also for the affairs, directed by this planet.
+%45%Psc: Pisces 20.02 -20.03|1st decanat 20.02 -01.03|2nd decanat 01.03 -10.03|3rd decanat 11.03 -20.03|Element Water. Good position for Jupiter.| Bad position for Mercury, thus, also for the affairs, directed by this planet.
+
+
+//Axes, Phases & VOC, VC,
+%50%asc –ascend of the planet.|Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of angles.
+%51%mc -zenith; upper culmination of the planet.| Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of corners.
+%52%dsc –descend of the planet.| Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of angles.
+%53%ic –lower culmination of the planet.| Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of angles.

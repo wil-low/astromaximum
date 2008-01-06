@@ -300,6 +300,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#       logger("moonPhase");
 //#endif      
                 errCode = 11; // XXX
+                
                 Vector nav = dataFile.getEvents(Event.EV_NAVROZ, Event.SE_SUN, 0, dataFile.finalJD);
 //        evDump(nav);
                 if (nav.size() != 2) {

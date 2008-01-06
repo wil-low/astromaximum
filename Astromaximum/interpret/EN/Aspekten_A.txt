@@ -1,11 +1,11 @@
 !!type  EV_ASP_EXACT 
-!!params 
+!!params 3
 !!planet –1
 
 // 1st 2nd param – planet 
 // 3rd param: 0 – conjunction, 1 – bad, 2 – good 
 
-Sun:Mercury%0,2% @Inadequate actions and opinions; cunnig.@~[--]no medicines, just blood-letting. ~ 
+Sun:Mercury%0,2,0% @Inadequate actions and opinions; cunnig.@~[--]no medicines, just blood-letting. ~ 
 %0,3,0% @Sympathies or unhealthy perception.@~[--] damage done by medicines.~ 
 %0,4,0% @Enterprise, but harm of unrestraint. Quarrels, damage by fire. [--] Tension, crisis –initial phase.@~[--]Medicines are harmful.~
 %0,5,0% @Success in affairs if arrogance and illegal actions are not disturbing.[--]Pease treaty –initial phase. @~Too awkward treatment.~
@@ -14,7 +14,7 @@ Sun:Mercury%0,2% @Inadequate actions and opinions; cunnig.@~[--]no medicines, ju
 %0,8,0% @Idealism. [--]Dissolution of powers, undermining of authority –initial phase.@
 %0,9,0% @Critical moent. [--]Shadow power –initial phase.@
 
-Mercury:Venus%2,3% @Possibility to come toan agreement. favourable time for commerce and beginning to study some craft; prodigality and idleness. @~[--]Inproper medicine.~
+Mercury:Venus%2,3,0% @Possibility to come toan agreement. favourable time for commerce and beginning to study some craft; prodigality and idleness. @~[--]Inproper medicine.~
 %2,4,0% @Disagreements, dangers on the way; keenness of the mind. Criminal actions. @~[--]Medicines are not favourable.~
 %2,5,0% @Trips, commerce research are successful. @~[--]Any treatment is useless.~
 %2,6,0% @Carefulness, circumspection; (-)obstacles, cunning, insidiousness. @~[--] Blood-letting and medicines are not desirable.~
@@ -35,7 +35,7 @@ Mars:Jupiter%4,5,0% @Optimism, ambitions. Lucky actions, reconciliation. |--|Pol
 %4,8,0% @Vain attempts, collapse of illusions.@
 %4,9,0% @Disasters –critical phase.@ 
 
-Jupiter:Saturn%5.6,0% @Change of social structures –initial phase.@~|--|Blood-letting and medicines are contra-indicated.~
+Jupiter:Saturn%5,6,0% @Change of social structures –initial phase.@~|--|Blood-letting and medicines are contra-indicated.~
 %5,7,0% @Cycle of a free market –initial phase.@
 %5,8,0% @Ideological and humanities cycle – initial phase.@ 
 %5,9,0% @Political power –initial phase.@

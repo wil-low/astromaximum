@@ -1,9 +1,10 @@
 #!/bin/sh
 DEST=../amax-mobi/dl
+PERL="/opt/lampp/bin/perl"
 SOURCE=$DEST/source
 #rm -r $DEST
 mkdir $DEST $SOURCE
-echo "#!/usr/bin/perl" | cat - tools.pm genconst.pm gen_amax.pl > $DEST/gen_amax.cgi
+echo "#!$PERL" | cat - tools.pm genconst.pm gen_amax.pl > $DEST/gen_amax.cgi
 chmod +x $DEST/gen_amax.cgi
 cp templates/AstromaximumDemo.jar $SOURCE
 cp templates/Astromaximum-tb.jar $SOURCE

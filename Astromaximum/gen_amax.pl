@@ -44,7 +44,7 @@ if($islocal){
 	if(!scalar(@ARGV)){
 	    print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
 	    print "Parameters:\n";
-	    print "\t<config>: [rebuild|notest|release|tb|demo|join]\n";
+	    print "\t<config>: [rebuild|notest|release|tb|demo|join|lang]\n";
 	    print "\t<year>\n";
 	    print "\t<lang>\n";
 	    print "\t<loclist file>\n";
@@ -75,6 +75,11 @@ our $outfile=shift(@ARGV);
 
 if($islocal and ($config eq 'join')){
 	inject_common($year, "$path/$year.comm");
+	exit(0);
+}
+
+if($islocal and ($config eq 'lang')){
+	inject_lang($lang);
 	exit(0);
 }
 
@@ -144,8 +149,7 @@ if($config=~/geo-$/is){
     }
 }
 
-unless($outfile=~/\.jar/is){
-    die "Invalid filename: '$outfile'" unless $outfile eq '-';
+if($outfile eq '-'){
     $outfile="$path/Astromaximum/deploy/$const::PRODUCT$ye.jar" ;
     print "Outfile is '-', setting to $outfile\n";
 }
@@ -298,62 +302,120 @@ sub inject_locations{
     close(IN);
     my $i=scalar(@fn);
     tools::join_datafiles($_[0], $i, $_[2], \@fn);
-	  print "$_[2] written\n";
   }
+  else{
+  	my($year, $ids, $outf)=@_;
+		use DBI;
+		use CGI;
+		use CGI::Carp 'fatalsToBrowser';
+		my($DB_SERVER,$DB_NAME,$DB_PORT,$DB_SUPERUSER,$DB_SUPERUSER_PWD,
+			$DB_USER,$DB_USER_PWD);
+
+		if(CGI::server_name() eq "localhost"){
+			$DB_SERVER='localhost';
+			$DB_NAME='amax';
+			$DB_PORT='3306';
+			
+			$DB_SUPERUSER='root';
+			$DB_SUPERUSER_PWD='toor';
+			$DB_USER='user';
+			$DB_USER_PWD='user';
+		}
+		else{
+			$DB_SERVER='localhost';
+			$DB_NAME='usr_web42_1';
+			$DB_PORT='3306';
+			
+			$DB_SUPERUSER='web42';
+			$DB_SUPERUSER_PWD='vSZBWppx';
+			$DB_USER='user';
+			$DB_USER_PWD='user';
+		}
+		my $dbh = DBI->connect("DBI:mysql:database=$DB_NAME;host=$DB_SERVER", 
+			$DB_SUPERUSER, $DB_SUPERUSER_PWD);
+		$ids=~s/^,+//is;
+		$ids=~s/,+$//is;
+		my $stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
+			"WHERE cities.id IN (%s) AND city_id=cities.id AND year=%s".
+			" ORDER BY cities.name",$ids,$year);
+	#	echo $stat;
+		my $sth = $dbh->prepare($stat);
+		$sth->execute || die $dbh->errstr;
+		my @iids=split(/,/is, $ids);
+		my @data;
+		my $midlet_name;
+		my $rows=$sth->rows;
+		die "Not enough locations for $year: '$ids' = $rows" if $rows!=scalar(@iids);
+		while(my @row = $sth->fetchrow_array){
+			push(@data, $row[1]);		
+			if(!$midlet_name){
+				$midlet_name=$row[0];
+			}
+		}
+		$sth->finish;
+		$dbh->disconnect;
+    join_datafiles2($outf, \@data);
+  }
+  print "$_[2] written\n";
 }
 
 sub inject_common{
-    my $imei='000000000000000';
-    #our $imei='359308007701623';
-    #die sprintf('%x',substr($imei,0,8));
-    if(scalar(@_)==0){
-	die "Usage: <year> [dest dir] [IMEI]\n";
-    }
-    my ($year,$month, $day, $hour, $min, $day_count)=($_[0],1,1,0,0,365);
-    if($year%100==0){
-	if($year%400==0){
-	    $day_count++;
-	}
-    }
-    else{
-	if($year%4==0){
-	    $day_count++;
-	}
-    }
-
-
-    if($_[2]){
-	if($_[2]=~/^\d{15}$/is){
-	    $imei=$_[2];
-	}
-	else{
-	    print "Invalid IMEI=$_[2],using $imei\n";
-	}
-    }
-    $dest=$_[1] if $_[1];
-    my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
-    my $path1=$path;
-
-    $path1.="/data/archive/$year";
-	open(OUTF, ">$dest") or die "$! $dest";
-	binmode(OUTF);
-	print OUTF $header;
-	close(OUTF);
-
-    my @bins=glob("$path1/*.bin");
-    #my @bins=glob("$path/retro09.bin");
-    my $counter=0;
-    foreach my $ff(@bins){
-	if($ff=~/(rise|set|navroz|geo|nakshatra|degall|aphetics)/is){
-	    next;
-	}
-    #   die pack('c',substr($imei,$counter++,1));
-	writeData(1, $ff, substr($imei,$counter++,1));
-	if($counter>=length($imei)){
-	    $counter=0;
-	}
-    }	
-    print "$dest ($year) written\n";
+    if($islocal){
+	    my $imei='000000000000000';
+	    #our $imei='359308007701623';
+	    #die sprintf('%x',substr($imei,0,8));
+	    if(scalar(@_)==0){
+		die "Usage: <year> [dest dir] [IMEI]\n";
+	    }
+	    my ($year,$month, $day, $hour, $min, $day_count)=($_[0],1,1,0,0,365);
+	    if($year%100==0){
+		if($year%400==0){
+		    $day_count++;
+		}
+	    }
+	    else{
+		if($year%4==0){
+		    $day_count++;
+		}
+	    }
+	
+	
+	    if($_[2]){
+		if($_[2]=~/^\d{15}$/is){
+		    $imei=$_[2];
+		}
+		else{
+		    print "Invalid IMEI=$_[2],using $imei\n";
+		}
+	    }
+	    $dest=$_[1] if $_[1];
+	    my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
+	    my $path1=$path;
+	
+	    $path1.="/data/archive/$year";
+		open(OUTF, ">$dest") or die "$! $dest";
+		binmode(OUTF);
+		print OUTF $header;
+		close(OUTF);
+	
+	    my @bins=glob("$path1/*.bin");
+	    #my @bins=glob("$path/retro09.bin");
+	    my $counter=0;
+	    foreach my $ff(@bins){
+		if($ff=~/(rise|set|navroz|geo|nakshatra|degall|aphetics)/is){
+		    next;
+		}
+	    #   die pack('c',substr($imei,$counter++,1));
+		writeData(1, $ff, substr($imei,$counter++,1));
+		if($counter>=length($imei)){
+		    $counter=0;
+		}
+	    }
+	  }
+	  else{
+			copy_file("$const::DIR_TEMPLATE/$_[0].comm", $_[1]);
+	  }	
+	  print "$dest ($year) written\n";
 
 }
 
@@ -402,8 +464,13 @@ sub do_jar{
     my $asize= -s $outfile;
     $template.="\nMIDlet-Jar-Size: $asize\n";
     my $jad=$outfile;
-    $jad=~s/jar/jad/is;
+    $jad=~s/r$/d/is;
     $outfile=~s/.+[\/\\]//is;
+    if(!$islocal){
+    	use CGI;
+    	$outfile=~s/\..+//is;
+    	$outfile='http://'.CGI::server_name()."/mobi/data.php?r=".$outfile;
+    }
     $template.="MIDlet-Jar-URL: $outfile\n";
     open(FFF, ">$jad") or die "$jad: $!";
     print(FFF $template);
@@ -767,10 +834,12 @@ sub inject_lang{ # lang, isdemo
             print "$len, $planet\n";
             $output=pack('nNcnna*',$eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
     #	die $output;
-            open(OF, ">$dest/$eventType{$evt}") or die "No file";
-            binmode(OF);
-            print OF $output;
-            close(OF);
+    				if($config ne 'lang'){
+	            open(OF, ">$dest/$eventType{$evt}") or die "No file $dest/$eventType{$evt}";
+	            binmode(OF);
+	            print OF $output;
+	            close(OF);
+	          }
             $output='';
             $outbuf='';
 

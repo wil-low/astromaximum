@@ -1,4 +1,3 @@
 UA:Data00 Kiev
 WE:Data00 London
-RU:Data00 Moscow
-CE:Data10 Vienna
+US:Data00 New York
