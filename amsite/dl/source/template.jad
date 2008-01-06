@@ -1,4 +1,4 @@
-MIDlet-1: <NAME>,/icon.png,GeoInstaller
+MIDlet-1: <NAME>,/icon.png,<MAINCLASS>
 MIDlet-Jar-URL: <JAR>
 MIDlet-Name: <NAME>
 MIDlet-Description: <DESC>

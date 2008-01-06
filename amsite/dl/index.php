@@ -12,7 +12,7 @@ $max_cities=20;
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-12-24T18:13:17+0200">
+<meta name="date" content="2007-12-28T20:21:21+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -107,7 +107,7 @@ function city_del(){
 			}
 			echo "</ol>\n";
 			include_once('../amtools.php');
-			$id=create_jar($defyear, $sc, 0);
+			$id=create_jar($defyear, $sc, 'source/template.zip', 0, 1, '');
 			$url='../data.php?r='.$id;
 			echo "<h4>{$i18['PC_DL']}:</h4>";
 			echo "{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";

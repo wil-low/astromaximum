@@ -21,7 +21,7 @@ function amtools_random($ye,$path, $ext){
 	return array($fn, $id);
 }
 
-$UNZIP="unzip %s -d %s -x *META-INF* > /dev/null";
+$UNZIP="unzip %s -d %s -x *META-INF* "; # > /dev/null
 $UNTAR="tar xvf %s -C %s";
 $ZIP="fastjar %s ";
 
@@ -65,6 +65,7 @@ function select_cities($year, $ids, $destfile){
 	$stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
 		"WHERE cities.id IN (%s) AND city_id=cities.id AND year=%s".
 		" ORDER BY cities.name",$ids,$year);
+#	echo $stat;
 	$sth = mysql_query($stat);
 	$i=0;
 	while($row = mysql_fetch_row($sth)){
@@ -74,11 +75,13 @@ function select_cities($year, $ids, $destfile){
 		}
 	}
 	mysql_free_result($sth);
+#	echo $destfile;
 	join_datafiles2($year, $destfile, $data);
 	return $midlet_name;
 }
 
-function create_jar($year, $ids, $template_jar, $isdemo, $named_midlet, $common_file){
+function create_jar($year, $ids, $template_jar, $isdemo, $midlet_name, 
+		$main_class, $common_file){
 	global $DIR_FILES, $DIR_SOURCE, $UNZIP, $ZIP;
 	$mypath=dirname(__FILE__);
 	$dfil="$mypath/$DIR_FILES";
@@ -91,12 +94,14 @@ function create_jar($year, $ids, $template_jar, $isdemo, $named_midlet, $common_
 	$server="http://".$_SERVER['SERVER_NAME'];
 	$locfile='locations.dat';
 	if($isdemo) $locfile='l.dat';
-	$midlet_name=select_cities($year, $ids, "$dsrc/$fn/$locfile");
+	$midlet_name_supposed=select_cities($year, $ids, "$dsrc/$fn/$locfile");
+#	echo "<p>$dsrc/$fn/$locfile";
+#	exit;
 	$infile=fopen("$dsrc/template.jad","rb");
 	$template = fread($infile, 1000000);
 	fclose($infile);
-	if($named_midlet){
-		$fname="$midlet_name'$ye";
+	if(strcmp($midlet_name,'')){
+		$fname="$midlet_name_'$ye";
 	}
 	else{
 		$code="-".substr($fn,-4);
@@ -105,8 +110,9 @@ function create_jar($year, $ids, $template_jar, $isdemo, $named_midlet, $common_
 	$template=str_replace('<NAME>', $fname, $template);
 #	$jad=~s/<DESC>/$desc/isg;
 	$template=str_replace('<JAR>', "$fname.jar", $template);
-#	echo $template;
-
+	$template=str_replace('<MAINCLASS>', $main_class, $template);
+	echo $template;
+	exit;
 	$cmd=sprintf($UNZIP, $template_jar, "$dsrc/$fn");
 	exec($cmd);
 	$inf=fopen("/tmp/$fn.MF", 'wb');
@@ -139,7 +145,8 @@ function create_jar($year, $ids, $template_jar, $isdemo, $named_midlet, $common_
 	$template.="MIDlet-Jar-Size: $asize\n";
 	fwrite($inf, $template);
 	fclose($inf);
-	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1http://astromaximum.de/mobi/data.php?r=$fn\n", $template);
+	$server=$_SERVER['SERVER_NAME'];
+	$template=preg_replace('/(MIDlet-Jar-URL: ).+?\n/is',"$1http://$server/mobi/data.php?r=$fn\n", $template);
 	$inf=fopen("$dfil/$fn.t", 'wb');
 	fwrite($inf, $template);
 	fclose($inf);
