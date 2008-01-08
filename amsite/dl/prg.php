@@ -2,8 +2,8 @@
 	include_once('../dbconnect.php');
 	include_once('../amtools.php');
 	include_once('nav.php');
-	$default_city_ids='319,273';  #London #Kiev #New York
-	$timeout_hrs=3;
+	$default_city_ids='273,319,307';  #London #Kiev #New York
+	$timeout_mins=180;
 
 	if(!isset($_GET['mode'])) exit;
 	$year=get_year();
@@ -41,17 +41,18 @@
 		$cmd="./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r nomessjar";
 	}
 	else{
-		$cmd="./gen_amax.cgi tb $year ".$_POST['lang']." $default_city_ids $dsrc/$fn.r $timeout_hrs 0 nomessjar";
+		$cmd="./gen_amax.cgi tb $year ".$_POST['lang']." $default_city_ids $dsrc/$fn.r 0 $timeout_mins nomessjar";
 	}
 				
 	exec($cmd, $outp);
-#	echo $cmd;
-#	echo implode('<br>',$outp);
+	#echo $cmd;
+	#echo implode('<br>',$outp);
 #	$fn=create_jar($year, $default_city_ids, "$dsrc/$fn.jar", $isdemo,
 #		'AstromaximumDemo', "Astromaximum", "source/$year.comm");
 #	unlink("$dsrc/$fn.jar");
 #	unlink("$dsrc/$fn.jad");
-	header("Location: ../data.php?d=$fn");
+	$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
+	header("Location: http://$data_php/data.php?d=$fn");
 #	exit;
 		
 function ask_login(){

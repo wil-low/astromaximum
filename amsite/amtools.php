@@ -111,8 +111,6 @@ function create_jar($year, $ids, $template_jar, $isdemo, $midlet_name,
 #	$jad=~s/<DESC>/$desc/isg;
 	$template=str_replace('<JAR>', "$fname.jar", $template);
 	$template=str_replace('<MAINCLASS>', $main_class, $template);
-	echo $template;
-	exit;
 	$cmd=sprintf($UNZIP, $template_jar, "$dsrc/$fn");
 	exec($cmd);
 	$inf=fopen("/tmp/$fn.MF", 'wb');

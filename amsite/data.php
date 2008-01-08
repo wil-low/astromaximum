@@ -23,7 +23,8 @@ if(true /*|| check_access()*/){
 	}
 
 	$handle = fopen($fn, "rb");
-	$data = fread($handle, filesize($fn));
+	$clen=filesize($fn);
+	$data = fread($handle, $clen);
 	fclose($handle);
 	if(strcmp($type,'d')==0){
 		header('Content-type: text/vnd.sun.j2me.app-descriptor');
@@ -32,6 +33,7 @@ if(true /*|| check_access()*/){
 //		echo filesize($fn); 
 		header('Content-type: application/java-archive');
 	}
+	header("Content-length: $clen");
 	header('Content-Disposition: attachment; filename="Cities'."'$ye-".$idd.'.ja'.$type.'"', false);
 	echo $data;
 

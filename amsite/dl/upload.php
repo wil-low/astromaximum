@@ -6,7 +6,7 @@ include_once('../lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-12-24T18:22:42+0200">
+<meta name="date" content="2008-01-08T19:04:11+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -121,8 +121,8 @@ function up_geodata($fname, $ext){
 	$sthstateins = "INSERT INTO states(name,country_id) VALUES (%s,%s)";
 	$sthcitins = "INSERT INTO cities(name,country_id,state_id) VALUES (%s,%s,%s)";
 	$sthloc = "SELECT id FROM locations WHERE year=%s AND city_id=%s";
-	$sthlocupd = "UPDATE locations SET data=%s WHERE id=%s";
-	$sthlocins = "INSERT INTO locations(year,city_id,data) VALUES(%s,%s,%s)";
+	$sthlocupd = "UPDATE locations SET data=0x%s WHERE id=%s";
+	$sthlocins = "INSERT INTO locations(year,city_id,data) VALUES(%s,%s,0x%s)";
 	$findex=fopen($fn[0],"r");
 	$fn=glob("$dir/Data*.dat");
 //  	echo count($fn);
@@ -226,18 +226,20 @@ function up_geodata($fname, $ext){
 		$sth=mysql_query(sprintf($sthloc,$yr,$citid));
 		if(mysql_num_rows($sth)){
 			$locid=mysql_result($sth,0);
-			mysql_query(sprintf($sthlocupd,quote_smart($locdata),$locid));
+			mysql_query(sprintf($sthlocupd,bin2hex($locdata),$locid));
 			++$locupd_count;
 		}
 		else{
-			mysql_query(sprintf($sthlocins,$yr,$citid,quote_smart($locdata)));
+			mysql_query(sprintf($sthlocins,$yr,$citid,bin2hex($locdata)));
 			$yr="<font color=red>$yr</font>";
 			++$locins_count;
 		}
+		$sth=mysql_query("SELECT data FROM locations WHERE id=$locid");
+		$datalen=strlen(mysql_result($sth,0));
 #			$sth = my$dbh->prepare(
 #				"SELECT cities.id, countries.id FROM cities,countries WHERE cities.country_id=countries.id ".
 #				"AND cities.name=\"$name\" AND countries.name=\"$country\"");
-		$status.="$citid, $stateid, $couid";
+		$status.="$citid, $stateid, $couid, #".strlen($locdata)."/$datalen";
 		echo("<tr><td>$name</td><td>$country</td><td>$state</td><td>$yr".
 			"</td><td>$txtchk</td><td>$status</td></tr>\n");
 	}

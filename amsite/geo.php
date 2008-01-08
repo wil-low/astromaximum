@@ -24,8 +24,9 @@
 	}
 	if($level==4){
 		include_once('amtools.php');
-		$fn=create_jar($defyear, $p[3], "source/template.zip", 0, 1, '');
-		header("Location: data.php?t=$fn");
+		$fn=create_jar($defyear, $p[3], "dl/source/template.zip", 0, '', 'GeoInstaller','');
+		$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
+		header("Location: http://$data_php/data.php?t=$fn");
 		exit();
 	}
 	$entity='';

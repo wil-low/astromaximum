@@ -21,6 +21,7 @@ $current_year=get_year();
 <body>
 <div id="hdr" class="hdr"></div>
 <div id="cont"><hr/>
+<?php echo $_SERVER['HTTP_USER_AGENT'] ?><br/>
 <a href="year.php">Download a city</a><br/>
 <a href="html/ru/0_0.xhtml">Astro help</a><br/>
 <a href="about.xhtml">About Astromaximum</a><hr/>
