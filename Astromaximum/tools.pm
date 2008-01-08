@@ -24,6 +24,7 @@ sub join_datafiles # year, size, destfile, fname_listref
 		close(INF);
 		$bodies[$i]="@buf";
 		print OUTF pack('n',length($bodies[$i]));
+		print length($bodies[$i])."\n";
 		++$i;
 		last if $i>=$size;
 	}

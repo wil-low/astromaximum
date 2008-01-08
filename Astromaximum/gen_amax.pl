@@ -135,7 +135,7 @@ my $dest='';
 
 if($config=~/(2006|demo)/is){
     $year=$TEST_YEAR;
-    unless($outfile=~/\.jar/is){
+    unless($outfile=~/r$/is){
 	$outfile="$path/Astromaximum/deploy/$const::PRODUCT".'Demo.jar' ;
     }
 }
@@ -144,7 +144,7 @@ $year=~/\d\d(\d\d)/is;
 my $ye=$1;
 
 if($config=~/geo-$/is){
-    unless($outfile=~/\.jar/is){
+    unless($outfile=~/r$/is){
 	$outfile="$path/Astromaximum/deploy/Geo$ye.jar";
     }
 }
@@ -239,7 +239,7 @@ if($islocal){
 
 	die "Invalid config" if !$done;
 }
-
+print "\n--- $outfile ---\n";
 rm_all("$path/$const::DIR_TEMP");
 
 sub ensure_slash{
@@ -305,9 +305,11 @@ sub inject_locations{
   }
   else{
   	my($year, $ids, $outf)=@_;
-		use DBI;
-		use CGI;
-		use CGI::Carp 'fatalsToBrowser';
+		require DBI;
+		require CGI;
+		require CGI::Carp;
+		import CGI::Carp 'fatalsToBrowser';
+		#use CGI::Carp 'fatalsToBrowser';
 		my($DB_SERVER,$DB_NAME,$DB_PORT,$DB_SUPERUSER,$DB_SUPERUSER_PWD,
 			$DB_USER,$DB_USER_PWD);
 
@@ -354,7 +356,7 @@ sub inject_locations{
 		}
 		$sth->finish;
 		$dbh->disconnect;
-    join_datafiles2($outf, \@data);
+    join_datafiles2($_[0], $outf, \@data);
   }
   print "$_[2] written\n";
 }
@@ -664,15 +666,17 @@ sub do_timebomb{
 }
 
 
-sub join_datafiles2 # destfile, data_listref
+sub join_datafiles2 # year, destfile, data_listref
 {
+	my $year=shift;
     open(OUTF, ">$_[0]");
     my @bins=@{$_[1]};
     my @buf;
     binmode(OUTF);
+	print OUTF pack('n',$year);
     print OUTF pack('n',$#bins+1);
-    my $i=0;
     foreach (@bins){
+	    print length($_)."\n";
         print OUTF pack('n',length($_));
     }
     foreach (@bins){
