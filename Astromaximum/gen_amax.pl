@@ -7,6 +7,12 @@ my $islocal=$0=~/\.pl$/is;;
 if(!$islocal){
 	$const::DIR_TEMPLATE='source';
 }
+my $nb_user='/home/willow/.netbeans/6.0';
+my $platform='/home/willow/wtk251';
+if($^O=~/win/is){
+	$nb_user='%USERPROFILE%/.netbeans/6.0';
+	$platform='D:\WTK251';
+}
 our $path;
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
@@ -37,7 +43,6 @@ if(!$path){
     $path='.';
 }
 my $jar_path=$path;
-
 if($islocal){
 	require "$path/genconst.pm";
 
@@ -102,13 +107,19 @@ if($islocal and ($config eq 'rebuild')){
     if(!$antpath){
       die "ANT not found in this system!!!\n";
     }
+    print "\n--------------------------------\n";
+    print "--- Config $_ ---\n";
+    print "--------------------------------\n";
+    my $cmd="\"$antpath\" -quiet -f geoLib/build.xml -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" clean jar";
+    print "$cmd\n";
+    die "BUILD ERROR" if system($cmd);
     my @conf=qw(midp2y2007notest midp2y2007notest_logger midp2y2007release 
         midp2y2007release_logger midp2y2007release_tb test2006);
     foreach(@conf){
         print "\n--------------------------------\n";
         print "--- Config $_ ---\n";
         print "--------------------------------\n";
-        my $cmd="\"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Drebuild.only=true clean jar";
+        my $cmd="\"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/geoLib\" clean jar";
         print "$cmd\n";
         die "BUILD ERROR" if system($cmd);
     }
@@ -116,7 +127,7 @@ if($islocal and ($config eq 'rebuild')){
     print "\n--------------------------------\n";
     print "--- Config geo: $conf ---\n";
     print "--------------------------------\n";
-    my $cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Drebuild.only=true clean jar";
+    my $cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/geoLib\" clean jar";
     print "$cmd\n";
     die "BUILD ERROR"if system($cmd);
     exit(0);
@@ -471,7 +482,9 @@ sub do_jar{
     if(!$islocal){
     	use CGI;
     	$outfile=~s/\..+//is;
-    	$outfile='http://'.CGI::server_name()."/mobi/data.php?r=".$outfile;
+    	my $serv=CGI::server_name();
+    	$serv.='/mobi' if $serv!~/\.mobi/is;
+    	$outfile='http://'.$serv."/data.php?r=".$outfile;
     }
     $template.="MIDlet-Jar-URL: $outfile\n";
     open(FFF, ">$jad") or die "$jad: $!";
