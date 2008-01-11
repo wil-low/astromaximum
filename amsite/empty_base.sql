@@ -72,7 +72,7 @@ CREATE TABLE `customers` (
   `name` varchar(20) NOT NULL default '',
   `realname` varchar(50) default NULL,
   `hash` varchar(32) default NULL,
-  `role` tinyint(4) NOT NULL default '0',
+  `role` tinyint(4) NOT NULL default '1',
   `email` varchar(50) default NULL,
   `subscr_date` date default NULL,
   PRIMARY KEY  (`id`),
@@ -279,8 +279,8 @@ CREATE TABLE `divisions` (
 --
 -- Dumping data for table `divisions`
 --
-
---/*!40000 ALTER TABLE `divisions` DISABLE KEYS */;
+*/
+-- /*!40000 ALTER TABLE `divisions` DISABLE KEYS */;
 /*LOCK TABLES `divisions` WRITE;
 INSERT INTO `divisions` VALUES (1,'Midwest',1),
 			(2,'Mountain',1),
@@ -292,4 +292,4 @@ INSERT INTO `divisions` VALUES (1,'Midwest',1),
 ;
 UNLOCK TABLES;
 */
---/*!40000 ALTER TABLE `divisions` ENABLE KEYS */;
+-- /*!40000 ALTER TABLE `divisions` ENABLE KEYS; */

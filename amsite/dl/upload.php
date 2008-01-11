@@ -233,9 +233,10 @@ function up_geodata($fname, $ext){
 			mysql_query(sprintf($sthlocins,$yr,$citid,bin2hex($locdata)));
 			$yr="<font color=red>$yr</font>";
 			++$locins_count;
+			$locid=mysql_insert_id();
 		}
-		$sth=mysql_query("SELECT data FROM locations WHERE id=$locid");
-		$datalen=strlen(mysql_result($sth,0));
+		$sth=mysql_query("SELECT LENGTH(data) FROM locations WHERE id=$locid");
+		$datalen=mysql_result($sth,0);
 #			$sth = my$dbh->prepare(
 #				"SELECT cities.id, countries.id FROM cities,countries WHERE cities.country_id=countries.id ".
 #				"AND cities.name=\"$name\" AND countries.name=\"$country\"");

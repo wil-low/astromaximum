@@ -107,7 +107,7 @@ function city_del(){
 			}
 			echo "</ol>\n";
 			include_once('../amtools.php');
-			$id=create_jar($defyear, $sc, 'source/template.zip', 0, 1, '');
+			$id=create_jar($defyear, $sc, 'source/template.zip', 0, '', 'GeoInstaller', '');
 			$url='../data.php?r='.$id;
 			echo "<h4>{$i18['PC_DL']}:</h4>";
 			echo "{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";

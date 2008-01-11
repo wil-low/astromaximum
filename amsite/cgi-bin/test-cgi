@@ -29,3 +29,18 @@ echo REMOTE_USER = $REMOTE_USER
 echo AUTH_TYPE = $AUTH_TYPE
 echo CONTENT_TYPE = $CONTENT_TYPE
 echo CONTENT_LENGTH = $CONTENT_LENGTH
+
+echo `whereis unzip`
+echo `whereis sqlite`
+
+FASTJAR=`whereis fastjar`
+echo $FASTJAR
+
+FJPATH=`perl -e "$FASTJAR=~/fastjar: (.+?)\s/is; print $1"`
+
+echo -n "My fastjar version: "
+../mobi/fastjar --help 2>&1
+
+echo -n "Server's fastjar version: "
+file $FJPATH/$FASTJAR
+ls $FJPATH/$FASTJAR/files

@@ -2,7 +2,7 @@
 	include_once('../dbconnect.php');
 	include_once('../amtools.php');
 	include_once('nav.php');
-	$default_city_ids='273,319,307';  #London #Kiev #New York
+	$default_city_ids='1,307,220';  #Kiev #London #Moscow
 	$timeout_mins=180;
 
 	if(!isset($_GET['mode'])) exit;

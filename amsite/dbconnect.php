@@ -1,4 +1,7 @@
 <?php
+/* FTP account 
+astromaximumcom a2a0SL2H
+
 if(strcmp($_SERVER['SERVER_NAME'],"localhost")==0){
 	$DB_SERVER='localhost';
 	$DB_NAME='amax';
@@ -19,6 +22,17 @@ else{
 	$DB_USER='user';
 	$DB_USER_PWD='user';
 }
+*/
+
+	$DB_SERVER='mysql1.100ws.com';
+	$DB_NAME='andivu_amax';
+	$DB_PORT='3306';
+	
+	$DB_SUPERUSER='andivu_amax';
+	$DB_SUPERUSER_PWD='toor';
+	$DB_USER='user';
+	$DB_USER_PWD='user';
+
 $DIR_SOURCE='dl/source';
 $DIR_INBOX='dl/inbox';
 $DIR_FILES='dl/files';
