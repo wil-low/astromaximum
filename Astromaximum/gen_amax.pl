@@ -7,9 +7,10 @@ my $islocal=$0=~/\.pl$/is;;
 if(!$islocal){
 	$const::DIR_TEMPLATE='source';
 }
-my $nb_user='/home/willow/.netbeans/6.0';
-my $platform='/home/willow/wtk251';
-if($^O=~/win/is){
+my $nb_user='$HOME/.netbeans/6.0';
+my $platform='$HOME/wtk251';
+our $winda=$^O=~/Win/is;
+if($winda){
 	$nb_user='%USERPROFILE%/.netbeans/6.0';
 	$platform='D:\WTK251';
 }
@@ -17,7 +18,6 @@ our $path;
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
 
-our $winda=$^O=~/Win/is;
 
 our %eventType=qw(EV_VOC 0 EV_SIGN_ENTER 1 EV_ASP_EXACT 2 EV_RISE 3 EV_DEGREE_PASS 4 
 	EV_VIA_COMBUSTA 5 EV_RETROGRADE 6 EV_ECLIPSE 7 EV_TITHI 8 EV_NAKSHATRA 9 EV_SET 10
@@ -37,11 +37,15 @@ our %hash;
 
 $0=~/(.+)[\\\/]/is;
 $path=$1;
-#my $path=`pwd`;
-chomp($path);
 if(!$path){
+	if($winda){
     $path='.';
+  }
+  else{
+  	$path=`pwd`;
+  }
 }
+chomp($path);
 my $jar_path=$path;
 if($islocal){
 	require "$path/genconst.pm";
@@ -181,9 +185,9 @@ if($config=~/tb$/is){
     inject_common($year, "$path/$const::DIR_TEMP/common.dat");
     inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
     inject_icon("res/");
-    do_jar("$const::PRODUCT$ye", $outfile);
+    do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
     $done=1;
-#    do_messjar($outfile);
+    do_messjar($outfile);
 }
 
 if($config=~/(2006|demo)/is){
@@ -194,7 +198,16 @@ if($config=~/(2006|demo)/is){
     inject_common($year, "$path/$const::DIR_TEMP/c.dat");
     inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
     inject_icon("res/");
-    do_jar("AstromaximumDemo", $outfile);
+    do_jar("AstromaximumDemo", $outfile, $const::PRODUCT);
+    do_messjar($outfile);
+    $done=1;
+}
+
+if($config=~/geo-$/is){
+    unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
+    my $locname=inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
+    inject_icon();
+    do_jar($locname, $outfile, 'GeoInstaller');
     do_messjar($outfile);
     $done=1;
 }
@@ -206,7 +219,7 @@ if($islocal){
 	    inject_common($year, "$path/$const::DIR_TEMP/common.dat");
 	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 	    inject_icon("res/");
-	    do_jar("$const::PRODUCT$ye", $outfile);
+	    do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
 	    do_messjar($outfile);
 	    $done=1;
 	}
@@ -220,7 +233,7 @@ if($islocal){
 	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 	    inject_amdata();
 	    inject_icon("res/");
-	    do_jar("$const::PRODUCT$ye", $outfile);
+	    do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
 	    do_messjar($outfile);
 	    $done=1;
 	}
@@ -234,24 +247,15 @@ if($islocal){
 	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 	    inject_amdata();
 	    inject_icon("res/");
-	    do_jar("$const::PRODUCT$ye", $outfile);
+	    do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
 	    do_messjar($outfile);
 	    $done=1;
 	}
-
-	if($config=~/geo-$/is){
-	    unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
-	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-	    inject_icon();
-	    do_jar("Geo$ye", $outfile);
-	    do_messjar($outfile);
-	    $done=1;
-	}
-
-	die "Invalid config" if !$done;
 }
+die "Invalid config <$config>" if !$done;
 print "\n--- $outfile ---\n";
 rm_all("$path/$const::DIR_TEMP");
+exit(0);
 
 sub ensure_slash{
     $_[0]=~s/\//\\/isg if $winda;
@@ -298,6 +302,7 @@ sub inject_icon{ #subdir
 }
 
 sub inject_locations{
+	my($locname, $locnum);
   if($islocal){
     if(!$_[0]){
 			die "Usage: inject_locations.pl <year> <city list> <dest file>\n";
@@ -305,13 +310,22 @@ sub inject_locations{
     my @fn;
     open(IN, "<$_[1]") or die "error $!: $_[1]\n";
     while(my $ln=<IN>){
-	    if($ln=~/(\w+):(Data\d\d)/is){
-		my $dfile=ensure_slash("$path/data/archive/$_[0]/$1/$2.dat");
+	    if($ln=~/(\w+):(Data\d\d)\s+(.+)/is){
+	    	my $fn="$path/data/archive/$_[0]/$1/$2.dat";
+	    	if(!$locname){
+					$locname=$3;
+					chomp($locname);	    		
+	    	}
+				my $dfile=ensure_slash($fn);
 		    push(@fn, $dfile);
+		    $locnum++;
 	    }
     }
     close(IN);
     my $i=scalar(@fn);
+    if($i==1){
+    	$locname=$fn[0];
+    }
     tools::join_datafiles($_[0], $i, $_[2], \@fn);
   }
   else{
@@ -351,25 +365,27 @@ sub inject_locations{
 		my $stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
 			"WHERE cities.id IN (%s) AND city_id=cities.id AND year=%s".
 			" ORDER BY cities.name",$ids,$year);
-	#	echo $stat;
+#		print "$stat\n";
 		my $sth = $dbh->prepare($stat);
 		$sth->execute || die $dbh->errstr;
 		my @iids=split(/,/is, $ids);
 		my @data;
-		my $midlet_name;
-		my $rows=$sth->rows;
-		die "Not enough locations for $year: '$ids' = $rows" if $rows!=scalar(@iids);
+		$locnum=$sth->rows;
+		die "Not enough locations for $year: '$ids' = $locnum" if $locnum!=scalar(@iids);
 		while(my @row = $sth->fetchrow_array){
 			push(@data, $row[1]);		
-			if(!$midlet_name){
-				$midlet_name=$row[0];
-			}
+    	if(!$locname){
+				$locname=$row[0];
+				chomp($locname);	    		
+    	}
 		}
 		$sth->finish;
 		$dbh->disconnect;
     join_datafiles2($_[0], $outf, \@data);
   }
   print "$_[2] written\n";
+  $locname='Geo' if $locnum>1;
+  return $locname."'$ye";
 }
 
 sub inject_common{
@@ -452,12 +468,10 @@ sub writeData
 }
 
 sub do_jar{
-    my($prod, $outfile)=@_;
+    my($prod, $outfile, $mainclass)=@_;
     open(INF, "<$path/$const::DIR_TEMPLATE/MANIFEST.MF") or die $!;
     my @data=<INF>;
     close(INF);
-    my $mainclass=$const::PRODUCT;
-    $mainclass='GeoInstaller' if $prod=~/geo/is;
     my $template=join("",@data);
     $template=~s/<PRODUCT>/$prod/isg;
     $template=~s/<VERSION>/$const::VERSION/isg;
