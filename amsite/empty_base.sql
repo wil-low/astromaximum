@@ -86,7 +86,9 @@ CREATE TABLE `customers` (
 
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
 LOCK TABLES `customers` WRITE;
-INSERT INTO `customers` VALUES (1,'vmesyats','Vasyl Mesyats','123',0,NULL,NULL),(2,'aivushkin','Andrei Ivushkin','123',0,NULL,NULL),(3,'guest','Guest','',1,NULL,NULL);
+INSERT INTO `customers` VALUES (1,'vmesyats','Vasyl Mesyats','123',0,NULL,NULL),
+	(2,'aivushkin','Andrei Ivushkin','65536',0,NULL,NULL),
+	(3,'1234','Test','31415926',1,NULL,NULL);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 

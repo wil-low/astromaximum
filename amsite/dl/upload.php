@@ -43,7 +43,7 @@ include_once('../amtools.php');
 			<option value='tjad'>Descriptor template</option>
 			<option value='demo'>Demo</option>
 		</select><p>
-		<input type="file" name="uploaded_file" value="" size="50" maxlength="80" />
+		<input type="file" name="uploaded_file" value="" size="80" maxlength="255" />
 <!--  	<input type="hidden" name="MAX_FILE_SIZE" value="300000" />-->
 		<br><input type="submit" name="Action" value="Upload" />
 	</form>

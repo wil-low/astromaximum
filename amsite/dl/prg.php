@@ -2,7 +2,7 @@
 	include_once('../dbconnect.php');
 	include_once('../amtools.php');
 	include_once('nav.php');
-	$default_city_ids='1,307,220';  #Kiev #London #Moscow
+	$default_city_ids='1,140,35,188';  #Kiev, London, New York, Moscow
 	$timeout_mins=180;
 
 	if(!isset($_GET['mode'])) exit;
@@ -38,21 +38,21 @@
 		}
 	}	
 	if($isdemo){
-		$cmd="./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r nomessjar";
+		$cmd="perl ./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r nomessjar";
 	}
 	else{
-		$cmd="./gen_amax.cgi tb $year ".$_POST['lang']." $default_city_ids $dsrc/$fn.r 0 $timeout_mins nomessjar";
+		$cmd="perl ./gen_amax.cgi tb $year ".$_POST['lang']." $default_city_ids $dsrc/$fn.r 0 $timeout_mins nomessjar";
 	}
-				
-	exec($cmd, $outp);
-	#echo $cmd;
-	#echo implode('<br>',$outp);
-#	$fn=create_jar($year, $default_city_ids, "$dsrc/$fn.jar", $isdemo,
-#		'AstromaximumDemo', "Astromaximum", "source/$year.comm");
-#	unlink("$dsrc/$fn.jar");
-#	unlink("$dsrc/$fn.jad");
-	$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
-	header("Location: http://$data_php/data.php?d=$fn");
+	$ret=0;
+	exec($cmd, $outp, $ret);
+	if($ret){				
+		echo $cmd;
+		echo implode('<br>',$outp);
+	}
+	else{
+		$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
+		header("Location: http://$data_php/data.php?d=$fn");
+	}
 #	exit;
 		
 function ask_login(){

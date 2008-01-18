@@ -23,13 +23,22 @@ else{
 	$DB_USER_PWD='user';
 }
 */
-
+/*
 	$DB_SERVER='mysql1.100ws.com';
 	$DB_NAME='andivu_amax';
 	$DB_PORT='3306';
 	
 	$DB_SUPERUSER='andivu_amax';
 	$DB_SUPERUSER_PWD='toor';
+	$DB_USER='user';
+	$DB_USER_PWD='user';
+*/
+	$DB_SERVER='localhost';
+	$DB_NAME='usr_web42_1';
+	$DB_PORT='3306';
+	
+	$DB_SUPERUSER='web42';
+	$DB_SUPERUSER_PWD='vSZBWppx';
 	$DB_USER='user';
 	$DB_USER_PWD='user';
 
