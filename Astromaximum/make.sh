@@ -7,6 +7,7 @@ SOURCE=$DEST/source
 mkdir $DEST $SOURCE
 echo "#!$PERL" | cat - tools.pm genconst.pm gen_amax.pl > $DEST/gen_amax.cgi
 chmod +x $DEST/gen_amax.cgi
+exit
 cp templates/AstromaximumDemo.jar $SOURCE
 cp templates/Astromaximum-tb.jar $SOURCE
 cp templates/MANIFEST.MF $SOURCE

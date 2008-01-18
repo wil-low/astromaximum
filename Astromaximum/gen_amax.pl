@@ -747,7 +747,10 @@ sub inject_lang{ # lang, isdemo
     my($lang, $demo)=@_;
     my $dest="$path/$const::DIR_TEMP";
     my @bins=glob("$path/$const::DIR_INTERPRET/$lang/*.txt");
-    die "No files for '$lang' language\n" unless scalar(@bins);
+    unless(scalar(@bins)){
+    	print "No files for '$lang' language ($path/$const::DIR_INTERPRET/$lang/*.txt)\n"; 
+    	die;
+    }
     my @buf;
     my $body;
 
