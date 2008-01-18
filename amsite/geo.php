@@ -24,10 +24,27 @@
 	}
 	if($level==4){
 		include_once('amtools.php');
-		$fn=create_jar($defyear, $p[3], "dl/source/template.zip", 0, '', 'GeoInstaller','');
-		$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
-		header("Location: http://$data_php/data.php?t=$fn");
-		exit();
+		global $DIR_FILES, $DIR_SOURCE;
+		$dsrc="./$DIR_FILES";
+		$ye=substr($defyear,-2);
+		list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
+		$srcdir="$dsrc/$fn";
+	#	echo "$dsrc/$destfile";
+		$cmd="./dl/gen_amax.cgi geo- $defyear EN $p[3] $dsrc/$fn.r nomessjar";
+		$ret=0;
+		exec($cmd, $outp, $ret);
+		if($ret){				
+			echo "$cmd: $ret";
+			echo implode('<br>',$outp);
+		}
+		else{
+			$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
+			if(!strpos($data_php, ".mobi")){
+				$data_php.="/mobi";
+			}
+			header("Location: http://$data_php/data.php?d=$fn");
+			exit();
+		}
 	}
 	$entity='';
 	if(isset($_GET['ent'])){

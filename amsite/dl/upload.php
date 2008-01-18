@@ -6,7 +6,7 @@ include_once('../lang.php');
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2008-01-08T19:04:11+0200">
+<meta name="date" content="2008-01-18T19:36:40+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -23,16 +23,13 @@ include_once('nav.php');
 
 emit_nav1();
 $chac=check_access();
-if(!$chac){ 
+if($chac!=0){
 	echo "<p align=center>".$i18['DB_ACCESS'];
   echo "</p>";
 	emit_nav2();
 	exit();
 }
-
-if($chac==1){
-	emit_admin();
-} 
+emit_admin();
 include_once('../amtools.php');
 ?>
 	<form method="post" action="upload.php" enctype="multipart/form-data">
@@ -45,7 +42,7 @@ include_once('../amtools.php');
 		</select><p>
 		<input type="file" name="uploaded_file" value="" size="80" maxlength="255" />
 <!--  	<input type="hidden" name="MAX_FILE_SIZE" value="300000" />-->
-		<br><input type="submit" name="Action" value="Upload" />
+		&nbsp;<input type="submit" name="Action" value="Upload" />
 	</form>
 <?php	
 	if(!isset($_FILES['uploaded_file'])|| !$_FILES['uploaded_file']['name']){

@@ -1,8 +1,8 @@
 <?php
 /* FTP account 
 astromaximumcom a2a0SL2H
-
-if(strcmp($_SERVER['SERVER_NAME'],"localhost")==0){
+*/
+if(strcmp($_SERVER['SERVER_NAME'],"localhost")==0){ // local=true
 	$DB_SERVER='localhost';
 	$DB_NAME='amax';
 	$DB_PORT='3306';
@@ -22,7 +22,7 @@ else{
 	$DB_USER='user';
 	$DB_USER_PWD='user';
 }
-*/
+
 /*
 	$DB_SERVER='mysql1.100ws.com';
 	$DB_NAME='andivu_amax';
@@ -33,14 +33,6 @@ else{
 	$DB_USER='user';
 	$DB_USER_PWD='user';
 */
-	$DB_SERVER='localhost';
-	$DB_NAME='usr_web42_1';
-	$DB_PORT='3306';
-	
-	$DB_SUPERUSER='web42';
-	$DB_SUPERUSER_PWD='vSZBWppx';
-	$DB_USER='user';
-	$DB_USER_PWD='user';
 
 $DIR_SOURCE='dl/source';
 $DIR_INBOX='dl/inbox';
@@ -66,6 +58,7 @@ function quote_smart($value)
 
 function login($user,$pwd){
 	$res=false;
+	$pwd=md5($pwd);
 	$stat=sprintf("SELECT id,realname FROM customers WHERE name=%s AND hash=%s",
 		quote_smart($user),quote_smart($pwd));
 	$sth=mysql_query($stat);
@@ -73,6 +66,7 @@ function login($user,$pwd){
 		$row=mysql_fetch_row($sth);
 		$_SESSION['uid']=$row[0];
 		$_SESSION['username']=$row[1];
+		$_SESSION['pwd']=$pwd;
 		$res=true;
 	}
 /*	else{
@@ -83,13 +77,25 @@ function login($user,$pwd){
 	return $res;
 }
 
+function logout(){
+	$_SESSION = array();
+	// If it's desired to kill the session, also delete the session cookie.
+	// Note: This will destroy the session, and not just the session data!
+	if (isset($_COOKIE[session_name()])) {
+	    setcookie(session_name(), '', time()-42000, '/');
+	}
+	// Finally, destroy the session.
+	session_destroy();
+}
+
 function check_access(){
-	$user=$_SESSION['uid'];
-	if(!$user){
-		return 0; 
+	$stat=sprintf("SELECT role FROM customers WHERE id=%s AND hash=%s",
+		quote_smart($_SESSION['uid']),quote_smart($_SESSION['pwd']));
+//	echo $stat;
+	$sth=mysql_query($stat);
+	if(mysql_num_rows($sth)==1){
+		$row=mysql_fetch_row($sth);
+		return $row[0]; 
 	}
-	if($user==2){
-		return 1;	
-	}
-	return 2;
+	return -1;
 }

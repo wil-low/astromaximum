@@ -20,8 +20,9 @@ error_reporting(E_ALL);
 session_start();
 
 if(!isset($_SESSION['username'])){
-	$_SESSION['username']='nobody';
-	$_SESSION['uid']=0;
+	$_SESSION['username']='';
+	$_SESSION['uid']=-1;
+	$_SESSION['pwd']='*';
 }
 
 ?>

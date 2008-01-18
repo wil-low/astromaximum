@@ -2,7 +2,13 @@
 	include_once('../dbconnect.php');
 	include_once('../amtools.php');
 	include_once('nav.php');
-	$default_city_ids='1,140,35,188';  #Kiev, London, New York, Moscow
+	$cities=array('Kiev', 'London', 'New York', 'Moscow');
+	$sth=mysql_query("SELECT id FROM cities WHERE name in ('".implode("','", $cities)."')");
+	$default_city_ids='';
+	while($row=mysql_fetch_row($sth)){
+		$default_city_ids.="$row[0],";
+	}
+	mysql_free_result($sth);
 	$timeout_mins=180;
 
 	if(!isset($_GET['mode'])) exit;
@@ -38,19 +44,23 @@
 		}
 	}	
 	if($isdemo){
-		$cmd="perl ./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r nomessjar";
+		$cmd="./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r nomessjar";
 	}
 	else{
-		$cmd="perl ./gen_amax.cgi tb $year ".$_POST['lang']." $default_city_ids $dsrc/$fn.r 0 $timeout_mins nomessjar";
+		$cmd="./gen_amax.cgi tb $year ".$_POST['lang']." $default_city_ids $dsrc/$fn.r 0 $timeout_mins nomessjar";
 	}
 	$ret=0;
 	exec($cmd, $outp, $ret);
+//	$ret=1;
 	if($ret){				
 		echo $cmd;
 		echo implode('<br>',$outp);
 	}
 	else{
 		$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
+		if(!strpos($data_php, "mobi")){
+			$data_php.="/mobi";
+		}
 		header("Location: http://$data_php/data.php?d=$fn");
 	}
 #	exit;

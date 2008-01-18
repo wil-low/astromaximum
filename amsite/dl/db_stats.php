@@ -7,7 +7,7 @@ include_once('../lang.php');
 <title>Cities database stats - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-10-17T19:31:59+0300">
+<meta name="date" content="2008-01-18T19:15:53+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -27,7 +27,7 @@ if(isset($_POST['year'])){
 	$defyear=$_POST['year'];
 }
 $chac=check_access();
-if($chac!=1){ 
+if($chac!=0){ 
 	echo "<br><p align=center>".$i18['DB_ACCESS']."</p>";
 	emit_nav2();
 	exit();
@@ -43,7 +43,7 @@ if(isset($_POST['mode'])){
 	emit_admin();
 if($mode=='data'){
 ?>
-	<table cellpadding="0" cellspacing="0" border="1">
+	<table style="cellpadding:0; cellspacing:0; border:1; font-size:8pt">
 	<th>Country</th><th>Cities</th><th>
 	<?php
 		$sth=mysql_query("SELECT DISTINCT year FROM locations ORDER BY year");
@@ -55,8 +55,14 @@ if($mode=='data'){
 		mysql_free_result($sth);
 		$sth=mysql_query("SELECT countries.id, countries.name, COUNT(cities.id) FROM countries,cities".
 			" WHERE cities.country_id=countries.id GROUP BY cities.country_id ORDER BY countries.name");
+		$colored=1;
 		while($row=mysql_fetch_row($sth)){
-			echo "<tr><td>{$row[1]}</td><td>{$row[2]}</td>";
+			echo "<tr";
+			if($colored){
+				echo " bgcolor='#E5E5E5'";
+			}
+			$colored=1-$colored;
+			echo "><td>{$row[1]}</td><td>{$row[2]}</td>";
 			foreach($a_years as $i=>$value){
 				$sth2=mysql_query(sprintf("select count(locations.id) from locations, cities where year=%d".
 					" and locations.city_id=cities.id and cities.country_id=%d", $value, $row[0]));
@@ -73,7 +79,7 @@ if($mode=='data'){
 		}
 		mysql_free_result($sth);
 	?>
-	</table>
+	</table></font>
 <?php
 }
 emit_nav2();

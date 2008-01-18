@@ -43,7 +43,7 @@ function emit_nav1(){
 	else{
 		$lng='en';
 	} 
-if($invalid_login || ($_SESSION['uid']==0)){
+if($invalid_login || ($_SESSION['uid']==-1)){
     echo <<<NAV1
     <form action="{$_SERVER['REQUEST_URI']}" method="post" name="log">
     <table align=center>

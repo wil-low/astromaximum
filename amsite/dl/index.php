@@ -12,7 +12,7 @@ $max_cities=20;
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2007-12-28T20:21:21+0200">
+<meta name="date" content="2008-01-18T18:48:59+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -78,7 +78,7 @@ function city_del(){
 </head>
 <body>
 <?php
-	$defyear=2007;
+	$defyear=date("Y");
 	if(isset($_POST['year'])){
 		$defyear=$_POST['year'];
 	}
@@ -91,7 +91,7 @@ function city_del(){
 		exit();
 	}
 	*/
-	if($chac==1){
+	if($chac==0){
 		emit_admin();
 	}
 	$sc=',';
@@ -107,18 +107,37 @@ function city_del(){
 			}
 			echo "</ol>\n";
 			include_once('../amtools.php');
-			$id=create_jar($defyear, $sc, 'source/template.zip', 0, '', 'GeoInstaller', '');
-			$url='../data.php?r='.$id;
-			echo "<h4>{$i18['PC_DL']}:</h4>";
-			echo "{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";
-			$url=str_replace("?r", "?d", $url);
-			echo "{$i18['JAD_LINK']}: <a href='$url'>$id</a><br><br>";
-			$url=str_replace("?d", "?t", $url);
-			echo "<h4>{$i18['PHONE_DL']}:</h4>";
-			echo "{$i18['DIRECTLINK']}: <a href='$url'>$id</a><br>";
-			echo "<br><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
-			echo "<a href={$_SERVER['PHP_SELF']}>Back</a>";
-			exit(0);
+			global $DIR_FILES, $DIR_SOURCE;
+			$dsrc="../$DIR_FILES";
+			$ye=substr($defyear,-2);
+			list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
+			$srcdir="$dsrc/$fn";
+		#	echo "$dsrc/$destfile";
+			$cmd="./gen_amax.cgi geo- $defyear $lang $sc $dsrc/$fn.r nomessjar";
+			$ret=0;
+			exec($cmd, $outp, $ret);
+			if($ret){				
+				echo $cmd;
+				echo implode('<br>',$outp);
+			}
+			else{
+		//		$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
+		//		header("Location: http://$data_php/data.php?d=$fn");
+				$id=$fn;
+		//			include_once('../amtools.php');
+		//			$id=create_jar($defyear, $sc, 'source/template.zip', 0, '', 'GeoInstaller', '');
+				$url='../data.php?r='.$id;
+				echo "<h4>{$i18['PC_DL']}:</h4>";
+				echo "{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";
+				$url=str_replace("?r", "?d", $url);
+				echo "{$i18['JAD_LINK']}: <a href='$url'>$id</a><br><br>";
+				$url=str_replace("?d", "?t", $url);
+				echo "<h4>{$i18['PHONE_DL']}:</h4>";
+				echo "{$i18['DIRECTLINK']}: <a href='$url'>$id</a><br>";
+				echo "<br><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
+				echo "<a href={$_SERVER['PHP_SELF']}>Back</a>";
+				exit(0);
+			}
 		}
 	}
 ?>
@@ -322,6 +341,7 @@ Selected cities
 </td>
 <td align=center valign=top cellpadding=1><input type=submit style="font-family:Verdana" name='Action' value='Make midlet'>
 <br><br><a href="../">Home</a>
+<br><br><a href="db_stats.php">DB stats</a>
 </td>
 </tr>
 </table>
