@@ -3,7 +3,7 @@ package const;
 our $DIR_TEMPLATE='templates';
 our $DIR_OUTPUT='Astromaximum/deploy';
 our $DIR_TEMP='.temp';
-our $DIR_IMG='images/icons';
+our $DIR_IMG='images/icons'; 
 our $DIR_INTERPRET='interpret';
 our $PRODUCT='Astromaximum';
 our $VENDOR='S&W Axis';

@@ -4,7 +4,7 @@
 //Movement of the Moon
 //FROM THE Sun to Saturn - %0,6%
 //VOC to Mercury - %1,2%
-//VOC - %-1,1%
+//VOC - %255,1%
 
 %6,5%@luck, stable position, the favourite of fortune. More favourable for the buyer. The captured one will be released soon.@
 %6,4%@bad luck, disaster, accident.@
@@ -63,5 +63,5 @@
 
 
 
-%-1,1%@Everything is already in the past.|Future depends on what has been done.@
+%255,1%@Everything is already in the past.|Future depends on what has been done.@
 

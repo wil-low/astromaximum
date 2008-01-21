@@ -10,6 +10,7 @@
     </jar>
   </target>
 
+<!--  
   <target name="color.icon">
     <echo message="${year}" file="year.tmp"/>
     <loadfile property="last.year.digit" srcFile="year.tmp">
@@ -24,7 +25,7 @@
     <copy file="${icons.dir}/${last.year.digit}.png" 
         tofile="${build.classes.dir}/res/icon.png" overwrite="yes"/>
   </target>    
-
+-->
   <target name="make.kzip" if="need.kzip" description="Kzip instead of Jar">
     <delete includeEmptyDirs="true" quiet="true">
       <fileset dir=".temp"/>

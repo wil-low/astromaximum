@@ -184,7 +184,7 @@ if($config=~/tb$/is){
     do_timebomb($ofs, $delta);
     inject_common($year, "$path/$const::DIR_TEMP/common.dat");
     inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-    inject_icon("res/");
+    inject_icon('a', "res/");
     do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
     $done=1;
     do_messjar($outfile);
@@ -197,7 +197,7 @@ if($config=~/(2006|demo)/is){
     inject_amdata();
     inject_common($year, "$path/$const::DIR_TEMP/c.dat");
     inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
-    inject_icon("res/");
+    inject_icon('a', "res/");
     do_jar("AstromaximumDemo", $outfile, $const::PRODUCT);
     do_messjar($outfile);
     $done=1;
@@ -206,7 +206,7 @@ if($config=~/(2006|demo)/is){
 if($config=~/geo-$/is){
     unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
     my $locname=inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-    inject_icon();
+    inject_icon('');
     do_jar($locname, $outfile, 'GeoInstaller');
     do_messjar($outfile);
     $done=1;
@@ -218,7 +218,7 @@ if($islocal){
 	    inject_lang($lang); 
 	    inject_common($year, "$path/$const::DIR_TEMP/common.dat");
 	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-	    inject_icon("res/");
+	    inject_icon('a', "res/");
 	    do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
 	    do_messjar($outfile);
 	    $done=1;
@@ -232,7 +232,7 @@ if($islocal){
 	    inject_common($year, "$path/$const::DIR_TEMP/common.dat", $imei);
 	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 	    inject_amdata();
-	    inject_icon("res/");
+	    inject_icon('a', "res/");
 	    do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
 	    do_messjar($outfile);
 	    $done=1;
@@ -246,7 +246,7 @@ if($islocal){
 	    inject_common($year, "$path/$const::DIR_TEMP/common.dat", $imei);
 	    inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 	    inject_amdata();
-	    inject_icon("res/");
+	    inject_icon('a', "res/");
 	    do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
 	    do_messjar($outfile);
 	    $done=1;
@@ -288,9 +288,10 @@ sub inject_amdata{
     close (OutF);
 }
 
-sub inject_icon{ #subdir
+sub inject_icon{ # prefix, subdir
     $ye=~/(\d)$/is;
-    open(INF,"<$path/$const::DIR_IMG/$1.png") or die "Cannot open file $path/$const::DIR_IMG/$1.png";
+    my $prefix=shift;
+    open(INF,"<$path/$const::DIR_IMG/$prefix$1.png") or die "Cannot open file $path/$const::DIR_IMG/$prefix$1.png";
     binmode(INF);
     my @body=<INF>;
     close (INF);
@@ -298,7 +299,7 @@ sub inject_icon{ #subdir
     binmode(OUTF);
     print OUTF join('', @body);
     close (OutF);
-    print "$const::DIR_TEMP/res/icon.png written\n";
+    print "$const::DIR_TEMP/res/icon.png written from $path/$const::DIR_IMG/$prefix$1.png\n";
 }
 
 sub inject_locations{
