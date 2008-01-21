@@ -171,6 +171,7 @@ function get_year(){
 	return $current_year;
 }
 function is_mobile(){
+    return 1;
 // Lightweight device detection http://dev.mobi/node/472
     $mobile_browser = '0';
 

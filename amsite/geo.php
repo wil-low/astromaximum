@@ -39,10 +39,10 @@
 		}
 		else{
 			$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
-			if(!strpos($data_php, ".mobi")){
+			if(!strpos($data_php, "mobi")){
 				$data_php.="/mobi";
 			}
-			header("Location: http://$data_php/data.php?d=$fn");
+			header("Location: http://$data_php/data.php?t=$fn");
 			exit();
 		}
 	}

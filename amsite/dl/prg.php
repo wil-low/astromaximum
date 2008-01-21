@@ -37,7 +37,7 @@
 		if(isset($_POST['user']) && isset($_POST['passwd'])){
 			if(!login($_POST['user'],$_POST['passwd'])){
 				ask_login();
-			}		
+			}	
 		}
 		else{
 				ask_login();
@@ -55,16 +55,45 @@
 	if($ret){				
 		echo $cmd;
 		echo implode('<br>',$outp);
+		exit;
 	}
-	else{
-		$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
-		if(!strpos($data_php, "mobi")){
-			$data_php.="/mobi";
-		}
-		header("Location: http://$data_php/data.php?d=$fn");
+	$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
+	if(!strpos($data_php, "mobi")){
+		$data_php.="/mobi";
 	}
-#	exit;
-		
+// show all links	
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Astromaximum download</title>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
+<meta http-equiv="Cache-Control" content="max-age=0"/>
+<link rel="stylesheet" type="text/css" href="html/style.css"/>
+</head>
+<body>
+<div id="hdr" class="hdr"></div>
+<div id="cont">
+<?php
+	$url='../data.php?r='.$fn;
+	if(strcmp($_POST['dest'], 'PC')==0){
+		echo "<h4>Download to PC:</h4>";
+		echo "<a href=\"$url\">JAR</a>&nbsp;&nbsp;";
+		$url=str_replace("?r", "?d", $url);
+		echo "<a href=\"$url\">JAD</a><br/><br/>";
+	}
+	if(strcmp($_POST['dest'], 'PH')==0){
+		$url=str_replace("?r", "?t", $url);
+		echo "<h4>Download to phone:</h4>";
+		echo "<a href=\"$url\">JAD</a><br/><br/>";
+	}
+//	echo "<br><font color='red'>{$i18['VALID_LINKS']}</font><br/><br/>";
+	echo "<a href={$_SERVER['PHP_SELF']}>Back</a>";
+?>
+</div>
+<div id="ftr"></div></body></html>
+
+<?php		
 function ask_login(){
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
@@ -79,12 +108,17 @@ function ask_login(){
 <div id="hdr" class="hdr"></div>
 <div id="cont">
 <?php echo gmdate("D M j G:i:s T Y") ?>
-<hr/>
 <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post">
+<optgroup>	
 <input type="radio" name="lang" value="EN" checked>EN</select>
-<input type="radio" name="lang" value="RU">RU</select><br/>
-Username: <input name="user" type="text" size="15" maxlength="15"><br/>
-Password: <input name="passwd" type="password" size="15" maxlength="15"><br/>
+<input type="radio" name="lang" value="RU">RU</select>
+</optgroup><br/><br/>
+<optgroup>	
+<input type="radio" name="dest" value="PH" checked>Phone</select>
+<input type="radio" name="dest" value="PC">PC</select>
+</optgroup><br/>
+Username: <input name="user" type="text" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
+Password: <input name="passwd" type="password" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
 <input type="submit" id="Submit">
 </form>
 </div>

@@ -1,6 +1,6 @@
 <?php
 include_once('amtools.php');
-if(isset($_GET['mobi']) || $mobile_browser>0 || (strcmp($_SERVER['SERVER_NAME'],"localhost")==0)){
+if(isset($_GET['mobi']) || is_mobile()>0 || (strcmp($_SERVER['SERVER_NAME'],"localhost")==0)){
    echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 } 
 else {

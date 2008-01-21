@@ -1,6 +1,7 @@
 <?php
 //include_once('lang.php');
 include_once('dbconnect.php');
+$PREFIX='Cities';
 if(true /*|| check_access()*/){
 	if(isset($_GET['r'])){
 		$type='r';
@@ -34,7 +35,7 @@ if(true /*|| check_access()*/){
 		header('Content-type: application/java-archive');
 	}
 	header("Content-length: $clen");
-	header('Content-Disposition: attachment; filename="Cities'."'$ye-".$idd.'.ja'.$type.'"', false);
+	header("Content-Disposition: attachment; filename=\"$PREFIX'$ye-$idd.ja$type\"", false);
 	echo $data;
 
 }
