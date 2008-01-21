@@ -2,8 +2,8 @@
 !!params 2
 !!planet 1
 
-//1st param – planet
-//2nd param: 0 – conjunction, 1 – bad, 2 – good 
+//1st param - planet
+//2nd param: 0 - conjunction, 1 - bad, 2 - good 
 
 //[2.3]%2,0% Moon:Mercury 
 //[2.3]%2,1% Moon-Mercury
@@ -13,7 +13,7 @@
 [1.2]%0,0% @(+/-12 hours) not to begin anything, strictly. |Secret matters are favoured by Moon in the rays of the Sun (the time of the first half of the 30th Titkhi and the second part of the 1st Titkhi).@;* | (-)for hiring. *#|--| Bad sign for the one fallen sick, the disease will be dangerous and may aggravate the first 14 days. |Happening in the day of crisis it will aggravate the disease. #~|--|(-)for operations and cosmetic procedures. |Harm of medicines. ~=|--| Rising emotions, invented feelings, love suffering.= 
 
 [2.3]%2,0% @(+) for concluding treaties, commercial activities, for beginning the advertising actions.@; {(+)for the beginning of studying; luck in travels. {#|--| seconday index. |For the one already ill: changing of the course of the disease.#~|--| Medicines are neither good nor bad. ~ =|--|(+)for solving material problems, guests and visits.=
-[2.4]%3,0% @Benefit for women’s craft and ordinary people; (+)for the beginning of advertising actions.@;*|(+)The hired one will bring profit.* #|--| Good sign, especially if the sick is young or a woman. | For the one already sick: release of current disease.#~|--| Medicines are good. ~=|--|(+)for love, courting, romantic dates and marriage.=
+[2.4]%3,0% @Benefit for women's craft and ordinary people; (+)for the beginning of advertising actions.@;*|(+)The hired one will bring profit.* #|--| Good sign, especially if the sick is young or a woman. | For the one already sick: release of current disease.#~|--| Medicines are good. ~=|--|(+)for love, courting, romantic dates and marriage.=
 [2.5]%4,0% @Precipitation, haste|(-)dangerous and harmful to begin travel.@;* |(-) The hired one will do harm.*#|--| bad sign for the one falling ill, the disease will be hard. |The one already ill will need additional care and more attention.#~|--|(-)for operations and cosmetic procedures. |Harm of medicines.~=|--| Nautiness, irritation or too much activity may harm relations.=
 [2.6]%5,0% @(+)all activities are fruitful though not for a long time.@;*|(+)the hired one will bring profit.*#|--| Good gogn, especially if the one falling ill is of middle age or older. |For the one already ill: release of current disease. #~|--| Treatment is favourable, medicines are helpful. ~=|--| Financial problems may be well solved without any harm to personal relations.=
 [2.7]%6,0% @(-)hinders women and ordinary people.@;*|(-) The hired one will be lasy and untidy.*#|--| Bad sign for the one falling ill, the disease will be difficult. |The one already ill will need additional care and more attention.#~|--| Harm of medicines and blood-letting. ~=|--|In relations the problems of any kind may occur.= 
@@ -37,7 +37,7 @@
 [1.2]%0,2% @(+/-12 hours) Excellend basis for success.@}|(+)for most affairs, but you should not always rely on luck, it may be short-term.}|(+)for moving. |{(+)for travel if it bodes danger.{#|--|good sign for the one falling ill. | For the one already ill: improvement of the state, if the Sun does not rule the disease.#=|--|(+) for romantic dates and intimate relations.=
 
 [2.3]%2,2% @(+)for concluding agreements, commercial activity, for the beginning of advertising actions and trips.@ $|favours purchase aimed at further reselling.${(+)for beginning of studies, travel.{#|--| Secondary index. | For the one already ill: favourable change of the disease.#~|--|It is better to give up medicines if possible.~=|--|(+)for solving material problems, guests and visits.=
-[2.4]%3,2% @(+)for financial affairs, purchases, for the beginning of advertising actions; (+)for all women’s deeds and crafts.@*|(+)The hired one will bring profit*, {(+)for travel in company.{# |--| Good sign for the one falling ill.|If the aspect taks place near crisis, the recovery may be expected.#~|--| Medicines are helpful. | Favourable time for treatment and cosmetic procedures.~=|--|(+)for love, courting,romantic dates and marriage.=
+[2.4]%3,2% @(+)for financial affairs, purchases, for the beginning of advertising actions; (+)for all women's deeds and crafts.@*|(+)The hired one will bring profit*, {(+)for travel in company.{# |--| Good sign for the one falling ill.|If the aspect taks place near crisis, the recovery may be expected.#~|--| Medicines are helpful. | Favourable time for treatment and cosmetic procedures.~=|--|(+)for love, courting,romantic dates and marriage.=
 [2.5]%4,2% @Mainly indifferent@,$|(+)for buying working tools$, competitions and training;*|(+)for hiring the workers,*#|--|Secondary index. | For the one already ill: some release of the disease, especially if Mars rules the recovery.#=|--|If you are not decisive, the aspect will add bravery in initiating romantic affairs.= 
 [2.6]%5,2% @Excellent basis for success, favours all plans.@$|(+)for large purchase$;*|(+) The hired one will bring profit.*#|--|Good sign for the one falling ill.|If the aspect takes place near the crisis, soon recovery may be expected.#~|--|Medicines will be helpful. | Favourable time for treatment and cosmetic procedures.~=|--| Financial problems may be well solved wiyhout any harm to personal relations.= 
 [2.7]%6,2% @Brings the element of stability.@|(+)for building, repair and agricultural work.*|(+)for hiring the primitive working force.*#|--|Secondary index. | For the one already ill: some release of the disease, especially if Saturn rules the recovery.#=|--|Favours the relations with great agedifference.=

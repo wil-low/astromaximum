@@ -17,7 +17,7 @@ if($winda){
 our $path;
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
-
+our $PREFIX='Cities';
 
 our %eventType=qw(EV_VOC 0 EV_SIGN_ENTER 1 EV_ASP_EXACT 2 EV_RISE 3 EV_DEGREE_PASS 4 
 	EV_VIA_COMBUSTA 5 EV_RETROGRADE 6 EV_ECLIPSE 7 EV_TITHI 8 EV_NAKSHATRA 9 EV_SET 10
@@ -38,12 +38,12 @@ our %hash;
 $0=~/(.+)[\\\/]/is;
 $path=$1;
 if(!$path){
-	if($winda){
-    $path='.';
-  }
-  else{
-  	$path=`pwd`;
-  }
+#	if($winda){
+#    $path='.';
+#  }
+#  else{
+  	$path=`sh pwd`;
+#  }
 }
 chomp($path);
 my $jar_path=$path;
@@ -496,15 +496,22 @@ sub do_jar{
     $outfile=~s/.+[\/\\]//is;
     if(!$islocal){
     	use CGI;
-    	$outfile=~s/\..+//is;
+    	my $jarurl=$outfile;
+    	$jarurl=~s/\..+//is;
+	    my $tjad=$jad;
+	    $tjad=~s/d$/t/is;
     	my $serv=CGI::server_name();
     	$serv.='/mobi' if $serv!~/\.mobi/is;
-    	$outfile='http://'.$serv."/data.php?r=".$outfile;
+    	$jarurl='http://'.$serv."/data.php?r=".$jarurl;
+	    open(FFF, ">$tjad") or die "$jad: $!";
+	    print(FFF $template."MIDlet-Jar-URL: $jarurl\n");
+	    close(FFF);
+    	$jarurl=~/(\d\d).+?(\d{4})$/is;
+    	$outfile="$PREFIX'$1-$2.jar";
     }
     $template.="MIDlet-Jar-URL: $outfile\n";
     open(FFF, ">$jad") or die "$jad: $!";
     print(FFF $template);
-    print(FFF "\n");
     close(FFF);
 }
 

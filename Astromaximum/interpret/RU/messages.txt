@@ -1,6 +1,6 @@
 !!type  EV_MSG
 !!params 1
-!!planet –1
+!!planet -1
 
 // Localization strings for Astromaximum interface - Russian
 

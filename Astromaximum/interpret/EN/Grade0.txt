@@ -14,7 +14,7 @@
 7 %6% Prudence and cation in everything. 
 8 %7% Irritation with consequences, some passions. Meanness, a victim of own foolishness. 
 9 %8% Self-importance; eloquence and bravery. 
-10 %9% Struggle in life, but with final victory. Influental friends. In the worst case – exile. 
+10 %9% Struggle in life, but with final victory. Influental friends. In the worst case - exile. 
 11 %10% Kindness; love will exert influence on destiny. 
 12 %11% Success in operations. Ascent, but trials and changes in life. 
 13 %12% Ascent and gliry due to the own merit and persistence. 
@@ -26,15 +26,15 @@
 19 %18% Extravagancy, loss of estate because of the immoral way of life. Dshonesty. 
 20 %19% Travel to foreign lands. Success in affairs. 
 21 %20% Nobleness, self-confidence, aspiration to trips. 
-22 %21% Idleness, conflictness, loss of estate. A woman will cause much grief. For women – lots of intrigues. 
+22 %21% Idleness, conflictness, loss of estate. A woman will cause much grief. For women - lots of intrigues. 
 23 %22% Destroys any untertaking. Obstacles, envious people may caue many misfortunes. Victory due to qick opinions. 
 24 %23% Whirl of passions, slave of love, troubles because of this. Scandals. 
-25 %24% Beautiful career, unbending will, but the resistance on the way will be stronger, thus – a sad end. 
+25 %24% Beautiful career, unbending will, but the resistance on the way will be stronger, thus - a sad end. 
 26 %25% Ascent. Strong patrons favouring the achievement of bright position. 
 27 %26% Changing fortune; high position only by the old age, or a quick success at the beginning and a collapse at the end. 
 28 %27% Success due to the patronage of an influentalwoman. The important role of people of another sex. 
 29 %28% Hard working life; numerous obstacles, which are to be overcome. Enterprise.
-30 %29% Tyranny and aspiration to power. Unhappiness caused by a woman. For women – destroyed family life. 
+30 %29% Tyranny and aspiration to power. Unhappiness caused by a woman. For women - destroyed family life. 
 
 [2] of the Taurus 
 1 %30% Success after long struggle. Dexterity, strength, surmounting obstacles. 
@@ -44,7 +44,7 @@
 5 %34% Pecefulness. Patiency, love of rest, fidelity. 
 6 %35% Great capabilities; scientific fame. Multisidedness, quick-wittedness, glory, knowledge. 
 7 %36% Beauty; happy marriage, lucky partnership. Happiness, enterpise. Fame/capability in arts. 
-8 %37% Loss of estate and unhappiness through women; for women – dangerous passions, loss of estate. 
+8 %37% Loss of estate and unhappiness through women; for women - dangerous passions, loss of estate. 
 9 %38% Advocates of new ideas; large family. Agriculture, many troubles and work for others, trips. 
 10%39% Sensuality; illegal ties. idleness, inclination to games and pleasures. 
 11 %40% Undoubtalle success, thrift. Aspitationto power, quarrels, cupidity. Ambitions, prestige, reckoning. 
@@ -65,7 +65,7 @@
 26 %55% Soft temper, quiet life. Consent, wealth, kindness. 
 27 %56% Economy, thrift, wealth after work and endeavours. 
 28 %57% Ambitious subject, receiving no satisfaction. Purposefulness, though disorder of actions. 
-29 %58% Strange features in character, despotism, desire to have power. The wife is the head at home; for women – unaccomodating nature. 
+29 %58% Strange features in character, despotism, desire to have power. The wife is the head at home; for women - unaccomodating nature. 
 30 %59% Success in enterprises, ability to architecture, endowments., good material state. 
 
 [3] of the Gemini. 

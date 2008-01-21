@@ -1,7 +1,7 @@
 #!/bin/sh
 DEST=../amax-mobi/dl
-PERL="/opt/lampp/bin/perl"
-#PERL="/usr/bin/perl"
+#PERL="/opt/lampp/bin/perl"
+PERL="/usr/bin/perl"
 SOURCE=$DEST/source
 #rm -r $DEST
 mkdir $DEST $SOURCE
@@ -16,7 +16,7 @@ svn export --force interpret $SOURCE/interpret
 #svn export --force images/icons $SOURCE/icons
 cp htaccess $SOURCE/interpret/.htaccess
 
-#exit
+exit
 
 echo "Size_join"
 perl size_join.pl

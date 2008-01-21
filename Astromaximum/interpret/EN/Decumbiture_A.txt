@@ -1,6 +1,6 @@
 !!type EV_DECUMBITURE
 !!params 1
-!!planet –1
+!!planet -1
 //Dynamics of acute diseases for about one month, not longer.The course of the disease is foretold according to both the state of the sick and the aspects of the Moon, whether they are good or evil. 
 
 [000]%0%#The beginning of the disease. |For the beginning take the time when the disease has somehow shown itself: the subject has either taken to his bedor felt badly; or when the first symptoms of the disease or injury on the body were revealed. #

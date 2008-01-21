@@ -52,7 +52,7 @@
 13 %132% Strong will, consistency, quiet work and successes. Practicalness. 
 14 %133% Loss of estate because of yourself, due to idleness and laziness. 
 15 %134% Bright capabilities, success in enterprises. Self-confidence, powel, nobility. 
-16 %135% Stubbornrss and conceit, obstinacy, thus – troubles. 
+16 %135% Stubbornrss and conceit, obstinacy, thus - troubles. 
 17 %136% Hard life, far-away travel. 
 18 %137% Fortune and wealth, inventiveness, research spirit. 
 19 %138% Life full of struggle and successes. Restraint. 
@@ -78,7 +78,7 @@
 7 %156% Difficulties and sadness because of laziness. 
 8 %157% Idyll, naivety, joy of labour. 
 9 %158% Unhappy marriage. Evil lazy person. Decay. 
-10 %159% Good material position; for women – unlucky marriage. Income without labour. 
+10 %159% Good material position; for women - unlucky marriage. Income without labour. 
 11 %160% Genius, strong will, bright career. Quick judgement, bravery, enterprise, seriousness. 
 12 %161% Falsity, reticency. Danger to cause unhappiness for a friend. 
 13 %162% Happy and quiet life, wealth. 
