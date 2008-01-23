@@ -1,7 +1,10 @@
 #!/bin/sh
 DEST=../amax-mobi/dl
-#PERL="/opt/lampp/bin/perl"
-PERL="/usr/bin/perl"
+if [ -x /opt/lampp/bin/perl ]; then
+    PERL="/opt/lampp/bin/perl";
+else
+    PERL="/usr/bin/perl";
+fi  
 SOURCE=$DEST/source
 #rm -r $DEST
 mkdir $DEST $SOURCE

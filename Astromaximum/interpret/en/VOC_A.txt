@@ -1,0 +1,4 @@
+﻿!!type EV_VOC
+!!params 0
+!!planet 1
+%0% @(-)for undertakings.|The affair is rarely concluded to the end; or it is done, but not in the way it had been planned.|Do not make key decisions. Do not do anything which you are doing for the first time. Work at that which has been already started. promises are empty, plans are doubtful. The purchased things will have unexpected destiny, or for a long time will not be used.|--|Appropriate time for affairs which won’t have special consequences and results (for example, providing some information, which will be left without attention and check).@|--|~Inappropriate time for diagnostics.|(+)for hygiene and procedures of hair removal.~
