@@ -13,21 +13,21 @@
 	mysql_free_result($sth);
 	$timeout_mins=180;
 
-	if(!isset($_POST['mode'])) exit;
+	if(!isset($_REQUEST['mode'])) exit;
 	$year=get_year();
 	$isdemo=0;
-	if(strcmp($_POST['mode'], 'demo')==0){
+	if(strcmp($_REQUEST['mode'], 'demo')==0){
 		$year--;
 		$isdemo=1;
 	}
-	else if(strcmp($_POST['mode'], 'trial')!=0){
+	else if(strcmp($_REQUEST['mode'], 'trial')!=0){
 		exit;
 	}
-	if(isset($_POST['lang'])){
-		$lang=strtoupper($_POST['lang']);
+	if(isset($_GET['lang'])){
+		$lang=$_GET['lang'];
 	}
 	else{
-		$lang='EN';
+		$lang='en';
 	}
 	$outp=array();
 	global $DIR_FILES, $DIR_SOURCE;
@@ -50,7 +50,7 @@
 		$cmd="./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r nomessjar";
 	}
 	else{
-		$cmd="./gen_amax.cgi tb $year ".$_POST['lang']." $default_city_ids $dsrc/$fn.r 0 $timeout_mins nomessjar";
+		$cmd="./gen_amax.cgi tb $year \"".$_REQUEST['lang']."\" \"$default_city_ids\" $dsrc/$fn.r 0 $timeout_mins nomessjar";
 	}
 	$ret=0;
 	exec($cmd, $outp, $ret);
@@ -79,25 +79,26 @@
 <div id="cont">
 <?php
 	$url='../data.php?r='.$fn;
-	if(strcmp($_POST['dest'], 'PC')==0){
-		echo "<h4>Download to PC:</h4>";
+	if(strcmp($_REQUEST['dest'], 'pc')==0){
+		echo "<h4>{$i18['PC_DL']}:</h4>";
 		echo "<a href=\"$url\">JAR</a>&nbsp;&nbsp;";
 		$url=str_replace("?r", "?d", $url);
-		echo "<a href=\"$url\">JAD</a><br/><br/>";
+		echo "<a href=\"$url\">JAD</a>";
 	}
-	if(strcmp($_POST['dest'], 'PH')==0){
+	if(strcmp($_REQUEST['dest'], 'ph')==0){
 		$url=str_replace("?r", "?t", $url);
-		echo "<h4>Download to phone:</h4>";
-		echo "<a href=\"$url\">JAD</a><br/><br/>";
+		echo "<h4>{$i18['PHONE_DL']}:</h4>";
+		echo "<a href=\"$url\">JAD</a>";
 	}
-//	echo "<br><font color='red'>{$i18['VALID_LINKS']}</font><br/><br/>";
-	echo '<a href="../">Back</a>';
+	echo "<br/><br/><font color='red'>{$i18['VALID_LINKS']}</font><br/><br/>";
+	echo '<a href="..">'.$i18['BACK']."</a>";
 ?>
 </div>
 <div id="ftr"></div></body></html>
 
 <?php		
 function ask_login(){
+	global $i18;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -121,9 +122,9 @@ function ask_login(){
 <span id="ofs"></span>
 <input type="hidden" id="gmt" value="<?php echo time() /*gmdate("T: Y-m-j G:i")*/ ?>">
 
-<form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post">
-Username: <input name="user" type="text" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
-Password: <input name="passwd" type="password" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
+<form action="<?php echo $_SERVER['REQUEST_URI']?>" method="post">
+<?php echo $i18['USER']?> <input name="user" type="text" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
+<?php echo $i18['PWD']?> <input name="passwd" type="password" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
 <input type="submit" id="Submit">
 </form>
 </div>

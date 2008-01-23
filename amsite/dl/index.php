@@ -42,7 +42,7 @@ function city_add(cname,sname){
 			count++;
 		}
 		if(count><?php echo $max_cities ?>){
-			alert("Sorry, you may select up to <?php echo $max_cities ?> cities.");
+			alert("<?php echo sprintf($i18['CITY_LIMIT'], $max_cities) ?>");
 			break;
 		}
 		opt.selected=false;
@@ -101,7 +101,7 @@ function city_del(){
 	if(isset($_POST['Action']) && isset($_POST['sc'])){
 		$sth=get_selected_cities('sc');
 		if(strlen($sth)>0){
-			echo "<h4>You have selected following cities:</h4>\n<ol>";
+			echo "<h4>{$i18['READY_CITIES']}</h4>\n<ol>";
 			while($row = mysql_fetch_row($sth)){
 				echo "<li>$row[1], $row[2]</li>\n";
 			}
@@ -128,14 +128,14 @@ function city_del(){
 		//			$id=create_jar($defyear, $sc, 'source/template.zip', 0, '', 'GeoInstaller', '');
 				$url='../data.php?r='.$id;
 				echo "<h4>{$i18['PC_DL']}:</h4>";
-				echo "{$i18['JAR_LINK']}: <a href='$url'>$id</a><br><br>";
+				echo "<a href='$url'>JAR</a>";
 				$url=str_replace("?r", "?d", $url);
-				echo "{$i18['JAD_LINK']}: <a href='$url'>$id</a><br><br>";
+				echo " <a href='$url'>JAD</a><br>";
 				$url=str_replace("?d", "?t", $url);
 				echo "<h4>{$i18['PHONE_DL']}:</h4>";
-				echo "{$i18['DIRECTLINK']}: <a href='$url'>$id</a><br>";
+				echo "<a href='$url'>JAD</a><br>";
 				echo "<br><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
-				echo "<a href={$_SERVER['PHP_SELF']}>Back</a>";
+				echo "<a href={$_SERVER['REQUEST_URI']}>{$i18['BACK']}</a>";
 				exit(0);
 			}
 		}
@@ -151,8 +151,9 @@ function city_del(){
 <?php } ?>
 &nbsp;</td>
 <?php } ?>
-<td width=11% align=center><font color=red><?php echo $step++ ?></font>. Country
+<td width=11% align=center><font color=red><?php echo $step++ ?></font>. 
 <?php
+	echo $i18['H_COUNTRY'];
 // First listbox
 	$cnum=0; $lb1='';
 	if(isset($_POST['cid'])){
@@ -173,8 +174,9 @@ function city_del(){
 	}
 ?>
 </td>
-<td width=11% align=center><font color=red><?php echo $step++ ?></font>. State
+<td width=11% align=center><font color=red><?php echo $step++ ?></font>. 
 <?php
+	echo $i18['H_STATE'];
 	$stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
 		"countries WHERE country_id=%s ORDER BY states.name",quote_smart($cnum));
 	$sth=mysql_query($stat);
@@ -202,10 +204,11 @@ function city_del(){
 	mysql_free_result($sth);
 ?>
 </td>
-<td width=20% align=center><font color=red><?php echo $step++ ?></font>. City
+<td width=20% align=center><font color=red><?php echo $step++ ?></font>. 	
+<?php echo $i18['H_CITY']?>
 </td>
 <td width=20% align=center><font color=red><?php echo $step++ ?></font>.
-Selected cities
+<?php echo $i18['SEL_CITIES']?>
 </td>
 <td width=20% align=center><b><font size=+3><?php echo $defyear ?></font></b>
 </td>
@@ -310,7 +313,7 @@ Selected cities
 	$sth = mysql_query($stat);
 ?>
 <td align=center valign=bottom>
-<div align=right><input type=button size=9 style="font-family:Verdana" value='Insert &gt;&gt;' onclick='<?php echo "city_add(\"$cur_country\",\"$cur_state\");" ?>'/>
+<div align=right><input type=button size=9 style="font-family:Verdana" value='<?php echo $i18['ADD_SEL']?> &gt;&gt;' onclick='<?php echo "city_add(\"$cur_country\",\"$cur_state\");" ?>'/>
 </div>
 <select id=chkcit size=34 multiple class=lb>
 <?php
@@ -326,7 +329,7 @@ Selected cities
 <input type="hidden" name="stateid" value="0"  />
 <input type="hidden" name="sc" value="<?php echo $sc ?>"  />
 <div align=left valign=top>
-<input type=button size=9 value='&lt;&lt; Remove' style="font-family:Verdana" onclick='city_del();'/>
+<input type=button size=9 value='&lt;&lt; <?php echo $i18['DEL_SEL']?>' style="font-family:Verdana" onclick='city_del();'/>
 </div>
 <select id=selcit size=34 multiple class=lb>
 <?php
@@ -339,9 +342,9 @@ Selected cities
 ?>
 </select>
 </td>
-<td align=center valign=top cellpadding=1><input type=submit style="font-family:Verdana" name='Action' value='Make midlet'>
-<br><br><a href="../">Home</a>
-<br><br><a href="db_stats.php">DB stats</a>
+<td align=center valign=top cellpadding=1><input type=submit style="font-family:Verdana" name='Action' value='<?php echo $i18['GET_DATA']?>'>
+<br><br><a href="../"><?php echo $i18['MAIN']?></a>
+<br><br><a href="db_stats.php"><?php echo $i18['DB_STATS']?></a>
 </td>
 </tr>
 </table>
