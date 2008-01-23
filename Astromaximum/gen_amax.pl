@@ -171,8 +171,14 @@ if($outfile eq '-'){
 $outfile=ensure_slash($outfile);
 print "Processing <$config> for $year lang=$lang using locations from $loclist...\n";
 
-my $done=0;
+my ($done, $ofs, $delta)=(0);
 
+if($config=~/(test|tb$)/is){
+    $ofs=shift(@ARGV);
+    $ofs=0 unless $ofs;
+    $delta=shift(@ARGV);
+    $delta=30 unless $delta;
+}    
 if($config=~/tb$/is){
     my $ofs=shift(@ARGV);
     $ofs=0 unless $ofs;
@@ -195,6 +201,7 @@ if($config=~/(2006|demo)/is){
     unzip("$path/$const::DIR_TEMPLATE/AstromaximumDemo.jar");
     inject_lang($lang, 'demo'); 
     inject_amdata();
+    do_timebomb($ofs, $delta);
     inject_common($year, "$path/$const::DIR_TEMP/c.dat");
     inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
     inject_icon('a', "res/");
