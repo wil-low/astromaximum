@@ -33,11 +33,22 @@ $current_year=get_year();
 <body>
 <div id="hdr" class="hdr"></div>
 <div id="cont"><hr/>
-<?php echo $_SERVER['HTTP_USER_AGENT'] ?><br/>
+<!-- <?php echo $_SERVER['HTTP_USER_AGENT'] ?><br/>-->
 <a href="year.php">Download a city</a><br/>
 <a href="html/ru/0_0.xhtml">Astro help</a><br/>
 <a href="about.xhtml">About Astromaximum</a><hr/>
-<a href="dl/prg.php?mode=demo"><?php echo $current_year-1 ?> Demo</a><br/>
-<a href="dl/prg.php?mode=trial"><?php echo $current_year ?> (clients only)</a><hr/>
+<form action="dl/prg.php" method="post">
+<optgroup>	
+<input type="radio" name="lang" value="en">en</select>
+<input type="radio" name="lang" value="en" checked>ru</select>
+</optgroup><hr/>
+<optgroup>	
+<input type="radio" name="dest" value="PH" checked>Phone</select>
+<input type="radio" name="dest" value="PC">PC</select>
+</optgroup><br/>
+<?php echo $current_year-1 ?> <input type="submit" name="mode" value="demo" style="width:6em"><br/>
+<?php echo $current_year ?> <input type="submit" name="mode" value="trial" style="width:6em">
+</form>
+<hr/>
 </div>
 <div id="ftr"></div></body></html>

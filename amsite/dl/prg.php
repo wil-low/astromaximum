@@ -2,6 +2,8 @@
 	include_once('../dbconnect.php');
 	include_once('../amtools.php');
 	include_once('nav.php');
+#	print_r($_POST);
+#	exit;
 	$cities=array('Kiev', 'London', 'New York', 'Moscow');
 	$sth=mysql_query("SELECT id FROM cities WHERE name in ('".implode("','", $cities)."')");
 	$default_city_ids='';
@@ -11,17 +13,18 @@
 	mysql_free_result($sth);
 	$timeout_mins=180;
 
-	if(!isset($_GET['mode'])) exit;
+	if(!isset($_POST['mode'])) exit;
 	$year=get_year();
 	$isdemo=0;
-	if(strcmp($_GET['mode'], 'demo')==0){
+	if(strcmp($_POST['mode'], 'demo')==0){
 		$year--;
 		$isdemo=1;
 	}
-	else if(strcmp($_GET['mode'], 'trial')!=0){
+	else if(strcmp($_POST['mode'], 'trial')!=0){
 		exit;
 	}
-	if(isset($_GET['lang'])){
+	if(isset($_POST['lang'])){
+		$lang=strtoupper($_POST['lang']);
 	}
 	else{
 		$lang='EN';
@@ -88,7 +91,7 @@
 		echo "<a href=\"$url\">JAD</a><br/><br/>";
 	}
 //	echo "<br><font color='red'>{$i18['VALID_LINKS']}</font><br/><br/>";
-	echo "<a href={$_SERVER['PHP_SELF']}>Back</a>";
+	echo '<a href="../">Back</a>';
 ?>
 </div>
 <div id="ftr"></div></body></html>
@@ -103,20 +106,22 @@ function ask_login(){
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
 <meta http-equiv="Cache-Control" content="max-age=30"/>
 <link rel="stylesheet" type="text/css" href="html/style.css"/>
+<script>
+	function curtime(){
+		gmt1=document.getElementById("gmt").value;
+		gmt2=new Date().getTime()/1000;
+		var newtext=document.createTextNode(gmt2-gmt1);
+		document.getElementById("gmt").appendChild(newtext);
+	}
+</script>
 </head>
-<body>
+<body onLoad="curtime()">
 <div id="hdr" class="hdr"></div>
 <div id="cont">
-<?php echo gmdate("D M j G:i:s T Y") ?>
+<span id="ofs"></span>
+<input type="hidden" id="gmt" value="<?php echo time() /*gmdate("T: Y-m-j G:i")*/ ?>">
+
 <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post">
-<optgroup>	
-<input type="radio" name="lang" value="EN" checked>EN</select>
-<input type="radio" name="lang" value="RU">RU</select>
-</optgroup><br/><br/>
-<optgroup>	
-<input type="radio" name="dest" value="PH" checked>Phone</select>
-<input type="radio" name="dest" value="PC">PC</select>
-</optgroup><br/>
 Username: <input name="user" type="text" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
 Password: <input name="passwd" type="password" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
 <input type="submit" id="Submit">

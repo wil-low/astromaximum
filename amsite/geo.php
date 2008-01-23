@@ -38,7 +38,7 @@
 			echo implode('<br>',$outp);
 		}
 		else{
-			$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
+			$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
 			if(!strpos($data_php, "mobi")){
 				$data_php.="/mobi";
 			}
