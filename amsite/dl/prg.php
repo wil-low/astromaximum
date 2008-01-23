@@ -60,9 +60,13 @@
 		echo implode('<br>',$outp);
 		exit;
 	}
-	$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
+	$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
 	if(!strpos($data_php, "mobi")){
 		$data_php.="/mobi";
+	}
+	if(strcmp($_REQUEST['dest'], 'ph')==0){
+		header("Location: http://$data_php/../data.php?t=$fn");
+		exit;
 	}
 // show all links	
 ?>
@@ -85,11 +89,6 @@
 		$url=str_replace("?r", "?d", $url);
 		echo "<a href=\"$url\">JAD</a>";
 	}
-	if(strcmp($_REQUEST['dest'], 'ph')==0){
-		$url=str_replace("?r", "?t", $url);
-		echo "<h4>{$i18['PHONE_DL']}:</h4>";
-		echo "<a href=\"$url\">JAD</a>";
-	}
 	echo "<br/><br/><font color='red'>{$i18['VALID_LINKS']}</font><br/><br/>";
 	echo '<a href="..">'.$i18['BACK']."</a>";
 ?>
@@ -109,19 +108,22 @@ function ask_login(){
 <link rel="stylesheet" type="text/css" href="html/style.css"/>
 <script>
 	function curtime(){
+<!--
 		gmt1=document.getElementById("gmt").value;
 		gmt2=new Date().getTime()/1000;
 		var newtext=document.createTextNode(gmt2-gmt1);
 		document.getElementById("gmt").appendChild(newtext);
+-->
 	}
 </script>
 </head>
 <body onLoad="curtime()">
 <div id="hdr" class="hdr"></div>
 <div id="cont">
+<!--
 <span id="ofs"></span>
 <input type="hidden" id="gmt" value="<?php echo time() /*gmdate("T: Y-m-j G:i")*/ ?>">
-
+-->
 <form action="<?php echo $_SERVER['REQUEST_URI']?>" method="post">
 <?php echo $i18['USER']?> <input name="user" type="text" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
 <?php echo $i18['PWD']?> <input name="passwd" type="password" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>

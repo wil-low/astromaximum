@@ -63,7 +63,7 @@ $current_year=get_year();
 </head>
 <body>
 <div id="hdr" class="hdr"></div>
-<b>Astromaximum</b>
+<p align="center"><b>Astromaximum</b></p>
 <div id="cont"><hr/>
 <!-- <?php echo $_SERVER['HTTP_USER_AGENT'] ?><br/>-->
 <form action="<?php echo $_SERVER['SCRIPT_NAME'] ?>" method="post">
@@ -81,10 +81,12 @@ Language:
 (1) <input type="image" src="img/ar0.png" alt="&gt;" accesskey="1" name="m_dl">Download a city<br/>
 (2) <input type="image" src="img/ar0.png" alt="&gt;" accesskey="2" name="m_he">Astro help<br/>
 (3) <input type="image" src="img/ar0.png" alt="&gt;" accesskey="3" name="m_ab">About calendar<br/>
-(4) <input type="image" src="img/ar0.png" alt="&gt;" accesskey="4" name="m_demo"><?php echo $current_year-1 ?> Demo<br/>
-(5) <input type="image" src="img/ar0.png" alt="&gt;" accesskey="5" name="m_trial"><?php echo $current_year ?> (clients only)
+(4) <input type="image" src="img/ar0.png" alt="&gt;" accesskey="4" name="m_demo"><?php echo $current_year-1 ?> Demo*<br/>
+(5) <input type="image" src="img/ar0.png" alt="&gt;" accesskey="5" name="m_trial"><?php echo $current_year ?>* (clients only)
 </optgroup>
 </form>
+<p align="center"><?php echo 'LONDON: '.gmdate("M j Y G:i") ?></p>
+<br/>* set your phone's timezone to London (GMT) and check out the time
 <hr/>
 </div>
 <div id="ftr"></div></body></html>
