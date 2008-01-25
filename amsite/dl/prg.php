@@ -2,8 +2,6 @@
 	include_once('../dbconnect.php');
 	include_once('../amtools.php');
 	include_once('nav.php');
-#	print_r($_POST);
-#	exit;
 	$cities=array('Kiev', 'London', 'New York', 'Moscow');
 	$sth=mysql_query("SELECT id FROM cities WHERE name in ('".implode("','", $cities)."')");
 	$default_city_ids='';
@@ -65,6 +63,7 @@
 		$data_php.="/mobi";
 	}
 	if(strcmp($_REQUEST['dest'], 'ph')==0){
+		echo "http://$data_php/../data.php?t=$fn";
 		header("Location: http://$data_php/../data.php?t=$fn");
 		exit;
 	}
@@ -76,7 +75,7 @@
 <title>Astromaximum download</title>
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
 <meta http-equiv="Cache-Control" content="max-age=0"/>
-<link rel="stylesheet" type="text/css" href="html/style.css"/>
+<link rel="stylesheet" type="text/css" href="../style.css"/>
 </head>
 <body>
 <div id="hdr" class="hdr"></div>
@@ -106,7 +105,7 @@ function ask_login(){
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
 <meta http-equiv="Cache-Control" content="max-age=30"/>
 <link rel="stylesheet" type="text/css" href="html/style.css"/>
-<script>
+<script type="text/javascript">
 	function curtime(){
 <!--
 		gmt1=document.getElementById("gmt").value;
@@ -117,17 +116,18 @@ function ask_login(){
 	}
 </script>
 </head>
-<body onLoad="curtime()">
+<body onload="curtime()">
 <div id="hdr" class="hdr"></div>
 <div id="cont">
 <!--
 <span id="ofs"></span>
 <input type="hidden" id="gmt" value="<?php echo time() /*gmdate("T: Y-m-j G:i")*/ ?>">
 -->
-<form action="<?php echo $_SERVER['REQUEST_URI']?>" method="post">
-<?php echo $i18['USER']?> <input name="user" type="text" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
-<?php echo $i18['PWD']?> <input name="passwd" type="password" size="15" maxlength="15" style=' -wap-input-format: "*N"'><br/>
-<input type="submit" id="Submit">
+<form action="<?php echo htmlentities($_SERVER['REQUEST_URI'])?>" method="post">
+<p>
+<?php echo $i18['USER']?> <input name="user" type="text" size="15" maxlength="15" class="numinput"/><br/>
+<?php echo $i18['PWD']?> <input name="passwd" type="password" size="15" maxlength="15" class="numinput"/><br/>
+<input type="submit" id="Submit"/></p>
 </form>
 </div>
 <div id="ftr"></div></body></html>

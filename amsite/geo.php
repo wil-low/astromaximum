@@ -35,7 +35,7 @@
 		exec($cmd, $outp, $ret);
 		if($ret){				
 			echo "$cmd: $ret";
-			echo implode('<br>',$outp);
+			echo implode('<br/>',$outp);
 		}
 		else{
 			$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
@@ -72,20 +72,20 @@
 		echo make_anchor($i, $p, $lvl_title[$i], $defyear).'&nbsp;';
 	}
 ?>
-</div><br>
+</div>
 <div id="cont">
 <?php
 	if($entity){
-		echo "$entity:<br>";
+		echo "$entity:<br/>";
 	}
 	$cnt=count($res[0]);
 	for($i=0; $i<$cnt; $i++){
 		$newparam=$p;
 		$newparam[$level]=$res[0][$i];
-		echo make_anchor($level+1, $newparam, $res[1][$i], $defyear)."<br>\n";	
+		echo make_anchor($level+1, $newparam, $res[1][$i], $defyear)."<br/>\n";	
 	}
 ?>
-</div><br>
+</div>
 <div id="ftr">
 <pre>
 <?php
@@ -110,7 +110,7 @@
 		}
 		if($level==1){ // country
 			$query=sprintf("SELECT * from countries where continent=%s ORDER BY name", quote_smart($params[0]));
-//			echo "$query<br>";
+//			echo "$query<br/>";
 			$sth=mysql_query($query);
 			while($row = mysql_fetch_row($sth)){
 				$keys[$i]=$row[0]; $values[$i]=$row[1];
@@ -120,7 +120,7 @@
 		if($level==2){ // state
 			$query=sprintf("SELECT DISTINCT states.id, states.name FROM states,countries WHERE ".
 				"country_id=%s ORDER BY states.name",quote_smart($params[1]));
-//			echo "$query<br>";
+//			echo "$query<br/>";
 			$sth=mysql_query($query);
 			if(mysql_num_rows($sth)){
 				while($row = mysql_fetch_row($sth)){
@@ -142,7 +142,7 @@
 				",locations WHERE country_id=%s AND countries.id=country_id".
 				" AND city_id=cities.id %s AND year=%s". # year condition
 				" ORDER BY cities.name",quote_smart($params[1]), $andst, quote_smart($defyear));
-//			echo "$query<br>";
+//			echo "$query<br/>";
 			$sth=mysql_query($query);
 			while($row = mysql_fetch_row($sth)){
 				$keys[$i]=$row[0]; $values[$i]=$row[1];
@@ -154,9 +154,9 @@
 	
 	function make_anchor($level, $params, $text, $year)
 	{
-		$str="<a href=\"".$_SERVER['PHP_SELF']."?lvl=$level&y=$year&ent=".urlencode($text);
+		$str="<a href=\"".$_SERVER['PHP_SELF']."?lvl=$level&amp;y=$year&amp;ent=".urlencode($text);
 		for($j=0; $j<$level; $j++){
-			$str.="&p$j=$params[$j]";
+			$str.="&amp;p$j=$params[$j]";
 		}
 		return $str."\">$text</a>&nbsp;";
 	}
