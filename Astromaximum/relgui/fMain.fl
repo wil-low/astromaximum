@@ -18,6 +18,9 @@ decl {extern void cb_do_imei(fltk::Button*, void*);} {}
 
 decl {extern void cb_do_timebomb(fltk::Button*, void*);} {} 
 
+decl {extern void cb_do_timebomb_logger(fltk::Button*, void*);} {selected
+} 
+
 decl {extern void cb_do_demo(fltk::Button*, void*);} {} 
 
 decl {extern void cb_do_geo(fltk::Button*, void*);} {} 
@@ -84,7 +87,7 @@ Function {make_window()} {open
     {fltk::Group} {} {open
       xywh {5 5 206 530}
     } {
-      {fltk::Group} {} {open selected
+      {fltk::Group} {} {open
         xywh {0 0 206 220} box THIN_DOWN_BOX
       } {
         {fltk::Input} txtYear {
@@ -132,19 +135,19 @@ o->label(o->get_item()->label());}
         {fltk::Input} txtTimeOffset {
           label {Timeshift, hrs:}
           xywh {5 130 95 25} align 1 deactivate
-          extra_code {o->text("0");}
+          extra_code {o->text("-24");}
           class {fltk::IntInput}
         }
         {fltk::Input} txtTimeDelta {
           label {Delta, min:}
           xywh {5 170 95 25} align 1
-          extra_code {o->text("30");}
+          extra_code {o->text("2880");}
           class {fltk::FloatInput}
         }
         {fltk::Button} {} {
           label {Time bomb}
           callback cb_do_timebomb
-          xywh {110 135 85 50} align 128
+          xywh {110 130 85 25} align 128
         }
         {fltk::CheckButton} ckDebug {
           label Debug
@@ -152,7 +155,12 @@ o->label(o->get_item()->label());}
         }
         {fltk::CheckButton} ckMessjar {
           label Messjar
-          xywh {125 195 72 25} value 1
+          xywh {125 195 72 25}
+        }
+        {fltk::Button} {} {
+          label {TB logger}
+          callback cb_do_timebomb_logger
+          xywh {110 170 85 25} align 128
         }
       }
       {fltk::Group} {} {open

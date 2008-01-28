@@ -7,6 +7,7 @@ extern void cb_select(MyBrowser*, void*);
 extern void cb_sort(fltk::RadioButton*, void*);
 extern void cb_do_imei(fltk::Button*, void*);
 extern void cb_do_timebomb(fltk::Button*, void*);
+extern void cb_do_timebomb_logger(fltk::Button*, void*);
 extern void cb_do_demo(fltk::Button*, void*);
 extern void cb_do_geo(fltk::Button*, void*);
 #include "fltk/events.h"
@@ -135,21 +136,23 @@ fltk::Window* make_window() {
          {fltk::IntInput* o = txtTimeOffset = new fltk::IntInput(5, 130, 95, 25, "Timeshift, hrs:");
           o->align(fltk::ALIGN_TOP);
           o->deactivate();
-          o->text("0");
+          o->text("-24");
         }
          {fltk::FloatInput* o = txtTimeDelta = new fltk::FloatInput(5, 170, 95, 25, "Delta, min:");
           o->align(fltk::ALIGN_TOP);
-          o->text("30");
+          o->text("2880");
         }
-         {fltk::Button* o = new fltk::Button(110, 135, 85, 50, "Time bomb");
+         {fltk::Button* o = new fltk::Button(110, 130, 85, 25, "Time bomb");
           o->callback((fltk::Callback*)cb_do_timebomb);
           o->align(fltk::ALIGN_WRAP);
         }
          {fltk::CheckButton* o = ckDebug = new fltk::CheckButton(5, 195, 65, 25, "Debug");
           o->deactivate();
         }
-         {fltk::CheckButton* o = ckMessjar = new fltk::CheckButton(125, 195, 72, 25, "Messjar");
-          o->set_flag(fltk::STATE);
+        ckMessjar = new fltk::CheckButton(125, 195, 72, 25, "Messjar");
+         {fltk::Button* o = new fltk::Button(110, 170, 85, 25, "TB logger");
+          o->callback((fltk::Callback*)cb_do_timebomb_logger);
+          o->align(fltk::ALIGN_WRAP);
         }
         o->end();
       }

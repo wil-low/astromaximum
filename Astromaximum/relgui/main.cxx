@@ -224,6 +224,14 @@ void cb_do_timebomb(fltk::Button*, void*){
 	int result=run_exe(add_messjar_switch(cmd));
 }
 
+void cb_do_timebomb_logger(fltk::Button*, void*){
+	char cmd[200];
+	sprintf(cmd, "perl %s/gen_amax.pl tb-logger %d %s %s - %s %s",
+		path, year, pbLang->label(), lbLoclist->text(), 
+                txtTimeOffset->text(), txtTimeDelta->text());
+	int result=run_exe(add_messjar_switch(cmd));
+}
+
 void cb_do_imei(fltk::Button*, void*){
 	char cmd[200];
 	sprintf(cmd, "perl %s/gen_amax.pl release %d %s %s - %s",

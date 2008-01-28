@@ -35,6 +35,7 @@ extern void cb_do_timebomb(fltk::Button*, void*);
 #include <fltk/CheckButton.h>
 extern fltk::CheckButton* ckDebug;
 extern fltk::CheckButton* ckMessjar;
+extern void cb_do_timebomb_logger(fltk::Button*, void*);
 #include <fltk/Output.h>
 extern fltk::Output* lbLoclist;
 extern void cb_load_loclist(fltk::Button*, void*);
