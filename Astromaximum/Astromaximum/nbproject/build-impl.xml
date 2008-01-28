@@ -1012,9 +1012,7 @@
             <classpath>
                 <path path="${libs.classpath}"/>
             </classpath>
-            <sourcepath>
-                <pathelement location="${buildsystem.baton}"/>
-            </sourcepath>
+            <fileset dir="${buildsystem.baton}" includes="*.java"/>
         </javadoc>
         <antcall target="browse-javadoc"/>
     </target>

@@ -53,7 +53,7 @@ if($islocal){
 	if(!scalar(@ARGV)){
 	    print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
 	    print "Parameters:\n";
-	    print "\t<config>: [rebuild|notest|release|tb|demo|join|lang]\n";
+	    print "\t<config>: [rebuild|notest|imei|tb|demo|join|lang]\n";
 	    print "\t<year>\n";
 	    print "\t<lang>\n";
 	    print "\t<loclist file>\n";
@@ -117,8 +117,8 @@ if($islocal and ($config eq 'rebuild')){
     my $cmd="\"$antpath\" -quiet -f geoLib/build.xml -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" clean jar";
     print "$cmd\n";
     die "BUILD ERROR" if system($cmd);
-    my @conf=qw(midp2y2007notest midp2y2007notest_logger midp2y2007release 
-        midp2y2007release_logger midp2y2007release_tb test2006);
+    my @conf=qw(notest notest_logger imei 
+         tb tb_logger demo);
     foreach(@conf){
         print "\n--------------------------------\n";
         print "--- Config $_ ---\n";
@@ -148,7 +148,7 @@ if($islocal){
 }
 my $dest='';
 
-if($config=~/(2006|demo)/is){
+if($config=~/demo/is){
     $year=$TEST_YEAR;
     unless($outfile=~/r$/is){
 	$outfile="$path/Astromaximum/deploy/$const::PRODUCT".'Demo.jar' ;
@@ -171,20 +171,19 @@ if($outfile eq '-'){
 $outfile=ensure_slash($outfile);
 print "Processing <$config> for $year lang=$lang using locations from $loclist...\n";
 
-my ($done, $ofs, $delta)=(0);
+my $done=0;
 
-if($config=~/(test|tb$)/is){
-    $ofs=shift(@ARGV);
-    $ofs=0 unless $ofs;
-    $delta=shift(@ARGV);
-    $delta=30 unless $delta;
-}    
-if($config=~/tb$/is){
+if($config=~/tb/is){
     my $ofs=shift(@ARGV);
     $ofs=0 unless $ofs;
     my $delta=shift(@ARGV);
     $delta=30 unless $delta;
-    unzip("$path/$const::DIR_TEMPLATE/Astromaximum-tb.jar");
+    if($config=~/logger/is){
+    	unzip("$path/$const::DIR_TEMPLATE/Astromaximum-tb-logger.jar");
+    }
+    else{
+    	unzip("$path/$const::DIR_TEMPLATE/Astromaximum-tb.jar");
+    }
     inject_lang($lang); 
     inject_amdata();
     do_timebomb($ofs, $delta);
@@ -196,12 +195,11 @@ if($config=~/tb$/is){
     do_messjar($outfile);
 }
 
-if($config=~/(2006|demo)/is){
+if($config=~/demo/is){
 #    $year=2006;
     unzip("$path/$const::DIR_TEMPLATE/AstromaximumDemo.jar");
     inject_lang($lang, 'demo'); 
     inject_amdata();
-    do_timebomb($ofs, $delta);
     inject_common($year, "$path/$const::DIR_TEMP/c.dat");
     inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
     inject_icon('a', "res/");
@@ -231,7 +229,7 @@ if($islocal){
 	    $done=1;
 	}
 
-	if($config=~/release$/is){
+	if($config=~/imei$/is){
 	    my $imei=shift(@ARGV);
 	    $imei='0' x 15 unless $imei;
 	    unzip("$path/$const::DIR_TEMPLATE/Astromaximum.jar");
@@ -245,7 +243,7 @@ if($islocal){
 	    $done=1;
 	}
 
-	if($config=~/release_logger$/is){
+	if($config=~/imei_logger$/is){
 	    my $imei=shift(@ARGV);
 	    $imei='0' x 15 unless $imei;
 	    unzip("$path/$const::DIR_TEMPLATE/Astromaximum-logger.jar");

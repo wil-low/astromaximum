@@ -25,20 +25,42 @@ import javax.microedition.lcdui.*;
  */
 
 /**
+ * CustomTime form allows to select any hour and minute to be highlighted
+ * every day with "blue mark".
+ * <p>Also used for {@link Summary#PAGE_DECUMB decumbiture page}.</p>
+ * 
  * @author Administrator
  */
 final class CustomTime extends Form implements CommandListener, ItemStateListener {
 //#if "timeBomb" @ protection
-//#   static int hj=0x89abcdef;
-    //#endif
+    /**
+     * Secret variable for timeBomb protection (end of time range)
+     */
+    static int hj=0x89abcdef;
+//#endif
     private int invoker = Event.EV_ASP_EXACT_MOON;
     final DateField timeField;
     final DateField dateField;
+    /**
+     * Decumbiture date storage variable
+     */
     long decumbDate;
+    /**
+     * Bitmask of locking status of items in recent time list
+     */
     int lockFlags;
+    /**
+     * Recently entered times list
+     */
     final ChoiceGroup cg;
     private static final int HIST_COUNT = 8;
+    /**
+     * Array holding entered times
+     */
     static final long[] history = new long[HIST_COUNT];
+    /**
+     * History item count
+     */
     static int histCount = 0;
     private boolean showHistory;
     private final Command[] cmds;
@@ -70,11 +92,15 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
         setCommandListener(this);
         setItemStateListener(this);
 //#if logger
-//#       Astromaximum.instance.logger("inside CustomTime");
-//#       Astromaximum.instance.logger(timeField.getDate().toString());
+      Astromaximum.instance.logger("inside CustomTime");
+      Astromaximum.instance.logger(timeField.getDate().toString());
 //#endif      
     }
 
+    /**
+     * Update DateFields when some history item is selected
+     * @param item - should always be history list
+     */
     public void itemStateChanged(Item item) {
         if (item == cg) {
 //      System.out.println("hkjh");
@@ -112,6 +138,11 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
         }
     }
 
+    /**
+     * Process important messages and transitions
+     * @param c
+     * @param d
+     */
     public void commandAction(Command c, Displayable d) {
         if (c.getPriority() == 4) {
             Astromaximum.summary.dontRender();
@@ -159,6 +190,10 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
         }
     }
 
+    /**
+     * Initialize form title and {@link #decumbDate} according to invoker page
+     * @param pn invoker's page index
+     */
     void setTimePrompt(int pn) {
         invoker = pn;
         String tit, sDate;
@@ -181,20 +216,25 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
         setTitle(tit + " " + sDate);
     }
 
+    /**
+     * Set custom time marker
+     * @param addHistory boolean
+     * @return true if date is added to history, otherwise show alert message
+     */
     boolean setTime(boolean addHistory) {
 //#if logger
-//#       Astromaximum.instance.logger(timeField.getDate().toString());
+      Astromaximum.instance.logger(timeField.getDate().toString());
 //#endif      
         long tmp = timeField.getDate().getTime();
 //#if logger
-//#       Astromaximum.instance.logger(Event.long2String(tmp,0,false));
+      Astromaximum.instance.logger(Event.long2String(tmp,0,false));
 //#endif      
         if (addHistory) {
             tmp += dateField.getDate().getTime();
         }
         Astromaximum.calendar.setTime(new Date(tmp));
 //#if logger
-//#       Astromaximum.instance.logger("before setCustomTime");
+      Astromaximum.instance.logger("before setCustomTime");
 //#endif      
         Astromaximum.summary.setCustomTime(
                 Astromaximum.calendar.get(Calendar.HOUR_OF_DAY), Astromaximum.calendar.get(Calendar.MINUTE));
@@ -211,6 +251,10 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
         return true;
     }
 
+    /**
+     * Recreate form controls according to invoker
+     * @param pn invoker page index
+     */
     void init(int pn) {
         setTimePrompt(Astromaximum.summary.pageNum);
 //#if timeHistory
@@ -280,6 +324,10 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
          return port1;
       }
     */
+    /**
+     * Reconstruct history list from {@link #history} after modifications
+     * @return boolean
+     */
     boolean arrangeHistory() {
         for (int i = 0; i < histCount; i++) {
             if (history[i] == decumbDate) {

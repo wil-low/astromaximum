@@ -26,6 +26,10 @@ import java.io.*;
 import javax.microedition.lcdui.*;
 import java.util.*;
 
+/**
+ * 
+ * @author willow
+ */
 class Summary extends Canvas implements CommandListener, Runnable {
 //#ifdef UseBuffer
 //#   static Image offScreenBuffer;
@@ -298,6 +302,9 @@ class Summary extends Canvas implements CommandListener, Runnable {
         }
     }
 
+    /**
+     * 
+     */
     void showMoonIngress() {
         if (pageNum == PAGE_WEEK && getSelectedItem().type == Event.EV_WEEK_GRID) {
             long p0 = selDate.getTime();

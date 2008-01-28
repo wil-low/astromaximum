@@ -9,7 +9,11 @@
  */
 import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.*;
-
+/**
+ * This alert shows some info about application and offers to go
+ * to the website (if platform allows <b>System.platformRequest</b>).
+ * @author willow
+ */
 public class About extends Alert implements CommandListener{
     About(){
         super(Astromaximum.getstr(152),
