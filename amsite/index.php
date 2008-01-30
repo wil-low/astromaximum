@@ -8,7 +8,6 @@ if(isset($_POST['lang'])){
 	}
 }
 if(isset($_POST['dest']) && isset($_POST['btn'])){
-	print_r($_POST);
 	$dest=$_POST['dest'];
 	$btn=$_POST['btn'];
 	$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);

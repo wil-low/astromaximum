@@ -9,7 +9,8 @@
 		$default_city_ids.="$row[0],";
 	}
 	mysql_free_result($sth);
-	$timeout_mins=180;
+	$timeout_offset=-24;
+	$timeout_mins=2880;
 
 	if(!isset($_REQUEST['mode'])) exit;
 	$year=get_year();
@@ -45,10 +46,10 @@
 		}
 	}	
 	if($isdemo){
-		$cmd="./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r nomessjar";
+		$cmd="./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
 	}
 	else{
-		$cmd="./gen_amax.cgi tb $year \"".$_REQUEST['lang']."\" \"$default_city_ids\" $dsrc/$fn.r 0 $timeout_mins nomessjar";
+		$cmd="./gen_amax.cgi tb $year \"".$_REQUEST['lang']."\" \"$default_city_ids\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
 	}
 	$ret=0;
 	exec($cmd, $outp, $ret);
@@ -63,7 +64,7 @@
 		$data_php.="/mobi";
 	}
 	if(strcmp($_REQUEST['dest'], 'ph')==0){
-		echo "http://$data_php/../data.php?t=$fn";
+		//echo "http://$data_php/../data.php?t=$fn";
 		header("Location: http://$data_php/../data.php?t=$fn");
 		exit;
 	}
