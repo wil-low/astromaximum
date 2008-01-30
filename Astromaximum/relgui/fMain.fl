@@ -104,9 +104,9 @@ Function {make_window()} {open
         {fltk::PopupMenu} pbLang {
           callback {o->label(o->get_item()->label());}
           xywh {5 28 85 25} align 48
-          extra_code {o->add("EN");
-o->add("RU");
-o->add("UA");
+          extra_code {o->add("en");
+o->add("ru");
+o->add("uk");
 o->value(1);
 o->label(o->get_item()->label());}
         } {}

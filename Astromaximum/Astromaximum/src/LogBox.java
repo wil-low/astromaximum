@@ -21,18 +21,24 @@
 import javax.microedition.lcdui.*;
 
 class LogBox extends List implements CommandListener {
-    static final String EMPTY = Astromaximum.getstr(119);//Empty
+    static String EMPTY;//Empty
     private Displayable invoker;
     static private final byte[] buf = new byte[8];
 
     LogBox() {
-        super(Astromaximum.getstr(95), Choice.IMPLICIT);//Log
-        append(EMPTY, null);
-        addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 1));//Back
-        addCommand(new Command(Astromaximum.getstr(96), Command.STOP, 1));//Clear
+        super("", Choice.IMPLICIT);//Log
         setCommandListener(this);
     }
 
+    void init() {
+        setTitle(Astromaximum.getstr(95));
+        EMPTY = Astromaximum.getstr(119);
+        if(size()==0){
+            append(EMPTY, null);
+        }
+        addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 1));//Back
+        addCommand(new Command(Astromaximum.getstr(96), Command.STOP, 1));//Clear
+    }
 
     /**
      * showLog
@@ -53,14 +59,7 @@ class LogBox extends List implements CommandListener {
             Display.getDisplay(Astromaximum.instance).setCurrent(invoker);
         }
         if (c.getCommandType() == Command.STOP) {
-//#if MIDP == "2.0"
             deleteAll();
-//#else
-//#    try {
-//#      while(true)
-//#        delete(0);
-//#    } catch (IndexOutOfBoundsException iob) {}
-//#endif
             append(EMPTY, null);
         }
     }

@@ -7,7 +7,8 @@ our $DIR_IMG='images/icons';
 our $DIR_INTERPRET='interpret';
 our $PRODUCT='Astromaximum';
 our $VENDOR='S&W Axis';
-our $VERSION='1.0.016';
+our $VERSION='1.0.017';
+our $USE_AMTEXT=1;
 
 our $UNZIP=q(unzip  %s -x *META-INF* -d %s );
 #our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );

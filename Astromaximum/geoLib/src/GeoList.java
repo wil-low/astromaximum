@@ -66,15 +66,8 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     }
 
     void init() {
-//#if MIDP == "2.0"
         cityList.deleteAll();
         try {
-//#else
-//#    try {
-//#      while(true)
-//#        cityList.delete(0);
-//#    } catch (IndexOutOfBoundsException iob) {}
-//#endif
 
 //#if Demo
 //#     stringItem1.setText(System.getProperty("com.sun.imei"));

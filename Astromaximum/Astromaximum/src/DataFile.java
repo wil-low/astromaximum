@@ -59,7 +59,7 @@ final class DataFile {
         final Calendar cal = Astromaximum.calendar;
         final DataInputStream is;
         try {
-//#if "test" @ protection
+//#if demo
 //#       is= new DataInputStream(getClass().getResourceAsStream("/c.dat"));
 //#else
             is = new DataInputStream(getClass().getResourceAsStream("/common.dat"));

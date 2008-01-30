@@ -13,23 +13,23 @@ extern void cb_do_geo(fltk::Button*, void*);
 #include "fltk/events.h"
 
 int MyBrowser::handle(int event) {
-  if(event==fltk::PUSH){
-  	if(fltk::event_clicks()>1){
-  		fltk::event_clicks(0);
-  		do_callback();
-  		return true;
-  	}
-  	else{
-  		return fltk::Browser::handle(event);
-  	}
-  }
-  else{
-  	return fltk::Browser::handle(event);
-  }
+	if(event==fltk::PUSH){
+		if(fltk::event_clicks()>1){
+			fltk::event_clicks(0);
+			do_callback();
+			return true;
+		}
+		else{
+			return fltk::Browser::handle(event);
+		}
+	}
+	else{
+		return fltk::Browser::handle(event);
+	}
 }
 
 MyBrowser::MyBrowser(int x, int y, int w, int h, const char *l):fltk::Browser(x, y, w, h, l) {
-  when(fltk::WHEN_ENTER_KEY_ALWAYS);
+	when(fltk::WHEN_ENTER_KEY_ALWAYS);
 }
 extern void cb_load_loclist(fltk::Button*, void*);
 extern void cb_save_loclist(fltk::Button*, void*);
@@ -42,20 +42,20 @@ MyBrowser *lbAvailable=(MyBrowser *)0;
 fltk::IntInput *txtYear=(fltk::IntInput *)0;
 
 static void cb_txtYear(fltk::IntInput*, void*) {
-  if(bSetYear->active())
-      set_year(txtYear->text());
+	if(bSetYear->active())
+	    set_year(txtYear->text());
 }
 
 fltk::Button *bSetYear=(fltk::Button *)0;
 
 static void cb_bSetYear(fltk::Button*, void*) {
-  set_year(txtYear->text());
+	set_year(txtYear->text());
 }
 
 fltk::PopupMenu *pbLang=(fltk::PopupMenu *)0;
 
 static void cb_pbLang(fltk::PopupMenu* o, void*) {
-  o->label(o->get_item()->label());
+	o->label(o->get_item()->label());
 }
 
 fltk::IntInput *txtImei=(fltk::IntInput *)0;
@@ -77,129 +77,129 @@ fltk::Output *lbLoclist=(fltk::Output *)0;
 fltk::Output *lbSize=(fltk::Output *)0;
 
 fltk::Window* make_window() {
-  fltk::Window* w;
-   {fltk::Window* o = new fltk::Window(950, 535);
-    w = o;
-    o->shortcut(0xff1b);
-    o->begin();
-     {fltk::Group* o = new fltk::Group(210, 5, 735, 525);
-      o->box(fltk::THIN_DOWN_BOX);
-      o->buttonbox(fltk::NO_BOX);
-      o->begin();
-       {MyBrowser* o = lbSelected = new MyBrowser(5, 20, 350, 505, "Selected");
-        o->set_vertical();
-        o->callback((fltk::Callback*)cb_unselect);
-      }
-       {MyBrowser* o = lbAvailable = new MyBrowser(360, 20, 370, 505, "Available");
-        o->set_vertical();
-        o->callback((fltk::Callback*)cb_select);
-      }
-      o->end();
-    }
-     {fltk::Group* o = new fltk::Group(5, 5, 206, 530);
-      o->set_vertical();
-      o->begin();
-       {fltk::Group* o = new fltk::Group(0, 0, 206, 220);
-        o->set_vertical();
-        o->box(fltk::THIN_DOWN_BOX);
-        o->begin();
-         {fltk::IntInput* o = txtYear = new fltk::IntInput(5, 5, 85, 20);
-          o->callback((fltk::Callback*)cb_txtYear);
-          o->when(fltk::WHEN_ENTER_KEY);
-        }
-         {fltk::Button* o = bSetYear = new fltk::Button(109, 5, 85, 20, "Set year");
-          o->callback((fltk::Callback*)cb_bSetYear);
-        }
-         {fltk::PopupMenu* o = pbLang = new fltk::PopupMenu(5, 28, 85, 25);
-          o->callback((fltk::Callback*)cb_pbLang);
-          o->align(fltk::ALIGN_CENTER|fltk::ALIGN_INSIDE);
-          o->add("EN");
-          o->add("RU");
-          o->add("UA");
-          o->value(1);
-          o->label(o->get_item()->label());
-        }
-         {fltk::Button* o = new fltk::Button(110, 28, 84, 25, "Demo");
-          o->callback((fltk::Callback*)cb_do_demo);
-        }
-         {fltk::IntInput* o = txtImei = new fltk::IntInput(35, 55, 160, 25, "IMEI:");
-          o->callback((fltk::Callback*)cb_imei_changed);
-          o->when(fltk::WHEN_CHANGED);
-        }
-         {fltk::Button* o = bImei = new fltk::Button(5, 85, 85, 25, "IMEI");
-          o->callback((fltk::Callback*)cb_do_imei);
-        }
-         {fltk::Button* o = bImeiLogger = new fltk::Button(110, 85, 85, 25, "IMEI logger");
-          o->callback((fltk::Callback*)cb_do_imei);
-          o->user_data((void*)1);
-        }
-         {fltk::IntInput* o = txtTimeOffset = new fltk::IntInput(5, 130, 95, 25, "Timeshift, hrs:");
-          o->align(fltk::ALIGN_TOP);
-          o->deactivate();
-          o->text("-24");
-        }
-         {fltk::FloatInput* o = txtTimeDelta = new fltk::FloatInput(5, 170, 95, 25, "Delta, min:");
-          o->align(fltk::ALIGN_TOP);
-          o->text("2880");
-        }
-         {fltk::Button* o = new fltk::Button(110, 130, 85, 25, "Time bomb");
-          o->callback((fltk::Callback*)cb_do_timebomb);
-          o->align(fltk::ALIGN_WRAP);
-        }
-         {fltk::CheckButton* o = ckDebug = new fltk::CheckButton(5, 195, 65, 25, "Debug");
-          o->deactivate();
-        }
-        ckMessjar = new fltk::CheckButton(125, 195, 72, 25, "Messjar");
-         {fltk::Button* o = new fltk::Button(110, 170, 85, 25, "TB logger");
-          o->callback((fltk::Callback*)cb_do_timebomb_logger);
-          o->align(fltk::ALIGN_WRAP);
-        }
-        o->end();
-      }
-       {fltk::Group* o = new fltk::Group(0, 225, 200, 150);
-        o->begin();
-         {fltk::Output* o = lbLoclist = new fltk::Output(0, 8, 200, 18);
-          o->textsize(9);
-        }
-         {fltk::Button* o = new fltk::Button(50, 35, 95, 25, "Load");
-          o->callback((fltk::Callback*)cb_load_loclist);
-        }
-         {fltk::Button* o = new fltk::Button(50, 65, 95, 25, "Save");
-          o->callback((fltk::Callback*)cb_save_loclist);
-        }
-         {fltk::Button* o = new fltk::Button(50, 110, 95, 25, "Clear");
-          o->callback((fltk::Callback*)cb_clear_loclist);
-        }
-        o->end();
-        fltk::Group::current()->resizable(o);
-      }
-       {fltk::Group* o = new fltk::Group(0, 375, 200, 150);
-        o->begin();
-         {fltk::Group* o = new fltk::Group(5, 75, 190, 35, "Sort by:");
-          o->box(fltk::FLAT_BOX);
-          o->begin();
-           {fltk::RadioButton* o = new fltk::RadioButton(5, 5, 80, 25, "City");
-            o->set_flag(fltk::STATE);
-            o->callback((fltk::Callback*)cb_sort);
-          }
-           {fltk::RadioButton* o = new fltk::RadioButton(105, 5, 80, 25, "State");
-            o->callback((fltk::Callback*)cb_sort);
-            o->user_data((void*)1);
-          }
-          o->end();
-        }
-         {fltk::Button* o = new fltk::Button(5, 120, 190, 25, "Generate Geo");
-          o->callback((fltk::Callback*)cb_do_geo);
-        }
-         {fltk::Output* o = lbSize = new fltk::Output(5, 20, 190, 25);
-          o->textsize(9);
-        }
-        o->end();
-      }
-      o->end();
-    }
-    o->end();
-    o->resizable(o);
-  }
-  return  w;
+	fltk::Window* w;
+	 {fltk::Window* o = new fltk::Window(950, 535);
+		w = o;
+		o->shortcut(0xff1b);
+		o->begin();
+		 {fltk::Group* o = new fltk::Group(210, 5, 735, 525);
+			o->box(fltk::THIN_DOWN_BOX);
+			o->buttonbox(fltk::NO_BOX);
+			o->begin();
+			 {MyBrowser* o = lbSelected = new MyBrowser(5, 20, 350, 505, "Selected");
+				o->set_vertical();
+				o->callback((fltk::Callback*)cb_unselect);
+			}
+			 {MyBrowser* o = lbAvailable = new MyBrowser(360, 20, 370, 505, "Available");
+				o->set_vertical();
+				o->callback((fltk::Callback*)cb_select);
+			}
+			o->end();
+		}
+		 {fltk::Group* o = new fltk::Group(5, 5, 206, 530);
+			o->set_vertical();
+			o->begin();
+			 {fltk::Group* o = new fltk::Group(0, 0, 206, 220);
+				o->set_vertical();
+				o->box(fltk::THIN_DOWN_BOX);
+				o->begin();
+				 {fltk::IntInput* o = txtYear = new fltk::IntInput(5, 5, 85, 20);
+					o->callback((fltk::Callback*)cb_txtYear);
+					o->when(fltk::WHEN_ENTER_KEY);
+				}
+				 {fltk::Button* o = bSetYear = new fltk::Button(109, 5, 85, 20, "Set year");
+					o->callback((fltk::Callback*)cb_bSetYear);
+				}
+				 {fltk::PopupMenu* o = pbLang = new fltk::PopupMenu(5, 28, 85, 25);
+					o->callback((fltk::Callback*)cb_pbLang);
+					o->align(fltk::ALIGN_CENTER|fltk::ALIGN_INSIDE);
+					o->add("en");
+					o->add("ru");
+					o->add("uk");
+					o->value(1);
+					o->label(o->get_item()->label());
+				}
+				 {fltk::Button* o = new fltk::Button(110, 28, 84, 25, "Demo");
+					o->callback((fltk::Callback*)cb_do_demo);
+				}
+				 {fltk::IntInput* o = txtImei = new fltk::IntInput(35, 55, 160, 25, "IMEI:");
+					o->callback((fltk::Callback*)cb_imei_changed);
+					o->when(fltk::WHEN_CHANGED);
+				}
+				 {fltk::Button* o = bImei = new fltk::Button(5, 85, 85, 25, "IMEI");
+					o->callback((fltk::Callback*)cb_do_imei);
+				}
+				 {fltk::Button* o = bImeiLogger = new fltk::Button(110, 85, 85, 25, "IMEI logger");
+					o->callback((fltk::Callback*)cb_do_imei);
+					o->user_data((void*)1);
+				}
+				 {fltk::IntInput* o = txtTimeOffset = new fltk::IntInput(5, 130, 95, 25, "Timeshift, hrs:");
+					o->align(fltk::ALIGN_TOP);
+					o->deactivate();
+					o->text("-24");
+				}
+				 {fltk::FloatInput* o = txtTimeDelta = new fltk::FloatInput(5, 170, 95, 25, "Delta, min:");
+					o->align(fltk::ALIGN_TOP);
+					o->text("2880");
+				}
+				 {fltk::Button* o = new fltk::Button(110, 130, 85, 25, "Time bomb");
+					o->callback((fltk::Callback*)cb_do_timebomb);
+					o->align(fltk::ALIGN_WRAP);
+				}
+				 {fltk::CheckButton* o = ckDebug = new fltk::CheckButton(5, 195, 65, 25, "Debug");
+					o->deactivate();
+				}
+				ckMessjar = new fltk::CheckButton(125, 195, 72, 25, "Messjar");
+				 {fltk::Button* o = new fltk::Button(110, 170, 85, 25, "TB logger");
+					o->callback((fltk::Callback*)cb_do_timebomb_logger);
+					o->align(fltk::ALIGN_WRAP);
+				}
+				o->end();
+			}
+			 {fltk::Group* o = new fltk::Group(0, 225, 200, 150);
+				o->begin();
+				 {fltk::Output* o = lbLoclist = new fltk::Output(0, 8, 200, 18);
+					o->textsize(9);
+				}
+				 {fltk::Button* o = new fltk::Button(50, 35, 95, 25, "Load");
+					o->callback((fltk::Callback*)cb_load_loclist);
+				}
+				 {fltk::Button* o = new fltk::Button(50, 65, 95, 25, "Save");
+					o->callback((fltk::Callback*)cb_save_loclist);
+				}
+				 {fltk::Button* o = new fltk::Button(50, 110, 95, 25, "Clear");
+					o->callback((fltk::Callback*)cb_clear_loclist);
+				}
+				o->end();
+				fltk::Group::current()->resizable(o);
+			}
+			 {fltk::Group* o = new fltk::Group(0, 375, 200, 150);
+				o->begin();
+				 {fltk::Group* o = new fltk::Group(5, 75, 190, 35, "Sort by:");
+					o->box(fltk::FLAT_BOX);
+					o->begin();
+					 {fltk::RadioButton* o = new fltk::RadioButton(5, 5, 80, 25, "City");
+						o->set_flag(fltk::STATE);
+						o->callback((fltk::Callback*)cb_sort);
+					}
+					 {fltk::RadioButton* o = new fltk::RadioButton(105, 5, 80, 25, "State");
+						o->callback((fltk::Callback*)cb_sort);
+						o->user_data((void*)1);
+					}
+					o->end();
+				}
+				 {fltk::Button* o = new fltk::Button(5, 120, 190, 25, "Generate Geo");
+					o->callback((fltk::Callback*)cb_do_geo);
+				}
+				 {fltk::Output* o = lbSize = new fltk::Output(5, 20, 190, 25);
+					o->textsize(9);
+				}
+				o->end();
+			}
+			o->end();
+		}
+		o->end();
+		o->resizable(o);
+	}
+	return  w;
 }

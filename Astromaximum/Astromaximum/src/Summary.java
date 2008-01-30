@@ -113,10 +113,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
         }
         catch (IOException ex) {
         }
-//#if MIDP=="2.0"
         setFullScreenMode(true);
-//#else
-//#endif
         createCommands(0);
         setCommandListener(this);
         pageNum = PAGE_SUMMARY;
@@ -412,7 +409,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
         getItem(Event.EV_VIA_COMBUSTA).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
                 Event.EV_VIA_COMBUSTA, Event.SE_MOON, false, period0, period1));
 //#if logger
-//#       Astromaximum.instance.logger(" VC");
+      Astromaximum.instance.logger(" VC");
 //#endif      
 //****** SUN & MOON RISES & SETS
         for (int i = Event.SE_SUN; i <= Event.SE_MOON; i++) {
@@ -428,7 +425,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
             getItem(Event.EV_SUN_RISE + i).events[0].date1 = eop.date0;
         }
 //#if logger
-//#       Astromaximum.instance.logger(" SO,MO riseset");
+      Astromaximum.instance.logger(" SO,MO riseset");
 //#endif      
 
         int pltDaySun;
@@ -436,13 +433,13 @@ class Summary extends Canvas implements CommandListener, Runnable {
         getItem(Event.EV_SUN_DEGREE_LARGE).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
                 Event.EV_DEGREE_PASS, Event.SE_SUN, true, period0, period1));
 //#if logger
-//#       Astromaximum.instance.logger(" SO degpass");
+      Astromaximum.instance.logger(" SO degpass");
 //#endif      
 //****** MOON SIGN ENTER
         getItem(Event.EV_MOON_SIGN_LARGE).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
                 Event.EV_SIGN_ENTER, Event.SE_MOON, true, period0, period1));
 //#if logger
-//#       Astromaximum.instance.logger(" MO signenter");
+      Astromaximum.instance.logger(" MO signenter");
 //#endif      
 
 //    Astromaximum.evDump(vNavroz);
@@ -480,11 +477,11 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 false, period0, period1, 0);
 //    Astromaximum.evDump(tith);
 //#if logger
-//#       Astromaximum.instance.logger("tithi found="+Integer.toString(tith.size()));
+      Astromaximum.instance.logger("tithi found="+Integer.toString(tith.size()));
 //#endif      
         getItem(Event.EV_TITHI).setEvents(tith);
 //#if logger
-//#       Astromaximum.instance.logger(" tithi");
+      Astromaximum.instance.logger(" tithi");
 //#endif      
 
 //****** MOON ASPECTS
@@ -500,7 +497,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 
         getItem(Event.EV_ASP_EXACT).setEvents(evInCurrentDay(new Vector(), asp));
 //#if logger
-//#       Astromaximum.instance.logger(" aspExact");
+      Astromaximum.instance.logger(" aspExact");
 //#endif      
 
         asp.removeAllElements();
@@ -553,7 +550,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 
         getItem(Event.EV_MOON_MOVE).setEvents(asp);
 //#if logger
-//#       Astromaximum.instance.logger(" moonMove");
+      Astromaximum.instance.logger(" moonMove");
 //#endif      
 
         final Vector retrograde = new Vector();
@@ -575,7 +572,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
         mergeEvents(asp, workVec, true);
         getItem(Event.EV_SEL_DEGREES).setEvents(asp);
 //#if logger
-//#       Astromaximum.instance.logger(" selDegree");
+      Astromaximum.instance.logger(" selDegree");
 //#endif      
         workVec.removeAllElements();
         for (int i = Event.SE_SUN; i <= Event.SE_PLUTO; i++) {
@@ -584,7 +581,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
         }
         getItem(Event.EV_RETROGRADE).setEvents(workVec);
 //#if logger
-//#       Astromaximum.instance.logger(" retrograde");
+      Astromaximum.instance.logger(" retrograde");
 //#endif      
 
 //******* common risesets
@@ -648,14 +645,14 @@ class Summary extends Canvas implements CommandListener, Runnable {
             tmp2 = evInCurrentDay(new Vector(), tmp);
             getItem(Event.EV_RISE, i).setEvents(tmp2);
 //#if logger
-//#       Astromaximum.instance.logger(" other risesets");
+      Astromaximum.instance.logger(" other risesets");
 //#endif      
 //      System.out.println("EvDump:");
 //      Astromaximum.evDump(tmp2);
         }
 ///////////////////////////////////////
 //#if logger
-//#       Astromaximum.instance.logger("end risesets");
+      Astromaximum.instance.logger("end risesets");
 //#endif      
 
 //****** PLANETARY HOURS
@@ -671,7 +668,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //    System.out.print("NH=");
 //    System.out.println(getItem(Event.EV_NIGHT_HOURS).events.length);
 //#if logger
-//#       Astromaximum.instance.logger(" planetHours");
+      Astromaximum.instance.logger(" planetHours");
 //#endif      
 //    long pp0=period0 + Astromaximum.MSECINDAY, pp1=period1 + Astromaximum.MSECINDAY;
 //    ev= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
@@ -696,11 +693,11 @@ class Summary extends Canvas implements CommandListener, Runnable {
             }
         }
 //#if logger
-//#       Astromaximum.instance.logger("before setTime");
+      Astromaximum.instance.logger("before setTime");
 //#endif      
         Astromaximum.customTime.setTime(false);
 //#if logger
-//#       Astromaximum.instance.logger("after setTime");
+      Astromaximum.instance.logger("after setTime");
 //#endif      
 //    final String et="gET="+Long.toString(Options.currentTime()-tick);
     }
@@ -734,7 +731,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
             }
 
 //#if logger
-//#       Astromaximum.instance.logger(" si created");
+      Astromaximum.instance.logger(" si created");
 //#endif      
             statItem = getItem(Event.EV_STATUS);
 //      getItem(Event.EV_ZODIAC_SIGN).initString();
@@ -1061,11 +1058,11 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //      System.out.println(date.toString());
             setCell(date.getTime(), true);
 //#if logger
-//#       Astromaximum.instance.logger("after setCell");
+      Astromaximum.instance.logger("after setCell");
 //#endif      
             gatherMonth();
 //#if logger
-//#       Astromaximum.instance.logger("gatherMonth");
+      Astromaximum.instance.logger("gatherMonth");
 //#endif      
         }
         recalcAllSelections();
@@ -1082,15 +1079,15 @@ class Summary extends Canvas implements CommandListener, Runnable {
         if (selsi != null && selsi.isOnPage()) {
             selsi.setSelection();
 //#if logger
-//#       Astromaximum.instance.logger("recalcsel");
-//#       Astromaximum.instance.logger(Integer.toString(selsi.nowSelection));
-//#       Astromaximum.instance.logger(Integer.toString(selsi.selIndex)+" of "+
-//#        Integer.toString(selsi.events.length));
+      Astromaximum.instance.logger("recalcsel");
+      Astromaximum.instance.logger(Integer.toString(selsi.nowSelection));
+      Astromaximum.instance.logger(Integer.toString(selsi.selIndex)+" of "+
+       Integer.toString(selsi.events.length));
 //#endif      
             selsi.prepareTithi();
         }
 //#if logger
-//#       Astromaximum.instance.logger("end SetCurPage");
+      Astromaximum.instance.logger("end SetCurPage");
 //#endif      
         if (pageNum >= PAGE_SUMMARY && pageNum <= PAGE_LAST) {
             recalcPeriods();
@@ -1320,23 +1317,23 @@ class Summary extends Canvas implements CommandListener, Runnable {
             String ext = "/res/sz" + Integer.toString(IMG_HEIGHT) + ".dat";
             imgService = Astromaximum.extractImg(0, ext);
 //#if logger
-//#       Astromaximum.instance.logger(" imgService");
+      Astromaximum.instance.logger(" imgService");
 //#endif      
             imgZodiac = Astromaximum.extractImg(1, ext);
 //#if logger
-//#       Astromaximum.instance.logger(" imgZodiac");
+      Astromaximum.instance.logger(" imgZodiac");
 //#endif      
             imgPlanet = Astromaximum.extractImg(2, ext);
 //#if logger
-//#       Astromaximum.instance.logger(" imgPlanet");
+      Astromaximum.instance.logger(" imgPlanet");
 //#endif      
             imgOpaq = Astromaximum.extractImg(3, ext);
 //#if logger
-//#       Astromaximum.instance.logger(" imgOpaq");
+      Astromaximum.instance.logger(" imgOpaq");
 //#endif      
             imgAspect = Astromaximum.extractImg(4, ext);
 //#if logger
-//#       Astromaximum.instance.logger(" imgAspect");
+      Astromaximum.instance.logger(" imgAspect");
 //#endif      
 //      String ext=Integer.toString(IMG_HEIGHT)+".png";
             final int dx = w * 10;
@@ -1380,11 +1377,11 @@ class Summary extends Canvas implements CommandListener, Runnable {
     void showDaySummary() {
         gatherSummary(selDate.getTime());
 //#if logger
-//#       Astromaximum.instance.logger("gatherSummary");
+      Astromaximum.instance.logger("gatherSummary");
 //#endif      
         setCurPage(PAGE_SUMMARY);
 //#if logger
-//#       Astromaximum.instance.logger("setCurPage");
+      Astromaximum.instance.logger("setCurPage");
 //#endif      
         selItem = 0;
         moveFocus(1);
@@ -1570,9 +1567,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
     }
 
     protected void showNotify() {
-//#if MIDP == "2.0"
         setFullScreenMode(true);
-//#endif
 //    if(timerTask!=null)
 //      timerTask.run();
     }
@@ -1610,24 +1605,24 @@ class Summary extends Canvas implements CommandListener, Runnable {
 
     public void run() {
 //#ifndef logger
-        goon = true;
-        timer = new Timer();
-        timer.schedule(new SummItem(0), LOGO_DELAY, LOGO_DELAY);
+//#         goon = true;
+//#         timer = new Timer();
+//#         timer.schedule(new SummItem(0), LOGO_DELAY, LOGO_DELAY);
 //#endif    
         DataInputStream dis = new DataInputStream(getClass().getResourceAsStream("/res/panel.png"));
         try {
 //#ifdef logger
-//#     Astromaximum.instance.logger(Integer.toString(dis.available()));
+    Astromaximum.instance.logger(Integer.toString(dis.available()));
 //#endif    
             byte[] buf = new byte[dis.available()];
             dis.read(buf);
 //#ifdef logger
-//#     Astromaximum.instance.logger(Integer.toString(buf[1896]));
-//#     Astromaximum.instance.logger(Integer.toString(buf[1897]));
+    Astromaximum.instance.logger(Integer.toString(buf[1896]));
+    Astromaximum.instance.logger(Integer.toString(buf[1897]));
 //#endif    
             imgPanel = Image.createImage(buf, 0, buf.length);
 //#ifdef logger
-//#     Astromaximum.instance.logger("imgPanel");
+    Astromaximum.instance.logger("imgPanel");
 //#endif    
             dis = new DataInputStream(new ByteArrayInputStream(buf));
             int chlen = 4, chtype, num = 0;

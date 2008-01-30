@@ -12,6 +12,8 @@ import java.io.*;
 import java.util.*;
 
 //#define perftest="0"
+import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreNotOpenException;
 
 //#ifdef build.desktop
 //# public class Astromaximum extends Frame{
@@ -207,6 +209,8 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#if logger
       long afterLS=Runtime.getRuntime().freeMemory();
 //#endif      
+                logBox = new LogBox();
+
                 interpreter = new Interpreter();
                 errCode = 1; // XXX
                 interpreter.addCommand(new Command(getstr(94), Command.BACK, 1));//back
@@ -214,6 +218,8 @@ public class Astromaximum extends MIDlet implements CommandListener {
                 interpreter.addCommand(new Command(getstr(90), Command.BACK, 3));//help
                 locale = getstr(255);
                 errCode = 101; // XXX
+                
+                logBox.init();
 //#if logger
       interpreter.isLogged=true;
       disp.setCurrent(interpreter);
@@ -245,7 +251,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
                     months[i] = getstr(7 + i);
                 }
 
-                logBox = new LogBox();
                 errCode = 4; // XXX
 //#if logger
       logger(logBox.toString());
@@ -473,6 +478,11 @@ public class Astromaximum extends MIDlet implements CommandListener {
      */
     private static void quit() {
         Display.getDisplay(instance).setCurrent(null);
+//#ifdef use_amtext
+//#         try {
+//#             interpreter.rs.closeRecordStore();
+//#         } catch (RecordStoreException ex) {}
+//#endif
         options.shutdown();
         instance.destroyApp(true);
         instance.notifyDestroyed();
@@ -486,12 +496,12 @@ public class Astromaximum extends MIDlet implements CommandListener {
      */
     static void log(String string) {
 ///#mdebug debug    
-        if (Astromaximum.logBox.getString(0).equals(LogBox.EMPTY)) {
-            Astromaximum.logBox.delete(0);
+        if (logBox.size()>0 && logBox.getString(0).equals(LogBox.EMPTY)) {
+            logBox.delete(0);
         }
-        Astromaximum.logBox.append(string, null);
-        while (Astromaximum.logBox.size() > 30) {
-            Astromaximum.logBox.delete(0);
+        logBox.append(string, null);
+        while (logBox.size() > 30) {
+            logBox.delete(0);
         }
         System.out.println(string);
 ///#enddebug

@@ -10,6 +10,7 @@
  * @author Andrei Ivushkin
  * @version 1.0
  */
+//#define use_amtext
 
 //#ifdef build.desktop
 //# package com.sw_axis;
@@ -18,11 +19,13 @@
 
 import javax.microedition.lcdui.*;
 import java.io.*;
+import java.util.Hashtable;
+import javax.microedition.rms.*;
 
 class Interpreter extends Canvas implements CommandListener {
 //#if "timeBomb" @ protection
-//#   static int hj=0x01234567;
-    //#endif
+  static int hj=0x01234567;
+//#endif
     private boolean helpMode;
     private final int HMARGIN;
     private final int VMARGIN;
@@ -43,15 +46,31 @@ class Interpreter extends Canvas implements CommandListener {
     static int topic = 10;
     boolean isLogged = false;
 
+//#ifdef use_amtext
+    Hashtable hamtext=new Hashtable();
+    RecordStore rs;
+//#endif
+    
     Interpreter() {
         super();
-//#if MIDP == "2.0"
         setFullScreenMode(true);
-//#endif
 //    offScreenBuffer=Image.createImage(getWidth()-HMARGIN*2,getHeight()*VMARGIN*2);
         setCommandListener(this);
         VMARGIN = HMARGIN = getWidth() / 25;
         fontSize = Font.SIZE_SMALL;
+//#ifdef use_amtext
+        try {
+
+            rs = RecordStore.openRecordStore("AMtext", "S&W Axis", "AMtext");
+            byte[] data=rs.getRecord(1);
+            for(int i=0; i<data.length; i++){
+                hamtext.put(new Integer(data[i]), new Integer(i+2));
+            }
+        } catch (RecordStoreException ex) {
+            Astromaximum.log("RS:"+ex.getMessage());
+        }
+//#endif
+        
     }
 
     /**
@@ -73,7 +92,8 @@ class Interpreter extends Canvas implements CommandListener {
         boolean isTopicTitle = false;
         String s = extractArticle(params);
         if (s == null) {
-            txt = s = Astromaximum.getstr(110);//demo texts
+            return false;
+//            txt = s = Astromaximum.getstr(110);//demo texts
         } else {
             StringBuffer sb = new StringBuffer(s);
             if (!ignoreAllTopics) {
@@ -136,7 +156,6 @@ class Interpreter extends Canvas implements CommandListener {
             //    }
 
             StringBuffer res = new StringBuffer();
-            //#if 1==1
             switch ((int) params[0]) {
                 case Event.EV_MOON_DAY:
                     res.append(Astromaximum.getstr(121)).append(params[2]);//moon day#
@@ -223,7 +242,6 @@ class Interpreter extends Canvas implements CommandListener {
                     res.append("\u00b16 ").append(Astromaximum.getstr(137));
                     break;
             }
-            //#endif
             String ss = "";
             if (params[params.length - 2] != 0) {
                 ss = Event.long2String(params[params.length - 2], 0, false);
@@ -252,9 +270,9 @@ class Interpreter extends Canvas implements CommandListener {
         return s.length() > 1;
     }
 
-    protected void sizeChanged(int w, int h) {
-        //    Astromaximum.instance.recalcBounds(getWidth(),getHeight());
-    }
+//    protected void sizeChanged(int w, int h) {
+//        Astromaximum.instance.recalcBounds(getWidth(),getHeight());
+//    }
 
 
     public void commandAction(Command c, Displayable d) {
@@ -377,17 +395,17 @@ class Interpreter extends Canvas implements CommandListener {
         switch (ga) {
             case Canvas.FIRE:
 //#if logger
-//#         if(isLogged){
-//# ///#           Astromaximum.instance.logger("Stopping log...");
-//# ///#           isLogged=false;
-//# ///#           Astromaximum.summary.stop();
-//#               Astromaximum.LOGGER_SLEEP=0;
-//#         }
-//#         else{
-//#           Astromaximum.summary.dontRender();
-//#         }
+        if(isLogged){
+///#           Astromaximum.instance.logger("Stopping log...");
+///#           isLogged=false;
+///#           Astromaximum.summary.stop();
+              Astromaximum.LOGGER_SLEEP=0;
+        }
+        else{
+          Astromaximum.summary.dontRender();
+        }
 //#else
-                Astromaximum.summary.dontRender();
+//#                 Astromaximum.summary.dontRender();
 //#endif
                 break;
             case Canvas.UP:
@@ -428,12 +446,26 @@ class Interpreter extends Canvas implements CommandListener {
         String res = null;
         byte[] interp;
         try {
+//#ifdef use_amtext
+            if(params[0]!=Event.EV_MSG){
+                Integer val=(Integer)hamtext.get(new Integer((int)params[0]));
+                try{
+                    interp=rs.getRecord(val.intValue());
+                } catch (Exception ex){
+                    return null;
+                }
+            }
+            else{
+//#endif
             InputStream is = getClass().getResourceAsStream(Long.toString(params[0]));
             if (is == null) {
                 return null;
             }
             interp = new byte[is.available()];
             is.read(interp);
+//#ifdef use_amtext
+            }
+//#endif
             DataInputStream dis = new DataInputStream(
                     new ByteArrayInputStream(interp));
 //      while(true){

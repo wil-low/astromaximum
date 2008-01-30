@@ -35,10 +35,13 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
+CC=gcc
+CCC=g++
+CXX=g++
 
 .SUFFIXES: .fl .cxx .h
 .fl.cxx .fl.h:
-				../../../fltk2/fluid/fluid2 -c $<
+	../../../fltk2/fluid/fluid2 -c $<
 				
 
 # build

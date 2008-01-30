@@ -39,10 +39,10 @@ $0=~/(.+)[\\\/]/is;
 $path=$1;
 if(!$path){
 #	if($winda){
-#    $path='.';
+    $path='.';
 #  }
 #  else{
-  	$path=`sh pwd`;
+#  	$path=`sh pwd`;
 #  }
 }
 chomp($path);
@@ -53,7 +53,7 @@ if($islocal){
 	if(!scalar(@ARGV)){
 	    print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
 	    print "Parameters:\n";
-	    print "\t<config>: [rebuild|notest|imei|tb|demo|join|lang]\n";
+	    print "\t<config>: [rebuild|notest|imei|tb|demo|join|lang|amtext]\n";
 	    print "\t<year>\n";
 	    print "\t<lang>\n";
 	    print "\t<loclist file>\n";
@@ -123,7 +123,7 @@ if($islocal and ($config eq 'rebuild')){
         print "\n--------------------------------\n";
         print "--- Config $_ ---\n";
         print "--------------------------------\n";
-        my $cmd="\"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/geoLib\" clean jar";
+        my $cmd="\"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
         print "$cmd\n";
         die "BUILD ERROR" if system($cmd);
     }
@@ -131,17 +131,39 @@ if($islocal and ($config eq 'rebuild')){
     print "\n--------------------------------\n";
     print "--- Config geo: $conf ---\n";
     print "--------------------------------\n";
-    my $cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/geoLib\" clean jar";
+    my $cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
     print "$cmd\n";
     die "BUILD ERROR"if system($cmd);
     exit(0);
 }
 our $messjar=1;
+my $done=0;
 
 my $argv="@ARGV";
 $messjar=0 if $argv=~/nomessjar/is;
 
-die "Invalid year '$year'" if $year!~/^\d{4}$/is;
+if($config=~/amtext/is){
+    unzip("$path/$const::DIR_TEMPLATE/AMtext.jar");
+    inject_lang($lang, 'amtext'); 
+    inject_icon('amtext', "res/");
+
+	my @files=glob("$path/$const::DIR_TEMP/*");
+	my $out='';
+	foreach my $fn(@files){
+		next if $fn!~/[\\\/](\d+)$/is;
+		$out.=pack("C", $1);
+	}
+	open(OUT, ">$path/$const::DIR_TEMP/index") or die "$!: $path/$const::DIR_TEMP/index";
+	binmode(OUT);
+	print(OUT $out);
+	close(OUT);
+#	$outfile=~s/\.jar/-$lang.jar/is;
+	    do_jar('AMtext', $outfile, "TextInstaller");
+    $done=1;
+}
+else{
+	die "Invalid year '$year'" if $year!~/^\d{4}$/is;
+}
 if($islocal){
 	$loclist=ensure_slash($loclist);
 	die "Invalid loclist '$loclist'" if ! -f $loclist;
@@ -171,7 +193,6 @@ if($outfile eq '-'){
 $outfile=ensure_slash($outfile);
 print "Processing <$config> for $year lang=$lang using locations from $loclist...\n";
 
-my $done=0;
 
 if($config=~/tb/is){
     my $ofs=shift(@ARGV);
@@ -197,9 +218,14 @@ if($config=~/tb/is){
 
 if($config=~/demo/is){
 #    $year=2006;
+    my $ofs=shift(@ARGV);
+    $ofs=0 unless $ofs;
+    my $delta=shift(@ARGV);
+    $delta=30 unless $delta;
     unzip("$path/$const::DIR_TEMPLATE/AstromaximumDemo.jar");
     inject_lang($lang, 'demo'); 
     inject_amdata();
+    do_timebomb($ofs, $delta);
     inject_common($year, "$path/$const::DIR_TEMP/c.dat");
     inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
     inject_icon('a', "res/");
@@ -207,6 +233,7 @@ if($config=~/demo/is){
     do_messjar($outfile);
     $done=1;
 }
+
 
 if($config=~/geo-$/is){
     unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
@@ -304,7 +331,7 @@ sub inject_icon{ # prefix, subdir
     binmode(OUTF);
     print OUTF join('', @body);
     close (OutF);
-    print "$const::DIR_TEMP/res/icon.png written from $path/$const::DIR_IMG/$prefix$1.png\n";
+    print "$const::DIR_TEMP/$_[0]"."icon.png written from $path/$const::DIR_IMG/$prefix$1.png\n";
 }
 
 sub inject_locations{
@@ -772,22 +799,25 @@ sub timebomb_install # time, sign
 
 sub inject_lang{ # lang, isdemo
     my($lang, $demo)=@_;
+
+    my $use_amtext=$lang=~s/\-//is; # write only EV_MSG if lang contains '-'
+
     my $dest="$path/$const::DIR_TEMP";
     my @bins=glob("$path/$const::DIR_INTERPRET/$lang/*.txt");
     unless(scalar(@bins)){
-    	print "No files for '$lang' language ($path/$const::DIR_INTERPRET/$lang/*.txt)\n"; 
-    	die;
+    	print "\nNo files for '$lang' language ($path/$const::DIR_INTERPRET/$lang/*.txt)\n\n"; 
+    	return;
     }
     my @buf;
     my $body;
-
+=head
     my @demo_allowed=qw(
       EV_VOC EV_SIGN_ENTER EV_MOON_MOVE EV_ASP_EXACT_MOON EV_DEGPASS0 EV_DEGPASS1
       EV_DEGPASS2 EV_DEGPASS3 EV_RETROGRADE EV_MSG
     );
 
-
     my %demo_events;
+    $demo=0; # demo filter disabled
     if($demo){
       print "Demo mode: filtering events\n";
       foreach(@demo_allowed){
@@ -799,7 +829,9 @@ sub inject_lang{ # lang, isdemo
     else{
       %demo_events=%eventType;
     }
+=cut
 
+    my %demo_events=%eventType;
 
     print "Cleaning $dest dir\n";
             my @clean=glob("$dest/*");
@@ -808,6 +840,7 @@ sub inject_lang{ # lang, isdemo
             }
     #die $eventType{'EV_VOC'};  
     foreach my $ff(@bins){
+	    next if $ff!~/\.txt$/is;
             open(InF, "<$ff") or die "No file $ff";
             @buf=<InF>;
             close(InF);
@@ -825,6 +858,8 @@ sub inject_lang{ # lang, isdemo
               print "skipped from demo\n";
               next;
             }
+	    next if $evt ne 'EV_MSG' and $use_amtext;
+	    next if $evt eq 'EV_MSG' and $demo eq 'amtext';
             $buf[1]=~/\!\!params\s*(\d+)/i;
             $paramcount=$1;
             $buf[2]=~/\!\!planet\s*(.+)/i;
@@ -892,7 +927,7 @@ sub inject_lang{ # lang, isdemo
 
     }
     if($errors==0){
-      return if $demo;
+      return 0 if $demo;
       while (my($key, $value) = each %hash) {
             $value=~s/\\//isg;
             print "    topics.put(new Integer(Event.$key), \"$value\");\n";

@@ -46,7 +46,7 @@ class Options extends GeoList {
     private static final int FLG_LOCALTIME = 2;
 
     Options() {
-        //#if "test" @ protection
+        //#if demo
 //#     super(Astromaximum.instance,Choice.EXCLUSIVE,"l.dat");
         //#else
         super(Astromaximum.instance, Choice.EXCLUSIVE, "locations.dat");
@@ -89,14 +89,7 @@ class Options extends GeoList {
      * @noinspection InfiniteLoopStatement
      */
     void init() {
-//#if MIDP == "2.0"
         cityList.deleteAll();
-//#else
-//#    try {
-//#      while(true)
-//#        cityList.delete(0);
-//#    } catch (IndexOutOfBoundsException iob) {}
-//#endif
 
         try {
 //#if Demo
@@ -360,9 +353,9 @@ class Options extends GeoList {
             if (rs.getNumRecords() == 0) { // fill initial city
                 byte[] cn;
 //#if "timeBomb" @ protection
-//#         cn=Astromaximum.getArray();
+        cn=Astromaximum.getArray();
 //#else
-                cn = new byte[2];
+//#                 cn = new byte[2];
 //#endif
                 DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
                 rs.addRecord(cn, 0, 1);

@@ -6,9 +6,9 @@
 #include "fltk/IntInput.h"
 
 class MyBrowser : public fltk::Browser  {
-  virtual int handle(int event);
+	virtual int handle(int event);
 public:
-  MyBrowser(int x, int y, int w, int h, const char *l);
+	MyBrowser(int x, int y, int w, int h, const char *l);
 };
 #include <fltk/Window.h>
 #include <fltk/Group.h>

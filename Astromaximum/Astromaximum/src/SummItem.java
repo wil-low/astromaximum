@@ -20,8 +20,6 @@
 //#else
 
 import javax.microedition.lcdui.*;
-//#if MIDP == "2.0"
-//#endif
 import java.util.*;
 import javax.microedition.rms.RecordFilter;
 
@@ -1235,7 +1233,7 @@ class SummItem extends TimerTask implements RecordFilter {
 //    events[0].dump();
         int deg2 = getSelEvent().getDegree() - 1;
 //#if logger
-//#       Astromaximum.instance.logger(Integer.toString(deg2));
+      Astromaximum.instance.logger(Integer.toString(deg2));
 //#endif  
         if (deg2 > 30) {
             deg2 = 0;
