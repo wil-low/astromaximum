@@ -82,27 +82,6 @@ our $lang=shift(@ARGV);
 our $loclist=shift(@ARGV);
 our $outfile=shift(@ARGV);
 
-if(!$islocal and ($config eq 'cleanup')){
-	my $dbh=db_connect();
-	my $stat="SELECT id FROM files WHERE end_tm<NOW()";
-	my $sth = $dbh->prepare($stat);
-	$sth->execute || die $dbh->errstr;
-	my $ids='';
-	while(my @row = $sth->fetchrow_array){
-		unlink glob("$path/files/$row[0].*");
-		print "Deleted: $path/files/$row[0]\n";
-		$ids.="'$row[0]',";
-	}
-	$ids=~s/,$//is;
-	$sth->finish;
-	$stat="UPDATE files SET deleted='t' WHERE id IN ($ids)";
-	$sth = $dbh->prepare($stat);
-	$sth->execute || die $dbh->errstr;
-	$sth->finish;
-	$dbh->disconnect;
-	exit(0);
-}
-
 if($islocal and ($config eq 'join')){
 	inject_common($year, "$path/$year.comm");
 	exit(0);
@@ -158,33 +137,11 @@ if($islocal and ($config eq 'rebuild')){
     exit(0);
 }
 our $messjar=1;
-my $done=0;
 
 my $argv="@ARGV";
 $messjar=0 if $argv=~/nomessjar/is;
 
 if($config=~/amtext/is){
-    unzip("$path/$const::DIR_TEMPLATE/AMtext.jar");
-    inject_lang($lang, 'amtext'); 
-    inject_icon('amtext', "res/");
-
-	my @files=glob("$path/$const::DIR_TEMP/*");
-	my $out='';
-	foreach my $fn(@files){
-		next if $fn!~/[\\\/](\d+)$/is;
-		$out.=pack("C", $1);
-	}
-	open(OUT, ">$path/$const::DIR_TEMP/index") or die "$!: $path/$const::DIR_TEMP/index";
-	binmode(OUT);
-	print(OUT $out);
-	close(OUT);
-#	$outfile=~s/\.jar/-$lang.jar/is;
-	    do_jar('AMtext', $outfile, "TextInstaller");
-    $done=1;
-}
-else{
-	die "Invalid year '$year'" if $year!~/^\d{4}$/is;
-}
 if($islocal){
 	$loclist=ensure_slash($loclist);
 	die "Invalid loclist '$loclist'" if ! -f $loclist;
@@ -239,14 +196,9 @@ if($config=~/tb/is){
 
 if($config=~/demo/is){
 #    $year=2006;
-    my $ofs=shift(@ARGV);
-    $ofs=0 unless $ofs;
-    my $delta=shift(@ARGV);
-    $delta=30 unless $delta;
     unzip("$path/$const::DIR_TEMPLATE/AstromaximumDemo.jar");
     inject_lang($lang, 'demo'); 
     inject_amdata();
-    do_timebomb($ofs, $delta);
     inject_common($year, "$path/$const::DIR_TEMP/c.dat");
     inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
     inject_icon('a', "res/");
@@ -254,7 +206,6 @@ if($config=~/demo/is){
     do_messjar($outfile);
     $done=1;
 }
-
 
 if($config=~/geo-$/is){
     unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
@@ -411,39 +362,6 @@ sub inject_locations{
   print "$_[2] written\n";
   $locname='Geo' if $locnum>1;
   return $locname."'$ye";
-}
-
-sub db_connect{
-	require DBI;
-	require CGI;
-	require CGI::Carp;
-	import CGI::Carp 'fatalsToBrowser';
-	my($DB_SERVER,$DB_NAME,$DB_PORT,$DB_SUPERUSER,$DB_SUPERUSER_PWD,
-		$DB_USER,$DB_USER_PWD);
-
-	if(CGI::server_name() eq "localhost"){
-		$DB_SERVER='localhost';
-		$DB_NAME='amax';
-		$DB_PORT='3306';
-		
-		$DB_SUPERUSER='root';
-		$DB_SUPERUSER_PWD='toor';
-		$DB_USER='user';
-		$DB_USER_PWD='user';
-	}
-	else{
-		$DB_SERVER='localhost';
-		$DB_NAME='usr_web42_1';
-		$DB_PORT='3306';
-		
-		$DB_SUPERUSER='web42';
-		$DB_SUPERUSER_PWD='vSZBWppx';
-		$DB_USER='user';
-		$DB_USER_PWD='user';
-	}
-	my $dbh = DBI->connect("DBI:mysql:database=$DB_NAME;host=$DB_SERVER", 
-		$DB_SUPERUSER, $DB_SUPERUSER_PWD);
-	return $dbh;
 }
 
 sub inject_common{
@@ -824,9 +742,6 @@ sub timebomb_install # time, sign
 
 sub inject_lang{ # lang, isdemo
     my($lang, $demo)=@_;
-
-    my $use_amtext=$lang=~s/\-//is; # write only EV_MSG if lang contains '-'
-
     my $dest="$path/$const::DIR_TEMP";
     my @bins=glob("$path/$const::DIR_INTERPRET/$lang/*.txt");
     unless(scalar(@bins)){
@@ -842,7 +757,6 @@ sub inject_lang{ # lang, isdemo
     );
 
     my %demo_events;
-    $demo=0; # demo filter disabled
     if($demo){
       print "Demo mode: filtering events\n";
       foreach(@demo_allowed){
@@ -854,9 +768,7 @@ sub inject_lang{ # lang, isdemo
     else{
       %demo_events=%eventType;
     }
-=cut
 
-    my %demo_events=%eventType;
 
     print "Cleaning $dest dir\n";
             my @clean=glob("$dest/*");
@@ -865,7 +777,6 @@ sub inject_lang{ # lang, isdemo
             }
     #die $eventType{'EV_VOC'};  
     foreach my $ff(@bins){
-	    next if $ff!~/\.txt$/is;
             open(InF, "<$ff") or die "No file $ff";
             @buf=<InF>;
             close(InF);
@@ -883,8 +794,6 @@ sub inject_lang{ # lang, isdemo
               print "skipped from demo\n";
               next;
             }
-	    next if $evt ne 'EV_MSG' and $use_amtext;
-	    next if $evt eq 'EV_MSG' and $demo eq 'amtext';
             $buf[1]=~/\!\!params\s*(\d+)/i;
             $paramcount=$1;
             $buf[2]=~/\!\!planet\s*(.+)/i;

@@ -393,6 +393,7 @@ class Options extends GeoList {
             dos.writeByte(optFlags);
             dos.writeByte(timeGap.getSelectedIndex());
             dos.writeByte(layout.getSelectedIndex());
+            dos.writeByte(Astromaximum.interpreter.fontSize);
             dos.writeShort(CustomTime.histCount);
             dos.writeInt(Astromaximum.customTime.lockFlags);
             for (int i = 0; i < CustomTime.histCount; i++) {
@@ -418,6 +419,7 @@ class Options extends GeoList {
             optFlags = dis.readByte();
             timeGap.setSelectedIndex(dis.readByte(), true);
             layout.setSelectedIndex(dis.readByte(), true);
+            Astromaximum.interpreter.fontSize=dis.readByte();
             CustomTime.histCount = dis.readUnsignedShort();
             Astromaximum.customTime.lockFlags = dis.readInt();
             for (int i = 0; i < CustomTime.histCount; i++) {
@@ -436,6 +438,7 @@ class Options extends GeoList {
             timeGap.setSelectedIndex(2, true);
             layout.setSelectedIndex(0, true);
             optFlags = OPT_FLAGS;
+            Astromaximum.interpreter.fontSize=Font.SIZE_SMALL;
         }
         for (int i = 0; i < optList.size(); i++) {
             optList.setSelectedIndex(i, (optFlags & (1 << i)) != 0);

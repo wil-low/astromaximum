@@ -4,7 +4,6 @@ SOURCE=$(DEST)/source
 all:	config gen_amax template interpret
 
 gen_amax:
-	#rm -r $(DEST)
 	mkdir $(DEST) $(SOURCE); \
 	cat tools.pm genconst.pm gen_amax.pl > $(DEST)/gen_amax.cgi; \
 

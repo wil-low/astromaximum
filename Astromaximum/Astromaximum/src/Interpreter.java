@@ -31,7 +31,8 @@ class Interpreter extends Canvas implements CommandListener {
     private final int VMARGIN;
     static final String[] riseKeys = {"asc", "mc", "dsc", "ic"};
     private int curX, curY, topLine = 0, lineCount;
-    private int fontSize, lineHeight;
+    int fontSize;
+    private int lineHeight;
     static final int T_BUSINESS = 0;
     static final int T_FINANCE = 1;
     static final int T_LICENSE = 2;
@@ -294,6 +295,7 @@ class Interpreter extends Canvas implements CommandListener {
                     break;
             }
             repaint();
+            Astromaximum.options.saveHistory();
         }
         if (c.getPriority() == 3) {
             Astromaximum.summary.setCurPage(Summary.PAGE_HELP);
@@ -452,7 +454,7 @@ class Interpreter extends Canvas implements CommandListener {
 //#                 try{
 //#                     interp=rs.getRecord(val.intValue());
 //#                 } catch (Exception ex){
-//#                     return null;
+//#                     return "No interpretation found. Please install AMtext midlet.";
 //#                 }
 //#             }
 //#             else{
