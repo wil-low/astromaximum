@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use strict;
-use warnings;
+#use warnings;
 
 my $path=$ARGV[0];
 if(!$path){

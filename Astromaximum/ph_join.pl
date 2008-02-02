@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use strict;
-use warnings;
+#use warnings;
 
 #for(my $i=0; $i<=$#str; $i++){
 #  $str[$i]=~/\"(.+?)\"/is;

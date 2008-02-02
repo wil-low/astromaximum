@@ -53,7 +53,7 @@ if($islocal){
 	if(!scalar(@ARGV)){
 	    print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
 	    print "Parameters:\n";
-	    print "\t<config>: [rebuild|notest|imei|tb|demo|join|lang|amtext]\n";
+	    print "\t<config>: [rebuild|notest|imei|tb|demo|join|lang|amtext|cleanup]\n";
 	    print "\t<year>\n";
 	    print "\t<lang>\n";
 	    print "\t<loclist file>\n";
@@ -81,6 +81,27 @@ our $year=shift(@ARGV);
 our $lang=shift(@ARGV);
 our $loclist=shift(@ARGV);
 our $outfile=shift(@ARGV);
+
+if(!$islocal and ($config eq 'cleanup')){
+	my $dbh=db_connect();
+	my $stat="SELECT id FROM files WHERE end_tm<NOW()";
+	my $sth = $dbh->prepare($stat);
+	$sth->execute || die $dbh->errstr;
+	my $ids='';
+	while(my @row = $sth->fetchrow_array){
+		unlink glob("$path/files/$row[0].*");
+		print "Deleted: $path/files/$row[0]\n";
+		$ids.="'$row[0]',";
+	}
+	$ids=~s/,$//is;
+	$sth->finish;
+	$stat="UPDATE files SET deleted='t' WHERE id IN ($ids)";
+	$sth = $dbh->prepare($stat);
+	$sth->execute || die $dbh->errstr;
+	$sth->finish;
+	$dbh->disconnect;
+	exit(0);
+}
 
 if($islocal and ($config eq 'join')){
 	inject_common($year, "$path/$year.comm");
@@ -363,36 +384,7 @@ sub inject_locations{
   }
   else{
   	my($year, $ids, $outf)=@_;
-		require DBI;
-		require CGI;
-		require CGI::Carp;
-		import CGI::Carp 'fatalsToBrowser';
-		#use CGI::Carp 'fatalsToBrowser';
-		my($DB_SERVER,$DB_NAME,$DB_PORT,$DB_SUPERUSER,$DB_SUPERUSER_PWD,
-			$DB_USER,$DB_USER_PWD);
-
-		if(CGI::server_name() eq "localhost"){
-			$DB_SERVER='localhost';
-			$DB_NAME='amax';
-			$DB_PORT='3306';
-			
-			$DB_SUPERUSER='root';
-			$DB_SUPERUSER_PWD='toor';
-			$DB_USER='user';
-			$DB_USER_PWD='user';
-		}
-		else{
-			$DB_SERVER='localhost';
-			$DB_NAME='usr_web42_1';
-			$DB_PORT='3306';
-			
-			$DB_SUPERUSER='web42';
-			$DB_SUPERUSER_PWD='vSZBWppx';
-			$DB_USER='user';
-			$DB_USER_PWD='user';
-		}
-		my $dbh = DBI->connect("DBI:mysql:database=$DB_NAME;host=$DB_SERVER", 
-			$DB_SUPERUSER, $DB_SUPERUSER_PWD);
+	my $dbh=db_connect();
 		$ids=~s/^,+//is;
 		$ids=~s/,+$//is;
 		my $stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
@@ -419,6 +411,39 @@ sub inject_locations{
   print "$_[2] written\n";
   $locname='Geo' if $locnum>1;
   return $locname."'$ye";
+}
+
+sub db_connect{
+	require DBI;
+	require CGI;
+	require CGI::Carp;
+	import CGI::Carp 'fatalsToBrowser';
+	my($DB_SERVER,$DB_NAME,$DB_PORT,$DB_SUPERUSER,$DB_SUPERUSER_PWD,
+		$DB_USER,$DB_USER_PWD);
+
+	if(CGI::server_name() eq "localhost"){
+		$DB_SERVER='localhost';
+		$DB_NAME='amax';
+		$DB_PORT='3306';
+		
+		$DB_SUPERUSER='root';
+		$DB_SUPERUSER_PWD='toor';
+		$DB_USER='user';
+		$DB_USER_PWD='user';
+	}
+	else{
+		$DB_SERVER='localhost';
+		$DB_NAME='usr_web42_1';
+		$DB_PORT='3306';
+		
+		$DB_SUPERUSER='web42';
+		$DB_SUPERUSER_PWD='vSZBWppx';
+		$DB_USER='user';
+		$DB_USER_PWD='user';
+	}
+	my $dbh = DBI->connect("DBI:mysql:database=$DB_NAME;host=$DB_SERVER", 
+		$DB_SUPERUSER, $DB_SUPERUSER_PWD);
+	return $dbh;
 }
 
 sub inject_common{

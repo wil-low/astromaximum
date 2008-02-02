@@ -141,11 +141,23 @@ class Summary extends Canvas implements CommandListener, Runnable {
             final int y = graphics.getClipY();
             final int w = graphics.getClipWidth();
             final int h = graphics.getClipHeight();
+            graphics.drawString(Astromaximum.instance.getAppProperty("MIDlet-Name"), 
+                        w / 2, moonY - 2, Graphics.BOTTOM | Graphics.HCENTER);
             String ver = Astromaximum.instance.getAppProperty("MIDlet-Version");
+            int yy = h - moonY + 2;
             if (ver != null) {
-                ver = "Astromaximum v." + ver;
+                ver = "v." + ver;
+                graphics.drawString(ver, 
+                        w / 2, yy, Graphics.TOP | Graphics.HCENTER);
+                yy+=Font.getDefaultFont().getHeight()+2;
             }
-            graphics.drawString(ver, w / 2, moonY - 2, Graphics.BOTTOM | Graphics.HCENTER);
+//#ifdef use_amtext            
+//#             graphics.drawString("included text", 
+//#                     w / 2, yy, Graphics.TOP | Graphics.HCENTER);
+//#else
+            graphics.drawString("external text", 
+                    w / 2, yy, Graphics.TOP | Graphics.HCENTER);
+//#endif                
 //#ifdef imgPhase
             graphics.setClip(moonX, moonY, img.getWidth(), img.getHeight());
             graphics.drawImage(img, moonX, moonY, Graphics.LEFT | Graphics.TOP);

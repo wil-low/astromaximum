@@ -5,14 +5,8 @@ all:	config gen_amax template interpret
 
 gen_amax:
 	#rm -r $(DEST)
-	if [ -x /opt/lampp/bin/perl ]; then \
-	    PERL="/opt/lampp/bin/perl"; \
-	else \
-	    PERL="/usr/bin/perl"; \
-	fi; \
 	mkdir $(DEST) $(SOURCE); \
-	echo "#!$(PERL)" | cat - tools.pm genconst.pm gen_amax.pl > $(DEST)/gen_amax.cgi; \
-	chmod +x $(DEST)/gen_amax.cgi
+	cat tools.pm genconst.pm gen_amax.pl > $(DEST)/gen_amax.cgi; \
 
 template:	
 	cp templates/AstromaximumDemo.jar $(SOURCE); \

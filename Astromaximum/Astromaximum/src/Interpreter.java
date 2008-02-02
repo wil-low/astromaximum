@@ -10,7 +10,7 @@
  * @author Andrei Ivushkin
  * @version 1.0
  */
-//#define use_amtext
+
 
 //#ifdef build.desktop
 //# package com.sw_axis;
@@ -47,8 +47,8 @@ class Interpreter extends Canvas implements CommandListener {
     boolean isLogged = false;
 
 //#ifdef use_amtext
-    Hashtable hamtext=new Hashtable();
-    RecordStore rs;
+//#     Hashtable hamtext=new Hashtable();
+//#     RecordStore rs;
 //#endif
     
     Interpreter() {
@@ -59,16 +59,16 @@ class Interpreter extends Canvas implements CommandListener {
         VMARGIN = HMARGIN = getWidth() / 25;
         fontSize = Font.SIZE_SMALL;
 //#ifdef use_amtext
-        try {
-
-            rs = RecordStore.openRecordStore("AMtext", "S&W Axis", "AMtext");
-            byte[] data=rs.getRecord(1);
-            for(int i=0; i<data.length; i++){
-                hamtext.put(new Integer(data[i]), new Integer(i+2));
-            }
-        } catch (RecordStoreException ex) {
-            Astromaximum.log("RS:"+ex.getMessage());
-        }
+//#         try {
+//# 
+//#             rs = RecordStore.openRecordStore("AMtext", "S&W Axis", "AMtext");
+//#             byte[] data=rs.getRecord(1);
+//#             for(int i=0; i<data.length; i++){
+//#                 hamtext.put(new Integer(data[i]), new Integer(i+2));
+//#             }
+//#         } catch (RecordStoreException ex) {
+//#             Astromaximum.log("RS:"+ex.getMessage());
+//#         }
 //#endif
         
     }
@@ -447,15 +447,15 @@ class Interpreter extends Canvas implements CommandListener {
         byte[] interp;
         try {
 //#ifdef use_amtext
-            if(params[0]!=Event.EV_MSG){
-                Integer val=(Integer)hamtext.get(new Integer((int)params[0]));
-                try{
-                    interp=rs.getRecord(val.intValue());
-                } catch (Exception ex){
-                    return null;
-                }
-            }
-            else{
+//#             if(params[0]!=Event.EV_MSG){
+//#                 Integer val=(Integer)hamtext.get(new Integer((int)params[0]));
+//#                 try{
+//#                     interp=rs.getRecord(val.intValue());
+//#                 } catch (Exception ex){
+//#                     return null;
+//#                 }
+//#             }
+//#             else{
 //#endif
             InputStream is = getClass().getResourceAsStream(Long.toString(params[0]));
             if (is == null) {
@@ -464,7 +464,7 @@ class Interpreter extends Canvas implements CommandListener {
             interp = new byte[is.available()];
             is.read(interp);
 //#ifdef use_amtext
-            }
+//#             }
 //#endif
             DataInputStream dis = new DataInputStream(
                     new ByteArrayInputStream(interp));

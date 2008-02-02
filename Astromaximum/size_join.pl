@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use strict;
-use warnings;
+#use warnings;
 use POSIX;
 
 $0=~/(.+\/)/is;
