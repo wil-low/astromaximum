@@ -2,6 +2,11 @@
 	include_once('../dbconnect.php');
 	include_once('../amtools.php');
 	include_once('nav.php');
+	
+	$perl="/opt/lampp/bin/perl";
+	if(!file_exists($perl)){
+		$perl="/usr/bin/perl";
+	}
 	$cities=array('Kiev', 'London', 'New York', 'Moscow');
 	$sth=mysql_query("SELECT id FROM cities WHERE name in ('".implode("','", $cities)."')");
 	$default_city_ids='';
@@ -46,10 +51,10 @@
 		}
 	}	
 	if($isdemo){
-		$cmd="./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
+		$cmd="$perl ./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
 	}
 	else{
-		$cmd="./gen_amax.cgi tb $year \"".$_REQUEST['lang']."\" \"$default_city_ids\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
+		$cmd="$perl ./gen_amax.cgi tb $year \"".$_REQUEST['lang']."\" \"$default_city_ids\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
 	}
 	$ret=0;
 	exec($cmd, $outp, $ret);
@@ -59,6 +64,14 @@
 		echo implode('<br>',$outp);
 		exit;
 	}
+	$stat="INSERT INTO files(end_tm, id, user_id) VALUES (ADDTIME(NOW(), '2:00:00'), '".
+		quote_smart($fn)."', ".
+		quote_smart($_SESSION['uid']).")";
+	if(!mysql_query($stat)){
+		echo mysql_error();
+		exit;
+	}
+
 	$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
 	if(!strpos($data_php, "mobi")){
 		$data_php.="/mobi";

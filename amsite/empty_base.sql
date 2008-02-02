@@ -75,6 +75,7 @@ CREATE TABLE `customers` (
   `role` tinyint(4) NOT NULL default '1',
   `email` varchar(50) default NULL,
   `subscr_date` date default NULL,
+  `dl_count` int(11) NOT NULL default '2',
   PRIMARY KEY  (`id`),
   KEY `name` (`name`,`realname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds customer data';
@@ -98,7 +99,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files` (
-  `id` varchar(12) NOT NULL default '',
+  `id` varchar(14) NOT NULL default '',
   `type` enum('r','d','t','a') NOT NULL default 'r',
   `user_id` int(11) NOT NULL default '0',
   `end_tm` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -172,7 +173,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE `sessions` (
   `name` varchar(32) NOT NULL default '',
-  `user_id` int(11) NOT NULL default '0',
+  `user_id` int(11) NOT NULL default '-1',
   `tm_start` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `tm_end` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY  (`name`)

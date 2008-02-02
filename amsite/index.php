@@ -17,7 +17,7 @@ if(isset($_POST['dest']) && isset($_POST['btn'])){
 	if(strcmp($dest, 'pc')==0){ // PC links
 		switch($btn){
 			case 1:	$desturl="dl?lang=$lang"; break;
-			case 2:	$desturl="html/$lang/0_0.xhtml"; break;
+//			case 2:	$desturl="html/$lang/0_0.xhtml"; break;
 			case 3:	$desturl="html/$lang/about.xhtml"; break;
 			case 4:	$desturl="dl/prg.php?mode=demo&lang=$lang&dest=$dest"; break;
 			case 5:	$desturl="dl/prg.php?mode=trial&lang=$lang&dest=$dest"; break;
@@ -26,13 +26,15 @@ if(isset($_POST['dest']) && isset($_POST['btn'])){
 	else{ // Phone links
 		switch($btn){
 			case 1:	$desturl="year.php"; break;
-			case 2:	$desturl="html/$lang/0_0.xhtml"; break;
+//			case 2:	$desturl="html/$lang/0_0.xhtml"; break;
 			case 3:	$desturl="html/$lang/about.xhtml"; break;
 			case 4:	$desturl="dl/prg.php?mode=demo&lang=$lang&dest=$dest"; break;
 			case 5:	$desturl="dl/prg.php?mode=trial&lang=$lang&dest=$dest"; break;
 		}
 	}
-	header("Location: $desturl");
+	if(isset($desturl)){
+		header("Location: $desturl");
+	}
 	exit;
 }
 include_once('amtools.php');

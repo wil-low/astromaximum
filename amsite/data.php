@@ -17,7 +17,15 @@ if(true /*|| check_access()*/){
 	$ye=substr($dig, 0,2);
 	$fn="$DIR_FILES/".$dig.".$type";
 	$stat=sprintf(
-		"UPDATE files SET used='t' WHERE id=%s AND type='%s'", $dig, $type);
+		"SELECT COUNT(*) FROM files WHERE id='%s' AND end_tm>NOW() AND NOT deleted", quote_smart($dig));
+	$sth=mysql_query($stat);
+	$count=mysql_fetch_row($sth);
+	if($count[0]!=1){
+		header("HTTP/1.0 404 Not Found");
+		exit;
+	}
+	$stat=sprintf(
+		"UPDATE files SET used='t' WHERE id='%s'", quote_smart($dig));
 	mysql_query($stat);
 	if(strcmp($type,'t')==0){
 		$type='d';
