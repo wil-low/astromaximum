@@ -19,6 +19,7 @@ interpret:
 	cp htaccess $(SOURCE)/interpret/.htaccess; \
 
 config:
+	mkdir Astromaximum/deploy; \
 	echo "Size_join"; \
 	perl size_join.pl; \
 	echo "."; \

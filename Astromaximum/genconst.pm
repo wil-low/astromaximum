@@ -10,7 +10,7 @@ our $VENDOR='S&W Axis';
 our $VERSION='1.0.017';
 our $USE_AMTEXT=1;
 
-our $UNZIP=q(unzip  %s -x *META-INF* -d %s );
+our $UNZIP=q("%s"  %s -x *META-INF* -d %s );
 #our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
 #our $ZIP=q(cd %s & zip -vr %s *);
 #our $JAR=q(jar cvf %s -C %s .);

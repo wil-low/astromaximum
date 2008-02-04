@@ -4,7 +4,7 @@
 <!-- (If you delete it and reopen the project it will be recreated.) -->
 <project name="AMtext" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
-    <property name="lang" value="en"/>
+    <property name="lang" value="ru"/>
     <import file="nbproject/build-impl.xml"/>
     <import file="../jar_or_kzip.xml"/> 
     <!--

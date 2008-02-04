@@ -74,9 +74,18 @@ public class TextInstaller extends MIDlet implements CommandListener {
                         for (int i = 0; i < count; i++) {
                             dis = new DataInputStream(getClass().getResourceAsStream(new Byte(fnames[i]).toString()));
                             int len = dis.available();
-                            text = new byte[len];
+//                            msg+=Integer.toString(len)+",";
+                            text=new byte[len];
                             dis.read(text, 0, len);
                             rs.addRecord(text, 0, len);
+                            text=null;
+                            text=rs.getRecord(i+2);
+                            long sum=0;
+                            for(int j=0; j<text.length; j++){
+                                sum+=text[j];
+                            }
+                            msg+=Long.toString(sum)+",";
+                            //msg+=Integer.toString(text.hashCode())+",";
     //#ifdef use_gauge
     //#                         progress.setValue(i+1);
     //#endif
@@ -102,6 +111,7 @@ public class TextInstaller extends MIDlet implements CommandListener {
                         msg+=was;
                     }
                     alert.setString(msg);
+                    System.out.println(msg);
                     alert.removeCommand(cmd);
                     alert.addCommand(new Command("Close", Command.OK, 1));
 //                    Display.getDisplay(this).setCurrent(alert);

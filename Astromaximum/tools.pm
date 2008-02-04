@@ -24,7 +24,7 @@ sub join_datafiles # year, size, destfile, fname_listref
 		close(INF);
 		$bodies[$i]="@buf";
 		print OUTF pack('n',length($bodies[$i]));
-		print length($bodies[$i])."\n";
+		print(length($bodies[$i])."\n");
 		++$i;
 		last if $i>=$size;
 	}
@@ -46,7 +46,7 @@ sub writeData # srcfile, destfile, imeichar
 	close(INF);
 	if(length($body)>8){
 		print OUTF pack('c',$imeichar).$body; #
-		print "$src $imeichar\n";
+		print("$src $imeichar\n");
 	}
 	close(OUTF);
 }
@@ -111,7 +111,7 @@ sub create_geo { # code, region, descript, destdir, locationpath, is_numbered, y
 	close(INF);
 
 	my $cmd="\"$rar\" a -r -ep1 $destdir$fname\.jar .temp/*";
-	print "$cmd\n";
+	print("$cmd\n");
 	system($cmd);
 	
 	my $asize= -s "$destdir$fname\.jar";
@@ -146,4 +146,6 @@ sub day_count{
 	}
 	return $dc;
 }
+
+
 1;

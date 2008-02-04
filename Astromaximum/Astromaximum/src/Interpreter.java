@@ -19,7 +19,7 @@
 
 import javax.microedition.lcdui.*;
 import java.io.*;
-import java.util.Hashtable;
+import java.util.*;
 import javax.microedition.rms.*;
 
 class Interpreter extends Canvas implements CommandListener {
@@ -59,14 +59,46 @@ class Interpreter extends Canvas implements CommandListener {
         setCommandListener(this);
         VMARGIN = HMARGIN = getWidth() / 25;
         fontSize = Font.SIZE_SMALL;
+//#ifdef test_rs        
+//#         byte[] text = null;
+//#         String msg="";
+//# try{
+//#         RecordStore rs = RecordStore.openRecordStore("AMtext", "S&W Axis", "AMtext");
+//#         byte[] data=rs.getRecord(1);
+//#         for (int i = 0; i < data.length; i++) {
+//#             text=rs.getRecord(i+2);
+//#             long sum=0;
+//#             for(int j=0; j<text.length; j++){
+//#                 sum+=text[j];
+//#             }
+//#             msg+=Long.toString(sum)+",";
+//#         }
+//# }catch(Exception ex){};        
+//#         Astromaximum.log(msg);
+//#endif
+        
 //#ifdef use_amtext
 //#         try {
-//# 
 //#             rs = RecordStore.openRecordStore("AMtext", "S&W Axis", "AMtext");
 //#             byte[] data=rs.getRecord(1);
+//#             String msg="";
 //#             for(int i=0; i<data.length; i++){
 //#                 hamtext.put(new Integer(data[i]), new Integer(i+2));
+//# //                outs+=new Integer(data[i]).toString()+",";
+//#                 byte[] interp=rs.getRecord(i+2);
+//#                 long sum=0;
+//#                 for(int j=0; j<interp.length; j++){
+//#                     sum+=interp[j];
+//#                 }
+//#                 msg+=Long.toString(sum)+",";
+//#              }
+//# //            Astromaximum.log(msg);
+//#             msg="";
+//#             for(Enumeration e=hamtext.keys(); e.hasMoreElements();){
+//#                 Integer kk=(Integer) e.nextElement();
+//#                 msg+=kk.toString()+"=>"+hamtext.get(kk).toString()+", ";
 //#             }
+//#             Astromaximum.log(msg);
 //#         } catch (RecordStoreException ex) {
 //#             Astromaximum.log("RS:"+ex.getMessage());
 //#         }
@@ -450,11 +482,20 @@ class Interpreter extends Canvas implements CommandListener {
         try {
 //#ifdef use_amtext
 //#             if(params[0]!=Event.EV_MSG){
-//#                 Integer val=(Integer)hamtext.get(new Integer((int)params[0]));
 //#                 try{
+//#                     Integer val=(Integer)hamtext.get(new Integer((int)params[0]));
+//#                     Astromaximum.log(val.toString());
+//#                     interp=new byte[rs.getRecordSize(val.intValue())];
 //#                     interp=rs.getRecord(val.intValue());
+//#                     long sum=0;
+//#                     for(int j=0; j<interp.length; j++){
+//#                         sum+=interp[j];
+//#                     }
+//#                     Astromaximum.log(new Integer(interp.length).toString()+">"+Long.toString(sum));
+//# 
 //#                 } catch (Exception ex){
-//#                     return "No interpretation found. Please install AMtext midlet.";
+//#                     Astromaximum.log("1:"+ex.getMessage());
+//#                     return null;
 //#                 }
 //#             }
 //#             else{
@@ -465,11 +506,13 @@ class Interpreter extends Canvas implements CommandListener {
             }
             interp = new byte[is.available()];
             is.read(interp);
+            is.close();
 //#ifdef use_amtext
 //#             }
 //#endif
             DataInputStream dis = new DataInputStream(
                     new ByteArrayInputStream(interp));
+            
 //      while(true){
             final int evt = dis.readUnsignedShort();
             final int partsz = dis.readInt();
@@ -505,7 +548,7 @@ class Interpreter extends Canvas implements CommandListener {
             }
 //      }
         } catch (IOException ex) {
-//      Astromaximum.log(ex.toString());
+          Astromaximum.log("2:"+ex.toString());
         }
         return res;
     }
