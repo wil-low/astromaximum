@@ -1012,7 +1012,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 Astromaximum.customTime.init(pageNum);
                 break;
             case 7:
-                Astromaximum.disp.setCurrent(new About());
+                Astromaximum.logBox.showAbout(this);
                 break;
 /*      case 1:
         if(pageNum==PAGE_DECUMB){

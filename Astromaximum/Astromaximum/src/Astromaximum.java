@@ -281,7 +281,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //        System.out.println("Modem="+customTime.askModem());
 //#debug error
                 errCode = 8; // XXX
-                Astromaximum.log("****Total memory = " + Long.toString(Runtime.getRuntime().totalMemory()));
+                Astromaximum.log("Total memory = " + Long.toString(Runtime.getRuntime().totalMemory()));
                 options.loadHistory();
                 errCode = 9; // XXX
 //      System.gc();

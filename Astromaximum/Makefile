@@ -19,28 +19,11 @@ interpret:
 	cp htaccess $(SOURCE)/interpret/.htaccess; \
 
 config:
-	mkdir Astromaximum/deploy; \
-	echo "Size_join"; \
-	perl size_join.pl; \
-	echo "."; \
-	echo "Phase_join"; \
-	perl ph_join.pl; \
-	echo "."; \
-	echo "Swiss ephemeris"; \
-	cd swe && make; \
-       	cd ..; \
-	echo "."; \
-	echo "Mutter2"; \
-	cd mutter2 && make CONF=Release $1 build; \
-	cd ..; \
-	echo "."; \
-	echo "Relgui"; \
-	cd relgui && make CONF=Release $1 build; \
-	cd ..; \
-	echo "."; \
-	echo "gen_amax"; \
-	perl gen_amax.pl rebuild; \
-	echo "."
+	mkdir Astromaximum/deploy;perl size_join.pl;perl ph_join.pl; \
+	cd swe && make && cd ..; \
+	cd mutter2 && make CONF=Release $1 build && cd ..; \
+	cd relgui && make CONF=Release $1 build && cd ..; \
+	perl gen_amax.pl rebuild
 
 help:
 	echo "Usage: make config|gen_amax|template|interpret"

@@ -49,6 +49,7 @@
   </target>  
 
     <target name="copy.template" description="Copy into common dir">
+        <echo message="Copy ${basedir}/../templates/${dist.jar}"/>
 	<copy file="${dist.dir}/${dist.jar}" todir="${basedir}/../templates" />
 	<antcall target="gen.amax" inheritall="true" inheritrefs="true" />
     </target>

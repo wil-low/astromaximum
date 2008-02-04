@@ -48,22 +48,38 @@ class LogBox extends List implements CommandListener {
     void showLog(Displayable displayable) {
         invoker = displayable;
         setSelectedIndex(size() - 1, true);
-        Display.getDisplay(Astromaximum.instance).setCurrent(this);
+        Astromaximum.disp.setCurrent(this);
     }
 
     /**
      * @noinspection InfiniteLoopStatement
      */
     public void commandAction(Command c, Displayable d) {
-        if (c.getCommandType() == Command.BACK) {
-            Display.getDisplay(Astromaximum.instance).setCurrent(invoker);
-        }
-        if (c.getCommandType() == Command.STOP) {
-            deleteAll();
-            append(EMPTY, null);
+        switch(c.getCommandType()){
+            case Command.BACK:
+                Astromaximum.disp.setCurrent(invoker); break;
+            case Command.STOP:
+                deleteAll(); append(EMPTY, null); break;
+            case Command.SCREEN:
+                try {
+                    Astromaximum.instance.platformRequest(Astromaximum.URL);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
         }
     }
 
+    void showAbout(Displayable displayable){
+        invoker = displayable;
+        Alert al=new Alert(Astromaximum.getstr(152),
+                Astromaximum.getstr(153)+" "+Astromaximum.URL+" "+
+                Astromaximum.getstr(154), null, AlertType.INFO);
+        al.addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 0));
+        al.addCommand(new Command(Astromaximum.getstr(155), Command.SCREEN, 0));
+        al.setCommandListener(this);
+        Astromaximum.disp.setCurrent(al);
+    }
+    
     static String access(String str, int param) {
         String ss = "";
         int idx = str.indexOf('.');
