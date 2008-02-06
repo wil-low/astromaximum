@@ -9,18 +9,24 @@ my $TZ_VER=2;
 
 my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
-my $tzonly=0;
+my($tzonly, $clean)=(0,0);
+
+$0=~/(.+[\/\\])/is;
+our $mypath=$1;
+$mypath='./' unless $mypath;
+require $mypath.'tz_patches.pm';
+
 my $year=shift(@ARGV);
 if($ARGV[0] eq 'tzonly'){
 	$tzonly=1;
 	shift(@ARGV);
 }
-$0=~/(.+[\/\\])/is;
-our $mypath=$1;
-$mypath='./' unless $mypath;
-require $mypath.'tz_patches.pm';
+if($ARGV[0] eq 'clean'){
+	$clean=1;
+	shift(@ARGV);
+}
 if($#ARGV!=0 and scalar(@ARGV)<2){
-	die "Usage: <year> [tzonly] <country group code list>|<all>|<common>\n";
+	die "Usage: <year> [tzonly|clean] <country group code list>|<all>|<common>\n";
 }
 our %historic;
 my @cities;
@@ -118,6 +124,9 @@ else{
 }
 
 sub process_ini{
+	if($clean){
+		unlink "$path$city_inf.txt";
+	}
 	if(! -f "$path$city_inf.txt"){
 		my $error=0;
 		unlink "$path$city_inf.txt";
@@ -220,7 +229,7 @@ sub process_ini{
 				my @params=split(/\|/is, $countries[0]);
 
 				$params[0]=~s/.+!//is;
-				$error++ if !get_tz($params[3],$params[0],1,1);
+				$error++ if !get_tz($params[3],$params[0],0,0);
 				$invoke="echo \"$countries[0]\" >> \"$path$city_inf.txt\"";
 	#			print "$invoke\n";
 				system($invoke);
@@ -285,7 +294,7 @@ sub process_ini{
 			$city=~s/.+!//is;
 			if(! -f $fname or $tzonly){
 				print "\n******** $city ********\n";
-				my $tz=get_tz($params[3],$city,1,1);
+				my $tz=get_tz($params[3],$city,0,0);
 				my $dstbuf=calc_dst($tz);
 				if($params[3]=~/USA \- (.+)/is){
 					$city.=", $1";
@@ -623,8 +632,8 @@ sub get_tz{
 #			die "No TZ for $country!" unless defined $c_arr;
 		}
 		else{
-		  print "No TZ for $country!\n";
-                  exit;
+		  warn "No TZ for $country,$city!";
+                  return undef;
 		}
 		if(!defined $c_arr){
 #			die $citlist;
@@ -720,7 +729,7 @@ sub get_tz{
 			die "No TZ for $country, $city!";
 		}
 		else{
-			warn "No TZ for $country, $city!\n";
+			warn "No TZ for $country, $city!";
 		}
 		return undef;
 	}

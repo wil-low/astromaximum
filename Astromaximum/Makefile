@@ -1,4 +1,4 @@
-DEST=../amax-mobi/dl
+DEST=site/mobi/dl
 SOURCE=$(DEST)/source
 
 all:	config gen_amax template interpret

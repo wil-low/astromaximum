@@ -49,7 +49,7 @@ sub convert{
 	$body=~s/^\xef\xbb\xbf//is;
 	$body=~s/^\s+//is;
 	$body=~s/\s+$//is;
-	$fn=~s/\.txt/\.xhtml/is;
+	$fn=~s/\.txt//is;
 	$fn=~s/txt/html/is;
 	$fn=~/.+[\/\\](.+?)\./is;
 	my $fid=$1;
@@ -68,13 +68,13 @@ sub convert{
 		$header_main=~s/%TITLE%/$tit/is;
 	}
 	my $footer='<div id="ftr">'.$header.'</div></body></html>';
-	$body=~s/<img (\w[\d_]+)\s*>/<img src="..\/..\/img\/$1\.gif" alt="$alter->{$1}" width="$img_dim" height="$img_dim"\/>/isg;
-	$body=~s/<a (\w[\d_]+)>/<a href="$1.xhtml">/isg;
-	$body=~s/<i>/<span class="comment">/isg;
-	$body=~s/<b>/<span class="alert">/isg;
-	$body=~s/<\/[ib]>/<\/span>/isg;
-	$body='<div id="cont">'.$body.'</div>';
-	$body="$header_main\n$body\n$footer";
+	$body=~s/<img (\w[\d_]+)\s*>/<img src="mobi\/i\/$1\.gif" alt="$alter->{$1}" width="$img_dim" height="$img_dim"\/>/isg;
+	$body=~s/<a (\w[\d_]+)>/<a href="?lang=$lang&p=$1">/isg;
+#	$body=~s/<i>/<span class="comment">/isg;
+#	$body=~s/<b>/<span class="alert">/isg;
+#	$body=~s/<\/[ib]>/<\/span>/isg;
+#	$body='<div id="cont">'.$body.'</div>';
+#	$body="$header_main\n$body\n$footer";
 	open(OUTF, ">$fn" ) or die "$! $fn";
 	binmode(OUTF);
 	print(OUTF $body);

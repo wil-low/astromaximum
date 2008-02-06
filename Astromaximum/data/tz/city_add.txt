@@ -1,15 +1,31 @@
 @ Armenia, Yerevan
 Kadzaran
 
+@ Austria, Vienna (Wien)_AUT
+Bregenz
+Klagenfurt
+Villach
+
 @ Azerbaijan, Baku
 Dzhalilabad
 Zardob
 
+@ Canary Islands, Las Palmas_ESP
+Las Palmas de Gran Canaria
 @ England, London
 Halifax
 
 @ Estonia, Tallinn
 Narva
+
+@ France, Paris_FRA
+Bayonne
+La Rochelle
+
+@ Italy, Rome_ITA
+Napoli
+Torino
+Venezia
 
 @ Lithuania, Vilnius
 Druskininkai
@@ -24,6 +40,9 @@ Alexandria
 @ Russia  +3, Moscow_RUS
 Tuapse
 
+@ Scotland, Glasgow_GBR
+Poolewe
+
 @ Turkmenistan, Ashgabat
 Kushka
 
@@ -35,8 +54,22 @@ Yaremche
 @ Ukraine, Simferopol^UKR
 Yalta
 
+@ USA - Arkansas, Little Rock_USA
+El Dorado
+@ USA - Colorado, Denver_USA
+Craig
+Grand Junction
 @ USA - Georgia, Atlanta_USA
 Waycross
+@ USA - Idaho, Boise_USA
+Arco
+McCall
+Montpelier
+Sandpoint
+@ USA - Kansas, Topeka_USA
+Colby
+Dodge City
+Hays
 @ USA - Michigan, Lansing_USA
 Escanaba
 Marquette
@@ -44,11 +77,28 @@ Traverse City
 @ USA - Minnesota, St. Paul_USA
 Mankato
 Moorhead
+@ USA - Nebraska, Lincoln_USA
+Norfolk
+North Platte
+@ USA - New Mexico, Santa Fe_USA
+Clayton
+Silver City
+@ USA - Oregon, Salem_USA
+Pendleton
 @ USA - South Carolina, Columbia_USA
 Florence
 Hemingway
+@ USA - South Dakota, Pierre_USA
+Watertown
+@ USA - Utah, Salt Lake City_USA
+Delta
+Moab
+Roosevelt
 @ USA - Wisconsin, Madison_USA
 Wausau
 
 @ Uzbekistan, Tashkent
 Termez
+
+@ Wales, Cardiff_GBR
+Cardigan
