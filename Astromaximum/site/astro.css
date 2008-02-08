@@ -46,7 +46,7 @@ ul {
 	margin: 0px;
 	padding: 0px;
 	width: 100%;
-	float: left;
+	float: left, top;
 	background: url('i/fon.jpg') repeat-x 956px top;
 }
 

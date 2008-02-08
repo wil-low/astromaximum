@@ -63,9 +63,10 @@ sub convert{
 		$header='<a class="sidepad" href="0_0.xhtml">'.$hdr[0].'</a>'.$header;
 	}
 	my $header_main=$head_t.'<div id="hdr" class="hdr">'.$header.'</div>';
+	my $tit;
 	if($body=~s/<title>(.+)<\/title>//is){
-		my $tit=$1;
-		$header_main=~s/%TITLE%/$tit/is;
+		$tit="<h4>$1</h4>";
+#		$header_main=~s/%TITLE%/$tit/is;
 	}
 	my $footer='<div id="ftr">'.$header.'</div></body></html>';
 	$body=~s/<img (\w[\d_]+)\s*>/<img src="mobi\/i\/$1\.gif" alt="$alter->{$1}" width="$img_dim" height="$img_dim"\/>/isg;
@@ -75,6 +76,7 @@ sub convert{
 #	$body=~s/<\/[ib]>/<\/span>/isg;
 #	$body='<div id="cont">'.$body.'</div>';
 #	$body="$header_main\n$body\n$footer";
+	$body="$tit$body";
 	open(OUTF, ">$fn" ) or die "$! $fn";
 	binmode(OUTF);
 	print(OUTF $body);

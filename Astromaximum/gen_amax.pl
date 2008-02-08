@@ -479,7 +479,7 @@ sub writeData
 
 sub do_jar{
 	my($prod, $outfile, $mainclass)=@_;
-	open(INF, "<$path/$const::DIR_TEMPLATE/MANIFEST.MF") or mydie($!);
+	open(INF, "<$path/$const::DIR_TEMPLATE/MANIFEST.MF") or die($!);
 	my @data=<INF>;
 	close(INF);
 	my $template=join("",@data);
@@ -491,20 +491,21 @@ sub do_jar{
 	#	$jad=~s/<DESC>/$desc/isg;
 	#    $template=~s/<JAR>/$fname\.jar/isg;
 
-	open(INF, ">$path/MANIFEST.MF") or mydie("$path/MANIFEST.MF $!");
+	open(INF, ">$path/$const::DIR_TEMPLATE/mf") or die("$path/$const::DIR_TEMPLATE/mf $!");
 	print INF $template;
 	print INF "\r\n";
 	close(INF);
-	my $cmd=ensure_slash(const::JAR($jar_path, $outfile, "$path/MANIFEST.MF", "$path/$const::DIR_TEMP", $winda));
+	my $cmd=ensure_slash(const::JAR($jar_path, $outfile, "$path/$const::DIR_TEMPLATE/mf", "$path/$const::DIR_TEMP", $winda));
 	echo("Exec: $cmd\n");
 	mydie("\tERROR: creating archive") if system($cmd);
+	unlink("$path/$const::DIR_TEMPLATE/mf");
 	my $asize= -s $outfile;
 	$template.="\nMIDlet-Jar-Size: $asize\n";
 	my $jad=$outfile;
 	$jad=~s/r$/d/is;
 	$outfile=~s/.+[\/\\]//is;
 	if(!$islocal){
-		use CGI;
+		require CGI;
 		my $jarurl=$outfile;
 		$jarurl=~s/\..+//is;
 		my $tjad=$jad;
@@ -977,4 +978,33 @@ sub mydie{
 	print FLOG "DIE: $_[0]";
 	close FLOG;
 	die $_[0];
+}
+
+sub db_connect{
+	require DBI;
+	require CGI;
+	my($DB_SERVER,$DB_NAME,$DB_PORT,$DB_SUPERUSER,$DB_SUPERUSER_PWD,$DB_USER,$DB_USER_PWD);
+
+	if(CGI::server_name() eq 'localhost'){ # local=true
+		$DB_SERVER='localhost';
+		$DB_NAME='amax';
+		$DB_PORT='3306';
+		
+		$DB_SUPERUSER='root';
+		$DB_SUPERUSER_PWD='toor';
+		$DB_USER='user';
+		$DB_USER_PWD='user';
+	}
+	else{
+		$DB_SERVER='localhost';
+		$DB_NAME='usr_web42_1';
+		$DB_PORT='3306';
+		
+		$DB_SUPERUSER='web42';
+		$DB_SUPERUSER_PWD='vSZBWppx';
+		$DB_USER='user';
+		$DB_USER_PWD='user';
+	}
+	my $dsn = "DBI:mysql:database=$DB_NAME;host=$DB_SERVER";
+	return DBI->connect($dsn, $DB_SUPERUSER, $DB_SUPERUSER_PWD);
 }

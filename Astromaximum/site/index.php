@@ -1,11 +1,26 @@
 ﻿<?php 
 $city_count=330;
 $lang="ru";
+$page='home';
+if(isset($_GET['p'])){
+	$main=$_GET['p'];
+}
+if(!preg_match("/^[\w_\d]+$/is", $main)){
+	$main='home';
+}
+$dir=dirname($_SERVER['SCRIPT_FILENAME']);
+$fn="$dir/mobi/html/$lang/$main";
+if(!file_exists($fn)){
+	$fn="$dir/mobi/html/$lang/home";
+}
+$content=implode('',file($fn));
+
 function anchor($pp){
 	global $lang;
 	echo "<a href=\"?lang=$lang&p=$pp\">";
 } 
 ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -30,8 +45,8 @@ function findObj(id) {
 <div id="logoText">астрологический календарь для мобильных телефонов</div>
 <div id="lang"> <a href="#">DE</a> | <a href="#">ENG</a> | <b>RU</b><br /></div>
 <div id="menu"><a href="#">главная</a> |  <a href="#">инструкция</a> |  <a href="#">купить</a> | <a href="mobi/dl/city.html">модули городов</a> | <a href="#">контакты</a> </div>
-<div id="demo"><a href="#">СКАЧАТЬ DEMO +<br />  <?php echo $city_count ?> модулей городов</a></div> 
-<div id="buy"><a href="#">КУПИТЬ 22$ +<br />  <?php echo $city_count ?> модулей городов</a></div>
+<div id="demo"><a href="#">СКАЧАТЬ DEMO <br />  <?php echo $city_count ?> городов</a></div> 
+<div id="buy"><a href="#">КУПИТЬ 22$<br />  <?php echo $city_count ?> городов</a></div>
 
 <div id="leftColumn"> 
 	<h6>GMT <span id="mtime">&nbsp;</span></h6>
@@ -67,23 +82,7 @@ function findObj(id) {
 <p><?php anchor("0_9")?><img src="i/ico.gif" alt="" /> <br /><b>ход болезни (декумбитура)</b></a></p>
 </div><!-- end leftColumn div -->
 <div id="content">
-<?php
-	$page='home';
-	if(isset($_GET['p'])){
-		$main=$_GET['p'];
-	}
-	if(!preg_match("/^[\w_\d]+$/is", $main)){
-		$main='home';
-	}
-	$dir=dirname($_SERVER['SCRIPT_FILENAME']);
-	$fn="$dir/mobi/html/$lang/$main";
-	if(!file_exists($fn)){
-		$fn="$dir/mobi/html/$lang/home";
-	}
-	$content='';
-	readfile($fn, $content);
-	echo "$content";
-?>	
+<p><?php	echo $content ?></p>
 </div><!-- end content div -->
 <div id="bottom"><p>Copyright &copy; 2007 Astromaximum. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
 </body>

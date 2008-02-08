@@ -1,11 +1,11 @@
 DEST=site/mobi/dl
 SOURCE=$(DEST)/source
 
-all:	config gen_amax template interpret
+all:	config gen_amax template interp
 
 gen_amax:
 	mkdir $(DEST) $(SOURCE); \
-	cat tools.pm genconst.pm gen_amax.pl > $(DEST)/gen_amax.cgi; \
+	cat tools.pm genconst.pm gen_amax.pl > $(DEST)/gen_amax.cgi
 
 template:	
 	cp templates/AstromaximumDemo.jar $(SOURCE); \
@@ -13,10 +13,10 @@ template:
 	cp templates/Astromaximum-tb.jar $(SOURCE); \
 	cp templates/MANIFEST.MF $(SOURCE)
 
-interpret:	
+interp:
 	svn export --force interpret $(SOURCE)/interpret; \
 	#svn export --force images/icons $(SOURCE)/icons
-	cp htaccess $(SOURCE)/interpret/.htaccess; \
+	cp htaccess $(SOURCE)/interpret/.htaccess
 
 config:
 	mkdir Astromaximum/deploy;perl size_join.pl;perl ph_join.pl; \
@@ -26,5 +26,5 @@ config:
 	perl gen_amax.pl rebuild
 
 help:
-	echo "Usage: make config|gen_amax|template|interpret"
+	echo "Usage: make config|gen_amax|template|interp"
 
