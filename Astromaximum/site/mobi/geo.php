@@ -30,7 +30,7 @@
 		list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
 		$srcdir="$dsrc/$fn";
 	#	echo "$dsrc/$destfile";
-		$cmd="./dl/gen_amax.cgi geo- $defyear EN $p[3] $dsrc/$fn.r nomessjar";
+		$cmd=find_perl()." ./dl/gen_amax.cgi geo- $defyear EN $p[3] $dsrc/$fn.r nomessjar";
 		$ret=0;
 		exec($cmd, $outp, $ret);
 		if($ret){				
@@ -38,6 +38,11 @@
 			echo implode('<br/>',$outp);
 		}
 		else{
+			if(!add_file($fn, "geo")){
+				echo mysql_error();
+				exit;
+			}
+			
 			$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
 			if(!strpos($data_php, "mobi")){
 				$data_php.="/mobi";

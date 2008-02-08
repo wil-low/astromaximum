@@ -100,12 +100,12 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files` (
   `id` varchar(14) NOT NULL default '',
-  `type` enum('r','d','t','a') NOT NULL default 'r',
-  `user_id` int(11) NOT NULL default '0',
+  `type` VARCHAR(10) NOT NULL,
+  `user_id` int(11) NOT NULL default '-1',
   `end_tm` datetime NOT NULL default '0000-00-00 00:00:00',
   `used` binary(1) NOT NULL default 'f',
   `deleted` binary(1) NOT NULL default 'f',
-  PRIMARY KEY  (`id`,`type`),
+  PRIMARY KEY  (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Generated files';
 

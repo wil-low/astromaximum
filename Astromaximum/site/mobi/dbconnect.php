@@ -99,3 +99,11 @@ function check_access(){
 	}
 	return -1;
 }
+
+function add_file($id, $type){
+	$stat="INSERT INTO files(end_tm, id, type, user_id) VALUES (ADDTIME(NOW(), '2:00:00'), '".
+		quote_smart($id)."', ".
+		quote_smart($type).", ".
+		quote_smart($_SESSION['uid']).")";
+	return mysql_query($stat);	
+}

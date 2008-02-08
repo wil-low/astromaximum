@@ -1,6 +1,8 @@
 <?php
 include_once('../dbconnect.php');
 include_once('nav.php');
+include_once('../lang.php');
+lang_load("source");
 $useimg=1;
 $useregions=0;
 $step=1;
@@ -12,7 +14,7 @@ $max_cities=20;
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2008-02-06T19:43:34+0200">
+<meta name="date" content="2008-01-23T21:53:31+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -20,7 +22,7 @@ $max_cities=20;
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
 <meta http-equiv="content-style-type" content="text/css">
-<link href="../../astro1.css" rel="stylesheet" type="text/css">
+<link href="../style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 function city_add(cname,sname){
 	selc=document.getElementById("selcit");

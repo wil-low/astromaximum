@@ -21,7 +21,7 @@ if(true /*|| check_access()*/){
 	$sth=mysql_query($stat);
 	$count=mysql_fetch_row($sth);
 	if($count[0]!=1){
-		header("HTTP/1.0 404 Not Found");
+		header("HTTP/1.0 410 Gone");
 		exit;
 	}
 	$stat=sprintf(

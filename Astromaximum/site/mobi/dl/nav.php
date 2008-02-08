@@ -1,5 +1,6 @@
 <?php
 include_once('../lang.php');
+include_once('../dbconnect.php');
 $invalid_login=0;
 
 $langs=array(

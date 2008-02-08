@@ -2,11 +2,10 @@
 	include_once('../dbconnect.php');
 	include_once('../amtools.php');
 	include_once('nav.php');
+	include_once('../lang.php');
+	lang_load("source");
 	
-	$perl="/opt/lampp/bin/perl";
-	if(!file_exists($perl)){
-		$perl="/usr/bin/perl";
-	}
+	$perl=find_perl();
 	$cities=array('Kiev', 'London', 'New York', 'Moscow');
 	$sth=mysql_query("SELECT id FROM cities WHERE name in ('".implode("','", $cities)."')");
 	$default_city_ids='';
@@ -50,11 +49,13 @@
 				ask_login();
 		}
 	}	
+	$type="d $year $lang";
 	if($isdemo){
 		$cmd="$perl ./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
 	}
 	else{
 		$cmd="$perl ./gen_amax.cgi tb $year \"".$_REQUEST['lang']."\" \"$default_city_ids\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
+		$type="t $year $lang";
 	}
 	$ret=0;
 	exec($cmd, $outp, $ret);
@@ -64,10 +65,7 @@
 		echo implode('<br>',$outp);
 		exit;
 	}
-	$stat="INSERT INTO files(end_tm, id, user_id) VALUES (ADDTIME(NOW(), '2:00:00'), '".
-		quote_smart($fn)."', ".
-		quote_smart($_SESSION['uid']).")";
-	if(!mysql_query($stat)){
+	if(!add_file($fn, $type)){
 		echo mysql_error();
 		exit;
 	}

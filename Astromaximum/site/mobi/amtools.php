@@ -1,4 +1,12 @@
 <?php
+function find_perl(){
+	$perl="/opt/lampp/bin/perl";
+	if(!file_exists($perl)){
+		$perl="/usr/bin/perl";
+	}
+	return $perl;
+}
+
 function amtools_random($ye,$path, $ext){
 	do{
 		$id=''; $flag=1;

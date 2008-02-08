@@ -1,5 +1,6 @@
 <?php
 include_once('../lang.php');
+lang_load("source");
 ?>
 
 <html>
