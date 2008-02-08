@@ -20,7 +20,7 @@ $max_cities=20;
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
 <meta http-equiv="content-style-type" content="text/css">
-<link href="../../astro.css" rel="stylesheet" type="text/css">
+<link href="../../astro1.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 function city_add(cname,sname){
 	selc=document.getElementById("selcit");
@@ -222,7 +222,7 @@ function city_del(){
     <table border="0">
     <tr>
     	<td width="100">
-				<img src="img/europe.png" alt="Europe" height="88" width="88" border="1">
+				<img src="i/europe.png" alt="Europe" height="88" width="88" border="1">
 			</td>
 			<td>
 				<div align=center>Europe:</div>
@@ -231,7 +231,7 @@ function city_del(){
 			</td></tr>
     <tr>
     	<td width="25%">
-				<img src="img/america.png" alt="America" height="88" width="88" border="1">
+				<img src="i/america.png" alt="America" height="88" width="88" border="1">
 			</td>
 			<td>
 				<div align=center>America:</div>
@@ -240,7 +240,7 @@ function city_del(){
 			</td></tr>
     <tr>
     	<td width="25%">
-				<img src="img/asia1.png" alt="Asia" height="88" width="88" border="1">
+				<img src="i/asia1.png" alt="Asia" height="88" width="88" border="1">
 			</td>
 			<td>
 				<div align=center>Asia:</div>
@@ -249,7 +249,7 @@ function city_del(){
 			</td></tr>
     <tr>
     	<td width="25%">
-				<img src="img/asia2.png" alt="Asia" height="88" width="88" border="1">
+				<img src="i/asia2.png" alt="Asia" height="88" width="88" border="1">
 			</td>
 			<td>
 				<div align=center>Asia:</div>
@@ -257,7 +257,7 @@ function city_del(){
 			</td></tr>
     <tr>
     	<td width="25%">
-				<img src="img/australia.png" alt="Australia" height="88" width="88" border="1">
+				<img src="i/australia.png" alt="Australia" height="88" width="88" border="1">
 			</td>
 			<td>
 				<div align=center>Australia:</div>
@@ -266,7 +266,7 @@ function city_del(){
 			</td></tr>
     <tr>
     	<td width="25%">
-				<img src="img/africa.png" alt="Africa" height="88" width="88" border="1">
+				<img src="i/africa.png" alt="Africa" height="88" width="88" border="1">
 			</td>
 			<td>
 				<div align=center>Africa:</div>
@@ -279,12 +279,12 @@ function city_del(){
 	else{
 ?>
 <table border="0">
-	<tr><td><img src="img/europe.png" alt="Europe" height="88" width="88" border="1"></td></tr>
-	<tr><td><img src="img/america.png" alt="America" height="88" width="88" border="1"></td></tr>
-	<tr><td><img src="img/asia1.png" alt="Asia" height="88" width="88" border="1"></td></tr>
-	<tr><td><img src="img/asia2.png" alt="Asia" height="88" width="88" border="1"></td></tr>
-	<tr><td><img src="img/australia.png" alt="Australia" height="88" width="88" border="1"></td></tr>
-	<tr><td><img src="img/africa.png" alt="Africa" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="i/europe.png" alt="Europe" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="i/america.png" alt="America" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="i/asia1.png" alt="Asia" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="i/asia2.png" alt="Asia" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="i/australia.png" alt="Australia" height="88" width="88" border="1"></td></tr>
+	<tr><td><img src="i/africa.png" alt="Africa" height="88" width="88" border="1"></td></tr>
 </table>
 <?php } ?>
 		</td>

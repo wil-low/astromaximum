@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 $city_count=330;
 $lang="ru";
 function anchor($pp){
@@ -16,6 +16,7 @@ function anchor($pp){
 <meta name="keywords" content="ключи"/>
 <meta name="description" content="описание"/>
 <link href="astro.css" rel="stylesheet" type="text/css"/>
+<!-- <link rel="shortcut icon" href="/favicon.gif" /> -->
 <script language="JavaScript" type="text/JavaScript">
 <!--
 function findObj(id) {
@@ -27,8 +28,13 @@ function findObj(id) {
 <body>
 <div id="globe"><a href="index.php"><img src="i/globe.jpg" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" height="320" width="956"/></a></div>
 <div id="logoText">астрологический календарь для мобильных телефонов</div>
-<div id="lang"> <a href="#">DE</a> | <a href="#">ENG</a> | <b>RU</b><br />
-	<h6 id="lang">GMT <span id="mtime">&nbsp;</span></h6>
+<div id="lang"> <a href="#">DE</a> | <a href="#">ENG</a> | <b>RU</b><br /></div>
+<div id="menu"><a href="#">главная</a> |  <a href="#">инструкция</a> |  <a href="#">купить</a> | <a href="mobi/dl/city.html">модули городов</a> | <a href="#">контакты</a> </div>
+<div id="demo"><a href="#">СКАЧАТЬ DEMO +<br />  <?php echo $city_count ?> модулей городов</a></div> 
+<div id="buy"><a href="#">КУПИТЬ 22$ +<br />  <?php echo $city_count ?> модулей городов</a></div>
+
+<div id="leftColumn"> 
+	<h6>GMT <span id="mtime">&nbsp;</span></h6>
 	<script type="text/javascript">
 	  function clock() {
 	    now=new Date();
@@ -43,19 +49,12 @@ function findObj(id) {
 	  }
 	  clock();
 	</script>
-</div><!-- end lang div -->
-<div id="loginfrm">
 <p>
-<input name="login"/> <a href="#">логин</a>  <br />
-<input name="pass"/> <a href="#">пароль</a> <br />
+<input name="login"/> <a href="#">логин</a>  <br /><br />
+<input name="pass"/> <a href="#">пароль</a> <br /><br />
 <a href="#"><strong>вход</strong></a> | <a href="#"><strong>регистрация</strong></a> 
 </p>
-</div><!-- end loginfrm div -->
-<div id="menu"><a href="#">главная</a> |  <a href="#">инструкция</a> |  <a href="#">купить</a> | <a href="mobi/dl/city.html">модули городов</a> | <a href="#">контакты</a> </div>
-<div id="demo"><a href="#">СКАЧАТЬ DEMO +<br />  <?php echo $city_count ?> модулей городов</a></div> 
-<div id="buy"><a href="#">КУПИТЬ 22$ +<br />  <?php echo $city_count ?> модулей городов</a></div>
 
-<div id="leftColumn"> 
 <h5>темы календаря </h5>
 <p><?php anchor("0_1")?><img src="i/ico.gif" alt="" /> <br /><b>деловая активность, подписание контрактов</b></a></p>
 <p><?php anchor("0_2")?><img src="i/ico.gif" alt="" /> <br /><b>торговля, финансы</b></a></p>
