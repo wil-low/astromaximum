@@ -1,24 +1,20 @@
 <?php
-$lang='';
+$lang='ru';
 $i18=array();
 if(isset($_GET['lang'])){
 	$lang=$_GET['lang'];
 }
-else{
-	$lang='en';
-}
 $lang_="lang=$lang";
 error_reporting(E_ALL);
+session_name("Astromaximum");
 session_start();
-
-if(!isset($_SESSION['username'])){
-	$_SESSION['username']='';
-	$_SESSION['uid']=-1;
-	$_SESSION['pwd']='*';
-}
+session_register("username","uid", "pwd");
 
 function lang_load($path){
 	global $lang, $i18;
+	if(!file_exists("$path/$lang/lang.txt")){
+		return;
+	}
 	$fd = fopen("$path/$lang/lang.txt", 'r');
 	while (!feof($fd)) {
 		$buffer = fgets($fd, 4096);

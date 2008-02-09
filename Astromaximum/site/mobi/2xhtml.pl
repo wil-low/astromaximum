@@ -49,7 +49,7 @@ sub convert{
 	$body=~s/^\xef\xbb\xbf//is;
 	$body=~s/^\s+//is;
 	$body=~s/\s+$//is;
-	$fn=~s/\.txt//is;
+	$fn=~s/\.txt/.php/is;
 	$fn=~s/txt/html/is;
 	$fn=~/.+[\/\\](.+?)\./is;
 	my $fid=$1;

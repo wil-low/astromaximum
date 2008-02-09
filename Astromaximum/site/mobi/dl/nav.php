@@ -1,5 +1,6 @@
 <?php
 include_once('../lang.php');
+lang_load("source");
 include_once('../dbconnect.php');
 $invalid_login=0;
 
@@ -49,7 +50,7 @@ if($invalid_login || ($_SESSION['uid']==-1)){
     <form action="{$_SERVER['REQUEST_URI']}" method="post" name="log">
     <table align=center>
     <tr align=center>
-        <td>{$i18['USERNAME']}</td><td><input name="user" type="text" size="15" maxlength="15"></td>
+        <td>{$i18['USER']}</td><td><input name="user" type="text" size="15" maxlength="15"></td>
     </tr>
     <tr align=center>
         <td>{$i18['PWD']}</td><td><input name="passwd" type="password" size="15" maxlength="15"></td>
@@ -98,7 +99,7 @@ echo <<<NAV6
 
 	<tr valign=top><td></td></tr>
 </table>
-<small>Execution took $exec_time msec.</small>
+<!-- <small>Execution took $exec_time msec.</small>-->
 </body>
 </html>
 NAV6;

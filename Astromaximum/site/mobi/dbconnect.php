@@ -77,15 +77,12 @@ function login($user,$pwd){
 	return $res;
 }
 
-function logout(){
-	$_SESSION = array();
-	// If it's desired to kill the session, also delete the session cookie.
-	// Note: This will destroy the session, and not just the session data!
-	if (isset($_COOKIE[session_name()])) {
-	    setcookie(session_name(), '', time()-42000, '/');
+function reject2index($suffix){
+	$chac=check_access();
+	if($chac!=0){
+		echo "<html><head><meta http-equiv=\"refresh\" content=\"0;url=../../?$suffix\"></head></html>";
+		exit;
 	}
-	// Finally, destroy the session.
-	session_destroy();
 }
 
 function check_access(){

@@ -1,56 +1,85 @@
-﻿<?php 
+<?php 
+include_once('mobi/lang.php');
+include_once('mobi/dbconnect.php');
 $city_count=330;
-$lang="ru";
-$page='home';
+$price=60;
+$main='home';
+$show_topics=1;
 if(isset($_GET['p'])){
 	$main=$_GET['p'];
+}
+
+if(strcmp($main, 'login')==0){
+	include_once('mobi/dbconnect.php');
+	$login=''; $pass='';
+	if(isset($_POST['login'])){
+		$login=$_POST['login'];
+	}
+	if(isset($_POST['pass'])){
+		$pass=$_POST['pass'];
+	}
+	if(login($login, $pass)){
+		if(check_access()==1){
+			$main='demo';
+			$show_topics=0;
+		}
+		else{
+			$main='home';
+		}	
+	}
 }
 if(!preg_match("/^[\w_\d]+$/is", $main)){
 	$main='home';
 }
 $dir=dirname($_SERVER['SCRIPT_FILENAME']);
-$fn="$dir/mobi/html/$lang/$main";
+$fn="$dir/mobi/html/$lang/$main.php";
 if(!file_exists($fn)){
-	$fn="$dir/mobi/html/$lang/home";
+	$main='home';
 }
-$content=implode('',file($fn));
-
+$fn="$dir/mobi/html/$lang/$main.php";
+if(preg_match("/^(demo)$/is", $main)){
+	$show_topics=0;
+}
 function anchor($pp){
 	global $lang;
 	echo "<a href=\"?lang=$lang&p=$pp\">";
 } 
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>ASTROMAXIMUM - первый астрологический календарь для мобильных телефонов </title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+﻿<title>ASTROMAXIMUM - первый астрологический календарь для мобильных телефонов </title>
 <meta name="author" content="design by goglus.com"/>
 <meta name="copyright" content="Copyright (c) by ASTROMAXIMUM.de"/>
 <meta name="keywords" content="ключи"/>
 <meta name="description" content="описание"/>
 <link href="astro.css" rel="stylesheet" type="text/css"/>
 <!-- <link rel="shortcut icon" href="/favicon.gif" /> -->
-<script language="JavaScript" type="text/JavaScript">
-<!--
-function findObj(id) {
-  return (document.all?document.all[id]:document.getElementById(id));
-}
-//-->
-</script>
 </head>
 <body>
 <div id="globe"><a href="index.php"><img src="i/globe.jpg" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" height="320" width="956"/></a></div>
 <div id="logoText">астрологический календарь для мобильных телефонов</div>
 <div id="lang"> <a href="#">DE</a> | <a href="#">ENG</a> | <b>RU</b><br /></div>
-<div id="menu"><a href="#">главная</a> |  <a href="#">инструкция</a> |  <a href="#">купить</a> | <a href="mobi/dl/city.html">модули городов</a> | <a href="#">контакты</a> </div>
-<div id="demo"><a href="#">СКАЧАТЬ DEMO <br />  <?php echo $city_count ?> городов</a></div> 
-<div id="buy"><a href="#">КУПИТЬ 22$<br />  <?php echo $city_count ?> городов</a></div>
+<div id="menu">
+<a href="#">главная</a> |  <a href="#">инструкция</a> |  <a href="#">купить</a> | <a href="mobi/dl/city.html">модули городов</a> | <a href="#">контакты</a>
+<?php 
+if(check_access()==0){
+	echo "<p><a href=\"?$lang_&p=db_stats&mode=env\">окружение</a> | "; 
+	echo "<a href=\"?$lang_&p=db_stats&mode=data\">статистика</a> | "; 
+	echo "<a href=\"?$lang_&p=upload\">загрузка городов</a></p>";
+}
+?> 
+</div>
+<div id="demo"><?php anchor('demo') ?>СКАЧАТЬ ДЕМО<br />+ <?php echo $city_count ?> модулей городов</a></div> 
+<div id="buy"><a href="#">КУПИТЬ $<?php echo $price ?><br />+ <?php echo $city_count ?> модулей городов</a></div>
 
 <div id="leftColumn"> 
 	<h6>GMT <span id="mtime">&nbsp;</span></h6>
 	<script type="text/javascript">
+		function findObj(id) {
+		  return (document.all?document.all[id]:document.getElementById(id));
+		}
 	  function clock() {
 	    now=new Date();
 			var london=now.toGMTString();
@@ -65,11 +94,22 @@ function findObj(id) {
 	  clock();
 	</script>
 <p>
-<input name="login"/> <a href="#">логин</a>  <br /><br />
-<input name="pass"/> <a href="#">пароль</a> <br /><br />
-<a href="#"><strong>вход</strong></a> | <a href="#"><strong>регистрация</strong></a> 
+<?php if(isset($_SESSION['username'])){
+	echo "Здравствуйте, <b>{$_SESSION['username']}</b>! </p><p>";
+	echo "<a href=\"mobi/dl/logout.php\"><strong>выход</strong></a>"; 
+?>
+<?php }else{ 
+?>
+	<form action="<?php echo "?lang=$lang&p=login" ?>" method="post"> 
+	<input name="login"/> <a href="#">логин</a>  <br /><br />
+	<input name="pass"/> <a href="#">пароль</a> <br /><br />
+	<a href="javascript:void(0)" onclick="javascript:submit()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
+	</form> 
+<?php } 
+?>
 </p>
 
+<?php if($show_topics){ ?>
 <h5>темы календаря </h5>
 <p><?php anchor("0_1")?><img src="i/ico.gif" alt="" /> <br /><b>деловая активность, подписание контрактов</b></a></p>
 <p><?php anchor("0_2")?><img src="i/ico.gif" alt="" /> <br /><b>торговля, финансы</b></a></p>
@@ -80,9 +120,12 @@ function findObj(id) {
 <p><?php anchor("0_7")?><img src="i/ico.gif" alt="" /> <br /><b>любовь, брак</b></a></p>
 <p><?php anchor("0_8")?><img src="i/ico.gif" alt="" /> <br /><b>медицина, косметология</b></a></p>
 <p><?php anchor("0_9")?><img src="i/ico.gif" alt="" /> <br /><b>ход болезни (декумбитура)</b></a></p>
+<?php } ?>
 </div><!-- end leftColumn div -->
 <div id="content">
-<p><?php	echo $content ?></p>
+<p>
+<?php include($fn) ?>
+</p>
 </div><!-- end content div -->
 <div id="bottom"><p>Copyright &copy; 2007 Astromaximum. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
 </body>
