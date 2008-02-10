@@ -77,12 +77,16 @@ function login($user,$pwd){
 	return $res;
 }
 
-function reject2index($suffix){
+function reject2index($url){
 	$chac=check_access();
 	if($chac!=0){
-		echo "<html><head><meta http-equiv=\"refresh\" content=\"0;url=../../?$suffix\"></head></html>";
-		exit;
+		redirect($url);
 	}
+}
+
+function redirect($url){
+	echo "<html><head><meta http-equiv=\"refresh\" content=\"0;url=$url\"></head></html>";
+	exit;
 }
 
 function check_access(){

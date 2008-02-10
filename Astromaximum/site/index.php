@@ -21,11 +21,11 @@ if(strcmp($main, 'login')==0){
 	if(login($login, $pass)){
 		if(check_access()==1){
 			$main='demo';
-			$show_topics=0;
 		}
 		else{
 			$main='home';
-		}	
+		}
+		redirect("?$lang_&p=$main");	
 	}
 }
 if(!preg_match("/^[\w_\d]+$/is", $main)){
@@ -50,7 +50,7 @@ function anchor($pp){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 ﻿<title>ASTROMAXIMUM - первый астрологический календарь для мобильных телефонов </title>
-<meta name="author" content="design by goglus.com"/>
+<meta name="author" content="Andrei Ivushkin"/>
 <meta name="copyright" content="Copyright (c) by ASTROMAXIMUM.de"/>
 <meta name="keywords" content="ключи"/>
 <meta name="description" content="описание"/>

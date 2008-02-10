@@ -1,5 +1,5 @@
 <?php
-reject2index($lang_);
+reject2index("index.php?$lang_");
 include_once('mobi/amtools.php');
 lang_load("source");
 $defyear=2007;
@@ -70,16 +70,17 @@ function check_env(){
 	$outp=array();
 	exec("$perl -c $p"."gen_amax.cgi", $outp, $ret);
 	$res['gen_amax.cgi syntax']=yesno($ret==0);
-	$res['common']='';
-	foreach (glob($p."source/*.comm") as $filename) {
-	    $res['common'].=substr_replace(basename($filename), '', -5)."<br/>";
+	$key='source/*.comm';
+	$res[$key]='';
+	foreach (glob($p.$key) as $filename) {
+	    $res[$key].=substr_replace(basename($filename), '', -5)." ";
 	}
-	if(strlen($res['common'])==0){
-		$res['common']="<font color=red>no</font>";
+	if(strlen($res[$key])==0){
+		$res[$key]="<font color=red>no</font>";
 	}
 	$res['jars']='';
 	foreach (glob($p."source/*.jar") as $filename) {
-	    $res['jars'].=substr_replace(basename($filename), '', -4)."<br/>";
+	    $res['jars'].=substr_replace(basename($filename), '', -4)." ";
 	}
 	if(strlen($res['jars'])==0){
 		$res['jars']="<font color=red>no</font>";

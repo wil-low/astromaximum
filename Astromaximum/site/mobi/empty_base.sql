@@ -87,9 +87,11 @@ CREATE TABLE `customers` (
 
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
 LOCK TABLES `customers` WRITE;
-INSERT INTO `customers` VALUES (1,'vmesyats','Vasyl Mesyats','123',0,NULL,NULL),
-	(2,'aivushkin','Andrei Ivushkin','65536',0,NULL,NULL),
-	(3,'1234','Test','31415926',1,NULL,NULL);
+INSERT INTO `customers` VALUES 
+	(1,'vmesyats','Vasyl Mesyats','123',0,NULL,NULL,-1),
+	(2,'aivushkin','Andrei Ivushkin','65536',0,NULL,NULL,-1),
+	(3,'1234','Demo','5678',1,NULL,NULL,-1);
+UPDATE `customers` SET `hash`=MD5(`hash`) WHERE 1;
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 

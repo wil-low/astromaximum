@@ -9,7 +9,7 @@ my $TZ_VER=2;
 
 my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
-my($tzonly, $clean)=(0,0);
+my($tzonly, $clean, $fnfix)=(0,0,0);
 
 $0=~/(.+[\/\\])/is;
 our $mypath=$1;
@@ -25,8 +25,12 @@ if($ARGV[0] eq 'clean'){
 	$clean=1;
 	shift(@ARGV);
 }
+if($ARGV[0] eq 'fnfix'){
+	$fnfix=1;
+	shift(@ARGV);
+}
 if($#ARGV!=0 and scalar(@ARGV)<2){
-	die "Usage: <year> [tzonly|clean] <country group code list>|<all>|<common>\n";
+	die "Usage: <year> [tzonly|clean|fnfix] <country group code list>|<all>|<common>\n";
 }
 our %historic;
 my @cities;
@@ -103,8 +107,23 @@ if($ARGV[0] eq 'all'){
 	foreach $city_inf(@ini){
 		$city_inf=~/.+[\/\\](.+?)\.ini/is;
 		$city_inf=$1;
-		print "---- $city_inf ----\n";
-		process_ini();
+		print "---- $city_inf ----";
+		if($fnfix){
+			my $cnt=0;
+			foreach my $fn(glob($path."$year/$city_inf/Data*.dat")){
+				my $newfn=$fn;
+				$newfn=~s/Data(\d+)\.dat$//s;
+				$newfn.=sprintf("Data%04d.dat", $1);
+				if($fn ne $newfn){
+					rename($fn, $newfn);
+					$cnt++;
+				}
+			}
+			print "\trenamed: $cnt\n";
+		}
+		else{
+			process_ini();
+		}
 	}
 	exit(0);
 }
@@ -118,12 +137,13 @@ if($ARGV[0] eq 'common'){
 }
 else{
 	foreach $city_inf(@ARGV){
-		print "---- $city_inf ----\n";
+		print "---- $city_inf ----";
 		process_ini();
 	}
 }
 
 sub process_ini{
+	print "\n";
 	if($clean){
 		unlink "$path$city_inf.txt";
 	}
@@ -289,7 +309,16 @@ sub process_ini{
 			next if $cit=~/\#/is;
 			next if $cit!~/\d/is;
 			my @params=split(/\|/is, $cit);
-			$fname=$newdir.sprintf('/Data%02d.dat',$i);
+			$fname=$newdir.sprintf('/Data%04d.dat',$i);
+=head
+			my $newfn=$fname;
+			if($newfn=~s/Data(\d\d)\.dat//is){
+				$newfn.=sprintf("%04d",$1);
+				rename($fname, $newfn) if -f $fname;
+				$fname=$newfn;
+			}	
+			die $fname;
+=cut
 			$city=$params[0];
 			$city=~s/.+!//is;
 			if(! -f $fname or $tzonly){

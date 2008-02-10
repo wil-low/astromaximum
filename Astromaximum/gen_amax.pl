@@ -340,6 +340,35 @@ sub inject_icon{ # prefix, subdir
 	echo("$const::DIR_TEMP/$_[0]"."icon.png written from $path/$const::DIR_IMG/$prefix$1.png\n");
 }
 
+sub dbconnect{
+	require DBI;
+	require CGI;
+	my($DB_SERVER,$DB_NAME,$DB_PORT,$DB_SUPERUSER,$DB_SUPERUSER_PWD,$DB_USER,$DB_USER_PWD);
+
+	if(CGI::server_name() eq 'localhost'){ # local=true
+		$DB_SERVER='localhost';
+		$DB_NAME='amax';
+		$DB_PORT='3306';
+		
+		$DB_SUPERUSER='root';
+		$DB_SUPERUSER_PWD='toor';
+		$DB_USER='user';
+		$DB_USER_PWD='user';
+	}
+	else{
+		$DB_SERVER='localhost';
+		$DB_NAME='usr_web42_1';
+		$DB_PORT='3306';
+		
+		$DB_SUPERUSER='web42';
+		$DB_SUPERUSER_PWD='vSZBWppx';
+		$DB_USER='user';
+		$DB_USER_PWD='user';
+	}
+	my $dsn = "DBI:mysql:database=$DB_NAME;host=$DB_SERVER";
+	return DBI->connect($dsn, $DB_SUPERUSER, $DB_SUPERUSER_PWD);
+}
+
 sub inject_locations{
 	my($locname, $locnum);
 	if($islocal){
@@ -369,13 +398,14 @@ sub inject_locations{
 	}
 	else{
 		my($year, $ids, $outf)=@_;
-		my $dbh=db_connect();
+		my $dbh=dbconnect();
+		mydie("Cant dbconnect()") unless $dbh;
 		$ids=~s/^,+//is;
 		$ids=~s/,+$//is;
 		my $stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".
 		"WHERE cities.id IN (%s) AND city_id=cities.id AND year=%s".
 		" ORDER BY cities.name",$ids,$year);
-		#		echo("$stat\n");
+		echo("$stat\n");
 		my $sth = $dbh->prepare($stat);
 		$sth->execute || mydie($dbh->errstr);
 		my @iids=split(/,/is, $ids);
@@ -978,33 +1008,4 @@ sub mydie{
 	print FLOG "DIE: $_[0]";
 	close FLOG;
 	die $_[0];
-}
-
-sub db_connect{
-	require DBI;
-	require CGI;
-	my($DB_SERVER,$DB_NAME,$DB_PORT,$DB_SUPERUSER,$DB_SUPERUSER_PWD,$DB_USER,$DB_USER_PWD);
-
-	if(CGI::server_name() eq 'localhost'){ # local=true
-		$DB_SERVER='localhost';
-		$DB_NAME='amax';
-		$DB_PORT='3306';
-		
-		$DB_SUPERUSER='root';
-		$DB_SUPERUSER_PWD='toor';
-		$DB_USER='user';
-		$DB_USER_PWD='user';
-	}
-	else{
-		$DB_SERVER='localhost';
-		$DB_NAME='usr_web42_1';
-		$DB_PORT='3306';
-		
-		$DB_SUPERUSER='web42';
-		$DB_SUPERUSER_PWD='vSZBWppx';
-		$DB_USER='user';
-		$DB_USER_PWD='user';
-	}
-	my $dsn = "DBI:mysql:database=$DB_NAME;host=$DB_SERVER";
-	return DBI->connect($dsn, $DB_SUPERUSER, $DB_SUPERUSER_PWD);
 }

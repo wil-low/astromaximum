@@ -1,6 +1,6 @@
 <?php
 include_once('mobi/amtools.php');
-reject2index($lang_);
+reject2index("index.php?$lang_");
 ?>
 	<form method="post" action="<?php echo htmlentities($_SERVER['REQUEST_URI'])?>" enctype="multipart/form-data">
 		Upload what: 
@@ -63,7 +63,7 @@ function up_geodata($fname, $ext){
 	global $DIR_INBOX, $UNZIP;
 	check_ext($fname, $ext);
 	$fh = $_FILES['uploaded_file']['tmp_name'];
-	list($dir,$fn)=amtools_random(0,'inbox','');
+	list($dir,$fn)=amtools_random(0,'mobi/dl/inbox','');
 //	echo "$dir";
 	mkdir($dir);
 	$cmd=sprintf($UNZIP, $fh, $dir);
@@ -79,7 +79,7 @@ function up_geodata($fname, $ext){
 	if(count($fn)!=1){
 		upload_error("TXT must be exactly one file in archive $dir/*.txt, not ".count($fn), $dir);
 	}
-	echo("<b>Reading $fn[0]</b><br><table style='font-size:9pt' border=1><tr><th>City</th>".
+	echo("<br/><b>Reading $fn[0]</b><br><table style='font-size:9pt' border=1><tr><th>City</th>".
 		"<th>Country</th><th>State</th><th>Year</th><th>TXT</th><th>Cities DB</th></tr>");
 	$sthcou = "SELECT countries.id FROM countries WHERE countries.name=%s";
 	$sthcit = "SELECT cities.id FROM cities,countries WHERE cities.name=%s AND country_id=%s AND state_id=%s";
@@ -118,7 +118,8 @@ function up_geodata($fname, $ext){
 			$state=$matches[1];
 			$country=preg_replace("/ - (.+)/is",'',$country,1);
 		}
-		$curfn=$fn[$i++];
+		$curfn=sprintf("$dir/Data%04d.dat",$i++);
+		if(!file_exists($curfn)) continue;
 		$FF0=fopen($curfn,"rb");
   	$tr='';
   	$locdata='';
@@ -134,10 +135,10 @@ function up_geodata($fname, $ext){
 			$locdata=fread($FF0, filesize($curfn));
 			fclose($FF0);
 			$tst=$name;
-/*				if($state){
+			if(strlen($state)){
 				$tst.=", $state";
 			}
-*/				if(strcmp($len,$tst)==0){
+			if(strcmp($len,$tst)==0){
 				$txtchk="<b>OK</b>";
 			}
 			else{
