@@ -46,7 +46,7 @@ ul {
 	margin: 0px;
 	padding: 0px;
 	width: 100%;
-	float: left, top;
+	float: left;
 	background: url('i/fon.jpg') repeat-x 956px top;
 }
 
@@ -56,7 +56,6 @@ ul {
 	left: 565px;
 	color: rgb(32,95,123);
 	font: 13px  bolder;
-
 }
 #menu {
 	position: absolute;
@@ -126,6 +125,20 @@ ul {
 #leftColumn p a:hover b {
 	color: rgb(96,96,96);
 }
+#loginframe {
+	position: absolute;
+	border:solid;
+	visibility:hidden;
+	top: 197px;
+	left: 370px;
+	width: 306px;
+	height: 91px;
+	background-color: rgb(255,0,0);
+	font: bold 18px bold Arial Black;
+	color: rgb(33,95,124);
+	text-align: center;
+	padding-top: 42px;
+}
 /*основной текст*/
 #content {
 	margin-left: 388px;
@@ -141,4 +154,26 @@ ul {
 }
 #bottom p {
 	margin: 47px 47px 0 0;
+}
+/* выбор городов */
+#city th {
+	vertical-align: top;
+	padding-top: 4px;
+	padding-bottom: 2px;
+}
+#city td {
+	padding: 0px;
+}
+
+#city select{
+	width: 100%;
+	font-size: 10px;
+	font-family: Verdana;
+	height: 400pt;
+}
+.lbbtn {
+	width: auto;
+	font-size: 10px;
+	font-family: Verdana;
+	margin: 3px;
 }

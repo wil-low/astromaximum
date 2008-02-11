@@ -2,7 +2,7 @@
 $lang='ru';
 $i18=array();
 if(isset($_GET['lang'])){
-	$lang=$_GET['lang'];
+	$lang=strtolower($_GET['lang']);
 }
 $lang_="lang=$lang";
 error_reporting(E_ALL);
@@ -12,10 +12,10 @@ session_register("username","uid", "pwd");
 
 function lang_load($path){
 	global $lang, $i18;
-	if(!file_exists("$path/$lang/lang.txt")){
+	if(!file_exists("$path/$lang.msg")){
 		return;
 	}
-	$fd = fopen("$path/$lang/lang.txt", 'r');
+	$fd = fopen("$path/$lang.msg", 'r');
 	while (!feof($fd)) {
 		$buffer = fgets($fd, 4096);
 		$line=explode("=",$buffer);

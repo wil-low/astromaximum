@@ -25,8 +25,12 @@ if(strcmp($main, 'login')==0){
 		else{
 			$main='home';
 		}
-		redirect("?$lang_&p=$main");	
 	}
+	else{
+		sleep(5);
+		$main='home';
+	}
+	redirect("?$lang_&p=$main");	
 }
 if(!preg_match("/^[\w_\d]+$/is", $main)){
 	$main='home';
@@ -34,9 +38,12 @@ if(!preg_match("/^[\w_\d]+$/is", $main)){
 $dir=dirname($_SERVER['SCRIPT_FILENAME']);
 $fn="$dir/mobi/html/$lang/$main.php";
 if(!file_exists($fn)){
-	$main='home';
+	$fn="$dir/mobi/html/$main.php";
+	if(!file_exists($fn)){
+		$main='home';
+		$fn="$dir/mobi/html/$lang/home.php";
+	}
 }
-$fn="$dir/mobi/html/$lang/$main.php";
 if(preg_match("/^(demo)$/is", $main)){
 	$show_topics=0;
 }
@@ -58,11 +65,25 @@ function anchor($pp){
 <!-- <link rel="shortcut icon" href="/favicon.gif" /> -->
 </head>
 <body>
-<div id="globe"><a href="index.php"><img src="i/globe.jpg" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" height="320" width="956"/></a></div>
+<div id="globe"><a href="?<?php echo $lang_ ?>"><img src="i/globe.jpg" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" height="320" width="956"/></a></div>
 <div id="logoText">астрологический календарь для мобильных телефонов</div>
-<div id="lang"> <a href="#">DE</a> | <a href="#">ENG</a> | <b>RU</b><br /></div>
+<div id="lang">
+<?php
+	$lng=array('DE', 'EN', 'RU');
+	for($i=0; $i<count($lng); $i++){
+		if($i) echo " | ";
+		$lng2=strtolower($lng[$i]);
+		if(strcmp($lang, $lng2)==0){
+			echo "<b>$lng[$i]</b>";
+		}
+		else{
+			echo "<a href=\"?lang=$lng2&p=$main\">$lng[$i]</a>";
+		}
+	}
+?>
+<br /></div>
 <div id="menu">
-<a href="#">главная</a> |  <a href="#">инструкция</a> |  <a href="#">купить</a> | <a href="mobi/dl/city.html">модули городов</a> | <a href="#">контакты</a>
+<a href="?<?php echo $lang_ ?>">главная</a> |  <a href="?<?php echo $lang_ ?>&p=0_0">инструкция</a> |  <a href="#">купить</a> | <a href="?<?php echo $lang_ ?>&p=dl">модули городов</a> | <a href="#">контакты</a>
 <?php 
 if(check_access()==0){
 	echo "<p><a href=\"?$lang_&p=db_stats&mode=env\">окружение</a> | "; 
@@ -71,6 +92,7 @@ if(check_access()==0){
 }
 ?> 
 </div>
+
 <div id="demo"><?php anchor('demo') ?>СКАЧАТЬ ДЕМО<br />+ <?php echo $city_count ?> модулей городов</a></div> 
 <div id="buy"><a href="#">КУПИТЬ $<?php echo $price ?><br />+ <?php echo $city_count ?> модулей городов</a></div>
 
@@ -92,6 +114,13 @@ if(check_access()==0){
 	    Timer=setTimeout("clock()",15000);
 	  }
 	  clock();
+	  function checklogin(){
+	  	if(!findObj('ilog').value && !findObj('ipwd').value){
+	  		return false;
+	  	}
+	  	findObj('aenter').disabled=1;
+	  	findObj('flog').submit();
+	  }
 	</script>
 <p>
 <?php if(isset($_SESSION['username'])){
@@ -100,10 +129,11 @@ if(check_access()==0){
 ?>
 <?php }else{ 
 ?>
-	<form action="<?php echo "?lang=$lang&p=login" ?>" method="post"> 
-	<input name="login"/> <a href="#">логин</a>  <br /><br />
-	<input name="pass"/> <a href="#">пароль</a> <br /><br />
-	<a href="javascript:void(0)" onclick="javascript:submit()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
+	<div id="loginframe"></div>
+	<form id="flog" action="<?php echo "?lang=$lang&p=login" ?>" method="post"> 
+	<input id="ilog" name="login"/> <a href="#">логин</a>  <br /><br />
+	<input id="ipwd" name="pass"/> <a href="#">пароль</a> <br /><br />
+	<a id="aenter" href="javascript:void(0)" onclick="javascript:checklogin()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
 	</form> 
 <?php } 
 ?>
@@ -124,7 +154,17 @@ if(check_access()==0){
 </div><!-- end leftColumn div -->
 <div id="content">
 <p>
-<?php include($fn) ?>
+<?php
+	if(file_exists($fn)){
+		include($fn);
+		if(preg_match("/^[_\d]+$/is", $main) and strcmp($main, '0_0')){
+			echo "<p><br/><a href=\"?$lang_&p=0_".$main{0}."\"><strong>назад к теме</strong></a></p>";
+		}
+	}
+	else{
+		echo "<h3>Страницы не существует: $fn</h3>";
+	} 
+?>
 </p>
 </div><!-- end content div -->
 <div id="bottom"><p>Copyright &copy; 2007 Astromaximum. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
