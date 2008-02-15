@@ -378,7 +378,7 @@ sub inject_locations{
 		my @fn;
 		open(IN, "<$_[1]") or mydie("error $!: $_[1]\n");
 		while(my $ln=<IN>){
-			if($ln=~/(\w+):(Data\d\d)\s+(.+)/is){
+			if($ln=~/(\w+):(Data\d+)\s+(.+)/is){
 				my $fn="$path/data/archive/$_[0]/$1/$2.dat";
 				if(!$locname){
 					$locname=$3;
@@ -399,7 +399,7 @@ sub inject_locations{
 	else{
 		my($year, $ids, $outf)=@_;
 		my $dbh=dbconnect();
-		mydie("Cant dbconnect()") unless $dbh;
+		mydie("Can't dbconnect()") unless $dbh;
 		$ids=~s/^,+//is;
 		$ids=~s/,+$//is;
 		my $stat=sprintf("SELECT DISTINCT cities.name, data FROM cities, locations ".

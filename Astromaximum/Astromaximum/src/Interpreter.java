@@ -81,7 +81,7 @@ class Interpreter extends Canvas implements CommandListener {
 //#         try {
 //#             rs = RecordStore.openRecordStore("AMtext", "S&W Axis", "AMtext");
 //#             byte[] data=rs.getRecord(1);
-//#             String msg="";
+//#             String msg1="";
 //#             for(int i=0; i<data.length; i++){
 //#                 hamtext.put(new Integer(data[i]), new Integer(i+2));
 //# //                outs+=new Integer(data[i]).toString()+",";
@@ -90,15 +90,15 @@ class Interpreter extends Canvas implements CommandListener {
 //#                 for(int j=0; j<interp.length; j++){
 //#                     sum+=interp[j];
 //#                 }
-//#                 msg+=Long.toString(sum)+",";
+//#                 msg1+=Long.toString(sum)+",";
 //#              }
 //# //            Astromaximum.log(msg);
-//#             msg="";
+//#             msg1="";
 //#             for(Enumeration e=hamtext.keys(); e.hasMoreElements();){
 //#                 Integer kk=(Integer) e.nextElement();
-//#                 msg+=kk.toString()+"=>"+hamtext.get(kk).toString()+", ";
+//#                 msg1+=kk.toString()+"=>"+hamtext.get(kk).toString()+", ";
 //#             }
-//#             Astromaximum.log(msg);
+//#             Astromaximum.log(msg1);
 //#         } catch (RecordStoreException ex) {
 //#             Astromaximum.log("RS:"+ex.getMessage());
 //#         }

@@ -117,6 +117,7 @@ void get_city_list(LocRec &v) {
 	char ini[100];
 	const char dir[]="data/archive";
 	City rec;
+
 	int n = fltk::filename_list(dir, &namelist, 0);
 	if (!n)
 		perror("scandir");
@@ -163,9 +164,9 @@ void get_city_list(LocRec &v) {
 				}
 //		printf("\nC: %s\tS: %s", city, state);
 				char dpath[1000];
-				sprintf(dpath, "%s/%04d/%s/Data%02d.dat", dir, year, ini, ii);
+				sprintf(dpath, "%s/%04d/%s/Data%04d.dat", dir, year, ini, ii);
 				if(fltk::filename_exist(dpath)){
-					sprintf(dpath,"%s:Data%02d %s", ini, ii, city);
+					sprintf(dpath,"%s:Data%04d %s", ini, ii, city);
 					rec.city=city; rec.state=state; rec.datapath=dpath;
 					v.push_back(rec);
 				}

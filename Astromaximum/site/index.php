@@ -45,7 +45,7 @@ if(!file_exists($fn)){
 	}
 }
 if(preg_match("/^(demo)$/is", $main)){
-	$show_topics=0;
+//	$show_topics=0;
 }
 function anchor($pp){
 	global $lang;
