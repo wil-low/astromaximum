@@ -1,5 +1,6 @@
 <?php 
 include_once('mobi/lang.php');
+lang_load("mobi/html");
 include_once('mobi/dbconnect.php');
 $city_count=330;
 $price=60;
@@ -19,11 +20,9 @@ if(strcmp($main, 'login')==0){
 		$pass=$_POST['pass'];
 	}
 	if(login($login, $pass)){
-		if(check_access()==1){
-			$main='demo';
-		}
-		else{
-			$main='home';
+		$main='home';
+		if(isset($_GET['to'])){
+			$main=$_GET['to'];
 		}
 	}
 	else{
@@ -47,10 +46,6 @@ if(!file_exists($fn)){
 if(preg_match("/^(demo)$/is", $main)){
 //	$show_topics=0;
 }
-function anchor($pp){
-	global $lang;
-	echo "<a href=\"?lang=$lang&p=$pp\">";
-} 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -83,7 +78,7 @@ function anchor($pp){
 ?>
 <br /></div>
 <div id="menu">
-<a href="?<?php echo $lang_ ?>">главная</a> |  <a href="?<?php echo $lang_ ?>&p=0_0">инструкция</a> |  <a href="#">купить</a> | <a href="?<?php echo $lang_ ?>&p=dl">модули городов</a> | <a href="#">контакты</a>
+<a href="?<?php echo $lang_ ?>">главная</a> |  <a href="?<?php echo $lang_ ?>&p=0_0">инструкция</a> |  <?php anchor('buy') ?>купить</a> | <?php anchor('dl') ?>модули городов</a> | <a href="#">контакты</a>
 <?php 
 if(check_access()==0){
 	echo "<p><a href=\"?$lang_&p=db_stats&mode=env\">окружение</a> | "; 
@@ -94,7 +89,7 @@ if(check_access()==0){
 </div>
 
 <div id="demo"><?php anchor('demo') ?>СКАЧАТЬ ДЕМО<br />+ <?php echo $city_count ?> модулей городов</a></div> 
-<div id="buy"><a href="#">КУПИТЬ $<?php echo $price ?><br />+ <?php echo $city_count ?> модулей городов</a></div>
+<div id="buy"><?php anchor('buy') ?>КУПИТЬ &euro;<?php echo $price ?><br />+ <?php echo $city_count ?> модулей городов</a></div>
 
 <div id="leftColumn"> 
 	<h6>GMT <span id="mtime">&nbsp;</span></h6>
@@ -130,7 +125,7 @@ if(check_access()==0){
 <?php }else{ 
 ?>
 	<div id="loginframe"></div>
-	<form id="flog" action="<?php echo "?lang=$lang&p=login" ?>" method="post"> 
+	<form id="flog" action="<?php echo "?lang=$lang&p=login&to=$main" ?>" method="post"> 
 	<input id="ilog" name="login"/> <a href="#">логин</a>  <br /><br />
 	<input id="ipwd" name="pass"/> <a href="#">пароль</a> <br /><br />
 	<a id="aenter" href="javascript:void(0)" onclick="javascript:checklogin()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
@@ -156,9 +151,21 @@ if(check_access()==0){
 <p>
 <?php
 	if(file_exists($fn)){
-		include($fn);
-		if(preg_match("/^[_\d]+$/is", $main) and strcmp($main, '0_0')){
-			echo "<p><br/><a href=\"?$lang_&p=0_".$main{0}."\"><strong>назад к теме</strong></a></p>";
+		$manual_requested=preg_match("/^[_\d]+$/is", $main);
+		if($manual_requested){
+			$chac=check_access(); 
+			if($chac!=-1 and $chac!=1){
+				include($fn);
+				if(strcmp($main, '0_0')){
+					echo "<p><br/><a href=\"?$lang_&p=0_".$main{0}."\"><strong>назад к теме</strong></a>";
+				}
+			}
+			else{
+				reg_warning("Просмотр документации");
+			}
+		}
+		else{
+			include($fn);
 		}
 	}
 	else{

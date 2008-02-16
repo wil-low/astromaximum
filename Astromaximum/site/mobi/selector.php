@@ -1,4 +1,6 @@
 <?php
+$BIG_SITE="http://astromaximum.de/";
+$MOBI_SITE="http://astromaximum.mobi/";
 if(isset($_GET['lang'])){
 	if(isset($_GET['lang'])){
 		$lang=$_GET['lang'];
@@ -16,12 +18,13 @@ if(isset($_GET['dest']) && isset($_POST['btn'])){
 		$data_php.="/mobi";
 	}
 	if(strcmp($dest, 'pc')==0){ // PC links
+		$desturl=$BIG_SITE."?lang=$lang";
 		switch($btn){
-			case 1:	$desturl="dl?lang=$lang"; break;
-//			case 2:	$desturl="html/$lang/0_0.xhtml"; break;
-			case 3:	$desturl="html/$lang/about.xhtml"; break;
-			case 4:	$desturl="dl/prg.php?mode=demo&lang=$lang&dest=$dest"; break;
-			case 5:	$desturl="dl/prg.php?mode=trial&lang=$lang&dest=$dest"; break;
+			case 1:	$desturl.="&p=dl"; break;
+			case 2:	unset($desturl); break;
+//			case 3:	$desturl=$BIG_SITE."&p=dl"; break;
+			case 4:	$desturl.="&p=demo"; break;
+			case 5:	$desturl.="&p=buy"; break;
 		}
 	}
 	else{ // Phone links
@@ -42,7 +45,7 @@ if(isset($_GET['dest']) && isset($_POST['btn'])){
 include_once('amtools.php');
 $current_year=get_year();   
 include_once("lang.php");
-lang_load("dl/source");
+lang_load("html");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

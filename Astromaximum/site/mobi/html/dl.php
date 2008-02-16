@@ -24,41 +24,8 @@ if(strlen($act) && isset($_POST['sc'])){
 		}
 		echo "</ol>\n";
 		include_once('mobi/amtools.php');
-		$perl=find_perl();
-		global $DIR_FILES, $DIR_SOURCE;
-		$dsrc="mobi/$DIR_FILES";
-		$ye=substr($defyear,-2);
-		list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
-		$srcdir="$dsrc/$fn";
-	#	echo "$dsrc/$destfile";
-		$cmd="$perl mobi/dl/gen_amax.cgi geo- $defyear $lang $sc $dsrc/$fn.r nomessjar";
-		$ret=0;
-		exec($cmd, $outp, $ret);
-		if($ret){				
-			echo $cmd;
-			echo implode('<br>',$outp);
-		}
-		else{
-			$id=$fn;
-			if(!add_file($fn, "g $defyear")){
-				echo mysql_error();
-				exit;
-			}
-
-			$url='mobi/data.php?r='.$id;
-			echo "<h4>{$i18['PC_DL']}:</h4>";
-			echo "<a href='$url'>JAR</a>";
-			$url=str_replace("?r", "?d", $url);
-			echo " <a href='$url'>JAD</a><br>";
-/*
-			$url=str_replace("?d", "?t", $url);
-			echo "<h4>{$i18['PHONE_DL']}:</h4>";
-			echo "<a href='$url'>JAD</a><br>";
-*/				
-			echo "<br><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
-			echo "<a href={$_SERVER['REQUEST_URI']}>{$i18['BACK']}</a>";
-		}
-		exit;
+		echo midlet_create("geo", $defyear, $lang, $sc, "mobi/dl");
+		return;
 	}
 }
 //print_r($_REQUEST);

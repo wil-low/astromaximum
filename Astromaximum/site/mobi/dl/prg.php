@@ -3,18 +3,10 @@
 	include_once('../amtools.php');
 	include_once('nav.php');
 	include_once('../lang.php');
-	lang_load("source");
+	lang_load("../html");
 	
 	$perl=find_perl();
-	$cities=array('Kiev', 'London', 'New York', 'Moscow');
-	$sth=mysql_query("SELECT id FROM cities WHERE name in ('".implode("','", $cities)."')");
-	$default_city_ids='';
-	while($row=mysql_fetch_row($sth)){
-		$default_city_ids.="$row[0],";
-	}
-	mysql_free_result($sth);
-	$timeout_offset=-24;
-	$timeout_mins=2880;
+	$default_city_ids=get_default_cities();
 
 	if(!isset($_REQUEST['mode'])) exit;
 	$year=get_year();
@@ -32,13 +24,6 @@
 	else{
 		$lang='en';
 	}
-	$outp=array();
-	global $DIR_FILES, $DIR_SOURCE;
-	$dsrc="../$DIR_FILES";
-	$ye=substr($year,-2);
-	list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
-	$srcdir="$dsrc/$fn";
-#	echo "$dsrc/$destfile";
 	if(!$isdemo){
 		if(isset($_POST['user']) && isset($_POST['passwd'])){
 			if(!login($_POST['user'],$_POST['passwd'])){
@@ -49,12 +34,19 @@
 				ask_login();
 		}
 	}	
+	$outp=array();
+	global $DIR_FILES, $DIR_SOURCE;
+	$dsrc="../$DIR_FILES";
+	$ye=substr($year,-2);
+	list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
+	$srcdir="$dsrc/$fn";
+#	echo "$dsrc/$destfile";
 	$type="d $year $lang";
 	if($isdemo){
 		$cmd="$perl ./gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
 	}
 	else{
-		$cmd="$perl ./gen_amax.cgi tb $year \"".$_REQUEST['lang']."\" \"$default_city_ids\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
+		$cmd="$perl ./gen_amax.cgi tb $year $lang \"$default_city_ids\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
 		$type="t $year $lang";
 	}
 	$ret=0;

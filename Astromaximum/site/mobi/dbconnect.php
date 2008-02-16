@@ -2,7 +2,7 @@
 /* FTP account 
 astromaximumcom a2a0SL2H
 */
-if(strcmp($_SERVER['SERVER_NAME'],"localhost")==0){ // local=true
+if(strcmp($_SERVER['REMOTE_ADDR'],"127.0.0.1")==0){ // local=true
 	$DB_SERVER='localhost';
 	$DB_NAME='amax';
 	$DB_PORT='3306';

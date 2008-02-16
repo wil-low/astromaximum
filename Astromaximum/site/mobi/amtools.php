@@ -1,4 +1,6 @@
 <?php
+$DEF_CITIES=array('Kiev', 'London', 'New York', 'Moscow');
+
 function find_perl(){
 	$perl="/opt/lampp/bin/perl";
 	if(!file_exists($perl)){
@@ -178,6 +180,7 @@ function get_year(){
 	};
 	return $current_year;
 }
+
 function is_mobile(){
     return 1;
 // Lightweight device detection http://dev.mobi/node/472
@@ -220,4 +223,74 @@ function is_mobile(){
     return $mobile_browser;
 }
 
+function get_default_cities(){
+	global $DEF_CITIES;
+	$sth=mysql_query("SELECT id FROM cities WHERE name in ('".implode("','", $DEF_CITIES)."')");
+	$ids='';
+	while($row=mysql_fetch_row($sth)){
+		$ids.="$row[0],";
+	}
+	mysql_free_result($sth);
+	return $ids;
+}
+
+function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string with links
+	global $DIR_FILES, $DIR_SOURCE, $i18;
+
+	$timeout_offset=-24;
+	$timeout_mins=2880;
+
+	$str='';
+	$perl=find_perl();
+	$dsrc="mobi/$DIR_FILES";
+	$ye=substr($year,-2);
+	list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
+	$srcdir="$dsrc/$fn";
+	$is_cal=false;
+#	echo "$dsrc/$destfile";
+	if(strcmp($type, "geo")==0){
+		$cmd="$perl $path2gen/gen_amax.cgi geo- $year $lang $param $dsrc/$fn.r nomessjar";
+	}
+	else{
+		$is_cal=true;
+		if(!preg_match("/^(demo|tb)$/is", $type)){
+			return;
+		}
+		$cmd="$perl $path2gen/gen_amax.cgi $type $year $lang \"$param\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
+	}
+	$ret=0;
+	exec($cmd, $outp, $ret);
+	if($ret){				
+		$str.=$cmd.'<br/>';
+		$str.=implode('<br/>',$outp);
+	}
+	else{
+		if($is_cal){
+//		$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
+//		header("Location: http://$data_php/data.php?d=$fn");
+			if(!add_file($fn, $type{0}." $year $lang")){
+				$str.=mysql_error();
+				return $str;
+			}
+		}
+		$id=$fn;
+		$data_php="http://".dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
+		if(!strpos($data_php, "mobi")){
+			$data_php.="/mobi";
+		}
+		$url=$data_php.'/data.php?r='.$id;
+		$str.="<h4>{$i18['PC_DL']}:</h4>";
+		$str.="<a href='$url'>JAR</a>";
+		$url=str_replace("?r", "?d", $url);
+		$str.=" <a href='$url'>JAD</a><br>";
+
+#				$url=str_replace("?d", "?t", $url);
+#				echo "<h4>{$i18['PHONE_DL']}:</h4>";
+#				echo "<a href='$url'>JAD</a><br>";
+		
+		$str.="<br><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
+//		$str.="<a href={$_SERVER['REQUEST_URI']}>{$i18['BACK']}</a>";
+	}
+	return $str;
+}
 ?>

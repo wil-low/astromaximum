@@ -35,7 +35,6 @@ td {
 input {
 	border: 1px  solid rgb(51,102,153);
 	height: 15px;
-	width: 69px;
 }
 ul {
 	list-style-image: url('i/bul.gif');
@@ -97,6 +96,9 @@ ul {
 	margin: 0px 0px 33px 11px;
 	width: 246px;
 	float: left;
+}
+#leftColumn input{
+	width: 69px;
 }
 #leftColumn h6 {
 	font-size: 9px;

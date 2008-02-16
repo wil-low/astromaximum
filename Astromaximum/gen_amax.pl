@@ -482,7 +482,7 @@ sub inject_common{
 		}
 	}
 	else{
-		copy_file("$const::DIR_TEMPLATE/$_[0].comm", $_[1]);
+		copy_file("$path/$const::DIR_TEMPLATE/$_[0].comm", $_[1]);
 	}
 	echo("$dest ($year) written\n");
 

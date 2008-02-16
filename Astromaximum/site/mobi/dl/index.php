@@ -14,7 +14,7 @@ $max_cities=20;
 <title>Cities database - Astromaximum</title>
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Unknown">
-<meta name="date" content="2008-01-23T21:53:31+0200">
+<meta name="date" content="2008-02-15T18:55:16+0200">
 <meta name="copyright" content="">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -109,6 +109,8 @@ function city_del(){
 			}
 			echo "</ol>\n";
 			include_once('../amtools.php');
+			echo midlet_create("geo", $defyear, $lang);
+/*
 			global $DIR_FILES, $DIR_SOURCE;
 			$dsrc="../$DIR_FILES";
 			$ye=substr($defyear,-2);
@@ -126,22 +128,21 @@ function city_del(){
 		//		$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
 		//		header("Location: http://$data_php/data.php?d=$fn");
 				$id=$fn;
-		//			include_once('../amtools.php');
-		//			$id=create_jar($defyear, $sc, 'source/template.zip', 0, '', 'GeoInstaller', '');
 				$url='../data.php?r='.$id;
 				echo "<h4>{$i18['PC_DL']}:</h4>";
 				echo "<a href='$url'>JAR</a>";
 				$url=str_replace("?r", "?d", $url);
 				echo " <a href='$url'>JAD</a><br>";
-/*
-				$url=str_replace("?d", "?t", $url);
-				echo "<h4>{$i18['PHONE_DL']}:</h4>";
-				echo "<a href='$url'>JAD</a><br>";
-*/				
+
+#				$url=str_replace("?d", "?t", $url);
+#				echo "<h4>{$i18['PHONE_DL']}:</h4>";
+#				echo "<a href='$url'>JAD</a><br>";
+				
 				echo "<br><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
 				echo "<a href={$_SERVER['REQUEST_URI']}>{$i18['BACK']}</a>";
 				exit(0);
 			}
+*/				
 		}
 	}
 ?>
