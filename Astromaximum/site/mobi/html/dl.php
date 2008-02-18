@@ -1,8 +1,12 @@
 <?php
 lang_load("mobi/html");
 $step=1;
-$max_cities=20;
-
+$max_cities=5;
+$chac=check_access();
+if($chac==-1 or $chac==1){
+	reg_warning("Загрузка городов");
+	return;
+}
 $defyear=date("Y");
 if(isset($_POST['y_sel'])){
 	$defyear=$_POST['y_sel'];
@@ -32,33 +36,6 @@ if(strlen($act) && isset($_POST['sc'])){
 ?>
 
 <script type="text/javascript">
-function city_add(cname,sname){
-	selc=document.getElementById("selcit");
-	out="";
-	count=selc.length;
-	frm=document.forms.namedItem("main");
-	sc=frm.elements.namedItem("sc");
-	var slct=document.getElementById("chkcit");
-	for(var i=0; i<slct.length; i++){
-		var opt=slct.item(i);
-		if(opt.selected && sc.value.indexOf(","+opt.value+",")<0){
-			var newopt=document.createElement("option");
-			var newtext=document.createTextNode(opt.text+", "+cname);
-//		alert(newopt);return;
-			newopt.value=opt.value;
-			newopt.appendChild(newtext);
-			selc.appendChild(newopt);
-			sc.value=sc.value+opt.value+",";
-			count++;
-		}
-		if(count><?php echo $max_cities ?>){
-			alert("<?php echo sprintf($i18['CITY_LIMIT'], $max_cities) ?>");
-			break;
-		}
-		opt.selected=false;
-	}
-}
-
 function showc(country,state){
 	frm=document.forms.namedItem("main");
 	if(frm.elements.namedItem('cid').value!=country || frm.elements.namedItem('stateid').value!=state){
@@ -67,34 +44,27 @@ function showc(country,state){
 		frm.submit();
 	}
 }
-
-function city_del(removeAll){
-	selc=document.getElementById("selcit");
-	frm=document.forms.namedItem("main");
-	sc=frm.elements.namedItem("sc");
-	sc.value=","; out='';
-	for(i=0; i<selc.length; i++){
-		opt=selc.item(i);
-		if(removeAll || opt.selected){
-			selc.removeChild(opt);
-			i--;
-		}
-		else{
-			sc.value=sc.value+opt.value+",";
-		}
+function generate(country){
+	lst=findObj("chkcit");
+	ind=lst.selectedIndex;
+	if(ind<0){
+		alert("Выберите город из списка");
+		return;
 	}
-}
-
-function check_list(){
-	if(document.getElementById("selcit").length){
+	if(confirm("Сгенерировать город:\n"+findObj('city_em').innerHTML+", "+country+"?")){
 		frm=document.forms.namedItem("main");
+		frm.elements.namedItem("sc").value=lst.item(ind).value;
 		frm.elements.namedItem("Action").value=1;
 		frm.submit();
 	}
 }
+function highlight_city(list){
+	findObj('city_em').innerHTML=list.item(list.selectedIndex).text;
+}
 </script>
-<h4>Загрузить модули городов</h4>
-<form method="post" border=1 action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
+<h4></h4>
+<p>Для использования городов необходимо установить <?php echo anchor('buy') ?>полную версию</a> календаря!</p>
+<form method="post" action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
 <table class="geo">
 <tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
 <select name="y_sel" style="height:auto; width:auto;" onchange="city_del(true)">
@@ -109,8 +79,7 @@ for($i=0; $i<3; $i++){
 ?>
 </select>
 </th>
-<th style="background-color:rgb(255,255,255)" colspan="2"></th>
-<th style="background-color:rgb(255,255,255)"><?php echo $i18['LOAD_LEFT'] ?> 5</th>
+<th colspan="2" style="font-size:12px"><?php echo sprintf($i18['LOAD_LEFT'], 5, $max_cities) ?></th>
 </tr>
 <tr>
 <th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
@@ -130,7 +99,7 @@ for($i=0; $i<3; $i++){
 		$selflag='';
 		if($row[0]==$cnum){
 			$cur_country=$row[1];
-			$selflag=' selected';
+			$selflag=' selected="selected"';
 		}
 		$lb1.="<option value=\"$row[0]{$selflag}\">{$row[1]}\n";
 	}
@@ -159,35 +128,30 @@ for($i=0; $i<3; $i++){
 		$selflag='';
 		if($row[0]==$statenum){
 			$cur_state=$row[1];
-			$selflag=' selected';
+			$selflag=' selected="selected"';
 		}
 		$lb2.="<option value=\"$row[0]\"$selflag>$row[1]\n";
 	}
 	mysql_free_result($sth);
 ?>
 </th>
-<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 	
-<?php echo $i18['H_CITY']?>
-<div class="bums">
-<input type=button value='<?php echo $i18['ADD_SEL']?> &gt;&gt;' onclick='<?php echo "city_add(\"$cur_country\",\"$cur_state\");" ?>'/>
-</div></th>
-<th><nobr><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
-<?php echo $i18['SEL_CITIES']?>
-<div class="bums">
-<input type=button value="&lt;&lt; <?php echo $i18['DEL_SEL']?>" onclick="city_del(false);"/>
-<input type=button onclick="check_list()" value="<?php echo $i18['GET_DATA']?>">
-</div>
+<th><nobr>
+<span id="city_em" style="padding:2px 4px;border:1px white solid">&gt;Выберите город&lt;</span>
+<span></span>
+<span class="bums">
+<input type="button" onclick="generate('<?php echo $cur_country ?>')" value="<?php echo $i18['GET_DATA']?>">
+</span> 
 </nobr></th>
 </tr>
 <tr>
 <td><!-- 1st listbox -->
-<select size=34 onchange="showc(item(selectedIndex).value,0);" class=lb>
+<select size="34" onchange="showc(item(selectedIndex).value,0);" class="lb">
 <?php echo $lb1 ?>
 </select>
 </td>
 <td><!-- 2nd listbox -->
 <?php
- echo "<select size=34 onchange=\"showc($cnum,item(selectedIndex).value);\" class=lb>";
+ echo "<select size=\"34\" onchange=\"showc($cnum,item(selectedIndex).value);\" class=\"lb\">";
  echo $lb2
 ?>
 </select>
@@ -206,30 +170,19 @@ for($i=0; $i<3; $i++){
 	$sth = mysql_query($stat);
 ?>
 <td>
-<select id=chkcit size=34 multiple class=lb>
+<select id="chkcit" size="34" class="lb" onchange="highlight_city(this)">
 <?php
 	while($row = mysql_fetch_row($sth)){
 		echo "<option value=\"$row[0]\">$row[1]\n";
 	}
 	mysql_free_result($sth);
+	
 ?>
 </select>
-</td>
-<td>
 <input type="hidden" name="Action" value=""/>
 <input type="hidden" name="cid" value=""/>
 <input type="hidden" name="stateid" value="0"/>
 <input type="hidden" name="sc" value="<?php echo $sc ?>"/>
-<select id=selcit size=34 multiple class=lb>
-<?php
-	$sth=get_selected_cities('sc');
-	if($sth){
-		while($row = mysql_fetch_row($sth)){
-			echo "<option value=\"$row[0]\">$row[1], $row[2]\n";
-		}
-	}
-?>
-</select>
 </td>
 </tr>
 </table>

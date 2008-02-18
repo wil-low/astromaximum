@@ -75,7 +75,7 @@ CREATE TABLE `customers` (
   `role` tinyint(4) NOT NULL default '1',
   `email` varchar(50) default NULL,
   `subscr_date` date default NULL,
-  `dl_count` int(11) NOT NULL default '2',
+  `dl_count` int(11) NOT NULL default '5',
   PRIMARY KEY  (`id`),
   KEY `name` (`name`,`realname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds customer data';

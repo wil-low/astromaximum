@@ -173,14 +173,6 @@ function create_jar($year, $ids, $template_jar, $isdemo, $midlet_name,
 	return $fn;
 }
 
-function get_year(){
-	$current_year=date("Y");
-	if(date("n")==12){
-		$current_year++;
-	};
-	return $current_year;
-}
-
 function is_mobile(){
     return 1;
 // Lightweight device detection http://dev.mobi/node/472
@@ -246,7 +238,7 @@ function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string 
 	$ye=substr($year,-2);
 	list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
 	$srcdir="$dsrc/$fn";
-	$is_cal=false;
+	$is_cal=true;
 #	echo "$dsrc/$destfile";
 	if(strcmp($type, "geo")==0){
 		$cmd="$perl $path2gen/gen_amax.cgi geo- $year $lang $param $dsrc/$fn.r nomessjar";

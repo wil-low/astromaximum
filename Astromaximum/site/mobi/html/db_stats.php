@@ -11,7 +11,7 @@ if(isset($_GET['mode'])){
 	$mode=$_GET['mode'];
 }
 if(strcmp($mode,'env')==0){
-	echo '<table style="cellpadding:0; cellspacing:0; border-width:solid 1px; font-size:8pt">';
+	echo '<table>';
 	echo '<th>Property</th><th>Status</th>';
 	$env=check_env();
 	foreach ($env as $key => $value) {
@@ -21,7 +21,7 @@ if(strcmp($mode,'env')==0){
 }	
 if(strcmp($mode,'data')==0){	
 	echo '<p></p>';
-	echo '<table style="cellpadding:0; cellspacing:0; border:1; font-size:8pt">';
+	echo '<table>';
 	echo '<th>Country</th><th>Cities</th>';
 	$sth=mysql_query("SELECT DISTINCT year FROM locations ORDER BY year");
 	while($row=mysql_fetch_row($sth)){
@@ -46,7 +46,7 @@ if(strcmp($mode,'data')==0){
 			while($row2=mysql_fetch_row($sth2)){
 				$bg='';
 				if($row[2]>$row2[0]){
-					$bg=" style='border-width:2; color:red'";
+					$bg=" style=\"color:red\"";
 				}
 				echo "<td{$bg}>{$row2[0]}</td>\n";
 			}

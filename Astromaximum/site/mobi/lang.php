@@ -57,4 +57,12 @@ function reg_warning($subj){
 	echo "<p>$subj разрешается только зарегистрированным пользователям.<br/>Введите свой логин и пароль в форме слева.";
 }
 
+function get_year(){
+	$current_year=date("Y");
+	if(date("n")==12){
+		$current_year++;
+	};
+	return $current_year;
+}
+
 ?>

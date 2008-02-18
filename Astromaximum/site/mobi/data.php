@@ -21,7 +21,8 @@ if(true /*|| check_access()*/){
 	$sth=mysql_query($stat);
 	$count=mysql_fetch_row($sth);
 	if($count[0]!=1){
-		header("HTTP/1.0 410 Gone");
+		echo $stat;
+//		header("HTTP/1.0 410 Gone");
 		exit;
 	}
 	$stat=sprintf(

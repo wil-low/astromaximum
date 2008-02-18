@@ -2,7 +2,8 @@
 include_once('mobi/lang.php');
 lang_load("mobi/html");
 include_once('mobi/dbconnect.php');
-$city_count=330;
+$chac=check_access();
+$city_count=711;
 $price=60;
 $main='home';
 $show_topics=1;
@@ -77,21 +78,44 @@ if(preg_match("/^(demo)$/is", $main)){
 	}
 ?>
 <br />
-<p>GMT <span id="mtime">&nbsp;</span></p>
+<p><b>GMT <span id="mtime">&nbsp;</span></b></p>
 </div>
 <div id="menu">
 <a href="?<?php echo $lang_ ?>">главная</a> |  <a href="?<?php echo $lang_ ?>&amp;p=0_0">инструкция</a> |  <?php anchor('buy') ?>купить</a> | <?php anchor('dl') ?>модули городов</a> | <a href="#">контакты</a>
 <?php 
-if(check_access()==0){
-	echo "<p><a href=\"?$lang_&amp;p=db_stats&amp;mode=env\">окружение</a> | "; 
-	echo "<a href=\"?$lang_&amp;p=db_stats&amp;mode=data\">статистика</a> | "; 
-	echo "<a href=\"?$lang_&amp;p=upload\">загрузка городов</a></p>";
+$btn1="СКАЧАТЬ ДЕМО<br/>+ $city_count модулей городов"; $btn1_link="demo";
+$btn2="КУПИТЬ &euro;$price<br/>+ $city_count модулей городов";
+if($chac==0){
+	echo <<<ADMIN_TB
+	<p><a href="?$lang_&amp;p=db_stats&amp;mode=env">окружение</a> |  
+	<a href="?$lang_&amp;p=db_stats&amp;mode=data">статистика</a> |  
+	<a href="?$lang_&amp;p=upload">загрузка городов</a></p>
+ADMIN_TB;
 }
+if($chac>=0 && $chac!=1){
+	$current_year=get_year();
+	$btn1="ЗАГРУЗИТЬ<br/>ГОРОД"; $btn2="ЗАГРУЗИТЬ<br/>КАЛЕНДАРЬ - $current_year"; $btn1_link="dl";
+}
+if(isset($_SESSION['username'])){
+	$session_prompt=<<<SP1
+	Здравствуйте, <b>{$_SESSION['username']}</b>! </p><p>
+	<a href="mobi/dl/logout.php"><strong>выход</strong></a> 
+SP1;
+}
+else{ 
+	$session_prompt=<<<FRM
+	<form id="flog" action="?lang=$lang&amp;p=login&amp;to=$main" method="post"> 
+	<input id="ilog" name="login"/> <a href="#">логин</a>  <br /><br />
+	<input id="ipwd" name="pass"/> <a href="#">пароль</a> <br /><br />
+	<a id="aenter" href="javascript:void(0)" onclick="javascript:checklogin()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
+	</form> 
+FRM;
+} 
 ?> 
 </div>
 
-<div id="demo"><?php anchor('demo') ?>СКАЧАТЬ ДЕМО<br />+ <?php echo $city_count ?> модулей городов</a></div> 
-<div id="buy"><?php anchor('buy') ?>КУПИТЬ &euro;<?php echo $price ?><br />+ <?php echo $city_count ?> модулей городов</a></div>
+<div id="demo"><?php anchor($btn1_link); echo $btn1 ?></a></div> 
+<div id="buy"><?php anchor('buy'); echo $btn2 ?></a></div>
 
 <div id="leftColumn"> 
 	<script type="text/javascript">
@@ -119,19 +143,7 @@ if(check_access()==0){
 	  }
 	</script>
 <p>
-<?php if(isset($_SESSION['username'])){
-	echo "Здравствуйте, <b>{$_SESSION['username']}</b>! </p><p>";
-	echo "<a href=\"mobi/dl/logout.php\"><strong>выход</strong></a>"; 
-?>
-<?php }else{ 
-?>
-	<form id="flog" action="<?php echo "?lang=$lang&amp;p=login&amp;to=$main" ?>" method="post"> 
-	<input id="ilog" name="login"/> <a href="#">логин</a>  <br /><br />
-	<input id="ipwd" name="pass"/> <a href="#">пароль</a> <br /><br />
-	<a id="aenter" href="javascript:void(0)" onclick="javascript:checklogin()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
-	</form> 
-<?php } 
-?>
+<?php	echo $session_prompt ?>
 </p>
 
 <?php if($show_topics){ ?>
@@ -153,7 +165,6 @@ if(check_access()==0){
 	if(file_exists($fn)){
 		$manual_requested=preg_match("/^[_\d]+$/is", $main);
 		if($manual_requested){
-			$chac=check_access(); 
 			if($chac!=-1 and $chac!=1){
 				include($fn);
 				if(strcmp($main, '0_0')){
@@ -174,6 +185,6 @@ if(check_access()==0){
 ?>
 </p>
 </div><!-- end content div -->
-<div id="bottom"><p>Copyright &copy; 2007 Astromaximum. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
+<div id="bottom"><p>Copyright &copy; 2007 S&amp;W Axis. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
 </body>
 </html>
