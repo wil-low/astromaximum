@@ -29,7 +29,7 @@ if(strcmp($main, 'login')==0){
 		sleep(5);
 		$main='home';
 	}
-	redirect("?$lang_&p=$main");	
+	redirect("?$lang_&amp;p=$main");	
 }
 if(!preg_match("/^[\w_\d]+$/is", $main)){
 	$main='home';
@@ -72,18 +72,20 @@ if(preg_match("/^(demo)$/is", $main)){
 			echo "<b>$lng[$i]</b>";
 		}
 		else{
-			echo "<a href=\"?lang=$lng2&p=$main\">$lng[$i]</a>";
+			echo "<a href=\"?lang=$lng2&amp;p=$main\">$lng[$i]</a>";
 		}
 	}
 ?>
-<br /></div>
+<br />
+<p>GMT <span id="mtime">&nbsp;</span></p>
+</div>
 <div id="menu">
-<a href="?<?php echo $lang_ ?>">главная</a> |  <a href="?<?php echo $lang_ ?>&p=0_0">инструкция</a> |  <?php anchor('buy') ?>купить</a> | <?php anchor('dl') ?>модули городов</a> | <a href="#">контакты</a>
+<a href="?<?php echo $lang_ ?>">главная</a> |  <a href="?<?php echo $lang_ ?>&amp;p=0_0">инструкция</a> |  <?php anchor('buy') ?>купить</a> | <?php anchor('dl') ?>модули городов</a> | <a href="#">контакты</a>
 <?php 
 if(check_access()==0){
-	echo "<p><a href=\"?$lang_&p=db_stats&mode=env\">окружение</a> | "; 
-	echo "<a href=\"?$lang_&p=db_stats&mode=data\">статистика</a> | "; 
-	echo "<a href=\"?$lang_&p=upload\">загрузка городов</a></p>";
+	echo "<p><a href=\"?$lang_&amp;p=db_stats&amp;mode=env\">окружение</a> | "; 
+	echo "<a href=\"?$lang_&amp;p=db_stats&amp;mode=data\">статистика</a> | "; 
+	echo "<a href=\"?$lang_&amp;p=upload\">загрузка городов</a></p>";
 }
 ?> 
 </div>
@@ -92,7 +94,6 @@ if(check_access()==0){
 <div id="buy"><?php anchor('buy') ?>КУПИТЬ &euro;<?php echo $price ?><br />+ <?php echo $city_count ?> модулей городов</a></div>
 
 <div id="leftColumn"> 
-	<h6>GMT <span id="mtime">&nbsp;</span></h6>
 	<script type="text/javascript">
 		function findObj(id) {
 		  return (document.all?document.all[id]:document.getElementById(id));
@@ -124,8 +125,7 @@ if(check_access()==0){
 ?>
 <?php }else{ 
 ?>
-	<div id="loginframe"></div>
-	<form id="flog" action="<?php echo "?lang=$lang&p=login&to=$main" ?>" method="post"> 
+	<form id="flog" action="<?php echo "?lang=$lang&amp;p=login&amp;to=$main" ?>" method="post"> 
 	<input id="ilog" name="login"/> <a href="#">логин</a>  <br /><br />
 	<input id="ipwd" name="pass"/> <a href="#">пароль</a> <br /><br />
 	<a id="aenter" href="javascript:void(0)" onclick="javascript:checklogin()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
@@ -157,7 +157,7 @@ if(check_access()==0){
 			if($chac!=-1 and $chac!=1){
 				include($fn);
 				if(strcmp($main, '0_0')){
-					echo "<p><br/><a href=\"?$lang_&p=0_".$main{0}."\"><strong>назад к теме</strong></a>";
+					echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>назад к теме</strong></a>";
 				}
 			}
 			else{

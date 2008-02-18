@@ -87,15 +87,16 @@ function city_del(removeAll){
 
 function check_list(){
 	if(document.getElementById("selcit").length){
-		document.getElementById("Action").value=1;
-		document.forms.namedItem("main").submit();
+		frm=document.forms.namedItem("main");
+		frm.elements.namedItem("Action").value=1;
+		frm.submit();
 	}
 }
 </script>
 <h4>Загрузить модули городов</h4>
 <form method="post" border=1 action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
-<table id="city" border=1 width=100% cellspacing=0 cellpadding=0>
-<tr><th colspan="4" align="left"><font color=red><?php echo $step++ ?></font>.
+<table class="geo">
+<tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
 <select name="y_sel" style="height:auto; width:auto;" onchange="city_del(true)">
 <?php
 $y_now=date("Y");
@@ -107,9 +108,12 @@ for($i=0; $i<3; $i++){
 }
 ?>
 </select>
-</th></tr>
+</th>
+<th style="background-color:rgb(255,255,255)" colspan="2"></th>
+<th style="background-color:rgb(255,255,255)"><?php echo $i18['LOAD_LEFT'] ?> 5</th>
+</tr>
 <tr>
-<th width=11% align=center><font color=red><?php echo $step++ ?></font>. 
+<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
 <?php
 	echo $i18['H_COUNTRY'];
 // First listbox
@@ -128,11 +132,11 @@ for($i=0; $i<3; $i++){
 			$cur_country=$row[1];
 			$selflag=' selected';
 		}
-		$lb1.="<option value=$row[0]{$selflag}>{$row[1]}\n";
+		$lb1.="<option value=\"$row[0]{$selflag}\">{$row[1]}\n";
 	}
 ?>
 </th>
-<th width=11% align=center><font color=red><?php echo $step++ ?></font>. 
+<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
 <?php
 	echo $i18['H_STATE'];
 	$stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
@@ -150,38 +154,38 @@ for($i=0; $i<3; $i++){
 	}
 	$state_count=mysql_num_rows($sth);
 
-	$lb2.="<option value=0 $selflag>&gt;&gt;".$allst."&lt;&lt;\n";
+	$lb2.="<option value=\"0\" $selflag>&gt;&gt;".$allst."&lt;&lt;\n";
 	while($row = mysql_fetch_row($sth)){
 		$selflag='';
 		if($row[0]==$statenum){
 			$cur_state=$row[1];
 			$selflag=' selected';
 		}
-		$lb2.="<option value=$row[0]$selflag>$row[1]\n";
+		$lb2.="<option value=\"$row[0]\"$selflag>$row[1]\n";
 	}
 	mysql_free_result($sth);
 ?>
 </th>
-<th width=20% align=center><font color=red><?php echo $step++ ?></font>. 	
+<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 	
 <?php echo $i18['H_CITY']?>
-<div align=right>
-<input type=button class="lbbtn" size=9 style="font-family:Verdana" value='<?php echo $i18['ADD_SEL']?> &gt;&gt;' onclick='<?php echo "city_add(\"$cur_country\",\"$cur_state\");" ?>'/>
+<div class="bums">
+<input type=button value='<?php echo $i18['ADD_SEL']?> &gt;&gt;' onclick='<?php echo "city_add(\"$cur_country\",\"$cur_state\");" ?>'/>
 </div></th>
-<th width=20% align=center><font color=red><?php echo $step++ ?></font>.
+<th><nobr><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
 <?php echo $i18['SEL_CITIES']?>
-<div align="left">
-<input type=button class="lbbtn" size=9 value="&lt;&lt; <?php echo $i18['DEL_SEL']?>" style="font-family:Verdana" onclick="city_del(false);"/><nobr/><input 
-	type=button class="lbbtn" onclick="check_list()" style="font-weight:bold" value="<?php echo $i18['GET_DATA']?>">
+<div class="bums">
+<input type=button value="&lt;&lt; <?php echo $i18['DEL_SEL']?>" onclick="city_del(false);"/>
+<input type=button onclick="check_list()" value="<?php echo $i18['GET_DATA']?>">
 </div>
-</th>
+</nobr></th>
 </tr>
 <tr>
-<td width=20% align=center valign=bottom><!-- 1st listbox -->
+<td><!-- 1st listbox -->
 <select size=34 onchange="showc(item(selectedIndex).value,0);" class=lb>
 <?php echo $lb1 ?>
 </select>
 </td>
-<td width=20% align=center valign=bottom><!-- 2nd listbox -->
+<td><!-- 2nd listbox -->
 <?php
  echo "<select size=34 onchange=\"showc($cnum,item(selectedIndex).value);\" class=lb>";
  echo $lb2
@@ -201,19 +205,17 @@ for($i=0; $i<3; $i++){
 		" ORDER BY cities.name",quote_smart($cnum), $andst, quote_smart($defyear));
 	$sth = mysql_query($stat);
 ?>
-<td align=center valign=bottom>
-<div align=right>
-</div>
+<td>
 <select id=chkcit size=34 multiple class=lb>
 <?php
 	while($row = mysql_fetch_row($sth)){
-		echo "<option value=$row[0]>$row[1]\n";
+		echo "<option value=\"$row[0]\">$row[1]\n";
 	}
 	mysql_free_result($sth);
 ?>
 </select>
 </td>
-<td align=center valign=bottom>
+<td>
 <input type="hidden" name="Action" value=""/>
 <input type="hidden" name="cid" value=""/>
 <input type="hidden" name="stateid" value="0"/>
@@ -223,7 +225,7 @@ for($i=0; $i<3; $i++){
 	$sth=get_selected_cities('sc');
 	if($sth){
 		while($row = mysql_fetch_row($sth)){
-			echo "<option value=$row[0]>$row[1], $row[2]\n";
+			echo "<option value=\"$row[0]\">$row[1], $row[2]\n";
 		}
 	}
 ?>

@@ -29,7 +29,7 @@ function lang_load($path){
 
 function anchor($pp){
 	global $lang;
-	echo "<a href=\"?lang=$lang&p=$pp\">";
+	echo "<a href=\"?lang=$lang&amp;p=$pp\">";
 } 
 
 function dload_prompt($str){
@@ -47,7 +47,7 @@ function checkCheckBox(f){
 }
 </script>
 <form action="{$_SERVER['REQUEST_URI']}" method="post" onsubmit="checkCheckBox(this)">
-<input type="checkbox" name="agree"> {$str}<br/><br/>
+<input type="checkbox" name="agree" style="width:auto;"> {$str}<br/><br/>
 <input type="submit" value="OK">
 </form>
 EOF;
