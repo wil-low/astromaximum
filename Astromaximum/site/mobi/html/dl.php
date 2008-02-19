@@ -2,6 +2,7 @@
 lang_load("mobi/html");
 $step=1;
 $max_cities=5;
+$table_vsize=18;
 $chac=check_access();
 if($chac==-1 or $chac==1){
 	reg_warning("Загрузка городов");
@@ -51,40 +52,25 @@ function generate(country){
 		alert("Выберите город из списка");
 		return;
 	}
-	if(confirm("Сгенерировать город:\n"+findObj('city_em').innerHTML+", "+country+"?")){
+	if(confirm("Сгенерировать город:\n"+lst.item(ind).text+", "+country+"?")){
 		frm=document.forms.namedItem("main");
 		frm.elements.namedItem("sc").value=lst.item(ind).value;
 		frm.elements.namedItem("Action").value=1;
 		frm.submit();
 	}
 }
-function highlight_city(list){
-	findObj('city_em').innerHTML=list.item(list.selectedIndex).text;
+function highlight_gen(){
+	btn=findObj('genbtn');
+	btn.style.background="url('i/btn_on.jpg')";
+	btn.style.color="rgb(0,0,0)";
 }
 </script>
 <h4></h4>
-<p>Для использования городов необходимо установить <?php echo anchor('buy') ?>полную версию</a> календаря!</p>
+<div style="position: absolute;top: 198px;left: 345px;width:660px;">
 <form method="post" action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
 <table class="geo">
 <tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
-<select name="y_sel" style="height:auto; width:auto;" onchange="city_del(true)">
 <?php
-$y_now=date("Y");
-for($i=0; $i<3; $i++){
-	$yy=$y_now-$i;
-	echo "<option value=\"$yy\"";
-	if($yy==$defyear) echo "selected=\"selected\"";
-	echo ">$yy\n";
-}
-?>
-</select>
-</th>
-<th colspan="2" style="font-size:12px"><?php echo sprintf($i18['LOAD_LEFT'], 5, $max_cities) ?></th>
-</tr>
-<tr>
-<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
-<?php
-	echo $i18['H_COUNTRY'];
 // First listbox
 	$cnum=0; $lb1='';
 	if(isset($_POST['cid'])){
@@ -101,8 +87,27 @@ for($i=0; $i<3; $i++){
 			$cur_country=$row[1];
 			$selflag=' selected="selected"';
 		}
-		$lb1.="<option value=\"$row[0]{$selflag}\">{$row[1]}\n";
+		$lb1.="<option value=\"".$row[0].'"'.$selflag.">".$row[1]."\n";
 	}
+?>
+<select name="y_sel" style="height:auto; width:auto;" onchange="document.forms.namedItem('main').submit()">
+<?php
+$y_now=date("Y");
+for($i=0; $i<3; $i++){
+	$yy=$y_now-$i;
+	echo "<option value=\"$yy\"";
+	if($yy==$defyear) echo "selected=\"selected\"";
+	echo ">$yy\n";
+}
+?>
+</select>
+</th>
+<th colspan="2" style="font-size:12px"><nobr><?php echo sprintf($i18['LOAD_LEFT'], 5, $max_cities) ?></nobr></th>
+</tr>
+<tr>
+<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
+<?php
+	echo $i18['H_COUNTRY'];
 ?>
 </th>
 <th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
@@ -136,22 +141,20 @@ for($i=0; $i<3; $i++){
 ?>
 </th>
 <th><nobr>
-<span id="city_em" style="padding:2px 4px;border:1px white solid">&gt;Выберите город&lt;</span>
-<span></span>
 <span class="bums">
-<input type="button" onclick="generate('<?php echo $cur_country ?>')" value="<?php echo $i18['GET_DATA']?>">
+<input id="genbtn" type="button" onclick="generate('<?php echo $cur_country ?>')" value="<?php echo $i18['GET_DATA']?>">
 </span> 
 </nobr></th>
 </tr>
 <tr>
 <td><!-- 1st listbox -->
-<select size="34" onchange="showc(item(selectedIndex).value,0);" class="lb">
+<select size="<?php echo $table_vsize ?>" onchange="showc(item(selectedIndex).value,0);" class="lb">
 <?php echo $lb1 ?>
 </select>
 </td>
 <td><!-- 2nd listbox -->
 <?php
- echo "<select size=\"34\" onchange=\"showc($cnum,item(selectedIndex).value);\" class=\"lb\">";
+ echo "<select size=\"$table_vsize\" onchange=\"showc($cnum,item(selectedIndex).value);\" class=\"lb\">";
  echo $lb2
 ?>
 </select>
@@ -170,7 +173,7 @@ for($i=0; $i<3; $i++){
 	$sth = mysql_query($stat);
 ?>
 <td>
-<select id="chkcit" size="34" class="lb" onchange="highlight_city(this)">
+<select id="chkcit" size="<?php echo $table_vsize ?>" class="lb" onchange="highlight_gen()">
 <?php
 	while($row = mysql_fetch_row($sth)){
 		echo "<option value=\"$row[0]\">$row[1]\n";
@@ -187,6 +190,8 @@ for($i=0; $i<3; $i++){
 </tr>
 </table>
 </form>
+<p>Для использования городов необходимо установить <?php echo anchor('buy') ?>полную версию</a> календаря!</p>
+</div>
 
 <?php
 function get_selected_cities($param)

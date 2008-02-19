@@ -3,6 +3,7 @@ include_once('mobi/lang.php');
 lang_load("mobi/html");
 include_once('mobi/dbconnect.php');
 $chac=check_access();
+$user_ok=($chac>=0 and $chac!=1);
 $city_count=711;
 $price=60;
 $main='home';
@@ -51,8 +52,8 @@ if(preg_match("/^(demo)$/is", $main)){
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<title>ASTROMAXIMUM - первый астрологический календарь для мобильных телефонов </title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-﻿<title>ASTROMAXIMUM - первый астрологический календарь для мобильных телефонов </title>
 <meta name="author" content="Andrei Ivushkin"/>
 <meta name="copyright" content="Copyright (c) by ASTROMAXIMUM.de"/>
 <meta name="keywords" content="ключи"/>
@@ -83,6 +84,7 @@ if(preg_match("/^(demo)$/is", $main)){
 <div id="menu">
 <a href="?<?php echo $lang_ ?>">главная</a> |  <a href="?<?php echo $lang_ ?>&amp;p=0_0">инструкция</a> |  <?php anchor('buy') ?>купить</a> | <?php anchor('dl') ?>модули городов</a> | <a href="#">контакты</a>
 <?php 
+//echo "<br/>";print_r($_REQUEST);
 $btn1="СКАЧАТЬ ДЕМО<br/>+ $city_count модулей городов"; $btn1_link="demo";
 $btn2="КУПИТЬ &euro;$price<br/>+ $city_count модулей городов";
 if($chac==0){
@@ -92,7 +94,7 @@ if($chac==0){
 	<a href="?$lang_&amp;p=upload">загрузка городов</a></p>
 ADMIN_TB;
 }
-if($chac>=0 && $chac!=1){
+if($user_ok){
 	$current_year=get_year();
 	$btn1="ЗАГРУЗИТЬ<br/>ГОРОД"; $btn2="ЗАГРУЗИТЬ<br/>КАЛЕНДАРЬ - $current_year"; $btn1_link="dl";
 }
@@ -104,18 +106,20 @@ SP1;
 }
 else{ 
 	$session_prompt=<<<FRM
-	<form id="flog" action="?lang=$lang&amp;p=login&amp;to=$main" method="post"> 
+	<form name="flog" action="?lang=$lang&amp;p=login&amp;to=$main" method="post"> 
 	<input id="ilog" name="login"/> <a href="#">логин</a>  <br /><br />
 	<input id="ipwd" name="pass"/> <a href="#">пароль</a> <br /><br />
-	<a id="aenter" href="javascript:void(0)" onclick="javascript:checklogin()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
+	<a id="aenter" href="#" onclick="javascript:checklogin()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
 	</form> 
 FRM;
 } 
 ?> 
 </div>
 
+<?php if(!$user_ok || strcmp($main, 'dl')){ ?>
 <div id="demo"><?php anchor($btn1_link); echo $btn1 ?></a></div> 
 <div id="buy"><?php anchor('buy'); echo $btn2 ?></a></div>
+<?php } ?>
 
 <div id="leftColumn"> 
 	<script type="text/javascript">
@@ -134,12 +138,13 @@ FRM;
 	    Timer=setTimeout("clock()",15000);
 	  }
 	  clock();
+	  
 	  function checklogin(){
 	  	if(!findObj('ilog').value && !findObj('ipwd').value){
 	  		return false;
 	  	}
 	  	findObj('aenter').disabled=1;
-	  	findObj('flog').submit();
+	  	document.flog.submit();
 	  }
 	</script>
 <p>
@@ -165,7 +170,7 @@ FRM;
 	if(file_exists($fn)){
 		$manual_requested=preg_match("/^[_\d]+$/is", $main);
 		if($manual_requested){
-			if($chac!=-1 and $chac!=1){
+			if($user_ok){
 				include($fn);
 				if(strcmp($main, '0_0')){
 					echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>назад к теме</strong></a>";
