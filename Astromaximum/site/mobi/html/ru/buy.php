@@ -20,13 +20,12 @@ if($chac!=-1 and $chac!=1){
 		return;
 	}
 	dload_prompt("Я подтверждаю, что установил на свой телефон и успешно запустил ".
-		"<a href=\"?lang=$lang&p=demo\">демо-версию</a> календаря");
+		"<a href=\"?lang=$lang&amp;p=demo\">демо-версию</a> календаря");
 }
 else
 {
 echo "<h4>Выберите вид оплаты:</h4>";
 ?>
-</p>
 <ul>
 <li><a href="#">PayPal</a></li>
 <li><a href="#">Другие</a></li>
@@ -39,7 +38,5 @@ echo "<h4>Выберите вид оплаты:</h4>";
 <input type="submit" name="reg_submit" value="Зарегистрироваться">  
 </form>
 -->
-</p>
-
 <?php } 
 ?>

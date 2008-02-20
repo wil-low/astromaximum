@@ -42,9 +42,9 @@ if(isset($_GET['dest']) && isset($_POST['btn'])){
 	}
 	exit;
 }
-include_once('amtools.php');
-$current_year=get_year();   
 include_once("lang.php");
+//include_once('amtools.php');
+$current_year=get_year();   
 lang_load("html");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
@@ -59,15 +59,14 @@ lang_load("html");
 <div id="hdr" class="hdr">Astromaximum</div>
 <div id="cont">
 <div class="hr"></div>
-<p>
-<form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post">
+<br/>
+<form action="<?php echo htmlentities($_SERVER['REQUEST_URI']) ?>" method="post"><p>
 <input type="submit" accesskey="1" name="btn" value="1"/> <?php echo $i18['SEL_DCITY'] ?><br/>
 <input type="submit" accesskey="2" name="btn" value="2" disabled="disabled"/> <?php echo $i18['SEL_AH'] ?><br/>
 <input type="submit" accesskey="3" name="btn" value="3"/> <?php echo $i18['SEL_ABOUT'] ?><br/>
 <input type="submit" accesskey="4" name="btn" value="4"/> <?php echo $current_year-1 ?> <?php echo $i18['SEL_DEMO'] ?>*<br/>
 <input type="submit" accesskey="5" name="btn" value="5"/> <?php echo $current_year ?>* <?php echo $i18['SEL_CLONLY'] ?>
-</p>
-</form>
+</p></form>
 <p class="centered">* <?php echo $i18['SEL_CHK1'] ?><br/>
 <?php echo "{$i18['SEL_CHK2']} ".gmdate("M j Y") ?>
 </p>

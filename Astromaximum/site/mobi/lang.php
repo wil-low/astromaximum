@@ -33,28 +33,31 @@ function anchor($pp){
 } 
 
 function dload_prompt($str){
+	$uri=htmlentities($_SERVER['REQUEST_URI']);
 	echo <<<EOF
 <script type="text/javascript">
-function checkCheckBox(f){
-	if(f.agree.checked==false)
-	{
-		alert('Please check the box to continue.');
-		return false;
+<!--
+	function checkCheckBox(f){
+		if(f.agree.checked==false)
+		{
+			alert('Please check the box to continue.');
+			return false;
+		}
+		else{
+			return true;
+		}
 	}
-	else{
-		return true;
-	}
-}
+-->
 </script>
-<form action="{$_SERVER['REQUEST_URI']}" method="post" onsubmit="checkCheckBox(this)">
-<input type="checkbox" name="agree" style="width:auto;"> {$str}<br/><br/>
-<input type="submit" value="OK">
+<form action="$uri" method="post" onsubmit="checkCheckBox(this)">
+<input type="checkbox" name="agree" style="width:auto;"/> {$str}<br/><br/>
+<input type="submit" style="height:auto;" value="OK"/>
 </form>
 EOF;
 } 
 
 function reg_warning($subj){
-	echo "<p>$subj разрешается только зарегистрированным пользователям.<br/>Введите свой логин и пароль в форме слева.";
+	echo "<p>$subj разрешается только зарегистрированным пользователям.<br/>Введите свой логин и пароль в форме слева.</p>";
 }
 
 function get_year(){

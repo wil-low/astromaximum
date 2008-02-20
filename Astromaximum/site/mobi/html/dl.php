@@ -37,6 +37,7 @@ if(strlen($act) && isset($_POST['sc'])){
 ?>
 
 <script type="text/javascript">
+<!--	
 function showc(country,state){
 	frm=document.forms.namedItem("main");
 	if(frm.elements.namedItem('cid').value!=country || frm.elements.namedItem('stateid').value!=state){
@@ -64,10 +65,11 @@ function highlight_gen(){
 	btn.style.background="url('i/btn_on.jpg')";
 	btn.style.color="rgb(0,0,0)";
 }
+-->
 </script>
 <h4></h4>
 <div style="position: absolute;top: 198px;left: 345px;width:660px;">
-<form method="post" action="<?php echo $_SERVER['REQUEST_URI']?>" name="main">
+<form method="post" action="/?<?php echo $lang ?>&amp;p=dl" name="main">
 <table class="geo">
 <tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
 <?php
@@ -87,7 +89,7 @@ function highlight_gen(){
 			$cur_country=$row[1];
 			$selflag=' selected="selected"';
 		}
-		$lb1.="<option value=\"".$row[0].'"'.$selflag.">".$row[1]."\n";
+		$lb1.="<option value=\"".$row[0].'"'.$selflag.">".$row[1]."</option>\n";
 	}
 ?>
 <select name="y_sel" style="height:auto; width:auto;" onchange="document.forms.namedItem('main').submit()">
@@ -96,13 +98,15 @@ $y_now=date("Y");
 for($i=0; $i<3; $i++){
 	$yy=$y_now-$i;
 	echo "<option value=\"$yy\"";
-	if($yy==$defyear) echo "selected=\"selected\"";
-	echo ">$yy\n";
+	if($yy==$defyear) echo " selected=\"selected\"";
+	echo ">$yy</option>\n";
 }
 ?>
 </select>
 </th>
-<th colspan="2" style="font-size:12px"><nobr><?php echo sprintf($i18['LOAD_LEFT'], 5, $max_cities) ?></nobr></th>
+<th colspan="2" style="font-size:12px">
+<span style="white-space: nowrap;"><?php echo sprintf($i18['LOAD_LEFT'], 5, $max_cities) ?></span>
+</th>
 </tr>
 <tr>
 <th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
@@ -117,34 +121,34 @@ for($i=0; $i<3; $i++){
 		"countries WHERE country_id=%s ORDER BY states.name",quote_smart($cnum));
 	$sth=mysql_query($stat);
 	$cur_state=''; $lb2='';
-	$allst="<i>".$i18['ALL_STATES']."</i><br>";
+	$allst=$i18['ALL_STATES'];
 	$statenum=0;
 	if(isset($_POST['stateid'])){
 		$statenum=$_POST['stateid'];
 	}
 	$selflag='';
 	if(!$statenum){
-		$selflag=' selected';
+		$selflag=' selected="selected"';
 	}
 	$state_count=mysql_num_rows($sth);
 
-	$lb2.="<option value=\"0\" $selflag>&gt;&gt;".$allst."&lt;&lt;\n";
+	$lb2.="<option value=\"0\" $selflag>&gt;&gt;".$allst."&lt;&lt;</option>\n";
 	while($row = mysql_fetch_row($sth)){
 		$selflag='';
 		if($row[0]==$statenum){
 			$cur_state=$row[1];
 			$selflag=' selected="selected"';
 		}
-		$lb2.="<option value=\"$row[0]\"$selflag>$row[1]\n";
+		$lb2.="<option value=\"$row[0]\"$selflag>$row[1]</option>\n";
 	}
 	mysql_free_result($sth);
 ?>
 </th>
-<th><nobr>
+<th>
 <span class="bums">
-<input id="genbtn" type="button" onclick="generate('<?php echo $cur_country ?>')" value="<?php echo $i18['GET_DATA']?>">
+<input id="genbtn" type="button" onclick="generate('<?php echo $cur_country ?>')" value="<?php echo $i18['GET_DATA']?>"/>
 </span> 
-</nobr></th>
+</th>
 </tr>
 <tr>
 <td><!-- 1st listbox -->
@@ -176,7 +180,7 @@ for($i=0; $i<3; $i++){
 <select id="chkcit" size="<?php echo $table_vsize ?>" class="lb" onchange="highlight_gen()">
 <?php
 	while($row = mysql_fetch_row($sth)){
-		echo "<option value=\"$row[0]\">$row[1]\n";
+		echo "<option value=\"$row[0]\">$row[1]</option>\n";
 	}
 	mysql_free_result($sth);
 	

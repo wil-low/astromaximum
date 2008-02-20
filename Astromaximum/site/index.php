@@ -100,15 +100,26 @@ if($user_ok){
 }
 if(isset($_SESSION['username'])){
 	$session_prompt=<<<SP1
-	Здравствуйте, <b>{$_SESSION['username']}</b>! </p><p>
-	<a href="mobi/dl/logout.php"><strong>выход</strong></a> 
+	<p>Здравствуйте, <b>{$_SESSION['username']}</b>! </p>
+	<p><a href="mobi/dl/logout.php"><strong>выход</strong></a></p> 
 SP1;
 }
 else{ 
 	$session_prompt=<<<FRM
+  <script type="text/javascript">
+  <!--
+	  function checklogin(){
+	  	if(!findObj('ilog').value && !findObj('ipwd').value){
+	  		return false;
+	  	}
+	  	findObj('aenter').disabled=1;
+	  	document.flog.submit();
+	  }
+	-->
+	</script>
 	<form name="flog" action="?lang=$lang&amp;p=login&amp;to=$main" method="post"> 
-	<input id="ilog" name="login"/> <a href="#">логин</a>  <br /><br />
-	<input id="ipwd" name="pass"/> <a href="#">пароль</a> <br /><br />
+	<input id="ilog" name="login"/> логин  <br /><br />
+	<input id="ipwd" name="pass" type="password"/> пароль <br /><br />
 	<a id="aenter" href="#" onclick="javascript:checklogin()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
 	</form> 
 FRM;
@@ -122,34 +133,26 @@ FRM;
 <?php } ?>
 
 <div id="leftColumn"> 
-	<script type="text/javascript">
-		function findObj(id) {
-		  return (document.all?document.all[id]:document.getElementById(id));
-		}
-	  function clock() {
-	    now=new Date();
-			var london=now.toGMTString();
-			var pos=london.lastIndexOf(":");
-			var tm=london.substring((pos-5),pos);
-	    Hello =  tm;
-	    e=findObj('mtime');
-	    if (!e) return false;
-	    e.innerHTML = Hello;
-	    Timer=setTimeout("clock()",15000);
-	  }
-	  clock();
-	  
-	  function checklogin(){
-	  	if(!findObj('ilog').value && !findObj('ipwd').value){
-	  		return false;
-	  	}
-	  	findObj('aenter').disabled=1;
-	  	document.flog.submit();
-	  }
-	</script>
-<p>
+<script type="text/javascript">
+<!--	
+	function findObj(id) {
+	  return (document.all?document.all[id]:document.getElementById(id));
+	}
+  function clock() {
+    now=new Date();
+		var london=now.toGMTString();
+		var pos=london.lastIndexOf(":");
+		var tm=london.substring((pos-5),pos);
+    Hello =  tm;
+    e=findObj('mtime');
+    if (!e) return false;
+    e.innerHTML = Hello;
+    Timer=setTimeout("clock()",15000);
+  }
+  clock();
+-->  
+</script>
 <?php	echo $session_prompt ?>
-</p>
 
 <?php if($show_topics){ ?>
 <h5>темы календаря </h5>
@@ -165,7 +168,6 @@ FRM;
 <?php } ?>
 </div><!-- end leftColumn div -->
 <div id="content">
-<p>
 <?php
 	if(file_exists($fn)){
 		$manual_requested=preg_match("/^[_\d]+$/is", $main);
@@ -173,7 +175,7 @@ FRM;
 			if($user_ok){
 				include($fn);
 				if(strcmp($main, '0_0')){
-					echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>назад к теме</strong></a>";
+					echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>назад к теме</strong></a></p>";
 				}
 			}
 			else{
@@ -188,7 +190,6 @@ FRM;
 		echo "<h3>Страницы не существует: $fn</h3>";
 	} 
 ?>
-</p>
 </div><!-- end content div -->
 <div id="bottom"><p>Copyright &copy; 2007 S&amp;W Axis. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
 </body>

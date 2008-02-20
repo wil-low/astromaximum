@@ -70,7 +70,7 @@ sub convert{
 	}
 	my $footer='<div id="ftr">'.$header.'</div></body></html>';
 	$body=~s/<img (\w[\d_]+)\s*>/<img src="mobi\/i\/$1\.gif" alt="$alter->{$1}" width="$img_dim" height="$img_dim"\/>/isg;
-	$body=~s/<a (\w[\d_]+)>/<a href="?lang=$lang&p=$1">/isg;
+	$body=~s/<a (\w[\d_]+)>/<a href="?lang=$lang&amp;p=$1">/isg;
 #	$body=~s/<i>/<span class="comment">/isg;
 #	$body=~s/<b>/<span class="alert">/isg;
 #	$body=~s/<\/[ib]>/<\/span>/isg;

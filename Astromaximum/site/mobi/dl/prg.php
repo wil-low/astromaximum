@@ -34,6 +34,10 @@
 				ask_login();
 		}
 	}	
+	
+	$timeout_offset=-24;
+	$timeout_mins=2880;  
+	
 	$outp=array();
 	global $DIR_FILES, $DIR_SOURCE;
 	$dsrc="../$DIR_FILES";

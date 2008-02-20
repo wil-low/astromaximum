@@ -14,12 +14,13 @@
 Select language:<br/>
 <input type="radio" name="lang" value="en"/>en
 <input type="radio" name="lang" value="ru" checked="checked"/>ru
-<br>
+<br/>
 Select your device:<br/>
 <input type="radio" name="dest" value="ph" checked="checked"/>Mobile
 <input type="radio" name="dest" value="pc"/>PC<br/>
 <input type="submit" accesskey="1" name="action" value="Proceed"/>
 </p>
+</form>
 </div>
 <div id="ftr"></div>
 </body></html>

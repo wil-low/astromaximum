@@ -5,18 +5,18 @@ reject2index("index.php?$lang_");
 	<form method="post" action="<?php echo htmlentities($_SERVER['REQUEST_URI'])?>" enctype="multipart/form-data">
 		Upload what: 
 		<select name="restype">
-			<option value='geodata' selected>Geo data</option>
-			<option value='tjar'>Archive template</option>
-			<option value='tjad'>Descriptor template</option>
-			<option value='demo'>Demo</option>
-		</select><p>
+			<option value="geodata" selected="selected">Geo data</option>
+			<option value="tjar">Archive template</option>
+			<option value="tjad">Descriptor template</option>
+			<option value="demo">Demo</option>
+		</select><br/><br/>
 		<input type="file" name="uploaded_file" size="60" value="" style="width:auto"/>
-<!--  	<input type="hidden" name="MAX_FILE_SIZE" value="300000" />-->
-		&nbsp;<input type="submit" name="Action" value="Upload" />
+  	<input type="hidden" name="MAX_FILE_SIZE" value="500000" />
+		&nbsp;<input type="submit" name="Action" value="Upload"/>
 	</form>
 <?php	
 	if(!isset($_FILES['uploaded_file'])|| !$_FILES['uploaded_file']['name']){
-		exit();
+		return;
 	}
 	else{
 		$fname=$_FILES['uploaded_file']['name'];
@@ -47,9 +47,12 @@ function up_res($fname, $resid, $ext){
 	$FF0=fopen($fn,"rb");
 	$data=fread($FF0, filesize($fn));
 	fclose($FF0);
-	mysql_query(sprintf("UPDATE source SET data=%s WHERE id=%s", quote_smart($data), $resid))
-		 or upload_error("Update error: " . mysql_error());
-	echo "<p>Uploaded successfully.";
+	if(mysql_query(sprintf("UPDATE source SET data=%s WHERE id=%s", quote_smart($data), $resid))){
+		echo "<p>Uploaded successfully.";
+	}
+	else{
+		upload_error("Update error: " . mysql_error());
+	}
 }
 	
 function check_ext($fname, $ext){
@@ -224,6 +227,5 @@ function upload_error($msg, $dir){
  		rm_all($dir);
  	}
  	emit_nav2();
-	exit();
 }
 ?>

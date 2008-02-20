@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ASTROMAXIMUM - первый астрологический календарь для мобильных телефонов </title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
+<meta name="author" content="design by goglus.com"/>
+<meta name="copyright" content="Copyright (c) by ASTROMAXIMUM.de"/>
+<meta name="keywords" content="ключи"/>
+<meta name="description" content="описание"/>
+<link href="astro.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="globe"><a href="http://astromaximum.de/"><img src="i/globe.jpg" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" height="320" width="956"/></a></div>
+<div id="logoText">астрологический календарь для мобильных телефонов</div>
+<div id="lang"> <a href="#">DE</a> | <a href="#">ENG</a> | <b>RU</b><br />
+<p>astro time 11:33:556</p>
+</div>
+
+<div id="menu"><a href="#">главная</a> |  <a href="#">инструкция</a> |  <a href="#">купить</a> | <a href="#">модули городов</a> | <a href="#">контакты</a> </div>
+<div id="demo"><a href="#">СКАЧАТЬ DEMO +<br />  330 модулей городов</a></div> 
+<div id="buy"><a href="#">КУПИТЬ 60$ +<br />  330 модулей городов</a></div>
+
+<div id="leftColumn"> 
+<h5>темы календаря </h5>
+<p><a href="#"><img src="i/ico.gif" alt="" /> <br /><b>деловая активность, подписание контрактов</b></a></p>
+<p><a href="#"><img src="i/ico.gif" alt="" /> <br /><b>торговля, финансы</b></a></p>
+<p><a href="#"><img src="i/ico.gif" alt="" /> <br /><b>регистрация предприятия, получение лицензии, открытие магазина</b></a></p>
+<p><a href="#"><img src="i/ico.gif" alt="" /> <br /><b>устройство на работу, найм</b></a></p>
+<p><a href="#"><img src="i/ico.gif" alt="" /> <br /><b>недвижимость, строительство, сельское хозяйство</b></a></p>
+<p><a href="#"><img src="i/ico.gif" alt="" /> <br /><b>поездки, учеба</b></a></p>
+<p><a href="#"><img src="i/ico.gif" alt="" /> <br /><b>любовь, брак</b></a></p>
+<p><a href="#"><img src="i/ico.gif" alt="" /> <br /><b>медицина, косметология</b></a></p>
+<p><a href="#"><img src="i/ico.gif" alt="" /> <br /><b>ход болезни (декумбитура)</b></a></p>
+
+<p class="gogo">
+<input name="login"/> <a href="#">логин</a>  <br /><br />
+<input name="pass"/> <a href="#">пароль</a> <br /><br />
+<a href="#"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a> 
+</p>
+
+
+</div><!-- end leftColumn div -->
+<div id="content">
+
+
+<p>
+<b>ASTROMAXIMUM </b>является первым самым подробным астрологическим календарём, при этом,<br /> 
+<b>ASTROMAXIMUM</b> - первый астрологический календарь для мобильных телефонов.
+</p>
+
+<p>
+Вы собрались обратиться к своему начальнику с просьбой о повышении заработной платы, но не хотите натолкнуться на унизительный отказ? Вы хотите открыть собственное дело, которому будет сопутствовать Удача? У Вас хорошо идут дела и Вы планируете приобрести автомобиль, но при этом не хотите стать постоянным клиентом ближайшего автосервиса? Вас ожидает медицинское обследование или хирургическая операция? Вы собираетесь открыть счет в банке?<br />
+<b>ASTROMAXIMUM</b> - это самый удобный поиск наиболее удачного времени для реализации своих планов и стремлений.
+</p>
+
+<p>
+Выбрать наименьшее из зол, не пропустить наилучшее благо, оценить множество равноценных вариантов, распознать пустые обещания, найти лучшее время, как для глобальных проектов, так и для дел, не отличающихся большим размахом - помощником здесь может быть только ваша интуиция, а если её нет, то поможет ASTROMAXIMUM, который в этих вопросах - самый деятельный инструмент.
+</p>
+
+
+
+<form method="post" border=1 action="http://astromaximum.de/mobi/dl/" name="main">
+<table class="geo ">
+<tr><th> <b>1.</b> <select name="y_sel" style="height:auto; width:auto;" onchange="city_del(true)">
+<option value="2008"selected="selected">2008
+<option value="2007">2007
+<option value="2006">2006
+</select>
+</th>
+
+<tr>
+<th><b>2.</b> COUNTRY</th>
+<th><b>3.</b> STATE</th>
+<th><b>4.</b> CITY<br />
+<div class="bums"><input type=button value='Insert &gt;&gt;' onclick='city_add("Cuba","");'/></div></th>
+<th><b>5.</b> SELECTED CITIES <br />
+<div class="bums"><input type=submit  name='Action' value='Make midlet'>  <input type=button  value='&lt;&lt; Remove'  onclick='city_del();'/></div>
+</div>
+</th>
+</tr><tr>
+
+<td><!-- 1st listbox -->
+<select size=34 onchange="showc(item(selectedIndex).value,0);" class=lb>
+<option value=69>Armenia
+<option value=33>Australia
+<option value=67>Austria
+<option value=70>Azerbaijan
+<option value=73>Bahamas
+<option value=80>Barbados
+<option value=90>Belarus
+<option value=62>Belgium
+<option value=60>Bulgaria
+<option value=92>Canada
+<option value=85>Costa Rica
+<option value=72 selected>Cuba
+<option value=46>Cyprus
+<option value=56>Czech Republic
+<option value=65>Denmark
+<option value=76>Dominican Republic
+<option value=50>Egypt
+<option value=82>El Salvador
+<option value=3>England
+<option value=88>Estonia
+<option value=40>Ethiopia
+<option value=6>France
+<option value=68>Georgia
+<option value=63>Germany
+<option value=9>Gibraltar
+<option value=47>Greece
+<option value=79>Grenada
+<option value=81>Guatemala
+<option value=75>Haiti
+<option value=83>Honduras
+<option value=58>Hungary
+<option value=32>Indonesia
+<option value=44>Iran
+<option value=43>Iraq
+<option value=5>Ireland
+<option value=41>Israel
+<option value=53>Italy
+<option value=74>Jamaica
+<option value=28>Japan
+<option value=54>Kazakhstan
+<option value=45>Kuwait
+<option value=13>Kyrgyzstan
+<option value=87>Latvia
+<option value=89>Lithuania
+<option value=10>Luxembourg
+<option value=51>Malta
+<option value=78>Martinique
+<option value=71>Mexico
+<option value=91>Moldova
+<option value=52>Morocco
+<option value=16>Mozambique
+<option value=61>Netherlands
+<option value=34>New Zealand
+<option value=84>Nicaragua
+<option value=86>Panama
+<option value=36>Papua New Guinea
+<option value=29>Philippines
+<option value=55>Poland
+<option value=8>Portugal
+<option value=77>Puerto Rico
+<option value=59>Romania
+<option value=23>Russia  +2
+<option value=19>Russia  +3
+<option value=27>Russia  +4
+<option value=20>Russia  +5
+<option value=26>Russia  +6
+<option value=25>Russia  +7
+<option value=22>Russia  +8
+<option value=21>Russia  +9
+<option value=24>Russia +10
+<option value=38>Saudi Arabia
+<option value=4>Scotland
+<option value=31>Singapore
+<option value=57>Slovakia
+<option value=15>South Africa
+<option value=7>Spain
+<option value=66>Sweden
+<option value=64>Switzerland
+<option value=42>Syria
+<option value=14>Tajikistan
+<option value=18>Tanzania
+<option value=35>Thailand
+<option value=49>Tunisia
+<option value=48>Turkey
+<option value=12>Turkmenistan
+<option value=1>Ukraine
+<option value=37>United Arab Emirates
+<option value=2>USA
+<option value=11>Uzbekistan
+<option value=30>Vietnam
+<option value=39>Yemen
+<option value=17>Zimbabwe
+</select>
+</td>
+<td><!-- 2nd listbox -->
+
+<select size=34 onchange="showc(72,item(selectedIndex).value);" class=lb><option value=0  selected>&gt;&gt;<i>All states</i>&lt;&lt;
+</select><br />
+
+</td>
+<td>
+
+
+<select id=chkcit size=34 multiple class=lb>
+<option value=378>Guantanamo
+<option value=379>Santa Clara
+</select>
+
+</td>
+<td>
+
+
+<select id=selcit size=34 multiple class=lb></select>
+<input type="hidden" name="cid" value=""  />
+<input type="hidden" name="stateid" value="0"  />
+<input type="hidden" name="sc" value=","  />
+
+
+</td>
+
+</tr>
+</table>
+</form>
+
+
+
+
+</div><!-- end conten div -->
+<div id="bottom"><p>Copyright &copy; 2007 Astromaximum. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
+</body>
+</html>

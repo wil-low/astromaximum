@@ -12,7 +12,7 @@ if(isset($_GET['mode'])){
 }
 if(strcmp($mode,'env')==0){
 	echo '<table>';
-	echo '<th>Property</th><th>Status</th>';
+	echo '<tr><th>Property</th><th>Status</th></tr>';
 	$env=check_env();
 	foreach ($env as $key => $value) {
     echo "<tr><td>$key</td><td>$value</td></tr>\n";
@@ -22,7 +22,7 @@ if(strcmp($mode,'env')==0){
 if(strcmp($mode,'data')==0){	
 	echo '<p></p>';
 	echo '<table>';
-	echo '<th>Country</th><th>Cities</th>';
+	echo '<tr><th>Country</th><th>Cities</th>';
 	$sth=mysql_query("SELECT DISTINCT year FROM locations ORDER BY year");
 	while($row=mysql_fetch_row($sth)){
 		echo "<th>$row[0]</th>";
@@ -36,7 +36,7 @@ if(strcmp($mode,'data')==0){
 	while($row=mysql_fetch_row($sth)){
 		echo "<tr";
 		if($colored){
-			echo " bgcolor='#E5E5E5'";
+			echo ' bgcolor="#E5E5E5"';
 		}
 		$colored=1-$colored;
 		echo "><td>{$row[1]}</td><td>{$row[2]}</td>";
@@ -55,7 +55,7 @@ if(strcmp($mode,'data')==0){
 		echo "</tr>\n";
 	}
 	mysql_free_result($sth);
-	echo '</table></font>';
+	echo '</table>';
 }
 
 function check_env(){
@@ -76,20 +76,20 @@ function check_env(){
 	    $res[$key].=substr_replace(basename($filename), '', -5)." ";
 	}
 	if(strlen($res[$key])==0){
-		$res[$key]="<font color=red>no</font>";
+		$res[$key]='<font color="red">no</font>';
 	}
 	$res['jars']='';
 	foreach (glob($p."source/*.jar") as $filename) {
 	    $res['jars'].=substr_replace(basename($filename), '', -4)." ";
 	}
 	if(strlen($res['jars'])==0){
-		$res['jars']="<font color=red>no</font>";
+		$res['jars']='<font color="red">no</font>';
 	}
 	$res['dl/html/.htaccess']=yesno(file_exists($p.'../html/.htaccess'));
 	return $res;
 }
 
 function yesno($val){
-	return $val? "<font color=green>OK</font>": "<font color=red>no</font>";
+	return $val? '<font color="green">OK</font>': '<font color="red">no</font>';
 }
 ?>
