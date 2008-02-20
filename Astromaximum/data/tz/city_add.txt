@@ -1,4 +1,5 @@
 @ Armenia, Yerevan
+m.Ararat
 Kadzaran
 
 @ Austria, Vienna (Wien)_AUT
@@ -22,6 +23,9 @@ Narva
 Bayonne
 La Rochelle
 
+@ Greece, Athens_GRE
+m.Olympos
+
 @ Italy, Rome_ITA
 Napoli
 Torino
@@ -29,6 +33,9 @@ Venezia
 
 @ Lithuania, Vilnius
 Druskininkai
+
+@ Peru, Lima_PER
+Machu Picchu
 
 @ Poland, Warsaw
 Jelenia Góra

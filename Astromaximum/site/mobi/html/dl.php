@@ -3,6 +3,7 @@ lang_load("mobi/html");
 $step=1;
 $max_cities=5;
 $table_vsize=18;
+$current_year=get_year();
 $chac=check_access();
 if($chac==-1 or $chac==1){
 	reg_warning("Загрузка городов");
@@ -11,6 +12,9 @@ if($chac==-1 or $chac==1){
 $defyear=date("Y");
 if(isset($_POST['y_sel'])){
 	$defyear=$_POST['y_sel'];
+	if($defyear>$current_year){
+		$defyear=$current_year;
+	}
 }
 $sc=',';
 if(isset($_POST['sc'])){
@@ -23,11 +27,10 @@ if(isset($_POST['Action'])){
 if(strlen($act) && isset($_POST['sc'])){
 	$sth=get_selected_cities('sc');
 	if(strlen($sth)>0){
-		echo "<h4>{$i18['READY_CITIES']} ($defyear):</h4>\n<ol>";
-		while($row = mysql_fetch_row($sth)){
-			echo "<li>$row[1], $row[2]</li>\n";
-		}
-		echo "</ol>\n";
+		$row = mysql_fetch_row($sth);
+		echo "$defyear!=$current_year";
+		return;
+		echo "<p>".sprintf($i18['READY_CITIES'], "$row[1], $row[2]", $defyear)."</p>\n";
 		include_once('mobi/amtools.php');
 		echo midlet_create("geo", $defyear, $lang, $sc, "mobi/dl");
 		return;
@@ -194,7 +197,7 @@ for($i=0; $i<3; $i++){
 </tr>
 </table>
 </form>
-<p>Для использования городов необходимо установить <?php echo anchor('buy') ?>полную версию</a> календаря!</p>
+<p>Перед загрузкой городов <?php echo anchor('buy') ?>календарь соответствующего года</a> должен быть установлен на Вашем телефоне.</p>
 </div>
 
 <?php

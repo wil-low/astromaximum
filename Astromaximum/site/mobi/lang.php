@@ -33,26 +33,22 @@ function anchor($pp){
 } 
 
 function dload_prompt($str){
-	$uri=htmlentities($_SERVER['REQUEST_URI']);
 	echo <<<EOF
 <script type="text/javascript">
 <!--
-	function checkCheckBox(f){
-		if(f.agree.checked==false)
+	function checkCheckBox(b){
+		if(b.form.agree.checked==false)
 		{
 			alert('Please check the box to continue.');
-			return false;
 		}
 		else{
-			return true;
+			b.form.submit();
 		}
 	}
 -->
 </script>
-<form action="$uri" method="post" onsubmit="checkCheckBox(this)">
 <input type="checkbox" name="agree" style="width:auto;"/> {$str}<br/><br/>
-<input type="submit" style="height:auto;" value="OK"/>
-</form>
+<input type="button" style="height:auto;" value="OK" onclick="checkCheckBox(this)"/>
 EOF;
 } 
 

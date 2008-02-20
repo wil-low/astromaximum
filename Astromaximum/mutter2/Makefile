@@ -35,7 +35,9 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-
+CC=gcc
+CCC=g++
+CXX=g++
 
 # build
 build: .build-pre .build-impl .build-post

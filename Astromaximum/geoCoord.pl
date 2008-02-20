@@ -162,15 +162,25 @@ sub process_ini{
 		my $contin='';
 		foreach my $cit(@cities){
 			$cit=~s/[\n\r]//isg;
-			next if $cit=~/\A\s*\Z/is;
-			next if $cit=~/\#/is;
+			my $citbak=$cit;
+			$cit=~s/\#.+//is;
+			$cit=~s/^\s+//is;
+			$cit=~s/\s+$//is;
+			next if $cit eq '';
 			if($cit=~s/&([A-Z]{3})//is){
 			  $contin=$1;
-			  die "Invalid continent: $contin" unless $contin=~/^(AFR|ASI|EAS|SAS|SEA|CAR|CAM|EUR|EEU|WEE|MIE|NAM|OCE|SAM)$/is;
+			  die "Invalid continent: $contin" unless $contin=~/^(ANC|AFR|ASI|EAS|SAS|SEA|CAR|CAM|EUR|EEU|WEE|MIE|NAM|OCE|SAM)$/is;
 			  next;
 			}
 			if(!$contin){
-			  die "No continent in $cit";
+			  die "No continent in $citbak";
+			}
+			if($cit=~s/^\-//is){
+				$invoke="echo \"$cit\" >> \"$path$city_inf.txt\"";
+				print "$invoke\n";
+				#	die;
+				system($invoke);
+				next;
 			}
 			if($cit=~s/\@\s*//is){
 		#		die if $country;
@@ -330,10 +340,13 @@ sub process_ini{
 				}
 				$city=~s/[\n\r]//isg;
 				writeUTF($city);
-
 				my $header=pack('SCCCCSa*a*',$year, $month, $day, $hour, $min, $day_count, $outbuf, $dstbuf);
 				if(!$tzonly){
-					my $invoke=ensure_slash($mypath."mutter2/mutter2 $year geo0- $params[1] $params[2]");# electio";
+					my $alt=0;
+					if($params[5]=~/^\d+$/is){
+						$alt=$params[5];
+					};
+					my $invoke=ensure_slash($mypath."mutter2/mutter2 $year geo0- $params[1] $params[2] $alt");# electio";
 					print "$invoke\n";
 					my $res=system($invoke);
 					die "Cancelled, result=$res" if $res;
@@ -661,7 +674,7 @@ sub get_tz{
 #			die "No TZ for $country!" unless defined $c_arr;
 		}
 		else{
-		  warn "No TZ for $country,$city!";
+		  die "No TZ for $country,$city!";
                   return undef;
 		}
 		if(!defined $c_arr){

@@ -13,14 +13,37 @@ if(isset($_POST["reg_submit"])){ ?>
 include_once("mobi/dbconnect.php");
 $chac=check_access(); 
 if($chac!=-1 and $chac!=1){
-	echo "<h4>Загрузка календаря <b>ASTROMAXIMUM</b> на $current_year год</h4>";
+	$y_now=date("Y");
+	$out='';
+	for($i=1; $i<3; $i++){
+		$yy=$y_now-$i;
+		$out.="<option value=\"$yy\"";
+		if($i==1) $out.=" selected=\"selected\"";
+		$out.=">$yy</option>\n";
+	}
+	$year=$current_year;
+	if(isset($_POST["yagree"])){
+		$year=(int)$_POST["yagree"];
+		if($year>=$current_year){
+			return;
+		}
+	}
+	echo "<h4>Загрузка календаря <b>ASTROMAXIMUM</b> на $year год</h4>";
 	if(isset($_POST["agree"])){
 		$sc=get_default_cities(); 
-		echo midlet_create("tb", $current_year, $lang, $sc, "mobi/dl");
+		echo midlet_create("tb", $year, $lang, $sc, "mobi/dl");
 		return;
 	}
+	$uri=htmlentities($_SERVER['REQUEST_URI']);
+	echo "<form action=\"$uri\" method=\"post\">\n";
 	dload_prompt("Я подтверждаю, что установил на свой телефон и успешно запустил ".
 		"<a href=\"?lang=$lang&amp;p=demo\">демо-версию</a> календаря");
+	echo "</form>";
+	echo "<br/><br/><br/>\n";
+	echo "<form action=\"$uri\" method=\"post\">\n";
+	echo "<h4>Загрузка календаря <b>ASTROMAXIMUM</b> на <select name=\"yagree\">$out</select> год</h4>";
+	dload_prompt("Сгенерировать?");
+	echo "</form>";
 }
 else
 {

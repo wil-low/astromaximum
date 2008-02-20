@@ -7,10 +7,13 @@ if(check_access()!=-1){
 	if(isset($_POST["agree"])){
 		$sc=get_default_cities(); 
 		$current_year=get_year();
-		echo midlet_create("demo", $current_year, $lang, $sc, "mobi/dl");
+		echo midlet_create("demo", $current_year, $lang, $sc, "mobi/dl", true);
 		return;
 	}
+	$uri=htmlentities($_SERVER['REQUEST_URI']);
+	echo "<form action=\"$uri\" method=\"post\">\n";
 	dload_prompt("Сгенерировать демо-версию?");
+	echo "</form>"
 }
 else
 {

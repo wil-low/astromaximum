@@ -54,7 +54,7 @@ static const int BURNT_ORBIS[7]={0,7,8,8,11,7,7};
 
 DataFile::DataFile()
 {
-  Lon=30.51; Lat=50.43; ascData=NULL;
+  Lon=30.51; Lat=50.43; Alt=0; ascData=NULL;
 }
 
 void DataFile::init(sEphRecord *ephdata, double start, unsigned int count)
@@ -843,7 +843,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
   char extra_plt[]={SE_TRUE_NODE,SE_MEAN_APOG,17};
   char fname[200];
   double endJD;
-  double geopos[3]={Lon,Lat,0},tret[2]; char serr[255];
+  double geopos[3]={Lon,Lat,Alt},tret[2]; char serr[255];
   release(work); release(assist); release(vout); release(work2);
   Event *ev;
   VAE allDegPass;
@@ -1459,7 +1459,7 @@ void DataFile::calcAscData()
   double cusps[13], ascmc[10];
   sAscRecord *myascData=new sAscRecord[stepCount];
   double endJD=startJD;
-  printf("\n AscData for %.2f, %.2f:    ", Lat, Lon);
+  printf("\n AscData for %.2f, %.2f, %.0f:    ", Lat, Lon, Alt);
   for(int i=0; i<stepCount; i++){
     swe_houses(endJD, Lat, Lon, 'P', cusps, ascmc);
     myascData[i].data[0]=cusps[1];  //asc

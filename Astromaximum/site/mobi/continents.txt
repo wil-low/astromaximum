@@ -1,3 +1,4 @@
+ANC	Ancient places
 AFR	Africa
 EAS	East Asia
 SAS	South Asia

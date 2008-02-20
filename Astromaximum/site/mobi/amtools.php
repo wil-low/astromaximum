@@ -257,7 +257,7 @@ function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string 
 		$str.=implode('<br/>',$outp);
 	}
 	else{
-		if($is_cal){
+		if(strcmp($type, "demo")){
 //		$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
 //		header("Location: http://$data_php/data.php?d=$fn");
 			if(!add_file($fn, $type{0}." $year $lang")){

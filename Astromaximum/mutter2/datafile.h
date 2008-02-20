@@ -101,7 +101,7 @@ public:
   void sortVAE(VAE &work);
   void AscendingTest(const char* dirname);
   DataFile();
-  double Lon, Lat;
+  double Lon, Lat, Alt;
   void choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2,
     char* prefix="");
   void init(sEphRecord *ephdata, double start, unsigned int count);

@@ -1,5 +1,6 @@
 sub do_patch{ # dataref
 	my $d=shift;
+	$$d=~s/(Russia)\s+(\+\d+)/$1 - GMT $2/isg;
 =head
 	$$d=~s/(Yemen, Sana).+?a/$1w/is;
 	$$d=~s/Mexico, M[^\n]+?rida/Mexico, Merida/is;
