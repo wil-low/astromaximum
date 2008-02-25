@@ -124,7 +124,7 @@ if($islocal and ($config eq 'rebuild')){
 	my $cmd="\"$antpath\" -quiet -f geoLib/build.xml -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" clean jar";
 	echo("$cmd\n");
 	mydie("BUILD ERROR") if system($cmd);
-	my @conf=('tb', 'demo',
+	my @conf=('tb', 'demo', 'imei',
 #	'notest', 'notest_logger', 'imei', 'tb_logger' 
 	);
 	my @tmpl=glob("$path/templates/*.jar");

@@ -65,13 +65,13 @@ Header fields:
 	0x0006	short LB	days in period
 	0x0008	short LB	city name length
 	0x000a	UTF-8		city name
-## TODO: these field may result in illegal calculations!!!
+## TODO: these fields may result in illegal calculations!!!
 			short LB	timezone offset. DST is applicable if 15th bit is set.
 						Real TZofs=(tz-16*60)*60000 msec.
 			short LB	DST start date, if applicable (local time)
 			short LB	DST end date, if applicable (local time)
 	
-*** data/archive/*.ini ***
+*** data/*.ini ***
 
 Purpose - contains location sets to be calculated and loaded into DB.
 Created by:
@@ -88,11 +88,23 @@ Hints:
 
     In case if city is a capital of state or country and contains non-ASCII letters,
     its name must be corrected in tz_patches.pm.
-    If it is an ordinary city, it must be included into add_city.txt
+    If it is an ordinary city, it must be included into add_city.txt, under appropriate country
 
     Country name should not contain braces.
 
+*** data/archive/*.ini ***
+
+Purpose - contains location coords in form: city|lon|lat|country [- state]|continent [|altitude].
+Created by:
+	geoCoord.pl
+Used in:
+	geoCoord.pl - generating datafiles by mutter2/mutter
+Hints:
+    Altitude is optional (default 0). If city field of *.ini begins with '-', the rest of line is copied into
+    data/archive/*.txt unchanged. Now the ancient places only are entered in such a way.
+
 Continent keys:
+    ANC - Ancient places (either mystic or somewhat sanctuary)
     AFR - Africa
     EAS - East Asia
     SAS - South Asia

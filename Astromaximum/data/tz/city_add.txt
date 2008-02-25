@@ -11,10 +11,18 @@ Villach
 Dzhalilabad
 Zardob
 
+@ Bolivia, La Paz_BOL
+Tiwanaku
+
 @ Canary Islands, Las Palmas_ESP
 Las Palmas de Gran Canaria
-@ England, London
+
+@ Egypt, Cairo_EGY
+Pyramid of Cheops
+
+@ England, London_GBR
 Halifax
+Stonehenge
 
 @ Estonia, Tallinn
 Narva
@@ -25,6 +33,9 @@ La Rochelle
 
 @ Greece, Athens_GRE
 m.Olympos
+
+@ Iraq, Baghdad_IRQ
+Babylon
 
 @ Italy, Rome_ITA
 Napoli
@@ -46,6 +57,9 @@ Alexandria
 
 @ Russia  +3, Moscow_RUS
 Tuapse
+
+@ Russia  +5, Ekaterinburg^RUS
+Arkaim
 
 @ Scotland, Glasgow_GBR
 Poolewe

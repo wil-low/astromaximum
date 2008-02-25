@@ -235,7 +235,7 @@ void cb_do_timebomb_logger(fltk::Button*, void*){
 
 void cb_do_imei(fltk::Button*, void*){
 	char cmd[200];
-	sprintf(cmd, "perl %s/gen_amax.pl release %d %s %s - %s",
+	sprintf(cmd, "perl %s/gen_amax.pl imei %d %s %s - %s",
 		path, year, pbLang->label(), lbLoclist->text(), txtImei->text());
 	int result=run_exe(add_messjar_switch(cmd));
 }

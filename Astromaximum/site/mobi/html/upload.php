@@ -107,7 +107,7 @@ function up_geodata($fname, $ext){
 		$cc=preg_replace('/\#.+/is','',$cc);
   	list($name, $country, $yr, $txtchk, $status, $state)=array('','',0,'','','');
 		$rec=explode('|', $cc);
-		if(count($rec)!=5){
+		if(count($rec)<5){
 			continue;
 		}
 		$name=$rec[0];

@@ -1,7 +1,7 @@
 DEST=site/mobi/dl
 SOURCE=$(DEST)/source
 
-all:	config gen_amax template interp
+all:	gen_amax config template interp
 
 gen_amax:
 	mkdir $(DEST) $(SOURCE); \
