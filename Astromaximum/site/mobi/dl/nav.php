@@ -1,5 +1,6 @@
 <?php
 include_once('../lang.php');
+sess_start();
 lang_load("source");
 include_once('../dbconnect.php');
 $invalid_login=0;

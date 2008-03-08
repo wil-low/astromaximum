@@ -5,10 +5,14 @@ if(isset($_GET['lang'])){
 	$lang=strtolower($_GET['lang']);
 }
 $lang_="lang=$lang";
-error_reporting(E_ALL);
-session_name("Astromaximum");
-session_start();
-session_register("username","uid", "pwd");
+
+function sess_start(){
+	error_reporting(E_ALL);
+	session_name("Astromaximum");
+	session_set_cookie_params(3600);
+	session_start();
+	session_register("username","uid", "pwd");
+}
 
 function lang_load($path){
 	global $lang, $i18;

@@ -70,12 +70,13 @@ DROP TABLE IF EXISTS `customers`;
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(20) NOT NULL default '',
-  `realname` varchar(50) default NULL,
+  `realname` varchar(50) NOT NULL default 'Unknown',
   `hash` varchar(32) default NULL,
   `role` tinyint(4) NOT NULL default '1',
   `email` varchar(50) default NULL,
   `subscr_date` date default NULL,
-  `dl_count` int(11) NOT NULL default '5',
+  `dl_count` int(11) NOT NULL default '2',
+  `city_count` int(11) NOT NULL default '5',
   PRIMARY KEY  (`id`),
   KEY `name` (`name`,`realname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds customer data';
@@ -90,8 +91,7 @@ LOCK TABLES `customers` WRITE;
 INSERT INTO `customers` VALUES 
 	(1,'vmesyats','Vasyl Mesyats','123',0,NULL,NULL,-1),
 	(2,'aivushkin','Andrei Ivushkin','65536',0,NULL,NULL,-1),
-	(3,'1234','Demo','5678',1,NULL,NULL,-1);
-UPDATE `customers` SET `hash`=MD5(`hash`) WHERE 1;
+	(3,'123456789','Demo','012345678',1,NULL,NULL,-1);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 

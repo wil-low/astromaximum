@@ -1,5 +1,6 @@
 <?php
 include_once('../lang.php');
+sess_start();
 include_once('nav.php');
 reject2index($lang_);
 ?>

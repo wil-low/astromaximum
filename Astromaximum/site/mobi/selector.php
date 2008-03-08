@@ -43,6 +43,7 @@ if(isset($_GET['dest']) && isset($_POST['btn'])){
 	exit;
 }
 include_once("lang.php");
+sess_start();
 //include_once('amtools.php');
 $current_year=get_year();   
 lang_load("html");

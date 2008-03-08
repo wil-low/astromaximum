@@ -1,5 +1,5 @@
 <?php
-$DEF_CITIES=array('Kiev', 'London', 'New York', 'Moscow');
+$DEF_CITIES=array('m.Olympos');
 
 function find_perl(){
 	$perl="/opt/lampp/bin/perl";

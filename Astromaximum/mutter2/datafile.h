@@ -77,12 +77,10 @@ private:
 	void VOC_generate(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2);
   void registerAspect(VAE & moonvae,VAE &vae, int i, int j);
   void registerDegPass(VAE &dpe, int deg, int body, int interval);
-  void release(VAE & v);
   void clearDegPass(VAE & src, VAE & dest, int id, VAE & destall);
   void clearSignEnter(VAE & src, VAE & dest);
   void clearViaCombusta(VAE & src, VAE & dest);
   bool writeSubData(const VAE & v, EventType evtype, int evflags, int planet, char* fname);
-  bool readSubData(const char* fname, VAE & v);
   int select(VAE & src, double jdstart, double jdend, char planet, bool both, VAE & dest);
   int getAspIndex(int angle);
   short swapShort(short var);
@@ -94,6 +92,8 @@ private:
   void addBalls(aphRecord *balls, const Event *ev, int value);
 public:
   unsigned int dayCount, stepCount;
+  bool readSubData(const char* fname, VAE & v);
+  void release(VAE & v);
   bool aph_ne(const Event* ev0, const Event* ev1);
   int aspectExists(int step, int p0, int p1, double delta);
   Event* eventContains(const VAE &work, double moment);

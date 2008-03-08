@@ -3,6 +3,7 @@
 	include_once('../amtools.php');
 	include_once('nav.php');
 	include_once('../lang.php');
+	sess_start();
 	lang_load("../html");
 	
 	$perl=find_perl();

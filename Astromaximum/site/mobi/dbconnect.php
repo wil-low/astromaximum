@@ -2,7 +2,7 @@
 /* FTP account 
 astromaximumcom a2a0SL2H
 */
-if(strcmp($_SERVER['REMOTE_ADDR'],"127.0.0.1")==0){ // local=true
+if(!isset($SERVER) or strcmp($_SERVER['REMOTE_ADDR'],"127.0.0.1")==0){ // local=true
 	$DB_SERVER='localhost';
 	$DB_NAME='amax';
 	$DB_PORT='3306';
@@ -58,15 +58,16 @@ function quote_smart($value)
 
 function login($user,$pwd){
 	$res=false;
-	$pwd=md5($pwd);
+	$pwd1=pwd_convert1($user, $pwd);
+	$pwd2=pwd_convert2($pwd1);
 	$stat=sprintf("SELECT id,realname FROM customers WHERE name=%s AND hash=%s",
-		quote_smart($user),quote_smart($pwd));
+		quote_smart($user),quote_smart($pwd2));
 	$sth=mysql_query($stat);
 	if(mysql_num_rows($sth)==1){
 		$row=mysql_fetch_row($sth);
 		$_SESSION['uid']=$row[0];
 		$_SESSION['username']=$row[1];
-		$_SESSION['pwd']=$pwd;
+		$_SESSION['pwd']=$pwd1;
 		$res=true;
 	}
 /*	else{
@@ -75,6 +76,18 @@ function login($user,$pwd){
 */
 	mysql_free_result($sth);
 	return $res;
+}
+
+function pwd_convert1($login, $pwd){
+	$pwd=sha1($pwd.md5($login));
+	$pwd=substr($pwd, 5, 16).substr($pwd, -16);
+	return $pwd;
+}
+
+function pwd_convert2($pwd){
+	$pwd=sha1($pwd);
+	$pwd=substr($pwd, 11, 5).substr($pwd, 27).substr($pwd, 8, 3).substr($pwd, 16, 11);
+	return $pwd;
 }
 
 function reject2index($url){
@@ -90,8 +103,9 @@ function redirect($url){
 }
 
 function check_access(){
+	$pass=pwd_convert2($_SESSION['pwd']);
 	$stat=sprintf("SELECT role FROM customers WHERE id=%s AND hash=%s",
-		quote_smart($_SESSION['uid']),quote_smart($_SESSION['pwd']));
+		quote_smart($_SESSION['uid']),quote_smart($pass));
 //	echo $stat;
 	$sth=mysql_query($stat);
 	if(mysql_num_rows($sth)==1){

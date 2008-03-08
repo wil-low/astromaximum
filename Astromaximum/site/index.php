@@ -1,5 +1,6 @@
 <?php 
 include_once('mobi/lang.php');
+sess_start();
 lang_load("mobi/html");
 include_once('mobi/dbconnect.php');
 $chac=check_access();
@@ -89,16 +90,19 @@ $btn1="СКАЧАТЬ ДЕМО<br/>+ $city_count модулей городов";
 $btn2="КУПИТЬ &euro;$price<br/>+ $city_count модулей городов";
 if($chac==0){
 	echo <<<ADMIN_TB
-	<p><a href="?$lang_&amp;p=db_stats&amp;mode=env">окружение</a> |  
+	<p>| 
+	<a href="?$lang_&amp;p=db_stats&amp;mode=env">окружение</a> |  
 	<a href="?$lang_&amp;p=db_stats&amp;mode=data">статистика</a> |  
-	<a href="?$lang_&amp;p=upload">загрузка городов</a></p>
+	<a href="?$lang_&amp;p=upload">загрузка городов</a> |
+	<a href="?$lang_&amp;p=usermgr">пользователи</a> |
+	</p>
 ADMIN_TB;
 }
 if($user_ok){
 	$current_year=get_year();
 	$btn1="ЗАГРУЗИТЬ<br/>ГОРОД"; $btn2="ЗАГРУЗИТЬ<br/>КАЛЕНДАРЬ - $current_year"; $btn1_link="dl";
 }
-if(isset($_SESSION['username'])){
+if(check_access()!=-1){
 	$session_prompt=<<<SP1
 	<p>Здравствуйте, <b>{$_SESSION['username']}</b>! </p>
 	<p><a href="mobi/dl/logout.php"><strong>выход</strong></a></p> 
@@ -120,7 +124,8 @@ else{
 	<form name="flog" action="?lang=$lang&amp;p=login&amp;to=$main" method="post"> 
 	<input id="ilog" name="login"/> логин  <br /><br />
 	<input id="ipwd" name="pass" type="password"/> пароль <br /><br />
-	<a id="aenter" href="#" onclick="javascript:checklogin()"><strong>вход</strong></a> | <a href="#"><strong>восстановить пароль</strong></a>
+	<a id="aenter" href="#" onclick="javascript:checklogin()"><strong>вход</strong></a> | 
+	<a href="?lang=$lang&amp;p=pwdrestore"><strong>восстановить пароль</strong></a>
 	</form> 
 FRM;
 } 

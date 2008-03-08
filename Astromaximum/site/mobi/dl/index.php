@@ -2,6 +2,7 @@
 include_once('../dbconnect.php');
 include_once('nav.php');
 include_once('../lang.php');
+sess_start();
 lang_load("source");
 $useimg=1;
 $useregions=0;

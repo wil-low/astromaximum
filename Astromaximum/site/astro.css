@@ -160,6 +160,9 @@ ul {
 	margin-left: 360px;
 	padding-right: 18px;
 }
+#usredit input {
+	width: auto;
+}
 /*подвал*/
 #bottom {
 	clear: both;

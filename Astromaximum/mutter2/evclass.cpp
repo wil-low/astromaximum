@@ -77,3 +77,10 @@ void Event::dump2()
   printf("  degree=%X",degree);
   printf("  planets %u - %u",planetId[0],planetId[1]);
 }
+
+char *Event::date_sql(char *str, int i)
+{
+  tm *st=gmtime(&date[i]);
+  strftime(str, 200, "'%F %T'", st);
+  return str;
+}

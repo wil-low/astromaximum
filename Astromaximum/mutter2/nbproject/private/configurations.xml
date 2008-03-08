@@ -8,7 +8,7 @@
         <gdb_command>gdb</gdb_command>
       </gdbdebugger>
       <runprofile version="5">
-        <args>2008 geo0- 35 38 electio</args>
+        <args>2008 sql</args>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <console-type>0</console-type>

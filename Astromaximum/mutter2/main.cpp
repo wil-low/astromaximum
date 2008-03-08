@@ -3,6 +3,7 @@
 #include "datafile.h"
 #include "assert.h"
 #include <time.h>
+#include "errno.h"
 #ifdef _WIN32_
 #include <dir.h>
 #endif
@@ -49,6 +50,7 @@ int main(int argc, char* argv[]) {
         printf("   <year> <prefix> <lon> <lat> [alt] [electio]- calc locations on coords with prefix\n");
         printf("   <year> view <file.bin> <count> - view events of datafile\n");
         printf("   <year> dump <country> <filenum> - dump sections of location file\n");
+        printf("   <year> sql - create year.sql for website import\n");
         exit(0);
     }
     strcpy(path, argv[0]);
@@ -110,6 +112,63 @@ int main(int argc, char* argv[]) {
         sscanf(argv[4], "%d", &count);
         df.view(argv[3], count);
         printf("\nFinished\n");
+        return 0;
+    }
+    if(argc==3 && strcmp(argv[2], "sql")==0){ // Creating SQL file
+        VAE work;
+        char fn[100];
+        char buf0[100], buf1[100];
+        sprintf(fn, "../site/%04d.sql", year);
+        FILE *sql=fopen(fn, "w");
+	if(!sql){
+            int ern=errno;
+            printf("Cannot create file %s: %s",fn,strerror(ern));
+            return -1;
+	}
+        fprintf(sql, "TRUNCATE TABLE `_voc`; BEGIN;\n");
+        if(df.readSubData("voc01.bin", work)){
+            for(int i=0; i<work.size(); i++){
+                Event *ev=work[i];
+                fprintf(sql, "INSERT INTO `_voc` VALUES (%s, %s);\n", 
+                    ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
+//                ev->dump();
+            }
+            fprintf(sql, "COMMIT;\n\n");
+        }
+        else{
+            printf("\nVOC file error!");
+        }
+        df.release(work);
+        fprintf(sql, "TRUNCATE TABLE `_vc`; BEGIN;\n");
+        if(df.readSubData("via01.bin", work)){
+            for(int i=0; i<work.size(); i++){
+                Event *ev=work[i];
+                fprintf(sql, "INSERT INTO `_vc` VALUES (%s, %s);\n", 
+                    ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
+//                ev->dump();
+            }
+            fprintf(sql, "COMMIT;\n\n");
+        }
+        else{
+            printf("\nVC file error!");
+        }
+        df.release(work);
+        fprintf(sql, "TRUNCATE TABLE `_sundgr`; BEGIN;\n");
+        if(df.readSubData("degpass00.bin", work)){
+            for(int i=0; i<work.size(); i++){
+                Event *ev=work[i];
+                fprintf(sql, "INSERT INTO `_sundgr` VALUES (%s, %s, %d);\n", 
+                    ev->date_sql(buf0, 0), ev->date_sql(buf1, 1), ev->degree & 0x3fff);
+//                ev->dump();
+            }
+            fprintf(sql, "COMMIT;\n\n");
+        }
+        else{
+            printf("\nSun degree file error!");
+        }
+        df.release(work);
+        fclose(sql);
+        printf("\nSQL created: %s\n", fn);
         return 0;
     }
     if((argc==5)&&(strcmp(argv[2], "dump")==0)){
@@ -190,7 +249,7 @@ int main(int argc, char* argv[]) {
         }
         else{
             if(strcmp(argv[2], "vocsql")==0){
-                
+
             }
             else{
                 if(argc<5)
@@ -205,7 +264,7 @@ int main(int argc, char* argv[]) {
                 //      df.stepCount=8000;
                 df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
                 df.calcAscData();
-                
+
                 df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
                 df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
                 if(argc>5 && (strcmp(argv[5], "electio")==0)){
