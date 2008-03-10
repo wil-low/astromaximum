@@ -67,5 +67,4 @@ function get_year(){
 	};
 	return $current_year;
 }
-
 ?>

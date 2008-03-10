@@ -1,17 +1,22 @@
 <?php 
 include_once('mobi/lang.php');
-sess_start();
+$main='home';
+if(isset($_GET['p'])){
+	$main=$_GET['p'];
+}
+if(strcmp($main, 'pwdrestore')==0){
+	session_start();
+}
+else{
+	sess_start();
+}
 lang_load("mobi/html");
 include_once('mobi/dbconnect.php');
 $chac=check_access();
 $user_ok=($chac>=0 and $chac!=1);
 $city_count=711;
 $price=60;
-$main='home';
 $show_topics=1;
-if(isset($_GET['p'])){
-	$main=$_GET['p'];
-}
 
 if(strcmp($main, 'login')==0){
 	include_once('mobi/dbconnect.php');
@@ -125,7 +130,7 @@ else{
 	<input id="ilog" name="login"/> логин  <br /><br />
 	<input id="ipwd" name="pass" type="password"/> пароль <br /><br />
 	<a id="aenter" href="#" onclick="javascript:checklogin()"><strong>вход</strong></a> | 
-	<a href="?lang=$lang&amp;p=pwdrestore"><strong>восстановить пароль</strong></a>
+	<a href="?lang=$lang&amp;p=pwdrestore"><strong>восстановить регистрацию</strong></a>
 	</form> 
 FRM;
 } 
@@ -192,7 +197,7 @@ FRM;
 		}
 	}
 	else{
-		echo "<h3>Страницы не существует: $fn</h3>";
+		echo "<h3>Запрашиваемой страницы не существует</h3>";
 	} 
 ?>
 </div><!-- end content div -->

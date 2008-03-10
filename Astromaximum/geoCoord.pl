@@ -293,10 +293,12 @@ sub process_ini{
 		my $hrepl=0;
 		our $city;
 	#	undef $/ ;
-		my $newdir=ensure_slash(sprintf('%sdata/archive/%d/%s',$mypath,$year,$city_inf));
+		my $newdir=ensure_slash(sprintf('%sdata/archive/%d',$mypath,$year));
+		mkdir $newdir;
+		$newdir=ensure_slash("$newdir/$city_inf");
 		my $arcdir=$mypath.'data';
 		if(!-d $newdir){
-			mkdir $newdir or die $!;
+			mkdir $newdir or die "$newdir: $!";
 		}
 	#	foreach my $cit(@cities){
 	#		chomp($cit);

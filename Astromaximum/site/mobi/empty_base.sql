@@ -77,6 +77,7 @@ CREATE TABLE `customers` (
   `subscr_date` date default NULL,
   `dl_count` int(11) NOT NULL default '2',
   `city_count` int(11) NOT NULL default '5',
+  `active` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`id`),
   KEY `name` (`name`,`realname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds customer data';
@@ -89,7 +90,7 @@ CREATE TABLE `customers` (
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
 LOCK TABLES `customers` WRITE;
 INSERT INTO `customers` VALUES 
-	(1,'vmesyats','Vasyl Mesyats','123',0,NULL,NULL,-1),
+	(1,'vmesiats','Vasyl Mesiats','',0,NULL,NULL,-1),
 	(2,'aivushkin','Andrei Ivushkin','65536',0,NULL,NULL,-1),
 	(3,'123456789','Demo','012345678',1,NULL,NULL,-1);
 UNLOCK TABLES;

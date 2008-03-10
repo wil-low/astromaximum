@@ -285,4 +285,22 @@ function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string 
 	}
 	return $str;
 }
+
+function record_in_range($table, $tm){
+	$stat=sprintf("SELECT * FROM %s WHERE %s BETWEEN start AND end LIMIT 1", $table, quote_smart($tm));
+	$sth=mysql_query($stat);
+	if(!$sth){
+		echo mysql_error();
+		return 0;
+	}
+	$res=mysql_num_rows($sth);
+	if($res and strcmp($table, "_sundgr")==0){
+		$res=mysql_fetch_row($sth);
+		$res=$res[2];
+	}
+//	echo "$stat\n";
+	mysql_free_result($sth);	
+	return $res;
+}
+
 ?>

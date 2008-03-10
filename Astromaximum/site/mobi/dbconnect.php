@@ -60,7 +60,7 @@ function login($user,$pwd){
 	$res=false;
 	$pwd1=pwd_convert1($user, $pwd);
 	$pwd2=pwd_convert2($pwd1);
-	$stat=sprintf("SELECT id,realname FROM customers WHERE name=%s AND hash=%s",
+	$stat=sprintf("SELECT id,realname FROM customers WHERE name=%s AND hash=%s AND active>0",
 		quote_smart($user),quote_smart($pwd2));
 	$sth=mysql_query($stat);
 	if(mysql_num_rows($sth)==1){

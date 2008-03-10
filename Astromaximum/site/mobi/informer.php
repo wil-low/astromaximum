@@ -1,5 +1,6 @@
 <?php 
 header("Content-type: image/png");
+include_once("amtools.php");
 include_once("lang.php");
 $update_sec=1*3600;
 //$lang='ru';
@@ -79,22 +80,5 @@ function find_dgr($var){
 	global $sun_degree;
 //	echo "$var\n";
 	return strpos($var, "%$sun_degree%");
-}
-
-function record_in_range($table, $tm){
-	$stat=sprintf("SELECT * FROM %s WHERE %s BETWEEN start AND end LIMIT 1", $table, quote_smart($tm));
-	$sth=mysql_query($stat);
-	if(!$sth){
-		echo mysql_error();
-		return 0;
-	}
-	$res=mysql_num_rows($sth);
-	if($res and strcmp($table, "_sundgr")==0){
-		$res=mysql_fetch_row($sth);
-		$res=$res[2];
-	}
-//	echo "$stat\n";
-	mysql_free_result($sth);	
-	return $res;
 }
 ?> 
