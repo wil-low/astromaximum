@@ -1,13 +1,12 @@
 <?php
-	include_once('../dbconnect.php');
-	include_once('../amtools.php');
-	include_once('nav.php');
 	include_once('../lang.php');
 	sess_start();
+	include_once('../dbconnect.php');
+	include_once('../amtools.php');
 	lang_load("../html");
-	
+	global $DEF_CITIES;
 	$perl=find_perl();
-	$default_city_ids=get_default_cities();
+	$default_city_ids=get_default_cities($DEF_CITIES);
 
 	if(!isset($_REQUEST['mode'])) exit;
 	$year=get_year();
@@ -19,23 +18,6 @@
 	else if(strcmp($_REQUEST['mode'], 'trial')!=0){
 		exit;
 	}
-	if(isset($_GET['lang'])){
-		$lang=$_GET['lang'];
-	}
-	else{
-		$lang='en';
-	}
-	if(!$isdemo){
-		if(isset($_POST['user']) && isset($_POST['passwd'])){
-			if(!login($_POST['user'],$_POST['passwd'])){
-				ask_login();
-			}	
-		}
-		else{
-				ask_login();
-		}
-	}	
-	
 	$timeout_offset=-24;
 	$timeout_mins=2880;  
 	
@@ -102,46 +84,3 @@
 ?>
 </div>
 <div id="ftr"></div></body></html>
-
-<?php		
-function ask_login(){
-	global $i18;
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>Astromaximum.mobi</title>
-<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
-<meta http-equiv="Cache-Control" content="max-age=30"/>
-<link rel="stylesheet" type="text/css" href="html/style.css"/>
-<script type="text/javascript">
-	function curtime(){
-<!--
-		gmt1=document.getElementById("gmt").value;
-		gmt2=new Date().getTime()/1000;
-		var newtext=document.createTextNode(gmt2-gmt1);
-		document.getElementById("gmt").appendChild(newtext);
--->
-	}
-</script>
-</head>
-<body onload="curtime()">
-<div id="hdr" class="hdr"></div>
-<div id="cont">
-<!--
-<span id="ofs"></span>
-<input type="hidden" id="gmt" value="<?php echo time() /*gmdate("T: Y-m-j G:i")*/ ?>">
--->
-<form action="<?php echo htmlentities($_SERVER['REQUEST_URI'])?>" method="post">
-<p>
-<?php echo $i18['USER']?> <input name="user" type="text" size="15" maxlength="15" class="numinput"/><br/>
-<?php echo $i18['PWD']?> <input name="passwd" type="password" size="15" maxlength="15" class="numinput"/><br/>
-<input type="submit" id="Submit"/></p>
-</form>
-</div>
-<div id="ftr"></div></body></html>
-	
-<?php
-	exit;
-}
-?>

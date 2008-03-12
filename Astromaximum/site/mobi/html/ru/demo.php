@@ -5,7 +5,8 @@ include_once("mobi/dbconnect.php");
 include_once("mobi/amtools.php");
 if(check_access()!=-1){
 	if(isset($_POST["agree"])){
-		$sc=get_default_cities(); 
+		global $DEF_CITIES;
+		$sc=get_default_cities($DEF_CITIES); 
 		$current_year=get_year();
 		echo midlet_create("demo", $current_year, $lang, $sc, "mobi/dl", true);
 		return;

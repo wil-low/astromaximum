@@ -1,5 +1,4 @@
 <?php
-include_once('../dbconnect.php');
 include_once('../lang.php');
 sess_start();
 $_SESSION = array();

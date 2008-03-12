@@ -540,7 +540,7 @@ sub do_jar{
 		$jarurl=~s/\..+//is;
 		my $tjad=$jad;
 		$tjad=~s/d$/t/is;
-		my $serv=CGI::server_name();
+		my $serv='astromaximum.mobi';
 		$serv.='/mobi' if $serv!~/\.mobi/is;
 		$jarurl='http://'.$serv."/data.php?r=".$jarurl;
 		open(FFF, ">$tjad") or mydie("$jad: $!");

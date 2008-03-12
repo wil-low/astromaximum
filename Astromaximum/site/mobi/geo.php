@@ -1,17 +1,34 @@
 <?php
+	include_once("lang.php");
+	sess_start();
 	include_once('dbconnect.php');
-	$fd = fopen("continents.txt", 'r');
-	while (!feof($fd)) {
-		$buffer = fgets($fd, 4096);
-		list($key,$value)=explode("\t",$buffer);
-		$cont[trim($value)]=$key;
+	$chac=check_access();
+	if($chac==-1){
+		redirect("/");
 	}
-	fclose($fd);
-	$LVL_MAX=3;
 	$level=0;
 	if(isset($_GET['lvl'])){
 		$level=$_GET['lvl'];
 	}
+	if($level==10){
+		include_once("amtools.php");
+		global $DEMO_CITY;
+		make_city(get_default_cities($DEMO_CITY), get_year()-1);
+		exit;
+	}
+	if($chac==1){
+		redirect("/");
+	}
+	$fd = fopen("continents.txt", 'r');
+	while (!feof($fd)) {
+		$buffer = fgets($fd, 4096);
+		if(strpos($buffer, "\t")){
+			list($key,$value)=explode("\t",$buffer);
+			$cont[trim($value)]=$key;
+		}
+	}
+	fclose($fd);
+	$LVL_MAX=3;
 	$defyear=date('Y');
 	if(isset($_GET['y'])){
 		$defyear=$_GET['y'];
@@ -23,33 +40,7 @@
 		}
 	}
 	if($level==4){
-		include_once('amtools.php');
-		global $DIR_FILES, $DIR_SOURCE;
-		$dsrc="./$DIR_FILES";
-		$ye=substr($defyear,-2);
-		list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
-		$srcdir="$dsrc/$fn";
-	#	echo "$dsrc/$destfile";
-		$cmd=find_perl()." ./dl/gen_amax.cgi geo- $defyear EN $p[3] $dsrc/$fn.r nomessjar";
-		$ret=0;
-		exec($cmd, $outp, $ret);
-		if($ret){				
-			echo "$cmd: $ret";
-			echo implode('<br/>',$outp);
-		}
-		else{
-			if(!add_file($fn, "geo")){
-				echo mysql_error();
-				exit;
-			}
-			
-			$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
-			if(!strpos($data_php, "mobi")){
-				$data_php.="/mobi";
-			}
-			header("Location: http://$data_php/data.php?t=$fn");
-			exit();
-		}
+		make_city($p[3], $defyear);
 	}
 	$entity='';
 	if(isset($_GET['ent'])){
@@ -164,5 +155,36 @@
 			$str.="&amp;p$j=$params[$j]";
 		}
 		return $str."\">$text</a>&nbsp;";
+	}
+	
+	function make_city($id, $defyear){
+		include_once('amtools.php');
+		global $DIR_FILES, $DIR_SOURCE;
+		$dsrc="./$DIR_FILES";
+		$ye=substr($defyear,-2);
+		list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
+		$srcdir="$dsrc/$fn";
+	#	echo "$dsrc/$destfile";
+		$cmd=find_perl()." ./dl/gen_amax.cgi geo- $defyear EN $id $dsrc/$fn.r nomessjar";
+		$ret=0;
+		exec($cmd, $outp, $ret);
+		if($ret){				
+			echo "$cmd: $ret";
+			echo implode('<br/>',$outp);
+			exit;
+		}
+		else{
+			if(!add_file($fn, "geo")){
+				echo mysql_error();
+				exit;
+			}
+			
+			$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
+			if(!strpos($data_php, "mobi")){
+				$data_php.="/mobi";
+			}
+			header("Location: http://$data_php/data.php?t=$fn");
+			exit();
+		}
 	}
 ?>

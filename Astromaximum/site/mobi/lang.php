@@ -1,8 +1,8 @@
 <?php
 $lang='ru';
 $i18=array();
-if(isset($_GET['lang'])){
-	$lang=strtolower($_GET['lang']);
+if(isset($_REQUEST['lang'])){
+	$lang=strtolower($_REQUEST['lang']);
 }
 $lang_="lang=$lang";
 

@@ -1,6 +1,6 @@
 <?php
 $DEF_CITIES=array('m.Olympos');
-
+$DEMO_CITY=array('London');
 function find_perl(){
 	$perl="/opt/lampp/bin/perl";
 	if(!file_exists($perl)){
@@ -215,15 +215,14 @@ function is_mobile(){
     return $mobile_browser;
 }
 
-function get_default_cities(){
-	global $DEF_CITIES;
-	$sth=mysql_query("SELECT id FROM cities WHERE name in ('".implode("','", $DEF_CITIES)."')");
+function get_default_cities($arr){
+	$sth=mysql_query("SELECT id FROM cities WHERE name in ('".implode("','", $arr)."')");
 	$ids='';
 	while($row=mysql_fetch_row($sth)){
 		$ids.="$row[0],";
 	}
 	mysql_free_result($sth);
-	return $ids;
+	return substr($ids, 0, -1);
 }
 
 function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string with links
