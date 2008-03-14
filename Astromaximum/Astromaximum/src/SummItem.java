@@ -1063,7 +1063,7 @@ class SummItem extends TimerTask implements RecordFilter {
                 }
                 return new long[]{Event.EV_MOON_PHASE, 1, evi.planet1 + 4, d0, 0};
             case Event.EV_MOON_PHASE:
-                return new long[]{Event.EV_MOON_PHASE, 1, evi.planet1, d0, 0};
+                return new long[]{Event.EV_MOON_PHASE, 1, evi.planet1, d0, d1};
             case Event.EV_VIA_COMBUSTA:
             case Event.EV_VOC:
                 return new long[]{t, plt, d0, d1};
@@ -1240,6 +1240,7 @@ class SummItem extends TimerTask implements RecordFilter {
             Astromaximum.log("wrong tithi");
         }
         tithi = Astromaximum.extractImg(deg2, "/res/ph" + Integer.toString(Summary.moonPhaseH) + ".dat");
+        Astromaximum.summary.calcPhase(getSelEvent().date1);
     }
 
     void setSelection() {

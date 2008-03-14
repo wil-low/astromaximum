@@ -396,13 +396,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
             si.events[0] = todayEclipse;
             si.tag |= 4;
         }
-        for (int i = moonPhase.size() - 1; i >= 0; i--) {
-            Event ph = Astromaximum.evAt(moonPhase, i);
-            if (ph.date0 < period1) {
-                getItem(Event.EV_MOON_PHASE, 0).events[0] = ph;
-                break;
-            }
-        }
         isCurrentDay = isInCurrentDay(tick);
         Astromaximum.calendar.setTime(new Date((period0 + period1) / 2));
         final int weekDay = Astromaximum.calendar.get(Calendar.DAY_OF_WEEK);
@@ -1548,8 +1541,8 @@ class Summary extends Canvas implements CommandListener, Runnable {
     }
 
 
-    protected void sizeChanged(int w, int h) {
-        if (!Astromaximum.firstRun) {
+//    protected void sizeChanged(int w, int h) {
+//        if (!Astromaximum.firstRun) {
 //      Astromaximum.log("chs");
 //      items=null;
 //      recalcBounds(w,h);
@@ -1557,8 +1550,8 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //      setCurPage(pageNum);
 //      Display.getDisplay(Astromaximum.instance).setCurrent(this);
 //      repaint(0, 0, getWidth(), getHeight()); 
-        }
-    }
+//        }
+//    }
 
     void recalcAllSelections() {
         long cur = Options.currentTime();
@@ -1856,6 +1849,16 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 repaint();
                 serviceRepaints();
                 progress += 2;
+            }
+        }
+    }
+    
+    void calcPhase(long date){
+        for (int i = moonPhase.size() - 1; i >= 0; i--) {
+            Event ph = Astromaximum.evAt(moonPhase, i);
+            if (ph.date0 < date) {
+                getItem(Event.EV_MOON_PHASE, 0).events[0] = ph;
+                break;
             }
         }
     }

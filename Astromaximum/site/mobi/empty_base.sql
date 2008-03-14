@@ -79,7 +79,8 @@ CREATE TABLE `customers` (
   `city_count` int(11) NOT NULL default '5',
   `active` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`id`),
-  KEY `name` (`name`,`realname`)
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `realname` (`realname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds customer data';
 
 --

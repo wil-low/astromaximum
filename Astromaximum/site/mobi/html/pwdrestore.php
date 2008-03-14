@@ -72,37 +72,44 @@ function is_capcha($capcha){
 function pwd_send($to, $login, $realname, $dl_count, $city_count, $pwd){
 	$subject = 'Astromaximum.de - new password';
 	$message = <<<EOF
-Dear $realname,
+<html><head>
+  <title>Astromaximum.de - new password</title>
+</head>
+<body>
+<p>Dear $realname,</p>
 
-You requested a new password for access to http://astromaximum.de 
-Your credentials is now as follows:
-	login:     $login
-	password:  $pwd
-	
-Number of Astromaximum copies to download: $dl_count
-Number of cities to download: $city_count
+<p>You requested a new password for access to 
+<a href="http://astromaximum.de/">http://astromaximum.de/</a> 
+<br/>Your credentials are now as follows:</p>
+<ul>
+<li>login: $login</li>
+<li>password:  $pwd</li>
+</ul>	
+<p>Number of Astromaximum copies to download: $dl_count</p>
+<p>Number of cities to download: $city_count</p>
 
-This mail was generated automatically, there is no need to reply.
+<p>This mail was generated automatically, there is no need to reply.</p>
 
-Thank you for using our service.
+<p>Thank you for using our service.</p>
+<hr/>
+<p>Уважаемый $realname,</p>
 
------
-Уважаемый $realname,
+<p>Вы запросили новый пароль для доступа на сайт 
+<a href="http://astromaximum.de/">http://astromaximum.de/</a>
+<br/>Для входа на сайт наберите:</p>
+<ul>
+<li>логин:   $login</li>
+<li>пароль:  $pwd</li>
+</ul>
+<p>Разрешено загрузить копий мидлета на текущий год: $dl_count</p>
+<p>Разрешено загрузить городов: $city_count</p>
 
-Вы запросили новый пароль для доступа на сайт http://astromaximum.de
-Для входа на сайт наберите:
-	логин:   $login
-	пароль:  $pwd
+<p>Это письмо сгенерировано автоматически, нет нужды отвечать на него.</p>
 
-Разрешено загрузить копий мидлета на текущий год: $dl_count
-Разрешено загрузить городов: $city_count
-
-Это письмо сгенерировано автоматически, нет нужды отвечать на него.
-
-Спасибо за использование нашего сервиса.
+<p>Спасибо за использование нашего сервиса.</p>
 EOF;
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
-	$headers .= 'Content-type: text/plain; charset=UTF-8' . "\r\n";	
+	$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";	
 	$headers .= 'From: robot@astromaximum.de' . "\r\n" .
 	    'X-Mailer: PHP';
 	return mail($to, $subject, $message, $headers);
