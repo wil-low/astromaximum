@@ -352,7 +352,8 @@ class Options extends GeoList {
         String place="opt";
         if (canCreate) {
             try {
-                rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year), true, RecordStore.AUTHMODE_ANY, true);
+                rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year).substring(2),
+                    true, RecordStore.AUTHMODE_ANY, true);
 //      rs=RecordStore.openRecordStore(STORE_NAME, "Wiland", "Astromaximum2007");
                 if (rs.getNumRecords() == 0) {
                     

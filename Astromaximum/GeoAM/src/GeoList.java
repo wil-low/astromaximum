@@ -98,21 +98,20 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
       String newStore=STORE_NAME + Integer.toString(year);
       byte[] data=null;
       try {
-        String platform = System.getProperty("microedition.platform");
+//        String platform = System.getProperty("microedition.platform");
         try{
-            if (platform != null && platform.indexOf("wtk") >= 0) {
-                System.out.println("open local "+newStore);
-                rs = RecordStore.openRecordStore(newStore, false);
-            } else {
-                System.out.println("open remote "+newStore);
-                rs = RecordStore.openRecordStore(newStore, main.getAppProperty("MIDlet-Vendor"),
-                    newStore);
-            }
+            System.out.println("Open remote");
+            rs = RecordStore.openRecordStore(newStore, main.getAppProperty("MIDlet-Vendor"),
+                STORE_NAME);
         } catch (RecordStoreNotFoundException ex) {
             System.out.println(place+ex.getMessage());
+            try{
+                System.out.println("Open simply");
+                rs = RecordStore.openRecordStore(newStore, false);
+            } catch (RecordStoreNotFoundException ex2) {
+                System.out.println(place+ex2.getMessage());
+            }
         }
-        System.out.println(rs.toString());
-        System.out.println(STORE_NAME);
         curCity = rs.getRecord(1);
         RecordEnumeration rece = rs.enumerateRecords(this, null, false);
 //#mdebug info 

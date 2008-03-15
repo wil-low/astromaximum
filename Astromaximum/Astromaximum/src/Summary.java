@@ -1630,15 +1630,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 dis.skip(chlen + 4);
                 chlen = dis.readInt();
                 chtype = dis.readInt();
-//#mdebug debug
-                System.out.print("Chunk=");
-                System.out.println(chtype);
-//#enddebug
                 if (chtype == 0x634f4445) {
                     dis.read(buf, 0, chlen);
                     DataFile.ids.addElement(LogBox.access(new String(buf, 0, chlen), num++));
-//#debug debug	  
-                    System.out.println(DataFile.ids.lastElement());
+//                    System.out.println(DataFile.ids.lastElement());
                     chlen = 0;
                 }
             } while (chtype != 0x49454e44);
