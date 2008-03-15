@@ -25,7 +25,7 @@
  */
 
 import java.io.*;
-//import java.util.Date;
+import java.util.Date;
 //import java.util.TimeZone;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
@@ -92,20 +92,30 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     public void commandAction(Command c, Displayable d) {
     }
 
-    public byte[] initDB(boolean canCreate) throws Exception {
+    byte[] initDB(boolean canCreate){
 //    System.out.println(STORE_NAME);
-        String platform = System.getProperty("microedition.platform");
-        if (platform != null && platform.indexOf("wtk") >= 0) {
-            rs = RecordStore.openRecordStore(STORE_NAME, false);
-        } else {
-            rs = RecordStore.openRecordStore(STORE_NAME, main.getAppProperty("MIDlet-Vendor"),
-                    STORE_NAME + Integer.toString(year).substring(2));
+      String place="gl ";
+      String newStore=STORE_NAME + Integer.toString(year);
+      byte[] data=null;
+      try {
+//        String platform = System.getProperty("microedition.platform");
+        try{
+            Astromaximum.log("Open simply");
+            rs = RecordStore.openRecordStore(newStore, false);
+/*            else {
+                Astromaximum.log("Open remote");
+                rs = RecordStore.openRecordStore(newStore, main.getAppProperty("MIDlet-Vendor"),
+                    newStore);
+            }
+ */
+        } catch (RecordStoreNotFoundException ex) {
+            Astromaximum.log(place+ex.getMessage());
         }
         curCity = rs.getRecord(1);
         RecordEnumeration rece = rs.enumerateRecords(this, null, false);
 //#mdebug info 
-//#     System.out.println(new String(curCity));
-//#     System.out.println(rece.numRecords());
+    System.out.println(new String(curCity));
+    System.out.println(rece.numRecords());
 //#enddebug    
         byte[] nextR;
         nextR = rece.nextRecord();
@@ -121,23 +131,30 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
             dstStart = dis.readInt() * 60000L - tzOffset;//
             dstEnd = dis.readInt() * 60000L - tzOffset - 3600000L;
 //#mdebug info
-//#       System.out.println(dstStart);
-//#       System.out.println(new Date(dstStart).toString());
-//#       System.out.println(dstEnd);
-//#       System.out.println(new Date(dstEnd).toString());
+      System.out.println(dstStart);
+      System.out.println(new Date(dstStart).toString());
+      System.out.println(dstEnd);
+      System.out.println(new Date(dstEnd).toString());
 //#enddebug      
         }
 
 //#mdebug info
-//#     System.out.print("TZ offset=");
-//#     System.out.println(tzOffset);
+    System.out.print("TZ offset=");
+    System.out.println(tzOffset);
 //#enddebug    
-        byte[] data = new byte[dis.available()];
+        data = new byte[dis.available()];
         dis.read(data);
         dis.close();
 //    for(int i=0; i<20; i++){
 //      System.out.print(Integer.toHexString(geoposData[i])+" ");
 //    }
+            } catch (RecordStoreFullException ex) {
+                Astromaximum.log(place+ex.getMessage());
+            } catch (RecordStoreException ex) {
+                Astromaximum.log(place+ex.getMessage());
+            } catch (IOException ex) {
+                Astromaximum.log(place+ex.getMessage());
+            }
         return data;
     }
 

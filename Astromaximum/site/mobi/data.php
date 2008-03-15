@@ -36,13 +36,13 @@ if(true /*|| check_access()*/){
 	$data = fread($handle, $clen);
 	fclose($handle);
 	if(strcmp($type,'d')==0){
-		header('Content-type: text/vnd.sun.j2me.app-descriptor');
+		header('Content-Type: text/vnd.sun.j2me.app-descriptor;charset=UTF-8');
 	}
 	else{
 //		echo filesize($fn); 
-		header('Content-type: application/java-archive');
+		header('Content-Type: application/java-archive');
 	}
-	header("Content-length: $clen");
+	header("Content-Length: $clen");
 	header("Content-Disposition: attachment; filename=\"$PREFIX'$ye-$idd.ja$type\"", false);
 	echo $data;
 

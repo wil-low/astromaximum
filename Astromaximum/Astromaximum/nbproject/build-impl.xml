@@ -328,9 +328,11 @@
     </target>
     <!--deps-jar-->
     <target name="deps-jar" depends="conditional-clean" unless="no.deps">
+<!--
         <ant target="jar" inheritall="false" antfile="${project.geoLib}/build.xml">
             <property name="config.active" value=""/>
         </ant>
+-->        
     </target>
     <!--preprocess-->
     <target name="pre-preprocess"/>

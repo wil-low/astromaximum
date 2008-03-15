@@ -29,6 +29,8 @@ import javax.microedition.lcdui.*;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreFullException;
+import javax.microedition.rms.RecordStoreNotFoundException;
 
 class Options extends GeoList {
     private static ChoiceGroup optList;
@@ -346,40 +348,51 @@ class Options extends GeoList {
         }
     }
 
-    public byte[] initDB(boolean canCreate) throws Exception {
+    byte[] initDB(boolean canCreate)  {
+        String place="opt";
         if (canCreate) {
-            rs = RecordStore.openRecordStore(STORE_NAME, true, RecordStore.AUTHMODE_ANY, true);
+            try {
+                rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year), true, RecordStore.AUTHMODE_ANY, true);
 //      rs=RecordStore.openRecordStore(STORE_NAME, "Wiland", "Astromaximum2007");
-            if (rs.getNumRecords() == 0) { // fill initial city
-                byte[] cn;
+                if (rs.getNumRecords() == 0) {
+                    
+                    byte[] cn;
 //#if "timeBomb" @ protection
-        cn=Astromaximum.getArray();
+                    cn = Astromaximum.getArray();
 //#else
 //#                 cn = new byte[2];
 //#endif
-                DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
-                rs.addRecord(cn, 0, 1);
-                rs.addRecord(cn, 0, 1);
-                istr.skip(2);
-                int numRec = istr.readUnsignedShort();
-                int rid = -1;
-                for (int i = 0; i < numRec; i++) {
-                    cn = extractLocation(i);
-                    try {
-                        rid = rs.addRecord(cn, 0, cn.length);
-                    }
-                    catch (RecordStoreException ex) {
-                        ex.printStackTrace();
-                    }
+                    DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
+                    rs.addRecord(cn, 0, 1);
+                    rs.addRecord(cn, 0, 1);
+                    istr.skip(2);
+                    int numRec = istr.readUnsignedShort();
+                    int rid = -1;
+                    for (int i = 0; i < numRec; i++) {
+                        cn = extractLocation(i);
+                        try {
+                            rid = rs.addRecord(cn, 0, cn.length);
+                        } catch (RecordStoreException ex) {
+                            ex.printStackTrace();
+                        }
 //          System.out.print(rid);
 //          System.out.println(extractCityName(cn));
-                }
-                byte[] geo = extractLocation(0);
+                    }
+                    byte[] geo = extractLocation(0);
 //        rs.addRecord(geo, 0, geo.length);
-                geo = extractCityName(geo).getBytes();
-                rs.setRecord(1, geo, 0, geo.length);
+                    geo = extractCityName(geo).getBytes();
+                    rs.setRecord(1, geo, 0, geo.length);
 //#debug info
-                System.out.println("RecStore created " + STORE_NAME);
+                    Astromaximum.log("rs created " + STORE_NAME);
+                }
+            } catch (RecordStoreFullException ex) {
+                Astromaximum.log(place+ex.getMessage());
+            } catch (RecordStoreNotFoundException ex) {
+                Astromaximum.log(place+ex.getMessage());
+            } catch (RecordStoreException ex) {
+                Astromaximum.log(place+ex.getMessage());
+            } catch (IOException ex) {
+                Astromaximum.log(place+ex.getMessage());
             }
         }
         Astromaximum.dataFile.geoposData = super.initDB(true);

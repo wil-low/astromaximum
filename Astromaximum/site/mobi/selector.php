@@ -55,7 +55,7 @@ if(isset($_POST['btn'])){
 	}
 	if(isset($desturl)){
 #		echo $desturl;
-		header("Location: $desturl");
+		header("Location: http://$data_php/$desturl");
 	}
 	exit;
 }
@@ -71,9 +71,9 @@ lang_load("html");
 </head>
 <body>
 <div id="hdr" class="hdr">Astromaximum</div>
-<div id="cont">
+<div id="cont"><?php echo "chac=$chac" ?>
 <div class="hr"></div>
-<form action="<?php echo htmlentities($_SERVER['REQUEST_URI']) ?>" method="post"><p>
+<form action="<?php echo 'selector.php?'.session_name().'='.session_id() ?>" method="post"><p>
 <input type="submit" accesskey="1" name="btn" value="1"<?php echo "$userflag/> ".$i18['SEL_DCITY'] ?><br/>
 <input type="submit" accesskey="2" name="btn" value="2"<?php echo "$userflag/> ".$i18['SEL_AH'] ?><br/>
 <input type="submit" accesskey="3" name="btn" value="3"<?php echo "$userflag/> ".$i18['SEL_ABOUT'] ?></p>

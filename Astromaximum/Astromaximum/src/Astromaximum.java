@@ -263,13 +263,9 @@ public class Astromaximum extends MIDlet implements CommandListener {
       logger("dataFile");
 //#endif      
                 errCode = 5; // XXX
-                try {
-                    options.initDB(true);
-                }
-                catch (Exception ex) {
-                    errCode = 6; // XXX
-                    options.resetStorage();
-                }
+                options.initDB(true);
+                int len=dataFile.geoposData.length;
+                Astromaximum.log("geopos len="+new Integer(len).toString());
 //#if logger
       logger("initDB");
 //#endif      
@@ -388,7 +384,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
       logger("moonPhase");
 //#endif      
                 errCode = 11; // XXX
-                
                 Vector nav = dataFile.getEvents(Event.EV_NAVROZ, Event.SE_SUN, 0, dataFile.finalJD);
 //        evDump(nav);
                 if (nav.size() != 2) {
@@ -604,7 +599,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
      */
     public void commandAction(Command c, Displayable d) {
         switch (c.getCommandType()) {
-            case Command.SCREEN:
+            case Command.STOP:
                 disp.setCurrent(summary);
                 break;
             case Command.OK:
@@ -622,7 +617,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
         str = str.substring(0, 11) + str.substring(str.length() - 4);
         final Alert noDate = new Alert(getstr(91) + " " + str, getstr(111), null, AlertType.ERROR);
         noDate.setTimeout(5000);
-        noDate.addCommand(new Command("OK", Command.SCREEN, 1));
+        noDate.addCommand(new Command("OK", Command.STOP, 1));
         noDate.setCommandListener(this);
         disp.setCurrent(noDate);
         calendar.setTime(summary.selDate);

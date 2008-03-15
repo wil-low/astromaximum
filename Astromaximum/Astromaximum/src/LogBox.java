@@ -59,13 +59,17 @@ class LogBox extends List implements CommandListener {
             case Command.BACK:
                 Astromaximum.disp.setCurrent(invoker); break;
             case Command.STOP:
-                deleteAll(); append(EMPTY, null); break;
-            case Command.SCREEN:
-                try {
-                    Astromaximum.instance.platformRequest(Astromaximum.URL);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                if(c.getPriority()==10){ // from ShowAbout
+                    try {
+                        Astromaximum.instance.platformRequest(Astromaximum.URL);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
+                else{
+                    deleteAll(); append(EMPTY, null);
+                }
+                 break;
         }
     }
 
@@ -75,7 +79,7 @@ class LogBox extends List implements CommandListener {
                 Astromaximum.getstr(153)+" "+Astromaximum.URL+" "+
                 Astromaximum.getstr(154), null, AlertType.INFO);
         al.addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 0));
-        al.addCommand(new Command(Astromaximum.getstr(155), Command.SCREEN, 0));
+        al.addCommand(new Command(Astromaximum.getstr(155), Command.STOP, 10));
         al.setCommandListener(this);
         Astromaximum.disp.setCurrent(al);
     }
