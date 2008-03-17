@@ -414,7 +414,7 @@ class Interpreter extends Canvas implements CommandListener {
         newLine();
     }
 
-    private void prepareText() {
+    void prepareText() {
         lineCount = topLine = 0;
     }
 
@@ -427,7 +427,19 @@ class Interpreter extends Canvas implements CommandListener {
     protected void keyReleased(int keyCode) {
         final int ga = getGameAction(keyCode);
         switch (ga) {
-            case Canvas.FIRE:
+            case Canvas.UP:
+                if (topLine + VMARGIN * 3 < getHeight()) {
+                    topLine += lineHeight;
+                    repaint();
+                }
+                break;
+            case Canvas.DOWN:
+                if (curY > VMARGIN * 2) {
+                    topLine -= lineHeight;
+                    repaint();
+                }
+                break;
+            default: //case Canvas.FIRE:
 //#if logger
         if(isLogged){
 ///#           Astromaximum.instance.logger("Stopping log...");
@@ -442,19 +454,6 @@ class Interpreter extends Canvas implements CommandListener {
 //#                 Astromaximum.summary.dontRender();
 //#endif
                 break;
-            case Canvas.UP:
-                if (topLine + VMARGIN * 3 < getHeight()) {
-                    topLine += lineHeight;
-                    repaint();
-                }
-                break;
-            case Canvas.DOWN:
-                if (curY > VMARGIN * 2) {
-                    topLine -= lineHeight;
-                    repaint();
-                }
-                break;
-
         }
     }
 

@@ -118,7 +118,12 @@ if($islocal and ($config eq 'rebuild')){
 	if(!$antpath){
 		mydie("ANT not found in this system!!!\n");
 	}
-	my $cmd;
+	echo("\n--------------------------------\n");
+	echo("--- Config $_ ---\n");
+	echo("--------------------------------\n");
+	my $cmd="\"$antpath\" -quiet -f geoLib/build.xml -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" clean jar";
+	echo("$cmd\n");
+	mydie("BUILD ERROR") if system($cmd);
 	my @conf=('tb', 'demo', 'imei',
 #	'notest', 'notest_logger', 'imei', 'tb_logger' 
 	);
@@ -130,7 +135,7 @@ if($islocal and ($config eq 'rebuild')){
 		echo("\n--------------------------------\n");
 		echo("--- Config $_ ---\n");
 		echo("--------------------------------\n");
-		$cmd="\"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\"  clean jar";
+		my $cmd="\"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
 		echo("$cmd\n");
 		mydie("BUILD ERROR") if system($cmd);
 	}
@@ -138,7 +143,7 @@ if($islocal and ($config eq 'rebuild')){
 	echo("\n--------------------------------\n");
 	echo("--- Config geo: $conf ---\n");
 	echo("--------------------------------\n");
-	$cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" clean jar";
+	$cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
 	echo("$cmd\n");
 	mydie("BUILD ERROR") if system($cmd);
 	exit(0);

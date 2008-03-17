@@ -4,8 +4,7 @@
 <!-- (If you delete it and reopen the project it will be recreated.) -->
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
-    <property name="project.geoLib" value="${basedir}/../geoLib"/>
-    <property name="year" value="2007"/>
+    <property name="year" value="2008"/>
     <import file="nbproject/build-impl.xml"/>
     <import file="../jar_or_kzip.xml"/> 
     <!--

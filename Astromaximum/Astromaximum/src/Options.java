@@ -348,20 +348,19 @@ class Options extends GeoList {
         }
     }
 
-    byte[] initDB(boolean canCreate)  {
-        String place="opt";
+    public byte[] initDB(boolean canCreate)  {
+        String place = "opt";
         if (canCreate) {
             try {
-                rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year).substring(2),
-                    true, RecordStore.AUTHMODE_ANY, true);
+                rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year).substring(2), true, RecordStore.AUTHMODE_ANY, true);
 //      rs=RecordStore.openRecordStore(STORE_NAME, "Wiland", "Astromaximum2007");
                 if (rs.getNumRecords() == 0) {
-                    
+
                     byte[] cn;
 //#if "timeBomb" @ protection
                     cn = Astromaximum.getArray();
 //#else
-//#                 cn = new byte[2];
+//#                     cn = new byte[2];
 //#endif
                     DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
                     rs.addRecord(cn, 0, 1);
@@ -387,16 +386,20 @@ class Options extends GeoList {
                     Astromaximum.log("rs created " + STORE_NAME);
                 }
             } catch (RecordStoreFullException ex) {
-                Astromaximum.log(place+ex.getMessage());
+                Astromaximum.log(place + ex.getMessage());
             } catch (RecordStoreNotFoundException ex) {
-                Astromaximum.log(place+ex.getMessage());
+                Astromaximum.log(place + ex.getMessage());
             } catch (RecordStoreException ex) {
-                Astromaximum.log(place+ex.getMessage());
+                Astromaximum.log(place + ex.getMessage());
             } catch (IOException ex) {
-                Astromaximum.log(place+ex.getMessage());
+                Astromaximum.log(place + ex.getMessage());
             }
         }
-        Astromaximum.dataFile.geoposData = super.initDB(true);
+        try {
+            Astromaximum.dataFile.geoposData = super.initDB(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return null;
     }
 

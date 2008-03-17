@@ -1029,7 +1029,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
             Astromaximum.instance.reportTodayError();
         }
         showDaySummary();
-        repaint();
+//        repaint();
     }
 
     private static Vector evInCurrentDay(Vector dest, Vector src) {

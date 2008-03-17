@@ -615,11 +615,15 @@ public class Astromaximum extends MIDlet implements CommandListener {
     public void reportTodayError() {
         String str = summary.selDate.toString();
         str = str.substring(0, 11) + str.substring(str.length() - 4);
-        final Alert noDate = new Alert(getstr(91) + " " + str, getstr(111), null, AlertType.ERROR);
+        interpreter.prepareText();
+        interpreter.txt=getstr(91)+" "+str+"||"+getstr(111);
+        disp.setCurrent(interpreter);
+/*        final Alert noDate = new Alert(getstr(91) + " " + str, getstr(111), null, AlertType.ERROR);
         noDate.setTimeout(5000);
         noDate.addCommand(new Command("OK", Command.STOP, 1));
         noDate.setCommandListener(this);
         disp.setCurrent(noDate);
+ */
         calendar.setTime(summary.selDate);
         calendar.set(Calendar.YEAR, Astromaximum.startYear);
         summary.selDate = calendar.getTime();
