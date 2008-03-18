@@ -4,6 +4,7 @@
 <!-- (If you delete it and reopen the project it will be recreated.) -->
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
+    <property name="project.geoLib" value="${basedir}/../geoLib"/>
     <property name="year" value="2008"/>
     <property name="lang" value="ru"/>
     
@@ -98,6 +99,7 @@
     
 
     <target name="post-jar" description="Copy into common dir">
+        <echo message="###${config.active}####"/>
 	<antcall target="copy.template" inheritall="true" inheritrefs="true">
 	    <param name="gen.conf" value="${config.active}"/>
 	</antcall>

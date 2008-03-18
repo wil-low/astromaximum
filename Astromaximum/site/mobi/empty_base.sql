@@ -91,9 +91,9 @@ CREATE TABLE `customers` (
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
 LOCK TABLES `customers` WRITE;
 INSERT INTO `customers` VALUES 
-	(1,'vmesiats','Vasyl Mesiats','',0,NULL,NULL,-1),
-	(2,'aivushkin','Andrei Ivushkin','65536',0,NULL,NULL,-1),
-	(3,'123456789','Demo','012345678',1,NULL,NULL,-1);
+	(1,'vmesiats','Vasyl Mesiats','',0,NULL,NULL,-1,-1,1),
+	(2,'aivushkin','Andrei Ivushkin','',0,NULL,NULL,-1,-1,1),
+	(3,'123456789','Demo','012345678',1,NULL,NULL,-1,-1,0);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 

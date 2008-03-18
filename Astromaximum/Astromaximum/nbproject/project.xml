@@ -8,9 +8,9 @@
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/2">
             <reference>
-                <foreign-project>geoLib</foreign-project>
+                <foreign-project>geoLib-1</foreign-project>
                 <artifact-type>jar</artifact-type>
-                <script>${project.geoLib}/build.xml</script>
+                <script>${project.geoLib-1}/build.xml</script>
                 <target>jar</target>
                 <clean-target>clean</clean-target>
                 <id>jar</id>
