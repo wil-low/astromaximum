@@ -99,7 +99,6 @@
     
 
     <target name="post-jar" description="Copy into common dir">
-        <echo message="###${config.active}####"/>
 	<antcall target="copy.template" inheritall="true" inheritrefs="true">
 	    <param name="gen.conf" value="${config.active}"/>
 	</antcall>

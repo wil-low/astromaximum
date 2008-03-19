@@ -18,21 +18,13 @@
 //# class Options extends Frame{
 //#else
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 import java.util.Vector;
 import javax.microedition.lcdui.*;
-import javax.microedition.rms.RecordEnumeration;
-import javax.microedition.rms.RecordStore;
-import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreFullException;
-import javax.microedition.rms.RecordStoreNotFoundException;
+import javax.microedition.rms.*;
 
-class Options extends GeoList {
+class Options extends GeoList implements ItemCommandListener{
     private static ChoiceGroup optList;
     private static ChoiceGroup timeGap;
     static ChoiceGroup layout;
@@ -69,7 +61,8 @@ class Options extends GeoList {
         optFlags = OPT_FLAGS;
         setTitle(Astromaximum.getstr(92));//Options
         setCommandListener(this);
-        addCommand(new Command("OK", Command.OK, 1));
+        Command cmd=new Command("OK", Command.OK, 1);
+//        addCommand(cmd);
         addCommand(new Command(Astromaximum.getstr(108), Command.ITEM, 2));//Del city
 //    addCommand(new Command("Reset storage",Command.ITEM, 3));
         optList = new ChoiceGroup(null, Choice.MULTIPLE,
@@ -77,6 +70,10 @@ class Options extends GeoList {
         insert(0, layout);
         insert(0, timeGap);
         insert(0, optList);
+        StringItem strOK=new StringItem("", "OK", Item.BUTTON);
+        strOK.setDefaultCommand(cmd);
+        strOK.setItemCommandListener(this);
+        append(strOK);
         cityList.setLabel(Astromaximum.getstr(105));//Cities
     }
 
@@ -84,9 +81,6 @@ class Options extends GeoList {
     static int hj;
     //#endif
     private final int IMEI_LEN = 15;
-//  private final String WARNING="Sorry, your device doesn't match minimal requirements for this application.\n"+
-
-    //      "Please check screen dimensions, storage size, memory available or application legalness.";
     /**
      * @noinspection InfiniteLoopStatement
      */
@@ -125,42 +119,23 @@ class Options extends GeoList {
         catch (Exception ex) {
             Astromaximum.log(ex.toString());
         }
-//    setTitle("IMEI: "+imei.toString());
-//    String res="";
-//    final String[] ids={
-//      "CellID",
-//      "phone.mcc",
-//      "phone.mnc",
-//      "phone.lai",
-//      "phone.cid",
-//    };
-//    String id=null;
-//    for(int i=0; i<ids.length; i++){
-//      res=System.getProperty(ids[i]);
-//      if(res!=null){
-//        id=ids[i];
-//        break;
-//      }
-//    }
-//    setTitle(id+": "+res);
-
 //#endif
     }
 
     public void commandAction(Command c, Displayable d) {
         if (d != this) {
-            if (c.getCommandType() == Command.OK) {
-                try {
-                    RecordEnumeration rece = rs.enumerateRecords(this, null, false);
-                    int nextID = rece.nextRecordId();
-                    rs.deleteRecord(nextID);
-                    //            rs.closeRecordStore();
-                    curCity = oldc.getBytes();
-                    //            Astromaximum.dataFile.geoposData=initDB(true);
-                    init();
-                }
-                catch (Exception ex) {
-                }
+            if (c.getCommandType() == Command.ITEM) { // delete city
+            try {
+                RecordEnumeration rece = rs.enumerateRecords(this, null, false);
+                int nextID = rece.nextRecordId();
+                rs.deleteRecord(nextID);
+                //            rs.closeRecordStore();
+                curCity = oldc.getBytes();
+                //Astromaximum.dataFile.geoposData=initDB(false);
+                init();
+            }
+            catch (Exception ex) {
+            }
             }
             Display.getDisplay(Astromaximum.instance).setCurrent(this);
             return;
@@ -234,26 +209,6 @@ class Options extends GeoList {
         String res = "";
         if (DataFile.ids == null) {
             DataFile.ids = new Vector();
-//#if 1==2      
-//#       final String[] ids={
-//#         "com.sonyericsson.IMEI",
-//#         "com.samsung.IMEI",
-//#         "com.samsung.imei",
-//#         "com.samsungmobile.IMEI",
-//#         "com.samsungmobile.imei",
-//#         "com.siemens.mp.imei",
-//#         "phone.imei",
-//#         "phone.IMEI",
-//#         "com.nokia.mid.imei",
-//#         "device.imei",
-//#         "device.IMEI",
-//#         "imei",
-//#         "IMEI"
-//#       };
-//#       for(int i=0; i<ids.length; i++){
-//#         DataFile.ids.addElement(ids[i]);
-//#       }
-//#endif      
         }
         String id = "";
         for (int i = 0; i < DataFile.ids.size(); i++) {
@@ -352,7 +307,8 @@ class Options extends GeoList {
         String place = "opt";
         if (canCreate) {
             try {
-                rs = RecordStore.openRecordStore(STORE_NAME, true, RecordStore.AUTHMODE_ANY, true);
+                rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year).substring(2),
+                        true, RecordStore.AUTHMODE_ANY, true);
 //      rs=RecordStore.openRecordStore(STORE_NAME, "Wiland", "Astromaximum2007");
                 if (rs.getNumRecords() == 0) {
 
@@ -476,6 +432,10 @@ class Options extends GeoList {
 
     private long getLocalOffset() {
         return Long.parseLong(timeGap.getString(timeGap.getSelectedIndex())) * 3600000;
+    }
+
+    public void commandAction(Command arg0, Item arg1) {
+        commandAction(arg0, this);
     }
 //#endif  
 }
