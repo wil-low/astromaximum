@@ -97,7 +97,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
 //        String platform = System.getProperty("microedition.platform");
         try{
             rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year).substring(2), main.getAppProperty("MIDlet-Vendor"),
-                        STORE_NAME);
+                        STORE_NAME + Integer.toString(year).substring(2));
         }catch(RecordStoreNotFoundException ex){
             rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year).substring(2), false);
         }

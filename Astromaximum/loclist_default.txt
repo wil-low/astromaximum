@@ -1,4 +1,1 @@
 UA:Data0000 Kiev
-WE:Data0000 London
-US:Data0000 New York
-RU:Data0000 Moscow

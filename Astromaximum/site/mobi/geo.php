@@ -1,4 +1,5 @@
 <?php
+  $sess=""; if(isset($_GET['Astromaximum'])) $sess='Astromaximum='.$_GET['Astromaximum'];
 	include_once("lang.php");
 	sess_start();
 	include_once('dbconnect.php');
@@ -150,7 +151,8 @@
 	
 	function make_anchor($level, $params, $text, $year)
 	{
-		$str="<a href=\"".$_SERVER['PHP_SELF']."?lvl=$level&amp;y=$year&amp;ent=".urlencode($text);
+	  global $sess;
+		$str="<a href=\"".$_SERVER['PHP_SELF']."?lvl=$level&amp;y=$year&amp;$sess&amp;ent=".urlencode($text);
 		for($j=0; $j<$level; $j++){
 			$str.="&amp;p$j=$params[$j]";
 		}

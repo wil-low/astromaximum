@@ -38,6 +38,7 @@ our %eventFlags=qw(EF_PLANET1 2 EF_PLANET2 4 EF_DEGREE 8 EF_SHORT_DEGREE 64);
 our $output=''; our $paramcount=0; our $outbuf; our $errors=0;
 our %hash;
 
+
 $0=~/(.+)[\\\/]/is;
 $path=$1;
 if(!$path){
@@ -135,7 +136,7 @@ if($islocal and ($config eq 'rebuild')){
 		echo("\n--------------------------------\n");
 		echo("--- Config $_ ---\n");
 		echo("--------------------------------\n");
-		my $cmd="\"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
+		my $cmd="\"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Dconfigs.$_.javac.debug=false -Dconfigs.$_.obfuscation.level=9 -Dconfigs.$_.javac.optimize=true -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
 		echo("$cmd\n");
 		mydie("BUILD ERROR") if system($cmd);
 	}
@@ -143,7 +144,7 @@ if($islocal and ($config eq 'rebuild')){
 	echo("\n--------------------------------\n");
 	echo("--- Config geo: $conf ---\n");
 	echo("--------------------------------\n");
-	$cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
+	$cmd="\"$antpath\" -quiet -f GeoAM/build.xml -Dcjavac.debug=false -Djavac.optimize=true -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
 	echo("$cmd\n");
 	mydie("BUILD ERROR") if system($cmd);
 	exit(0);
@@ -192,6 +193,11 @@ if($config=~/demo/is){
 $year=~/\d\d(\d\d)/is;
 my $ye=$1;
 
+my $ofs=shift(@ARGV);
+$ofs=-24 unless $ofs;
+my $delta=shift(@ARGV);
+$delta=2880 unless $delta;
+
 if($config=~/geo-$/is){
 	unless($outfile=~/r$/is){
 		$outfile="$path/Astromaximum/deploy/Geo$ye.jar";
@@ -207,10 +213,6 @@ echo("Processing <$config> for $year lang=$lang using locations from $loclist...
 
 
 if($config=~/tb/is){
-	my $ofs=shift(@ARGV);
-	$ofs=0 unless $ofs;
-	my $delta=shift(@ARGV);
-	$delta=30 unless $delta;
 	if($config=~/logger/is){
 		unzip("$path/$const::DIR_TEMPLATE/Astromaximum-tb-logger.jar");
 	}
@@ -233,6 +235,7 @@ if($config=~/demo/is){
 	unzip("$path/$const::DIR_TEMPLATE/AstromaximumDemo.jar");
 	inject_lang($lang, 'demo');
 	inject_amdata();
+	do_timebomb($ofs, $delta);
 	inject_common($year, "$path/$const::DIR_TEMP/c.dat");
 	inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
 	inject_icon('a', "res/");
@@ -391,9 +394,6 @@ sub inject_locations{
 		}
 		close(IN);
 		my $i=scalar(@fn);
-		if($i==1){
-			$locname=$fn[0];
-		}
 		tools::join_datafiles($_[0], $i, $_[2], \@fn);
 	}
 	else{

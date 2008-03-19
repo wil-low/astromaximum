@@ -25,9 +25,9 @@ if($chac==-1){
 	}
 }
 $chac=check_access();
-$userflag=' disabled="disabled"';
+$validuser=false;
 if($chac>=0 && $chac!=1){
-	$userflag="";
+	$validuser=true;
 }
 $current_year=get_year();   
 if(isset($_POST['btn'])){
@@ -45,16 +45,16 @@ if(isset($_POST['btn'])){
 	}
 	else{ // Phone links
 		switch($btn){
-			case 1:	$desturl="year.php"; break;
+			case 1:	$desturl="year.php?"; break;
 			case 2:	$desturl="index.php?lang=$lang&p=0_0"; break;
-			case 3:	$desturl="html/$lang/about.xhtml"; break;
+			case 3:	$desturl="html/$lang/about.xhtml?"; break;
 			case 4:	$desturl="dl/prg.php?mode=demo&lang=$lang&dest=$dest"; break;
 			case 5:	$desturl="geo.php?lvl=10"; break;
 			case 6:	$desturl="dl/prg.php?mode=trial&lang=$lang&dest=$dest"; break;
 		}
 	}
 	if(isset($desturl)){
-#		echo $desturl;
+		$desturl.='&'.session_name().'='.session_id();
 		header("Location: http://$data_php/$desturl");
 	}
 	exit;
@@ -71,18 +71,18 @@ lang_load("html");
 </head>
 <body>
 <div id="hdr" class="hdr">Astromaximum</div>
-<div id="cont"><?php echo "chac=$chac" ?>
+<div id="cont">
 <div class="hr"></div>
 <form action="<?php echo 'selector.php?'.session_name().'='.session_id() ?>" method="post"><p>
-<input type="submit" accesskey="1" name="btn" value="1"<?php echo "$userflag/> ".$i18['SEL_DCITY'] ?><br/>
-<input type="submit" accesskey="2" name="btn" value="2"<?php echo "$userflag/> ".$i18['SEL_AH'] ?><br/>
-<input type="submit" accesskey="3" name="btn" value="3"<?php echo "$userflag/> ".$i18['SEL_ABOUT'] ?></p>
+<?php echo knopka(1, $validuser).$i18['SEL_DCITY'] ?><br/>
+<?php echo knopka(2, $validuser).$i18['SEL_AH'] ?><br/>
+<?php echo knopka(3, true).$i18['SEL_ABOUT'] ?></p>
 <p>
-<input type="submit" accesskey="4" name="btn" value="4"/> <?php echo $current_year-1 ?> <?php echo $i18['SEL_DEMO'] ?>*<br/>
-<input type="submit" accesskey="5" name="btn" value="5"/> <?php echo "$DEMO_CITY[0] ".($current_year-1) ?> <?php echo $i18['SEL_DEMO'] ?>
+<?php echo knopka(4, true).$i18['SEL_DEMO'] ?> <?php echo $current_year-1 ?>*<br/>
+<?php echo knopka(5, true).$i18['SEL_DEMOCITY'] ?>
 </p>
 <p>
-<input type="submit" accesskey="6" name="btn" value="6"<?php echo "$userflag/> ".$current_year ?>*
+<?php echo knopka(6, $validuser)."$current_year*" ?>
 </p></form>
 <p class="centered">* <?php echo $i18['SEL_CHK1'] ?><br/>
 <?php echo "{$i18['SEL_CHK2']} ".gmdate("M j Y") ?>
@@ -94,3 +94,14 @@ lang_load("html");
 &nbsp; <a href="dl/logout.php">logout</a>
 </div>
 </body></html>
+
+<?php
+function knopka($key, $is_valid){
+  $disa="";
+  if(!$is_valid){
+    $key="&nbsp;";
+    $disa=" disabled=\"disabled\"";
+  }
+  return "<input type=\"submit\" accesskey=\"$key\" name=\"btn\" value=\"$key\" style=\"width:2em;\"$disa/> ";
+}
+?>

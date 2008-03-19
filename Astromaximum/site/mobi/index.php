@@ -39,23 +39,21 @@ if(isset($page) && $chac!=-1 && $chac!=1){
 ?>
 <form action="selector.php" method="post">
 <p>
-Select language:<br/>
 <input type="radio" name="lang" value="en"/>en
 <input type="radio" name="lang" value="ru" checked="checked"/>ru
 <br/>
-Select your device:<br/>
 <input type="radio" name="dest" value="ph" checked="checked"/>Mobile
 <input type="radio" name="dest" value="pc"/>PC</p>
 <?php if($chac==-1){ ?>
-<p>Clients only*<br/>
-<input name="login" type="text" size="9" maxlength="9"/> login<br/>
-<input name="pass" type="password" size="9" maxlength="9" class="numinput"/> pass<br/>
+<p>
+login <input name="login" type="text" size="9" maxlength="9"/><br/>
+pass <input name="pass" type="password" size="9" maxlength="9" class="numinput"/><br/>
 </p>
 <?php } ?>
 <input type="submit" accesskey="1" name="action" value="Proceed"/>
 </form>
 <?php if($chac==-1){ ?>
-*for limited access, enter<br/> login: 123456789<br/> password: 012345678
+* for demo:<br/> log: 123456789<br/> pas: 012345678
 <?php } ?>
 </div>
 <div id="ftr">

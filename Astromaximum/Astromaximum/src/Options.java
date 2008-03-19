@@ -124,7 +124,7 @@ class Options extends GeoList implements ItemCommandListener{
 
     public void commandAction(Command c, Displayable d) {
         if (d != this) {
-            if (c.getCommandType() == Command.ITEM) { // delete city
+            if (c.getCommandType() == Command.OK) { // delete city entrance from Alert
             try {
                 RecordEnumeration rece = rs.enumerateRecords(this, null, false);
                 int nextID = rece.nextRecordId();
@@ -181,7 +181,7 @@ class Options extends GeoList implements ItemCommandListener{
 //      case 3:
 //        resetStorage();
 //        break;
-                case 2:
+                case 2: // delete city command
                     String sel = cityList.getString(cityList.getSelectedIndex());
                     System.out.println(sel);
                     if (!sel.equals(curCity) && cityList.size() > 1) {

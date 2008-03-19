@@ -616,7 +616,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
         String str = summary.selDate.toString();
         str = str.substring(0, 11) + str.substring(str.length() - 4);
         interpreter.prepareText();
-        interpreter.txt=getstr(91)+" "+str+"||"+getstr(111);
+        interpreter.txt=getstr(91)+" "+str+"||"+getstr(111)+"||"+getstr(156);
         disp.setCurrent(interpreter);
 /*        final Alert noDate = new Alert(getstr(91) + " " + str, getstr(111), null, AlertType.ERROR);
         noDate.setTimeout(5000);

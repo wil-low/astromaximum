@@ -16,87 +16,92 @@ import javax.microedition.rms.RecordStoreNotOpenException;
  * @author  Administrator
  * @version
  */
-public class GeoInstaller extends MIDlet implements CommandListener{
-  private GeoList gl;
-  private boolean interrupt=false;
-  
-  public void startApp() {
+public class GeoInstaller extends MIDlet implements CommandListener {
+
+    private GeoList gl;
+    private boolean interrupt = false;
+
+    public void startApp() {
 //    Alert alert=new Alert("Installer",
 //      "Loading list of cities, please wait...",null,AlertType.INFO);
 //    alert.setTimeout(Alert.FOREVER);
 //    alert.addCommand(new Command("Cancel",Command.OK,1));
 //    alert.setCommandListener(this);
 //    Display.getDisplay(this).setCurrent(alert);
-    gl=new GeoList(this,Choice.MULTIPLE,"locations.dat");
-    gl.setCommandListener(this);
-    gl.addCommand(new Command(gl.getMessage("Install"),
-        Command.OK, 1));
-    try {
-      gl.initDB(false);
-      gl.init();
-      for(int i=0; i<gl.total; i++){
-        if(interrupt)
-          throw new IllegalArgumentException();
-        gl.cityList.append(gl.extractCityName(gl.extractLocation(i)),null);
-      }
-      Display.getDisplay(this).setCurrent(gl);
-    } 
-    catch (Exception ex) {
-       Alert alert=new Alert("Error",
-           "Astromaximum cities database is not found. Please install Astromaximum"+
-               Integer.toString(gl.year).substring(2)+" first.",
-           null,AlertType.ERROR);
-       alert.addCommand(new Command("OK",Command.ITEM,1));
-       alert.setTimeout(Alert.FOREVER);
-       alert.setCommandListener(this);
-       Display.getDisplay(this).setCurrent(alert);
-    }
-  }
-  
-  public void pauseApp() {
-  }
-  
-  public void destroyApp(boolean unconditional) {
-  }
-
-  public void commandAction(Command c, Displayable d) {
-    switch(c.getCommandType()){
-      case Command.OK:
-	String msg="Cities installed";
-	AlertType at=AlertType.INFO;
-        boolean[] selArray=new boolean[gl.cityList.size()];
-        if(gl.cityList.getSelectedFlags(selArray)>0){
-          for(int i=0; i<selArray.length; i++){
-            if(selArray[i]){
-              byte[] cn=gl.extractLocation(i);
-              try {
-                gl.rs.addRecord(cn,0,cn.length);
-              }
-              catch (RecordStoreException ex) {
-		msg="An error occured when installing cities!  "+ex.toString();
-		at=AlertType.ERROR;
-              }
+        gl = new GeoList(this, Choice.MULTIPLE, "locations.dat");
+        gl.setCommandListener(this);
+        Command cmd=new Command(gl.getMessage("Install"), Command.OK, 1);
+        gl.addCommand(cmd);
+        try {
+            gl.initDB(false);
+            gl.init();
+            for (int i = 0; i < gl.total; i++) {
+                if (interrupt) {
+                    throw new IllegalArgumentException();
+                }
+                gl.cityList.append(gl.extractCityName(gl.extractLocation(i)), null);
             }
-          }
-	  Alert alert=new Alert("GeoInstaller",msg,null,at);
-	  alert.addCommand(new Command("Close", Command.CANCEL,1));
-	  alert.setCommandListener(this);
-          alert.setTimeout(Alert.FOREVER);
-	  Display.getDisplay(this).setCurrent(alert);
+            System.out.println(gl.cityList.size());
+            if(gl.cityList.size()==1){
+                gl.cityList.setSelectedIndex(0, true);
+                commandAction(cmd, gl);
+                quit();
+                return;
+            }
+            Display.getDisplay(this).setCurrent(gl);
+        } catch (Exception ex) {
+            Alert alert = new Alert("Error",
+                    "Astromaximum cities database is not found. Please install Astromaximum" +
+                    Integer.toString(gl.year).substring(2) + " first. " + ex.getMessage(),
+                    null, AlertType.ERROR);
+            alert.addCommand(new Command("OK", Command.ITEM, 1));
+            alert.setTimeout(Alert.FOREVER);
+            alert.setCommandListener(this);
+            Display.getDisplay(this).setCurrent(alert);
         }
-	break;
-      case Command.ITEM:
-      case Command.CANCEL:
-        quit();
     }
-  }
 
-  private void quit(){
-    interrupt=true;
-    Display.getDisplay(this).setCurrent(null);
-    destroyApp(true);
-    notifyDestroyed();
-  }
-  
-  
+    public void pauseApp() {
+    }
+
+    public void destroyApp(boolean unconditional) {
+    }
+
+    public void commandAction(Command c, Displayable d) {
+        switch (c.getCommandType()) {
+            case Command.OK:
+                String msg = "Cities installed";
+                AlertType at = AlertType.INFO;
+                boolean[] selArray = new boolean[gl.cityList.size()];
+                if (gl.cityList.getSelectedFlags(selArray) > 0) {
+                    for (int i = 0; i < selArray.length; i++) {
+                        if (selArray[i]) {
+                            byte[] cn = gl.extractLocation(i);
+                            try {
+                                gl.rs.addRecord(cn, 0, cn.length);
+                            } catch (RecordStoreException ex) {
+                                msg = "An error occured when installing cities!  " + ex.toString();
+                                at = AlertType.ERROR;
+                            }
+                        }
+                    }
+                    Alert alert = new Alert("GeoInstaller", msg, null, at);
+                    alert.addCommand(new Command("Close", Command.CANCEL, 1));
+                    alert.setCommandListener(this);
+                    alert.setTimeout(Alert.FOREVER);
+                    Display.getDisplay(this).setCurrent(alert);
+                }
+                break;
+            case Command.ITEM:
+            case Command.CANCEL:
+                quit();
+        }
+    }
+
+    private void quit() {
+        interrupt = true;
+        Display.getDisplay(this).setCurrent(null);
+        destroyApp(true);
+        notifyDestroyed();
+    }
 }

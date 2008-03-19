@@ -11,9 +11,10 @@
 <div id="cont">
 <?php
     include_once('dbconnect.php');
+    $sess=""; if(isset($_GET['Astromaximum'])) $sess='Astromaximum='.$_GET['Astromaximum'];
     $sth=mysql_query("SELECT DISTINCT year FROM locations ORDER BY year");
     while($row=mysql_fetch_row($sth)){
-            echo "<a href=\"geo.php?y=".$row[0]."\">".$row[0]."</a><br/>";
+            echo "<a href=\"geo.php?y=".$row[0]."&amp;$sess\">".$row[0]."</a><br/>";
     }
     mysql_free_result($sth);
 
