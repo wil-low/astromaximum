@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="31">
+<configurationDescriptor version="39">
   <logicalFolder name="root" displayName="root" projectFiles="true">
-    <logicalFolder name="SourceFiles"
-                   displayName="Source Files"
-                   projectFiles="true">
-      <itemPath>AspEditUI.cxx</itemPath>
-      <itemPath>ChronoUI.cxx</itemPath>
-      <itemPath>LibUI.cxx</itemPath>
-      <itemPath>main.cxx</itemPath>
-      <itemPath>MainWindow.cxx</itemPath>
-    </logicalFolder>
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
@@ -26,6 +17,15 @@
       <itemPath>LibUI.fl</itemPath>
       <itemPath>MainWindow.fl</itemPath>
     </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>AspEditUI.cxx</itemPath>
+      <itemPath>ChronoUI.cxx</itemPath>
+      <itemPath>LibUI.cxx</itemPath>
+      <itemPath>main.cxx</itemPath>
+      <itemPath>MainWindow.cxx</itemPath>
+    </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false">
@@ -33,23 +33,21 @@
     </logicalFolder>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
-  <defaultConf>0</defaultConf>
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>1</compilerSet>
+        <compilerSet>MinGW</compilerSet>
+        <cRequired>false</cRequired>
+        <cppRequired>true</cppRequired>
+        <fortranRequired>false</fortranRequired>
         <platform>2</platform>
       </toolsSet>
       <compileType>
-        <cCompilerTool>
-        </cCompilerTool>
         <ccCompilerTool>
           <includeDirectories>
             <directoryPath>../../../fltk2</directoryPath>
           </includeDirectories>
         </ccCompilerTool>
-        <fortranCompilerTool>
-        </fortranCompilerTool>
         <linkerTool>
           <output>amax-desktop</output>
           <linkerAddLib>
@@ -57,52 +55,20 @@
           </linkerAddLib>
           <linkerLibItems>
             <linkerOptionItem>`../../../fltk2/fltk2-config --ldflags`</linkerOptionItem>
-            <linkerOptionItem>-lsqlite3</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="main.cxx">
-        <itemTool>1</itemTool>
-        <ccCompilerTool>
-        </ccCompilerTool>
-      </item>
-      <item path="MainWindow.fl">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="MainWindow.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="MainWindow.cxx">
-        <itemTool>1</itemTool>
-        <ccCompilerTool>
-        </ccCompilerTool>
-      </item>
       <item path="AspEditUI.cxx">
         <itemTool>1</itemTool>
-        <ccCompilerTool>
-        </ccCompilerTool>
-      </item>
-      <item path="AspEditUI.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="LibUI.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="LibUI.cxx">
-        <itemTool>1</itemTool>
-        <ccCompilerTool>
-        </ccCompilerTool>
       </item>
       <item path="AspEditUI.fl">
         <itemTool>3</itemTool>
       </item>
-      <item path="LibUI.fl">
+      <item path="AspEditUI.h">
         <itemTool>3</itemTool>
       </item>
       <item path="ChronoUI.cxx">
         <itemTool>1</itemTool>
-        <ccCompilerTool>
-        </ccCompilerTool>
       </item>
       <item path="ChronoUI.fl">
         <itemTool>3</itemTool>
@@ -110,10 +76,34 @@
       <item path="ChronoUI.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="LibUI.cxx">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="LibUI.fl">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="LibUI.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="MainWindow.cxx">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="MainWindow.fl">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="MainWindow.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="main.cxx">
+        <itemTool>1</itemTool>
+      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <compilerSet>1</compilerSet>
+        <compilerSet>MinGW</compilerSet>
+        <cRequired>false</cRequired>
+        <cppRequired>true</cppRequired>
+        <fortranRequired>false</fortranRequired>
         <platform>2</platform>
       </toolsSet>
       <compileType>
@@ -138,10 +128,35 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="main.cxx">
+      <item path="AspEditUI.cxx">
         <itemTool>1</itemTool>
-        <ccCompilerTool>
-        </ccCompilerTool>
+      </item>
+      <item path="AspEditUI.fl">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="AspEditUI.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="ChronoUI.cxx">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="ChronoUI.fl">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="ChronoUI.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="LibUI.cxx">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="LibUI.fl">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="LibUI.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="MainWindow.cxx">
+        <itemTool>1</itemTool>
       </item>
       <item path="MainWindow.fl">
         <itemExcluded>true</itemExcluded>
@@ -153,43 +168,8 @@
       <item path="MainWindow.h">
         <itemTool>3</itemTool>
       </item>
-      <item path="MainWindow.cxx">
+      <item path="main.cxx">
         <itemTool>1</itemTool>
-        <ccCompilerTool>
-        </ccCompilerTool>
-      </item>
-      <item path="AspEditUI.cxx">
-        <itemTool>1</itemTool>
-        <ccCompilerTool>
-        </ccCompilerTool>
-      </item>
-      <item path="AspEditUI.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="LibUI.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="LibUI.cxx">
-        <itemTool>1</itemTool>
-        <ccCompilerTool>
-        </ccCompilerTool>
-      </item>
-      <item path="AspEditUI.fl">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="LibUI.fl">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="ChronoUI.cxx">
-        <itemTool>1</itemTool>
-        <ccCompilerTool>
-        </ccCompilerTool>
-      </item>
-      <item path="ChronoUI.fl">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="ChronoUI.h">
-        <itemTool>3</itemTool>
       </item>
     </conf>
   </confs>

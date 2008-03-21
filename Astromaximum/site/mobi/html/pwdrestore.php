@@ -17,6 +17,7 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 			}
 		}
 		else{
+			sleep(5);
 			echo "Email is not found in database: <b>'$mail'</b>";
 			echo "<p><a href=\"{$_SERVER['REQUEST_URI']}\">back</a></p>";
 		}
@@ -71,7 +72,7 @@ function is_capcha($capcha){
 
 function pwd_send($to, $login, $realname, $dl_count, $city_count, $pwd){
 	$subject = 'Astromaximum.de - new password';
-	$message = <<<EOF
+/*	$message = <<<EOF
 <html><head>
   <title>Astromaximum.de - new password</title>
 </head>
@@ -92,6 +93,9 @@ function pwd_send($to, $login, $realname, $dl_count, $city_count, $pwd){
 
 <p>Thank you for using our service.</p>
 <hr/>
+EOF;
+
+$rusmsg= <<<EOF1
 <p>Уважаемый $realname,</p>
 
 <p>Вы запросили новый пароль для доступа на сайт 
@@ -107,10 +111,14 @@ function pwd_send($to, $login, $realname, $dl_count, $city_count, $pwd){
 <p>Это письмо сгенерировано автоматически, нет нужды отвечать на него.</p>
 
 <p>Спасибо за использование нашего сервиса.</p>
-EOF;
-	$headers  = 'MIME-Version: 1.0' . "\r\n";
-	$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";	
-	$headers .= 'From: robot@astromaximum.de' . "\r\n" .
+EOF1;
+*/
+	$message=file_get_contents("mobi/dl/source/pwdrestore.mail");
+	$message=str_replace('<login>', $login, $message);
+	$message=str_replace('<pwd>', $pwd, $message);
+	$message=str_replace('<dl_count>', $dl_count, $message);
+	$message=str_replace('<city_count>', $city_count, $message);
+	$headers = 'From: robot@astromaximum.de' . "\r\n" .
 	    'X-Mailer: PHP';
 	return mail($to, $subject, $message, $headers);
 }

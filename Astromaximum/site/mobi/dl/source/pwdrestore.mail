@@ -1,0 +1,30 @@
+Dear $realname,
+
+You have requested a new password for access to http://astromaximum.de/ 
+Your credentials are now as follows:
+
+  login:     <login>
+  password:  <pwd>
+
+Number of Astromaximum copies to download: <dl_count>
+Number of cities to download: <city_count>
+
+This mail was generated automatically, there is no need to reply.
+
+Thank you for using our service.
+------------
+
+”важаемый $realname,
+
+¬ы запросили новый пароль дл€ доступа на сайт http://astromaximum.de/
+ƒл€ входа на сайт наберите:
+
+  логин:   $login
+  пароль:  $pwd
+
+–азрешено загрузить копий мидлета на текущий год: <dl_count>
+–азрешено загрузить городов: <city_count>
+
+Ёто письмо сгенерировано автоматически, нет нужды отвечать на него.
+
+—пасибо за использование нашего сервиса.

@@ -2,7 +2,7 @@
 # Gererated Makefile - do not edit!
 #
 # Edit the Makefile in the project folder instead (../Makefile). Each target
-# has a -pre and a -post target defined where you can add custumized code.
+# has a -pre and a -post target defined where you can add customized code.
 #
 # This makefile implements configuration specific macros and targets.
 
@@ -12,21 +12,24 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=gcc
-CCC=g++
-CXX=g++
-FC=g77
+CC=gcc.exe
+CCC=g++.exe
+CXX=g++.exe
+FC=
 
 # Include project Makefile
 include Makefile
 
+# Object Directory
+OBJECTDIR=build/Debug/MinGW-Linux-x86
+
 # Object Files
 OBJECTFILES= \
-	build/Debug/GNU-Linux-x86/ChronoUI.o \
-	build/Debug/GNU-Linux-x86/AspEditUI.o \
-	build/Debug/GNU-Linux-x86/LibUI.o \
-	build/Debug/GNU-Linux-x86/main.o \
-	build/Debug/GNU-Linux-x86/MainWindow.o
+	${OBJECTDIR}/AspEditUI.o \
+	${OBJECTDIR}/LibUI.o \
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/ChronoUI.o \
+	${OBJECTDIR}/MainWindow.o
 
 # C Compiler Flags
 CFLAGS=
@@ -39,11 +42,7 @@ CXXFLAGS=
 FFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=\
-	-L./ \
-	`../../../fltk2/fltk2-config \
-	--ldflags` \
-	-lsqlite3
+LDLIBSOPTIONS=-L./ `../../../fltk2/fltk2-config --ldflags`  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS} amax-desktop
@@ -51,25 +50,25 @@ LDLIBSOPTIONS=\
 amax-desktop: ${OBJECTFILES}
 	${LINK.cc} -o amax-desktop ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-build/Debug/GNU-Linux-x86/ChronoUI.o: ChronoUI.cxx 
-	${MKDIR} -p build/Debug/GNU-Linux-x86
-	$(COMPILE.cc) -g -I../../../fltk2 -o build/Debug/GNU-Linux-x86/ChronoUI.o ChronoUI.cxx
+${OBJECTDIR}/AspEditUI.o: AspEditUI.cxx 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -I../../../fltk2 -o ${OBJECTDIR}/AspEditUI.o AspEditUI.cxx
 
-build/Debug/GNU-Linux-x86/AspEditUI.o: AspEditUI.cxx 
-	${MKDIR} -p build/Debug/GNU-Linux-x86
-	$(COMPILE.cc) -g -I../../../fltk2 -o build/Debug/GNU-Linux-x86/AspEditUI.o AspEditUI.cxx
+${OBJECTDIR}/LibUI.o: LibUI.cxx 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -I../../../fltk2 -o ${OBJECTDIR}/LibUI.o LibUI.cxx
 
-build/Debug/GNU-Linux-x86/LibUI.o: LibUI.cxx 
-	${MKDIR} -p build/Debug/GNU-Linux-x86
-	$(COMPILE.cc) -g -I../../../fltk2 -o build/Debug/GNU-Linux-x86/LibUI.o LibUI.cxx
+${OBJECTDIR}/main.o: main.cxx 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -I../../../fltk2 -o ${OBJECTDIR}/main.o main.cxx
 
-build/Debug/GNU-Linux-x86/main.o: main.cxx 
-	${MKDIR} -p build/Debug/GNU-Linux-x86
-	$(COMPILE.cc) -g -I../../../fltk2 -o build/Debug/GNU-Linux-x86/main.o main.cxx
+${OBJECTDIR}/ChronoUI.o: ChronoUI.cxx 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -I../../../fltk2 -o ${OBJECTDIR}/ChronoUI.o ChronoUI.cxx
 
-build/Debug/GNU-Linux-x86/MainWindow.o: MainWindow.cxx 
-	${MKDIR} -p build/Debug/GNU-Linux-x86
-	$(COMPILE.cc) -g -I../../../fltk2 -o build/Debug/GNU-Linux-x86/MainWindow.o MainWindow.cxx
+${OBJECTDIR}/MainWindow.o: MainWindow.cxx 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -I../../../fltk2 -o ${OBJECTDIR}/MainWindow.o MainWindow.cxx
 
 # Subprojects
 .build-subprojects:
