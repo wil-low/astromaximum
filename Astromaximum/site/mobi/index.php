@@ -1,7 +1,9 @@
 <?php
+include_once("dbconnect.php");
+include_once("secure/ipblock.php");
+allow_ip();
 include_once("lang.php");
 sess_start();
-include_once("dbconnect.php");
 $chac=check_access();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">

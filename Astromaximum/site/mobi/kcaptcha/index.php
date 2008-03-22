@@ -1,6 +1,18 @@
 <?php
+if(isset($_SERVER['HTTP_REFERER']) && preg_match("/astromaximum\.de\/(?:index\.php)?\?lang=\w+\&p=pwdrestore/i",$_SERVER['HTTP_REFERER'])){
+	error_reporting (E_ALL);
 
-error_reporting (E_ALL);
+	include('kcaptcha.php');
+	
+	if(isset($_REQUEST[session_name()])){
+		session_start();
+	}
+	$captcha = new KCAPTCHA();
+	
+	if($_REQUEST[session_name()]){
+		$_SESSION['captcha_keystring'] = $captcha->getKeyString();
+	}
+}
 
 /* Using:
 
@@ -26,16 +38,4 @@ error_reporting (E_ALL);
 
 */
 
-if(isset($_SERVER['HTTP_REFERER']) && preg_match("/astromaximum\.de\/(?:index\.php)?\?lang=\w+\&p=pwdrestore/i",$_SERVER['HTTP_REFERER'])){
-	include('kcaptcha.php');
-	
-	if(isset($_REQUEST[session_name()])){
-		session_start();
-	}
-	$captcha = new KCAPTCHA();
-	
-	if($_REQUEST[session_name()]){
-		$_SESSION['captcha_keystring'] = $captcha->getKeyString();
-	}
-}
 ?>

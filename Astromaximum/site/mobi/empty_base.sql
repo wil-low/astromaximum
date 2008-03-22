@@ -248,6 +248,20 @@ UNLOCK TABLES;
 
 
 --
+-- Table structure for table `ipblock`
+--
+
+CREATE TABLE IF NOT EXISTS `ipblock` (
+  `ip` varchar(16) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `tm_first` timestamp NOT NULL default '0000-00-00 00:00:00',
+  `tm_last` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `tm_block` timestamp NOT NULL default '0000-00-00 00:00:00',
+  `accessed` int(11) NOT NULL default '1',
+  `pageid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`ip`,`pageid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds ip access data';
+
+--
 -- Table structure for table `source`
 --
 

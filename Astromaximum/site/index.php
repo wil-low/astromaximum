@@ -34,7 +34,6 @@ if(strcmp($main, 'login')==0){
 		}
 	}
 	else{
-		sleep(5);
 		$main='home';
 	}
 	redirect("?$lang_&amp;p=$main");	
