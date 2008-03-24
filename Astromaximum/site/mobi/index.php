@@ -1,10 +1,10 @@
 <?php
 include_once("dbconnect.php");
-include_once("secure/ipblock.php");
-allow_ip();
+include_once("ipblock.php");
 include_once("lang.php");
 sess_start();
 $chac=check_access();
+allow_ip(1);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

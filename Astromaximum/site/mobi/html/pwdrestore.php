@@ -1,8 +1,9 @@
 <h4>Восстановление регистрации</h4>
 <?php
 if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
-	$mail=$_POST['p_email']; $capcha=$_POST['p_captcha'];
-	if(is_capcha($capcha)){
+	include_once("mobi/ipblock.php");
+	$mail=$_POST['p_email']; $captcha=$_POST['p_captcha'];
+	if(is_capcha($captcha)){
 		$arr=email2login($mail);
 		if(count($arr)){ 
 			$newpass=sprintf("%09d", mt_rand(1, 999999999));
@@ -17,14 +18,12 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 			}
 		}
 		else{
-			sleep(5);
 			echo "Email is not found in database: <b>'$mail'</b>";
 			echo "<p><a href=\"{$_SERVER['REQUEST_URI']}\">back</a></p>";
 		}
 		return;
 	}
 	else{
-		sleep(5);
 		echo "<p><font color=\"red\">Invalid string entered</font></p>";
 	}
 } 
@@ -59,15 +58,6 @@ function email2login($mail){
 		}
 	}
 	return $arr;
-}
-
-function is_capcha($capcha){
-	$res=false;
-	if(count($_POST)>0){
-		$res=isset($_SESSION['captcha_keystring']) && ($_SESSION['captcha_keystring'] ==  $_POST['p_captcha']);
-	}
-	unset($_SESSION['captcha_keystring']);
-	return $res;
 }
 
 function pwd_send($to, $login, $realname, $dl_count, $city_count, $pwd){

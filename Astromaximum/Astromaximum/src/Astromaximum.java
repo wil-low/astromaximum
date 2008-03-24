@@ -185,7 +185,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
         disp = Display.getDisplay(this);
 //#debug
         long start = System.currentTimeMillis();
-        if (firstRun) {
+//        if (firstRun) {
 //        System.gc();
             try {
                 instance = this;
@@ -435,7 +435,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //        quit();
 ///#enddebug       
             }
-        }
+//        }
         summary.repaint();
 //#mdebug
         System.out.print("Initialization took ");
@@ -471,7 +471,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     /**
      * Stop the MIDlet, saving {@link Options}
      */
-    private static void quit() {
+    static void quit() {
         Display.getDisplay(instance).setCurrent(null);
 //#ifdef use_amtext
 //#         try {

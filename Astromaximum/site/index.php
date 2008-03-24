@@ -10,8 +10,8 @@ if(strcmp($main, 'pwdrestore')==0){
 else{
 	sess_start();
 }
-lang_load("mobi/html");
 include_once('mobi/dbconnect.php');
+lang_load("mobi/html");
 $chac=check_access();
 $user_ok=($chac>=0 and $chac!=1);
 $city_count=711;
@@ -38,6 +38,8 @@ if(strcmp($main, 'login')==0){
 	}
 	redirect("?$lang_&amp;p=$main");	
 }
+include_once("mobi/ipblock.php");
+allow_ip($main);
 if(!preg_match("/^[\w_\d]+$/is", $main)){
 	$main='home';
 }
@@ -147,6 +149,7 @@ FRM;
 	function findObj(id) {
 	  return (document.all?document.all[id]:document.getElementById(id));
 	}
+
   function clock() {
     now=new Date();
 		var london=now.toGMTString();

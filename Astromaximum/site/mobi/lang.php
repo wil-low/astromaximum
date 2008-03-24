@@ -8,10 +8,9 @@ $lang_="lang=$lang";
 
 function sess_start(){
 	error_reporting(E_ALL);
-	session_name("Astromaximum");
 	session_set_cookie_params(3600);
 	session_start();
-	session_register("username","uid", "pwd");
+	session_register("username","uid", "pwd", "captcha_keystring");
 }
 
 function lang_load($path){

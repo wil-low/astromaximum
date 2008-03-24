@@ -170,6 +170,7 @@
 %154% you can download more cities and read astrological reference.
 %155% Go
 %156% Press a key...
+%157% Quit
 
 %255% En
 

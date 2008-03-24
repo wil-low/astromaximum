@@ -971,7 +971,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
             isShowCustom = false;
         }
         switch (c.getPriority()) {
-            case 0:
+            case 0: // Help
                 setCurPage(Summary.PAGE_HELP);
 //        Astromaximum.summary.dontRender();
                 break;
@@ -981,12 +981,12 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         setCurPage(Summary.PAGE_ELECTIO);
 //#         break;
                 //#endif
-            case 2:
-            case 3:
+            case 2: // Week
+            case 3: // Month
                 setCurPage(c.getPriority() == 2 ? Summary.PAGE_WEEK : Summary.PAGE_MONTH);
 //        Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.instance.summary);
                 break;
-            case 6:
+            case 6: // No theme
                 Interpreter.topic = 10;
                 if (pageNum == PAGE_DECUMB) {
                     setCurPage(PAGE_SUMMARY);
@@ -994,18 +994,21 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 }
                 repaint();
                 break;
-            case 4:
+            case 4: // Options
                 Astromaximum.options.init();
                 Astromaximum.disp.setCurrent(Astromaximum.options);
                 break;
-            case 1:
+            case 1: // Today
                 setToday();
                 break;
             case 5: // back to CustomTime
                 Astromaximum.customTime.init(pageNum);
                 break;
-            case 7:
+            case 7: // Website
                 Astromaximum.logBox.showAbout(this);
+                break;
+            case 8: // Quit
+                Astromaximum.quit();
                 break;
 /*      case 1:
         if(pageNum==PAGE_DECUMB){
@@ -1787,7 +1790,8 @@ class Summary extends Canvas implements CommandListener, Runnable {
             cmds[3] = new Command(Astromaximum.getstr(19), Command.SCREEN, 3);//Month
             cmds[4] = new Command(Astromaximum.getstr(92), Command.SCREEN, 4);//Options
             cmds[6] = new Command(Astromaximum.getstr(93), Command.SCREEN, 6);//No theme
-            cmds[7] = new Command(Astromaximum.getstr(152), Command.SCREEN, 7);//No theme
+            cmds[7] = new Command(Astromaximum.getstr(152), Command.SCREEN, 7);//Website
+            cmds[8] = new Command(Astromaximum.getstr(157), Command.SCREEN, 8);//Quit
             //#ifdef ELECTIO
 //#       cmds[7]=new Command(Astromaximum.getstr("Aphetics"),Command.SCREEN,7);
             //#endif

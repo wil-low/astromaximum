@@ -98,7 +98,13 @@ function reject2index($url){
 }
 
 function redirect($url){
-	echo "<html><head><meta http-equiv=\"refresh\" content=\"0;url=$url\"></head></html>";
+	echo <<<EOF2
+<html>
+<head>
+<meta http-equiv="refresh" content="0;url=$url">
+</head>
+</html>
+EOF2;
 	exit;
 }
 

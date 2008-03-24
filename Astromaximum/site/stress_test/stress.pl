@@ -16,18 +16,28 @@ my($tm_start, $tm_elapsed);
 print "*** Starting stress tests ***\n";
 
 #die 11234%100;
-stress_request(1000, "captcha", 1, \&stress_captcha);
+#stress_request(100, "captcha", 1, \&stress_captcha);
+stress_request(100, "login", 0, \&stress_login);
 
 # stress_* w/o args creates Request
 # stress_*(Response) returns if it is succeeded
 
 sub stress_captcha {
 	if(defined($_[0])){
-		die $_[0];
+#		die $_[0];
 		return $_[0]->is_success();
 	}
 	$req=HTTP::Request->new(GET=>'http://astromaximum.de/mobi/kcaptcha/?PHPSESSID=1234567890');
 	$req->header(Referer=>'http://astromaximum.de/index.php?lang=ru&p=pwdrestore');
+	return $req;
+}
+
+sub stress_login {
+	if(defined($_[0])){
+#		die $_[0];
+		return $_[0]->is_success();
+	}
+	$req=HTTP::Request->new(GET=>'http://astromaximum.de/');
 	return $req;
 }
 

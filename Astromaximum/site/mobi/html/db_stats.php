@@ -68,6 +68,14 @@ function check_env(){
 	$res['gen_amax.log writable']=yesno(is_writable($p.'gen_amax.log'));
 	$ret=0;
 	$outp=array();
+	exec("mobi/fastjar -V", $outp, $ret);
+	$key="fastjar version";
+	if($ret){
+		$res[$key]='<font color="red">Error '.$ret.$php_errormsg.'</font>';
+	}
+	else{
+		$res[$key]=$outp[0];
+	}
 	exec("$perl -c $p"."gen_amax.cgi", $outp, $ret);
 	$res['gen_amax.cgi syntax']=yesno($ret==0);
 	$key='source/*.comm';

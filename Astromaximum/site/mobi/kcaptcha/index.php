@@ -1,5 +1,5 @@
 <?php
-if(isset($_SERVER['HTTP_REFERER']) && preg_match("/astromaximum\.de\/(?:index\.php)?\?lang=\w+\&p=pwdrestore/i",$_SERVER['HTTP_REFERER'])){
+if(isset($_SERVER['HTTP_REFERER']) && preg_match("/astromaximum\.(de|mobi)/i",$_SERVER['HTTP_REFERER'])){
 	error_reporting (E_ALL);
 
 	include('kcaptcha.php');
