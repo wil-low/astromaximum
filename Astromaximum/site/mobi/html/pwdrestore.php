@@ -1,7 +1,8 @@
 <h4>Восстановление регистрации</h4>
 <?php
+include_once("mobi/ipblock.php");
+allow_ip('pwd_rest');
 if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
-	include_once("mobi/ipblock.php");
 	$mail=$_POST['p_email']; $captcha=$_POST['p_captcha'];
 	if(is_capcha($captcha)){
 		$arr=email2login($mail);

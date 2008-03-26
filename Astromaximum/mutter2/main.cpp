@@ -31,15 +31,15 @@ int main(int argc, char* argv[]) {
     
     swe_set_ephe_path(ephemPath);
     /*
-  double test_day=swe_julday(2007, 4, 7, 0, SE_GREG_CAL);
-  double result;
-  double geopos[3]={30.51,50.43,200};
-  swe_rise_trans(test_day,SE_MOON,NULL,0,SE_CALC_SET| SE_BIT_DISC_CENTER ,geopos,0,20,&result,path);
-  int y,m,d; double hour;
-  swe_revjul(result, SE_GREG_CAL, &y, &m, &d, &hour);
-  printf("%02d.%02d.%04d %02d:%02d",d, m, y, (int)hour, (int)((hour-(int)hour)*60));
-  scanf("%s",path);
-  return 0;
+     * double test_day=swe_julday(2007, 4, 7, 0, SE_GREG_CAL);
+     * double result;
+     * double geopos[3]={30.51,50.43,200};
+     * swe_rise_trans(test_day,SE_MOON,NULL,0,SE_CALC_SET| SE_BIT_DISC_CENTER ,geopos,0,20,&result,path);
+     * int y,m,d; double hour;
+     * swe_revjul(result, SE_GREG_CAL, &y, &m, &d, &hour);
+     * printf("%02d.%02d.%04d %02d:%02d",d, m, y, (int)hour, (int)((hour-(int)hour)*60));
+     * scanf("%s",path);
+     * return 0;
      */
     if((argc==1)||(strcmp(argv[1], "--help"))==0){
         printf("Usage:  mutter2 [options]\n");
@@ -120,17 +120,17 @@ int main(int argc, char* argv[]) {
         char buf0[100], buf1[100];
         sprintf(fn, "../site/%04d.sql", year);
         FILE *sql=fopen(fn, "w");
-	if(!sql){
+        if(!sql){
             int ern=errno;
-            printf("Cannot create file %s: %s",fn,strerror(ern));
+            printf("Cannot create file %s: %s", fn, strerror(ern));
             return -1;
-	}
+        }
         fprintf(sql, "TRUNCATE TABLE `_voc`; BEGIN;\n");
         if(df.readSubData("voc01.bin", work)){
             for(int i=0; i<work.size(); i++){
                 Event *ev=work[i];
-                fprintf(sql, "INSERT INTO `_voc` VALUES (%s, %s);\n", 
-                    ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
+                fprintf(sql, "INSERT INTO `_voc` VALUES (%s, %s);\n",
+                        ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
 //                ev->dump();
             }
             fprintf(sql, "COMMIT;\n\n");
@@ -143,8 +143,8 @@ int main(int argc, char* argv[]) {
         if(df.readSubData("via01.bin", work)){
             for(int i=0; i<work.size(); i++){
                 Event *ev=work[i];
-                fprintf(sql, "INSERT INTO `_vc` VALUES (%s, %s);\n", 
-                    ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
+                fprintf(sql, "INSERT INTO `_vc` VALUES (%s, %s);\n",
+                        ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
 //                ev->dump();
             }
             fprintf(sql, "COMMIT;\n\n");
@@ -157,8 +157,8 @@ int main(int argc, char* argv[]) {
         if(df.readSubData("degpass00.bin", work)){
             for(int i=0; i<work.size(); i++){
                 Event *ev=work[i];
-                fprintf(sql, "INSERT INTO `_sundgr` VALUES (%s, %s, %d);\n", 
-                    ev->date_sql(buf0, 0), ev->date_sql(buf1, 1), ev->degree & 0x3fff);
+                fprintf(sql, "INSERT INTO `_sundgr` VALUES (%s, %s, %d);\n",
+                        ev->date_sql(buf0, 0), ev->date_sql(buf1, 1), ev->degree & 0x3fff);
 //                ev->dump();
             }
             fprintf(sql, "COMMIT;\n\n");
@@ -249,7 +249,7 @@ int main(int argc, char* argv[]) {
         }
         else{
             if(strcmp(argv[2], "vocsql")==0){
-
+                
             }
             else{
                 if(argc<5)
@@ -264,7 +264,7 @@ int main(int argc, char* argv[]) {
                 //      df.stepCount=8000;
                 df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
                 df.calcAscData();
-
+                
                 df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
                 df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
                 if(argc>5 && (strcmp(argv[5], "electio")==0)){

@@ -34,12 +34,12 @@ if(strcmp($main, 'login')==0){
 		}
 	}
 	else{
+		include_once("mobi/ipblock.php");
+		allow_ip('login');
 		$main='home';
 	}
 	redirect("?$lang_&amp;p=$main");	
 }
-include_once("mobi/ipblock.php");
-allow_ip($main);
 if(!preg_match("/^[\w_\d]+$/is", $main)){
 	$main='home';
 }
@@ -93,7 +93,7 @@ if(preg_match("/^(demo)$/is", $main)){
 <?php 
 //echo "<br/>";print_r($_REQUEST);
 $btn1="СКАЧАТЬ ДЕМО<br/>+ $city_count модулей городов"; $btn1_link="demo";
-$btn2="КУПИТЬ &euro;$price<br/>+ $city_count модулей городов";
+$btn2="КУПИТЬ $$price<br/>+ $city_count модулей городов";
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 
@@ -119,7 +119,7 @@ else{
   <script type="text/javascript">
   <!--
 	  function checklogin(){
-	  	if(!findObj('ilog').value && !findObj('ipwd').value){
+	  	if(!findObj('ilog').value || !findObj('ipwd').value){
 	  		return false;
 	  	}
 	  	findObj('aenter').disabled=1;
