@@ -25,8 +25,16 @@ if(isset($_GET['u'])){
 <h3>$hdr $row[0]</h3>
 <script type="text/javascript">
 <!--
-	function checkuser(){
-//		alert(findObj('u_pwd1'));
+	function is_empty(id){
+		return findObj(id).value.length==0;
+	}
+
+	function check_notify(){
+		if(!findObj('u_notify').checked) return true;
+		return !is_empty('u_pwd1') && !is_empty('u_email') && !is_empty('u_login');
+	}
+
+	function check_user(){
 		upw1=findObj('u_pwd1').value;
 		upw2=findObj('u_pwd2').value;
 		if(upw1!=upw2){
@@ -37,23 +45,44 @@ if(isset($_GET['u'])){
 				alert("Password must be 9 digits long!"); return;
 			}
 		}
-		frm=findObj('usredit');
-		frm.submit();
+		if(check_notify()){
+			findObj('usredit').submit();
+		}
+		else{
+			alert("Notify user: Missing login or password or email");
+		}
+
+	}
+	
+	function do_random(input_id){
+		var str='';
+		for(i=0; i<9; i++){
+			str=str.concat(Math.floor(Math.random()*9));
+		}
+		findObj(input_id).value=str;
 	}
 -->
 </script>
 <form id="usredit" action="index.php?$lang_&amp;p=usermgr" method="post">
 <input type="hidden" name="u_id" value="$id"/>
 <input type="text" name="u_realname" value="$row[0]"/> realname &nbsp; 
-<p><input type="text" name="u_login" value="$row[1]" maxlength="9"/> login</p> 
+<p>
+<input type="text" name="u_login" value="$row[1]" maxlength="9"/>
+<a href="javascript:void(0)" onclick="do_random('u_login');">login</a> &nbsp;
+</p> 
 <p><i>Enter new password when changing login !!!</i></p>
-<p><input type="text" name="u_pwd1" value="" size="9" maxlength="9"/> pwd
+<p>
+<input type="text" name="u_pwd1" value="" size="9" maxlength="9"/> 
+<a href="javascript:void(0)" onclick="do_random('u_pwd1');">pwd</a> &nbsp;
 <br/><input type="text" name="u_pwd2" size="9" maxlength="9"> pwd again &nbsp;
- <input type="text" name="u_email" size="48" value="$row[2]"/> e-mail</p>
-<p><input type="text" name="u_dlc" value="$row[3]" size="3"/> dl &nbsp;
-&nbsp; <input type="text" name="u_cityc" value="$row[4]" size="3"/> city &nbsp;
-&nbsp; <input type="checkbox" name="u_active"$active/> Active</p>
-<p><input type="button" name="action" value="$act" onclick="checkuser()"/>
+<input type="text" name="u_email" size="48" value="$row[2]"/> e-mail</p>
+<p>
+<input type="text" name="u_dlc" value="$row[3]" size="3"/> dl &nbsp; &nbsp; 
+<input type="text" name="u_cityc" value="$row[4]" size="3"/> city &nbsp; &nbsp; 
+<input type="checkbox" name="u_active"$active/> Active &nbsp; &nbsp; 
+<input type="checkbox" name="u_notify"/> E-mail credentials to this user</a></p>
+<p>
+<input type="button" name="action" value="$act" onclick="check_user()"/>
 <input type="submit" name="cancel" value="Cancel"/></p>
 </form>
 EOF;
@@ -107,6 +136,19 @@ if(isset($_POST['u_id'])){
 	//			echo "$stat<br/>";
 				if(!mysql_query($stat)){
 					echo "<font color=\"red\">Error when setting password!</font><br/>".mysql_error();
+				}
+				else{
+					if(isset($_POST['u_notify'])){
+						include_once("mobi/amtools.php");
+						if(pwd_send($_POST['u_email'], $_POST['u_login'], $_POST['u_realname'],
+						 	$_POST['u_dlc'], $_POST['u_cityc'], $_POST['u_pwd1'])){
+						 		echo "Notification was sent to ".$_POST['u_email']."<br/>";
+						}
+						else{
+							echo "<font color=\"red\">Error when sending notification to ".$_POST['u_email'].
+								"</font><br/>";
+						}
+					}
 				}
 			}
 			else{

@@ -303,4 +303,57 @@ function record_in_range($table, $tm){
 }
 
 
+function pwd_send($to, $login, $realname, $dl_count, $city_count, $pwd){
+	$subject = 'Astromaximum.de - new password';
+/*	$message = <<<EOF
+<html><head>
+  <title>Astromaximum.de - new password</title>
+</head>
+<body>
+<p>Dear $realname,</p>
+
+<p>You requested a new password for access to 
+<a href="http://astromaximum.de/">http://astromaximum.de/</a> 
+<br/>Your credentials are now as follows:</p>
+<ul>
+<li>login: $login</li>
+<li>password:  $pwd</li>
+</ul>	
+<p>Number of Astromaximum copies to download: $dl_count</p>
+<p>Number of cities to download: $city_count</p>
+
+<p>This mail was generated automatically, there is no need to reply.</p>
+
+<p>Thank you for using our service.</p>
+<hr/>
+EOF;
+
+$rusmsg= <<<EOF1
+<p>Уважаемый $realname,</p>
+
+<p>Вы запросили новый пароль для доступа на сайт 
+<a href="http://astromaximum.de/">http://astromaximum.de/</a>
+<br/>Для входа на сайт наберите:</p>
+<ul>
+<li>логин:   $login</li>
+<li>пароль:  $pwd</li>
+</ul>
+<p>Разрешено загрузить копий мидлета на текущий год: $dl_count</p>
+<p>Разрешено загрузить городов: $city_count</p>
+
+<p>Это письмо сгенерировано автоматически, нет нужды отвечать на него.</p>
+
+<p>Спасибо за использование нашего сервиса.</p>
+EOF1;
+*/
+	$message=file_get_contents("mobi/dl/source/pwdrestore.mail");
+	$message=str_replace('<realname>', $realname, $message);
+	$message=str_replace('<login>', $login, $message);
+	$message=str_replace('<pwd>', $pwd, $message);
+	$message=str_replace('<dl_count>', $dl_count, $message);
+	$message=str_replace('<city_count>', $city_count, $message);
+	$headers = 'From: robot@astromaximum.de' . "\r\n" .
+	    'X-Mailer: PHP';
+	return mail($to, $subject, $message, $headers);
+}
 ?>

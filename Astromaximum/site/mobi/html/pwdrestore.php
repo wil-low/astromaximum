@@ -8,6 +8,7 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 		$arr=email2login($mail);
 		if(count($arr)){ 
 			$newpass=sprintf("%09d", mt_rand(1, 999999999));
+			include_once("mobi/amtools.php");
 			if(pwd_send($mail, $arr[0], $arr[1], $arr[2], $arr[3], $newpass)){
 				echo "New password has been sent to email address specified.";
 				$pwd=pwd_convert2(pwd_convert1($arr[0], $newpass));
@@ -59,58 +60,5 @@ function email2login($mail){
 		}
 	}
 	return $arr;
-}
-
-function pwd_send($to, $login, $realname, $dl_count, $city_count, $pwd){
-	$subject = 'Astromaximum.de - new password';
-/*	$message = <<<EOF
-<html><head>
-  <title>Astromaximum.de - new password</title>
-</head>
-<body>
-<p>Dear $realname,</p>
-
-<p>You requested a new password for access to 
-<a href="http://astromaximum.de/">http://astromaximum.de/</a> 
-<br/>Your credentials are now as follows:</p>
-<ul>
-<li>login: $login</li>
-<li>password:  $pwd</li>
-</ul>	
-<p>Number of Astromaximum copies to download: $dl_count</p>
-<p>Number of cities to download: $city_count</p>
-
-<p>This mail was generated automatically, there is no need to reply.</p>
-
-<p>Thank you for using our service.</p>
-<hr/>
-EOF;
-
-$rusmsg= <<<EOF1
-<p>Уважаемый $realname,</p>
-
-<p>Вы запросили новый пароль для доступа на сайт 
-<a href="http://astromaximum.de/">http://astromaximum.de/</a>
-<br/>Для входа на сайт наберите:</p>
-<ul>
-<li>логин:   $login</li>
-<li>пароль:  $pwd</li>
-</ul>
-<p>Разрешено загрузить копий мидлета на текущий год: $dl_count</p>
-<p>Разрешено загрузить городов: $city_count</p>
-
-<p>Это письмо сгенерировано автоматически, нет нужды отвечать на него.</p>
-
-<p>Спасибо за использование нашего сервиса.</p>
-EOF1;
-*/
-	$message=file_get_contents("mobi/dl/source/pwdrestore.mail");
-	$message=str_replace('<login>', $login, $message);
-	$message=str_replace('<pwd>', $pwd, $message);
-	$message=str_replace('<dl_count>', $dl_count, $message);
-	$message=str_replace('<city_count>', $city_count, $message);
-	$headers = 'From: robot@astromaximum.de' . "\r\n" .
-	    'X-Mailer: PHP';
-	return mail($to, $subject, $message, $headers);
 }
 ?>

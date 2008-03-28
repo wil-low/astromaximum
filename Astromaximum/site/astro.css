@@ -80,9 +80,11 @@ ul {
 #logoText {
 	position: absolute;
 	top: 151px;
-	left: 460px;
+	left: 458px;
 	color: rgb(32,95,123);
 	font: 13px  bolder;
+	width: 380px;
+	text-align: center;
 }
 #menu {
 	position: absolute;

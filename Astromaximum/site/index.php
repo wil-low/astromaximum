@@ -66,11 +66,10 @@ if(preg_match("/^(demo)$/is", $main)){
 <meta name="keywords" content="ключи"/>
 <meta name="description" content="описание"/>
 <link href="astro.css" rel="stylesheet" type="text/css"/>
-<!-- <link rel="shortcut icon" href="/favicon.gif" /> -->
 </head>
 <body>
 <div id="globe"><a href="?<?php echo $lang_ ?>"><img src="i/globe.jpg" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" height="320" width="956"/></a></div>
-<div id="logoText">астрологический календарь для мобильных телефонов</div>
+<div id="logoText"><?php echo $i18['AMAX_LOGO'] ?></div>
 <div id="lang">
 <?php
 	$lng=array('DE', 'EN', 'RU');
@@ -92,8 +91,8 @@ if(preg_match("/^(demo)$/is", $main)){
 <a href="?<?php echo $lang_ ?>">главная</a> |  <a href="?<?php echo $lang_ ?>&amp;p=0_0">инструкция</a> |  <?php anchor('buy') ?>купить</a> | <?php anchor('dl') ?>модули городов</a> | <a href="#">контакты</a>
 <?php 
 //echo "<br/>";print_r($_REQUEST);
-$btn1="СКАЧАТЬ ДЕМО<br/>+ $city_count модулей городов"; $btn1_link="demo";
-$btn2="КУПИТЬ $$price<br/>+ $city_count модулей городов";
+$btn1=$i18['DEMO']."<br/>+ $city_count ".$i18['CITY_MODULES']; $btn1_link="demo";
+$btn2=$i18['ORDER']." $$price<br/>+ $city_count ".$i18['CITY_MODULES'];
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 

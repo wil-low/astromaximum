@@ -1,4 +1,4 @@
-Dear $realname,
+Dear <realname>,
 
 You have requested a new password for access to http://astromaximum.de/ 
 Your credentials are now as follows:
@@ -14,13 +14,13 @@ This mail was generated automatically, there is no need to reply.
 Thank you for using our service.
 ------------
 
-Уважаемый $realname,
+Уважаемый <realname>,
 
 Вы запросили новый пароль для доступа на сайт http://astromaximum.de/
 Для входа на сайт наберите:
 
-  логин:   $login
-  пароль:  $pwd
+  логин:   <login>
+  пароль:  <pwd>
 
 Разрешено загрузить копий мидлета на текущий год: <dl_count>
 Разрешено загрузить городов: <city_count>
