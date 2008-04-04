@@ -220,8 +220,20 @@ UNLOCK TABLES;
 -- Table structure for table `vocs`
 --
 
-DROP TABLE IF EXISTS `vocs`;
-CREATE TABLE `vocs` (
+DROP TABLE IF EXISTS `_sundgr`;
+CREATE TABLE `_sundgr` (
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL,
+  `dgr` int(11) NOT NULL,
+  PRIMARY KEY  (`start`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Sun degrees for current year';
+
+--
+-- Table structure for table `_voc`
+--
+
+DROP TABLE IF EXISTS `_voc`;
+CREATE TABLE `_voc` (
   `start` datetime NOT NULL,
   `end` datetime NOT NULL,
   PRIMARY KEY  (`start`)
@@ -257,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `ipblock` (
   `tm_last` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `tm_block` timestamp NOT NULL default '0000-00-00 00:00:00',
   `accessed` int(11) NOT NULL default '1',
-  `pageid` int(11) NOT NULL default '0',
+  `pageid` varchar(16) NOT NULL default '0',
   PRIMARY KEY  (`ip`,`pageid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds ip access data';
 

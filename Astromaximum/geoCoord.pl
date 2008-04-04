@@ -157,7 +157,7 @@ sub process_ini{
 		$country='';
 		my $state=0;
 		my $invoke;
-		my $db="$sqlite3 $sqpath".'coords.sqb';
+		my $db="\"$sqlite3\" \"$sqpath".'coords.sqb"';
 		my $tmp=$path.'country.tmp';
 		my $contin='';
 		foreach my $cit(@cities){

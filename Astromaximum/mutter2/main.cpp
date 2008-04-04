@@ -139,6 +139,7 @@ int main(int argc, char* argv[]) {
             printf("\nVOC file error!");
         }
         df.release(work);
+/*        
         fprintf(sql, "TRUNCATE TABLE `_vc`; BEGIN;\n");
         if(df.readSubData("via01.bin", work)){
             for(int i=0; i<work.size(); i++){
@@ -153,6 +154,7 @@ int main(int argc, char* argv[]) {
             printf("\nVC file error!");
         }
         df.release(work);
+*/
         fprintf(sql, "TRUNCATE TABLE `_sundgr`; BEGIN;\n");
         if(df.readSubData("degpass00.bin", work)){
             for(int i=0; i<work.size(); i++){
@@ -167,6 +169,7 @@ int main(int argc, char* argv[]) {
             printf("\nSun degree file error!");
         }
         df.release(work);
+ 
         fclose(sql);
         printf("\nSQL created: %s\n", fn);
         return 0;

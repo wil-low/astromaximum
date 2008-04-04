@@ -74,6 +74,6 @@ void Event::dump2() {
 
 char *Event::date_sql(char *str, int i) {
     tm *st=gmtime(&date[i]);
-    strftime(str, 200, "'%F %T'", st);
+    strftime(str, 200, "'%Y-%m-%d %H-%M-%S'", st);
     return str;
 }
