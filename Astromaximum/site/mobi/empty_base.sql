@@ -217,7 +217,7 @@ UNLOCK TABLES;
 /*!40000 ALTER TABLE `states` ENABLE KEYS */;
 
 --
--- Table structure for table `vocs`
+-- Table structure for table `_sundgr`
 --
 
 DROP TABLE IF EXISTS `_sundgr`;
@@ -244,10 +244,10 @@ CREATE TABLE `_voc` (
 --
 
 
-/*!40000 ALTER TABLE `vocs` DISABLE KEYS */;
-LOCK TABLES `vocs` WRITE;
+/*!40000 ALTER TABLE `_voc` DISABLE KEYS */;
+LOCK TABLES `_voc` WRITE;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `vocs` ENABLE KEYS */;
+/*!40000 ALTER TABLE `_voc` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

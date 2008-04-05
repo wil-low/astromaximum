@@ -1,6 +1,7 @@
 <?php
 $DEF_CITIES=array('m.Olympos');
-$DEMO_CITY=array('London');
+$DEMO_CITY=array("London", "New York", "Moscow", "Kiev");
+sort($DEMO_CITY);
 function find_perl(){
 	$perl="/opt/lampp/bin/perl";
 	if(!file_exists($perl)){
@@ -216,7 +217,10 @@ function is_mobile(){
 }
 
 function get_default_cities($arr){
-	$sth=mysql_query("SELECT id FROM cities WHERE name in ('".implode("','", $arr)."')");
+	if(is_array($arr)){
+		$arr=implode("','", $arr);
+	}
+	$sth=mysql_query("SELECT id FROM cities WHERE name in ('$arr')");
 	$ids='';
 	while($row=mysql_fetch_row($sth)){
 		$ids.="$row[0],";

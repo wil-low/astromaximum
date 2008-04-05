@@ -28,8 +28,6 @@ if(strlen($act) && isset($_POST['sc'])){
 	$sth=get_selected_cities('sc');
 	if(strlen($sth)>0){
 		$row = mysql_fetch_row($sth);
-		echo "$defyear!=$current_year";
-		return;
 		echo "<p>".sprintf($i18['READY_CITIES'], "$row[1], $row[2]", $defyear)."</p>\n";
 		include_once('mobi/amtools.php');
 		echo midlet_create("geo", $defyear, $lang, $sc, "mobi/dl");

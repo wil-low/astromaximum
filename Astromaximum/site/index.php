@@ -17,6 +17,7 @@ $user_ok=($chac>=0 and $chac!=1);
 $city_count=711;
 $price=60;
 $show_topics=1;
+$custom_content='';
 
 if(strcmp($main, 'login')==0){
 	include_once('mobi/dbconnect.php');
@@ -35,10 +36,12 @@ if(strcmp($main, 'login')==0){
 	}
 	else{
 		include_once("mobi/ipblock.php");
-		allow_ip('login');
+		$custom_content=allow_ip('login', false);
 		$main='home';
 	}
-	redirect("?$lang_&amp;p=$main");	
+	if(!$custom_content){
+		redirect("?$lang_&amp;p=$main");
+	}	
 }
 if(!preg_match("/^[\w_\d]+$/is", $main)){
 	$main='home';
@@ -61,7 +64,7 @@ if(preg_match("/^(demo)$/is", $main)){
 <head>
 <title>ASTROMAXIMUM - первый астрологический календарь для мобильных телефонов </title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<meta name="author" content="Andrei Ivushkin"/>
+<meta name="author" content="Unknown"/>
 <meta name="copyright" content="Copyright (c) by ASTROMAXIMUM.de"/>
 <meta name="keywords" content="ключи"/>
 <meta name="description" content="описание"/>
@@ -91,8 +94,8 @@ if(preg_match("/^(demo)$/is", $main)){
 <a href="?<?php echo $lang_ ?>">главная</a> |  <a href="?<?php echo $lang_ ?>&amp;p=0_0">инструкция</a> |  <?php anchor('buy') ?>купить</a> | <?php anchor('dl') ?>модули городов</a> | <a href="#">контакты</a>
 <?php 
 //echo "<br/>";print_r($_REQUEST);
-$btn1=$i18['DEMO']."<br/>+ $city_count ".$i18['CITY_MODULES']; $btn1_link="demo";
-$btn2=$i18['ORDER']." $$price<br/>+ $city_count ".$i18['CITY_MODULES'];
+$btn1=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE']; $btn1_link="demo";
+$btn2=$i18['ORDER']." $$price<br/>+ $city_count ".$i18['_CITIES'];
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 
@@ -109,7 +112,7 @@ if($user_ok){
 }
 if(check_access()!=-1){
 	$session_prompt=<<<SP1
-	<p>Здравствуйте, <b>{$_SESSION['username']}</b>! </p>
+	<p>Здравствуйте, <b>{$_SESSION['username']}</b> ! </p>
 	<p><a href="mobi/dl/logout.php"><strong>выход</strong></a></p> 
 SP1;
 }
@@ -129,7 +132,7 @@ else{
 	<form name="flog" action="?lang=$lang&amp;p=login&amp;to=$main" method="post"> 
 	<input id="ilog" name="login"/> логин  <br /><br />
 	<input id="ipwd" name="pass" type="password"/> пароль <br /><br />
-	<a id="aenter" href="#" onclick="javascript:checklogin()"><strong>вход</strong></a> | 
+	<a id="aenter" href="javascript:void(0)" onclick="javascript:checklogin()"><strong>вход</strong></a> | 
 	<a href="?lang=$lang&amp;p=pwdrestore"><strong>восстановить регистрацию</strong></a>
 	</form> 
 FRM;
@@ -180,25 +183,30 @@ FRM;
 </div><!-- end leftColumn div -->
 <div id="content">
 <?php
-	if(file_exists($fn)){
-		$manual_requested=preg_match("/^[_\d]+$/is", $main);
-		if($manual_requested){
-			if($user_ok){
-				include($fn);
-				if(strcmp($main, '0_0')){
-					echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>назад к теме</strong></a></p>";
+	if($custom_content){
+		echo $custom_content;
+	}
+	else{
+		if(file_exists($fn)){
+			$manual_requested=preg_match("/^[_\d]+$/is", $main);
+			if($manual_requested){
+				if($user_ok){
+					include($fn);
+					if(strcmp($main, '0_0')){
+						echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>назад к теме</strong></a></p>";
+					}
+				}
+				else{
+					reg_warning("Просмотр документации");
 				}
 			}
 			else{
-				reg_warning("Просмотр документации");
+				include($fn);
 			}
 		}
 		else{
-			include($fn);
+			echo "<h3>Запрашиваемой страницы не существует</h3>";
 		}
-	}
-	else{
-		echo "<h3>Запрашиваемой страницы не существует</h3>";
 	} 
 ?>
 </div><!-- end content div -->

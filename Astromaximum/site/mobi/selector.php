@@ -5,6 +5,7 @@ $BIG_SITE="http://astromaximum.de/";
 $MOBI_SITE="http://astromaximum.mobi/";
 include_once("dbconnect.php");
 include_once("amtools.php");
+lang_load("html");
 global $DEMO_CITY;
 $data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
 if(!strpos($data_php, "mobi")){
@@ -20,7 +21,10 @@ if($chac==-1){
 		$pass=$_POST['pass'];
 	}
 	if(!login($login, $pass)){
-		redirect($MOBI_SITE);
+		include_once("ipblock.php");
+		$msg=allow_ip("mobi_home", true);
+		echo $msg;
+		if(!$msg)	redirect($MOBI_SITE);
 		exit;
 	}
 }
@@ -59,7 +63,6 @@ if(isset($_POST['btn'])){
 	}
 	exit;
 }
-lang_load("html");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

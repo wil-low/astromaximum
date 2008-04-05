@@ -1,10 +1,11 @@
 <?php
 include_once("mobi/dbconnect.php"); 
 include_once("mobi/amtools.php");
+global $DEMO_CITY;
 if(check_access()!=-1){
 	include_once("mobi/ipblock.php");
-	allow_ip('demo');
-	echo "<h4>Загрузка демо-версии</h4><p>";
+	allow_ip('demo',false);
+	echo "<h4>Загрузка демо-версии</h4><p>Демо-версия календаря <b>ASTROMAXIMUM</b> содержит астрологические события прошлого года.</p>";
 	if(isset($_POST["agree"]) && isset($_POST['p_captcha'])){
 		$captcha=$_POST['p_captcha'];
 		if(is_capcha($captcha)){
@@ -16,9 +17,10 @@ if(check_access()!=-1){
 				echo midlet_create("demo", $current_year, $lang, $sc, "mobi/dl", true);
 			}
 			else{
-				global $DEMO_CITY;
-				$sc=get_default_cities($DEMO_CITY); 
-				echo midlet_create("geo", $current_year, $lang, $sc, "mobi/dl", true);
+				if(is_numeric($choice) && ($choice>=0) && ($choice<count($DEMO_CITY))){
+					$sc=get_default_cities($DEMO_CITY[$choice]); 
+					echo midlet_create("geo", $current_year, $lang, $sc, "mobi/dl", true);
+				}
 			}
 			return;
 		}
@@ -45,16 +47,18 @@ if(check_access()!=-1){
 <p><img src="mobi/kcaptcha?$sess">
 <input name="p_captcha" type="text"/>
 </p>
-Сгенерировать:<br/><br/>
-<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> демо-версию<br/><br/>
-<input type="radio" name="agree" value="city" style="width:auto; border: 0px"/> демо-город<br/><br/>
-<input type="button" style="height:auto;" value="OK" onclick="checkCheckBox(this)"/>
-</form>
+<p><font color="green">Сгенерировать календарь:</font><br/><br/>
+<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> <b>ASTROMAXIMUM</b> демо<br/><br/>
+<font color="green">Сгенерировать город:</font><br/><br/>
 EOF1;
+	foreach($DEMO_CITY as $i=>$city){
+		echo '<input type="radio" name="agree" value="'.$i.'" style="width:auto; border: 0px"/> '.$city.' <br/><br/>';
+	}
+	echo '<input type="button" style="height:auto;" value="OK" onclick="checkCheckBox(this)"/></form>';
 	return;
 }
 ?>
-Демо-версия календаря <b>ASTROMAXIMUM</b> содержит астрологические события прошлого года.</p>
+</p>
 <p>Если Вы - незарегистрированный пользователь, для загрузки демо-версии введите в форме слева:</p>
 <ul>
 <li>логин: 123456789</li>

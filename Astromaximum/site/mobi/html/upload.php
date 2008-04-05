@@ -211,7 +211,7 @@ function up_geodata($fname, $ext){
 #			$sth = my$dbh->prepare(
 #				"SELECT cities.id, countries.id FROM cities,countries WHERE cities.country_id=countries.id ".
 #				"AND cities.name=\"$name\" AND countries.name=\"$country\"");
-		$status.="$citid, $stateid, $couid, #".strlen($locdata)."/$datalen";
+		$status.="$citid, $stateid, $couid";//, #".strlen($locdata)."/$datalen";
 		echo("<tr><td>$name</td><td>$country</td><td>$state</td><td>$yr".
 			"</td><td>$txtchk</td><td>$status</td></tr>\n");
 	}
