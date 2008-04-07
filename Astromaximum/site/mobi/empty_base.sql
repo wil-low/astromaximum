@@ -77,6 +77,7 @@ CREATE TABLE `customers` (
   `subscr_date` date default NULL,
   `dl_count` int(11) NOT NULL default '2',
   `city_count` int(11) NOT NULL default '5',
+  `past_count` INT NOT NULL DEFAULT '10',
   `active` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`),

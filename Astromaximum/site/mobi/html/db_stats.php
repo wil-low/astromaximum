@@ -94,10 +94,21 @@ function check_env(){
 		$res['jars']='<font color="red">no</font>';
 	}
 	$res['dl/html/.htaccess']=yesno(file_exists($p.'../html/.htaccess'));
+	global $DEMO;
+	$key='Demo account';
+	$stat="SELECT name, realname, hash FROM customers WHERE name='{$DEMO['login']}'";
+	$sth=mysql_query($stat);
+	if($sth and ($row=mysql_fetch_row($sth))){
+		$res[$key]="login: $row[0], realname: $row[1], password valid: ".
+			yesno(strcmp($row[2], pwd_convert2(pwd_convert1($DEMO['login'],$DEMO['pass'])))==0); 
+	}
+	else{
+		$res[$key]="<font color=\"red\">MISSING</font>";
+	}
 	return $res;
 }
 
 function yesno($val){
-	return $val? '<font color="green">OK</font>': '<font color="red">no</font>';
+	return $val? '<font color="green">YES</font>': '<font color="red">NO</font>';
 }
 ?>

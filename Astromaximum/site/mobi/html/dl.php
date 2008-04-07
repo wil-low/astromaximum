@@ -9,6 +9,16 @@ if($chac==-1 or $chac==1){
 	reg_warning("Загрузка городов");
 	return;
 }
+$stat=sprintf("SELECT city_count FROM customers WHERE id=%d", quote_smart($_SESSION['uid']));
+$sth=mysql_query($stat);
+include_once('mobi/amtools.php');
+global $DLIM;
+$key='city_count';
+if(!$sth or !($rowc=mysql_fetch_array($sth, MYSQL_BOTH))){
+	reg_warning("Загрузка городов");
+	return;
+}
+
 $defyear=date("Y");
 if(isset($_POST['y_sel'])){
 	$defyear=$_POST['y_sel'];
@@ -106,7 +116,13 @@ for($i=0; $i<3; $i++){
 </select>
 </th>
 <th colspan="2" style="font-size:12px">
-<span style="white-space: nowrap;"><?php echo sprintf($i18['LOAD_LEFT'], 5, $max_cities) ?></span>
+<span style="white-space: nowrap;">
+<?php
+	if($row[0]!=-1){ 
+		echo sprintf($i18['LOAD_LEFT'], $DLIM[$key]-$rowc[0], $DLIM[$key]);
+	} 
+?>
+</span>
 </th>
 </tr>
 <tr>
@@ -143,11 +159,15 @@ for($i=0; $i<3; $i++){
 		$lb2.="<option value=\"$row[0]\"$selflag>$row[1]</option>\n";
 	}
 	mysql_free_result($sth);
+	$gen_prop=' onclick="generate(\''.$cur_country.'\')"';
+	if(!$rowc){
+		$gen_prop=' disabled="disabled"';
+	}
 ?>
 </th>
 <th>
 <span class="bums">
-<input id="genbtn" type="button" onclick="generate('<?php echo $cur_country ?>')" value="<?php echo $i18['GET_DATA']?>"/>
+<input id="genbtn" type="button" value="<?php echo $i18['GET_DATA']?>"<?php echo $gen_prop ?>/>
 </span> 
 </th>
 </tr>

@@ -1,7 +1,12 @@
 <?php
 $DEF_CITIES=array('m.Olympos');
 $DEMO_CITY=array("London", "New York", "Moscow", "Kiev");
+$DEMO=array('login'=>'123456789', 'pass'=>'012345678');
+
 sort($DEMO_CITY);
+
+$DLIM=array('dl_count'=>2, 'city_count'=>5, 'past_count'=>10); //download limited
+  
 function find_perl(){
 	$perl="/opt/lampp/bin/perl";
 	if(!file_exists($perl)){
@@ -249,7 +254,7 @@ function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string 
 	else{
 		$is_cal=true;
 		if(!preg_match("/^(demo|tb)$/is", $type)){
-			return;
+			return '';
 		}
 		$cmd="$perl $path2gen/gen_amax.cgi $type $year $lang \"$param\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
 	}
@@ -258,6 +263,8 @@ function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string 
 	if($ret){				
 		$str.=$cmd.'<br/>';
 		$str.=implode('<br/>',$outp);
+		error_log($str);
+		$str='';
 	}
 	else{
 //		if(strcmp($type, "demo")){
@@ -265,7 +272,8 @@ function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string 
 //		header("Location: http://$data_php/data.php?d=$fn");
 			if(!add_file($fn, $type{0}." $year $lang")){
 				$str.=mysql_error();
-				return $str;
+				error_log($str);
+				return '';
 			}
 //		}
 		$id=$fn;

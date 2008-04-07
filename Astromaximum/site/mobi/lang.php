@@ -35,8 +35,15 @@ function anchor($pp){
 	echo "<a href=\"?lang=$lang&amp;p=$pp\">";
 } 
 
-function dload_prompt($str){
-	echo <<<EOF
+function dload_prompt($str, $is_disabled){
+	$ret='';
+	$disabled='';
+	if($is_disabled){
+		$disabled=" disabled=\"disabled\"";
+		$onclick='';
+	}
+	else{
+		$ret = <<<EOF
 <script type="text/javascript">
 <!--
 	function checkCheckBox(b){
@@ -50,9 +57,12 @@ function dload_prompt($str){
 	}
 -->
 </script>
-<input type="checkbox" name="agree" style="width:auto;"/> {$str}<br/><br/>
-<input type="button" style="height:auto;" value="OK" onclick="checkCheckBox(this)"/>
 EOF;
+		 $onclick=' onclick="checkCheckBox(this)"';
+	}
+	$ret.='<input type="checkbox" name="agree" style="width:auto;"'.$disabled.'/> '.$str.'<br/><br/>'.
+	'<input type="button" style="height:auto;" value="OK"'.$onclick.$disabled.'/>';
+	return $ret;
 } 
 
 function reg_warning($subj){

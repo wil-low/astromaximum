@@ -5,12 +5,13 @@ if(isset($_GET['u'])){
 	$row=array();
 	$id=$_GET['u'];
 	if(strcmp($id, 'add')==0){
-		$row=array("", "", "", 2, 5, 1);
+		global $DLIM;
+		$row=array("", "", "", $DLIM['dl_count'], $DLIM['city_count'], $DLIM['past_count'], 1);
 		$hdr="Add new user:";
 		$act="Add";
 	}
 	if(is_numeric($id)){
-		$stat="SELECT realname, name, email, dl_count, city_count, active from customers WHERE id=".quote_smart($id);
+		$stat="SELECT realname, name, email, dl_count, city_count, past_count, active from customers WHERE id=".quote_smart($id);
 		$sth=mysql_query($stat);
 		$row=mysql_fetch_row($sth);
 		$hdr="Edit user - ";
@@ -18,7 +19,7 @@ if(isset($_GET['u'])){
 	}
 	if(count($row)){
 		$active="";
-		if($row[5]){
+		if($row[6]){
 			$active=" checked=\"checked\"";
 		}
 		echo <<<EOF
@@ -79,6 +80,7 @@ if(isset($_GET['u'])){
 <p>
 <input type="text" name="u_dlc" value="$row[3]" size="3"/> dl &nbsp; &nbsp; 
 <input type="text" name="u_cityc" value="$row[4]" size="3"/> city &nbsp; &nbsp; 
+<input type="text" name="u_pastc" value="$row[5]" size="3"/> city &nbsp; &nbsp; 
 <input type="checkbox" name="u_active"$active/> Active &nbsp; &nbsp; 
 <input type="checkbox" name="u_notify"/> E-mail credentials to this user</a></p>
 <p>
@@ -97,26 +99,28 @@ if(isset($_POST['u_id'])){
 		$active=isset($_POST['u_active']) ? 1: 0;
 		$succ=false;
 		if($is_num){
-			$stat=sprintf("UPDATE customers set realname=%s, name=%s, email=%s, dl_count=%d, city_count=%d, ".
+			$stat=sprintf("UPDATE customers set realname=%s, name=%s, email=%s, dl_count=%d, city_count=%d, past_count=%d, ".
 				"active=%d WHERE id=%d",
 				quote_smart($_POST['u_realname']),
 				quote_smart($_POST['u_login']),
 				quote_smart($_POST['u_email']),
 				quote_smart($_POST['u_dlc']),
 				quote_smart($_POST['u_cityc']),
+				quote_smart($_POST['u_pastc']),
 				quote_smart($active),
 				quote_smart($id)
 			);
 			$succ=mysql_query($stat);
 		}
 		if(strcmp($id, "add")==0){
-			$stat=sprintf("INSERT INTO customers(realname, name, email, dl_count, city_count, active, subscr_date) ".
-				"VALUES (%s, %s, %s, %d, %d, %d, CURRENT_DATE)",
+			$stat=sprintf("INSERT INTO customers(realname, name, email, dl_count, city_count, past_count, active, subscr_date) ".
+				"VALUES (%s, %s, %s, %d, %d, %d, %d, CURRENT_DATE)",
 				quote_smart($_POST['u_realname']),
 				quote_smart($_POST['u_login']),
 				quote_smart($_POST['u_email']),
 				quote_smart($_POST['u_dlc']),
 				quote_smart($_POST['u_cityc']),
+				quote_smart($_POST['u_pastc']),
 				quote_smart($active)
 			);
 			$succ=mysql_query($stat);
@@ -167,11 +171,11 @@ if(isset($_POST['u_id'])){
 }
 ?>
 <table>
-<tr><td colspan="4" style="background-color:white; text-align:right">
+<tr><td colspan="5" style="background-color:white; text-align:right">
 <a href="index.php?<?php echo $lang_ ?>&amp;p=usermgr&amp;u=add">Add user</a></td></tr>
-<tr><th>Realname</th><th>email</th><th>dl count</th><th>city count</th></tr>
+<tr><th>Realname</th><th>email</th><th>dl count</th><th>city count</th><th>past count</th></tr>
 <?php
-$stat="SELECT realname, email, dl_count, city_count, hash, active, id from customers ORDER BY realname";
+$stat="SELECT realname, email, dl_count, city_count, past_count, hash, active, id from customers ORDER BY realname";
 $sth=mysql_query($stat);
 $i=0;
 while($row=mysql_fetch_row($sth)){
