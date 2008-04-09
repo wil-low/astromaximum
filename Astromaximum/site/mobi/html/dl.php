@@ -1,4 +1,5 @@
 <?php
+if(!isset($EXEC)) die("Access restricted");
 lang_load("mobi/html");
 $step=1;
 $max_cities=5;
@@ -118,7 +119,7 @@ for($i=0; $i<3; $i++){
 <th colspan="2" style="font-size:12px">
 <span style="white-space: nowrap;">
 <?php
-	if($row[0]!=-1){ 
+	if($rowc[0]!=-1){ 
 		echo sprintf($i18['LOAD_LEFT'], $DLIM[$key]-$rowc[0], $DLIM[$key]);
 	} 
 ?>

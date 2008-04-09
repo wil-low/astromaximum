@@ -1,4 +1,5 @@
 <?php
+$EXEC=5;
 include_once('../lang.php');
 sess_start();
 $_SESSION = array();

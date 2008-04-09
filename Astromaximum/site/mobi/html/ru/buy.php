@@ -1,6 +1,7 @@
 <?php 
-	include_once("mobi/amtools.php");
-	$current_year=get_year();
+if(!isset($EXEC)) die("Access restricted");
+include_once("mobi/amtools.php");
+$current_year=get_year();
 ?>
 <?php
 if(isset($_POST["reg_submit"])){ ?>
@@ -24,7 +25,7 @@ if($chac!=-1 and $chac!=1){
 	$year=$current_year;
 	
 	$dl_key='dl';
-	
+
 	$stat=sprintf("SELECT dl_count, past_count FROM customers WHERE id=%d", quote_smart($_SESSION['uid']));
 	$sth=mysql_query($stat);
 	global $DLIM;

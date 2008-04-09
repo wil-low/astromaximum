@@ -26,7 +26,8 @@ CREATE TABLE `cities` (
   `country_id` int(11) NOT NULL default '0',
   `state_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  KEY `name` (`name`,`country_id`,`state_id`)
+  KEY `name` (`name`,`country_id`,`state_id`),
+  KEY `country_id` (`country_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds city names';
 
 --
@@ -49,7 +50,7 @@ CREATE TABLE `countries` (
   `name` varchar(50) NOT NULL default '',
   `continent` enum('AFR','ASI','EAS','SAS','SEA','CAR','CAM','EUR','EEU','WEE','MIE','NAM','OCE','SAM'),
   PRIMARY KEY  (`id`),
-  KEY `name` (`name`)
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds country names';
 
 --
@@ -135,7 +136,7 @@ CREATE TABLE `locations` (
   `city_id` int(11) NOT NULL default '0',
   `data` blob NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `year` (`year`,`city_id`)
+  UNIQUE KEY `year` (`year`,`city_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds calculated geodata';
 
 --

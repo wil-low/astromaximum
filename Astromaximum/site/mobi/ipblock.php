@@ -1,4 +1,5 @@
 <?php
+if(!isset($EXEC)) die("Access restricted");
 $ACCESS_ON=5; // access is checked when >
 $TIME_DEL=60*60; // ip records will be deleted if older than this period
 $TIME_MIN=$TIME_DEL/$ACCESS_ON; // min time to reload page again

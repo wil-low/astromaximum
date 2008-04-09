@@ -52,3 +52,4 @@ SEL_CHK1=Please check the date on your phone before installing the calendar:
 SEL_CHK2=today is
 LOAD_LEFT=You have already downloaded <b>%d</b> cities from <b>%d</b> available.
 IP_BLOCKED=No access. Please visit this page in %d mins.
+UP=up

@@ -1,4 +1,5 @@
 <?php
+$EXEC=2;
 include_once("dbconnect.php");
 include_once("lang.php");
 sess_start();

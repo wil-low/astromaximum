@@ -1,4 +1,5 @@
 <?php
+$EXEC=3;
 include_once("lang.php");
 sess_start();
 $BIG_SITE="http://astromaximum.de/";
@@ -53,7 +54,7 @@ if(isset($_POST['btn'])){
 			case 2:	$desturl="index.php?lang=$lang&p=0_0"; break;
 			case 3:	$desturl="html/$lang/about.xhtml?"; break;
 			case 4:	$desturl="dl/prg.php?mode=demo&lang=$lang&dest=$dest"; break;
-			case 5:	$desturl="geo.php?lvl=10"; break;
+			case 5:	$desturl="democity.php?"; break;
 			case 6:	$desturl="dl/prg.php?mode=trial&lang=$lang&dest=$dest"; break;
 		}
 	}

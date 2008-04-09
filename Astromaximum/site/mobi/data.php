@@ -1,4 +1,5 @@
 <?php
+$EXEC=5;
 include_once('dbconnect.php');
 $PREFIX='Cities';
 if(true /*|| check_access()*/){

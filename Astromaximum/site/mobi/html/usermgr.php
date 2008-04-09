@@ -1,8 +1,10 @@
 <?php
+if(!isset($EXEC)) die("Access restricted");
 reject2index("index.php?$lang_");
 //print_r($_REQUEST);
+include_once("mobi/amtools.php");
+$row=array();
 if(isset($_GET['u'])){
-	$row=array();
 	$id=$_GET['u'];
 	if(strcmp($id, 'add')==0){
 		global $DLIM;
@@ -73,6 +75,7 @@ if(isset($_GET['u'])){
 </p> 
 <p><i>Enter new password when changing login !!!</i></p>
 <p>
+
 <input type="text" name="u_pwd1" value="" size="9" maxlength="9"/> 
 <a href="javascript:void(0)" onclick="do_random('u_pwd1');">pwd</a> &nbsp;
 <br/><input type="text" name="u_pwd2" size="9" maxlength="9"> pwd again &nbsp;
@@ -80,7 +83,7 @@ if(isset($_GET['u'])){
 <p>
 <input type="text" name="u_dlc" value="$row[3]" size="3"/> dl &nbsp; &nbsp; 
 <input type="text" name="u_cityc" value="$row[4]" size="3"/> city &nbsp; &nbsp; 
-<input type="text" name="u_pastc" value="$row[5]" size="3"/> city &nbsp; &nbsp; 
+<input type="text" name="u_pastc" value="$row[5]" size="3"/> past &nbsp; &nbsp; 
 <input type="checkbox" name="u_active"$active/> Active &nbsp; &nbsp; 
 <input type="checkbox" name="u_notify"/> E-mail credentials to this user</a></p>
 <p>
@@ -143,7 +146,6 @@ if(isset($_POST['u_id'])){
 				}
 				else{
 					if(isset($_POST['u_notify'])){
-						include_once("mobi/amtools.php");
 						if(pwd_send($_POST['u_email'], $_POST['u_login'], $_POST['u_realname'],
 						 	$_POST['u_dlc'], $_POST['u_cityc'], $_POST['u_pwd1'])){
 						 		echo "Notification was sent to ".$_POST['u_email']."<br/>";

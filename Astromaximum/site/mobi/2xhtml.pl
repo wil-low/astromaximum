@@ -76,7 +76,7 @@ sub convert{
 #	$body=~s/<\/[ib]>/<\/span>/isg;
 #	$body='<div id="cont">'.$body.'</div>';
 #	$body="$header_main\n$body\n$footer";
-	$body="$tit$body";
+	$body='<?php if(!isset($EXEC)) die("Access restricted") ?>'."\n$tit$body";
 	open(OUTF, ">$fn" ) or die "$! $fn";
 	binmode(OUTF);
 	print(OUTF $body);

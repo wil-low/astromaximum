@@ -1,4 +1,5 @@
 <?php
+if(!isset($EXEC)) die("Access restricted");
 $to=1;
 if(isset($_GET['to'])){
 	$to=$_GET['to'];

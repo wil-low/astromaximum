@@ -1,5 +1,6 @@
-<h4>Восстановление регистрации</h4>
 <?php
+if(!isset($EXEC)) die("Access restricted");
+echo "<h4>Восстановление регистрации</h4>";
 include_once("mobi/ipblock.php");
 $msg=allow_ip('pwd_rest', false);
 echo $msg;

@@ -1,4 +1,5 @@
 <?php
+if(!isset($EXEC)) die("Access restricted");
 $DEF_CITIES=array('m.Olympos');
 $DEMO_CITY=array("London", "New York", "Moscow", "Kiev");
 $DEMO=array('login'=>'123456789', 'pass'=>'012345678');

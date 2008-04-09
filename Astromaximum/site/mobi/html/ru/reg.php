@@ -1,6 +1,6 @@
-<h4>Загрузка полной версии</h4>
-<p>
 <?php
+if(!isset($EXEC)) die("Access restricted");
+echo "<h4>Загрузка полной версии</h4><p>";
 include_once("mobi/dbconnect.php");
 include_once("mobi/amtools.php");
 $current_year=get_year();

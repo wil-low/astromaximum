@@ -1,4 +1,5 @@
 <?php 
+$EXEC=1;
 include_once('mobi/lang.php');
 $main='home';
 if(isset($_GET['p'])){
@@ -71,6 +72,7 @@ if(preg_match("/^(demo)$/is", $main)){
 <link href="astro.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+<a id="top"></a>
 <div id="globe"><a href="?<?php echo $lang_ ?>"><img src="i/globe.jpg" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" height="320" width="956"/></a></div>
 <div id="logoText"><?php echo $i18['AMAX_LOGO'] ?></div>
 <div id="lang">
@@ -91,7 +93,12 @@ if(preg_match("/^(demo)$/is", $main)){
 <p><b>GMT <span id="mtime">&nbsp;</span></b></p>
 </div>
 <div id="menu">
-<a href="?<?php echo $lang_ ?>">главная</a> |  <a href="?<?php echo $lang_ ?>&amp;p=0_0">инструкция</a> |  <?php anchor('buy') ?>купить</a> | <?php anchor('dl') ?>модули городов</a> | <a href="#">контакты</a>
+<a href="?<?php echo $lang_ ?>">главная</a> | 
+<a href="?<?php echo $lang_ ?>&amp;p=0_0">инструкция</a> | 
+<?php anchor('buy') ?>купить</a> | 
+<?php anchor('citylist') ?>список городов</a> |
+<?php anchor('dl') ?>загрузка городов</a> | 
+<a href="#">контакты</a>
 <?php 
 //echo "<br/>";print_r($_REQUEST);
 $btn1=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE']; $btn1_link="demo";

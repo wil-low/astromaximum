@@ -1,8 +1,10 @@
 <?php
-  $sess=""; if(isset($_GET['Astromaximum'])) $sess='Astromaximum='.$_GET['Astromaximum'];
+	$EXEC=4;
 	include_once("lang.php");
 	sess_start();
+   $sess=session_name().'='.session_id();
 	include_once('dbconnect.php');
+	include_once('amtools.php');	
 	$chac=check_access();
 	if($chac==-1){
 		redirect("/");
@@ -11,10 +13,19 @@
 	if(isset($_GET['lvl'])){
 		$level=$_GET['lvl'];
 	}
-	if($level==10){
+	for($i=0; $i<=$level; $i++){
+		$p[$i]=0;
+		if(isset($_GET["p$i"])){
+			$p[$i]=$_GET["p$i"];
+		}
+	}
+	global $DEMO_CITY;
+	if($level==10 and $p[0]>=0 and $p[0]<count($DEMO_CITY)){
 		include_once("amtools.php");
-		global $DEMO_CITY;
-		make_city(get_default_cities($DEMO_CITY), get_year()-1);
+		$arr=explode(',', get_default_cities($DEMO_CITY));
+		if(isset($arr[$p[0]])){
+			make_city($arr[$p[0]], get_year()-1);
+		}
 		exit;
 	}
 	if($chac==1){
@@ -33,12 +44,6 @@
 	$defyear=date('Y');
 	if(isset($_GET['y'])){
 		$defyear=$_GET['y'];
-	}
-	for($i=0; $i<=$level; $i++){
-		$p[$i]=0;
-		if(isset($_GET["p$i"])){
-			$p[$i]=$_GET["p$i"];
-		}
 	}
 	if($level==4){
 		make_city($p[3], $defyear);
