@@ -71,10 +71,6 @@ function login($user,$pwd){
 		$_SESSION['pwd']=$pwd1;
 		$res=true;
 	}
-/*	else{
-		sleep(2);
-	}
-*/
 	mysql_free_result($sth);
 	return $res;
 }
@@ -113,7 +109,6 @@ function check_access(){
 	$pass=pwd_convert2($_SESSION['pwd']);
 	$stat=sprintf("SELECT role FROM customers WHERE id=%s AND hash=%s",
 		quote_smart($_SESSION['uid']),quote_smart($pass));
-//	echo $stat;
 	$sth=mysql_query($stat);
 	if(mysql_num_rows($sth)==1){
 		$row=mysql_fetch_row($sth);

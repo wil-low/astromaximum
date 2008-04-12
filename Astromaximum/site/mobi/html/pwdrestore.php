@@ -12,10 +12,11 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 		if(count($arr)){ 
 			$newpass=sprintf("%09d", mt_rand(1, 999999999));
 			include_once("mobi/amtools.php");
-			if(pwd_send($mail, $arr[0], $arr[1], $arr[2], $arr[3], $newpass)){
+			$tries=get_try_count($arr[0]);
+			if(pwd_send($mail, $arr[1], $arr[2], $tries, $newpass)){
 				echo "New password has been sent to email address specified.";
-				$pwd=pwd_convert2(pwd_convert1($arr[0], $newpass));
-				$stat=sprintf("UPDATE customers set hash=%s WHERE name=%s",
+				$pwd=pwd_convert2(pwd_convert1($arr[1], $newpass));
+				$stat=sprintf("UPDATE customers set hash=%s WHERE id=%d",
 					quote_smart($pwd), quote_smart($arr[0]));
 				if(!mysql_query($stat)){
 					echo "Error setting password:<br/>$stat<br/>".mysql_error();
@@ -54,7 +55,7 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 function email2login($mail){
 	$arr=array();
 	if(strlen($mail)>0){
-		$stat=sprintf("SELECT name, realname, dl_count, city_count FROM customers WHERE email=%s AND active>0",
+		$stat=sprintf("SELECT id, name, realname FROM customers WHERE email=%s AND active>0",
 			quote_smart($mail));
 //		echo $stat;
 		$sth=mysql_query($stat);

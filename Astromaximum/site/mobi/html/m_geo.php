@@ -1,34 +1,33 @@
 <?php
-	$EXEC=4;
-	include_once("lang.php");
-	sess_start();
-   $sess=session_name().'='.session_id();
-	include_once('dbconnect.php');
-	include_once('amtools.php');	
-	$chac=check_access();
-	if($chac==-1){
-		redirect("/");
-	}
+	if(!isset($EXEC)) die("Access restricted");
 	$level=0;
 	if(isset($_GET['lvl'])){
 		$level=$_GET['lvl'];
 	}
 	for($i=0; $i<=$level; $i++){
-		$p[$i]=0;
+		$parm[$i]=0;
 		if(isset($_GET["p$i"])){
-			$p[$i]=$_GET["p$i"];
+			$parm[$i]=$_GET["p$i"];
 		}
 	}
 	global $DEMO_CITY;
-	if($level==10 and $p[0]>=0 and $p[0]<count($DEMO_CITY)){
-		include_once("amtools.php");
+	if($level==10 and $parm[0]>=0 and $parm[0]<count($DEMO_CITY)){
 		$arr=explode(',', get_default_cities($DEMO_CITY));
-		if(isset($arr[$p[0]])){
-			make_city($arr[$p[0]], get_year()-1);
+		if(isset($arr[$parm[0]])){
+			$sc=$arr[$parm[0]];
+			$defyear=get_year()-1;
+			$stat="SELECT cities.name, countries.name FROM cities,countries WHERE cities.id=$sc and countries.id=country_id ORDER BY countries.name,cities.name";
+			$sth=mysql_query($stat);
+			if(mysql_num_rows($sth)>0){
+				$row = mysql_fetch_row($sth);
+				echo sprintf($i18['READY_CITIES'], "$row[0], $row[1]", $defyear)."<br/>\n";
+				echo midlet_create("geo", $defyear, $lang, $sc, "dl");
+			}
+#			make_city($arr[$parm[0]], get_year()-1);
 		}
-		exit;
+		return;
 	}
-	if($chac==1){
+	if(!$user_ok){
 		redirect("/");
 	}
 	$fd = fopen("continents.txt", 'r');
@@ -41,12 +40,31 @@
 	}
 	fclose($fd);
 	$LVL_MAX=3;
-	$defyear=date('Y');
+	$defyear=get_year();
 	if(isset($_GET['y'])){
 		$defyear=$_GET['y'];
 	}
 	if($level==4){
-		make_city($p[3], $defyear);
+		$is_allow_dl=1;
+		$tries=get_try_count(0);
+		make_city($parm[3], $defyear);
+		$sc=$parm[3];
+		$stat="SELECT cities.name, countries.name FROM cities,countries WHERE cities.id=$sc and countries.id=country_id ORDER BY countries.name,cities.name";
+		$sth=mysql_query($stat);
+		if($is_allow_dl && mysql_num_rows($sth)>0){
+			$row = mysql_fetch_row($sth);
+			echo sprintf($i18['READY_CITIES'], "$row[0], $row[1]", $defyear)."<br/>\n";
+			$str=midlet_create("geo", $defyear, $lang, $sc, "dl");
+			if(strlen($str)){
+				dec_try_count(0, 1);
+				echo $str;
+				echo tries_remained($tries[1]-1, $DLIM[1]);
+			}
+		}
+		else{
+			echo 'Вам не разрешено загружать города.';
+		}
+		return;
 	}
 	$entity='';
 	if(isset($_GET['ent'])){
@@ -54,53 +72,21 @@
 	}
 	$_POST["n$level"]=$entity;
 	$lvl_title=array('Continent', 'Country', 'State', 'City');
-	echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<?php
-	$res=db_query($level, $p);
-?>
-<title><?php echo "Select $lvl_title[$level]" ?></title>
-<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
-<meta http-equiv="Cache-Control" content="max-age=0"/>
-<link rel="stylesheet" type="text/css" href="style.css"/>
-</head>
-<body>
-<div class="hdr">
-<?php
+	$res=db_query($level, $parm);
 	for($i=0; $i<$level; $i++){
-		echo make_anchor($i, $p, $lvl_title[$i], $defyear).'&nbsp;';
+		echo make_anchor($i, $parm, $lvl_title[$i], $defyear).'&nbsp;';
 	}
-?>
-</div>
-<div id="cont">
-<?php
 	if($entity){
 		echo "$entity:<br/>";
 	}
 	$cnt=count($res[0]);
 	for($i=0; $i<$cnt; $i++){
-		$newparam=$p;
+		$newparam=$parm;
 		$newparam[$level]=$res[0][$i];
 		echo make_anchor($level+1, $newparam, $res[1][$i], $defyear)."<br/>\n";	
 	}
-?>
-</div>
-<div id="ftr">
-<pre>
-<?php
-//	print_r($_GET);
-//	print_r($_POST);
-?>
-</pre>
-</div>
-</body>
-</html>
-
-<?php
-	function db_query($level, $params)
+	
+	function db_query($level, $parmarams)
 	{
 		global $cont, $level, $defyear;
 		$i=0; $keys=$values=array();
@@ -111,8 +97,8 @@
 			}
 		}
 		if($level==1){ // country
-			$query=sprintf("SELECT * from countries where continent=%s ORDER BY name", quote_smart($params[0]));
-//			echo "$query<br/>";
+			$query=sprintf("SELECT * from countries where continent=%s ORDER BY name", quote_smart($parmarams[0]));
+	//			echo "$query<br/>";
 			$sth=mysql_query($query);
 			while($row = mysql_fetch_row($sth)){
 				$keys[$i]=$row[0]; $values[$i]=$row[1];
@@ -121,8 +107,8 @@
 		}
 		if($level==2){ // state
 			$query=sprintf("SELECT DISTINCT states.id, states.name FROM states,countries WHERE ".
-				"country_id=%s ORDER BY states.name",quote_smart($params[1]));
-//			echo "$query<br/>";
+				"country_id=%s ORDER BY states.name",quote_smart($parmarams[1]));
+	//			echo "$query<br/>";
 			$sth=mysql_query($query);
 			if(mysql_num_rows($sth)){
 				while($row = mysql_fetch_row($sth)){
@@ -136,15 +122,15 @@
 		}
 		if($level==3){ // city
 			$andst='';
-			if($params[2]){
-				$andst=sprintf(" AND state_id=%s",quote_smart($params[2]));
+			if($parmarams[2]){
+				$andst=sprintf(" AND state_id=%s",quote_smart($parmarams[2]));
 			}
 			$query=sprintf(
 				"SELECT cities.id, cities.name FROM cities,countries".
 				",locations WHERE country_id=%s AND countries.id=country_id".
 				" AND city_id=cities.id %s AND year=%s". # year condition
-				" ORDER BY cities.name",quote_smart($params[1]), $andst, quote_smart($defyear));
-//			echo "$query<br/>";
+				" ORDER BY cities.name",quote_smart($parmarams[1]), $andst, quote_smart($defyear));
+	//			echo "$query<br/>";
 			$sth=mysql_query($query);
 			while($row = mysql_fetch_row($sth)){
 				$keys[$i]=$row[0]; $values[$i]=$row[1];
@@ -154,18 +140,27 @@
 		return array($keys, $values);
 	}
 	
-	function make_anchor($level, $params, $text, $year)
+	function make_anchor($level, $parmarams, $text, $year)
 	{
-	  global $sess;
-		$str="<a href=\"".$_SERVER['PHP_SELF']."?lvl=$level&amp;y=$year&amp;$sess&amp;ent=".urlencode($text);
+	  global $sess, $lang_;
+		$str="<a href=\"?$lang_&amp;p=geo&amp;lvl=$level&amp;y=$year&amp;$sess&amp;ent=".urlencode($text);
 		for($j=0; $j<$level; $j++){
-			$str.="&amp;p$j=$params[$j]";
+			$str.="&amp;p$j=$parmarams[$j]";
 		}
 		return $str."\">$text</a>&nbsp;";
 	}
 	
+	function make_city($id, $country, $defyear){
+		echo "<p>".sprintf($i18['READY_CITIES'], "$row[1], $row[2]", $defyear)."</p>\n";
+		$str=midlet_create("geo", $defyear, $lang, $sc, "mobi/dl");
+		if(strlen($str)){
+			dec_try_count(0, 1);
+			echo $str;
+			echo tries_remained($tries[1]-1, $DLIM[1]);
+		}
+	}
+/*	
 	function make_city($id, $defyear){
-		include_once('amtools.php');
 		global $DIR_FILES, $DIR_SOURCE;
 		$dsrc="./$DIR_FILES";
 		$ye=substr($defyear,-2);
@@ -190,8 +185,8 @@
 			if(!strpos($data_php, "mobi")){
 				$data_php.="/mobi";
 			}
-			header("Location: http://$data_php/data.php?t=$fn");
-			exit();
+			echo "<a href=\"http://$data_php/data.php?t=$fn\">Скачать</a>";
 		}
 	}
+*/
 ?>

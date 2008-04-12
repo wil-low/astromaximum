@@ -1,12 +1,6 @@
 <?php
-$EXEC=3;
-include_once("lang.php");
-sess_start();
 $BIG_SITE="http://astromaximum.de/";
 $MOBI_SITE="http://astromaximum.mobi/";
-include_once("dbconnect.php");
-include_once("amtools.php");
-lang_load("html");
 global $DEMO_CITY;
 $data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
 if(!strpos($data_php, "mobi")){
@@ -29,15 +23,18 @@ if($chac==-1){
 		exit;
 	}
 }
+$DEST_URL=array("year", "0_0", "about", "prg&amp;mode=demo", "dcity", "prg&amp;mode=trial");
+
 $chac=check_access();
 $validuser=false;
 if($chac>=0 && $chac!=1){
 	$validuser=true;
 }
-$current_year=get_year();   
+$current_year=get_year();
 if(isset($_POST['btn'])){
 	$dest='ph';
 	$btn=$_POST['btn'];
+/*
 	if(strcmp($dest, 'pc')==0){ // PC links
 		$desturl=$BIG_SITE."?lang=$lang";
 		switch($btn){
@@ -62,50 +59,31 @@ if(isset($_POST['btn'])){
 		$desturl.='&'.session_name().'='.session_id();
 		header("Location: http://$data_php/$desturl");
 	}
+*/	
 	exit;
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>Astromaximum.mobi</title>
-<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
-<meta http-equiv="Cache-Control" content="max-age=30"/>
-<link rel="stylesheet" type="text/css" href="style.css"/>
-</head>
-<body>
-<div id="hdr" class="hdr">Astromaximum</div>
-<div id="cont">
-<div class="hr"></div>
-<form action="<?php echo 'selector.php?'.session_name().'='.session_id() ?>" method="post"><p>
-<?php echo knopka(1, $validuser).$i18['SEL_DCITY'] ?><br/>
-<?php echo knopka(2, $validuser).$i18['SEL_AH'] ?><br/>
-<?php echo knopka(3, true).$i18['SEL_ABOUT'] ?></p>
+<form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post"><p>
+<?php echo knopka(1, $validuser, $i18['SEL_DCITY']) ?><br/>
+<?php echo knopka(2, $validuser, $i18['SEL_AH']) ?><br/>
+<?php echo knopka(3, true, $i18['SEL_ABOUT']) ?></p>
 <p>
-<?php echo knopka(4, true).$i18['SEL_DEMO'] ?> <?php echo $current_year-1 ?>*<br/>
-<?php echo knopka(5, true).$i18['SEL_DEMOCITY'] ?>
+<?php echo knopka(4, true, $i18['SEL_DEMO'].' '.($current_year-1)) ?>*<br/>
+<?php echo knopka(5, true, $i18['SEL_DEMOCITY']) ?>
 </p>
 <p>
-<?php echo knopka(6, $validuser)."$current_year*" ?>
+<?php echo knopka(6, $validuser, $current_year) ?>*
 </p></form>
 <p class="centered">* <?php echo $i18['SEL_CHK1'] ?><br/>
 <?php echo "{$i18['SEL_CHK2']} ".gmdate("M j Y") ?>
 </p>
-<div class="hr"></div>
-</div>
-<div id="ftr">
-<?php echo "user: ".$_SESSION['username'] ?>
-&nbsp; <a href="dl/logout.php">logout</a>
-</div>
-</body></html>
-
 <?php
-function knopka($key, $is_valid){
-  $disa="";
-  if(!$is_valid){
-    $key="&nbsp;";
-    $disa=" disabled=\"disabled\"";
+function knopka($key, $is_valid, $text){
+  global $DEST_URL, $sess, $lang_;
+//  $str="<input type=\"submit\" accesskey=\"$key\" name=\"btn\" value=\"$key\" style=\"width:2em;\"$disa/> ";
+  if($is_valid){
+	 $text="<a href=\"?$lang_&amp;p={$DEST_URL[$key-1]}&amp;$sess\">$text</a>";
   }
-  return "<input type=\"submit\" accesskey=\"$key\" name=\"btn\" value=\"$key\" style=\"width:2em;\"$disa/> ";
+  return "$key. $text";
 }
 ?>

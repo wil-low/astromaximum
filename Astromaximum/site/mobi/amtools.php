@@ -6,7 +6,7 @@ $DEMO=array('login'=>'123456789', 'pass'=>'012345678');
 
 sort($DEMO_CITY);
 
-$DLIM=array('dl_count'=>2, 'city_count'=>5, 'past_count'=>10); //download limited
+$DLIM=array(2, 5, 10); //download limited
   
 function find_perl(){
 	$perl="/opt/lampp/bin/perl";
@@ -236,14 +236,19 @@ function get_default_cities($arr){
 }
 
 function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string with links
-	global $DIR_FILES, $DIR_SOURCE, $i18;
+	global $DIR_FILES, $DIR_SOURCE, $i18, $EXEC;
 
 	$timeout_offset=-24;
 	$timeout_mins=2880;
 
 	$str='';
 	$perl=find_perl();
-	$dsrc="mobi/$DIR_FILES";
+	if($EXEC==1){
+		$dsrc="mobi/$DIR_FILES";
+	}
+	else{
+		$dsrc=$DIR_FILES;
+	}
 	$ye=substr($year,-2);
 	list($dir,$fn)=amtools_random($ye, $dsrc,'.r');
 	$srcdir="$dsrc/$fn";
@@ -283,8 +288,13 @@ function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string 
 			$data_php.="/mobi";
 		}
 		$url=$data_php.'/data.php?r='.$id;
-		$str.="<h4>{$i18['PC_DL']}:</h4>";
-		$str.="<a href='$url'>JAR</a>";
+		if($EXEC==1){
+			$str.="<h4>{$i18['PC_DL']}:</h4>";
+			$str.="<a href='$url'>JAR</a>";
+		}
+		else{
+			$str.="<h4>{$i18['PHONE_DL']}:</h4>";
+		}
 		$url=str_replace("?r", "?d", $url);
 		$str.=" <a href='$url'>JAD</a><br>";
 
@@ -292,7 +302,7 @@ function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string 
 #				echo "<h4>{$i18['PHONE_DL']}:</h4>";
 #				echo "<a href='$url'>JAD</a><br>";
 		
-		$str.="<br><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
+		$str.="<br/><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
 //		$str.="<a href={$_SERVER['REQUEST_URI']}>{$i18['BACK']}</a>";
 	}
 	return $str;
@@ -316,7 +326,7 @@ function record_in_range($table, $tm){
 }
 
 
-function pwd_send($to, $login, $realname, $dl_count, $city_count, $pwd){
+function pwd_send($to, $login, $realname, $dl_limits, $pwd){
 	$subject = 'Astromaximum.de - new password';
 /*	$message = <<<EOF
 <html><head>
@@ -363,10 +373,39 @@ EOF1;
 	$message=str_replace('<realname>', $realname, $message);
 	$message=str_replace('<login>', $login, $message);
 	$message=str_replace('<pwd>', $pwd, $message);
-	$message=str_replace('<dl_count>', $dl_count, $message);
-	$message=str_replace('<city_count>', $city_count, $message);
+	$message=str_replace('<dl_count>', $dl_limits[0], $message);
+	$message=str_replace('<city_count>', $dl_limits[1], $message);
+	$message=str_replace('<past_count>', $dl_limits[2], $message);
 	$headers = 'From: robot@astromaximum.de' . "\r\n" .
 	    'X-Mailer: PHP';
 	return mail($to, $subject, $message, $headers);
+}
+
+function get_try_count($id){ // get dl limit for current user, if $id==0
+	if(intval($id)==0){
+		$id=$_SESSION['uid'];
+	}
+	$stat=sprintf("SELECT dlcount0, dlcount1, dlcount2 FROM customers WHERE id=%d", quote_smart($id));
+	$sth=mysql_query($stat);
+	global $DLIM;
+	if($sth && ($row=mysql_fetch_row($sth))){
+		return $row;
+	}
+	return array(0,0,0);	
+}
+
+function dec_try_count($id, $key){ // decrease dl limit by $key for current user, if $id==0
+	if(intval($id)==0){
+		$id=$_SESSION['uid'];
+	}
+	if(is_numeric($key)){
+		$key="dlcount$key";
+	}
+	$stat=sprintf("UPDATE customers SET $key=$key-1 WHERE id=%d AND $key>0", quote_smart($id));
+	return mysql_query($stat);
+}
+
+function tries_remained($tries, $limit) {
+	return "<br/><br/>Осталось попыток: <b>$tries из $limit</b>";
 }
 ?>

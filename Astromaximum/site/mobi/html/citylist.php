@@ -19,7 +19,7 @@ foreach($row as $i=>$ctry){
 	$stat="SELECT name FROM cities WHERE country_id={$ctry[0]} ORDER BY name";
 	if($sth=mysql_query($stat)){
 		$num=mysql_num_rows($sth);
-		echo "<a id=\"{$ctry[0]}\"></a><p><b>{$ctry[1]}</b> - $num &nbsp; (<a href=\"#top\">{$i18['UP']}</a>)<br/>";
+		echo "<a id=\"{$ctry[0]}\"></a><p><b>{$ctry[1]}</b> - $num &nbsp; ( <a href=\"#top\">^{$i18['UP']}</a> )<br/>";
 		$comma="";
 		while($row2=mysql_fetch_row($sth)){
 			echo "$comma ".$row2[0];

@@ -10,16 +10,10 @@ if($chac==-1 or $chac==1){
 	reg_warning("Загрузка городов");
 	return;
 }
-$stat=sprintf("SELECT city_count FROM customers WHERE id=%d", quote_smart($_SESSION['uid']));
-$sth=mysql_query($stat);
 include_once('mobi/amtools.php');
+$tries=get_try_count(0);
 global $DLIM;
-$key='city_count';
-if(!$sth or !($rowc=mysql_fetch_array($sth, MYSQL_BOTH))){
-	reg_warning("Загрузка городов");
-	return;
-}
-
+$is_allow_dl=($tries[1]!=0);
 $defyear=date("Y");
 if(isset($_POST['y_sel'])){
 	$defyear=$_POST['y_sel'];
@@ -37,13 +31,20 @@ if(isset($_POST['Action'])){
 }
 if(strlen($act) && isset($_POST['sc'])){
 	$sth=get_selected_cities('sc');
-	if(strlen($sth)>0){
+	if($is_allow_dl && mysql_num_rows($sth)>0){
 		$row = mysql_fetch_row($sth);
 		echo "<p>".sprintf($i18['READY_CITIES'], "$row[1], $row[2]", $defyear)."</p>\n";
-		include_once('mobi/amtools.php');
-		echo midlet_create("geo", $defyear, $lang, $sc, "mobi/dl");
-		return;
+		$str=midlet_create("geo", $defyear, $lang, $sc, "mobi/dl");
+		if(strlen($str)){
+			dec_try_count(0, 1);
+			echo $str;
+			echo tries_remained($tries[1]-1, $DLIM[1]);
+		}
 	}
+	else{
+		echo 'Вам не разрешено загружать города. Обратитесь в <a href="#">службу поддержки</a>.';
+	}
+	return;
 }
 //print_r($_REQUEST);
 ?>
@@ -119,8 +120,8 @@ for($i=0; $i<3; $i++){
 <th colspan="2" style="font-size:12px">
 <span style="white-space: nowrap;">
 <?php
-	if($rowc[0]!=-1){ 
-		echo sprintf($i18['LOAD_LEFT'], $DLIM[$key]-$rowc[0], $DLIM[$key]);
+	if($tries[1]!=-1){ 
+		echo sprintf($i18['LOAD_LEFT'], $DLIM[1]-$tries[1], $DLIM[1]);
 	} 
 ?>
 </span>
@@ -161,7 +162,7 @@ for($i=0; $i<3; $i++){
 	}
 	mysql_free_result($sth);
 	$gen_prop=' onclick="generate(\''.$cur_country.'\')"';
-	if(!$rowc){
+	if(!$tries[1]){
 		$gen_prop=' disabled="disabled"';
 	}
 ?>

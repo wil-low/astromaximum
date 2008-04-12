@@ -8,12 +8,12 @@ if(isset($_GET['u'])){
 	$id=$_GET['u'];
 	if(strcmp($id, 'add')==0){
 		global $DLIM;
-		$row=array("", "", "", $DLIM['dl_count'], $DLIM['city_count'], $DLIM['past_count'], 1);
+		$row=array("", "", "", $DLIM[0], $DLIM[1], $DLIM[2], 1); // defaults for new user
 		$hdr="Add new user:";
 		$act="Add";
 	}
 	if(is_numeric($id)){
-		$stat="SELECT realname, name, email, dl_count, city_count, past_count, active from customers WHERE id=".quote_smart($id);
+		$stat="SELECT realname, name, email, dlcount0, dlcount1, dlcount2, active from customers WHERE id=".quote_smart($id);
 		$sth=mysql_query($stat);
 		$row=mysql_fetch_row($sth);
 		$hdr="Edit user - ";
@@ -102,7 +102,7 @@ if(isset($_POST['u_id'])){
 		$active=isset($_POST['u_active']) ? 1: 0;
 		$succ=false;
 		if($is_num){
-			$stat=sprintf("UPDATE customers set realname=%s, name=%s, email=%s, dl_count=%d, city_count=%d, past_count=%d, ".
+			$stat=sprintf("UPDATE customers set realname=%s, name=%s, email=%s, dlcount0=%d, dlcount1=%d, dlcount2=%d, ".
 				"active=%d WHERE id=%d",
 				quote_smart($_POST['u_realname']),
 				quote_smart($_POST['u_login']),
@@ -116,7 +116,7 @@ if(isset($_POST['u_id'])){
 			$succ=mysql_query($stat);
 		}
 		if(strcmp($id, "add")==0){
-			$stat=sprintf("INSERT INTO customers(realname, name, email, dl_count, city_count, past_count, active, subscr_date) ".
+			$stat=sprintf("INSERT INTO customers(realname, name, email, dlcount0, dlcount1, dlcount2, active, subscr_date) ".
 				"VALUES (%s, %s, %s, %d, %d, %d, %d, CURRENT_DATE)",
 				quote_smart($_POST['u_realname']),
 				quote_smart($_POST['u_login']),
@@ -146,8 +146,9 @@ if(isset($_POST['u_id'])){
 				}
 				else{
 					if(isset($_POST['u_notify'])){
+						$tries=get_try_count($id);
 						if(pwd_send($_POST['u_email'], $_POST['u_login'], $_POST['u_realname'],
-						 	$_POST['u_dlc'], $_POST['u_cityc'], $_POST['u_pwd1'])){
+						 	$tries, $_POST['u_pwd1'])){
 						 		echo "Notification was sent to ".$_POST['u_email']."<br/>";
 						}
 						else{
@@ -177,7 +178,7 @@ if(isset($_POST['u_id'])){
 <a href="index.php?<?php echo $lang_ ?>&amp;p=usermgr&amp;u=add">Add user</a></td></tr>
 <tr><th>Realname</th><th>email</th><th>dl count</th><th>city count</th><th>past count</th></tr>
 <?php
-$stat="SELECT realname, email, dl_count, city_count, past_count, hash, active, id from customers ORDER BY realname";
+$stat="SELECT realname, email, dlcount0, dlcount1, dlcount2, hash, active, id from customers ORDER BY realname";
 $sth=mysql_query($stat);
 $i=0;
 while($row=mysql_fetch_row($sth)){

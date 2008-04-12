@@ -8,9 +8,9 @@ if(isset($_COOKIE[session_name()])){
 }
 session_destroy();
 $url="/";
-if(isset($_SERVER['HTTP_REFERER'])){
+/*if(isset($_SERVER['HTTP_REFERER'])){
 	$url=$_SERVER['HTTP_REFERER'];
-}
+}*/
 ?>
 <html>
 <head>
