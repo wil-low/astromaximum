@@ -325,60 +325,54 @@ function record_in_range($table, $tm){
 	return $res;
 }
 
-
 function pwd_send($to, $login, $realname, $dl_limits, $pwd){
-	$subject = 'Astromaximum.de - new password';
-/*	$message = <<<EOF
-<html><head>
-  <title>Astromaximum.de - new password</title>
-</head>
-<body>
-<p>Dear $realname,</p>
+  include("mobi/phpmailer/class.phpmailer.php");
+  include("mobi/phpmailer/class.smtp.php");
+  $site='http://astromaximum.mobi';
+  $from='office@astromaximum.mobi';
+	$subject = 'Astromaximum - new password';
+  
+  $mail=new PHPMailer();
+  $mail->SetLanguage("en", "mobi/phpmailer/");
+  
+  $mail->IsSMTP();
+  $mail->SMTPAuth   = true;                  // enable SMTP authentication
+//  $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
+  $mail->Host       = "smtp.astromaximum.mobi";// sets GMAIL as the SMTP server
+  $mail->Port       = 25;                   // set the SMTP port 
+  
+  $mail->Username   = "web42p2";
+  $mail->Password   = "TWmvvIWx";
+  
+  $mail->From       = $from;
 
-<p>You requested a new password for access to 
-<a href="http://astromaximum.de/">http://astromaximum.de/</a> 
-<br/>Your credentials are now as follows:</p>
-<ul>
-<li>login: $login</li>
-<li>password:  $pwd</li>
-</ul>	
-<p>Number of Astromaximum copies to download: $dl_count</p>
-<p>Number of cities to download: $city_count</p>
+  $mail->FromName   = 'Astromaximum office';
+  $mail->Subject    = $subject;
 
-<p>This mail was generated automatically, there is no need to reply.</p>
-
-<p>Thank you for using our service.</p>
-<hr/>
-EOF;
-
-$rusmsg= <<<EOF1
-<p>Уважаемый $realname,</p>
-
-<p>Вы запросили новый пароль для доступа на сайт 
-<a href="http://astromaximum.de/">http://astromaximum.de/</a>
-<br/>Для входа на сайт наберите:</p>
-<ul>
-<li>логин:   $login</li>
-<li>пароль:  $pwd</li>
-</ul>
-<p>Разрешено загрузить копий мидлета на текущий год: $dl_count</p>
-<p>Разрешено загрузить городов: $city_count</p>
-
-<p>Это письмо сгенерировано автоматически, нет нужды отвечать на него.</p>
-
-<p>Спасибо за использование нашего сервиса.</p>
-EOF1;
-*/
 	$message=file_get_contents("mobi/dl/source/pwdrestore.mail");
-	$message=str_replace('<realname>', $realname, $message);
-	$message=str_replace('<login>', $login, $message);
-	$message=str_replace('<pwd>', $pwd, $message);
-	$message=str_replace('<dl_count>', $dl_limits[0], $message);
-	$message=str_replace('<city_count>', $dl_limits[1], $message);
-	$message=str_replace('<past_count>', $dl_limits[2], $message);
-	$headers = 'From: robot@astromaximum.de' . "\r\n" .
-	    'X-Mailer: PHP';
-	return mail($to, $subject, $message, $headers);
+	$message=str_replace('[site]', $site, $message);
+	$message=str_replace('[realname]', $realname, $message);
+	$message=str_replace('[login]', $login, $message);
+	$message=str_replace('[pwd]', $pwd, $message);
+	$message=str_replace('[dl_count]', $dl_limits[0], $message);
+	$message=str_replace('[city_count]', $dl_limits[1], $message);
+	$message=str_replace('[past_count]', $dl_limits[2], $message);
+  $mail->AltBody    = $message;
+
+	$message=file_get_contents("mobi/dl/source/pwdrestore.mail.html");
+	$message=str_replace('[site]', $site, $message);
+	$message=str_replace('[realname]', $realname, $message);
+	$message=str_replace('[login]', $login, $message);
+	$message=str_replace('[pwd]', $pwd, $message);
+	$message=str_replace('[dl_count]', $dl_limits[0], $message);
+	$message=str_replace('[city_count]', $dl_limits[1], $message);
+	$message=str_replace('[past_count]', $dl_limits[2], $message);
+  $mail->Body       = $message;                      
+//  $mail->AltBody    = "This is the body when user views in plain text format"; //Text Body
+  $mail->AddAddress($to,$realname);
+  
+  $mail->IsHTML(true); // send as HTML
+  return $mail; 
 }
 
 function get_try_count($id){ // get dl limit for current user, if $id==0

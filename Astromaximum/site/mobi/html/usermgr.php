@@ -147,13 +147,15 @@ if(isset($_POST['u_id'])){
 				else{
 					if(isset($_POST['u_notify'])){
 						$tries=get_try_count($id);
-						if(pwd_send($_POST['u_email'], $_POST['u_login'], $_POST['u_realname'],
-						 	$tries, $_POST['u_pwd1'])){
+						$mail=pwd_send($_POST['u_email'], $_POST['u_login'], $_POST['u_realname'],
+						 	$tries, $_POST['u_pwd1']);
+						if($mail->Send()){
 						 		echo "Notification was sent to ".$_POST['u_email']."<br/>";
 						}
 						else{
-							echo "<font color=\"red\">Error when sending notification to ".$_POST['u_email'].
-								"</font><br/>";
+							echo "<font color=\"red\">Error when sending notification to ".$_POST['u_email'];
+						  echo "<br/>Mailer Error: " . $mail->ErrorInfo;
+              echo "</font><br/>";
 						}
 					}
 				}

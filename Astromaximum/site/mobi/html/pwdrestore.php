@@ -13,7 +13,8 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 			$newpass=sprintf("%09d", mt_rand(1, 999999999));
 			include_once("mobi/amtools.php");
 			$tries=get_try_count($arr[0]);
-			if(pwd_send($mail, $arr[1], $arr[2], $tries, $newpass)){
+			$mail=pwd_send($mail, $arr[1], $arr[2], $tries, $newpass);
+			if($mail->Send()){
 				echo "New password has been sent to email address specified.";
 				$pwd=pwd_convert2(pwd_convert1($arr[1], $newpass));
 				$stat=sprintf("UPDATE customers set hash=%s WHERE id=%d",

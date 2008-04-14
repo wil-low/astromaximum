@@ -131,15 +131,14 @@ else{
 	  	if(!findObj('ilog').value || !findObj('ipwd').value){
 	  		return false;
 	  	}
-	  	findObj('aenter').disabled=1;
-	  	document.flog.submit();
+	  	findObj('flog').submit();
 	  }
 	-->
 	</script>
 	<form name="flog" action="?lang=$lang&amp;p=login&amp;to=$main" method="post"> 
 	<input id="ilog" name="login"/> логин  <br /><br />
 	<input id="ipwd" name="pass" type="password"/> пароль <br /><br />
-	<a id="aenter" href="javascript:void(0)" onclick="javascript:checklogin()"><strong>вход</strong></a> | 
+	<a id="aenter" href="#" onclick="javascript:checklogin()"><strong>вход</strong></a> | 
 	<a href="?lang=$lang&amp;p=pwdrestore"><strong>восстановить регистрацию</strong></a>
 	</form> 
 FRM;
