@@ -1,10 +1,6 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
-$DEF_CITIES=array('m.Olympos');
-$DEMO_CITY=array("London", "New York", "Moscow", "Kiev");
 $DEMO=array('login'=>'123456789', 'pass'=>'012345678');
-
-sort($DEMO_CITY);
 
 $DLIM=array(2, 5, 10); //download limited
   
@@ -326,28 +322,28 @@ function record_in_range($table, $tm){
 }
 
 function pwd_send($to, $login, $realname, $dl_limits, $pwd){
-  include("mobi/phpmailer/class.phpmailer.php");
-  include("mobi/phpmailer/class.smtp.php");
-  $site='http://astromaximum.mobi';
-  $from='office@astromaximum.mobi';
-	$subject = 'Astromaximum - new password';
+   include("mobi/phpmailer/class.phpmailer.php");
+   include("mobi/phpmailer/class.smtp.php");
+   $site='http://astromaximum.mobi';
+   $from=$_GLOBALS['amax']['mail_office'];
+   $subject = 'Astromaximum - new password';
   
-  $mail=new PHPMailer();
-  $mail->SetLanguage("en", "mobi/phpmailer/");
-  
-  $mail->IsSMTP();
-  $mail->SMTPAuth   = true;                  // enable SMTP authentication
-//  $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
-  $mail->Host       = "smtp.astromaximum.mobi";// sets GMAIL as the SMTP server
-  $mail->Port       = 25;                   // set the SMTP port 
-  
-  $mail->Username   = "web42p2";
-  $mail->Password   = "TWmvvIWx";
-  
-  $mail->From       = $from;
+   $mail=new PHPMailer();
+   $mail->SetLanguage("en", "mobi/phpmailer/");
+   if($_GLOBALS['amax']['is_online']){
+	  $mail->IsSMTP();
+	  $mail->SMTPAuth   = true;                  // enable SMTP authentication
+	//  $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
+	  $mail->Host       = $_GLOBALS['amax']['smtp_host'];// sets GMAIL as the SMTP server
+	  $mail->Port       = 25;                   // set the SMTP port 
+	  
+	  $mail->Username   = $_GLOBALS['amax']['smtp_host'];
+	  $mail->Password   = $_GLOBALS['amax']['smtp_host'];
+	}  
+   $mail->From       = $from;
 
-  $mail->FromName   = 'Astromaximum office';
-  $mail->Subject    = $subject;
+   $mail->FromName   = 'Astromaximum office';
+	$mail->Subject    = $subject;
 
 	$message=file_get_contents("mobi/dl/source/pwdrestore.mail");
 	$message=str_replace('[site]', $site, $message);
@@ -357,7 +353,7 @@ function pwd_send($to, $login, $realname, $dl_limits, $pwd){
 	$message=str_replace('[dl_count]', $dl_limits[0], $message);
 	$message=str_replace('[city_count]', $dl_limits[1], $message);
 	$message=str_replace('[past_count]', $dl_limits[2], $message);
-  $mail->AltBody    = $message;
+   $mail->AltBody    = $message;
 
 	$message=file_get_contents("mobi/dl/source/pwdrestore.mail.html");
 	$message=str_replace('[site]', $site, $message);

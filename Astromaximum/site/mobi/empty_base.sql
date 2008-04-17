@@ -93,9 +93,9 @@ CREATE TABLE `customers` (
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
 LOCK TABLES `customers` WRITE;
 INSERT INTO `customers` VALUES 
-	(1,'vmesiats','Vasyl Mesiats','',0,NULL,NULL,-1,-1,1),
-	(2,'aivushkin','Andrei Ivushkin','',0,NULL,NULL,-1,-1,1),
-	(3,'123456789','Demo','012345678',1,NULL,NULL,-1,-1,0);
+	(1,'vmesiats','Vasyl Mesiats','',0,'kiev999@gmail.com',NULL,-1,-1,-1,1),
+	(2,'aivushkin','Andrei Ivushkin','',0,'aivushkin@gmail.com',NULL,-1,-1,-1,1),
+	(3,'123456789','Demo','',1,NULL,NULL,-1,-1,-1,0);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 
@@ -267,6 +267,7 @@ UNLOCK TABLES;
 
 CREATE TABLE IF NOT EXISTS `ipblock` (
   `ip` varchar(16) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `uid` int(11) NOT NULL default '0',
   `tm_first` timestamp NOT NULL default '0000-00-00 00:00:00',
   `tm_last` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `tm_block` timestamp NOT NULL default '0000-00-00 00:00:00',

@@ -1,5 +1,6 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
+include_once('config.php');
 $lang='ru';
 $i18=array();
 if(isset($_REQUEST['lang'])){
@@ -8,7 +9,10 @@ if(isset($_REQUEST['lang'])){
 $lang_="lang=$lang";
 
 function sess_start(){
-	error_reporting(E_ALL);
+
+	error_reporting(E_NONE);
+	#error_reporting(E_ALL);
+	
 	session_set_cookie_params(3600);
 	session_start();
 	session_register("username","uid", "pwd", "captcha_keystring");

@@ -4,9 +4,8 @@
 	include_once('../dbconnect.php');
 	include_once('../amtools.php');
 	lang_load("../html");
-	global $DEF_CITIES;
 	$perl=find_perl();
-	$default_city_ids=get_default_cities($DEF_CITIES);
+	$default_city_ids=get_default_cities($_GLOBALS['amax']['def_cities']);
 
 	if(!isset($_REQUEST['mode'])) exit;
 	$year=get_year();

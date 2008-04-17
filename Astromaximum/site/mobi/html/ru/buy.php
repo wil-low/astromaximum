@@ -37,9 +37,8 @@ if($chac!=-1 and $chac!=1){
 	}
 	echo "<h4>Загрузка календаря <b>ASTROMAXIMUM</b> на $year год</h4>";
 	if(isset($_POST["agree"])){
-		global $DEF_CITIES;
 		if($is_allow_dl){
-			$sc=get_default_cities($DEF_CITIES); 
+			$sc=get_default_cities($_GLOBALS['amax']['def_cities']); 
 			$str=midlet_create("tb", $year, $lang, $sc, "mobi/dl");
 			if(strlen($str)){
 				dec_try_count(0, $dl_key);

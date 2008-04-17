@@ -4,6 +4,7 @@ $stat="SELECT id, name FROM countries ORDER BY name";
 $sth=mysql_query($stat);
 $i=0;
 $letter='';
+$row=array();
 while($res=mysql_fetch_row($sth)){
 	$row[$i]=$res;
 	if(strcmp($letter, $res[1][0])){

@@ -3,7 +3,7 @@ if(!isset($EXEC)) die("Access restricted");
 /* FTP account 
 astromaximumcom a2a0SL2H
 */
-if(!isset($_SERVER) or strcmp($_SERVER['REMOTE_ADDR'],"127.0.0.1")==0){ // local=true
+if(!$_GLOBALS['amax']['is_online']){ // local=true
 	$DB_SERVER='localhost';
 	$DB_NAME='amax';
 	$DB_PORT='3306';

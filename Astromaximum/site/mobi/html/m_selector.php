@@ -1,7 +1,6 @@
 <?php
 $BIG_SITE="http://astromaximum.de/";
 $MOBI_SITE="http://astromaximum.mobi/";
-global $DEMO_CITY;
 $data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
 if(!strpos($data_php, "mobi")){
 	$data_php.="/mobi";

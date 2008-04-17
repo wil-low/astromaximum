@@ -21,7 +21,6 @@ $show_topics=1;
 $custom_content='';
 
 if(strcmp($main, 'login')==0){
-	include_once('mobi/dbconnect.php');
 	$login=''; $pass='';
 	if(isset($_POST['login'])){
 		$login=$_POST['login'];
@@ -31,7 +30,7 @@ if(strcmp($main, 'login')==0){
 	}
 	if(login($login, $pass)){
 		$main='home';
-		if(isset($_GET['to'])){
+		if(isset($_GET['to']) && strcmp($_GET['to'],'demo')==0){
 			$main=$_GET['to'];
 		}
 	}

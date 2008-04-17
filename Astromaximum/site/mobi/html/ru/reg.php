@@ -25,7 +25,7 @@ else
 Дистрибутив календаря <b>ASTROMAXIMUM</b> уже содержит следующие города:
 <ol><li>
 <?php
-	echo implode("</li><li>", $DEF_CITIES);
+	echo implode("</li><li>", $_GLOBALS['amax']['def_cities']);
 ?>
 </li></ol>
 Полная версия астрологического календаря доступна только зарегистрированным
