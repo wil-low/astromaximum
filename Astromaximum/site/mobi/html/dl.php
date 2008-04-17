@@ -82,7 +82,7 @@ function highlight_gen(){
 </script>
 <h4></h4>
 <div style="position: absolute;top: 198px;left: 345px;width:660px;">
-<form method="post" action="/?<?php echo $lang ?>&amp;p=dl" name="main">
+<form method="post" action="/?<?php echo $lang_ ?>&amp;p=dl" name="main">
 <table class="geo">
 <tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
 <?php

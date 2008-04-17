@@ -69,10 +69,21 @@ if(preg_match("/^(demo)$/is", $main)){
 <meta name="keywords" content="ключи"/>
 <meta name="description" content="описание"/>
 <link href="astro.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+	function findObj(id) {
+	  return (document.all?document.all[id]:document.getElementById(id));
+	}
+</script>
 </head>
 <body>
 <a id="top"></a>
-<div id="globe"><a href="?<?php echo $lang_ ?>"><img src="i/globe.jpg" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" height="320" width="956"/></a></div>
+<div id="globe">
+<img src="i/globe.jpg" width="956" height="320" usemap="#Map" alt="ASTROMAXIMUM"/>
+<map id="Map" name="Map">
+	<area shape="circle" coords="178,132,95" href="?<?php echo $lang_ ?>" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" />
+	<area shape="rect" coords="443,87,859,165" href="?<?php echo $lang_ ?>" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" />
+</map>
+</div>
 <div id="logoText"><?php echo $i18['AMAX_LOGO'] ?></div>
 <div id="lang">
 <?php
@@ -116,7 +127,10 @@ if($user_ok){
 	$current_year=get_year();
 	$btn1="ЗАГРУЗИТЬ<br/>ГОРОД"; $btn2="ЗАГРУЗИТЬ<br/>КАЛЕНДАРЬ - $current_year"; $btn1_link="dl";
 }
-if(check_access()!=-1){
+if($chac==1){
+	$btn2=$i18['ORDER']." $$price<br/>+ $city_count ".$i18['_CITIES'];
+}
+if($chac!=-1){
 	$session_prompt=<<<SP1
 	<p>Здравствуйте, <b>{$_SESSION['username']}</b> ! </p>
 	<p><a href="mobi/dl/logout.php"><strong>выход</strong></a></p> 
@@ -130,15 +144,15 @@ else{
 	  	if(!findObj('ilog').value || !findObj('ipwd').value){
 	  		return false;
 	  	}
-	  	findObj('flog').submit();
+		findObj("flog").submit();
 	  }
 	-->
 	</script>
-	<form name="flog" action="?lang=$lang&amp;p=login&amp;to=$main" method="post"> 
+	<form id="flog" action="?$lang_&amp;p=login&amp;to=$main" method="post"> 
 	<input id="ilog" name="login"/> логин  <br /><br />
 	<input id="ipwd" name="pass" type="password"/> пароль <br /><br />
-	<a id="aenter" href="#" onclick="javascript:checklogin()"><strong>вход</strong></a> | 
-	<a href="?lang=$lang&amp;p=pwdrestore"><strong>восстановить регистрацию</strong></a>
+	<a id="aenter" href="javascript:void(0)" onclick="checklogin(); return false"><strong>вход</strong></a> | 
+	<a href="?$lang_&amp;p=pwdrestore"><strong>восстановить регистрацию</strong></a>
 	</form> 
 FRM;
 } 
@@ -153,10 +167,6 @@ FRM;
 <div id="leftColumn"> 
 <script type="text/javascript">
 <!--	
-	function findObj(id) {
-	  return (document.all?document.all[id]:document.getElementById(id));
-	}
-
   function clock() {
     now=new Date();
 		var london=now.toGMTString();

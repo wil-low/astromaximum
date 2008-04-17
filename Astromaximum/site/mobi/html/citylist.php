@@ -12,7 +12,7 @@ while($res=mysql_fetch_row($sth)){
 		$letter=$res[1][0];
 		$comma="";
 	}	
-	echo $comma." <a href=\"#{$res[0]}\">{$res[1]}</a>";
+	echo $comma." <a href=\"#n{$res[0]}\">{$res[1]}</a>";
 	$i++;
 	$comma=",";
 }
@@ -20,13 +20,13 @@ foreach($row as $i=>$ctry){
 	$stat="SELECT name FROM cities WHERE country_id={$ctry[0]} ORDER BY name";
 	if($sth=mysql_query($stat)){
 		$num=mysql_num_rows($sth);
-		echo "<a id=\"{$ctry[0]}\"></a><p><b>{$ctry[1]}</b> - $num &nbsp; ( <a href=\"#top\">^{$i18['UP']}</a> )<br/>";
+		echo "<a id=\"n{$ctry[0]}\"></a><p><b>{$ctry[1]}</b> - $num &nbsp; ( <a href=\"#top\">^{$i18['UP']}</a> )<br/>";
 		$comma="";
 		while($row2=mysql_fetch_row($sth)){
 			echo "$comma ".$row2[0];
 			$comma=",";
 		}
+		echo "</p>";
 	}
-	echo "</p>";
 }
 ?>

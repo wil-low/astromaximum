@@ -95,7 +95,7 @@ LOCK TABLES `customers` WRITE;
 INSERT INTO `customers` VALUES 
 	(1,'vmesiats','Vasyl Mesiats','',0,'kiev999@gmail.com',NULL,-1,-1,-1,1),
 	(2,'aivushkin','Andrei Ivushkin','',0,'aivushkin@gmail.com',NULL,-1,-1,-1,1),
-	(3,'123456789','Demo','',1,NULL,NULL,-1,-1,-1,0);
+	(3,'123456789','Demo','7faa7ccafc874123c1ff345b7becb94c',1,NULL,NULL,-1,-1,-1,0);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 

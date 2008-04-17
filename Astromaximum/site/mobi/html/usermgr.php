@@ -54,7 +54,6 @@ if(isset($_GET['u'])){
 		else{
 			alert("Notify user: Missing login or password or email");
 		}
-
 	}
 	
 	function do_random(input_id){
@@ -71,13 +70,13 @@ if(isset($_GET['u'])){
 <input type="text" name="u_realname" value="$row[0]"/> realname &nbsp; 
 <p>
 <input type="text" name="u_login" value="$row[1]" maxlength="9"/>
-<a href="javascript:void(0)" onclick="do_random('u_login');">login</a> &nbsp;
+<a href="javascript:void(0)" onclick="do_random('u_login');return false">login</a> &nbsp;
 </p> 
 <p><i>Enter new password when changing login !!!</i></p>
 <p>
 
 <input type="text" name="u_pwd1" value="" size="9" maxlength="9"/> 
-<a href="javascript:void(0)" onclick="do_random('u_pwd1');">pwd</a> &nbsp;
+<a href="javascript:void(0)" onclick="do_random('u_pwd1');return false">pwd</a> &nbsp;
 <br/><input type="text" name="u_pwd2" size="9" maxlength="9"> pwd again &nbsp;
 <input type="text" name="u_email" size="48" value="$row[2]"/> e-mail</p>
 <p>
