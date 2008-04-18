@@ -160,7 +160,16 @@ FRM;
 </div>
 
 <?php if(!$user_ok || strcmp($main, 'dl')){ ?>
-<div id="demo"><?php anchor($btn1_link); echo $btn1 ?></a></div> 
+<?php 
+	$label=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE'];
+	$css_demo='demo_off';
+	if(strcmp($main, 'demo')){
+		$label='<a href="?'.$lang_.'&amp;p=demo">'.$label.'</a>';
+		$css_demo='demo';
+	}
+	echo '<div id="'.$css_demo.'">'.$label.'</div>';
+?>
+</div> 
 <div id="buy"><?php anchor('buy'); echo $btn2 ?></a></div>
 <?php } ?>
 

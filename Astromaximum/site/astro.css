@@ -109,6 +109,18 @@ ul {
 	text-align: center;
 	padding-top: 42px;
 }
+#demo_off {
+	position: absolute;
+	top: 197px;
+	left: 345px;
+	width: 306px;
+	height: 91px;
+	background: url('i/button.jpg') no-repeat center center;
+	font: bold 18px bold Arial Black;
+	color: rgb(133,195,224);
+	text-align: center;
+	padding-top: 42px;
+}
 #buy {
 	position: absolute;
 	top: 197px;

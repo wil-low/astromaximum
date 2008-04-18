@@ -8,7 +8,8 @@ astromaximumcom a2a0SL2H
 	$DB_NAME='amax';
 	$DB_PORT='3306';
 	
-	$DB_SUPERUSER='amax_root';
+#	$DB_SUPERUSER='amax_root';
+	$DB_SUPERUSER='root';
 	$DB_SUPERUSER_PWD='toor';
 	$DB_USER='user';
 	$DB_USER_PWD='user';
