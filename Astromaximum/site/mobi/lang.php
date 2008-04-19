@@ -10,8 +10,8 @@ $lang_="lang=$lang";
 
 function sess_start(){
 
-	error_reporting(E_NONE);
-	#error_reporting(E_ALL);
+#	error_reporting(E_NONE);
+	error_reporting(E_ALL);
 	
 	session_set_cookie_params(3600);
 	session_start();
@@ -26,7 +26,7 @@ function lang_load($path){
 	$fd = fopen("$path/$lang.msg", 'r');
 	while (!feof($fd)) {
 		$buffer = fgets($fd, 4096);
-		$line=explode("=",$buffer);
+		$line=explode("=",$buffer,2);
 		if(count($line)==2){
 			list($key,$value)=$line;
 			$i18[$line[0]]=trim($line[1]);

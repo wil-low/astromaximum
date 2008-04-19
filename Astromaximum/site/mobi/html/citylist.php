@@ -8,7 +8,7 @@ $row=array();
 while($res=mysql_fetch_row($sth)){
 	$row[$i]=$res;
 	if(strcmp($letter, $res[1][0])){
-		echo "<br/>";
+		echo "\n<br/>";
 		$letter=$res[1][0];
 		$comma="";
 	}	
@@ -20,7 +20,7 @@ foreach($row as $i=>$ctry){
 	$stat="SELECT name FROM cities WHERE country_id={$ctry[0]} ORDER BY name";
 	if($sth=mysql_query($stat)){
 		$num=mysql_num_rows($sth);
-		echo "<a id=\"n{$ctry[0]}\"></a><p><b>{$ctry[1]}</b> - $num &nbsp; ( <a href=\"#top\">^{$i18['UP']}</a> )<br/>";
+		echo "\n<p><a id=\"n{$ctry[0]}\"></a><b>{$ctry[1]}</b> - $num &nbsp; ( <a href=\"#top\">^{$i18['UP']}</a> )<br/>\n";
 		$comma="";
 		while($row2=mysql_fetch_row($sth)){
 			echo "$comma ".$row2[0];

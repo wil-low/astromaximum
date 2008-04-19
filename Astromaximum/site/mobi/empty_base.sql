@@ -63,12 +63,8 @@ LOCK TABLES `countries` WRITE;
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `countries` ENABLE KEYS */;
 
---
--- Table structure for table `customers`
---
-
 DROP TABLE IF EXISTS `customers`;
-CREATE TABLE `customers` (
+CREATE TABLE IF NOT EXISTS `customers` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(20) NOT NULL default '',
   `realname` varchar(50) NOT NULL default 'Unknown',
@@ -76,14 +72,16 @@ CREATE TABLE `customers` (
   `role` tinyint(4) NOT NULL default '2',
   `email` varchar(50) default NULL,
   `subscr_date` date default NULL,
+  `paymode_id` int(11) NOT NULL COMMENT 'Payment mode id',
   `dlcount0` int(11) NOT NULL default '2' COMMENT 'Midlet counter',
   `dlcount1` int(11) NOT NULL default '5' COMMENT 'City counter',
   `dlcount2` int(11) NOT NULL default '10' COMMENT 'Past years midlet counter',
   `active` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `realname` (`realname`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds customer data';
+  UNIQUE KEY `realname` (`realname`),
+  KEY `paymode` (`paymode_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds customer data' AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `customers`
@@ -92,10 +90,10 @@ CREATE TABLE `customers` (
 
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
 LOCK TABLES `customers` WRITE;
-INSERT INTO `customers` VALUES 
-	(1,'vmesiats','Vasyl Mesiats','',0,'kiev999@gmail.com',NULL,-1,-1,-1,1),
-	(2,'aivushkin','Andrei Ivushkin','',0,'aivushkin@gmail.com',NULL,-1,-1,-1,1),
-	(3,'123456789','Demo','7faa7ccafc874123c1ff345b7becb94c',1,NULL,NULL,-1,-1,-1,0);
+INSERT INTO `customers` (`id`, `name`, `realname`, `hash`, `role`, `email`, `subscr_date`, `paymode_id`, `dlcount0`, `dlcount1`, `dlcount2`, `active`) VALUES
+	(1,'vmesiats','Vasyl Mesiats','',0,'kiev999@gmail.com','2007-10-13', 1, -1,-1,-1, 1),
+	(2,'aivushkin','Andrei Ivushkin','',0,'aivushkin@gmail.com','2007-10-13', 1,-1,-1,-1, 1),
+	(3,'123456789','Demo','7faa7ccafc874123c1ff345b7becb94c', 1, NULL, NULL, 1, -1,-1,-1,0);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 
@@ -329,3 +327,44 @@ INSERT INTO `divisions` VALUES (1,'Midwest',1),
 UNLOCK TABLES;
 */
 -- /*!40000 ALTER TABLE `divisions` ENABLE KEYS; */
+
+--
+-- Структура таблицы `dic_paymode`
+--
+
+DROP TABLE IF EXISTS `dic_paymode`;
+CREATE TABLE IF NOT EXISTS `dic_paymode` (
+  `id` int(11) NOT NULL COMMENT 'Mode id',
+  `name` varchar(20) NOT NULL COMMENT 'Mode description',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Payment modes dictionary';
+
+--
+-- Дамп данных таблицы `dic_paymode`
+--
+
+INSERT INTO `dic_paymode` (`id`, `name`) VALUES
+(1, 'No payment'),
+(2, 'PayPal'),
+(3, 'Cash');
+
+--
+-- Структура таблицы `dic_role`
+--
+
+DROP TABLE IF EXISTS `dic_role`;
+CREATE TABLE IF NOT EXISTS `dic_role` (
+  `id` int(11) NOT NULL COMMENT 'Mode id',
+  `name` varchar(20) NOT NULL COMMENT 'Mode description',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Roles dictionary';
+
+--
+-- Дамп данных таблицы `dic_role`
+--
+
+INSERT INTO `dic_role` (`id`, `name`) VALUES
+(0, 'Administrator'),
+(1, 'Demo user'),
+(2, 'Customer');
+

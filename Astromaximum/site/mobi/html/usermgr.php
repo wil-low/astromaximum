@@ -13,7 +13,7 @@ if(isset($_GET['u'])){
 		$act="Add";
 	}
 	if(is_numeric($id)){
-		$stat="SELECT realname, name, email, dlcount0, dlcount1, dlcount2, active from customers WHERE id=".quote_smart($id);
+		$stat="SELECT realname, name, email, dlcount0, dlcount1, dlcount2, active, paymode_id, role from customers WHERE id=".quote_smart($id);
 		$sth=mysql_query($stat);
 		$row=mysql_fetch_row($sth);
 		$hdr="Edit user - ";
@@ -26,65 +26,27 @@ if(isset($_GET['u'])){
 		}
 		echo <<<EOF
 <h3>$hdr $row[0]</h3>
-<script type="text/javascript">
-<!--
-	function is_empty(id){
-		return findObj(id).value.length==0;
-	}
-
-	function check_notify(){
-		if(!findObj('u_notify').checked) return true;
-		return !is_empty('u_pwd1') && !is_empty('u_email') && !is_empty('u_login');
-	}
-
-	function check_user(){
-		upw1=findObj('u_pwd1').value;
-		upw2=findObj('u_pwd2').value;
-		if(upw1!=upw2){
-			alert("Passwords do not match!"); return;
-		}
-		else{
-			if(upw1.length>0 && upw1.length!=9){
-				alert("Password must be 9 digits long!"); return;
-			}
-		}
-		if(check_notify()){
-			findObj('usredit').submit();
-		}
-		else{
-			alert("Notify user: Missing login or password or email");
-		}
-	}
-	
-	function do_random(input_id){
-		var str='';
-		for(i=0; i<9; i++){
-			str=str.concat(Math.floor(Math.random()*9));
-		}
-		findObj(input_id).value=str;
-	}
--->
-</script>
 <form id="usredit" action="index.php?$lang_&amp;p=usermgr" method="post">
 <input type="hidden" name="u_id" value="$id"/>
 <input type="text" name="u_realname" value="$row[0]"/> realname &nbsp; 
 <p>
-<input type="text" name="u_login" value="$row[1]" maxlength="9"/>
+<input type="text" name="u_login" id="u_login" value="$row[1]" maxlength="9"/>
 <a href="javascript:void(0)" onclick="do_random('u_login');return false">login</a> &nbsp;
 </p> 
 <p><i>Enter new password when changing login !!!</i></p>
 <p>
 
-<input type="text" name="u_pwd1" value="" size="9" maxlength="9"/> 
-<a href="javascript:void(0)" onclick="do_random('u_pwd1');return false">pwd</a> &nbsp;
-<br/><input type="text" name="u_pwd2" size="9" maxlength="9"> pwd again &nbsp;
-<input type="text" name="u_email" size="48" value="$row[2]"/> e-mail</p>
+<input type="text" name="u_pwd1" id="u_pwd1" value="" size="9" maxlength="9"/> 
+<a href="javascript:void(0)" onclick="do_random('u_pwd1');findObj('u_pwd2').value=findObj('u_pwd1').value;return false">pwd</a> &nbsp;
+<br/><input type="text" name="u_pwd2" id="u_pwd2" size="9" maxlength="9"> pwd again &nbsp;
+<input type="text" name="u_email" id="u_email" size="48" value="$row[2]"/> e-mail</p>
 <p>
 <input type="text" name="u_dlc" value="$row[3]" size="3"/> dl &nbsp; &nbsp; 
 <input type="text" name="u_cityc" value="$row[4]" size="3"/> city &nbsp; &nbsp; 
-<input type="text" name="u_pastc" value="$row[5]" size="3"/> past &nbsp; &nbsp; 
+<input type="text" name="u_pastc" value="$row[5]" size="3"/> past &nbsp; &nbsp;</p>
+<p> 
 <input type="checkbox" name="u_active"$active/> Active &nbsp; &nbsp; 
-<input type="checkbox" name="u_notify"/> E-mail credentials to this user</a></p>
+<input type="checkbox" name="u_notify" id="u_notify"/> E-mail credentials to this user</a></p>
 <p>
 <input type="button" name="action" value="$act" onclick="check_user()"/>
 <input type="submit" name="cancel" value="Cancel"/></p>
@@ -95,6 +57,7 @@ EOF;
 }
 echo "<h3>User manager</h3>";
 if(isset($_POST['u_id'])){
+	print_r($_POST);
 	if(!isset($_POST['cancel'])){ 
 		$id=$_POST['u_id'];
 		$is_num=is_numeric($id);
@@ -175,11 +138,12 @@ if(isset($_POST['u_id'])){
 }
 ?>
 <table>
-<tr><td colspan="5" style="background-color:white; text-align:right">
+<tr><td colspan="6" style="background-color:white; text-align:right">
 <a href="index.php?<?php echo $lang_ ?>&amp;p=usermgr&amp;u=add">Add user</a></td></tr>
-<tr><th>Realname</th><th>email</th><th>dl count</th><th>city count</th><th>past count</th></tr>
+<tr><th>Realname</th><th>email</th><th>dl count</th><th>city count</th><th>past count</th><th>payment</th></tr>
 <?php
-$stat="SELECT realname, email, dlcount0, dlcount1, dlcount2, hash, active, id from customers ORDER BY realname";
+$stat="SELECT realname, email, dlcount0, dlcount1, dlcount2, dic_paymode.name, role, hash, active, customers.id ".
+	"from customers, dic_paymode WHERE paymode_id=dic_paymode.id ORDER BY realname";
 $sth=mysql_query($stat);
 $i=0;
 while($row=mysql_fetch_row($sth)){
@@ -187,12 +151,16 @@ while($row=mysql_fetch_row($sth)){
 	$id=array_pop($row);
 	$active=array_pop($row);
 	$hash=array_pop($row);
+	$role=array_pop($row);
 	$back="";
 	if(!$active){
 	 	$back=" style=\"background-color: rgb(220,220,220)\""; //inactive
 	}
-	if(!$hash){
+	if(strlen($hash)!=32){
 	 	$back=" style=\"background-color: rgb(236,113,113)\""; //password invalid
+	}
+	if($role==0){
+		$row[0].='*';
 	}
 	$row[0]="<a href=\"index.php?$lang_&amp;p=usermgr&amp;u=$id\">$i. ".$row[0]."</a>";
 	$row[1]="<a href=\"mailto:$row[1]\">$row[1]</a>";

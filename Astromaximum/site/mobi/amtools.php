@@ -163,19 +163,10 @@ function create_jar($year, $ids, $template_jar, $isdemo, $midlet_name,
 	fclose($inf);
 	exec("rm -R $dsrc/$fn");
 	unlink("/tmp/$fn.MF");
-/*	
-	my $sql='INSERT INTO files (id, type, user_id, end_tm) VALUES';
-	foreach (('r','d','t')){
-		$sql.=" ($fn, \'$_\', ".$userid.", NOW()+ INTERVAL 2 HOUR),";
-	}
-	$sql=~s/,$//is;
-	$sth = $dbh->prepare($sql)|| die $dbh->errstr;
-	$sth->execute|| die $dbh->errstr;
-	$sth->finish;
-*/	
 	return $fn;
 }
 
+/*
 function is_mobile(){
     return 1;
 // Lightweight device detection http://dev.mobi/node/472
@@ -217,6 +208,7 @@ function is_mobile(){
     }
     return $mobile_browser;
 }
+*/
 
 function get_default_cities($arr){
 	if(is_array($arr)){
@@ -396,6 +388,7 @@ function dec_try_count($id, $key){ // decrease dl limit by $key for current user
 }
 
 function tries_remained($tries, $limit) {
-	return "<br/><br/>Осталось попыток: <b>$tries из $limit</b>";
+	global $i18;
+	return sprintf($i18['TRIES_REMAINED'], $tries, $limit);
 }
 ?>

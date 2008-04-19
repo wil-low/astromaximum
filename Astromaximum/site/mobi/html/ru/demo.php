@@ -4,6 +4,7 @@ include_once("mobi/amtools.php");
 include_once("mobi/ipblock.php");
 allow_ip('demo',false);
 if(check_access()!=-1){
+	$uri=htmlentities($_SERVER['REQUEST_URI']);
 	echo "<h4>Загрузка демо-версии</h4><p>Демо-версия календаря <b>ASTROMAXIMUM</b> содержит астрологические события прошлого года.</p>";
 	if(isset($_POST["agree"]) && isset($_POST['p_captcha'])){
 		$captcha=$_POST['p_captcha'];
@@ -20,26 +21,13 @@ if(check_access()!=-1){
 					echo midlet_create("geo", $current_year, $lang, $sc, "mobi/dl", true);
 				}
 			}
+			echo "<p><a href=\"$uri\">{$i18['BACK']}</a></p>";
 			return;
 		}
 		echo "<p><font color=\"red\">Invalid string entered</font></p>";
 	}
-	$uri=htmlentities($_SERVER['REQUEST_URI']);
 	$sess=session_name().'='.session_id();
 	echo <<<EOF1
-<script type="text/javascript">
-<!--
-	function checkCheckBox(b){
-		if(b.form.agree.checked==false)
-		{
-			alert('Please check the box to continue.');
-		}
-		else{
-			b.form.submit();
-		}
-	}
--->
-</script>
 <form action="$uri" method="post">
 <p>Введите символы, указанные на рисунке:</p>
 <p><img src="mobi/kcaptcha?$sess">
@@ -47,6 +35,7 @@ if(check_access()!=-1){
 </p>
 <p><font color="green">Сгенерировать календарь:</font><br/><br/>
 <input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> <b>ASTROMAXIMUM</b> демо<br/><br/>
+<p>После установки календаря вы можете загрузить любой из демо городов</p><br/>
 <font color="green">Сгенерировать город:</font><br/><br/>
 EOF1;
 	foreach($_GLOBALS['amax']['demo_cities'] as $i=>$city){
@@ -56,7 +45,6 @@ EOF1;
 	return;
 }
 ?>
-</p>
 <p>Если Вы - незарегистрированный пользователь, для загрузки демо-версии введите в форме слева:</p>
 <ul>
 <li>логин: 123456789</li>
