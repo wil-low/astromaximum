@@ -56,7 +56,7 @@ function info_regenerate($fname, $tm, $lang){
 		$sun_degree=record_in_range("_sundgr", $tm);
 		$text=file(realpath(".").sprintf("/dl/source/interpret/$lang/Grade%01d.txt", $sun_degree/90));
 		$text=array_filter($text, "find_dgr");
-	//	print_r($sun);
+		print_r($sun);
 		$text=trim(array_shift($text));
 		$text=preg_replace("/.+?%\d+%\s+/is", "", $text);
 	//	echo($sun);

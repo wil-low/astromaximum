@@ -10,8 +10,8 @@
 			$parm[$i]=$_GET["p$i"];
 		}
 	}
-	if($level==10 and $parm[0]>=0 and $parm[0]<count($_GLOBALS['amax']['demo_cities'])){
-		$arr=explode(',', get_default_cities($_GLOBALS['amax']['demo_cities']));
+	if($level==10 and $parm[0]>=0 and $parm[0]<count($GLOBALS['amax']['demo_cities'])){
+		$arr=explode(',', get_default_cities($GLOBALS['amax']['demo_cities']));
 		if(isset($arr[$parm[0]])){
 			$sc=$arr[$parm[0]];
 			$defyear=get_year()-1;

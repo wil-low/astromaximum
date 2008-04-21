@@ -12,12 +12,12 @@ if(check_access()!=-1){
 			$choice=$_POST["agree"];
 			$current_year=get_year()-1;
 			if(strcmp($choice,"demo")==0){
-				$sc=get_default_cities($_GLOBALS['amax']['def_cities']); 
+				$sc=get_default_cities($GLOBALS['amax']['def_cities']); 
 				echo midlet_create("demo", $current_year, $lang, $sc, "mobi/dl", true);
 			}
 			else{
-				if(is_numeric($choice) && ($choice>=0) && ($choice<count($_GLOBALS['amax']['demo_cities']))){
-					$sc=get_default_cities($_GLOBALS['amax']['demo_cities'][$choice]); 
+				if(is_numeric($choice) && ($choice>=0) && ($choice<count($GLOBALS['amax']['demo_cities']))){
+					$sc=get_default_cities($GLOBALS['amax']['demo_cities'][$choice]); 
 					echo midlet_create("geo", $current_year, $lang, $sc, "mobi/dl", true);
 				}
 			}
@@ -38,7 +38,7 @@ if(check_access()!=-1){
 <p>После установки календаря вы можете загрузить любой из демо городов</p><br/>
 <font color="green">Сгенерировать город:</font><br/><br/>
 EOF1;
-	foreach($_GLOBALS['amax']['demo_cities'] as $i=>$city){
+	foreach($GLOBALS['amax']['demo_cities'] as $i=>$city){
 		echo '<input type="radio" name="agree" value="'.$i.'" style="width:auto; border: 0px"/> '.$city.' <br/><br/>';
 	}
 	echo '<input type="button" style="height:auto;" value="OK" onclick="checkCheckBox(this)"/></form>';

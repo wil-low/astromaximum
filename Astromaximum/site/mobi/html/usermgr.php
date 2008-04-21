@@ -57,7 +57,7 @@ EOF;
 }
 echo "<h3>User manager</h3>";
 if(isset($_POST['u_id'])){
-	print_r($_POST);
+#	print_r($_POST);
 	if(!isset($_POST['cancel'])){ 
 		$id=$_POST['u_id'];
 		$is_num=is_numeric($id);

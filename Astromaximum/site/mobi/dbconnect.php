@@ -3,7 +3,8 @@ if(!isset($EXEC)) die("Access restricted");
 /* FTP account 
 astromaximumcom a2a0SL2H
 */
-//if(!$_GLOBALS['amax']['is_online']){ // local=true
+/*
+//if(!$GLOBALS['amax']['is_online']){ // local=true
 	$DB_SERVER='localhost';
 	$DB_NAME='amax';
 	$DB_PORT='3306';
@@ -13,8 +14,9 @@ astromaximumcom a2a0SL2H
 	$DB_SUPERUSER_PWD='toor';
 	$DB_USER='user';
 	$DB_USER_PWD='user';
-/*}
+}
 else{
+*/
 	$DB_SERVER='localhost';
 	$DB_NAME='usr_web42_1';
 	$DB_PORT='3306';
@@ -23,8 +25,9 @@ else{
 	$DB_SUPERUSER_PWD='vSZBWppx';
 	$DB_USER='user';
 	$DB_USER_PWD='user';
-}
-*/
+
+//}
+
 /*
 	$DB_SERVER='mysql1.100ws.com';
 	$DB_NAME='andivu_amax';

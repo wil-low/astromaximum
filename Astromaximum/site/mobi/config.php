@@ -20,5 +20,5 @@ $sett=array(
 );
 
 sort($sett['demo_cities']);
-$_GLOBALS['amax']=$sett;
+$GLOBALS['amax']=$sett;
 ?>

@@ -97,12 +97,12 @@ function check_env(){
 	}
 	$res['dl/html/.htaccess']=yesno(file_exists($p.'../html/.htaccess'));
 	$key='Demo account';
-	$stat="SELECT name, realname, hash FROM customers WHERE name='{$_GLOBALS['amax']['demo_login']}'";
+	$stat="SELECT name, realname, hash FROM customers WHERE name='{$GLOBALS['amax']['demo_login']}'";
 	$sth=mysql_query($stat);
 	if($sth and ($row=mysql_fetch_row($sth))){
 		$res[$key]="login: $row[0], realname: $row[1], password valid: ".
-			yesno(strcmp($row[2], pwd_convert2(pwd_convert1($_GLOBALS['amax']['demo_login'],
-			$_GLOBALS['amax']['demo_pass'])))==0); 
+			yesno(strcmp($row[2], pwd_convert2(pwd_convert1($GLOBALS['amax']['demo_login'],
+			$GLOBALS['amax']['demo_pass'])))==0); 
 	}
 	else{
 		$res[$key]="<font color=\"red\">MISSING</font>";

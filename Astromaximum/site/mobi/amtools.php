@@ -317,20 +317,20 @@ function pwd_send($to, $login, $realname, $dl_limits, $pwd){
    include("mobi/phpmailer/class.phpmailer.php");
    include("mobi/phpmailer/class.smtp.php");
    $site='http://astromaximum.mobi';
-   $from=$_GLOBALS['amax']['mail_office'];
+   $from=$GLOBALS['amax']['mail_office'];
    $subject = 'Astromaximum - new password';
   
    $mail=new PHPMailer();
    $mail->SetLanguage("en", "mobi/phpmailer/");
-   if($_GLOBALS['amax']['is_online']){
+   if($GLOBALS['amax']['is_online']){
 	  $mail->IsSMTP();
 	  $mail->SMTPAuth   = true;                  // enable SMTP authentication
 	//  $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
-	  $mail->Host       = $_GLOBALS['amax']['smtp_host'];// sets GMAIL as the SMTP server
+	  $mail->Host       = $GLOBALS['amax']['smtp_host'];// sets GMAIL as the SMTP server
 	  $mail->Port       = 25;                   // set the SMTP port 
 	  
-	  $mail->Username   = $_GLOBALS['amax']['smtp_host'];
-	  $mail->Password   = $_GLOBALS['amax']['smtp_host'];
+	  $mail->Username   = $GLOBALS['amax']['smtp_user'];
+	  $mail->Password   = $GLOBALS['amax']['smtp_pass'];
 	}  
    $mail->From       = $from;
 

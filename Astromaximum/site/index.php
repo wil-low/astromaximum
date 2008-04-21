@@ -101,7 +101,7 @@ if(preg_match("/^(demo)$/is", $main)){
 <?php 
 //echo "<br/>";print_r($_REQUEST);
 $btn1=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE']; $btn1_link="demo";
-$btn2=$i18['ORDER']." {$_GLOBALS['amax']['price']}<br/>+ {$_GLOBALS['amax']['city_count']} ".$i18['_CITIES'];
+$btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_count']} ".$i18['_CITIES'];
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 
@@ -120,7 +120,7 @@ if($user_ok){
 	$btn2=$i18['TRIAL'];
 }
 if($chac==1){
-	$btn2=$i18['ORDER']." {$_GLOBALS['amax']['price']}<br/>+ {$_GLOBALS['amax']['city_count']} ".$i18['_CITIES'];
+	$btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_count']} ".$i18['_CITIES'];
 }
 if($chac!=-1){
 	$session_prompt=<<<SP1

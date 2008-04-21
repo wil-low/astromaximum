@@ -5,7 +5,7 @@
 	include_once('../amtools.php');
 	lang_load("../html");
 	$perl=find_perl();
-	$default_city_ids=get_default_cities($_GLOBALS['amax']['def_cities']);
+	$default_city_ids=get_default_cities($GLOBALS['amax']['def_cities']);
 
 	if(!isset($_REQUEST['mode'])) exit;
 	$year=get_year();
