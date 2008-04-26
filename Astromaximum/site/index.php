@@ -207,6 +207,7 @@ if(!$user_ok || strcmp($main, 'dl')){
 		}
 	} 
 ?>
+
 </div><!-- end content div -->
 <div id="bottom"><p>Copyright &copy; 2007 S&amp;W Axis. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
 </body>

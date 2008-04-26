@@ -7,7 +7,7 @@ echo $msg;
 if($msg) return;
 if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 	$mail=$_POST['p_email']; $captcha=$_POST['p_captcha'];
-	if(is_capcha($captcha)){
+	if(is_captcha($captcha)){
 		$arr=email2login($mail);
 		if(count($arr)){ 
 			$newpass=sprintf("%09d", mt_rand(1, 999999999));
@@ -31,7 +31,7 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 		return;
 	}
 	else{
-		echo "<p><font color=\"red\">Invalid string entered</font></p>";
+		echo "<p><font color=\"red\">{$i18['CAPTCHA_WRONG']}</font></p>";
 	}
 } 
 ?>
@@ -46,7 +46,7 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 <p>Введите e-mail, указанный Вами при регистрации. На него будут высланы Ваши логин и новый пароль:</p>
 <form id="pwdrestore" action="<?php echo $_SERVER['REQUEST_URI']?>" method="post">
 <input name="p_email" type="text" style="width: auto"/>
-<p>Введите символы, указанные на рисунке:</p>
+<p><?php echo $i18['CAPTCHA_PROMPT']?></p>
 <p><img src="mobi/kcaptcha?<?php echo session_name()?>=<?php echo session_id()?>" alt="Captcha">
 <input name="p_captcha" type="text"/>
 </p>

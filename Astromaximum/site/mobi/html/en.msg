@@ -52,7 +52,7 @@ SEL_DEMOCITY=Demo city
 SEL_CLONLY=(clients only)
 SEL_CHK1=Please check the date on your phone before installing the calendar:
 SEL_CHK2=today is
-LOAD_LEFT=You have already downloaded <b>%d</b> cities from <b>%d</b> available.
+LOAD_LEFT=You have downloaded <b>%d</b> cities from <b>%d</b> available.
 IP_BLOCKED=No access. Please visit this page in %d mins.
 UP=up
 TRIES_REMAINED=Downloads remained: <b>%s of %s</b>
@@ -62,3 +62,9 @@ INSTR_SENT=Thank you. Instructions how to purchase astrological calendar have be
 CONFIRM_TRIAL=I confirm that I have installed and run <a href="?%s&amp;p=demo">the calendar demo</a> successfully
 GENERATE?=Generate?
 NO_CALENDAR_DL=You are not allowed to download the calendar. Please contact <a href="#">our support service</a>.
+REQUEST_MORE=Request more
+REQUEST_MORE_H=Request more cities to download
+REQUEST_MORE_DESC=You will be able to download additional %d cities.
+CAPTCHA_PROMPT=Enter charachers seen on the image:
+CAPTCHA_WRONG=Invalid string entered
+

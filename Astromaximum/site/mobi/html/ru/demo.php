@@ -8,7 +8,7 @@ if(check_access()!=-1){
 	echo "<h4>Загрузка демо-версии</h4><p>Демо-версия календаря <b>ASTROMAXIMUM</b> содержит астрологические события прошлого года.</p>";
 	if(isset($_POST["agree"]) && isset($_POST['p_captcha'])){
 		$captcha=$_POST['p_captcha'];
-		if(is_capcha($captcha)){
+		if(is_captcha($captcha)){
 			$choice=$_POST["agree"];
 			$current_year=get_year()-1;
 			if(strcmp($choice,"demo")==0){
@@ -24,17 +24,18 @@ if(check_access()!=-1){
 			echo "<p><a href=\"$uri\">{$i18['BACK']}</a></p>";
 			return;
 		}
-		echo "<p><font color=\"red\">Invalid string entered</font></p>";
+		echo "<p><font color=\"red\">{$i18['CAPTCHA_WRONG']}</font></p>";
 	}
 	$sess=session_name().'='.session_id();
 	echo <<<EOF1
 <form action="$uri" method="post">
-<p>Введите символы, указанные на рисунке:</p>
+<p>{$i18['CAPTCHA_PROMPT']}</p>
 <p><img src="mobi/kcaptcha?$sess">
 <input name="p_captcha" type="text"/>
 </p>
 <p><font color="green">Сгенерировать календарь:</font><br/><br/>
-<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> <b>ASTROMAXIMUM</b> демо<br/><br/>
+<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> 
+<b>ASTROMAXIMUM</b> демо<br/><br/>
 <p>После установки календаря вы можете загрузить любой из демо городов</p><br/>
 <font color="green">Сгенерировать город:</font><br/><br/>
 EOF1;

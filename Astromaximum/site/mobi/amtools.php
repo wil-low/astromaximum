@@ -2,7 +2,7 @@
 if(!isset($EXEC)) die("Access restricted");
 $DEMO=array('login'=>'123456789', 'pass'=>'012345678');
 
-$DLIM=array(2, 5, 10); //download limited
+$DLIM=array(2, 8, 10); //download limited
   
 function find_perl(){
 	$perl="/opt/lampp/bin/perl";
@@ -390,5 +390,15 @@ function dec_try_count($id, $key){ // decrease dl limit by $key for current user
 function tries_remained($tries, $limit) {
 	global $i18;
 	return sprintf($i18['TRIES_REMAINED'], $tries, $limit);
+}
+
+
+function is_captcha($captcha){
+	$res=false;
+	if(count($_POST)>0){
+		$res=isset($_SESSION['captcha_keystring']) && ($_SESSION['captcha_keystring'] ==  $captcha);
+	}
+	unset($_SESSION['captcha_keystring']);
+	return $res;
 }
 ?>

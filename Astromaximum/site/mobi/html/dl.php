@@ -29,22 +29,62 @@ $act=0;
 if(isset($_POST['Action'])){
 	$act=$_POST['Action'];
 }
-if(strlen($act) && isset($_POST['sc'])){
-	$sth=get_selected_cities('sc');
-	if($is_allow_dl && mysql_num_rows($sth)>0){
-		$row = mysql_fetch_row($sth);
-		echo "<p>".sprintf($i18['READY_CITIES'], "$row[1], $row[2]", $defyear)."</p>\n";
-		$str=midlet_create("geo", $defyear, $lang, $sc, "mobi/dl");
-		if(strlen($str)){
-			dec_try_count(0, 1);
-			echo $str;
-			echo tries_remained($tries[1]-1, $DLIM[1]);
+if(strlen($act)){
+	if(!$tries[1]){
+		if(isset($_POST['p_captcha'])){ // check captcha
+			if(is_captcha($_POST['p_captcha'])){
+				$stat=sprintf("UPDATE customers SET city_limit=city_limit+1, dlcount1=$DLIM[1] WHERE id=%d",
+					$_SESSION['uid']);
+				if(mysql_query($stat)){
+					$tries=get_try_count(0);
+					$is_allow_dl=($tries[1]!=0);
+				}
+				else{
+					echo "Error:".mysql_error();
+				}
+			}
+			else{
+				echo <<<KCAP1
+<h4>{$i18['REQUEST_MORE_H']}</h4>
+{$i18['CAPTCHA_WRONG']}<br/><a href="{$_SERVER['REQUEST_URI']}">{$i18['BACK']}</a>
+KCAP1;
+				return;
+			}
+		}
+		if(isset($_POST['rmore'])){ // requesting more cities
+			$param=session_name().'='.session_id();
+			$desc=sprintf($i18['REQUEST_MORE_DESC'], $add_count);
+			echo <<< KCAP
+<h4>{$i18['REQUEST_MORE_H']}</h4>			
+<p>$desc</p>
+<form id="pwdrestore" action="{$_SERVER['REQUEST_URI']}" method="post">
+<p>{$i18['CAPTCHA_PROMPT']}</p>
+<p><img src="mobi/kcaptcha?$param" alt="Captcha">
+<input name="p_captcha" type="text"/>
+</p>
+<input name="Action" type="submit" value="OK"/>
+</form>			
+KCAP;
+		return;
 		}
 	}
-	else{
-		echo 'Вам не разрешено загружать города. Обратитесь в <a href="#">службу поддержки</a>.';
+	if(isset($_POST['sc'])){
+		$sth=get_selected_cities('sc');
+		if($is_allow_dl && mysql_num_rows($sth)>0){
+			$row = mysql_fetch_row($sth);
+			echo "<p>".sprintf($i18['READY_CITIES'], "$row[1], $row[2]", $defyear)."</p>\n";
+			$str=midlet_create("geo", $defyear, $lang, $sc, "mobi/dl");
+			if(strlen($str)){
+				dec_try_count(0, 1);
+				echo $str;
+				echo tries_remained($tries[1]-1, $DLIM[1]);
+			}
+		}
+		else{
+			echo 'Вам не разрешено загружать города. Обратитесь в <a href="#">службу поддержки</a>.';
+		}
+		return;
 	}
-	return;
 }
 //print_r($_REQUEST);
 ?>
@@ -117,7 +157,7 @@ for($i=0; $i<3; $i++){
 ?>
 </select>
 </th>
-<th colspan="2" style="font-size:12px">
+<th colspan="2">
 <span style="white-space: nowrap;">
 <?php
 	if($tries[1]!=-1){ 
@@ -161,15 +201,19 @@ for($i=0; $i<3; $i++){
 		$lb2.="<option value=\"$row[0]\"$selflag>$row[1]</option>\n";
 	}
 	mysql_free_result($sth);
-	$gen_prop=' onclick="generate(\''.$cur_country.'\')"';
-	if(!$tries[1]){
-		$gen_prop=' disabled="disabled"';
+	$gen_prop=" onclick=\"generate('$cur_country')\"";
+	$btnlbl=$i18['GET_DATA'];
+	
+	if(!$tries[1]){ // limit exceeded
+		echo "\n<input type=\"hidden\" name=\"rmore\"/>";
+		$gen_prop=" onclick=\"this.form.elements.namedItem('Action').value=1; this.form.submit()\"";
+		$btnlbl=$i18['REQUEST_MORE'];
 	}
 ?>
 </th>
 <th>
 <span class="bums">
-<input id="genbtn" type="button" value="<?php echo $i18['GET_DATA']?>"<?php echo $gen_prop ?>/>
+<input id="genbtn" type="button" value="<?php echo "$btnlbl\"$gen_prop"?>/>
 </span> 
 </th>
 </tr>

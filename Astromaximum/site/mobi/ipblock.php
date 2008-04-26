@@ -12,7 +12,7 @@ function allow_ip($pageid, $is_mobi){
 	$ip=quote_smart($_SERVER['REMOTE_ADDR']);
 	$pageid=quote_smart($pageid);
 	if(isset($_POST['p_ipcaptcha'])){
-		$capok=is_capcha($_POST['p_ipcaptcha']);
+		$capok=is_captcha($_POST['p_ipcaptcha']);
 		if($capok){
 			$stat=sprintf("UPDATE ipblock SET accessed=1, tm_first=tm_last WHERE ip=%s AND pageid=%s",
 				$ip,$pageid);
@@ -83,14 +83,5 @@ function ip_ok($ip, $pageid){
 //		echo mysql_error();
 //	}
 	return $result;
-}
-
-function is_capcha($captcha){
-	$res=false;
-	if(count($_POST)>0){
-		$res=isset($_SESSION['captcha_keystring']) && ($_SESSION['captcha_keystring'] ==  $captcha);
-	}
-	unset($_SESSION['captcha_keystring']);
-	return $res;
 }
 ?>
