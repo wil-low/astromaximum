@@ -32,6 +32,19 @@ if($ARGV[0] eq 'fnfix'){
 if($#ARGV!=0 and scalar(@ARGV)<2){
 	die "Usage: <year> [tzonly|clean|fnfix] <country group code list>|<all>|<common>\n";
 }
+my %MSK=(
+		'+2' =>'GMT +2, MSK -1, USZ1',
+		'+3' =>'GMT +3, MSK ',
+		'+4' =>'GMT +4, MSK+1, SAMT',
+		'+5' =>'GMT +5, MSK+2, YEKT',
+		'+6' =>'GMT +6, MSK+3, OMST',
+		'+7' =>'GMT +7, MSK+4, KRAT',
+		'+8' =>'GMT +8, MSK+5, IRKT',
+		'+9' =>'GMT +9, MSK+6, YAKT',
+		'+10'=>'GMT+10, MSK+7, VLAT',
+		'+11'=>'GMT+11, MSK+8, MAGT',
+		'+12'=>'GMT+12, MSK+9, PETT',
+	);
 our %historic;
 my @cities;
 my $citlist;
@@ -257,9 +270,9 @@ sub process_ini{
 				$countries[0]=~s/\|/$altcit\|/is;
 				$countries[0]=~s/\'\'/\'/isg;
 				my @params=split(/\|/is, $countries[0]);
-
 				$params[0]=~s/.+!//is;
 				$error++ if !get_tz($params[3],$params[0],0,0);
+				$countries[0]=~s/(Russia \- )GMT (\+\d+)/$1.$MSK{$2}/e;
 				$invoke="echo \"$countries[0]\" >> \"$path$city_inf.txt\"";
 	#			print "$invoke\n";
 				system($invoke);

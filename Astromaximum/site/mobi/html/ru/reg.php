@@ -34,7 +34,7 @@ else
 <p><em><strong>&euro;<?php echo $price ?></strong> - полная версия на <?php echo $current_year ?> год</em></p>
 одним из следующих способов:
 <ul>
-<li>почтовым переводом (<?php anchor("sendmoney") ?>наши реквизиты</a>)</li>
+<li>почтовым переводом (<?php echo anchor("sendmoney") ?>наши реквизиты</a>)</li>
 <li>через платежную систему <a href="http://paypal.com">PayPal</a></li>
 </ul>
 и нажмите "вход".</p>

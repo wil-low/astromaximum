@@ -37,7 +37,7 @@ function lang_load($path){
 
 function anchor($pp){
 	global $lang;
-	echo "<a href=\"?lang=$lang&amp;p=$pp\">";
+	return "<a href=\"?lang=$lang&amp;p=$pp\">";
 } 
 
 function dload_prompt($str, $is_disabled){

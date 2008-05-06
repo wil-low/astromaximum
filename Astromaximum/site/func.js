@@ -48,7 +48,6 @@ function check_user(){
 }
 
 function do_random(input_id){
-	alert(findObj(input_id));
 	var str='';
 	for(i=0; i<9; i++){
 		str=str.concat(Math.floor(Math.random()*9));

@@ -53,7 +53,7 @@ KCAP1;
 		}
 		if(isset($_POST['rmore'])){ // requesting more cities
 			$param=session_name().'='.session_id();
-			$desc=sprintf($i18['REQUEST_MORE_DESC'], $add_count);
+			$desc=sprintf($i18['REQUEST_MORE_DESC'], $DLIM[1]);
 			echo <<< KCAP
 <h4>{$i18['REQUEST_MORE_H']}</h4>			
 <p>$desc</p>
@@ -78,6 +78,7 @@ KCAP;
 				dec_try_count(0, 1);
 				echo $str;
 				echo tries_remained($tries[1]-1, $DLIM[1]);
+				echo "<br/><br/><a href=\"{$_SERVER['REQUEST_URI']}\">{$i18['BACK']}</a>";
 			}
 		}
 		else{
@@ -103,17 +104,18 @@ function generate(country){
 	lst=findObj("chkcit");
 	ind=lst.selectedIndex;
 	if(ind<0){
-		alert("Выберите город из списка");
+		alert("<?php echo $i18['SELCITY_ALERT']?>");
 		return;
 	}
-	if(confirm("Сгенерировать город:\n"+lst.item(ind).text+", "+country+"?")){
+	if(confirm("<?php echo $i18['SELCITY_GENERATE']?>:\n"+lst.item(ind).text+", "+country+"?")){
 		frm=document.forms.namedItem("main");
 		frm.elements.namedItem("sc").value=lst.item(ind).value;
 		frm.elements.namedItem("Action").value=1;
 		frm.submit();
 	}
 }
-function highlight_gen(){
+function highlight_gen(lb){
+	if(lb.selectedIndex<0) return;
 	btn=findObj('genbtn');
 	btn.style.background="url('i/btn_on.jpg')";
 	btn.style.color="rgb(0,0,0)";
@@ -244,7 +246,7 @@ for($i=0; $i<3; $i++){
 	$sth = mysql_query($stat);
 ?>
 <td>
-<select id="chkcit" size="<?php echo $table_vsize ?>" class="lb" onchange="highlight_gen()">
+<select id="chkcit" size="<?php echo $table_vsize ?>" class="lb" onchange="highlight_gen(this)">
 <?php
 	while($row = mysql_fetch_row($sth)){
 		echo "<option value=\"$row[0]\">$row[1]</option>\n";
@@ -261,7 +263,7 @@ for($i=0; $i<3; $i++){
 </tr>
 </table>
 </form>
-<p>Перед загрузкой городов <?php echo anchor('buy') ?>календарь соответствующего года</a> должен быть установлен на Вашем телефоне.</p>
+<p><?php echo sprintf($i18['DL_BEFORE_INSTALL'], anchor('buy'))?></p>
 </div>
 
 <?php
