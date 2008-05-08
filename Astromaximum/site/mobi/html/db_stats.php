@@ -19,7 +19,7 @@ if(strcmp($mode,'env')==0){
     echo "<tr><td>$key</td><td>$value</td></tr>\n";
 	}
 	echo '</table>';
-	phpinfo();
+	phpinfo();                                                                                                         
 }	
 if(strcmp($mode,'data')==0){	
 	echo '<p></p>';

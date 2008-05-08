@@ -208,7 +208,10 @@ sub process_ini{
 				$cit=~s/^\s+//is;
 				$cit=~s/\s+$//is;
 				my $sql="select id, eng from countries where eng = \'$cit\';";
-				$invoke="echo \"$sql\" \| $db > \"$tmp\"";
+				open (TMP, ">$path".'tmp.sh');
+				print(TMP "echo \"$sql\" \| $db > \"$tmp\"");
+				close(TMP);
+				$invoke="sh $path".'tmp.sh';
 				system($invoke);
 				open(InF, "<$tmp") or die "No file $tmp";
 				my @countries=<InF>;
@@ -260,7 +263,10 @@ sub process_ini{
 				$state=$1;
 				$sql="select eng, longit, latit, \'$state\','$contin' from cities where eng = \'$cit\' and country_id=$cid limit 1";
 			}
-			$invoke="echo \"$sql;\" \| $db > \"$tmp\"";
+			open (TMP, ">$path".'tmp.sh');
+			print(TMP "echo \"$sql;\" \| $db > \"$tmp\"");
+			close(TMP);
+			$invoke="sh $path".'tmp.sh';
 			system($invoke);
 			open(InF, "<$tmp") or die "No file $tmp";
 			my @countries=<InF>;
@@ -677,6 +683,7 @@ sub get_tz{
 	my ($country,$city,$isdie,$verbose)=@_;
 	$country=~s/.+\$//is;
 	$country=~s/[\n\r]//isg;
+	$country=~s/, MSK.+//is;
 	if($TZ_VER==2){
 		my $c_arr;
 		print "$country,$city,$isdie\t" if $verbose;

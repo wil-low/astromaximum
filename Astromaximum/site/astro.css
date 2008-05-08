@@ -2,6 +2,7 @@
 html, body {
 	padding: 0;
 	margin: 0;
+	overflow-x:hidden;
 }
 html, body,  table {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -56,11 +57,12 @@ ul {
 }
 .bums input {
 	border: none;
-	height: 26px;
-	width: 128px;
+	height: 37px;
+	width: 132px;
+	background: url('i/btn_off.png');
+	color: rgb(33,95,124);
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
-	background: url('i/btn_off.jpg');
-	color: rgb(200,200,200);
 }
 .lb {
 	width: 100%;

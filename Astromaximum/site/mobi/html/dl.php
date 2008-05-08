@@ -117,8 +117,8 @@ function generate(country){
 function highlight_gen(lb){
 	if(lb.selectedIndex<0) return;
 	btn=findObj('genbtn');
-	btn.style.background="url('i/btn_on.jpg')";
-	btn.style.color="rgb(0,0,0)";
+	btn.style.background="url('i/btn_on.png')";
+	btn.style.fontWeight="bold";
 }
 -->
 </script>

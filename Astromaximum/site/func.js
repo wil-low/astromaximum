@@ -29,6 +29,14 @@ function check_notify(){
 }
 
 function check_user(){
+	if(is_empty('u_login') || is_empty('u_realname)){
+		alert("Missing login or realname");
+		return;
+	}
+	if(!check_notify()){
+		alert("Notify user: Missing login or password or email");
+		return;
+	}
 	upw1=findObj('u_pwd1').value;
 	upw2=findObj('u_pwd2').value;
 	if(upw1!=upw2){
@@ -39,12 +47,10 @@ function check_user(){
 			alert("Password must be 9 digits long!"); return;
 		}
 	}
-	if(check_notify()){
-		findObj('usredit').submit();
+	if(findObj('u_paymode').selectedIndex==0){
+		alert("Please select paymode!"); return;
 	}
-	else{
-		alert("Notify user: Missing login or password or email");
-	}
+	findObj('usredit').submit();
 }
 
 function do_random(input_id){

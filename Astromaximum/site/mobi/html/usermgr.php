@@ -8,7 +8,7 @@ if(isset($_GET['u'])){
 	$id=$_GET['u'];
 	if(strcmp($id, 'add')==0){
 		global $DLIM;
-		$row=array("", "", "", $DLIM[0], $DLIM[1], $DLIM[2], 1); // defaults for new user
+		$row=array("", "", "", $DLIM[0], $DLIM[1], $DLIM[2], 1, 0); // defaults for new user
 		$hdr="Add new user:";
 		$act="Add";
 	}
@@ -24,6 +24,13 @@ if(isset($_GET['u'])){
 		if($row[6]){
 			$active=" checked=\"checked\"";
 		}
+		$paymode="";
+		$stat="SELECT id, name from dic_paymode ORDER BY id";
+		$sth=mysql_query($stat);
+		while($rowp=mysql_fetch_row($sth)){
+			$sel=($row[7]==$rowp[0])? ' selected="selected"': '';
+			$paymode.="<option value=\"$rowp[0]\"$sel>$rowp[1]</option>\n";
+		}
 		echo <<<EOF
 <h3>$hdr $row[0]</h3>
 <form id="usredit" action="index.php?$lang_&amp;p=usermgr" method="post">
@@ -35,7 +42,6 @@ if(isset($_GET['u'])){
 </p> 
 <p><i>Enter new password when changing login !!!</i></p>
 <p>
-
 <input type="text" name="u_pwd1" id="u_pwd1" value="" size="9" maxlength="9"/> 
 <a href="javascript:void(0)" onclick="do_random('u_pwd1');findObj('u_pwd2').value=findObj('u_pwd1').value;return false">pwd</a> &nbsp;
 <br/><input type="text" name="u_pwd2" id="u_pwd2" size="9" maxlength="9"> pwd again &nbsp;
@@ -43,7 +49,13 @@ if(isset($_GET['u'])){
 <p>
 <input type="text" name="u_dlc" value="$row[3]" size="3"/> dl &nbsp; &nbsp; 
 <input type="text" name="u_cityc" value="$row[4]" size="3"/> city &nbsp; &nbsp; 
-<input type="text" name="u_pastc" value="$row[5]" size="3"/> past &nbsp; &nbsp;</p>
+<input type="text" name="u_pastc" value="$row[5]" size="3"/> past &nbsp; &nbsp;
+Paymode: 
+<select name="u_paymode" style="width:10em">
+<option value="0"></option>
+$paymode
+</select>
+</p>
 <p> 
 <input type="checkbox" name="u_active"$active/> Active &nbsp; &nbsp; 
 <input type="checkbox" name="u_notify" id="u_notify"/> E-mail credentials to this user</a></p>
@@ -65,7 +77,7 @@ if(isset($_POST['u_id'])){
 		$succ=false;
 		if($is_num){
 			$stat=sprintf("UPDATE customers set realname=%s, name=%s, email=%s, dlcount0=%d, dlcount1=%d, dlcount2=%d, ".
-				"active=%d WHERE id=%d",
+				"active=%d, paymode_id=%d WHERE id=%d",
 				quote_smart($_POST['u_realname']),
 				quote_smart($_POST['u_login']),
 				quote_smart($_POST['u_email']),
@@ -73,20 +85,22 @@ if(isset($_POST['u_id'])){
 				quote_smart($_POST['u_cityc']),
 				quote_smart($_POST['u_pastc']),
 				quote_smart($active),
+				quote_smart($_POST['u_paymode']),
 				quote_smart($id)
 			);
 			$succ=mysql_query($stat);
 		}
 		if(strcmp($id, "add")==0){
-			$stat=sprintf("INSERT INTO customers(realname, name, email, dlcount0, dlcount1, dlcount2, active, subscr_date) ".
-				"VALUES (%s, %s, %s, %d, %d, %d, %d, CURRENT_DATE)",
+			$stat=sprintf("INSERT INTO customers(realname, name, email, dlcount0, dlcount1, dlcount2, active, subscr_date, paymode_id) ".
+				"VALUES (%s, %s, %s, %d, %d, %d, %d, CURRENT_DATE, %d)",
 				quote_smart($_POST['u_realname']),
 				quote_smart($_POST['u_login']),
 				quote_smart($_POST['u_email']),
 				quote_smart($_POST['u_dlc']),
 				quote_smart($_POST['u_cityc']),
 				quote_smart($_POST['u_pastc']),
-				quote_smart($active)
+				quote_smart($active),
+				quote_smart($_POST['u_paymode'])
 			);
 			$succ=mysql_query($stat);
 			if($succ){
