@@ -113,7 +113,6 @@ if($chac==0){
 ADMIN_TB;
 }
 if($user_ok){
-	$current_year=get_year();
 	if(strcmp($main, 'demo')){
 		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
 	}
@@ -181,7 +180,6 @@ echo $session_prompt
 <?php } ?>
 </div><!-- end leftColumn div -->
 <div id="content">
-<br/>
 <?php
 	if($custom_content){
 		echo $custom_content;

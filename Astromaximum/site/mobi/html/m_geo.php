@@ -14,7 +14,7 @@
 		$arr=explode(',', get_default_cities($GLOBALS['amax']['demo_cities']));
 		if(isset($arr[$parm[0]])){
 			$sc=$arr[$parm[0]];
-			$defyear=get_year()-1;
+			$defyear=$GLOBALS['amax']['year']-1;
 			$stat="SELECT cities.name, countries.name FROM cities,countries WHERE cities.id=$sc and countries.id=country_id ORDER BY countries.name,cities.name";
 			$sth=mysql_query($stat);
 			if(mysql_num_rows($sth)>0){
@@ -22,7 +22,6 @@
 				echo sprintf($i18['READY_CITIES'], "$row[0], $row[1]", $defyear)."<br/>\n";
 				echo midlet_create("geo", $defyear, $lang, $sc, "dl");
 			}
-#			make_city($arr[$parm[0]], get_year()-1);
 		}
 		return;
 	}
@@ -39,7 +38,7 @@
 	}
 	fclose($fd);
 	$LVL_MAX=3;
-	$defyear=get_year();
+	$defyear=$GLOBALS['amax']['year'];
 	if(isset($_GET['y'])){
 		$defyear=$_GET['y'];
 	}

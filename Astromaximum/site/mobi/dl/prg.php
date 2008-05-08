@@ -8,7 +8,7 @@
 	$default_city_ids=get_default_cities($GLOBALS['amax']['def_cities']);
 
 	if(!isset($_REQUEST['mode'])) exit;
-	$year=get_year();
+	$year=$GLOBALS['amax']['year'];
 	$isdemo=0;
 	if(strcmp($_REQUEST['mode'], 'demo')==0){
 		$year--;

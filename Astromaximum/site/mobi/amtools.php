@@ -290,8 +290,7 @@ function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string 
 #				echo "<h4>{$i18['PHONE_DL']}:</h4>";
 #				echo "<a href='$url'>JAD</a><br>";
 		
-		$str.="<br/><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
-//		$str.="<a href={$_SERVER['REQUEST_URI']}>{$i18['BACK']}</a>";
+		$str.="<br/><font color='red'>{$i18['VALID_LINKS']}</font>";
 	}
 	return $str;
 }
@@ -331,7 +330,7 @@ function pwd_send($to, $login, $realname, $dl_limits, $pwd){
 	  
 	  $mail->Username   = $GLOBALS['amax']['smtp_user'];
 	  $mail->Password   = $GLOBALS['amax']['smtp_pass'];
-	}  
+	} 
    $mail->From       = $from;
 
    $mail->FromName   = 'Astromaximum office';
@@ -360,6 +359,7 @@ function pwd_send($to, $login, $realname, $dl_limits, $pwd){
   $mail->AddAddress($to,$realname);
   
   $mail->IsHTML(true); // send as HTML
+  $mail->CharSet    = 'windows-1251'; 
   return $mail; 
 }
 

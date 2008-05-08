@@ -2,6 +2,7 @@
 if(!isset($EXEC)) die("Access restricted");
 echo "<h4>Восстановление регистрации</h4>";
 include_once("mobi/ipblock.php");
+include_once("mobi/amtools.php");
 $msg=allow_ip('pwd_rest', false);
 echo $msg;
 if($msg) return;
@@ -50,7 +51,7 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 <p><img src="mobi/kcaptcha?<?php echo session_name()?>=<?php echo session_id()?>" alt="Captcha">
 <input name="p_captcha" type="text"/>
 </p>
-<input name="action" type="button" value="OK" onclick="checkdata()"/>
+<input name="action" type="button" class="ok_on" value="OK" onclick="checkdata()"/>
 </form>
 <?php
 function email2login($mail){

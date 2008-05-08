@@ -4,7 +4,7 @@ lang_load("mobi/html");
 $step=1;
 $max_cities=5;
 $table_vsize=18;
-$current_year=get_year();
+$current_year=$GLOBALS['amax']['year'];
 $chac=check_access();
 if($chac==-1 or $chac==1){
 	reg_warning("Загрузка городов");
@@ -14,7 +14,7 @@ include_once('mobi/amtools.php');
 $tries=get_try_count(0);
 global $DLIM;
 $is_allow_dl=($tries[1]!=0);
-$defyear=date("Y");
+$defyear=$current_year;
 if(isset($_POST['y_sel'])){
 	$defyear=$_POST['y_sel'];
 	if($defyear>$current_year){
@@ -77,7 +77,9 @@ KCAP;
 			if(strlen($str)){
 				dec_try_count(0, 1);
 				echo $str;
-				echo tries_remained($tries[1]-1, $DLIM[1]);
+				if($tries[1]>=0){
+					echo tries_remained($tries[1]-1, $DLIM[1]);
+				}
 				echo "<br/><br/><a href=\"{$_SERVER['REQUEST_URI']}\">{$i18['BACK']}</a>";
 			}
 		}

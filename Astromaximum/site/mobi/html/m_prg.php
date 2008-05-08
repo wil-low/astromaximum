@@ -3,7 +3,7 @@ if(!isset($EXEC)) die("Access restricted");
 $perl=find_perl();
 $default_city_ids=get_default_cities($GLOBALS['amax']['def_cities']);
 if(!isset($_REQUEST['mode'])) exit;
-$year=get_year();
+$year=$GLOBALS['amax']['year'];
 $isdemo=0;
 if(strcmp($_REQUEST['mode'], 'demo')==0){
 	$year--;
@@ -50,7 +50,7 @@ if(!strpos($data_php, "mobi")){
 }
 //echo "http://$data_php/../data.php?t=$fn";
 echo "<a href=\"http://$data_php/data.php?t=$fn\">{$i18['PHONE_DL']}</a>";
-echo "<br/><font color='red'>{$i18['VALID_LINKS']}</font><br><br>";
+echo "<br/><font color='red'>{$i18['VALID_LINKS']}</font><br/><br/>";
 
  
 ?>

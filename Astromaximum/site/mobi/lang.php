@@ -7,6 +7,7 @@ if(isset($_REQUEST['lang'])){
 	$lang=strtolower($_REQUEST['lang']);
 }
 $lang_="lang=$lang";
+$GLOBALS['amax']['year']=get_year();
 
 function sess_start(){
 
@@ -43,8 +44,10 @@ function anchor($pp){
 function dload_prompt($str, $is_disabled){
 	$ret='';
 	$disabled='';
+	$cls="ok_on";
 	if($is_disabled){
 		$disabled=" disabled=\"disabled\"";
+		$cls="ok_off";
 		$onclick='';
 	}
 	else{
@@ -66,7 +69,7 @@ EOF;
 		 $onclick=' onclick="checkCheckBox(this)"';
 	}
 	$ret.='<input type="checkbox" name="agree" style="width:auto;"'.$disabled.'/> '.$str.'<br/><br/>'.
-	'<input type="button" style="height:auto;" value="OK"'.$onclick.$disabled.'/>';
+	'<input type="button" class="'.$cls.'" value="OK"'.$onclick.$disabled.'/>';
 	return $ret;
 } 
 

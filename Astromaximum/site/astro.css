@@ -2,7 +2,7 @@
 html, body {
 	padding: 0;
 	margin: 0;
-	overflow-x:hidden;
+/*	overflow-x:hidden;*/
 }
 html, body,  table {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -64,6 +64,27 @@ ul {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 }
+
+.ok_on {
+	border: none;
+	height: 26px;
+	width: 91px;
+	background: url('i/ok_on.png');
+	color: rgb(33,95,124);
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+.ok_off {
+	border: none;
+	height: 26px;
+	width: 91px;
+	background: url('i/ok_off.png');
+	color: rgb(80,80,80);
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
 .lb {
 	width: 100%;
 	font-size: 10px;
@@ -76,7 +97,7 @@ ul {
 	margin: 0px;
 	padding: 0px;
 	width: 100%;
-	float: left;
+	float: left,top;
 	background: url('i/fon.jpg') repeat-x 956px top;
 }
 #logoText {

@@ -29,7 +29,7 @@ $validuser=false;
 if($chac>=0 && $chac!=1){
 	$validuser=true;
 }
-$current_year=get_year();
+$current_year=$GLOBALS['amax']['year'];
 if(isset($_POST['btn'])){
 	$dest='ph';
 	$btn=$_POST['btn'];

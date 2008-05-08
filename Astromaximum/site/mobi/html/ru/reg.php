@@ -1,9 +1,8 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
 echo "<h4>Загрузка полной версии</h4><p>";
-include_once("mobi/dbconnect.php");
 include_once("mobi/amtools.php");
-$current_year=get_year();
+$current_year=$GLOBALS['amax']['year'];
 $chac=check_access(); 
 if($chac!=-1 and $chac!=1){
 	if(isset($_REQUEST["go"])){

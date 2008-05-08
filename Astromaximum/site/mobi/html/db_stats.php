@@ -19,7 +19,6 @@ if(strcmp($mode,'env')==0){
     echo "<tr><td>$key</td><td>$value</td></tr>\n";
 	}
 	echo '</table>';
-	phpinfo();                                                                                                         
 }	
 if(strcmp($mode,'data')==0){	
 	echo '<p></p>';
@@ -107,6 +106,17 @@ function check_env(){
 	else{
 		$res[$key]="<font color=\"red\">MISSING</font>";
 	}
+	$key='Demo cities';
+	$adc=$GLOBALS['amax']['demo_cities'];
+	$dcit=get_default_cities($adc);
+	$yprev=$GLOBALS['amax']['year']-1;
+	$value='';
+	for($i=0; $i<count($adc); $i++){
+		$value.="$adc[$i] ";
+		$value.=yesno(mysql_query("SELECT 1 FROM locations WHERE city_id = '$dcit[$i]' and year=$yprev"));
+		$value.=", ";
+	}
+	$res[$key]=$value;
 	return $res;
 }
 

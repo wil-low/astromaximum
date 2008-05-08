@@ -87,7 +87,7 @@ if(preg_match("/^(demo)$/is", $main)){
 				if($user_ok){
 					echo str_replace('src="mobi/', 'src="', file_get_contents($fn));
 					if(strcmp($main, '0_0')){
-						echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>назад к теме</strong></a></p>";
+						echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a></p>";
 					}
 				}
 			}
@@ -96,7 +96,7 @@ if(preg_match("/^(demo)$/is", $main)){
 			}
 		}
 		else{
-			echo "<h3>Запрашиваемой страницы не существует</h3>";
+			echo "<h3>{$i18['PAGE_NOT_FOUND']}</h3>";
 		}
 	} 
 ?>
@@ -110,7 +110,8 @@ if($chac!=-1){
 	echo " &nbsp; <a href=\"dl/logout.php\">logout</a>";
 }
 else{
-	echo '<br/>* for demo:<br/> log: 123456789<br/> pas: 012345678';
+	echo '<br/>* for demo:<br/> log: '.$GLOBALS['amax']['demo_login'].
+		'<br/> pas: '.$GLOBALS['amax']['demo_pass'];
 }
 ?>
 </div>

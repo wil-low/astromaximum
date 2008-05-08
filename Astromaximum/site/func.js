@@ -29,7 +29,7 @@ function check_notify(){
 }
 
 function check_user(){
-	if(is_empty('u_login') || is_empty('u_realname)){
+	if(is_empty('u_login') || is_empty('u_realname')){
 		alert("Missing login or realname");
 		return;
 	}
