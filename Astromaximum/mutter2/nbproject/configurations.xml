@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="39">
+<configurationDescriptor version="45">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -25,14 +25,12 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceEncoding>windows-1252</sourceEncoding>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>GNU</compilerSet>
-        <cRequired>true</cRequired>
-        <cppRequired>true</cppRequired>
-        <fortranRequired>false</fortranRequired>
+        <compilerSet>GNU|GNU</compilerSet>
         <platform>2</platform>
       </toolsSet>
       <compileType>
@@ -40,7 +38,9 @@
           <includeDirectories>
             <directoryPath>../swe</directoryPath>
           </includeDirectories>
-          <preprocessor>ANSITZ</preprocessor>
+          <preprocessorList>
+            <Elem>ANSITZ</Elem>
+          </preprocessorList>
         </ccCompilerTool>
         <linkerTool>
           <output>mutter2</output>
@@ -73,20 +73,18 @@
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <compilerSet>GNU</compilerSet>
-        <cRequired>true</cRequired>
-        <cppRequired>true</cppRequired>
-        <fortranRequired>false</fortranRequired>
+        <compilerSet>GNU|GNU</compilerSet>
         <platform>2</platform>
       </toolsSet>
       <compileType>
         <ccCompilerTool>
           <developmentMode>5</developmentMode>
-          <stripSymbols>true</stripSymbols>
           <includeDirectories>
             <directoryPath>../swe</directoryPath>
           </includeDirectories>
-          <preprocessor>ANSITZ</preprocessor>
+          <preprocessorList>
+            <Elem>ANSITZ</Elem>
+          </preprocessorList>
         </ccCompilerTool>
         <linkerTool>
           <output>mutter2</output>
@@ -97,6 +95,51 @@
           <linkerLibItems>
             <linkerLibLibItem>swe</linkerLibLibItem>
           </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="datafile.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="datafile.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="evclass.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="evclass.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="events.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="main.cpp">
+        <itemTool>1</itemTool>
+      </item>
+    </conf>
+    <conf name="Profiling" type="1">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <ccCompilerTool>
+          <includeDirectories>
+            <directoryPath>../swe</directoryPath>
+          </includeDirectories>
+          <commandLine>-pg</commandLine>
+          <preprocessorList>
+            <Elem>ANSITZ</Elem>
+          </preprocessorList>
+        </ccCompilerTool>
+        <linkerTool>
+          <output>mutter2prof</output>
+          <linkerAddLib>
+            <directoryPath>../swe</directoryPath>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerLibLibItem>swe</linkerLibLibItem>
+          </linkerLibItems>
+          <commandLine>-pg</commandLine>
         </linkerTool>
       </compileType>
       <item path="datafile.cpp">

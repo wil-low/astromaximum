@@ -89,6 +89,7 @@ private:
     void doAphetics(VAE &work);
     void doAscAphetics(VAE &work);
     void addBalls(aphRecord *balls, const Event *ev, int value);
+    double getPrevious0dgr();
 public:
     unsigned int dayCount, stepCount;
     bool readSubData(const char* fname, VAE & v);

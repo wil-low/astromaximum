@@ -30,7 +30,18 @@ if($ARGV[0] eq 'fnfix'){
 	shift(@ARGV);
 }
 if($#ARGV!=0 and scalar(@ARGV)<2){
-	die "Usage: <year> [tzonly|clean|fnfix] <country group code list>|<all>|<common>\n";
+	die <<EOF;
+Astrological events calculator
+Usage: 
+	perl geoCoord.pl <year> [tzonly|clean|fnfix] common|<country group code list>|all
+Options:
+	tzonly - only update timezone dates, no calculation
+	clean - regenerate city coords
+	fnfix - rename files to new convention (deprecated)
+
+	common - calculate common.dat for this year
+	all - calculate all cities
+EOF
 }
 my %MSK=(
 		'+2' =>'GMT +2, MSK -1, USZ1',
@@ -84,6 +95,7 @@ do_patch(\$citlist);
 
 my $day_count=tools::day_count($year);
 mkdir $mypath."data/archive";
+mkdir $mypath."data/archive/$year";
 mkdir $mypath."data/ephdata";
 our $path=$mypath."data/archive/";
 our $city_inf;
@@ -282,6 +294,7 @@ sub process_ini{
 				$invoke="echo \"$countries[0]\" >> \"$path$city_inf.txt\"";
 	#			print "$invoke\n";
 				system($invoke);
+				print '.';
 			}
 			else{
 				print "$invoke\n";
@@ -296,7 +309,7 @@ sub process_ini{
 		die "Please correct $error errors.\n";
 	  }
 	  else{
-			print "Ready. Check coords.\nMay I continue calculations (y/n)? ";
+			print "\nReady. Check coords in $path$city_inf.txt.\nMay I continue calculations (y/n)? ";
 		}
 		my $ans=<STDIN>;
 #		print ">$ans<";

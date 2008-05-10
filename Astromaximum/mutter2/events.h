@@ -17,7 +17,7 @@
 #include "swephexp.h"
 
 const int PLANET_COUNT=SE_PLUTO-SE_SUN+1;
-const int EFLAG=SEFLG_SPEED|SEFLG_SWIEPH;
+const int EFLAG=SEFLG_SWIEPH;
 
 const double MINUTE_STEP=(1./24/60);
 const double MSECINDAY=86400*1000;

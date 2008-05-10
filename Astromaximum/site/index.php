@@ -105,8 +105,8 @@ $btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 
-	<a href="?$lang_&amp;p=db_stats&amp;mode=env">окружение</a> |  
-	<a href="?$lang_&amp;p=db_stats&amp;mode=data">статистика</a> |  
+	<a href="?$lang_&amp;p=env">окружение</a> |  
+	<a href="?$lang_&amp;p=db_stats">статистика</a> |  
 	<a href="?$lang_&amp;p=upload">загрузка городов</a> |
 	<a href="?$lang_&amp;p=usermgr">пользователи</a> |
 	</p>

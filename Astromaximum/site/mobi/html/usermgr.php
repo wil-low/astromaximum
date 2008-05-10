@@ -151,7 +151,7 @@ if(isset($_POST['u_id'])){
 	}
 }
 ?>
-<table>
+<table class="colorlist">
 <tr><td colspan="6" style="background-color:white; text-align:right">
 <a href="index.php?<?php echo $lang_ ?>&amp;p=usermgr&amp;u=add">Add user</a></td></tr>
 <tr><th>Realname</th><th>email</th><th>dl count</th><th>city count</th><th>past count</th><th>payment</th></tr>

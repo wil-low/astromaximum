@@ -127,7 +127,7 @@ function highlight_gen(lb){
 <h4></h4>
 <div style="position: absolute;top: 198px;left: 345px;width:660px;">
 <form method="post" action="/?<?php echo $lang_ ?>&amp;p=dl" name="main">
-<table class="geo">
+<table class="citylist">
 <tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
 <?php
 // First listbox

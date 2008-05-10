@@ -204,6 +204,8 @@ void DataFile::sortVAE(VAE &work) {
 
 void DataFile::AAA() {
     VAE work, assist, vout, work2;
+    getPrevious0dgr();
+    exit(0);
     /*
   calcDegPass(work, 10);
   clearDegPass(work, assist, 10, vout);
@@ -445,6 +447,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
             if(abs(delta)>32767){
                 printf("\nError overflow %d at:", delta);
                 ev->dump();
+                printf("\n");
                 return false;
             }
             short d=delta;
@@ -1099,7 +1102,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
                 isRetro=isFaster=false; endJD=startJD; ev=NULL;
                 Event *evFast=NULL;
                 for(int i=0; i<stepCount; i++){
-                    swe_calc_ut(endJD, body, EFLAG, data, serr);
+                    swe_calc_ut(endJD, body, EFLAG|SEFLG_SPEED, data, serr);
                     if(body>=SE_MERCURY){
                         isRetro=data[3]<0;
                         if(isRetro){  // retrograde
@@ -1234,6 +1237,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             printf("Navroz..."); fflush(stdout);
             st=startJD-dayCount; int deg;
             deg=-1; ev=NULL;
+            st=getPrevious0dgr();
             do{
                 swe_calc_ut(st, SE_SUN, EFLAG, data, serr);
                 if(deg!=int(data[0])){
@@ -1564,4 +1568,26 @@ void DataFile::VOC_generate(EventType et, VAE & work, VAE & assist, VAE & vout, 
         st=work[i]->julianDay;
         vout.clear();
     }
+}
+
+double DataFile::getPrevious0dgr() {
+    double st, data[6];
+    char buf[255];
+    sprintf(buf, "archive/%d/navroz.prev", Event::startYear);
+    FILE *nprev=fopen(buf, "a+b");
+    assert(nprev);
+    int res=fread(&st, sizeof(st), 1, nprev);
+    if(res!=1){
+        st=startJD-dayCount;
+        do{
+            swe_calc_ut(st, SE_SUN, EFLAG, data, buf);
+            if(!(int(data[0]))) 
+                break;
+            st+=MINUTE_STEP;
+        }while(true);
+        res=fwrite(&st, sizeof(st), 1, nprev);
+        assert(res==1);
+    }
+    fclose(nprev);
+    return st;
 }

@@ -8,28 +8,29 @@
 #include <dir.h>
 #endif
 #include <fstream>
+#include <unistd.h>
 #include <assert.h>
 using namespace std;
-#pragma hdrstop
-
-//---------------------------------------------------------------------------
-
-#pragma argsused
 
 const int NOT_ENOUGH_PARAMS=-1,
         INVALID_YEAR=-2,
         INVALID_EVENT=-3;
 
-;
-char ephemPath[]="swiss";
+char ephemPath[]="../swiss"; // relative to program dir
+char mypath[PATH_MAX];
 const char outFile[]="output.txt";
 
 sAphRecord aphetics[SE_SATURN+1];
 
+void myexit(int ret){
+    chdir(mypath);
+    printf("\nExit code: %d. Restored curdir: %s\n", ret, mypath);
+    exit(ret);
+}
+
 int main(int argc, char* argv[]) {
-    char path[255];
+    char path[255], serr[256];
     
-    swe_set_ephe_path(ephemPath);
     /*
      * double test_day=swe_julday(2007, 4, 7, 0, SE_GREG_CAL);
      * double result;
@@ -39,7 +40,7 @@ int main(int argc, char* argv[]) {
      * swe_revjul(result, SE_GREG_CAL, &y, &m, &d, &hour);
      * printf("%02d.%02d.%04d %02d:%02d",d, m, y, (int)hour, (int)((hour-(int)hour)*60));
      * scanf("%s",path);
-     * return 0;
+     * myexit(0);
      */
     if((argc==1)||(strcmp(argv[1], "--help"))==0){
         printf("Usage:  mutter2 [options]\n");
@@ -65,10 +66,27 @@ int main(int argc, char* argv[]) {
     else{
         path[0]=0;
     }
+
+    getcwd(mypath, PATH_MAX);
+    printf("Curdir: %s\n", mypath);
+    if(path[0]!='/'){
+        sprintf(serr, "%s/%s/%s", mypath, path, ephemPath);
+    }
+    else{
+        sprintf(serr, "%s/%s", mypath, ephemPath);
+    }
+    swe_set_ephe_path(serr);
+    double g2000=swe_julday(2000, 1, 1, 1, SE_GREG_CAL);
+    double outr[6];
+    int res=swe_calc_ut(g2000, SE_SUN, SEFLG_BARYCTR, outr, serr);
+    if(res<0){
+        printf("%s\n",serr);
+        myexit(-1); // Sweph not found, exit
+    }
+    
     strcat(path, "../data/");
     chdir(path);
-    printf("Current directory is: %s\n", path);
-//  return 0;
+    printf("Chdir to %s\n", path);
     struct tm now;
     now.tm_year=2006-1900;
     now.tm_mon=11;
@@ -92,19 +110,19 @@ int main(int argc, char* argv[]) {
     
     assert(sizeof(sMatrix)==9);
     assert(EV_LAST==50);
-    if(argc<2) return NOT_ENOUGH_PARAMS;
+    if(argc<2) myexit(NOT_ENOUGH_PARAMS);
     DataFile df;
     char buf[20];
     if(strcmp(argv[1], "asctest")==0){
         df.AscendingTest(argv[2]);
         printf("\n%s\n", "Finished.");
         scanf("%s", buf);
-        return 0;
+        myexit(0);
     }
     sEphRecord *ephData=NULL;
     int year;
     if(sscanf(argv[1], "%4d", &year)!=1)
-        return INVALID_YEAR;
+        myexit(INVALID_YEAR);
     printf("Year = %d\t", year);
     Event::startYear=year;
     if((argc==5)&&(strcmp(argv[2], "view")==0)){
@@ -112,7 +130,7 @@ int main(int argc, char* argv[]) {
         sscanf(argv[4], "%d", &count);
         df.view(argv[3], count);
         printf("\nFinished\n");
-        return 0;
+        myexit(0);
     }
     if(argc==3 && strcmp(argv[2], "sql")==0){ // Creating SQL file
         VAE work;
@@ -123,7 +141,7 @@ int main(int argc, char* argv[]) {
         if(!sql){
             int ern=errno;
             printf("Cannot create file %s: %s", fn, strerror(ern));
-            return -1;
+            myexit(-1);
         }
         fprintf(sql, "TRUNCATE TABLE `_voc`; BEGIN;\n");
         if(df.readSubData("voc01.bin", work)){
@@ -172,26 +190,22 @@ int main(int argc, char* argv[]) {
  
         fclose(sql);
         printf("\nSQL created: %s\n", fn);
-        return 0;
+        myexit(0);
     }
     if((argc==5)&&(strcmp(argv[2], "dump")==0)){
         int num=0;
         sscanf(argv[4], "%d", &num);
         df.dump_location(argv[3], num);
-        return 0;
+        myexit(0);
     }
     double startJD=swe_julday(year-1, 12, 31, 0, SE_GREG_CAL);
     printf("startJD=%f\t", startJD);
     double endJD=swe_julday(year+1, 2, 1, 0, SE_GREG_CAL);
     
-    
-//  double endJD=swe_julday(year,2,1,0,SE_GREG_CAL);
-    
-    
     int dayCount=(int)(endJD-startJD);
     unsigned int stepCount=(int)(dayCount/MINUTE_STEP);
     printf("Steps = %d\n", stepCount);
-    double data[6]; char serr[255], ephf[255];
+    double data[6]; char ephf[255];
     ephData=new sEphRecord [stepCount];
     endJD=startJD;
     int size=sizeof(sEphRecord)*stepCount;
@@ -219,20 +233,20 @@ int main(int argc, char* argv[]) {
         printf("\nSteps = %d\n", stepCount);
         for(int i=0; i<stepCount; i++){
             for(int body=0; body<13; body++){
-                swe_calc_ut(endJD, PLANETS[body], EFLAG, data, serr);
+                swe_calc_ut(endJD, PLANETS[body], SEFLG_SWIEPH, data, serr);
                 ephData[i].data[body]=data[0];
             }
             endJD+=MINUTE_STEP;
             if(i%10000==0)
-                printf("%d...", i/10000);
+                printf("%d.", i/10000);
             fflush(stdout);
         }
         printf("\nSaving cached ephemeris...");
         FILE *fout=fopen(ephf, "wb");
         fwrite(ephData, size, 1, fout);
         fclose(fout);
-        printf("Done.\n");
-        return 0;
+        printf("Done. Restart with the same parameters to calculate common.dat\n");
+        myexit(0);
     }
     df.init(ephData, startJD, dayCount);
     if(argc==2){ // only year specified
@@ -240,8 +254,7 @@ int main(int argc, char* argv[]) {
         //  df.saveFile(outFile);
         delete[] ephData;
         ephData=NULL;
-        printf("\nPress any key...");
-        scanf("%s", buf);
+        printf("Done.\n");
     }
     else{
         VAE work, assist, vout, work2;
@@ -256,7 +269,7 @@ int main(int argc, char* argv[]) {
             }
             else{
                 if(argc<5)
-                    return NOT_ENOUGH_PARAMS;
+                    myexit(NOT_ENOUGH_PARAMS);
                 df.Lon=strtod(argv[3], NULL);
                 df.Lat=strtod(argv[4], NULL);
                 int alt=0;
@@ -281,8 +294,5 @@ int main(int argc, char* argv[]) {
         delete[] df.ascData;
     }
     printf("\nFinished.\n");
-    return 0;
+    myexit(0);
 }
-
-
-
