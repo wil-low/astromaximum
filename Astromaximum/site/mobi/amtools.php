@@ -4,6 +4,16 @@ $DEMO=array('login'=>'123456789', 'pass'=>'012345678');
 
 $DLIM=array(2, 8, 10); //download limited
   
+function sess_start(){
+
+#	error_reporting(E_NONE);
+	error_reporting(E_ALL);
+	
+	session_set_cookie_params(3600);
+	session_start();
+	session_register("username","uid", "pwd", "captcha_keystring");
+}
+
 function find_perl(){
 	$perl="/opt/lampp/bin/perl";
 	if(!file_exists($perl)){

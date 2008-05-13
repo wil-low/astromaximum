@@ -1,4 +1,4 @@
-﻿SITE_TITLE=ASTROMAXIMUM - der erste astrologischer Kalender für mobile Geräte
+SITE_TITLE=ASTROMAXIMUM - der erste astrologischer Kalender für mobile Geräte
 MAIN=Hauptseite
 FEAT=Features
 INSTR=Instructions

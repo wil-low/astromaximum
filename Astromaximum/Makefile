@@ -32,5 +32,4 @@ relgui:
 	cd relgui && make CONF=Release $1 build && cd ..
 
 help:
-	echo "Usage: make config|gen_amax|template|interp"
-
+	echo "Usage: make [gen_amax|template|interp|config|mutter|relgui]"

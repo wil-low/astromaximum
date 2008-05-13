@@ -1,6 +1,6 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
-include_once('config.php');
+include_once('mobi/config.php');
 $lang='ru';
 $i18=array();
 if(isset($_REQUEST['lang'])){
@@ -8,16 +8,6 @@ if(isset($_REQUEST['lang'])){
 }
 $lang_="lang=$lang";
 $GLOBALS['amax']['year']=get_year();
-
-function sess_start(){
-
-#	error_reporting(E_NONE);
-	error_reporting(E_ALL);
-	
-	session_set_cookie_params(3600);
-	session_start();
-	session_register("username","uid", "pwd", "captcha_keystring");
-}
 
 function lang_load($path){
 	global $lang, $i18;

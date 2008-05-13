@@ -1,11 +1,12 @@
 <?php 
 $EXEC=1;
-include_once('mobi/lang.php');
+include_once('mobi/amtools.php');
 $main='home';
 if(isset($_GET['p'])){
 	$main=$_GET['p'];
 }
 sess_start();
+include_once('mobi/lang.php');
 include_once('mobi/dbconnect.php');
 lang_load("mobi/html");
 $chac=check_access();
@@ -130,10 +131,10 @@ SP1;
 else{ 
 	$session_prompt=<<<FRM
 <form id="flog" action="?$lang_&amp;p=login&amp;to=$main" method="post"> 
-<input id="ilog" name="login"/> {$i18['LOGIN']} <br /><br />
-<input id="ipwd" name="pass" type="password"/> {$i18['PWD']} <br /><br />
-<a id="aenter" href="javascript:void(0)" onclick="checklogin(); return false"><strong>{$i18['LOG_IN']}</strong></a> | 
-<a href="?$lang_&amp;p=pwdrestore"><strong>{$i18['LOST_PWD']}</strong></a>
+<input id="ilog" class="fixedinput" name="login"/> {$i18['LOGIN']} <br /><br />
+<input id="ipwd" class="fixedinput" name="pass" type="password"/> {$i18['PWD']} <br /><br />
+<input type="submit" class="loginbutton" onclick="checklogin(); return false" value="{$i18['LOG_IN']}" /> | 
+<a style="font-size: 10px;" href="?$lang_&amp;p=pwdrestore"><b>{$i18['LOST_PWD']}</b></a>
 </form> 
 FRM;
 } 

@@ -1,6 +1,6 @@
 <?php
 $EXEC=5;
-include_once('../lang.php');
+include_once('../amtools.php');
 sess_start();
 $_SESSION = array();
 if(isset($_COOKIE[session_name()])){

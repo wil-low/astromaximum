@@ -25,21 +25,16 @@ function yesno($val){
 		"fastjar"=>"mobi/fastjar -V",
 		"bzip2"=>"bzip2 --help",
 		"gzip"=>"gzip -V",
-		"gunzip"=>"gunzip -V",
 		"tar"=>"tar --version",
 	);
-	foreach($apps as $key=>$value){
+	$value='';
+	foreach($apps as $key=>$val){
 		unset($outp);
-		exec($value, $outp, $ret);
-		$key="$key found?";
-		if($ret){
-			$env[$key]='<font color="red">Error '.$ret.'</font>';
-		}
-		else{
-			$env[$key]=yesno($ret==0);
-		}
+		exec($val, $outp, $ret);
+		$value.="$key ".yesno($ret==0).", ";
 	}
-
+	$env['archivers']=$value;
+	
 	exec("$perl -c $p"."gen_amax.cgi", $outp, $ret);
 	$env['gen_amax.cgi syntax']=yesno($ret==0);
 
@@ -49,7 +44,7 @@ function yesno($val){
 	    $env[$key].=substr_replace(basename($filename), '', -5)." ";
 	}
 	if(strlen($env[$key])==0){
-		$env[$key]='<font color="red">no</font>';
+		$env[$key]='<font color="red">NO</font>';
 	}
 
 	$env['jars']='';
