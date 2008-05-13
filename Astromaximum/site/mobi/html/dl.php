@@ -127,7 +127,7 @@ function highlight_gen(lb){
 <h4></h4>
 <div style="position: absolute;top: 198px;left: 345px;width:660px;">
 <form method="post" action="/?<?php echo $lang_ ?>&amp;p=dl" name="main">
-<table class="citylist">
+<table class="colorlist">
 <tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
 <?php
 // First listbox
@@ -162,7 +162,7 @@ for($i=0; $i<3; $i++){
 </select>
 </th>
 <th colspan="2">
-<span style="white-space: nowrap;">
+<span style="white-space: nowrap; font-size:11px">
 <?php
 	if($tries[1]!=-1){ 
 		echo sprintf($i18['LOAD_LEFT'], $DLIM[1]-$tries[1], $DLIM[1]);

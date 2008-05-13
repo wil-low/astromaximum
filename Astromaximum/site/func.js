@@ -16,6 +16,7 @@ function checklogin(){
   	if(!findObj('ilog').value || !findObj('ipwd').value){
   		return false;
   	}
+  	return true;
 }
 
 function is_empty(id){

@@ -1,6 +1,6 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
-echo "<h4>Восстановление регистрации</h4>";
+echo "<h4>".$i18['PWDRESTORE']."</h4>";
 include_once("mobi/ipblock.php");
 include_once("mobi/amtools.php");
 $msg=allow_ip('pwd_rest', false);

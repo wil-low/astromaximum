@@ -95,6 +95,7 @@ if(preg_match("/^(demo)$/is", $main)){
 <div id="menu">
 <a href="?<?php echo "$lang_\">".$i18['MNU_HOME']?></a> | 
 <a href="?<?php echo "$lang_&amp;p=0_0\">".$i18['MNU_MAN']?></a> | 
+<?php echo anchor('scr').$i18['MNU_SCRSHOTS'] ?></a> | 
 <?php echo anchor('buy').$i18['MNU_BUY'] ?></a> | 
 <?php echo anchor('citylist').$i18['MNU_CITYLIST'] ?></a> |
 <?php echo anchor('dl').$i18['MNU_DLCIT'] ?></a> | 
@@ -133,8 +134,8 @@ else{
 <form id="flog" action="?$lang_&amp;p=login&amp;to=$main" method="post"> 
 <input id="ilog" class="fixedinput" name="login"/> {$i18['LOGIN']} <br /><br />
 <input id="ipwd" class="fixedinput" name="pass" type="password"/> {$i18['PWD']} <br /><br />
-<input type="submit" class="loginbutton" onclick="checklogin(); return false" value="{$i18['LOG_IN']}" /> | 
-<a style="font-size: 10px;" href="?$lang_&amp;p=pwdrestore"><b>{$i18['LOST_PWD']}</b></a>
+<input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | 
+<input type="button" class="loginbutton" onclick="window.location='?$lang_&amp;p=pwdrestore'" value="{$i18['LOST_PWD']}" />
 </form> 
 FRM;
 } 

@@ -105,12 +105,11 @@ my $tz;
 my ($month, $day, $hour, $min)=(1,1,0,0);
 my $tz_ofs=0;
 {
-#		warn $tm;
-		my $tm=time;
-		my ($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = gmtime();
-		my $tm2=POSIX::mktime($sec, $min, $hour, $mday, $m,$y,0,0,-1);
-		
-		$tz_ofs=$tm-$tm2;
+	my $tm=time;
+	my ($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = gmtime();
+	my $tm2=POSIX::mktime($sec, $min, $hour, $mday, $m,$y,0,0,-1);
+	
+	$tz_ofs=$tm-$tm2;
 }
 
 my $sqpath='d:/projects/astro/v2/db/';
@@ -290,7 +289,8 @@ sub process_ini{
 				my @params=split(/\|/is, $countries[0]);
 				$params[0]=~s/.+!//is;
 				$error++ if !get_tz($params[3],$params[0],0,0);
-				$countries[0]=~s/(Russia \- )GMT (\+\d+)/$1.$MSK{$2}/e;
+#				die join("\n", @params);
+				$countries[0]=~s/(Russia \- )GMT\s*(\+\d+)/$1.$MSK{$2}/e;
 				$invoke="echo \"$countries[0]\" >> \"$path$city_inf.txt\"";
 	#			print "$invoke\n";
 				system($invoke);
@@ -318,7 +318,10 @@ sub process_ini{
 	}
 	#####################################
 		open(InF, "<$path$city_inf.txt") or die "No file";
-		@cities=<InF>;
+		$/="\n";
+		my @clist=<InF>;
+		die "Input error=".scalar(@clist) if scalar(@clist)<2;
+#		print join("**", @clist);
 		close(InF);
 	#	die "@cities";
 		my $i=0;
@@ -332,37 +335,17 @@ sub process_ini{
 		if(!-d $newdir){
 			mkdir $newdir or die "$newdir: $!";
 		}
-	#	foreach my $cit(@cities){
-	#		chomp($cit);
-	#		next if $cit=~/\A\s*\Z/is;
-	#		$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
-	#		next if $cit=~/\#/is;
-	#		next if $cit!~/\d/is;
-	#		my @params=split(/\|/is, $cit);
-	#		if(! -f $fname){
-	#			$city=$params[0];
-	#			$city=~s/.+!//is;
-	#			get_tz($params[3],$city);
-	#		}		
-	#	}
-		foreach my $cit(@cities){
+		my $geomask=sprintf('%sdata/archive/%d/geo0-*.bin',$mypath, $year);
+		foreach my $cit(@clist){
 			$outbuf='';
 			chomp($cit);
+#print "\n>>>> $cit <<<<<\n";
 			$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
 			next if $cit=~/\A\s*\Z/is;
 			next if $cit=~/\#/is;
 			next if $cit!~/\d/is;
 			my @params=split(/\|/is, $cit);
 			$fname=$newdir.sprintf('/Data%04d.dat',$i);
-=head
-			my $newfn=$fname;
-			if($newfn=~s/Data(\d\d)\.dat//is){
-				$newfn.=sprintf("%04d",$1);
-				rename($fname, $newfn) if -f $fname;
-				$fname=$newfn;
-			}	
-			die $fname;
-=cut
 			$city=$params[0];
 			$city=~s/.+!//is;
 			if(! -f $fname or $tzonly){
@@ -380,20 +363,23 @@ sub process_ini{
 					if($params[5]=~/^\d+$/is){
 						$alt=$params[5];
 					};
+					my @bins=glob($geomask);
+					foreach (@bins){
+						unlink($_);
+					}
 					my $invoke=ensure_slash($mypath."mutter2/mutter2 $year geo0- $params[1] $params[2] $alt");# electio";
+#$invoke=ensure_slash("echo 1");# electio";
 					print "$invoke\n";
 					my $res=system($invoke);
 					die "Cancelled, result=$res" if $res;
 					
-	#				print "$fname\n";
 					open(OutF, ">$fname") or die "$! $fname";
 					binmode(OutF);
 					print OutF $header;
 					close(OutF);
 
-					my $geomask=sprintf('%sdata/archive/%d/geo0-*.bin',$mypath, $year);
 					my @bins=glob($geomask);
-					die "No files: $geomask" if $#bins<0;
+					die "No files to pack: $geomask" if $#bins<0;
 					my $counter=0;
 					print join(@bins,"\n");
 					foreach my $ff(@bins){
@@ -410,32 +396,23 @@ sub process_ini{
 
 			$i++;
 		}
-	#	if(!$tzonly){
-			unlink "$arcdir/$year/$city_inf.zip";
-#			if(-f "$arcdir/$year/$city_inf.zip"){
-#				print "$year/$city_inf.zip exists. Please delete it to regenerate.\n";
-#			}
-#			else{
-				open(InF, ">$newdir/$city_inf.txt");
-				print(InF join("\n", @cities));
-				close(InF);
-				unlink("$newdir/$city_inf.zip");
-				my $cmd;
-				if($winda){
-					$cmd=ensure_slash(sprintf('cd %s & ../../../zip  %s *.txt *.dat & cd ../../../../', $newdir, $city_inf));
-				}
-				else{
-					$cmd=ensure_slash(sprintf('cd %s ; zip -q %s *.txt *.dat ; cd ../../../../', $newdir, $city_inf));
-				}
-				print "$cmd\n";
-				system($cmd);
-				mkdir(ensure_slash("$arcdir/$year"));
-				rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!." $newdir/$city_inf.zip";
-				print "Written $arcdir/$year/$city_inf.zip\n";
-			#	my @bins=glob("$dir\\Data*.dat");
-			#	tools::join_datafiles($i, "$dir\\locations.dat", \@bins);
-	#		}
-#		}
+		unlink "$arcdir/$year/$city_inf.zip";
+		open(InF, ">$newdir/$city_inf.txt");
+		print(InF join("\n", @clist));
+		close(InF);
+		unlink("$newdir/$city_inf.zip");
+		my $cmd;
+		if($winda){
+			$cmd=ensure_slash(sprintf('cd %s & ../../../zip  %s *.txt *.dat & cd ../../../../', $newdir, $city_inf));
+		}
+		else{
+			$cmd=ensure_slash(sprintf('cd %s ; zip -q %s *.txt *.dat ; cd ../../../../', $newdir, $city_inf));
+		}
+		print "$cmd\n";
+		system($cmd);
+		mkdir(ensure_slash("$arcdir/$year"));
+		rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!." $newdir/$city_inf.zip";
+		print "Written $arcdir/$year/$city_inf.zip\n";
 		print "\nHeaders replaced: $hrepl.\n" if $tzonly;
 }
 
@@ -443,8 +420,6 @@ sub calc_dst{
 	my $buf;
 	my @fld=$_[0]=~/([\d\+\-\.]+)\s+(?:(\S+\@\S+)\s+(\S+\@\S+)\s+)?(.+)/is;
 	print join('|',@fld).",\t";
-#	die "\n$#fld";
-#	die "Invalid TZ: $_[0]\n" if !$fld[1] || $fld[2];
 	my $ofs=$fld[0]*60;
 	print "TZ offset=$ofs\n"; #in mins
 	$ofs+=(16*60);
@@ -461,7 +436,6 @@ sub calc_dst{
 		$ofs+=(1<<15);
 	}
 	$buf=pack('n',$ofs).$buf;
-#	die;
 	return $buf;
 }
 
@@ -478,8 +452,6 @@ sub tz_check{
 	my @data=<InF1>;
 	close(InF1);
 	my $body=join('', @data);
-#	my $citylen=unpack("n",substr($body,8,2));
-#	die "$citylen, $comment, $fname";
 	$body=~/^(.{$hlen})/s;
 	my $oldhdr=$1;
 	if($oldhdr ne $header){
@@ -506,24 +478,17 @@ sub decode_time{
 	my $mn=int($hr_frac/60);
 	$hr_frac-=$mn*60;
 	my $sc=$hr_frac;
-#	die "$hr $mn $sc";
 	if($str=~/(\d+)(\w{3})\@/is){ # 01Apr@3
 		$tm=POSIX::mktime($sc, $mn, $hr, $1, $mon{$2},$year-1900,0,0,-1);
-#		my ($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = gmtime($tm);
-#		die $wday;
 	}
 	elsif($str=~/last/is){ # LastSunMar@2
 		my @pp=$str=~/last(\w{3})(\w{3})\@/is;
 		my $month=$mon{$pp[1]}+1; # next month
-#		print $mon{$pp[1]};
 		$tm=POSIX::mktime($sc, $mn, $hr, 0, $month,$year-1900,0,0,-1);
 		my ($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = localtime($tm);
 		$pp[0]=$wd{$pp[0]};
-#		print "last $wday, need $pp[0]\n";
 		$wday=($wday+7-$pp[0])%7;
 		$tm=POSIX::mktime($sec,$min,$hour,$mday-$wday,$m,$y,0,0,-1);
-#		die $wday;
-#		$tm=POSIX::mktime(0, 0, 0, 10, 1,2007-1900,0,0,-1);#-$tz_ofs;
 	}
 	if($str=~s/first(\w{3})//is){ 
 		my($after,$week_day,$m)=(1,$wd{$1});
@@ -536,11 +501,8 @@ sub decode_time{
 		}
 		$tm=POSIX::mktime($sc, $mn, $hr, $after, $m,$year-1900,0,0,-1);
 		my ($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = localtime($tm);
-#		print "$after,need $week_day,$m,$hr\n";
-#		die $wday;
 		$wday=(7+$week_day-$wday)%7;
 		$tm=POSIX::mktime($sec,$min,$hour,$mday+$wday,$m,$y,0,0,-1);
-#		$tm=POSIX::mktime(0, 0, 0, 10, 1,2007-1900,0,0,-1);#-$tz_ofs;
 		
 	}
 	my $tmstr=POSIX::ctime($tm);
@@ -557,15 +519,11 @@ sub decode_time{
 sub writeUTF
 {
 	my $param=shift;
-#	print "$param\n";
-#	$param = decode("cp1251", $param);
 	my $len=0;
 	{
 		use bytes; $len=length($param);
 	}
 	$outbuf.=pack('na*', $len, $param);
-#	$outbuf.=$param;
-#	die $outbuf;
 }
 
 sub data_check
@@ -694,9 +652,11 @@ use warnings;
 	
 sub get_tz{
 	my ($country,$city,$isdie,$verbose)=@_;
+	$verbose=1;
 	$country=~s/.+\$//is;
 	$country=~s/[\n\r]//isg;
 	$country=~s/, MSK.+//is;
+	$country=~s/GMT\+/GMT \+/is;
 	if($TZ_VER==2){
 		my $c_arr;
 		print "$country,$city,$isdie\t" if $verbose;
@@ -732,6 +692,7 @@ sub get_tz{
 			$c_arr=$historic{$country};
 			die "No TZ for $country!" unless defined $c_arr;
 		}
+		print "$country\n";
 		foreach my $row(@$c_arr){
 			if($row->{end_date}=~/(\d{4})/is){ # end year
 				$end=$1;
@@ -739,7 +700,7 @@ sub get_tz{
 			else{
 				$end=9999; # max
 			}
-#			print "\t - $start $end\n" if $verbose;
+			print "\t - $start $end\n" if $verbose;
 			if($year>=$start and $year<$end){ # we're inside period
 				$ofs=$row->{ofs};
 				my $rule=$row->{rule};
@@ -755,14 +716,18 @@ sub get_tz{
 				}
 				else{
 					print "Rule $rule\n" if $verbose;
-					my $r_arr=$historic{-$rule}; # follow rule
+					my $r_arr=$historic{"-$rule"}; # follow rule
 					die "No rule for $rule!" unless defined $r_arr;
 					$start=0;
-					foreach my $rulerow(@$r_arr){
+					my $ra_count=scalar(@$r_arr);
+					for(my $ii=0; $ii<$ra_count; $ii++){
+						my $rulerow=$$r_arr[$ii];
 						my $period=$rulerow->{year};
 						my ($y0, $y1)=split(/-/, $period); # year range
 						$y1=9999 if $y1 eq 'max';
 						$y1=$y0 unless $y1;
+						print
+							"\t$y0/$y1\t".$rulerow->{year}."\t".$rulerow->{start}."\t".$rulerow->{end}."\n";
 						if($year>=$y0 and $year<=$y1){ # we're inside period
 							$start=$rulerow->{start};
 							$end=$rulerow->{end};
@@ -777,7 +742,7 @@ sub get_tz{
 			$start=$end; # probe next period
 		}
 		if($start==9999){
-			print "Cannot handle - too complicated\n";
+			die "Cannot handle - too complicated\n";
 		}
 		$start=~s/(\d+)\(UTC\)/$1+$ofs/e;
 		$end=~s/(\d+)\(UTC\)/$1+$ofs+$diff/e;
@@ -816,3 +781,4 @@ sub ensure_slash{
 	$_[0]=~s/\//\\/isg if $winda;
 	return $_[0];
 }
+

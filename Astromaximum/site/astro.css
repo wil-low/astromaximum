@@ -25,8 +25,11 @@ img {
 	border: none;
 }
 
-.fixedinput {
+input {
 	border: 1px  solid rgb(51,102,153);
+}
+
+.fixedinput {
 	height: 15px;
 	width: 88px;
 }
