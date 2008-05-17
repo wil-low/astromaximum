@@ -112,6 +112,9 @@ my $tz_ofs=0;
 	$tz_ofs=$tm-$tm2;
 }
 
+$year=1947;
+get_tz('Chile', 'Santiago', 1, 1);
+exit;
 my $sqpath='d:/projects/astro/v2/db/';
 $sqpath='D:/Willow/prj/astrology/v2/db/' unless -d $sqpath;
 $sqpath='../' unless -d $sqpath;
@@ -378,7 +381,7 @@ sub process_ini{
 					print OutF $header;
 					close(OutF);
 
-					my @bins=glob($geomask);
+					@bins=glob($geomask);
 					die "No files to pack: $geomask" if $#bins<0;
 					my $counter=0;
 					print join(@bins,"\n");
@@ -500,7 +503,8 @@ sub decode_time{
 			$m=$mon{$1};
 		}
 		$tm=POSIX::mktime($sc, $mn, $hr, $after, $m,$year-1900,0,0,-1);
-		my ($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = localtime($tm);
+		my ($sec,$min,$hour,$mday,$y,$wday,$yday);
+		($sec,$min,$hour,$mday,$m,$y,$wday,$yday) = localtime($tm);
 		$wday=(7+$week_day-$wday)%7;
 		$tm=POSIX::mktime($sec,$min,$hour,$mday+$wday,$m,$y,0,0,-1);
 		
@@ -585,8 +589,7 @@ use warnings;
 #			}
 #		]
 #	}
-
-	open(HIST, "<data/tz/Historic.txt");
+	open(HIST, "<$mypath"."data/tz/Historic.txt");
 	my $secflag=0;
 	my $secname=''; # section header
 	print "Historic.txt: ";
@@ -716,6 +719,7 @@ sub get_tz{
 				}
 				else{
 					print "Rule $rule\n" if $verbose;
+					my $first_date;
 					my $r_arr=$historic{"-$rule"}; # follow rule
 					die "No rule for $rule!" unless defined $r_arr;
 					$start=0;
@@ -726,14 +730,17 @@ sub get_tz{
 						my ($y0, $y1)=split(/-/, $period); # year range
 						$y1=9999 if $y1 eq 'max';
 						$y1=$y0 unless $y1;
-						print
-							"\t$y0/$y1\t".$rulerow->{year}."\t".$rulerow->{start}."\t".$rulerow->{end}."\n";
+						print	"\t$y0/$y1\t".$rulerow->{year}."\t".$rulerow->{start}."\t".$rulerow->{end}."\n" if $verbose;
 						if($year>=$y0 and $year<=$y1){ # we're inside period
 							$start=$rulerow->{start};
 							$end=$rulerow->{end};
 							$diff=$rulerow->{diff};
 							last;
 						}
+						if($year<=$y0){
+							die "\nhere ".$first_date->{start}." ". $rulerow->{end};
+						}
+						$first_date=$rulerow;
 						$start=$y1; # probe next period
 					}
 				}
