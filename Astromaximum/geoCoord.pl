@@ -112,9 +112,9 @@ my $tz_ofs=0;
 	$tz_ofs=$tm-$tm2;
 }
 
-$year=1947;
-get_tz('Chile', 'Santiago', 1, 1);
-exit;
+#$year=1947;
+#get_tz('Chile', 'Santiago', 1, 1);
+#exit;
 my $sqpath='d:/projects/astro/v2/db/';
 $sqpath='D:/Willow/prj/astrology/v2/db/' unless -d $sqpath;
 $sqpath='../' unless -d $sqpath;
@@ -323,7 +323,7 @@ sub process_ini{
 		open(InF, "<$path$city_inf.txt") or die "No file";
 		$/="\n";
 		my @clist=<InF>;
-		die "Input error=".scalar(@clist) if scalar(@clist)<2;
+		die "Input error=".scalar(@clist)." in $path$city_inf.txt" if scalar(@clist)<2;
 #		print join("**", @clist);
 		close(InF);
 	#	die "@cities";

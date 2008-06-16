@@ -1,1 +1,9 @@
-UA:Data0000 Kiev
+test:Data0000 Cuzco
+test:Data0001 m.Olympos
+test:Data0002 Arkaim
+test:Data0003 Stonehenge
+test:Data0004 New York
+test:Data0005 Québec
+test:Data0006 Wellington
+test:Data0007 Jerusalem
+test:Data0008 Mexico City

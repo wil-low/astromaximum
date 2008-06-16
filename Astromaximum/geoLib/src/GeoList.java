@@ -27,6 +27,7 @@
 import java.io.*;
 //import java.util.Date;
 //import java.util.TimeZone;
+import java.util.Date;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.*;
@@ -43,6 +44,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     static long dstEnd;
     static boolean dstExists;
     static long tzOffset;
+    static boolean isSouthern=false;
     ChoiceGroup cityList;
 
     public GeoList(MIDlet midlet, int type, String loc) {
@@ -104,8 +106,8 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
         curCity = rs.getRecord(1);
         RecordEnumeration rece = rs.enumerateRecords(this, null, false);
 //#mdebug info 
-//#     System.out.println(new String(curCity));
-//#     System.out.println(rece.numRecords());
+    System.out.println(new String(curCity));
+    System.out.println(rece.numRecords());
 //#enddebug    
         byte[] nextR;
         nextR = rece.nextRecord();
@@ -117,20 +119,27 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
         tzOffset &= (1 << 15) - 1;
         tzOffset -= 16 * 60;
         tzOffset *= 60000L;
+        long d_1, d_2;
         if (dstExists) {
-            dstStart = dis.readInt() * 60000L - tzOffset;//
-            dstEnd = dis.readInt() * 60000L - tzOffset - 3600000L;
+            d_1 = dis.readInt() * 60000L - tzOffset;
+            d_2 = dis.readInt() * 60000L - tzOffset - 3600000L;
+            if(d_1<d_2){ // N hemisphere
+                dstStart=d_1; dstEnd=d_2;
+            }
+            else{
+                dstStart=d_2; dstEnd=d_1; isSouthern=true;
+            }
 //#mdebug info
-//#       System.out.println(dstStart);
-//#       System.out.println(new Date(dstStart).toString());
-//#       System.out.println(dstEnd);
-//#       System.out.println(new Date(dstEnd).toString());
+      System.out.println(dstStart);
+      System.out.println(new Date(dstStart).toString());
+      System.out.println(dstEnd);
+      System.out.println(new Date(dstEnd).toString());
 //#enddebug      
         }
 
 //#mdebug info
-//#     System.out.print("TZ offset=");
-//#     System.out.println(tzOffset);
+    System.out.print("TZ offset=");
+    System.out.println(tzOffset);
 //#enddebug    
         byte[] data = new byte[dis.available()];
         dis.read(data);

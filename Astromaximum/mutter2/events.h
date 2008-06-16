@@ -13,6 +13,7 @@
     extern "C" int32 swe_lun_eclipse_when(double, int, int, double*, int, char*);
     extern "C" void swe_set_ephe_path(char*);
     extern "C" int swe_houses(double, double, double, int, double*, double*);
+    extern "C" int swe_day_of_week(double);
 #endif
 #include "swephexp.h"
 
@@ -58,7 +59,7 @@ typedef enum {
   EV_PLANET_HOUR,  // planetary hours
   EV_STATUS,
   EV_SUN_RISE,
-	EV_MOON_RISE,
+  EV_MOON_RISE,
   EV_MOON_MOVE,
   EV_SEL_DEGREES,
   EV_DAY_HOURS,

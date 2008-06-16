@@ -16,8 +16,10 @@ public:
 #ifdef ANSITZ
     static long _timezone_;
 #endif
+    static double EPOCH;
     static int startYear;
     static double calcJD(long date);
+    void print_date(int i);
     Event(double jd, unsigned char planet);
     static long packDate(double date);
     int getDayNumber();

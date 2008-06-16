@@ -1169,6 +1169,15 @@ class SummItem extends TimerTask implements RecordFilter {
                                 sel.getDateString(1, hrOnly);
                     }
             }
+//#mdebug
+            Astromaximum.calendar.setTime(new Date(sel.date0));
+            System.out.print("Status GMT= ");
+            System.out.print(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH));
+            System.out.print(" # ");
+            System.out.print(Astromaximum.calendar.get(Calendar.HOUR_OF_DAY));
+            System.out.print(":");
+            System.out.println(Event.to2String(Astromaximum.calendar.get(Calendar.MINUTE)));
+//#enddebug
         }
         return s;
     }

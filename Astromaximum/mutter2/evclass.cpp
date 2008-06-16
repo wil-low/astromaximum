@@ -4,13 +4,19 @@
 #include <time.h>
 #include "evclass.h"
 #include "events.h"
+
+#define OLDCALC
 //---------------------------------------------------------------------------
-#pragma package(smart_init)
 double Event::startJD=0;
 int Event::startYear=0;
 #ifdef ANSITZ
 long Event::_timezone_=0;
 #endif
+double Event::EPOCH=0;
+static const double SECINDAY=24*3600;
+
+const char *month_name[][4]={"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
 Event::Event(double jd, unsigned char planet) {
     julianDay=jd;
@@ -76,4 +82,19 @@ char *Event::date_sql(char *str, int i) {
     tm *st=gmtime(&date[i]);
     strftime(str, 200, "'%Y-%m-%d %H-%M-%S'", st);
     return str;
+}
+
+void Event::print_date(int i){
+#ifdef OLDCALC    
+    char str[200];
+    tm *st=gmtime(&date[i]);
+    strftime(str, 200, "'%Y-%m-%d %H:%M:%S'", st);
+    printf("%s", str);
+#else
+    int y, mon, day, min;
+    double hr;
+    swe_revjul(date[i]/SECINDAY+EPOCH, SE_GREG_CAL, &y, &mon, &day, &hr);
+    min=(int)((hr-(int)hr)*60+0.5);
+    printf("%04d-%02d-%02d %02d:%02d", y, mon, day, (int)hr, min);
+#endif    
 }

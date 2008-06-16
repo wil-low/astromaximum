@@ -254,7 +254,7 @@ if($config=~/geo-$/is){
 }
 
 if($islocal){
-	if($config=~/notest$/is){
+	if($config=~/(notest|freetest)$/is){
 		unzip("$path/$const::DIR_TEMPLATE/Astromaximum-notest.jar");
 		inject_lang($lang);
 		inject_common($year, "$path/$const::DIR_TEMP/common.dat");

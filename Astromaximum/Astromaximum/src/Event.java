@@ -121,7 +121,7 @@ class Event {
      * @param value int
      * @return String
      */
-    private static String to2String(int value) {
+    static String to2String(int value) {
         String str = Integer.toString(value);
         if (str.length() == 1) {
             str = "0" + str;
@@ -297,11 +297,17 @@ class Event {
         return s.toString();//s;
     }
 
-    static long localOffset(long date0) {
+    static long localOffset(long date0) { // date0 is in UTC always ?
         long ofs = GeoList.tzOffset;//-GeoList.localOffset;
         if (Options.dstExists) {
+/*
+            System.out.println(date0);
+            System.out.println(GeoList.dstStart);
+            System.out.println(GeoList.dstEnd);
+            System.out.println(GeoList.isSouthern);
+ */
             int inn = dateBetween(date0, GeoList.dstStart, GeoList.dstEnd);
-            if (inn == 0) {
+            if ((inn == 0) ^ GeoList.isSouthern) {
                 ofs += Astromaximum.MSECINDAY / 24;
             }
         }

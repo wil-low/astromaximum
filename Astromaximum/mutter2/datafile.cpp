@@ -12,8 +12,6 @@ using namespace std;
 #include <dirent.h>
 // 2007 geo0- 30.51 50.43 electio
 //---------------------------------------------------------------------------
-#pragma package(smart_init)
-
 #define Dgr(deg, min, sec) (deg)+((min)/60.)+((sec)/3600.)
 
 static sMatrix matrix[PLANET_COUNT][PLANET_COUNT];
@@ -77,6 +75,7 @@ void DataFile::view(const char* fname, int count){
     printf("\nContents of %s (%d of %d):\n", fname, count, work.size());
     for(int i=0; i<count; i++){
         work[i]->dump();
+        printf("\n");
     }
     release(work);
     printf("\nFinished\n");
@@ -84,8 +83,8 @@ void DataFile::view(const char* fname, int count){
 
 void DataFile::dump_location(const char* fname, int num){
     const char TMPFILE[]="~tmp";
-    char fn[200];
-    sprintf(fn, "archive/%d/%s/Data%02d.dat", Event::startYear, fname, num);
+    char fn[200], cityname[200];
+    sprintf(fn, "archive/%d/%s/Data%04d.dat", Event::startYear, fname, num);
     FILE *fin=fopen(fn, "rb");
     
     if(!fin)
@@ -98,11 +97,23 @@ void DataFile::dump_location(const char* fname, int num){
         int name_len;
         fread(&name_len, 2, 1, fin);
         name_len=(unsigned short)swapShort(name_len);
-        fseek(fin, name_len, SEEK_CUR);
+        cityname[fread(cityname, 1, name_len, fin)]=0;
+        printf("\n  City name: %s", cityname);
         fread(&name_len, 2, 1, fin);
-        name_len=(unsigned short)swapShort(name_len);
-        if(!(name_len & 0x80)){
-            fseek(fin, 8, SEEK_CUR);
+        int tzofs=(unsigned short)swapShort(name_len);
+        bool dst_app=!(tzofs & 0x8000);
+        tzofs &=(0xffff-0x8000);
+        tzofs=tzofs-16*60; //real tz in min
+        printf("\n  Timezone offset: %d mins", tzofs);
+        if(dst_app){
+            printf("\n  DST start & end dates:");
+            for(int i=0; i<2; i++){
+                fread(&name_len, 4, 1, fin);
+                name_len=swapInt(name_len);
+                long dt=60*((long)(name_len+i));
+                Event ev(Event::calcJD(dt),0);
+                printf("\n  %s", ev.date_sql(cityname, 0));
+            }
         }
         int i=0;
         char evtype;
@@ -124,17 +135,17 @@ void DataFile::dump_location(const char* fname, int num){
         secofs.pop_back();
         while(true){
             printf("\n\nEnter section # to view, 's' for section list, 'q' to quit: ");
-            scanf("%s", fn);
-            if(strcmp(fn, "q")==0){
+            scanf("%s", cityname);
+            if(strcmp(cityname, "q")==0){
                 fclose(fin);
                 return;
             }
-            if(strcmp(fn, "s")==0) break;
-            if(sscanf(fn, "%d", &i) && i>=0 && i<secofs.size()){
+            if(strcmp(cityname, "s")==0) break;
+            if(sscanf(cityname, "%d", &i) && i>=0 && i<secofs.size()){
                 break;
             }
         }
-        if(strcmp(fn, "s")==0) continue;
+        if(strcmp(cityname, "s")==0) continue;
         int ii=secofs[i].first;
         fseek(fin, ii+1, SEEK_SET);
         char buf[10000];
@@ -144,38 +155,17 @@ void DataFile::dump_location(const char* fname, int num){
         fclose(fout);
         view("../../.tmp", 1000000);
     }
-    /*
-  while (true) {
-      int ch = is.readUnsignedByte();
-      int rub = is.readUnsignedByte();
-      while (evtype != rub) {
-          if (isCommon && Astromaximum.options != null) {
-              Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
-          }
-          skipOff = is.readShort() - 3;
-          is.skip(skipOff);
-          ch = is.readUnsignedByte();
-          rub = is.readUnsignedByte();
-      }
-      skipOff = is.readShort();
-      flag = is.readShort();
-      if (planet == is.readByte()) {
-//          Astromaximum.instance.log("Found!",false);
-          break;
-      } else {
-          is.skip(skipOff - 6);
-      }
-  }
-     */
     fclose(fin);
 }
 
-void DataFile::AscendingTest(const char* dirname) {
+void DataFile::AscendingTest() {
     DIR *dir;
     struct dirent *ent;
     
-    printf("First pass on '%s':\n", dirname);
-    if ((dir = opendir(dirname)) == NULL){
+    char fulldir[255];
+    sprintf(fulldir, "archive/%d", Event::startYear);
+    printf("First pass on '%s':\n", fulldir);
+    if ((dir = opendir(fulldir)) == NULL){
         perror("Unable to open directory");
         exit(1);
     }

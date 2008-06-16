@@ -1,5 +1,6 @@
 //---------------------------------------------------------------------------
 #include "events.h"
+#include "evclass.h"
 #include "datafile.h"
 #include "assert.h"
 #include <time.h>
@@ -20,11 +21,13 @@ char ephemPath[]="../swiss"; // relative to program dir
 char mypath[PATH_MAX];
 const char outFile[]="output.txt";
 
+int test();
+
 sAphRecord aphetics[SE_SATURN+1];
 
 void myexit(int ret){
     chdir(mypath);
-    printf("\nExit code: %d. Restored curdir: %s\n", ret, mypath);
+//    printf("\nExit code: %d. Restored curdir: %s\n", ret, mypath);
     exit(ret);
 }
 
@@ -43,19 +46,22 @@ int main(int argc, char* argv[]) {
      * myexit(0);
      */
     if((argc==1)||(strcmp(argv[1], "--help"))==0){
-        printf("Usage:  mutter2 [options]\n");
+        printf("Usage:  mutter2 <year> [options]\n");
         printf(" options:\n");
-        printf("   asctest <dir> - ascending test for events in dir/*.bin\n");
-        printf("   <year> - calculate ephemeris if none, and common.dat\n");
-        printf("   <year> <prefix> electio - calculate APHETICS with prefix\n");
-        printf("   <year> <prefix> <lon> <lat> [alt] [electio]- calc locations on coords with prefix\n");
-        printf("   <year> view <file.bin> <count> - view events of datafile\n");
-        printf("   <year> dump <country> <filenum> - dump sections of location file\n");
-        printf("   <year> sql - create year.sql for website import\n");
+        printf("   <empty> - calculate ephemeris if none, and common.dat\n");
+        printf("   asctest - ascending test for events in archive/<year>/*.bin\n");
+        printf("   <prefix> electio - calculate APHETICS with prefix\n");
+        printf("   <prefix> <lon> <lat> [alt] [electio]- calc locations on coords with prefix\n");
+        printf("   view <file.bin> <count> - view events of datafile\n");
+        printf("   dump <country> <filenum> - dump sections of location file\n");
+        printf("   sql - create year.sql for website import\n");
+        printf("   jul <month> <day> <hour> - julian date from ephemeris\n");
+        printf("   revjul <float> - date from ephemeris\n");
+        printf("   dow <double> - day of week from ephemeris\n");
+        printf("   test - run test() routine\n");
         exit(0);
     }
     strcpy(path, argv[0]);
-    printf("argv[0] is: %s\n", path);
     char *pos=strrchr(path, '\\');
     if(!pos){
         pos=strrchr(path, '/');
@@ -68,7 +74,6 @@ int main(int argc, char* argv[]) {
     }
 
     getcwd(mypath, PATH_MAX);
-    printf("Curdir: %s\n", mypath);
     if(path[0]!='/'){
         sprintf(serr, "%s/%s/%s", mypath, path, ephemPath);
     }
@@ -76,14 +81,14 @@ int main(int argc, char* argv[]) {
         sprintf(serr, "%s/%s", mypath, ephemPath);
     }
     swe_set_ephe_path(serr);
-    double g2000=swe_julday(2000, 1, 1, 1, SE_GREG_CAL);
+    Event::EPOCH=swe_julday(1970, 1, 1, 0, SE_GREG_CAL);
     double outr[6];
-    int res=swe_calc_ut(g2000, SE_SUN, SEFLG_BARYCTR, outr, serr);
+    int res=swe_calc_ut(Event::EPOCH, SE_SUN, SEFLG_BARYCTR, outr, serr);
     if(res<0){
         printf("%s\n",serr);
         myexit(-1); // Sweph not found, exit
     }
-    
+/*    
     strcat(path, "../data/");
     chdir(path);
     printf("Chdir to %s\n", path);
@@ -107,24 +112,71 @@ int main(int argc, char* argv[]) {
     tm *st=gmtime(&loo);
     loo=mktime(st);
 #endif
-    
+*/    
     assert(sizeof(sMatrix)==9);
     assert(EV_LAST==50);
     if(argc<2) myexit(NOT_ENOUGH_PARAMS);
     DataFile df;
     char buf[20];
-    if(strcmp(argv[1], "asctest")==0){
-        df.AscendingTest(argv[2]);
-        printf("\n%s\n", "Finished.");
-        scanf("%s", buf);
-        myexit(0);
-    }
     sEphRecord *ephData=NULL;
     int year;
     if(sscanf(argv[1], "%4d", &year)!=1)
         myexit(INVALID_YEAR);
-    printf("Year = %d\t", year);
     Event::startYear=year;
+    if(argc>2){
+        if(strcmp(argv[2], "jul")==0){
+            int mon, day;
+            float hr;
+            if(sscanf(argv[3], "%02d-%02d*%02d", &mon)!=1){
+                myexit(NOT_ENOUGH_PARAMS);
+            }
+            if(sscanf(argv[4], "%02d-%02d*%02d", &day)!=1){
+                myexit(NOT_ENOUGH_PARAMS);
+            }
+            if(sscanf(argv[5], "%f", &hr)!=1){
+                myexit(NOT_ENOUGH_PARAMS);
+            }
+
+            double jd=swe_julday(year, mon, day, hr, SE_GREG_CAL);        
+            printf("%f\n", jd);
+            myexit(0);
+        }
+        if(strcmp(argv[2], "test")==0){
+            myexit(test());
+        }
+        if(strcmp(argv[2], "revjul")==0){
+            double jd;
+            if(sscanf(argv[3], "%lf", &jd)!=1){
+                myexit(NOT_ENOUGH_PARAMS);
+            }
+            Event ev(jd, 0);
+            ev.print_date(0);
+            printf("\n");
+            myexit(0);
+        }
+
+        if(strcmp(argv[2], "dow")==0){
+            double jd;
+            if(sscanf(argv[3], "%lf", &jd)!=1){
+                myexit(NOT_ENOUGH_PARAMS);
+            }
+            int dow=swe_day_of_week(jd);        
+            printf("%d\n", dow);
+            myexit(0);
+        }
+    }
+    printf("Curdir: %s\n", mypath);
+    printf("argv[0] is: %s\n", path);
+    strcat(path, "../data/");
+
+    chdir(path);
+    printf("Chdir to %s\n", path);
+    printf("Year = %d\t", year);
+    if((argc>2)&&(strcmp(argv[2], "asctest")==0)){
+        df.AscendingTest();
+        printf("\n%s\n", "Finished.");
+        myexit(0);
+    }
     if((argc==5)&&(strcmp(argv[2], "view")==0)){
         int count=0;
         sscanf(argv[4], "%d", &count);
@@ -295,4 +347,17 @@ int main(int argc, char* argv[]) {
     }
     printf("\nFinished.\n");
     myexit(0);
+}
+
+int test(){
+    double tm=2451655.252083;
+    Event ev(tm, 0);
+    ev.dump();
+    printf("\nPacked date: %ld\n", ev.packDate(tm));
+    double tm2=ev.calcJD(ev.date[0]);
+    printf("tm %f, tm2 %f\n", tm, tm2);
+    assert(tm==tm2);
+    Event ev2(tm2, 0);
+    ev2.dump();
+    return 0;
 }

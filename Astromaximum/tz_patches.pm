@@ -10,7 +10,9 @@ sub do_patch{ # dataref
 	$$d=~s/Panam[^\s]+ City/Panama City/is;
 =cut
 	$$d=~s/´/'/sg;
-	$$d=~s/\([^\)]+?\)//isg;
+	$$d=~s/\(UTC\)/``/isg;
+ 	$$d=~s/\([^\)]+?\)//isg;
+	$$d=~s/``/(UTC)/isg;
 	$$d=~s/\s*,/,/isg;
 	return;
 }
