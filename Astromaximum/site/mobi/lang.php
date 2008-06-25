@@ -1,6 +1,5 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
-include_once('mobi/config.php');
 $lang='ru';
 $i18=array();
 if(isset($_REQUEST['lang'])){

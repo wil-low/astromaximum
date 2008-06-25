@@ -1,5 +1,6 @@
 <?php 
 $EXEC=2;
+include_once('config.php');
 include_once('lang.php');
 include_once('dbconnect.php');
 include_once('amtools.php');

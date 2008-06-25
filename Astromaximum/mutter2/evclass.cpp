@@ -1,6 +1,5 @@
 //---------------------------------------------------------------------------
 
-#pragma hdrstop
 #include <time.h>
 #include "evclass.h"
 #include "events.h"
@@ -57,7 +56,7 @@ long Event::packDate(double date) {
 
 void Event::dump() {
     tm *st=gmtime(&date[0]);
-    printf("\n\n* %s - ", asctime(st));
+    printf("\n* %s - ", asctime(st));
     st=gmtime(&date[1]);
     printf("%s", asctime(st));
     int dgr=degree&0x3fff;
@@ -70,11 +69,17 @@ void Event::dump() {
 
 void Event::dump2() {
     tm *st=gmtime(&date[0]);
-    printf("\n\n* %s - ", asctime(st));
+    printf("\n* %s - ", asctime(st));
     st=gmtime(&date[1]);
     printf("%s", asctime(st));
     printf("   %d - %d\n", date[0], date[1]);
     printf("  degree=%X", degree);
+    printf("  planets %u - %u", planetId[0], planetId[1]);
+}
+
+void Event::dump3() {
+    printf("%d - %d", date[0], date[1]);
+    printf("\tdegree=%X", degree);
     printf("  planets %u - %u", planetId[0], planetId[1]);
 }
 

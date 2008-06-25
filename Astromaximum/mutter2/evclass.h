@@ -25,6 +25,7 @@ public:
     int getDayNumber();
     void dump();
     void dump2();
+    void dump3();
     char *date_sql(char *str, int i);
 private:
 };

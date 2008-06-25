@@ -6,6 +6,7 @@ if(isset($_GET['p'])){
 	$main=$_GET['p'];
 }
 sess_start();
+include_once('mobi/config.php');
 include_once('mobi/lang.php');
 include_once('mobi/dbconnect.php');
 lang_load("mobi/html");

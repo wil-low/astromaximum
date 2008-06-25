@@ -5,7 +5,6 @@
 #include "errno.h"
 
 using namespace std;
-#pragma hdrstop
 
 #include "events.h"
 #include "datafile.h"
@@ -75,87 +74,98 @@ void DataFile::view(const char* fname, int count){
     printf("\nContents of %s (%d of %d):\n", fname, count, work.size());
     for(int i=0; i<count; i++){
         work[i]->dump();
+/*        
+        work[i]->print_date(0);
+        printf(" - ");
+        work[i]->print_date(0);
+*/        
         printf("\n");
     }
     release(work);
-    printf("\nFinished\n");
 }
 
-void DataFile::dump_location(const char* fname, int num){
+void DataFile::get_loc_contents(const char* fname, bool is_output, LOC_CONTENTS &v){
+    char fn[200], cityname[200];
+    FILE *fin=fopen(fname, "rb");
+    assert(fin);
+    v.clear();
+    if(is_output) printf("Sections of %s :", fname);
+    fseek(fin, 8, SEEK_SET);
+    int name_len;
+    fread(&name_len, 2, 1, fin);
+    name_len=(unsigned short)swapShort(name_len);
+    cityname[fread(cityname, 1, name_len, fin)]=0;
+    if(is_output) printf("\n  City name: %s", cityname);
+    fread(&name_len, 2, 1, fin);
+    int tzofs=(unsigned short)swapShort(name_len);
+    bool dst_app=!(tzofs & 0x8000);
+    tzofs &=(0xffff-0x8000);
+    tzofs=tzofs-16*60; //real tz in min
+    if(is_output) printf("\n  Timezone offset: %d mins", tzofs);
+    if(dst_app){
+        if(is_output) printf("\n  DST start & end dates:");
+        for(int i=0; i<2; i++){
+            fread(&name_len, 4, 1, fin);
+            name_len=swapInt(name_len);
+            long dt=60*((long)(name_len+i));
+            Event ev(Event::calcJD(dt),0);
+            if(is_output) 
+                printf("\n  %s  %d", ev.date_sql(cityname, 0), ev.date[0]);
+        }
+    }
+    int i=0;
+    char evtype;
+    int section_len;
+    while(true){
+        name_len=ftell(fin);
+        if(fseek(fin, 1, SEEK_CUR)) break;
+        if(is_output) printf("\n%02d - %5d (0x%04x): ", i++, name_len, name_len);
+        section_len=0;
+        fread(&evtype, 1, 1, fin);
+        if(is_output) printf("event=%d", evtype);
+        fread(&section_len, 2, 1, fin);
+        section_len=swapShort(section_len);
+        if(section_len<=3) break;
+        v.push_back(pair<int, int>(name_len, section_len));
+        fseek(fin, section_len-3, SEEK_CUR);
+    }
+    if(is_output) printf(" - unused");
+    v.pop_back();
+    fclose(fin);
+}
+
+void DataFile::dump_section(const char* fname, pair<int, int> sec){
     const char TMPFILE[]="~tmp";
+    FILE *fin=fopen(fname, "rb");
+    if(!fin) return;
+    int ii=sec.first;
+    fseek(fin, ii+1, SEEK_SET);
+    char buf[20000];
+    int fsize=fread(buf, 1, sec.second, fin);
+    FILE *fout=fopen(".tmp", "wb");
+    fwrite(buf, 1, fsize, fout);
+    fclose(fout);
+    printf("\n=== Section offset=%5d (0x%04x)", sec.first, sec.first);
+    view("../../.tmp", 1000000);
+    fclose(fin);
+}
+
+void DataFile::dump_location(const char* fname, int num, int secnum){
+// -1 - everything, -2 - sections only, 0..n - single section
     char fn[200], cityname[200];
     sprintf(fn, "archive/%d/%s/Data%04d.dat", Event::startYear, fname, num);
-    FILE *fin=fopen(fn, "rb");
-    
-    if(!fin)
-        return;
-    vector<pair<int, int> > secofs;
-    while(true){
-        secofs.clear();
-        printf("\n\nSections of %s :", fn);
-        fseek(fin, 8, SEEK_SET);
-        int name_len;
-        fread(&name_len, 2, 1, fin);
-        name_len=(unsigned short)swapShort(name_len);
-        cityname[fread(cityname, 1, name_len, fin)]=0;
-        printf("\n  City name: %s", cityname);
-        fread(&name_len, 2, 1, fin);
-        int tzofs=(unsigned short)swapShort(name_len);
-        bool dst_app=!(tzofs & 0x8000);
-        tzofs &=(0xffff-0x8000);
-        tzofs=tzofs-16*60; //real tz in min
-        printf("\n  Timezone offset: %d mins", tzofs);
-        if(dst_app){
-            printf("\n  DST start & end dates:");
-            for(int i=0; i<2; i++){
-                fread(&name_len, 4, 1, fin);
-                name_len=swapInt(name_len);
-                long dt=60*((long)(name_len+i));
-                Event ev(Event::calcJD(dt),0);
-                printf("\n  %s", ev.date_sql(cityname, 0));
-            }
+    LOC_CONTENTS secofs;
+    get_loc_contents(fn, secnum<0, secofs);
+    if(secnum==-2) return;
+    if(secnum==-1){
+        for(int i=0; i<secofs.size(); i++){
+            dump_section(fn, secofs[i]);
         }
-        int i=0;
-        char evtype;
-        int section_len;
-        while(true){
-            name_len=ftell(fin);
-            if(fseek(fin, 1, SEEK_CUR)) break;
-            printf("\n%02d - %5d (0x%04x): ", i++, name_len, name_len);
-            section_len=0;
-            fread(&evtype, 1, 1, fin);
-            printf("event=%d", evtype);
-            fread(&section_len, 2, 1, fin);
-            section_len=swapShort(section_len);
-            if(section_len<=3) break;
-            secofs.push_back(pair<int, int>(name_len, section_len));
-            fseek(fin, section_len-3, SEEK_CUR);
-        }
-        printf(" - unused");
-        secofs.pop_back();
-        while(true){
-            printf("\n\nEnter section # to view, 's' for section list, 'q' to quit: ");
-            scanf("%s", cityname);
-            if(strcmp(cityname, "q")==0){
-                fclose(fin);
-                return;
-            }
-            if(strcmp(cityname, "s")==0) break;
-            if(sscanf(cityname, "%d", &i) && i>=0 && i<secofs.size()){
-                break;
-            }
-        }
-        if(strcmp(cityname, "s")==0) continue;
-        int ii=secofs[i].first;
-        fseek(fin, ii+1, SEEK_SET);
-        char buf[10000];
-        int fsize=fread(buf, 1, secofs[i].second, fin);
-        FILE *fout=fopen(".tmp", "wb");
-        fwrite(buf, 1, fsize, fout);
-        fclose(fout);
-        view("../../.tmp", 1000000);
     }
-    fclose(fin);
+    else if(secnum>=0 && secnum<secofs.size()){
+        dump_section(fn, secofs[secnum]);
+    }
+//    printf("Event::_timezone_ = %d\n", Event::_timezone_);
 }
 
 void DataFile::AscendingTest() {

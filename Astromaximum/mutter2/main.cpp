@@ -24,14 +24,35 @@ const char outFile[]="output.txt";
 int test();
 
 sAphRecord aphetics[SE_SATURN+1];
+clock_t c_start,c_end;
 
 void myexit(int ret){
     chdir(mypath);
+    c_end=clock();
+    long cps=CLOCKS_PER_SEC;
+    if(!ret) 
+        printf("\nExecution time %d clocks (cps=%d)\n", c_end-c_start, cps);
 //    printf("\nExit code: %d. Restored curdir: %s\n", ret, mypath);
     exit(ret);
 }
 
 int main(int argc, char* argv[]) {
+/*    
+  char szInput [256];
+
+  long dif;
+  long cps=CLOCKS_PER_SEC;
+  start=clock ();
+  printf ("Please, enter your name: ");
+  gets (szInput);
+  end=clock();
+  dif = end-start;
+  printf ("Hi %s.\n", szInput);
+  printf ("It took you %d  clocks at %d.\n", dif, cps);
+ 
+  return 0;    
+
+ */
     char path[255], serr[256];
     
     /*
@@ -53,32 +74,33 @@ int main(int argc, char* argv[]) {
         printf("   <prefix> electio - calculate APHETICS with prefix\n");
         printf("   <prefix> <lon> <lat> [alt] [electio]- calc locations on coords with prefix\n");
         printf("   view <file.bin> <count> - view events of datafile\n");
-        printf("   dump <country> <filenum> - dump sections of location file\n");
+        printf("   dump <country> <filenum> <secnum> - dump sections of location file\n");
         printf("   sql - create year.sql for website import\n");
         printf("   jul <month> <day> <hour> - julian date from ephemeris\n");
         printf("   revjul <float> - date from ephemeris\n");
         printf("   dow <double> - day of week from ephemeris\n");
-        printf("   test - run test() routine\n");
+        printf("   _test_ - run test() routine\n");
         exit(0);
     }
-    strcpy(path, argv[0]);
-    char *pos=strrchr(path, '\\');
+    strcpy(mypath, argv[0]);
+    char *pos=strrchr(mypath, '\\');
     if(!pos){
-        pos=strrchr(path, '/');
+        pos=strrchr(mypath, '/');
     }
     if(pos){
         *(pos+1)=0;
     }
     else{
-        path[0]=0;
+        mypath[0]=0;
     }
 
-    getcwd(mypath, PATH_MAX);
-    if(path[0]!='/'){
-        sprintf(serr, "%s/%s/%s", mypath, path, ephemPath);
-    }
-    else{
-        sprintf(serr, "%s/%s", mypath, ephemPath);
+//    getcwd(mypath, PATH_MAX);
+    printf("Curpath=%s\n", mypath);
+    sprintf(path, "%s/%s", mypath, "../data");
+    chdir(path);
+    sprintf(serr, "%s/%s", path, ephemPath);
+    while(pos=strchr(serr, '\\')){
+        *pos='/';
     }
     swe_set_ephe_path(serr);
     Event::EPOCH=swe_julday(1970, 1, 1, 0, SE_GREG_CAL);
@@ -88,10 +110,6 @@ int main(int argc, char* argv[]) {
         printf("%s\n",serr);
         myexit(-1); // Sweph not found, exit
     }
-/*    
-    strcat(path, "../data/");
-    chdir(path);
-    printf("Chdir to %s\n", path);
     struct tm now;
     now.tm_year=2006-1900;
     now.tm_mon=11;
@@ -106,13 +124,12 @@ int main(int argc, char* argv[]) {
     tm *st=gmtime(&loo);
     time_t loo1=mktime(st);
     Event::_timezone_=loo1-loo;
-    printf("Local timezone offset %d\n", Event::_timezone_);
 #else
     time_t loo=mktime(&now)-_timezone;
     tm *st=gmtime(&loo);
     loo=mktime(st);
 #endif
-*/    
+   
     assert(sizeof(sMatrix)==9);
     assert(EV_LAST==50);
     if(argc<2) myexit(NOT_ENOUGH_PARAMS);
@@ -141,7 +158,7 @@ int main(int argc, char* argv[]) {
             printf("%f\n", jd);
             myexit(0);
         }
-        if(strcmp(argv[2], "test")==0){
+        if(strcmp(argv[2], "_test_")==0){
             myexit(test());
         }
         if(strcmp(argv[2], "revjul")==0){
@@ -165,13 +182,11 @@ int main(int argc, char* argv[]) {
             myexit(0);
         }
     }
-    printf("Curdir: %s\n", mypath);
-    printf("argv[0] is: %s\n", path);
-    strcat(path, "../data/");
-
-    chdir(path);
-    printf("Chdir to %s\n", path);
-    printf("Year = %d\t", year);
+    printf("Local timezone offset %d\n", Event::_timezone_);
+//    printf("Curdir: %s\n", mypath);
+//    printf("argv[0] is: %s\n", path);
+//    printf("Chdir to %s\n", path);
+//    printf("Year = %d\t", year);
     if((argc>2)&&(strcmp(argv[2], "asctest")==0)){
         df.AscendingTest();
         printf("\n%s\n", "Finished.");
@@ -244,10 +259,11 @@ int main(int argc, char* argv[]) {
         printf("\nSQL created: %s\n", fn);
         myexit(0);
     }
-    if((argc==5)&&(strcmp(argv[2], "dump")==0)){
-        int num=0;
+    if((argc==6)&&(strcmp(argv[2], "dump")==0)){
+        int num=0, secnum=-2;
         sscanf(argv[4], "%d", &num);
-        df.dump_location(argv[3], num);
+        sscanf(argv[5], "%d", &secnum);
+        df.dump_location(argv[3], num, secnum);
         myexit(0);
     }
     double startJD=swe_julday(year-1, 12, 31, 0, SE_GREG_CAL);

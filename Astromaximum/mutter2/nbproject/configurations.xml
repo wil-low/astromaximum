@@ -30,7 +30,7 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>GNU|GNU</compilerSet>
+        <compilerSet>MinGW|MinGW</compilerSet>
         <platform>2</platform>
       </toolsSet>
       <compileType>
@@ -73,7 +73,7 @@
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <compilerSet>GNU|GNU</compilerSet>
+        <compilerSet>MinGW|MinGW</compilerSet>
         <platform>2</platform>
       </toolsSet>
       <compileType>
@@ -82,6 +82,7 @@
           <includeDirectories>
             <directoryPath>../swe</directoryPath>
           </includeDirectories>
+          <commandLine>-Wall -march=pentium4</commandLine>
           <preprocessorList>
             <Elem>ANSITZ</Elem>
           </preprocessorList>

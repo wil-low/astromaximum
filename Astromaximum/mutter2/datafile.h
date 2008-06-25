@@ -58,6 +58,7 @@ SE_JUPITER, SE_SATURN, SE_URANUS, SE_NEPTUNE, SE_PLUTO, SE_TRUE_NODE, SE_MEAN_AP
 SE_FICT_OFFSET_1+17
 };
 typedef vector<Event*> VAE;
+typedef vector<pair<int, int> > LOC_CONTENTS;
 
 class DataFile {
 private:
@@ -90,6 +91,8 @@ private:
     void doAscAphetics(VAE &work);
     void addBalls(aphRecord *balls, const Event *ev, int value);
     double getPrevious0dgr();
+    void get_loc_contents(const char* fname, bool is_output, LOC_CONTENTS &v);
+    void dump_section(const char* fname, pair<int, int> sec);
 public:
     unsigned int dayCount, stepCount;
     bool readSubData(const char* fname, VAE & v);
@@ -107,7 +110,7 @@ public:
     void init(sEphRecord *ephdata, double start, unsigned int count);
     void AAA();
     void view(const char* fname, int count);
-    void dump_location(const char* fname, int num);
+    void dump_location(const char* fname, int num, int secnum);
     ~DataFile();
     bool loadAphetics(sAphRecord *data);
     void calcAscData();
