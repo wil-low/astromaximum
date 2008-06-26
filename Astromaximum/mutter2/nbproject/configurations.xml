@@ -79,10 +79,11 @@
       <compileType>
         <ccCompilerTool>
           <developmentMode>5</developmentMode>
+          <stripSymbols>true</stripSymbols>
           <includeDirectories>
             <directoryPath>../swe</directoryPath>
           </includeDirectories>
-          <commandLine>-Wall -march=pentium4</commandLine>
+          <commandLine>-march=pentium3 -fomit-frame-pointer</commandLine>
           <preprocessorList>
             <Elem>ANSITZ</Elem>
           </preprocessorList>

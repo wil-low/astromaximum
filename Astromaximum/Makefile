@@ -1,7 +1,13 @@
 DEST=site/mobi/dl
 SOURCE=$(DEST)/source
 
-.PHONY: gen_amax config template interp mutter relgui
+.PHONY: gen_amax config template interp mutter relgui test
+
+test:	
+	#make mutter; \
+	#rm -f data/archive/2008/test/Data0000.dat; \
+	perl geoCoord.pl 2008 test; \
+	mutter2/mutter2 2008 dump test 0 -2
 
 all:	gen_amax config template interp mutter relgui
 

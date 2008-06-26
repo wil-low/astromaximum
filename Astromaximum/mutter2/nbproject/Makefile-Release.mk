@@ -33,8 +33,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-Wall -march=pentium4
-CXXFLAGS=-Wall -march=pentium4
+CCFLAGS=-march=pentium3 -fomit-frame-pointer
+CXXFLAGS=-march=pentium3 -fomit-frame-pointer
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -50,15 +50,15 @@ mutter2: ${OBJECTFILES}
 
 ${OBJECTDIR}/evclass.o: evclass.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -O2 -DANSITZ -I../swe -o ${OBJECTDIR}/evclass.o evclass.cpp
+	$(COMPILE.cc) -O2 -s -DANSITZ -I../swe -o ${OBJECTDIR}/evclass.o evclass.cpp
 
 ${OBJECTDIR}/datafile.o: datafile.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -O2 -DANSITZ -I../swe -o ${OBJECTDIR}/datafile.o datafile.cpp
+	$(COMPILE.cc) -O2 -s -DANSITZ -I../swe -o ${OBJECTDIR}/datafile.o datafile.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -O2 -DANSITZ -I../swe -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -s -DANSITZ -I../swe -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

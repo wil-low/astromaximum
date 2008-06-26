@@ -4,6 +4,7 @@ use POSIX;
 #use warnings;
 #use Encode;
 our $winda=$^O=~/Win/is;
+my $epoch=jul(1970, 1, 1, 0);
 
 my $TZ_VER=2;
 
@@ -15,6 +16,17 @@ $0=~/(.+[\/\\])/is;
 our $mypath=$1;
 $mypath='./' unless $mypath;
 require $mypath.'tz_patches.pm';
+=head
+my $rule='01Apr@3.5';
+print "Old\n\t";
+print scalar(decode_time(2008, $rule));
+print "\nNew\n\t";
+print decode_time2(2008, $rule);
+#decode_time2(2007, 'LastSunAug@2');
+exit;
+my $tod=jul(2008,5,20,15);
+print dow($tod);
+=cut
 
 my $year=shift(@ARGV);
 if($ARGV[0] eq 'tzonly'){
@@ -112,9 +124,16 @@ my $tz_ofs=0;
 	$tz_ofs=$tm-$tm2;
 }
 
-#$year=1947;
-#get_tz('Chile', 'Santiago', 1, 1);
-#exit;
+###### TZ testing
+=head
+$year=2004;
+my $tz=get_tz('Cuba', 'Santa Clara', 1, 1);
+print $tz;
+my $dstbuf=calc_dst($tz);
+exit;
+=cut
+######
+
 my $sqpath='d:/projects/astro/v2/db/';
 $sqpath='D:/Willow/prj/astrology/v2/db/' unless -d $sqpath;
 $sqpath='../' unless -d $sqpath;
@@ -421,6 +440,7 @@ sub process_ini{
 
 sub calc_dst{
 	my $buf;
+    warn 'Difficult @: '.$_[0] if $_[0]=~/\t\@/is;
 	my @fld=$_[0]=~/([\d\+\-\.]+)\s+(?:(\S+\@\S+)\s+(\S+\@\S+)\s+)?(.+)/is;
 	print join('|',@fld).",\t";
 	my $ofs=$fld[0]*60;
@@ -428,10 +448,10 @@ sub calc_dst{
 	$ofs+=(16*60);
 	if($fld[1] && $fld[2]){
 		print 'Start ';
-		my $start_dst=decode_time($year, $fld[1]);
+		my $start_dst=decode_time($year, $fld[1],0);
 
 		print 'End ';
-		my $end_dst=decode_time($year, $fld[2]);
+		my $end_dst=decode_time($year, $fld[2],0);
 		print "$start_dst,$end_dst\n";
 		$buf=pack('NN',$start_dst,$end_dst);
 	}
@@ -470,10 +490,95 @@ sub tz_check{
 	return 0;
 }
 
+sub jul{ # y, m, d, hr
+	my $invoke=ensure_slash($mypath."mutter2/mutter2 ".
+			sprintf("%04d jul %02d %02d %f", 
+			$_[0], $_[1], $_[2], $_[3]));# 
+	$invoke=`$invoke`;
+	chomp($invoke);
+	return $invoke;
+}
+
+sub revjul{
+	my $invoke=ensure_slash($mypath."mutter2/mutter2 2000 revjul $_[0]");
+	$invoke=`$invoke`;
+	chomp($invoke);
+	return $invoke;
+}
+
+sub dow{ # julday, out: 0-Mon, 1-Tue, ..., 6-Sun 
+	my $invoke=ensure_slash($mypath."mutter2/mutter2 2000 dow $_[0]");
+	$invoke=`$invoke`;
+	chomp($invoke);
+	return $invoke;
+}
+
 sub decode_time{
 	my $tm=undef;
-	my ($year, $str)=@_;
+	my $wday;
+	my ($year, $str, $dst)=@_;
 	print "$str: ";
+	my $hr=0;
+	$hr=$1 if $str=~s/\@([\d\+\-\.]+)/\@/is;
+=head
+    # extracting hours after @ into $hr, $mn, $sc
+	my $hr_frac=$1*3600;
+	my $hr=int($hr_frac/3600);
+	$hr_frac-=$hr*3600;
+	my $mn=int($hr_frac/60);
+	$hr_frac-=$mn*60;
+	my $sc=$hr_frac;
+=cut    
+	if($str=~/(\d+)(\w{3})\@/is){ # 01Apr@3
+		$tm=jul($year, $mon{$2}+1, $1, 0);
+	}
+	elsif($str=~/last/is){ # LastSunMar@2
+		my @pp=$str=~/last(\w{3})(\w{3})\@/is;
+		my $month=$mon{$pp[1]}+1; # next month
+		$tm=jul($year, $month+1, 0, 0);
+		$wday=dow($tm);
+		$pp[0]=$wd{$pp[0]}+6;
+		$wday=($wday+7-$pp[0])%7;
+		$tm=jul($year, $month+1, -$wday, 0);
+	}
+	if($str=~s/first(\w{3})//is){ 
+		my($after,$week_day,$m)=(1,$wd{$1}+6);
+#		die "($after, $week_day, $m)";
+		if($str=~/after(\d+)(\w{3})\@/is){ # FirstSunAfter18Mar@2
+			($after,$m)=($1+1,$mon{$2},$3);
+		}
+		else{
+			$str=~/(\w{3})\@/is; # FirstSunMar@2
+			$m=$mon{$1};
+		}
+#		die "($year,$m,$after, $hr)";
+		$tm=jul($year, $m+1, $after, 0);
+		$wday=dow($tm);
+		$wday=(7+$week_day-$wday)%7;
+		$tm=jul($year, $m+1, $after+$wday, 0);
+		
+	}
+#print "$tm";
+	my $tmstr=revjul($tm);
+#	my $tmstr=POSIX::ctime($tm);
+#	print "\t$tmstr, $tm";
+	$tm=$tm-$epoch;
+	$tm=$tm*24+$hr;
+	$tm*=60;
+#	$tm=($tm+$tz_ofs)/60;
+	if(wantarray){
+		return ($tm);#, $tmstr);
+	}
+	else{
+		return $tm;
+	}
+}
+
+sub decode_time2{
+	my $tm=undef;
+	my ($year, $str, $dst)=@_;
+	print "$str: ";
+    # extracting hours after @ into $hr, $mn, $sc
 	$str=~s/\@([\d\+\-\.]+)/\@/is;
 	my $hr_frac=$1*3600;
 	my $hr=int($hr_frac/3600);
@@ -510,7 +615,7 @@ sub decode_time{
 		
 	}
 	my $tmstr=POSIX::ctime($tm);
-	print "\t$tmstr";
+#	print "\t$tmstr";
 	$tm=($tm+$tz_ofs)/60;
 	if(wantarray){
 		return ($tm, $tmstr);
@@ -655,7 +760,7 @@ use warnings;
 	
 sub get_tz{
 	my ($country,$city,$isdie,$verbose)=@_;
-	$verbose=1;
+#	$verbose=1;
 	$country=~s/.+\$//is;
 	$country=~s/[\n\r]//isg;
 	$country=~s/, MSK.+//is;
@@ -737,8 +842,15 @@ sub get_tz{
 							$diff=$rulerow->{diff};
 							last;
 						}
-						if($year<=$y0){
-							die "\nhere ".$first_date->{start}." ". $rulerow->{end};
+						if($year<$y0){
+                            if($first_date->{end} eq $rulerow->{start} and $first_date->{end} eq '@'){
+                                $start=$end=$diff=''; $ofs+=1;
+                                print 'Having @-@, so no changes occured in '.$year.". adding 1, offset = $ofs\n";
+                                last;
+                            }
+                            else{
+                                die "\nDifficulty here ".$first_date->{start}." ". $rulerow->{end};
+                            }
 						}
 						$first_date=$rulerow;
 						$start=$y1; # probe next period
@@ -751,9 +863,11 @@ sub get_tz{
 		if($start==9999){
 			die "Cannot handle - too complicated\n";
 		}
+        warn "$ofs, $start, $end, $diff\n";
 		$start=~s/(\d+)\(UTC\)/$1+$ofs/e;
 		$end=~s/(\d+)\(UTC\)/$1+$ofs+$diff/e;
-		my @oo=split(/:/, $ofs);
+        warn "becomes\n$ofs, $start, $end, $diff\n";
+        my @oo=split(/:/, $ofs);
 		$ofs=($oo[0]*3600+$oo[1]*60+$oo[2])/3600;
 #		die $ofs;
 		if(wantarray()){

@@ -30,8 +30,8 @@ void myexit(int ret){
     chdir(mypath);
     c_end=clock();
     long cps=CLOCKS_PER_SEC;
-    if(!ret) 
-        printf("\nExecution time %d clocks (cps=%d)\n", c_end-c_start, cps);
+//    if(!ret) 
+//        printf("\nExecution time %d clocks (cps=%d)\n", c_end-c_start, cps);
 //    printf("\nExit code: %d. Restored curdir: %s\n", ret, mypath);
     exit(ret);
 }
@@ -88,21 +88,23 @@ int main(int argc, char* argv[]) {
         pos=strrchr(mypath, '/');
     }
     if(pos){
-        *(pos+1)=0;
+        *pos=0;
     }
     else{
         mypath[0]=0;
     }
 
 //    getcwd(mypath, PATH_MAX);
-    printf("Curpath=%s\n", mypath);
+//    printf("App path=%s\n", mypath);
     sprintf(path, "%s/%s", mypath, "../data");
     chdir(path);
+    getcwd(mypath, PATH_MAX);
+//    printf("chdir to %s\n", mypath);
     sprintf(serr, "%s/%s", path, ephemPath);
     while(pos=strchr(serr, '\\')){
         *pos='/';
     }
-    swe_set_ephe_path(serr);
+    swe_set_ephe_path(ephemPath);
     Event::EPOCH=swe_julday(1970, 1, 1, 0, SE_GREG_CAL);
     double outr[6];
     int res=swe_calc_ut(Event::EPOCH, SE_SUN, SEFLG_BARYCTR, outr, serr);
