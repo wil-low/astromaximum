@@ -7,7 +7,7 @@ $chac=check_access();
 if($chac!=-1 and $chac!=1){
 	if(isset($_REQUEST["go"])){
 		$sc=get_default_cities(); 
-		echo midlet_create("demo", $current_year-1, $lang, $sc, "mobi/dl");
+		echo midlet_create("demo", $current_year-1, $lang, $sc, "mobi/dl", true);
 		return;
 	}
 ?>

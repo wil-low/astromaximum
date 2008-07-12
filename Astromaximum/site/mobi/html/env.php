@@ -17,6 +17,7 @@ function yesno($val){
 	$env['files writable']=yesno(is_writable($p.'files'));
 	$env['inbox writable']=yesno(is_writable($p.'inbox'));
 	$env['source writable']=yesno(is_writable($p.'source'));
+	$env['restore writable']=yesno(is_writable($GLOBALS['amax']['restore']));
 	$env['gen_amax.log writable']=yesno(is_writable($p.'gen_amax.log'));
 	$ret=0;
 	$outp=array();

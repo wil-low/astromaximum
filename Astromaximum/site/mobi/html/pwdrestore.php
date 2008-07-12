@@ -7,16 +7,16 @@ $msg=allow_ip('pwd_rest', false);
 echo $msg;
 if($msg) return;
 if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
-	$mail=$_POST['p_email']; $captcha=$_POST['p_captcha'];
+	$email=$_POST['p_email']; $captcha=$_POST['p_captcha'];
 	if(is_captcha($captcha)){
-		$arr=email2login($mail);
+		$arr=email2login($email);
 		if(count($arr)){ 
 			$newpass=sprintf("%09d", mt_rand(1, 999999999));
 			include_once("mobi/amtools.php");
 			$tries=get_try_count($arr[0]);
-			$mail=pwd_send($mail, $arr[1], $arr[2], $tries, $newpass);
-			if($mail->Send()){
-				echo "New password has been sent to email address specified.";
+			$mail=pwd_send($email, $arr[1], $arr[2], $tries, $newpass);
+			if(!$mail->ErrorInfo){
+				echo $i18['PWDR_SENT'];
 				$pwd=pwd_convert2(pwd_convert1($arr[1], $newpass));
 				$stat=sprintf("UPDATE customers set hash=%s WHERE id=%d",
 					quote_smart($pwd), quote_smart($arr[0]));
@@ -24,10 +24,13 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 					echo "Error setting password:<br/>$stat<br/>".mysql_error();
 				}
 			}
+			else{
+				echo "Error sending mail: ".$mail->ErrorInfo;
+			}
 		}
 		else{
-			echo "Email is not found in database: <b>'$mail'</b>";
-			echo "<p><a href=\"{$_SERVER['REQUEST_URI']}\">back</a></p>";
+			echo sprintf($i18['PWDR_NOTFOUND'], $email);
+			echo "<p><a href=\"{$_SERVER['REQUEST_URI']}\">{$i18['BACK']}</a></p>";
 		}
 		return;
 	}
@@ -44,7 +47,7 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 	}
 -->
 </script>
-<p>Введите e-mail, указанный Вами при регистрации. На него будут высланы Ваши логин и новый пароль:</p>
+<p><?php echo $i18['PWDR_EMAILING']?></p>
 <form id="pwdrestore" action="<?php echo $_SERVER['REQUEST_URI']?>" method="post">
 <input name="p_email" type="text" style="width: auto"/>
 <p><?php echo $i18['CAPTCHA_PROMPT']?></p>

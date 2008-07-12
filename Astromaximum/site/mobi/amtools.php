@@ -233,7 +233,7 @@ function get_default_cities($arr){
 	return substr($ids, 0, -1);
 }
 
-function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string with links
+function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out - string with links
 	global $DIR_FILES, $DIR_SOURCE, $i18, $EXEC;
 
 	$timeout_offset=-24;
@@ -286,21 +286,26 @@ function midlet_create($type, $year, $lang, $param, $path2gen){ // out - string 
 			$data_php.="/mobi";
 		}
 		$url=$data_php.'/data.php?r='.$id;
-		if($EXEC==1){
-			$str.="<h4>{$i18['PC_DL']}:</h4>";
-			$str.="<a href='$url'>JAR</a>";
+		$url2=str_replace("?r", "?d", $url);
+		if($is_html){
+			if($EXEC==1){
+				$str.="<h4>{$i18['PC_DL']}:</h4>";
+				$str.="<a href=\"$url\">JAR</a>";
+			}
+			else{
+				$str.="<h4>{$i18['PHONE_DL']}:</h4>";
+			}
+			$str.=" <a href=\"$url2\">JAD</a><br>";
+	
+	#				$url=str_replace("?d", "?t", $url);
+	#				echo "<h4>{$i18['PHONE_DL']}:</h4>";
+	#				echo "<a href='$url'>JAD</a><br>";
+			
+			$str.="<br/><font color=\"red\">{$i18['VALID_LINKS']}</font>";
 		}
-		else{
-			$str.="<h4>{$i18['PHONE_DL']}:</h4>";
+		else{ # text-only version
+			$str="JAR: <<$url>>\n\nJAD: <<$url2>>";
 		}
-		$url=str_replace("?r", "?d", $url);
-		$str.=" <a href='$url'>JAD</a><br>";
-
-#				$url=str_replace("?d", "?t", $url);
-#				echo "<h4>{$i18['PHONE_DL']}:</h4>";
-#				echo "<a href='$url'>JAD</a><br>";
-		
-		$str.="<br/><font color='red'>{$i18['VALID_LINKS']}</font>";
 	}
 	return $str;
 }
@@ -322,12 +327,10 @@ function record_in_range($table, $tm){
 	return $res;
 }
 
-function pwd_send($to, $login, $realname, $dl_limits, $pwd){
+function mailtext_w_attach($to, $realname, $subject, $message){ # returns sent Mail object
    include("mobi/phpmailer/class.phpmailer.php");
    include("mobi/phpmailer/class.smtp.php");
-   $site='http://astromaximum.mobi';
    $from=$GLOBALS['amax']['mail_office'];
-   $subject = 'Astromaximum - new password';
   
    $mail=new PHPMailer();
    $mail->SetLanguage("en", "mobi/phpmailer/");
@@ -345,32 +348,32 @@ function pwd_send($to, $login, $realname, $dl_limits, $pwd){
 
    $mail->FromName   = 'Astromaximum office';
 	$mail->Subject    = $subject;
+	if($tmpfname = tempnam($GLOBALS['amax']['restore'], "")){
+		if(strpos($tmpfname, $GLOBALS['amax']['restore'])){
+			$handle = fopen($tmpfname, "w");
+			fwrite($handle, $message);
+			fclose($handle);
+			$mail->AddAttachment($tmpfname, "message.txt","8bit", "text/plain");
+		}
+	}
+	
+	$message=preg_replace("/\-{4,}.+/s", "", $message);
+   $mail->Body    = $message;
+	$mail->AddAddress($to,$realname);
+	$mail->Send();
+	return $mail;
+}
 
+function pwd_send($to, $login, $realname, $dl_limits, $pwd){
 	$message=file_get_contents("mobi/dl/source/pwdrestore.mail");
-	$message=str_replace('[site]', $site, $message);
+	$message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
 	$message=str_replace('[realname]', $realname, $message);
 	$message=str_replace('[login]', $login, $message);
 	$message=str_replace('[pwd]', $pwd, $message);
 	$message=str_replace('[dl_count]', $dl_limits[0], $message);
 	$message=str_replace('[city_count]', $dl_limits[1], $message);
 	$message=str_replace('[past_count]', $dl_limits[2], $message);
-   $mail->AltBody    = $message;
-
-	$message=file_get_contents("mobi/dl/source/pwdrestore.mail.html");
-	$message=str_replace('[site]', $site, $message);
-	$message=str_replace('[realname]', $realname, $message);
-	$message=str_replace('[login]', $login, $message);
-	$message=str_replace('[pwd]', $pwd, $message);
-	$message=str_replace('[dl_count]', $dl_limits[0], $message);
-	$message=str_replace('[city_count]', $dl_limits[1], $message);
-	$message=str_replace('[past_count]', $dl_limits[2], $message);
-  $mail->Body       = $message;                      
-//  $mail->AltBody    = "This is the body when user views in plain text format"; //Text Body
-  $mail->AddAddress($to,$realname);
-  
-  $mail->IsHTML(true); // send as HTML
-  $mail->CharSet    = 'windows-1251'; 
-  return $mail; 
+	return mailtext_w_attach($to, $realname, 'Astromaximum - new password', $message);
 }
 
 function get_try_count($id){ // get dl limit for current user, if $id==0

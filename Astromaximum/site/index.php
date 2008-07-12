@@ -95,7 +95,7 @@ if(preg_match("/^(demo)$/is", $main)){
 </div>
 <div id="menu">
 <a href="?<?php echo "$lang_\">".$i18['MNU_HOME']?></a> | 
-<a href="?<?php echo "$lang_&amp;p=0_0\">".$i18['MNU_MAN']?></a> | 
+<?php echo anchor('manual').$i18['MNU_MAN']?></a> | 
 <?php echo anchor('scr').$i18['MNU_SCRSHOTS'] ?></a> | 
 <?php echo anchor('buy').$i18['MNU_BUY'] ?></a> | 
 <?php echo anchor('citylist').$i18['MNU_CITYLIST'] ?></a> |
@@ -191,15 +191,15 @@ echo $session_prompt
 		if(file_exists($fn)){
 			$manual_requested=preg_match("/^[_\d]+$/is", $main);
 			if($manual_requested){
-				if($user_ok){
+#				if($user_ok){ # manuals are browsed for free
 					include($fn);
 					if(strcmp($main, '0_0')){
 						echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a></p>";
 					}
-				}
-				else{
-					reg_warning("Просмотр документации");
-				}
+#				}
+#				else{
+#					reg_warning("Просмотр документации");
+#				}
 			}
 			else{
 				include($fn);

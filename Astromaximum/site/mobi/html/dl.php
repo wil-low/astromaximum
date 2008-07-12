@@ -73,12 +73,12 @@ KCAP;
 		if($is_allow_dl && mysql_num_rows($sth)>0){
 			$row = mysql_fetch_row($sth);
 			echo "<p>".sprintf($i18['READY_CITIES'], "$row[1], $row[2]", $defyear)."</p>\n";
-			$str=midlet_create("geo", $defyear, $lang, $sc, "mobi/dl");
+			$str=midlet_create("geo", $defyear, $lang, $sc, "mobi/dl", true);
 			if(strlen($str)){
 				dec_try_count(0, 1);
-				echo $str;
+				echo "$str";
 				if($tries[1]>=0){
-					echo tries_remained($tries[1]-1, $DLIM[1]);
+					echo "<br/><br/>".tries_remained($tries[1]-1, $DLIM[1]);
 				}
 				echo "<br/><br/><a href=\"{$_SERVER['REQUEST_URI']}\">{$i18['BACK']}</a>";
 			}

@@ -6,30 +6,40 @@ allow_ip('demo',false);
 if(check_access()!=-1){
 	$uri=htmlentities($_SERVER['REQUEST_URI']);
 	if(isset($_POST["agree"]) && isset($_POST['p_captcha'])){
-		$captcha=$_POST['p_captcha'];
-		if(is_captcha($captcha)){
-			$choice=$_POST["agree"];
-			$prev_year=$GLOBALS['amax']['year']-1;
-			if(strcmp($choice,"demo")==0){
-				$sc=get_default_cities($GLOBALS['amax']['def_cities']); 
-				echo midlet_create("demo", $prev_year, $lang, $sc, "mobi/dl", true);
+		if(isset($_POST["email"])){
+			$email=$_POST['email'];
+			if(preg_match("/^[\w\.]+@(\w+\.)+\w{2,4}$/", $email)){
+				$captcha=$_POST['p_captcha'];
+				if(is_captcha($captcha)){
+					$choice=$_POST["agree"];
+					$prev_year=$GLOBALS['amax']['year']-1;
+					if(strcmp($choice,"demo")==0){
+						$sc=get_default_cities($GLOBALS['amax']['def_cities']); 
+						$link_text=midlet_create("demo", $prev_year, $lang, $sc, "mobi/dl", false);
+					}
+					else{
+						if(is_numeric($choice) && ($choice>=0) && ($choice<count($GLOBALS['amax']['demo_cities']))){
+							echo "<p>".sprintf($i18['READY_CITIES'], $GLOBALS['amax']['demo_cities'][$choice], $prev_year)."</p>\n";				
+							$sc=get_default_cities($GLOBALS['amax']['demo_cities'][$choice]); 
+							$link_text=midlet_create("geo", $prev_year, $lang, $sc, "mobi/dl", false);
+						}
+					}
+					echo "<p>".sprintf($i18['DEMO_LINK_SENT'], $email)."</p>";
+					echo "<p><a href=\"$uri\">{$i18['BACK']}</a></p>";
+					return;
+				}
+				echo "<p><font color=\"red\">{$i18['CAPTCHA_WRONG']}</font></p>";
 			}
 			else{
-				if(is_numeric($choice) && ($choice>=0) && ($choice<count($GLOBALS['amax']['demo_cities']))){
-					echo "<p>".sprintf($i18['READY_CITIES'], $GLOBALS['amax']['demo_cities'][$choice], $prev_year)."</p>\n";				
-					$sc=get_default_cities($GLOBALS['amax']['demo_cities'][$choice]); 
-					echo midlet_create("geo", $prev_year, $lang, $sc, "mobi/dl", true);
-				}
+				echo "<p><font color=\"red\">{$i18['EMAIL_WRONG']}</font></p>";
 			}
-			echo "<p><a href=\"$uri\">{$i18['BACK']}</a></p>";
-			return;
 		}
-		echo "<p><font color=\"red\">{$i18['CAPTCHA_WRONG']}</font></p>";
 	}
 	$sess=session_name().'='.session_id();
 	echo $i18['DEMO_HEADER'];
 	echo <<<EOF1
 <form action="$uri" method="post">
+<p>{$i18['DEMO_EMAILING']} <input name="email" type="text"/></p>
 <p>{$i18['CAPTCHA_PROMPT']}</p>
 <p><img src="mobi/kcaptcha?$sess">
 <input name="p_captcha" type="text"/>

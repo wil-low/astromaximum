@@ -64,7 +64,7 @@ if(isset($_POST['btn'])){
 ?>
 <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post"><p>
 <?php echo knopka(1, $validuser, $i18['SEL_DCITY']) ?><br/>
-<?php echo knopka(2, $validuser, $i18['SEL_AH']) ?><br/>
+<?php echo knopka(2, true, $i18['SEL_AH']) ?><br/>
 <?php echo knopka(3, true, $i18['SEL_ABOUT']) ?></p>
 <p>
 <?php echo knopka(4, true, $i18['SEL_DEMO'].' '.($current_year-1)) ?>*<br/>

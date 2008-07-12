@@ -21,8 +21,8 @@ if(true /*|| check_access()*/){
 	$sth=mysql_query($stat);
 	$count=mysql_fetch_row($sth);
 	if($count[0]!=1){
-		echo $stat;
-//		header("HTTP/1.0 410 Gone");
+		header("HTTP/1.0 410 Gone");
+		echo "Sorry, wrong URL or no file present.";
 		exit;
 	}
 	$stat=sprintf(

@@ -12,9 +12,9 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=
-CCC=
-CXX=
+CC=gcc
+CCC=g++
+CXX=g++
 FC=
 
 # Include project Makefile

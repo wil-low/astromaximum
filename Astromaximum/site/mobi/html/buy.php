@@ -33,7 +33,7 @@ if($chac!=-1 and $chac!=1){
 	if(isset($_POST["agree"])){
 		if($is_allow_dl){
 			$sc=get_default_cities($GLOBALS['amax']['def_cities']); 
-			$str=midlet_create("tb", $year, $lang, $sc, "mobi/dl");
+			$str=midlet_create("tb", $year, $lang, $sc, "mobi/dl", true);
 			if(strlen($str)){
 				dec_try_count(0, $dl_key);
 				echo $str;
