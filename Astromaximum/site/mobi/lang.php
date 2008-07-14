@@ -63,7 +63,8 @@ EOF;
 } 
 
 function reg_warning($subj){
-	echo "<p>$subj разрешается только зарегистрированным пользователям.<br/>Введите свой логин и пароль в форме слева.</p>";
+	global $i18;
+	echo "<h4>{$i18['REG_REQ']}</h4>".'<p>'.sprintf($i18['RESTRICTED'], $subj).'</p>';
 }
 
 function get_year(){

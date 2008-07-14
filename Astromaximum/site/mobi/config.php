@@ -1,4 +1,9 @@
 <?php
+# A better method than turning off error_reporting() is to turn off 'display_errors', 
+# and use 'log_errors' and 'error_log'. This way developers can still get errors from misbehaving applications, and it won't trouble the user. <http://us2.php.net/manual/en/ref.errorfunc.php>
+#error_reporting(E_NONE);
+error_reporting(E_ALL);
+
 $sett=array(
 	'is_online'=>(isset($_SERVER['REMOTE_ADDR']) && strcmp($_SERVER['REMOTE_ADDR'],"127.0.0.1")),
 
@@ -8,6 +13,7 @@ $sett=array(
 	'smtp_pass'=>"TWmvvIWx",
 	'mail_office'=>'office@astromaximum.mobi',
 	'mail_site'=>'http://astromaximum.mobi',
+	'noreply'=>'noreply@astromaximum.de',
 	
 	'def_cities'=>array('m.Olympos'),
 	'demo_cities'=>array("London", "New York", "Moscow", "Kiev"),

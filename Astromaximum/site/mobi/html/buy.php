@@ -89,7 +89,7 @@ function dload_tries_prompt($arr, $key, $str, $prompt){
 		$rem=tries_remained($num, $DLIM[$key]);
 	}
 	if(!$num){
-		$num='<font color="red">'.$num."</font>";
+		$num='<span class="alert">'.$num."</span>";
 		$disabled=true;
 	}
 	return $rem."<br/><br/>".$str.dload_prompt($prompt, $disabled);

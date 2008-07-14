@@ -3,16 +3,28 @@ if(!isset($EXEC)) die("Access restricted");
 reject2index("index.php?$lang_");
 include_once('mobi/amtools.php');
 lang_load("source");
+$errors=0;
 function yesno($val){
-	return $val? '<font color="green">YES</font>': '<font color="red">NO</font>';
+	global $errors;
+	if($val){
+		return '<span class="fine">YES</span>';
+	}
+	else{
+		$errors++;
+		return '<span class="alert">NO</span>';
+	}
 }
 ?>
+<h4>Environment check</h4>
 <table border="1" cellspacing="0">
 <tr><th>Property</th><th>Status</th></tr>
 
 <?php
 	$perl=find_perl();
 	$env=array();
+	$env['error_reporting']=ini_get('error_reporting');
+	$env['register_globals=off']=yesno(!ini_get('register_globals'));
+	
 	$p='mobi/dl/';
 	$env['files writable']=yesno(is_writable($p.'files'));
 	$env['inbox writable']=yesno(is_writable($p.'inbox'));
@@ -45,7 +57,7 @@ function yesno($val){
 	    $env[$key].=substr_replace(basename($filename), '', -5)." ";
 	}
 	if(strlen($env[$key])==0){
-		$env[$key]='<font color="red">NO</font>';
+		$env[$key]='<span class="alert">NO</span>';
 	}
 
 	$env['jars']='';
@@ -53,7 +65,7 @@ function yesno($val){
 	    $env['jars'].=substr_replace(basename($filename), '', -4)." ";
 	}
 	if(strlen($env['jars'])==0){
-		$env['jars']='<font color="red">no</font>';
+		$env['jars']='<span class="alert">no</span>';
 	}
 
 	$env['dl/html/.htaccess']=yesno(file_exists($p.'../html/.htaccess'));
@@ -66,17 +78,21 @@ function yesno($val){
 			$GLOBALS['amax']['demo_pass'])))==0); 
 	}
 	else{
-		$env[$key]="<font color=\"red\">MISSING</font>";
+		$env[$key]="<span class=\"alert\">MISSING</span>";
 	}
 	$key='Demo cities';
 	$adc=$GLOBALS['amax']['demo_cities'];
-	$dcit=get_default_cities($adc);
+	$dcit=explode(',', get_default_cities($adc));
+//	print_r($dcit);
 	$yprev=$GLOBALS['amax']['year']-1;
 	$value='';
 	for($i=0; $i<count($adc); $i++){
 		$value.="$adc[$i] ";
-		$value.=yesno(mysql_query("SELECT 1 FROM locations WHERE city_id = '$dcit[$i]' and year=$yprev"));
+		$sql="SELECT 1 FROM locations WHERE city_id = '$dcit[$i]' and year=$yprev";
+		$sth=mysql_query($sql);
+		$value.=yesno($sth && mysql_num_rows($sth));
 		$value.=", ";
+//		echo "$sql<br/>";
 	}
 	$env[$key]=$value;
 
@@ -85,3 +101,4 @@ function yesno($val){
 	}
 ?>
 </table>
+<?php if($errors) echo "<p class=\"alert\">There are $errors error(s)!!!</p>" ?>

@@ -50,7 +50,7 @@ if(!strpos($data_php, "mobi")){
 }
 //echo "http://$data_php/../data.php?t=$fn";
 echo "<a href=\"http://$data_php/data.php?t=$fn\">{$i18['PHONE_DL']}</a>";
-echo "<br/><font color='red'>{$i18['VALID_LINKS']}</font><br/><br/>";
+echo "<br/><span class=\"alert\">{$i18['VALID_LINKS']}</span><br/><br/>";
 
  
 ?>

@@ -78,7 +78,7 @@
 		$url=str_replace("?r", "?d", $url);
 		echo "<a href=\"$url\">JAD</a>";
 	}
-	echo "<br/><br/><font color='red'>{$i18['VALID_LINKS']}</font><br/><br/>";
+	echo "<br/><br/><span class=\"alert\">{$i18['VALID_LINKS']}</span><br/><br/>";
 	echo '<a href="..">'.$i18['BACK']."</a>";
 ?>
 </div>

@@ -20,6 +20,7 @@ function checklogin(){
 }
 
 function is_empty(id){
+//	alert(id+" "+findObj(id).value);
 	return findObj(id).value.length==0;
 }
 

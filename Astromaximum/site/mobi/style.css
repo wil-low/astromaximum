@@ -1,54 +1,41 @@
 .geo {
 	vertical-align:top;
 }
-
 .center {
 	horizontal-align:center;
 }
-
 a {
 	color: blue;
 }
-
-.lb{
+.lb {
 	width:100%;
 	font-size:12px;
 	font-family:Verdana;
 	height:400pt;
 }
-
 .hdr {
 	horizontal-align:center; font-style:bold;
 }
-
 .centered {
 	horizontal-align:center;
 }
-
-div.hr{
+div.hr {
 	border: 1px rgb(0,0,0) solid
 }
-
-.comment
-{
+.comment {
 	font-style:italic;
 }
-
-.alert
-{
-	font-style:bold;
-}
-
-img
-{
+.alert {
+	color:rgb(255,0,0);
+}	
+.fine {
+	color:rgb(0,130,0);
+}	
+img {
 	padding-bottom:-2pt;
 }
-
-.sidepad
-{
+.sidepad {
 }
-
-.numinput
-{
+.numinput {
 	-wap-input-format: "*N"
 }

@@ -5,10 +5,6 @@ $DEMO=array('login'=>'123456789', 'pass'=>'012345678');
 $DLIM=array(2, 8, 10); //download limited
   
 function sess_start(){
-
-#	error_reporting(E_NONE);
-	error_reporting(E_ALL);
-	
 	session_set_cookie_params(3600);
 	session_start();
 	session_register("username","uid", "pwd", "captcha_keystring");
@@ -301,10 +297,10 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
 	#				echo "<h4>{$i18['PHONE_DL']}:</h4>";
 	#				echo "<a href='$url'>JAD</a><br>";
 			
-			$str.="<br/><font color=\"red\">{$i18['VALID_LINKS']}</font>";
+			$str.="<br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
 		}
 		else{ # text-only version
-			$str="JAR: <<$url>>\n\nJAD: <<$url2>>";
+			$str="JAR: $url\n\nJAD: $url2";
 		}
 	}
 	return $str;
@@ -348,7 +344,9 @@ function mailtext_w_attach($to, $realname, $subject, $message){ # returns sent M
 
    $mail->FromName   = 'Astromaximum office';
 	$mail->Subject    = $subject;
+//	echo $GLOBALS['amax']['restore'];
 	if($tmpfname = tempnam($GLOBALS['amax']['restore'], "")){
+//		echo $tmpfname;
 		if(strpos($tmpfname, $GLOBALS['amax']['restore'])){
 			$handle = fopen($tmpfname, "w");
 			fwrite($handle, $message);
@@ -413,5 +411,33 @@ function is_captcha($captcha){
 	}
 	unset($_SESSION['captcha_keystring']);
 	return $res;
+}
+
+function check_email_address($email) { # http://www.addedbytes.com/php/email-address-validation/
+	// First, we check that there's one @ symbol, and that the lengths are right
+	if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
+		// Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
+		return false;
+	}
+	// Split it into sections to make life easier
+	$email_array = explode("@", $email);
+	$local_array = explode(".", $email_array[0]);
+	for ($i = 0; $i < sizeof($local_array); $i++) {
+		if (!ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$", $local_array[$i])) {
+			return false;
+		}
+	} 
+	if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
+		$domain_array = explode(".", $email_array[1]);
+		if (sizeof($domain_array) < 2) {
+			return false; // Not enough parts to domain
+		}
+		for ($i = 0; $i < sizeof($domain_array); $i++) {
+			if (!ereg("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$", $domain_array[$i])) {
+				return false;
+			}
+		}
+	}
+	return true;
 }
 ?>

@@ -7,7 +7,7 @@ $table_vsize=18;
 $current_year=$GLOBALS['amax']['year'];
 $chac=check_access();
 if($chac==-1 or $chac==1){
-	reg_warning("Загрузка городов");
+	reg_warning($i18['PAGE_DLCIT']);
 	return;
 }
 include_once('mobi/amtools.php');

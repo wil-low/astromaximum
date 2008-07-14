@@ -146,11 +146,11 @@ function up_geodata($fname, $ext){
 				$txtchk="<b>OK</b>";
 			}
 			else{
-				$txtchk="<font color=red>doesn't match, found <b>$len</b></font>";
+				$txtchk="<span class=\"alert\">doesn't match, found <b>$len</b></span>";
 			}
 		}
 		else{
-			$txtchk="<font color=red>missing</font>";
+			$txtchk="<span class=\"alert\">missing</span>";
 		}
 		$couid=0;
 		$sth=mysql_query(sprintf($sthcou,quote_smart($country)));
@@ -159,7 +159,7 @@ function up_geodata($fname, $ext){
 //			echo $que;
 			$sth=mysql_query($que);
 			$couid=mysql_insert_id();
-			$country="<font color=red>$country</font>";
+			$country="<span class=\"alert\">$country</span>";
 			++$cou_count;
 		}
 		else{	
@@ -171,7 +171,7 @@ function up_geodata($fname, $ext){
 			if(!mysql_num_rows($sth)){
 				$sth=mysql_query(sprintf($sthstateins,quote_smart($state),$couid));
 				$stateid=mysql_insert_id();
-				$state="<font color=red>$state</font>";
+				$state="<span class=\"alert\">$state</span>";
 				++$state_count;
 			}
 			else{	
@@ -187,7 +187,7 @@ function up_geodata($fname, $ext){
 		if(!mysql_num_rows($sth)){
 			$sth=mysql_query(sprintf($sthcitins,quote_smart($name),$couid,$stateid));
 			$citid=mysql_insert_id();
-			$name="<font color=red>$name</font>";
+			$name="<span class=\"alert\">$name</span>";
 			++$cit_count;
 		}
 		else{	
@@ -203,7 +203,7 @@ function up_geodata($fname, $ext){
 		}
 		else{
 			mysql_query(sprintf($sthlocins,$yr,$citid,bin2hex($locdata)));
-			$yr="<font color=red>$yr</font>";
+			$yr="<span class=\"fine\">$yr</span>";
 			++$locins_count;
 			$locid=mysql_insert_id();
 		}
@@ -223,7 +223,7 @@ function up_geodata($fname, $ext){
 }
 	
 function upload_error($msg, $dir){
-	echo "<h4>Error: $msg</h4>";
+	echo "<h4 class=\"alert\">Error: $msg</h4>";
  	if(strlen($dir)){
  		rm_all($dir);
  	}

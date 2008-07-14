@@ -1,6 +1,6 @@
 <?php
 if(isset($_SERVER['HTTP_REFERER']) && preg_match("/(localhost|test21\.cityhost|astromaximum\.(de|mobi))/i",$_SERVER['HTTP_REFERER'])){
-	error_reporting (E_ALL);
+//	error_reporting (E_ALL);
 
 	include('kcaptcha.php');
 	

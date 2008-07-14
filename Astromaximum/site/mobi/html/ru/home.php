@@ -1,4 +1,9 @@
-<?php if(!isset($EXEC)) die("Access restricted") ?>
+<?php 
+if(!isset($EXEC)) die("Access restricted");
+$META_TITLE="Главная";
+$META_DESCR=$i18['SITE_TITLE'];
+$META_KEYWORDS='Astromaximum, mobile phone, midlet, java, j2me, astrology, calendar'; 
+?>
 <p>
 <b>ASTROMAXIMUM </b>является первым самым подробным астрологическим календарём, при этом,<br /> 
 <b>ASTROMAXIMUM</b> - первый астрологический календарь для мобильных телефонов.

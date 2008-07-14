@@ -37,7 +37,7 @@ if(true /*|| check_access()*/){
 	$data = fread($handle, $clen);
 	fclose($handle);
 	if(strcmp($type,'d')==0){
-		header('Content-Type: text/vnd.sun.j2me.app-descriptor;charset=UTF-8');
+		header('Content-Type: text/vnd.sun.j2me.app-descriptor; charset=UTF-8');
 	}
 	else{
 //		echo filesize($fn); 

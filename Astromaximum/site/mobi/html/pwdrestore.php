@@ -35,7 +35,7 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 		return;
 	}
 	else{
-		echo "<p><font color=\"red\">{$i18['CAPTCHA_WRONG']}</font></p>";
+		echo "<p class=\"alert\">{$i18['CAPTCHA_WRONG']}</p>";
 	}
 } 
 ?>

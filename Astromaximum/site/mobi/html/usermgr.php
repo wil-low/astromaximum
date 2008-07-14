@@ -35,7 +35,7 @@ if(isset($_GET['u'])){
 <h3>$hdr $row[0]</h3>
 <form id="usredit" action="index.php?$lang_&amp;p=usermgr" method="post">
 <input type="hidden" name="u_id" value="$id"/>
-<input type="text" name="u_realname" value="$row[0]"/> realname &nbsp; 
+<input type="text" name="u_realname" id="u_realname" value="$row[0]"/> realname &nbsp; 
 <p>
 <input type="text" name="u_login" id="u_login" value="$row[1]" maxlength="9"/>
 <a href="javascript:void(0)" onclick="do_random('u_login');return false">login</a> &nbsp;
@@ -51,13 +51,13 @@ if(isset($_GET['u'])){
 <input type="text" name="u_cityc" value="$row[4]" size="3"/> city &nbsp; &nbsp; 
 <input type="text" name="u_pastc" value="$row[5]" size="3"/> past &nbsp; &nbsp;
 Paymode: 
-<select name="u_paymode" style="width:10em">
+<select name="u_paymode" id="u_paymode" style="width:10em">
 <option value="0"></option>
 $paymode
 </select>
 </p>
 <p> 
-<input type="checkbox" name="u_active"$active/> Active &nbsp; &nbsp; 
+<input type="checkbox" name="u_active" id="u_active"$active/> Active &nbsp; &nbsp; 
 <input type="checkbox" name="u_notify" id="u_notify"/> E-mail credentials to this user</a></p>
 <p>
 <input type="button" name="action" value="$act" onclick="check_user()"/>
@@ -118,7 +118,7 @@ if(isset($_POST['u_id'])){
 				);
 	//			echo "$stat<br/>";
 				if(!mysql_query($stat)){
-					echo "<font color=\"red\">Error when setting password!</font><br/>".mysql_error();
+					echo "<span class=\"alert\">Error when setting password!</span><br/>".mysql_error();
 				}
 				else{
 					if(isset($_POST['u_notify'])){
@@ -129,9 +129,9 @@ if(isset($_POST['u_id'])){
 						 	echo "Notification was sent to ".$_POST['u_email']."<br/>";
 						}
 						else{
-							echo "<font color=\"red\">Error when sending notification to ".$_POST['u_email'];
+							echo "<span class=\"alert\">Error when sending notification to ".$_POST['u_email'];
 							echo "<br/>Mailer Error: " . $mail->ErrorInfo;
-              			echo "</font><br/>";
+              			echo "</span><br/>";
 						}
 					}
 				}
@@ -141,12 +141,12 @@ if(isset($_POST['u_id'])){
 					echo "Password is not changed";
 				}
 				else{
-					echo "<font color=\"red\">Password is <b>UNDEFINED</b>!!! No one knows it!</font>";
+					echo "<span class=\"alert\">Password is <b>UNDEFINED</b>!!! No one knows it!</span>";
 				}
 			}
 		}
 		else{
-			echo "<font color=\"red\">Error when updating user!</font><br/>".mysql_error();
+			echo "<span class=\"alert\">Error when updating user!</span><br/>".mysql_error();
 		}
 	}
 }

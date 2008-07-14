@@ -1,5 +1,25 @@
 <?php 
 $EXEC=1;
+
+$META_KEYWORDS='';
+$META_DESCR='';
+$META_TITLE='';
+function output_callback($buffer)
+{
+	global $META_TITLE, $META_KEYWORDS, $META_DESCR;
+	// fill meta tags
+	if($META_TITLE){ 
+		$META_TITLE.=" - ";
+	}
+	$META_TITLE.="ASTROMAXIMUM"; 
+	$buffer=str_replace("[[title]]", $META_TITLE, $buffer);
+	$buffer=str_replace("[[keywords]]", $META_KEYWORDS, $buffer);
+	$buffer=str_replace("[[description]]", $META_DESCR, $buffer);
+	return $buffer;
+}
+
+ob_start("output_callback");
+
 include_once('mobi/amtools.php');
 $main='home';
 if(isset($_GET['p'])){
@@ -58,11 +78,12 @@ if(preg_match("/^(demo)$/is", $main)){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<title><?php echo $i18['SITE_TITLE']?></title>
-<meta name="author" content="Unknown"/>
-<meta name="copyright" content="Copyright (c) by ASTROMAXIMUM.de"/>
-<meta name="keywords" content="ключи"/>
-<meta name="description" content="описание"/>
+<title>[[title]]</title>
+<meta name="author" content="Willow"/>
+<meta name="generator" content="Bluefish 1.0.7"/>
+<meta name="copyright" content="Copyright (c) by S&amp;W Axis"/>
+<meta name="keywords" content="[[keywords]]"/>
+<meta name="description" content="[[description]]"/>
 <link href="astro.css" rel="stylesheet" type="text/css"/>
 <script src="./func.js" type="text/javascript"></script>
 </head>
@@ -135,8 +156,8 @@ else{
 <form id="flog" action="?$lang_&amp;p=login&amp;to=$main" method="post"> 
 <input id="ilog" class="fixedinput" name="login"/> {$i18['LOGIN']} <br /><br />
 <input id="ipwd" class="fixedinput" name="pass" type="password"/> {$i18['PWD']} <br /><br />
-<input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | 
-<input type="button" class="loginbutton" onclick="window.location='?$lang_&amp;p=pwdrestore'" value="{$i18['LOST_PWD']}" />
+<input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | <input type="button" 
+class="loginbutton" onclick="window.location='?$lang_&amp;p=pwdrestore'" value="{$i18['LOST_PWD']}" />
 </form> 
 FRM;
 } 
@@ -217,6 +238,8 @@ echo $session_prompt
 </html>
 
 <?php
+ob_end_flush();
+
 function disable_big_button($id, $label, $check_page, $link_page){
 	global $main, $lang_;
 	$style='';
@@ -226,6 +249,6 @@ function disable_big_button($id, $label, $check_page, $link_page){
 	else{
 		$style=' style="color:rgb(133,195,224)"';
 	}
-	return "<div id=\"$id\"$style>$label</div>";
+	return "<div id=\"$id\"$style>$label</div>\n";
 }
 ?>
