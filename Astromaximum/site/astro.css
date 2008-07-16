@@ -71,7 +71,6 @@ ul {
 	cursor: pointer;
 	cursor: hand;
 }
-
 .alert {
 	color: #FF0000;
 }	
@@ -115,6 +114,10 @@ ul {
 	padding: 7px;
 	color: #215F7C;
 }
+.shot {
+	margin: 5px;
+	text-align:center;
+}
 
 /*дизайн*/
 #globe {
@@ -134,6 +137,15 @@ ul {
 	width: 400px;
 	text-align: center;
 }
+#js_warn {
+	position: absolute;
+	top: 191px;
+	left: 448px;
+	font: 11px  bolder;
+	width: 400px;
+	text-align: center;
+}
+
 #menu {
 	position: absolute;
 	top: 10px;
@@ -225,6 +237,9 @@ ul {
 #usredit input {
 	width: auto;
 	height: auto;
+}
+.gallery td{
+	padding: 0px 25px 5px 25px;
 }
 /*подвал*/
 #bottom {

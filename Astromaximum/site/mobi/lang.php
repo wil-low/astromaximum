@@ -40,22 +40,7 @@ function dload_prompt($str, $is_disabled){
 		$onclick='';
 	}
 	else{
-		$ret = <<<EOF
-<script type="text/javascript">
-<!--
-	function checkCheckBox(b){
-		if(b.form.agree.checked==false)
-		{
-			alert('Please check the box to continue.');
-		}
-		else{
-			b.form.submit();
-		}
-	}
--->
-</script>
-EOF;
-		 $onclick=' onclick="checkCheckBox(this)"';
+		$onclick=' onclick="checkCheckBox(this)"';
 	}
 	$ret.='<input type="checkbox" name="agree" style="width:auto;"'.$disabled.'/> '.$str.'<br/><br/>'.
 	'<input type="button" class="'.$cls.'" value="OK"'.$onclick.$disabled.'/>';

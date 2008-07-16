@@ -1,4 +1,9 @@
-<?php if(!isset($EXEC)) die("Access restricted") ?>
+<?php 
+if(!isset($EXEC)) die("Access restricted"); 
+$META_TITLE='Инструкция';
+$META_KEYWORDS='руководство пользователя, мануал, установка на телефон, установка городов';
+$META_DESCR='';
+?>
 <p><a href="/mobi/html/ru/amax-manual.pdf">Руководство пользователя в формате PDF (300 kb)</a>
 <br/><br/></p>
 

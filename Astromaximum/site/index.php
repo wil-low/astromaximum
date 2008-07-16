@@ -97,6 +97,9 @@ if(preg_match("/^(demo)$/is", $main)){
 </map>
 </div>
 <div id="logoText"><?php echo $i18['AMAX_LOGO'] ?></div>
+<noscript>
+	<div id="js_warn" class="alert"><?php echo $i18['ENABLE_JS']?></div>
+</noscript>
 <div id="lang">
 <?php
 	$lng=array('DE', 'EN', 'RU');
@@ -156,7 +159,7 @@ else{
 <form id="flog" action="?$lang_&amp;p=login&amp;to=$main" method="post"> 
 <input id="ilog" class="fixedinput" name="login"/> {$i18['LOGIN']} <br /><br />
 <input id="ipwd" class="fixedinput" name="pass" type="password"/> {$i18['PWD']} <br /><br />
-<input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | 
+<input type="submit" class="loginbutton" style="font-size:14px" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | 
 <a class="loginbutton" href="?$lang_&amp;p=pwdrestore">{$i18['LOST_PWD']}</a>
 </form> 
 FRM;
@@ -170,37 +173,15 @@ if(!$user_ok || strcmp($main, 'dl')){
 }
 ?>
 <div id="leftColumn">
-<?php	
-echo $session_prompt 
-/*
-<script type="text/javascript">
-  function clock() {
-    now=new Date();
-		var london=now.toGMTString();
-		var pos=london.lastIndexOf(":");
-		var tm=london.substring((pos-5),pos);
-    Hello =  tm;
-    e=findObj('mtime');
-    if (!e) return false;
-    e.innerHTML = Hello;
-    Timer=setTimeout("clock()",15000);
-  }
-  clock();
-</script>
-*/  
-?>
+<?php	echo $session_prompt ?>
 
 <?php if($show_topics){ ?>
 <h5>темы календаря </h5>
-<p><?php echo anchor("0_1")?><img src="i/ico.gif" alt="" /> <br /><b>деловая активность, подписание контрактов</b></a></p>
-<p><?php echo anchor("0_2")?><img src="i/ico.gif" alt="" /> <br /><b>торговля, финансы</b></a></p>
-<p><?php echo anchor("0_3")?><img src="i/ico.gif" alt="" /> <br /><b>регистрация предприятия, получение лицензии, открытие магазина</b></a></p>
-<p><?php echo anchor("0_4")?><img src="i/ico.gif" alt="" /> <br /><b>устройство на работу, найм</b></a></p>
-<p><?php echo anchor("0_5")?><img src="i/ico.gif" alt="" /> <br /><b>недвижимость, строительство, сельское хозяйство</b></a></p>
-<p><?php echo anchor("0_6")?><img src="i/ico.gif" alt="" /> <br /><b>поездки, учеба</b></a></p>
-<p><?php echo anchor("0_7")?><img src="i/ico.gif" alt="" /> <br /><b>любовь, брак</b></a></p>
-<p><?php echo anchor("0_8")?><img src="i/ico.gif" alt="" /> <br /><b>медицина, косметология</b></a></p>
-<p><?php echo anchor("0_9")?><img src="i/ico.gif" alt="" /> <br /><b>ход болезни (декумбитура)</b></a></p>
+<?php
+for($i=1; $i<=9; $i++){
+	echo "<p>".anchor("0_$i")."<img src=\"i/ico.gif\" alt=\"\"/> <br/><b>".$i18["THEME_$i"]."</b></a></p>\n";
+}
+?>
 <?php } ?>
 </div><!-- end leftColumn div -->
 <div id="content">

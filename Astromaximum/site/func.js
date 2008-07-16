@@ -61,3 +61,7 @@ function do_random(input_id){
 	}
 	findObj(input_id).value=str;
 }
+
+function open_scr(lang, n){
+	window.open("/shot.php?lang="+lang+"&n="+n, "", "target=blank, width=260, height=420");
+}
