@@ -156,8 +156,8 @@ else{
 <form id="flog" action="?$lang_&amp;p=login&amp;to=$main" method="post"> 
 <input id="ilog" class="fixedinput" name="login"/> {$i18['LOGIN']} <br /><br />
 <input id="ipwd" class="fixedinput" name="pass" type="password"/> {$i18['PWD']} <br /><br />
-<input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | <input type="button" 
-class="loginbutton" onclick="window.location='?$lang_&amp;p=pwdrestore'" value="{$i18['LOST_PWD']}" />
+<input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | 
+<a class="loginbutton" href="?$lang_&amp;p=pwdrestore">{$i18['LOST_PWD']}</a>
 </form> 
 FRM;
 } 

@@ -16,11 +16,11 @@ function checklogin(){
   	if(!findObj('ilog').value || !findObj('ipwd').value){
   		return false;
   	}
+	findObj('flog').submit();
   	return true;
 }
 
 function is_empty(id){
-//	alert(id+" "+findObj(id).value);
 	return findObj(id).value.length==0;
 }
 
