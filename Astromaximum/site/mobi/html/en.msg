@@ -124,3 +124,10 @@ SCRTEXT_13=??
 SCRTEXT_14=??
 SCRTEXT_15=??
 CLOSE=close
+CITYLIST_CLICK=Click on a city to get its current time, sunrise and timezone information
+CITYLIST_SUNRISE_ERROR=Error occured
+CITYLIST_SUNRISE=Sunrise
+CITYLIST_NOW=Current time
+CITYLIST_GMT=Time offset
+CITYLIST_DST= +1 (DST)
+

@@ -114,6 +114,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(nextR));
         dis.skip(8);
         dis.readUTF();
+        isSouthern=false;
         tzOffset = dis.readUnsignedShort();
         dstExists = (tzOffset & (1 << 15)) == 0;
         tzOffset &= (1 << 15) - 1;

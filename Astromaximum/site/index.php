@@ -193,15 +193,10 @@ for($i=1; $i<=9; $i++){
 		if(file_exists($fn)){
 			$manual_requested=preg_match("/^[_\d]+$/is", $main);
 			if($manual_requested){
-#				if($user_ok){ # manuals are browsed for free
-					include($fn);
-					if(strcmp($main, '0_0')){
-						echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a></p>";
-					}
-#				}
-#				else{
-#					reg_warning("Просмотр документации");
-#				}
+				include($fn);
+				if(strcmp($main, '0_0')){
+					echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a></p>";
+				}
 			}
 			else{
 				include($fn);

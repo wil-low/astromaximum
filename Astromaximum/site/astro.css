@@ -28,12 +28,10 @@ img {
 input {
 	border: 1px solid #336699;
 }
-
 .fixedinput {
 	height: 15px;
 	width: 88px;
 }
-
 ul {
 	list-style-image: url('i/bul.gif');
 }
@@ -49,7 +47,6 @@ ul {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 }
-
 .ok_on {
 	border: none;
 	height: 26px;
@@ -86,14 +83,12 @@ ul {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 }
-
 .lb {
 	width: 100%;
 	font-size: 10px;
 	font-family: Verdana;
 	height: 190pt;
 }
-
 .colorlist table {
 	width: 90%;
 }
@@ -240,6 +235,15 @@ ul {
 }
 .gallery td{
 	padding: 0px 25px 5px 25px;
+}
+.city a {
+	text-decoration: none;
+	color: #056A96;
+	font-weight: normal;
+}
+.city a:hover {
+	text-decoration: underline;
+	font-weight: normal;
 }
 /*подвал*/
 #bottom {

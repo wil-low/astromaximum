@@ -35,6 +35,7 @@ function yesno($val){
 	$outp=array();
 	
 	$apps=array(
+		"sunrise"=>"mobi/sunrise",
 		"fastjar"=>"mobi/fastjar -V",
 		"bzip2"=>"bzip2 --help",
 		"gzip"=>"gzip -V",
@@ -46,7 +47,7 @@ function yesno($val){
 		exec($val, $outp, $ret);
 		$value.="$key ".yesno($ret==0).", ";
 	}
-	$env['archivers']=$value;
+	$env['tools']=$value;
 	
 	exec("$perl -c $p"."gen_amax.cgi", $outp, $ret);
 	$env['gen_amax.cgi syntax']=yesno($ret==0);

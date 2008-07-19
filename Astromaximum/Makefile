@@ -1,7 +1,9 @@
 DEST=site/mobi/dl
 SOURCE=$(DEST)/source
 
-.PHONY: gen_amax config template interp mutter relgui test
+.PHONY: all gen_amax config template interp mutter relgui test
+
+all:	gen_amax config template interp mutter relgui
 
 test:	
 	#make mutter; \
@@ -9,10 +11,8 @@ test:
 	perl geoCoord.pl 2008 test; \
 	mutter2/mutter2 2008 dump test 0 -2
 
-all:	gen_amax config template interp mutter relgui
-
 gen_amax:
-	mkdir $(DEST) $(SOURCE); \
+	mkdir -p $(DEST) $(SOURCE); \
 	cat tools.pm genconst.pm gen_amax.pl > $(DEST)/gen_amax.cgi
 
 template:
@@ -27,7 +27,7 @@ interp:
 	cp htaccess $(SOURCE)/interpret/.htaccess
 
 config:
-	mkdir Astromaximum/deploy;perl size_join.pl;perl ph_join.pl; \
+	mkdir -p Astromaximum/deploy;perl size_join.pl;perl ph_join.pl; \
 	cd swe && make && cd ..; \
 	perl gen_amax.pl rebuild
 

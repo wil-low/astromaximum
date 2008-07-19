@@ -36,7 +36,7 @@ Header fields:
 
 *** locations.dat ***
 
-Purpose - contains **Event record** bundle (location-dependent)
+Purpose - contains **Loc record** bundle (location-dependent)
 Created by:
 	locations_create.pl (gathering into single file) - invoked by build.xml
 Used in:
