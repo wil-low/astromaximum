@@ -283,27 +283,43 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
 		}
 		$url=$data_php.'/data.php?r='.$id;
 		$url2=str_replace("?r", "?d", $url);
+		$jarsize=fsize_human("mobi/dl/files/$id.r");
+		$jadsize=fsize_human("mobi/dl/files/$id.d");
 		if($is_html){
 			if($EXEC==1){
 				$str.="<h4>{$i18['PC_DL']}:</h4>";
-				$str.="<a href=\"$url\">JAR</a>";
+				$str.="<a href=\"$url\">JAR ($jarsize)</a><br/>";
 			}
 			else{
 				$str.="<h4>{$i18['PHONE_DL']}:</h4>";
 			}
-			$str.=" <a href=\"$url2\">JAD</a><br>";
+			$str.="<a href=\"$url2\">JAD ($jadsize)</a><br>";
 	
 	#				$url=str_replace("?d", "?t", $url);
 	#				echo "<h4>{$i18['PHONE_DL']}:</h4>";
 	#				echo "<a href='$url'>JAD</a><br>";
-			
-			$str.="<br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
+			$str.="<br/>{$i18['BOTH_FILES']}";
+			$str.="<br/><br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
 		}
 		else{ # text-only version
 			$str="JAR: $url\n\nJAD: $url2";
 		}
 	}
 	return $str;
+}
+
+function fsize_human($fname){
+	$size=filesize($fname);
+	if(!$size)
+		return 0;
+	if($size < 1024)
+		return "$size b";
+	$size/=1024.;
+	if($size < 1024)
+		return sprintf("%0.1f Kb", $size);
+	$size/=1024.;
+	if($size < 1024)
+		return sprintf("%0.1f Mb", $size);
 }
 
 function record_in_range($table, $tm){

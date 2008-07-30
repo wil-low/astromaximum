@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <time.h>
 // datafile.h
 typedef enum{
     EF_DATE=0x1, // contains 2nd date - 4b
@@ -102,6 +102,8 @@ int main(int argc, char** argv) { // data filename
     FILE *fn=fopen(argv[1], "rb");
     if(!fn)
         return -1;
+    int df_year=0;
+    fread(&df_year, 2, 1, fn);
     fseek(fn, 8, SEEK_SET);
     short len=readShort(fn);
     fseek(fn, len, SEEK_CUR);
@@ -154,8 +156,10 @@ int main(int argc, char** argv) { // data filename
     
     time_t dayStart, dayEnd, now; struct tm tm_;
     time(&dayStart);
-    now=dayStart;
     gmtime_r(&dayStart, &tm_);
+    tm_.tm_year=df_year-1900;
+    dayStart=mktime(&tm_);
+    now=dayStart;
     dayStart-=(tm_.tm_hour*3600 + tm_.tm_min*60 + tm_.tm_sec);
     dayEnd=dayStart+PERIOD*60;
     int planet=0; // SE_SUN

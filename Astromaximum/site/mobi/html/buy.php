@@ -1,6 +1,5 @@
 <?php 
 if(!isset($EXEC)) die("Access restricted");
-include_once("mobi/amtools.php");
 $current_year=get_year();
 if(isset($_POST["reg_submit"])){ 
 	echo $i18['INSTR_SENT'];
@@ -8,13 +7,12 @@ if(isset($_POST["reg_submit"])){
 }
 $chac=check_access(); 
 if($chac!=-1 and $chac!=1){
-	$y_now=date("Y");
+	$y_now=$current_year;
 	$out='';
-	for($i=1; $i<3; $i++){
-		$yy=$y_now-$i;
-		$out.="<option value=\"$yy\"";
-		if($i==1) $out.=" selected=\"selected\"";
-		$out.=">$yy</option>\n";
+	for($i=$current_year; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
+		$out.="<option value=\"$i\"";
+		if($i==$current_year) $out.=" selected=\"selected\"";
+		$out.=">$i</option>\n";
 	}
 	$year=$current_year;
 	$tries=get_try_count(0);
@@ -33,15 +31,15 @@ if($chac!=-1 and $chac!=1){
 	if(isset($_POST["agree"])){
 		if($is_allow_dl){
 			$sc=get_default_cities($GLOBALS['amax']['def_cities']); 
+			echo tries_remained($tries[$dl_key]-1, $DLIM[$dl_key]);
 			$str=midlet_create("tb", $year, $lang, $sc, "mobi/dl", true);
 			if(strlen($str)){
 				dec_try_count(0, $dl_key);
 				echo $str;
-				echo tries_remained($tries[$dl_key]-1, $DLIM[$dl_key]);
 			}
 		}
 		else{
-			echo $i18['NO_CALENDAR_DL'];
+			echo sprintf($i18['NO_CALENDAR_DL'], '<a href="#">');
 		}
 		return;
 	}
@@ -56,11 +54,6 @@ if($chac!=-1 and $chac!=1){
 	echo "<h4>".sprintf($i18['DLOAD4YEAR'],"<select name=\"yagree\">$out</select>")."</h4>";
 	echo dload_tries_prompt($tries, 2, '', $i18['GENERATE?']);
 	echo "</form>";
-/*	}
-	else{
-		echo 'Вам не разрешено загружать календарь. Обратитесь в <a href="#">службу поддержки</a>.';
-	}
-*/
 }
 else
 {
@@ -92,6 +85,6 @@ function dload_tries_prompt($arr, $key, $str, $prompt){
 		$num='<span class="alert">'.$num."</span>";
 		$disabled=true;
 	}
-	return $rem."<br/><br/>".$str.dload_prompt($prompt, $disabled);
+	return $rem."<br/>".$str.dload_prompt($prompt, $disabled);
 }
 ?>

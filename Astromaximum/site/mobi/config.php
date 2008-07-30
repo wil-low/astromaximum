@@ -24,6 +24,7 @@ $sett=array(
 	'city_count'=>711,
 	'price'=>'$60',
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder
+	'min_demo_year'=>2005,
 );
 
 sort($sett['demo_cities']);

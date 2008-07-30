@@ -1,8 +1,25 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
 if(isset($_GET['n']) && $chac>=0){
-	$num=$_GET['n'];
-	$year=date("Y"); $month=date("m"); $day=date("d");	
+	$num=intval($_GET['n']);
+	$current_year=get_year();
+	$year=0;
+	if(isset($_GET['y']))
+		$year=intval($_GET['y']);
+	if($year>$current_year || $year<$GLOBALS['amax']['min_demo_year']){
+		$year=$current_year;
+	}
+	$month=date("m"); $day=date("d");
+	echo '<p> | ';
+	for($yy=$current_year; $yy>=$GLOBALS['amax']['min_demo_year']; $yy--){
+		if($year==$yy){
+			echo "<b>$yy</b> | ";
+		}
+		else{
+			echo "<a href=\"?$lang_&amp;p=citylist&amp;n=$num&amp;y=$yy\">$yy</a> | ";
+		}
+	}
+	echo '</p>';
 	$stat=sprintf("SELECT data FROM locations WHERE year=%d AND city_id=%d",
 		quote_smart($year), quote_smart($num));
 	$sth=mysql_query($stat);
@@ -17,10 +34,11 @@ if(isset($_GET['n']) && $chac>=0){
 		fclose($handle);
 		$cmd="mobi/sunrise $tmpfname";
 		$ret=0;
+//		echo $cmd;
 		exec($cmd, $outp, $ret);
 		unlink($tmpfname);
 		if($ret){
-			echo "<h4>{$i18['CITYLIST_SUNRISE_ERROR']}</h4>";
+			echo "<h4>{$i18['CITYLIST_SUNRISE_ERROR']} $ret</h4>";
 		}
 		else{
 			$stat=sprintf("SELECT cities.name,countries.name FROM cities,countries ".
