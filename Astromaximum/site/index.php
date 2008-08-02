@@ -119,7 +119,7 @@ if(preg_match("/^(demo)$/is", $main)){
 </div>
 <div id="menu">
 <a href="?<?php echo "$lang_\">".$i18['MNU_HOME']?></a> | 
-<?php echo anchor('manual').$i18['MNU_MAN']?></a> | 
+<?php echo anchor('man0').$i18['MNU_MAN']?></a> | 
 <?php echo anchor('scr').$i18['MNU_SCRSHOTS'] ?></a> | 
 <?php echo anchor('buy').$i18['MNU_BUY'] ?></a> | 
 <?php echo anchor('citylist').$i18['MNU_CITYLIST'] ?></a> |
@@ -175,14 +175,25 @@ if(!$user_ok || strcmp($main, 'dl')){
 <div id="leftColumn">
 <?php	echo $session_prompt ?>
 
-<?php if($show_topics){ ?>
-<h5>темы календаря </h5>
 <?php
-for($i=1; $i<=9; $i++){
-	echo "<p>".anchor("0_$i")."<img src=\"i/ico.gif\" alt=\"\"/> <br/><b>".$i18["THEME_$i"]."</b></a></p>\n";
+if(preg_match("/^man\d$/is", $main)){
+    echo "<h5>".$i18['MAN_TOPICS']."</h5>";
+    for($i=0; $i<=4; $i++){
+        echo "<p>".anchor("man$i")."<img src=\"i/ico.gif\" alt=\"\"/> <br/><b>".$i18["MAN_$i"]."</b></a></p>\n";
+    }
+    $pdf_path="mobi/html/amax-manual-$lang.pdf";
+    echo "<p><a href=\"$pdf_path\"><img src=\"i/ico.gif\" alt=\"\"/> <br/><b>".$i18['MAN_PDF']." (PDF ".
+        fsize_human($pdf_path).")</b></a></p>\n";
+}
+else{
+    if($show_topics){
+        echo "<h5>".$i18['THEMES_CAL']."</h5>";
+        for($i=1; $i<=9; $i++){
+            echo "<p>".anchor("0_$i")."<img src=\"i/ico.gif\" alt=\"\"/> <br/><b>".$i18["THEME_$i"]."</b></a></p>\n";
+        }
+    }
 }
 ?>
-<?php } ?>
 </div><!-- end leftColumn div -->
 <div id="content">
 <?php

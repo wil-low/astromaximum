@@ -4,14 +4,15 @@ if(isset($_GET['n']) && $chac>=0){
 	$num=intval($_GET['n']);
 	$current_year=get_year();
 	$year=0;
-	if(isset($_GET['y']))
-		$year=intval($_GET['y']);
-	if($year>$current_year || $year<$GLOBALS['amax']['min_demo_year']){
-		$year=$current_year;
+	if(isset($_GET['y'])) $year=intval($_GET['y']);
+    $y_start=($chac==1)? $current_year-1 : $current_year;
+    $y_end=($chac==1)? $current_year-1 : $GLOBALS['amax']['min_demo_year'];
+	if($year>$y_start || $year<$y_end){
+		$year=$y_start;
 	}
 	$month=date("m"); $day=date("d");
 	echo '<p> | ';
-	for($yy=$current_year; $yy>=$GLOBALS['amax']['min_demo_year']; $yy--){
+	for($yy=$y_start; $yy>=$y_end; $yy--){
 		if($year==$yy){
 			echo "<b>$yy</b> | ";
 		}
@@ -82,7 +83,7 @@ foreach($row as $i=>$ctry){
 		echo "\n<p><a id=\"n{$ctry[0]}\"></a><b>{$ctry[1]}</b> - $num &nbsp; ( <a href=\"#top\">^{$i18['UP']}</a> )<br/>\n<span class=\"city\">\n";
 		$comma="";
 		while($row2=mysql_fetch_row($sth)){
-			if($chac>=0){
+			if($user_ok){
 				$row2[0]="<a href=\"?$lang_&amp;p=citylist&amp;n={$row2[1]}\">{$row2[0]}</a>";
 			}
 			echo "$comma ".$row2[0];
