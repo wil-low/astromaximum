@@ -9,7 +9,7 @@ $chac=check_access();
 if($chac!=-1 and $chac!=1){
 	$y_now=$current_year;
 	$out='';
-	for($i=$current_year; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
+	for($i=$current_year-1; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
 		$out.="<option value=\"$i\"";
 		if($i==$current_year) $out.=" selected=\"selected\"";
 		$out.=">$i</option>\n";

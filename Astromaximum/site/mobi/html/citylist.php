@@ -24,7 +24,7 @@ if(isset($_GET['n']) && $chac>=0){
 		quote_smart($year), quote_smart($num));
 	$sth=mysql_query($stat);
 	if(!$sth || mysql_num_rows($sth)!=1){ 
-		echo "<h4>{$i18['CITYLIST_SUNRISE_ERROR']}</h4>";
+		echo "<h4>{$i18['CITYLIST_NOCITY']}</h4>";
 	}
 	else{
 		$row=mysql_fetch_row($sth);		
