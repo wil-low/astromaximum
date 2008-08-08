@@ -1,7 +1,7 @@
 DEST=site/mobi/dl
 SOURCE=$(DEST)/source
 
-.PHONY: all gen_amax config template interp mutter relgui test
+.PHONY: all gen_amax config template interp mutter relgui test sunrise
 
 all:	gen_amax config template interp mutter relgui
 
@@ -36,6 +36,9 @@ mutter:
 
 relgui:
 	cd relgui && make CONF=Release $1 build && cd ..
+
+sunrise:
+	cd sunrise;  make CONF=Release build; cd ..
 
 help:
 	@echo "Usage: make [gen_amax|template|interp|config|mutter|relgui]"

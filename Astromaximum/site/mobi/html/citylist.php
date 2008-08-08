@@ -59,6 +59,16 @@ if(isset($_GET['n']) && $chac>=0){
 }	
 if($chac>=0){
 	echo "{$i18['CITYLIST_CLICK']}<br/>";
+    if($chac==1){
+        $citids=get_default_cities($GLOBALS['amax']['demo_cities']);
+        $citids=explode(',', $citids);
+		$comma="<p>{$i18['SEL_DEMOCITY']}: ";
+        foreach($GLOBALS['amax']['demo_cities'] as $i=>$city){
+            echo $comma." <a href=\"?$lang_&amp;p=citylist&amp;n={$citids[$i]}\">{$city}</a>";
+            $comma=',';
+        }
+        echo '</p>';
+    }
 }
 $stat="SELECT id, name FROM countries ORDER BY name";
 $sth=mysql_query($stat);

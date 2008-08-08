@@ -96,7 +96,7 @@ DEMO_DEMO=demo
 DEMO_NOTREG=If you are not a registered user, to get demo version please fill the form to the left:
 DEMO_ENTER=and click "%s"
 DEMO_DLCITY=You can get any of demo cities after installing the calendar
-DEMO_EMAILING=???
+DEMO_EMAILING=Enter email to which the download link will be sent,<br/>and add <u>%s</u> into your address book.</p><p>Your email:
 DEMO_LINK_SENT=Letter with the download link has been sent to %s.
 DEMO_EMAIL_WRONG=Wrong e-mail
 PAGE_DLCIT=Downloading cities
@@ -141,4 +141,3 @@ CITYLIST_SUNRISE=Sunrise
 CITYLIST_NOW=Current time
 CITYLIST_GMT=Time offset
 CITYLIST_DST= +1 (DST)
-

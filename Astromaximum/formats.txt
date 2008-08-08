@@ -66,7 +66,7 @@ Header fields:
 	0x0008	short LB	city name length
 	0x000a	UTF-8		city name
 ## TODO: these fields may result in illegal calculations!!!
-                short LB	timezone offset. DST is applicable if 15th bit (0x8000) is set.
+                short LB	timezone offset. DST is applicable if 15th bit (0x8000) is NOT set.
                             Real TZofs=(tz-16*60)*60000 msec.
                 int LB	DST start date, if applicable (local time), mins
                 int LB	DST end date, if applicable (local time), mins

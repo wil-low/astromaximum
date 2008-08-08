@@ -52,6 +52,7 @@ if(check_access()!=-1){
 
 <form action="$uri" method="post">
 <p>{$emailing} <input name="email" type="text"/></p>
+<p><input name="btnDemo" type="button" onclick="citySelector(this)"/></p>
 <p>{$i18['CAPTCHA_PROMPT']}</p>
 <p><img src="mobi/kcaptcha?$sess" alt="Captcha">
 <input name="p_captcha" type="text"/>

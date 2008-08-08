@@ -233,6 +233,10 @@ ul {
 	width: auto;
 	height: auto;
 }
+.gallery img{
+	border: none;
+    vertical-align: top;
+}
 .gallery td{
 	padding: 0px 25px 5px 25px;
 }

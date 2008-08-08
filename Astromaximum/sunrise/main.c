@@ -89,7 +89,7 @@ int printLocalTime(long date){
     struct tm risetime;
     gmtime_r(&date, &risetime);
     printf("%04d-%02d-%02d %02d:%02d\n", 
-        risetime.tm_year+1900, risetime.tm_mon, risetime.tm_mday,
+        risetime.tm_year+1900, risetime.tm_mon+1, risetime.tm_mday,
         risetime.tm_hour, risetime.tm_min);
     return dst;
 }
@@ -167,6 +167,7 @@ int main(int argc, char** argv) { // data filename
     char myplanet0 = planet, myplanet1 = -1;
     int mydgr = 127;
     long mydate0, mydate1;
+/*
     int skips = 0;
     if (fdate) {
         skips += 4;
@@ -183,6 +184,7 @@ int main(int argc, char** argv) { // data filename
             ++skips;
         }
     }
+ */
     int cumul, i, res_count=0;
     long date = 0;
     for (i = 0; i < count; i++) {
@@ -231,7 +233,7 @@ int main(int argc, char** argv) { // data filename
         if (fnext_date2) {
             last.date1 = mydate0;
         }
-
+//        printf("%d (%d, %d)\n", i, last.date0, last.date1);
         if (isInPeriod(&last, dayStart, dayEnd)) {
             res_count++;
                 result=last;

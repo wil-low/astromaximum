@@ -378,6 +378,7 @@ final class DataFile {
             byte myplanet0 = (byte) planet, myplanet1 = -1;
             int mydgr = 127;
             long mydate0, mydate1;
+/*            
             int skips = 0;
             if (fdate != 0) {
                 skips += 4;
@@ -394,6 +395,7 @@ final class DataFile {
                     ++skips;
                 }
             }
+ */
             int cumul;
             long date = 0;
             long sJD = startJD, fJD = finalJD;
