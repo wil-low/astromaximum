@@ -27,7 +27,6 @@ import java.util.Vector;
  */
 final class DataFile {
 //#ifndef build.desktop
-
     private static final int EF_DATE = 0x1; // contains 2nd date - 4b
     private static final int EF_PLANET1 = 0x2; // contains 1nd planet - 1b
     private static final int EF_PLANET2 = 0x4; // contains 2nd planet - 1b
@@ -46,10 +45,9 @@ final class DataFile {
     private int dayCount;
     //  private final Vector cache=new Vector();
     private byte[] commonData;
+    byte[] customData;
     byte[] geoposData;
-    static Vector ids = new Vector();
-
-    //  private int curRec=-1;
+    static Vector ids = new Vector();    //  private int curRec=-1;
     private Vector eclipses = null;
 
     /**
@@ -60,7 +58,7 @@ final class DataFile {
         final DataInputStream is;
         try {
 //#if demo
-//#       is= new DataInputStream(getClass().getResourceAsStream("/c.dat"));
+//#             is = new DataInputStream(getClass().getResourceAsStream("/c.dat"));
 //#else
             is = new DataInputStream(getClass().getResourceAsStream("/common.dat"));
 //#endif
@@ -68,22 +66,25 @@ final class DataFile {
             cal.set(Calendar.YEAR, Astromaximum.startYear);
             cal.set(Calendar.MONTH, is.readUnsignedByte() - 1);
             cal.set(Calendar.DAY_OF_MONTH, is.readUnsignedByte());
-            cal.set(Calendar.HOUR_OF_DAY, is.readUnsignedByte());
-            cal.set(Calendar.MINUTE, is.readUnsignedByte());
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
+            customData = null;
+            int count = is.readUnsignedShort(); // customData length
             startJD = cal.getTime().getTime();
-//      System.out.println(Event.long2String(startJD,false,false));
             dayCount = is.readShort();
             finalJD = startJD + dayCount * Astromaximum.MSECINDAY;
-//#debug info 
+            if (count > 0) {
+               customData = new byte[count];
+               is.read(customData);
+            }
+//#debug info
             System.out.println(dayCount);
             commonData = new byte[is.available()];
-//#debug debug 
-            System.out.println(is.available());
+//            System.out.println(customData);
             is.read(commonData);
             is.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
         }
 
         eclipses = getEvents(Event.EV_ECLIPSE, Event.SE_SUN, startJD, finalJD);
@@ -124,8 +125,6 @@ final class DataFile {
 //  private short readShort(DataInputStream is) throws IOException {
 //    return (short)(is.readByte() & 0xff | (is.readByte() & 0xff) << 8);
 //  }
-
-
     /**
      * readSubData
      *
@@ -163,7 +162,7 @@ final class DataFile {
 //#         if(planet == is.readByte()){
 //# //          Astromaximum.instance.log("Found!",false);
 //#           break;
-//#         } 
+//#         }
 //#         else {
 //#           is.skip(skipOff - 6);
 //#         }
@@ -177,7 +176,7 @@ final class DataFile {
 //#       int fdegree=(flag & EF_DEGREE);
 //#       int fshort_degree=(flag & EF_SHORT_DEGREE);
 //#       int fnext_date2=(flag & EF_NEXT_DATE2);
-//#       
+//#
 //#       int skips=0;
 //# //      if(evtype==Event.EV_TITHI){
 //# //        dayStart-=Astromaximum.MSECINDAY;
@@ -226,16 +225,16 @@ final class DataFile {
 //#         else{
 //#             date=is.readInt();
 //#         }
-//#         
+//#
 //#if "imeiCheck" @ protection
 //#         long mydate=(date*1000)+hj;
-//#else        
+//#else
 //#         long mydate=date*1000;
 //#endif
 //#         if(fdate!=0) {
 //#if "imeiCheck" @ protection
 //#           date1= ((long)is.readInt() *1000)+hj;
-//#else   
+//#else
 //# //          date=;
 //#           date1=  ((long)is.readInt() * 1000);
 //#endif
@@ -251,11 +250,11 @@ final class DataFile {
 //#     System.out.println(f1);
 //#  */
 //#define optread22
-//#     
+//#
 //#ifdef optread
 //#     if(Math.abs(f0 + f1) != 2) {
 //#endif
-//#         
+//#
 //# //        if(mydate>=dayStart){
 //#         final Event ev=new Event(mydate,planet);
 //#         ev.date1=date1;
@@ -268,7 +267,7 @@ final class DataFile {
 //#         if(fdegree!=0) {
 //#           if (fshort_degree!=0) {
 //#             ev.setDegree(is.readUnsignedByte());
-//#           } 
+//#           }
 //#           else {
 //#             ev.setDegree(is.readShort());
 //#           }
@@ -302,10 +301,10 @@ final class DataFile {
 //#endif
 //#     } catch (IOException ex) {
 //#     }
-//#     
+//#
 //#     return v;
 //#   }
-//#else  
+//#else
 
     //#if 0==1
 //#   Datafile format: (all big-endian)
@@ -315,7 +314,7 @@ final class DataFile {
 //#     2 bytes - hour
 //#     2 bytes - mins
 //#     2 bytes - days in this year
-//#     
+//#
 //#     buffer:
 //#       1 bytes - IMEI digit
 //# 			1 bytes - event type
@@ -324,9 +323,8 @@ final class DataFile {
 //# 			  2 bytes - event flags
 //# 			  2 bytes - item count
 //# 			    next data depends on flags
-//#     
+//#
     //#endif
-
     Vector readSubData(byte[] buf, int evtype, int planet, boolean isCommon, long dayStart, long dayEnd) {
         final Vector v = new Vector();
         int flag;
@@ -337,7 +335,7 @@ final class DataFile {
 //      System.out.println(new Date(dayStart));
 //      System.out.println(new Date(dayEnd));
 //    }
-        
+
         int PERIOD = (evtype == Event.EV_ASCAPHETICS) ? 2 * 60 : 24 * 60;
         try {
             final DataInputStream is = new DataInputStream(new ByteArrayInputStream(buf));
@@ -425,14 +423,14 @@ final class DataFile {
 
 //#if "imeiCheck" @ protection
                 mydate0 = (date * 1000) + hj;
-//#else        
-//#         mydate0=date*1000;
+//#else
+//#                 mydate0 = date * 1000;
 //#endif
                 if (fdate != 0) {
 //#if "imeiCheck" @ protection
                     mydate1 = ((long) is.readInt() * 1000) + hj;
-//#else   
-//#           mydate1=  ((long)is.readInt() * 1000);
+//#else
+//#                     mydate1 = ((long) is.readInt() * 1000);
 //#endif
                 } else {
                     mydate1 = mydate0;
@@ -484,13 +482,11 @@ final class DataFile {
                 v.addElement(last);
 //        v.addElement(new Event(last));
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
         }
         return v;
     }
 //#endif
-
     /**
      * getEventsOnDay
      *
@@ -503,7 +499,7 @@ final class DataFile {
      * @param value
      */
     void getEventsOnPeriod(Vector v, int evtype, int planet, boolean special,
-                           long dayStart, long dayEnd, int value) {
+            long dayStart, long dayEnd, int value) {
         boolean flag = false;
         final Vector tmp = getEvents(evtype, planet, dayStart, dayEnd);
         for (Enumeration e = tmp.elements(); e.hasMoreElements();) {
@@ -519,7 +515,6 @@ final class DataFile {
             }
         }
     }
-
 
     void getAspectsOnPeriod(Vector v, int planet, long dayStart, long dayEnd) {
         boolean flag = false;
@@ -584,23 +579,22 @@ final class DataFile {
 
     /*
     private void cacheData(int event, int planet) {
-      final Vector v = readSubData(event, planet);
-      if (v.size() > 0){
-        cache.addElement(new EventCache(v, event, planet));
-  //      System.out.println("Cashed "+Integer.toString(v.size())+" events for "+
-  //          Integer.toString(event)+"/"+Integer.toString(planet));
-      }
-  //    else
-  //      System.out.println("Cache not found for "+Integer.toString(event)+"/"+
-  //          Integer.toString(planet));
+    final Vector v = readSubData(event, planet);
+    if (v.size() > 0){
+    cache.addElement(new EventCache(v, event, planet));
+    //      System.out.println("Cashed "+Integer.toString(v.size())+" events for "+
+    //          Integer.toString(event)+"/"+Integer.toString(planet));
     }
-    */
+    //    else
+    //      System.out.println("Cache not found for "+Integer.toString(event)+"/"+
+    //          Integer.toString(planet));
+    }
+     */
 // --Commented out by Inspection START (1/12/07 1:44 PM):
 //  int getDayCount() {
 //    return dayCount;
 //  }
 // --Commented out by Inspection STOP (1/12/07 1:44 PM)
-
     /**
      * @param date
      * @return
@@ -608,11 +602,11 @@ final class DataFile {
      */
     boolean isDateAvailable(long date) {
         long fin = startJD + dayCount * Astromaximum.MSECINDAY;
-//#mdebug debug    
+//#mdebug debug
         System.out.println(Event.long2String(date, 0, false) + " " + Long.toString(date));
         System.out.println(Event.long2String(startJD, 0, false) + " " + Long.toString(startJD));
         System.out.println(Event.long2String(fin, 0, false) + " " + Long.toString(fin));
-//#enddebug    
+//#enddebug
         return Event.dateBetween(date, startJD - Event.localOffset(startJD),
                 fin - Event.localOffset(fin)) == 0;
 //    return true;
@@ -621,7 +615,6 @@ final class DataFile {
     boolean isDateAvailable(Date date) {
         return isDateAvailable(date.getTime());
     }
-
 
     /**
      * @param today
@@ -639,13 +632,11 @@ final class DataFile {
             }
         }
         return null;
-    }
-
-//  public void cacheData(int event, int planet) {
+    }//  public void cacheData(int event, int planet) {
 //    Vector v =null;// readSubData(geoposData, event, planet);
 //    if (v.size() > 0){
 //      cache.addElement(new EventCache(v, event, planet));
-////#debug info 
+////#debug info
 //      System.out.println("Cached "+Integer.toString(v.size()));
 //    }
 //  }
@@ -662,3 +653,5 @@ final class DataFile {
 //  }
 //#endif
 }
+
+// # vi:et:ts=4:sw=4

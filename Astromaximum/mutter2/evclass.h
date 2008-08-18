@@ -6,6 +6,7 @@
 #include "events.h"
 
 //---------------------------------------------------------------------------
+
 class Event {
 public:
     long date[2];
@@ -30,3 +31,5 @@ public:
 private:
 };
 #endif
+
+// # vi:et:ts=4:sw=4

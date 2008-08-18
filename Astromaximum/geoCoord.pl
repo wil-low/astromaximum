@@ -28,6 +28,9 @@ my $tod=jul(2008,5,20,15);
 print dow($tod);
 =cut
 
+our $city_info;
+#$city_info="инфо города";
+
 my $year=shift(@ARGV);
 if($ARGV[0] eq 'tzonly'){
 	$tzonly=1;
@@ -379,7 +382,7 @@ sub process_ini{
 				}
 				$city=~s/[\n\r]//isg;
 				writeUTF($city);
-				my $header=pack('SCCCCSa*a*',$year, $month, $day, $hour, $min, $day_count, $outbuf, $dstbuf);
+				my $header=pack('SCCnSa*a*a*',$year, $month, $day, length($city_info), $day_count, $outbuf, $dstbuf, $city_info);
 				if(!$tzonly){
 					my $alt=0;
 					if($params[5]=~/^\d+$/is){

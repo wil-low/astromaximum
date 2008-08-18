@@ -5,13 +5,12 @@
 //# import java.awt.Frame;
 //# import java.awt.event.WindowAdapter;
 //# import java.awt.event.WindowEvent;
-//# 
+//#
 //# class CustomTime extends Frame{
 //#else
 //import java.io.ByteArrayOutputStream;
 //import java.io.DataInputStream;
 //import java.io.DataOutputStream;
-
 import java.util.Calendar;
 import java.util.Date;
 import javax.microedition.lcdui.*;
@@ -28,7 +27,7 @@ import javax.microedition.lcdui.*;
  * CustomTime form allows to select any hour and minute to be highlighted
  * every day with "blue mark".
  * <p>Also used for {@link Summary#PAGE_DECUMB decumbiture page}.</p>
- * 
+ *
  * @author Administrator
  */
 final class CustomTime extends Form implements CommandListener, ItemStateListener {
@@ -36,7 +35,7 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
     /**
      * Secret variable for timeBomb protection (end of time range)
      */
-    static int hj=0x89abcdef;
+    static int hj = 0x89abcdef;
 //#endif
     private int invoker = Event.EV_ASP_EXACT_MOON;
     final DateField timeField;
@@ -84,17 +83,17 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
             cg.append(Event.long2String(history[i], 0, false), null);
         }
         cmds = new Command[]{
-                new Command("OK", Command.OK, 1),
-                new Command(Astromaximum.getstr(117), Command.ITEM, 2),
-                new Command(Astromaximum.getstr(100), Command.ITEM, 3),
-                new Command(Astromaximum.getstr(97), Command.CANCEL, 4),
-        };
+                    new Command("OK", Command.OK, 1),
+                    new Command(Astromaximum.getstr(117), Command.ITEM, 2),
+                    new Command(Astromaximum.getstr(100), Command.ITEM, 3),
+                    new Command(Astromaximum.getstr(97), Command.CANCEL, 4),
+                };
         setCommandListener(this);
         setItemStateListener(this);
 //#if logger
       Astromaximum.instance.logger("inside CustomTime");
       Astromaximum.instance.logger(timeField.getDate().toString());
-//#endif      
+//#endif
     }
 
     /**
@@ -165,7 +164,7 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
                 str += "*";
             }
             lockFlags ^= (1 << sel);
-//#debug debug      
+//#debug debug
             System.out.println("Lock=" + Integer.toBinaryString(lockFlags));
             cg.set(sel, str, null);
             return;
@@ -224,18 +223,18 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
     boolean setTime(boolean addHistory) {
 //#if logger
       Astromaximum.instance.logger(timeField.getDate().toString());
-//#endif      
+//#endif
         long tmp = timeField.getDate().getTime();
 //#if logger
       Astromaximum.instance.logger(Event.long2String(tmp,0,false));
-//#endif      
+//#endif
         if (addHistory) {
             tmp += dateField.getDate().getTime();
         }
         Astromaximum.calendar.setTime(new Date(tmp));
 //#if logger
       Astromaximum.instance.logger("before setCustomTime");
-//#endif      
+//#endif
         Astromaximum.summary.setCustomTime(
                 Astromaximum.calendar.get(Calendar.HOUR_OF_DAY), Astromaximum.calendar.get(Calendar.MINUTE));
         if (addHistory) {
@@ -284,28 +283,28 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
     }
 
     /*
-      String askModem(){
-         String port1;
-         String ports = System.getProperty("microedition.commports");
-         int comma = ports.indexOf(',');
-         if (comma > 0) {
-             // Parse the first port from the available ports list.
-             port1 = ports.substring(0, comma);
-         } else {
-             // Only one serial port available.
-             port1 =ports;
-         }
-        try {
-          CommConnection cc = (CommConnection)
-                     Connector.open("comm:COM3;baudrate=19200");
-          int baudrate = cc.getBaudRate();
-          InputStream is  = cc.openInputStream();
-          OutputStream os = cc.openOutputStream();
-          byte[] cmd=new String("AT+GMM").getBytes();
-          os.write(cmd);
-          os.write(0xa);
-          os.write(0xd);
-          int ch = 0;
+    String askModem(){
+    String port1;
+    String ports = System.getProperty("microedition.commports");
+    int comma = ports.indexOf(',');
+    if (comma > 0) {
+    // Parse the first port from the available ports list.
+    port1 = ports.substring(0, comma);
+    } else {
+    // Only one serial port available.
+    port1 =ports;
+    }
+    try {
+    CommConnection cc = (CommConnection)
+    Connector.open("comm:COM3;baudrate=19200");
+    int baudrate = cc.getBaudRate();
+    InputStream is  = cc.openInputStream();
+    OutputStream os = cc.openOutputStream();
+    byte[] cmd=new String("AT+GMM").getBytes();
+    os.write(cmd);
+    os.write(0xa);
+    os.write(0xd);
+    int ch = 0;
     //#debug debug
           System.out.print("Available=");
     //#debug debug
@@ -314,16 +313,16 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
     //        ch = is.read();
     //        System.out.println(ch);
     //      }
-          is.close();
-          os.close();
-          cc.close();
-        }
-        catch (IOException ex) {
-          ex.printStackTrace();
-        }
-         return port1;
-      }
-    */
+    is.close();
+    os.close();
+    cc.close();
+    }
+    catch (IOException ex) {
+    ex.printStackTrace();
+    }
+    return port1;
+    }
+     */
     /**
      * Reconstruct history list from {@link #history} after modifications
      * @return boolean
@@ -355,5 +354,7 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
         cg.setSelectedIndex(0, true);
         return true;
     }
-//#endif  
+//#endif
 }
+
+// # vi:et:ts=4:sw=4

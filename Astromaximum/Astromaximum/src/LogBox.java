@@ -1,3 +1,4 @@
+
 /**
  * <p>Title: Astromaximum</p>
  *
@@ -14,13 +15,13 @@
 //#ifdef build.desktop
 //# package com.sw_axis;
 //# import java.awt.Frame;
-//# 
+//#
 //# class LogBox extends Frame{
 //#else
-
 import javax.microedition.lcdui.*;
 
 class LogBox extends List implements CommandListener {
+
     static String EMPTY;//Empty
     private Displayable invoker;
     static private final byte[] buf = new byte[8];
@@ -33,7 +34,7 @@ class LogBox extends List implements CommandListener {
     void init() {
         setTitle(Astromaximum.getstr(95));
         EMPTY = Astromaximum.getstr(119);
-        if(size()==0){
+        if (size() == 0) {
             append(EMPTY, null);
         }
         addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 1));//Back
@@ -55,35 +56,36 @@ class LogBox extends List implements CommandListener {
      * @noinspection InfiniteLoopStatement
      */
     public void commandAction(Command c, Displayable d) {
-        switch(c.getCommandType()){
+        switch (c.getCommandType()) {
             case Command.BACK:
-                Astromaximum.disp.setCurrent(invoker); break;
+                Astromaximum.disp.setCurrent(invoker);
+                break;
             case Command.STOP:
-                if(c.getPriority()==10){ // from ShowAbout
+                if (c.getPriority() == 10) { // from ShowAbout
                     try {
                         Astromaximum.instance.platformRequest(Astromaximum.URL);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
+                } else {
+                    deleteAll();
+                    append(EMPTY, null);
                 }
-                else{
-                    deleteAll(); append(EMPTY, null);
-                }
-                 break;
+                break;
         }
     }
 
-    void showAbout(Displayable displayable){
+    void showAbout(Displayable displayable) {
         invoker = displayable;
-        Alert al=new Alert(Astromaximum.getstr(152),
-                Astromaximum.getstr(153)+" "+Astromaximum.URL+" "+
+        Alert al = new Alert(Astromaximum.getstr(152),
+                Astromaximum.getstr(153) + " " + Astromaximum.URL + " " +
                 Astromaximum.getstr(154), null, AlertType.INFO);
         al.addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 0));
         al.addCommand(new Command(Astromaximum.getstr(155), Command.STOP, 10));
         al.setCommandListener(this);
         Astromaximum.disp.setCurrent(al);
     }
-    
+
     static String access(String str, int param) {
         String ss = "";
         int idx = str.indexOf('.');
@@ -101,5 +103,7 @@ class LogBox extends List implements CommandListener {
 
         return ss;
     }
-//#endif  
+//#endif
 }
+
+// # vi:et:ts=4:sw=4

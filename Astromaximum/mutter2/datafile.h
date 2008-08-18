@@ -7,19 +7,20 @@
 #include <vector>
 using namespace std;
 //---------------------------------------------------------------------------
-typedef enum{
-    EF_DATE=0x1, // contains 2nd date - 4b
-    EF_PLANET1=0x2, // contains 1nd planet - 1b
-    EF_PLANET2=0x4, // contains 2nd planet - 1b
-    EF_DEGREE=0x8, // contains degree or angle - 2b
-    EF_CUMUL_DATE_B=0x10, // date are cumulative from 1st 4b - 1b
-    EF_CUMUL_DATE_W=0x20, // date are cumulative from 1st 4b - 2b
-    EF_SHORT_DEGREE=0x40, // contains angle 0..180 - 1b
-    EF_NEXT_DATE2=0x80 // 2nd date is 1st in next event
+
+typedef enum {
+    EF_DATE = 0x1, // contains 2nd date - 4b
+    EF_PLANET1 = 0x2, // contains 1nd planet - 1b
+    EF_PLANET2 = 0x4, // contains 2nd planet - 1b
+    EF_DEGREE = 0x8, // contains degree or angle - 2b
+    EF_CUMUL_DATE_B = 0x10, // date are cumulative from 1st 4b - 1b
+    EF_CUMUL_DATE_W = 0x20, // date are cumulative from 1st 4b - 2b
+    EF_SHORT_DEGREE = 0x40, // contains angle 0..180 - 1b
+    EF_NEXT_DATE2 = 0x80 // 2nd date is 1st in next event
 } EventFlag;
 
-typedef enum{
-    AF_DOMICILE=0,
+typedef enum {
+    AF_DOMICILE = 0,
     AF_EXALT,
     AF_TRIPL,
     AF_TERM,
@@ -35,9 +36,9 @@ typedef enum{
     AF_GROWINGMOON,
 } ApheFlag;
 
-static const int AF_PEREGRINE=(1<<AF_DOMICILE)+(1<<AF_EXALT)+(1<<AF_RECSIGN)+(1<<AF_RECEXALT)+(1<<AF_TRIPL);
+static const int AF_PEREGRINE = (1 << AF_DOMICILE)+(1 << AF_EXALT)+(1 << AF_RECSIGN)+(1 << AF_RECEXALT)+(1 << AF_TRIPL);
 
-static const int ApheBalls[]={
+static const int ApheBalls[] = {
     5, // AF_DOMICILE
     4, // AF_EXALT
     3, // AF_TRIPL
@@ -53,16 +54,17 @@ static const int ApheBalls[]={
     4, // AF_FAST (+2 against SLOW -2)
     4, // AF_GROWINGMOON (+2 against  -2)
 };
-static const char PLANETS[]={SE_SUN, SE_MOON, SE_MERCURY, SE_VENUS, SE_MARS,
-SE_JUPITER, SE_SATURN, SE_URANUS, SE_NEPTUNE, SE_PLUTO, SE_TRUE_NODE, SE_MEAN_APOG,
-SE_FICT_OFFSET_1+17
+static const char PLANETS[] = {SE_SUN, SE_MOON, SE_MERCURY, SE_VENUS, SE_MARS,
+    SE_JUPITER, SE_SATURN, SE_URANUS, SE_NEPTUNE, SE_PLUTO, SE_TRUE_NODE, SE_MEAN_APOG,
+    SE_FICT_OFFSET_1 + 17
 };
 typedef vector<Event*> VAE;
 typedef vector<pair<int, int> > LOC_CONTENTS;
 
 class DataFile {
 private:
-    struct aphRecord{
+
+    struct aphRecord {
         unsigned int data[7];
     };
     sEphRecord *ephData;
@@ -73,7 +75,7 @@ private:
     void calcAspExact(VAE & moonvae, VAE & vae);
     void calcDegPass(VAE & vae, int planet);
     void NormAngle(double &a);
-    
+
     void VOC_generate(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2);
     void registerAspect(VAE & moonvae, VAE &vae, int i, int j);
     void registerDegPass(VAE &dpe, int deg, int body, int interval);
@@ -106,7 +108,7 @@ public:
     DataFile();
     double Lon, Lat, Alt;
     void choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2,
-            char* prefix="");
+            char* prefix = "");
     void init(sEphRecord *ephdata, double start, unsigned int count);
     void AAA();
     void view(const char* fname, int count);
@@ -116,3 +118,5 @@ public:
     void calcAscData();
 };
 #endif
+
+// # vi:et:ts=4:sw=4

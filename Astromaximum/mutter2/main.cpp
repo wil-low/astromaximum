@@ -13,48 +13,48 @@
 #include <assert.h>
 using namespace std;
 
-const int NOT_ENOUGH_PARAMS=-1,
-        INVALID_YEAR=-2,
-        INVALID_EVENT=-3;
+const int NOT_ENOUGH_PARAMS = -1,
+        INVALID_YEAR = -2,
+        INVALID_EVENT = -3;
 
-char ephemPath[]="../swiss"; // relative to program dir
+char ephemPath[] = "../swiss"; // relative to program dir
 char mypath[PATH_MAX];
-const char outFile[]="output.txt";
+const char outFile[] = "output.txt";
 
 int test();
 
-sAphRecord aphetics[SE_SATURN+1];
-clock_t c_start,c_end;
+sAphRecord aphetics[SE_SATURN + 1];
+clock_t c_start, c_end;
 
-void myexit(int ret){
+void myexit(int ret) {
     chdir(mypath);
-    c_end=clock();
-    long cps=CLOCKS_PER_SEC;
-//    if(!ret) 
-//        printf("\nExecution time %d clocks (cps=%d)\n", c_end-c_start, cps);
-//    printf("\nExit code: %d. Restored curdir: %s\n", ret, mypath);
+    c_end = clock();
+    long cps = CLOCKS_PER_SEC;
+    //    if(!ret)
+    //        printf("\nExecution time %d clocks (cps=%d)\n", c_end-c_start, cps);
+    //    printf("\nExit code: %d. Restored curdir: %s\n", ret, mypath);
     exit(ret);
 }
 
 int main(int argc, char* argv[]) {
-/*    
-  char szInput [256];
+    /*
+      char szInput [256];
 
-  long dif;
-  long cps=CLOCKS_PER_SEC;
-  start=clock ();
-  printf ("Please, enter your name: ");
-  gets (szInput);
-  end=clock();
-  dif = end-start;
-  printf ("Hi %s.\n", szInput);
-  printf ("It took you %d  clocks at %d.\n", dif, cps);
- 
-  return 0;    
+      long dif;
+      long cps=CLOCKS_PER_SEC;
+      start=clock ();
+      printf ("Please, enter your name: ");
+      gets (szInput);
+      end=clock();
+      dif = end-start;
+      printf ("Hi %s.\n", szInput);
+      printf ("It took you %d  clocks at %d.\n", dif, cps);
 
- */
+      return 0;
+
+     */
     char path[255], serr[256];
-    
+
     /*
      * double test_day=swe_julday(2007, 4, 7, 0, SE_GREG_CAL);
      * double result;
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
      * scanf("%s",path);
      * myexit(0);
      */
-    if((argc==1)||(strcmp(argv[1], "--help"))==0){
+    if ((argc == 1) || (strcmp(argv[1], "--help")) == 0) {
         printf("Usage:  mutter2 <year> [options]\n");
         printf(" options:\n");
         printf("   <empty> - calculate ephemeris if none, and common.dat\n");
@@ -83,89 +83,88 @@ int main(int argc, char* argv[]) {
         exit(0);
     }
     strcpy(mypath, argv[0]);
-    char *pos=strrchr(mypath, '\\');
-    if(!pos){
-        pos=strrchr(mypath, '/');
+    char *pos = strrchr(mypath, '\\');
+    if (!pos) {
+        pos = strrchr(mypath, '/');
     }
-    if(pos){
-        *pos=0;
-    }
-    else{
-        mypath[0]=0;
+    if (pos) {
+        *pos = 0;
+    } else {
+        mypath[0] = 0;
     }
 
-//    getcwd(mypath, PATH_MAX);
-//    printf("App path=%s\n", mypath);
+    //    getcwd(mypath, PATH_MAX);
+    //    printf("App path=%s\n", mypath);
     sprintf(path, "%s/%s", mypath, "../data");
     chdir(path);
     getcwd(mypath, PATH_MAX);
-//    printf("chdir to %s\n", mypath);
+    //    printf("chdir to %s\n", mypath);
     sprintf(serr, "%s/%s", path, ephemPath);
-    while(pos=strchr(serr, '\\')){
-        *pos='/';
+    while (pos = strchr(serr, '\\')) {
+        *pos = '/';
     }
     swe_set_ephe_path(ephemPath);
-    Event::EPOCH=swe_julday(1970, 1, 1, 0, SE_GREG_CAL);
+    Event::EPOCH = swe_julday(1970, 1, 1, 0, SE_GREG_CAL);
     double outr[6];
-    int res=swe_calc_ut(Event::EPOCH, SE_SUN, SEFLG_BARYCTR, outr, serr);
-    if(res<0){
-        printf("%s\n",serr);
+    int res = swe_calc_ut(Event::EPOCH, SE_SUN, SEFLG_BARYCTR, outr, serr);
+    if (res < 0) {
+        printf("%s\n", serr);
         myexit(-1); // Sweph not found, exit
     }
     struct tm now;
-    now.tm_year=2006-1900;
-    now.tm_mon=11;
-    now.tm_mday=8;
-    now.tm_hour=18;
-    now.tm_min=3;
-    now.tm_sec=0;
+    now.tm_year = 2006 - 1900;
+    now.tm_mon = 11;
+    now.tm_mday = 8;
+    now.tm_hour = 18;
+    now.tm_min = 3;
+    now.tm_sec = 0;
     now.tm_isdst = 0;
-    
+
 #ifdef ANSITZ
-    time_t loo=mktime(&now);//-_timezone;
-    tm *st=gmtime(&loo);
-    time_t loo1=mktime(st);
-    Event::_timezone_=loo1-loo;
+    time_t loo = mktime(&now); //-_timezone;
+    tm *st = gmtime(&loo);
+    time_t loo1 = mktime(st);
+    Event::_timezone_ = loo1 - loo;
 #else
-    time_t loo=mktime(&now)-_timezone;
-    tm *st=gmtime(&loo);
-    loo=mktime(st);
+    time_t loo = mktime(&now) - _timezone;
+    tm *st = gmtime(&loo);
+    loo = mktime(st);
 #endif
-   
-    assert(sizeof(sMatrix)==9);
-    assert(EV_LAST==50);
-    if(argc<2) myexit(NOT_ENOUGH_PARAMS);
+
+    assert(sizeof (sMatrix) == 9);
+    assert(EV_LAST == 50);
+    if (argc < 2) myexit(NOT_ENOUGH_PARAMS);
     DataFile df;
     char buf[20];
-    sEphRecord *ephData=NULL;
+    sEphRecord *ephData = NULL;
     int year;
-    if(sscanf(argv[1], "%4d", &year)!=1)
+    if (sscanf(argv[1], "%4d", &year) != 1)
         myexit(INVALID_YEAR);
-    Event::startYear=year;
-    if(argc>2){
-        if(strcmp(argv[2], "jul")==0){
+    Event::startYear = year;
+    if (argc > 2) {
+        if (strcmp(argv[2], "jul") == 0) {
             int mon, day;
             float hr;
-            if(sscanf(argv[3], "%02d-%02d*%02d", &mon)!=1){
+            if (sscanf(argv[3], "%02d-%02d*%02d", &mon) != 1) {
                 myexit(NOT_ENOUGH_PARAMS);
             }
-            if(sscanf(argv[4], "%02d-%02d*%02d", &day)!=1){
+            if (sscanf(argv[4], "%02d-%02d*%02d", &day) != 1) {
                 myexit(NOT_ENOUGH_PARAMS);
             }
-            if(sscanf(argv[5], "%f", &hr)!=1){
+            if (sscanf(argv[5], "%f", &hr) != 1) {
                 myexit(NOT_ENOUGH_PARAMS);
             }
 
-            double jd=swe_julday(year, mon, day, hr, SE_GREG_CAL);        
+            double jd = swe_julday(year, mon, day, hr, SE_GREG_CAL);
             printf("%f\n", jd);
             myexit(0);
         }
-        if(strcmp(argv[2], "_test_")==0){
+        if (strcmp(argv[2], "_test_") == 0) {
             myexit(test());
         }
-        if(strcmp(argv[2], "revjul")==0){
+        if (strcmp(argv[2], "revjul") == 0) {
             double jd;
-            if(sscanf(argv[3], "%lf", &jd)!=1){
+            if (sscanf(argv[3], "%lf", &jd) != 1) {
                 myexit(NOT_ENOUGH_PARAMS);
             }
             Event ev(jd, 0);
@@ -174,208 +173,205 @@ int main(int argc, char* argv[]) {
             myexit(0);
         }
 
-        if(strcmp(argv[2], "dow")==0){
+        if (strcmp(argv[2], "dow") == 0) {
             double jd;
-            if(sscanf(argv[3], "%lf", &jd)!=1){
+            if (sscanf(argv[3], "%lf", &jd) != 1) {
                 myexit(NOT_ENOUGH_PARAMS);
             }
-            int dow=swe_day_of_week(jd);        
+            int dow = swe_day_of_week(jd);
             printf("%d\n", dow);
             myexit(0);
         }
     }
     printf("Local timezone offset %d\n", Event::_timezone_);
-//    printf("Curdir: %s\n", mypath);
-//    printf("argv[0] is: %s\n", path);
-//    printf("Chdir to %s\n", path);
-//    printf("Year = %d\t", year);
-    if((argc>2)&&(strcmp(argv[2], "asctest")==0)){
+    //    printf("Curdir: %s\n", mypath);
+    //    printf("argv[0] is: %s\n", path);
+    //    printf("Chdir to %s\n", path);
+    //    printf("Year = %d\t", year);
+    if ((argc > 2) && (strcmp(argv[2], "asctest") == 0)) {
         df.AscendingTest();
         printf("\n%s\n", "Finished.");
         myexit(0);
     }
-    if((argc==5)&&(strcmp(argv[2], "view")==0)){
-        int count=0;
+    if ((argc == 5) && (strcmp(argv[2], "view") == 0)) {
+        int count = 0;
         sscanf(argv[4], "%d", &count);
         df.view(argv[3], count);
         printf("\nFinished\n");
         myexit(0);
     }
-    if(argc==3 && strcmp(argv[2], "sql")==0){ // Creating SQL file
+    if (argc == 3 && strcmp(argv[2], "sql") == 0) { // Creating SQL file
         VAE work;
         char fn[100];
         char buf0[100], buf1[100];
         sprintf(fn, "../site/%04d.sql", year);
-        FILE *sql=fopen(fn, "w");
-        if(!sql){
-            int ern=errno;
+        FILE *sql = fopen(fn, "w");
+        if (!sql) {
+            int ern = errno;
             printf("Cannot create file %s: %s", fn, strerror(ern));
             myexit(-1);
         }
         fprintf(sql, "TRUNCATE TABLE `_voc`; BEGIN;\n");
-        if(df.readSubData("voc01.bin", work)){
-            for(int i=0; i<work.size(); i++){
-                Event *ev=work[i];
+        if (df.readSubData("voc01.bin", work)) {
+            for (int i = 0; i < work.size(); i++) {
+                Event *ev = work[i];
                 fprintf(sql, "INSERT INTO `_voc` VALUES (%s, %s);\n",
                         ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
-//                ev->dump();
+                //                ev->dump();
             }
             fprintf(sql, "COMMIT;\n\n");
-        }
-        else{
+        } else {
             printf("\nVOC file error!");
         }
         df.release(work);
-/*        
-        fprintf(sql, "TRUNCATE TABLE `_vc`; BEGIN;\n");
-        if(df.readSubData("via01.bin", work)){
-            for(int i=0; i<work.size(); i++){
-                Event *ev=work[i];
-                fprintf(sql, "INSERT INTO `_vc` VALUES (%s, %s);\n",
-                        ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
-//                ev->dump();
-            }
-            fprintf(sql, "COMMIT;\n\n");
-        }
-        else{
-            printf("\nVC file error!");
-        }
-        df.release(work);
-*/
+        /*
+                fprintf(sql, "TRUNCATE TABLE `_vc`; BEGIN;\n");
+                if(df.readSubData("via01.bin", work)){
+                    for(int i=0; i<work.size(); i++){
+                        Event *ev=work[i];
+                        fprintf(sql, "INSERT INTO `_vc` VALUES (%s, %s);\n",
+                                ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
+        //                ev->dump();
+                    }
+                    fprintf(sql, "COMMIT;\n\n");
+                }
+                else{
+                    printf("\nVC file error!");
+                }
+                df.release(work);
+         */
         fprintf(sql, "TRUNCATE TABLE `_sundgr`; BEGIN;\n");
-        if(df.readSubData("degpass00.bin", work)){
-            for(int i=0; i<work.size(); i++){
-                Event *ev=work[i];
+        if (df.readSubData("degpass00.bin", work)) {
+            for (int i = 0; i < work.size(); i++) {
+                Event *ev = work[i];
                 fprintf(sql, "INSERT INTO `_sundgr` VALUES (%s, %s, %d);\n",
                         ev->date_sql(buf0, 0), ev->date_sql(buf1, 1), ev->degree & 0x3fff);
-//                ev->dump();
+                //                ev->dump();
             }
             fprintf(sql, "COMMIT;\n\n");
-        }
-        else{
+        } else {
             printf("\nSun degree file error!");
         }
         df.release(work);
- 
+
         fclose(sql);
         printf("\nSQL created: %s\n", fn);
         myexit(0);
     }
-    if((argc==6)&&(strcmp(argv[2], "dump")==0)){
-        int num=0, secnum=-2;
+    if ((argc == 6) && (strcmp(argv[2], "dump") == 0)) {
+        int num = 0, secnum = -2;
         sscanf(argv[4], "%d", &num);
         sscanf(argv[5], "%d", &secnum);
         df.dump_location(argv[3], num, secnum);
         myexit(0);
     }
-    double startJD=swe_julday(year-1, 12, 31, 0, SE_GREG_CAL);
+    double startJD = swe_julday(year - 1, 12, 31, 0, SE_GREG_CAL);
     printf("startJD=%f\t", startJD);
-    double endJD=swe_julday(year+1, 2, 1, 0, SE_GREG_CAL);
-    
-    int dayCount=(int)(endJD-startJD);
-    unsigned int stepCount=(int)(dayCount/MINUTE_STEP);
+    double endJD = swe_julday(year + 1, 2, 1, 0, SE_GREG_CAL);
+
+    int dayCount = (int) (endJD - startJD);
+    unsigned int stepCount = (int) (dayCount / MINUTE_STEP);
     printf("Steps = %d\n", stepCount);
-    double data[6]; char ephf[255];
-    ephData=new sEphRecord [stepCount];
-    endJD=startJD;
-    int size=sizeof(sEphRecord)*stepCount;
+    double data[6];
+    char ephf[255];
+    ephData = new sEphRecord [stepCount];
+    endJD = startJD;
+    int size = sizeof (sEphRecord) * stepCount;
     sprintf(ephf, "ephdata/ephdata%04d.dat", year);
-    
-    FILE *fin=fopen(ephf, "rb");
-    int fsz=0;
-    if(fin){
+
+    FILE *fin = fopen(ephf, "rb");
+    int fsz = 0;
+    if (fin) {
         fseek(fin, 0, SEEK_END);
-        fsz=ftell(fin);
+        fsz = ftell(fin);
     }
-    if(fsz){
+    if (fsz) {
         printf("\nValid cached ephdata found. Loading...");
         rewind(fin);
         fread(ephData, size, 1, fin);
         fclose(fin);
         printf("Done.\n");
-    }
-    else{
+    } else {
         printf("\nCalculating ephdata...");
-        if(fin){
+        if (fin) {
             fclose(fin);
         }
-        
+
         printf("\nSteps = %d\n", stepCount);
-        for(int i=0; i<stepCount; i++){
-            for(int body=0; body<13; body++){
+        for (int i = 0; i < stepCount; i++) {
+            for (int body = 0; body < 13; body++) {
                 swe_calc_ut(endJD, PLANETS[body], SEFLG_SWIEPH, data, serr);
-                ephData[i].data[body]=data[0];
+                ephData[i].data[body] = data[0];
             }
-            endJD+=MINUTE_STEP;
-            if(i%10000==0)
-                printf("%d.", i/10000);
+            endJD += MINUTE_STEP;
+            if (i % 10000 == 0)
+                printf("%d.", i / 10000);
             fflush(stdout);
         }
         printf("\nSaving cached ephemeris...");
-        FILE *fout=fopen(ephf, "wb");
+        FILE *fout = fopen(ephf, "wb");
         fwrite(ephData, size, 1, fout);
         fclose(fout);
         printf("Done. Restart with the same parameters to calculate common.dat\n");
         myexit(0);
     }
     df.init(ephData, startJD, dayCount);
-    if(argc==2){ // only year specified
-        df.AAA();  // calculate common.dat
+    if (argc == 2) { // only year specified
+        df.AAA(); // calculate common.dat
         //  df.saveFile(outFile);
         delete[] ephData;
-        ephData=NULL;
+        ephData = NULL;
         printf("Done.\n");
-    }
-    else{
+    } else {
         VAE work, assist, vout, work2;
-        if(strcmp(argv[2], "electio")==0){
-//      df.loadAphetics(aphetics);
+        if (strcmp(argv[2], "electio") == 0) {
+            //      df.loadAphetics(aphetics);
             df.choice(EV_APHETICS, work, assist, vout, work2, argv[3]);
-//      scanf("%s",buf);
-        }
-        else{
-            if(strcmp(argv[2], "vocsql")==0){
-                
-            }
-            else{
-                if(argc<5)
+            //      scanf("%s",buf);
+        } else {
+            if (strcmp(argv[2], "vocsql") == 0) {
+
+            } else {
+                if (argc < 5)
                     myexit(NOT_ENOUGH_PARAMS);
-                df.Lon=strtod(argv[3], NULL);
-                df.Lat=strtod(argv[4], NULL);
-                int alt=0;
-                if(argc>5 && sscanf(argv[5], "%d", &alt)==1){
-                    df.Alt=alt;
+                df.Lon = strtod(argv[3], NULL);
+                df.Lat = strtod(argv[4], NULL);
+                int alt = 0;
+                if (argc > 5 && sscanf(argv[5], "%d", &alt) == 1) {
+                    df.Alt = alt;
                 }
                 // TODO remove this line
                 //      df.stepCount=8000;
                 df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
                 df.calcAscData();
-                
+
                 df.choice(EV_ASTRORISE, work, assist, vout, work2, argv[2]);
                 df.choice(EV_RISE, work, assist, vout, work2, argv[2]);
-                if(argc>5 && (strcmp(argv[5], "electio")==0)){
-//                    df.choice(EV_ASCAPHETICS, work, assist, vout, work2, argv[2]);
+                if (argc > 5 && (strcmp(argv[5], "electio") == 0)) {
+                    //                    df.choice(EV_ASCAPHETICS, work, assist, vout, work2, argv[2]);
                 }
             }
         }
         delete[] ephData;
     }
-    if(df.ascData){
+    if (df.ascData) {
         delete[] df.ascData;
     }
     printf("\nFinished.\n");
     myexit(0);
 }
 
-int test(){
-    double tm=2451655.252083;
+int test() {
+    double tm = 2451655.252083;
     Event ev(tm, 0);
     ev.dump();
     printf("\nPacked date: %ld\n", ev.packDate(tm));
-    double tm2=ev.calcJD(ev.date[0]);
+    double tm2 = ev.calcJD(ev.date[0]);
     printf("tm %f, tm2 %f\n", tm, tm2);
-    assert(tm==tm2);
+    assert(tm == tm2);
     Event ev2(tm2, 0);
     ev2.dump();
     return 0;
 }
+
+// # vi:et:ts=4:sw=4

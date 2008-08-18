@@ -20,26 +20,28 @@ join_phases(50);
 
 sub join_phases
 {
-	my $size=shift;
-	my @buf;
-	my @bodies;
-	my @bins=glob($path.'images/phasesgif/ph'.$size.'-*.png');
-	open($OutF, ">$path".'Astromaximum/src/res/ph'.$size.'.dat') or die "No file";
-	binmode($OutF);
-	print $OutF pack('n',$#bins+1);
-	my $i=0;
-	foreach my $ff(@bins){
-		open($InF, "<$ff") or die "No file";
-		binmode($InF);
-		@buf=<$InF>;
-		close($InF);
-		$bodies[$i]=join('',@buf);
-		print $OutF pack('n',length($bodies[$i]));
-		++$i;
-	}
-	foreach my $png(@bodies){
-		print $OutF $png;
-	}
-	close($OutF);
+    my $size=shift;
+    my @buf;
+    my @bodies;
+    my @bins=glob($path.'images/phasesgif/ph'.$size.'-*.png');
+    open($OutF, ">$path".'Astromaximum/src/res/ph'.$size.'.dat') or die "No file";
+    binmode($OutF);
+    print $OutF pack('n',$#bins+1);
+    my $i=0;
+    foreach my $ff(@bins){
+        open($InF, "<$ff") or die "No file";
+        binmode($InF);
+        @buf=<$InF>;
+        close($InF);
+        $bodies[$i]=join('',@buf);
+        print $OutF pack('n',length($bodies[$i]));
+        ++$i;
+    }
+    foreach my $png(@bodies){
+        print $OutF $png;
+    }
+    close($OutF);
 }
+
+# vi:et:ts=4:sw=4
 

@@ -18,18 +18,15 @@
 //# import java.awt.Frame;
 //# class SummItem{
 //#else
-
 import javax.microedition.lcdui.*;
 import java.util.*;
 import javax.microedition.rms.RecordFilter;
-
 
 class SummItem extends TimerTask implements RecordFilter {
 
     private static final int XLEFT = 0;
     private static final int XCENTER = 1;
     private static final int XRIGHT = 2;
-
     private short[] widths;
     private int rowCount = 1;
     byte tag;
@@ -55,15 +52,13 @@ class SummItem extends TimerTask implements RecordFilter {
     private static final long DEGREE_DELTA_MSEC2 = 28 * 60 * 1000;
     static Summary owner;
     private static final int[] ASP_ANGLES = {0, 180, 90, 120, 60, 45, 30, 15, 72, 150};
-
-    private static final int[] OWN_SIGN_REVERSE =
-            {
-                    Event.SE_MARS, Event.SE_VENUS, Event.SE_MERCURY, Event.SE_MOON, Event.SE_SUN, Event.SE_MERCURY,
-                    Event.SE_VENUS, Event.SE_MARS, Event.SE_JUPITER, Event.SE_SATURN, Event.SE_SATURN, Event.SE_JUPITER
-            };
-
+    private static final int[] OWN_SIGN_REVERSE = {
+        Event.SE_MARS, Event.SE_VENUS, Event.SE_MERCURY, Event.SE_MOON, Event.SE_SUN, Event.SE_MERCURY,
+        Event.SE_VENUS, Event.SE_MARS, Event.SE_JUPITER, Event.SE_SATURN, Event.SE_SATURN, Event.SE_JUPITER
+    };
     static final byte[] weekPlanets = {0, 1, 4, 2, 5, 3, 6};
     private static final Hashtable topics = new Hashtable();
+    
 
     static {
         topics.put(new Integer(Event.EV_MOON_DAY), "}#");
@@ -116,7 +111,7 @@ class SummItem extends TimerTask implements RecordFilter {
      * @noinspection AssignmentToMethodParameter,NestedAssignment
      */
     SummItem(int left, int top, int w, int h, int page, int widCount, int rowCount, int type,
-             int nleft, int nright, int nup, int ndown) {
+            int nleft, int nright, int nup, int ndown) {
         this.type = type;
         this.left = left;
         this.top = top;
@@ -243,8 +238,7 @@ class SummItem extends TimerTask implements RecordFilter {
             if (selIndex < 0) {
                 selIndex = 0;
             }
-        }
-        catch (NullPointerException npe) {
+        } catch (NullPointerException npe) {
 //          System.out.println("Exception!!!!");
 //          dump();
             selIndex = 0;
@@ -683,9 +677,9 @@ class SummItem extends TimerTask implements RecordFilter {
                         osg.setColor(Astromaximum.CUST_COLOR);
                     }
                     int day = events[i].getDegree();
-                    if (day >= 360)
+                    if (day >= 360) {
                         day = -(day - 359);
-
+                    }
                     osg.drawString(Integer.toString(day),
                             getX(i, XCENTER), top + height, Graphics.BASELINE | Graphics.HCENTER);
                 }
@@ -717,8 +711,7 @@ class SummItem extends TimerTask implements RecordFilter {
                                 top + height / 2 - Summary.IMG_HEIGHT / 2,
                                 Summary.IMG_HEIGHT, pll);
                     }
-                }
-                catch (NullPointerException npe) {
+                } catch (NullPointerException npe) {
                 }
                 break;
             case Event.EV_RISE:
@@ -921,7 +914,6 @@ class SummItem extends TimerTask implements RecordFilter {
         return left + width * x / 1000;
     }
 
-
     private Event getSelEvent() {
         try {
             return events[selIndex];
@@ -1080,7 +1072,8 @@ class SummItem extends TimerTask implements RecordFilter {
             case Event.EV_SUN_DEGREE_LARGE:
             case Event.EV_SEL_DEGREES:
                 return new long[]{Event.EV_DEGPASS0 + dgr / 90, plt, dgr, Astromaximum.getSignDegree(dgr),
-                        dgr / 30, evi.getDegType(), d0, d1};
+                            dgr / 30, evi.getDegType(), d0, d1
+                        };
             case Event.EV_WEEK:
                 return new long[]{t, -1, plt, 0, 0};
             case Event.EV_DECUMBITURE:
@@ -1234,7 +1227,6 @@ class SummItem extends TimerTask implements RecordFilter {
         }
     }
 //#enddebug
-
     void prepareTithi() {
         if (type != Event.EV_TITHI) {
             return;
@@ -1243,7 +1235,7 @@ class SummItem extends TimerTask implements RecordFilter {
         int deg2 = getSelEvent().getDegree() - 1;
 //#if logger
       Astromaximum.instance.logger(Integer.toString(deg2));
-//#endif  
+//#endif
         if (deg2 > 30) {
             deg2 = 0;
             Astromaximum.log("wrong tithi");
@@ -1271,7 +1263,6 @@ class SummItem extends TimerTask implements RecordFilter {
 //  int getEventCount() {
 //    return events.length;
 //  }
-
     int defaultNavigate(int dir) {
         int delta = nav[dir];
         int msel = (dir % 2 == 0) ? -1 : 1;
@@ -1369,14 +1360,18 @@ class SummItem extends TimerTask implements RecordFilter {
 //#     osg.drawRegion(image,h*index,0,h,h, Sprite.TRANS_NONE,left,top,anchor);
 //#else
         int ch = osg.getClipHeight(), cw = osg.getClipWidth();
-        if ((anchor & Graphics.HCENTER) != 0)
+        if ((anchor & Graphics.HCENTER) != 0) {
             left -= h / 2;
-        if ((anchor & Graphics.RIGHT) != 0)
+        }
+        if ((anchor & Graphics.RIGHT) != 0) {
             left -= h;
-        if ((anchor & Graphics.VCENTER) != 0)
+        }
+        if ((anchor & Graphics.VCENTER) != 0) {
             top -= h / 2;
-        if ((anchor & Graphics.BOTTOM) != 0)
+        }
+        if ((anchor & Graphics.BOTTOM) != 0) {
             top -= h;
+        }
         osg.setClip(left, top, h, h);
         osg.drawImage(image, left - h * index, top, Graphics.LEFT | Graphics.TOP);
         osg.setClip(0, 0, cw, ch);
@@ -1397,8 +1392,7 @@ class SummItem extends TimerTask implements RecordFilter {
                 default:
                     return events.length <= 1 && events[0] == null;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return true;
         }
     }
@@ -1406,8 +1400,7 @@ class SummItem extends TimerTask implements RecordFilter {
     Event getCusSelEvent() {
         try {
             return events[cusSelection];
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -1463,7 +1456,7 @@ class SummItem extends TimerTask implements RecordFilter {
         osg.setColor(Astromaximum.BACK_COLOR);
         osg.fillRect(left, top, width, height);
         osg.setColor(0);
-// @todo zero        
+// @todo zero
         zeroPlaces();
         Date cur = new Date(Summary.firstGridDate.getTime());
 //    final Font oldFont=osg.getFont();
@@ -1475,7 +1468,7 @@ class SummItem extends TimerTask implements RecordFilter {
         int cnt = 0;
         boolean[] nodrawNums = new boolean[owner.colCount * owner.rowCount];
         // dimmed days aside selected month
-// @todo **********        
+// @todo **********
         int count = 0;
         int count2 = 1;
         long fgd;
@@ -1499,9 +1492,10 @@ class SummItem extends TimerTask implements RecordFilter {
                 if (isCurDay) {
                     // current day highlight
                     if (fillColor != 0) {
-                        if (type == Event.EV_MONTH_GRID)
+                        if (type == Event.EV_MONTH_GRID) {
                             fillColor = Astromaximum.GRAY_COLOR;
 //            fontColor=0;
+                        }
                     } else {
                         fillColor = Astromaximum.BACK_COLOR;
                     }
@@ -1563,7 +1557,7 @@ class SummItem extends TimerTask implements RecordFilter {
 // @todo **********
         osg.setColor(0);
 //    osg.setFont(oldFont);
-// @todo zero        
+// @todo zero
         zeroPlaces();
         for (Enumeration e = owner.mIngress.elements(); e.hasMoreElements();) {
             ev = (Event) e.nextElement();
@@ -1626,7 +1620,7 @@ class SummItem extends TimerTask implements RecordFilter {
             drawImg(osg, Summary.imgService, 1, x + 3, y + 3, Graphics.BOTTOM | Graphics.LEFT);
 //          }
         }
-// @todo zero in week       
+// @todo zero in week
         zeroPlaces();
         // @todo Aspect drawing in week mode
         for (Enumeration e = owner.mAsp.elements(); e.hasMoreElements();) {
@@ -1678,7 +1672,7 @@ class SummItem extends TimerTask implements RecordFilter {
         osg.setColor(Astromaximum.BACK_COLOR);
         osg.fillRect(left, top, width, height);
         osg.setColor(0);
-// @todo zero        
+// @todo zero
         zeroPlaces();
         Date cur = new Date(Summary.firstGridDate.getTime());
         final Font oldFont = osg.getFont();
@@ -1688,7 +1682,7 @@ class SummItem extends TimerTask implements RecordFilter {
         int cnt = 0;
         boolean[] nodrawNums = new boolean[owner.colCount * owner.rowCount];
         // dimmed days aside selected month
-// @todo **********        
+// @todo **********
         int count = 0;
         int count2 = 1;
         long fgd;
@@ -1717,9 +1711,10 @@ class SummItem extends TimerTask implements RecordFilter {
                 if (isCurDay) {
                     // current day highlight
                     if (fillColor != 0) {
-                        if (type == Event.EV_MONTH_GRID)
+                        if (type == Event.EV_MONTH_GRID) {
                             fillColor = Astromaximum.GRAY_COLOR;
 //            fontColor=0;
+                        }
                     } else {
                         fillColor = Astromaximum.BACK_COLOR;
                     }
@@ -1753,7 +1748,7 @@ class SummItem extends TimerTask implements RecordFilter {
 // @todo **********
         osg.setColor(0);
         osg.setFont(oldFont);
-// @todo zero        
+// @todo zero
 //        zeroPlaces();
         for (Enumeration e = owner.mIngress.elements(); e.hasMoreElements();) {
             ev = (Event) e.nextElement();
@@ -1849,5 +1844,7 @@ class SummItem extends TimerTask implements RecordFilter {
             }
         }
     }
-//#endif  
+//#endif
 }
+
+// # vi:et:ts=4:sw=4

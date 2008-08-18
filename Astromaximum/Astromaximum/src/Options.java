@@ -1,3 +1,4 @@
+
 /**
  * <p>Title: </p>
  *
@@ -10,32 +11,31 @@
  * @author not attributable
  * @version 1.0
  */
-
 //#ifdef build.desktop
 //# package com.sw_axis;
 //# import java.awt.Frame;
-//# 
+//#
 //# class Options extends Frame{
 //#else
-
 import java.io.*;
 import java.util.Random;
 import java.util.Vector;
 import javax.microedition.lcdui.*;
 import javax.microedition.rms.*;
 
-class Options extends GeoList implements ItemCommandListener{
+class Options extends GeoList implements ItemCommandListener {
+
     private static ChoiceGroup optList;
     private static ChoiceGroup timeGap;
     static ChoiceGroup layout;
-//#if localtime  
+//#if localtime
 //#   static byte OPT_FLAGS=1;
     //#else
     private static final byte OPT_FLAGS = 0;
     //#endif
     static byte optFlags;
     private static long localOffset;
-    private String oldc, initCity;
+    private String oldc,  initCity;
     static final int FLG_ALLTEXT = 1;
     private static final int FLG_LOCALTIME = 2;
 
@@ -55,13 +55,13 @@ class Options extends GeoList implements ItemCommandListener{
                 Choice.POPUP, sLayout, null);
 
         String[] sOpt = {
-                Astromaximum.getstr(104),//Use all texts
-                Astromaximum.getstr(103),//Local time
+            Astromaximum.getstr(104),//Use all texts
+            Astromaximum.getstr(103),//Local time
         };
         optFlags = OPT_FLAGS;
         setTitle(Astromaximum.getstr(92));//Options
         setCommandListener(this);
-        Command cmd=new Command("OK", Command.OK, 1);
+        Command cmd = new Command("OK", Command.OK, 1);
 //        addCommand(cmd);
         addCommand(new Command(Astromaximum.getstr(108), Command.ITEM, 2));//Del city
 //    addCommand(new Command("Reset storage",Command.ITEM, 3));
@@ -70,17 +70,18 @@ class Options extends GeoList implements ItemCommandListener{
         insert(0, layout);
         insert(0, timeGap);
         insert(0, optList);
-        StringItem strOK=new StringItem("", "OK", Item.BUTTON);
+        StringItem strOK = new StringItem("", "OK", Item.BUTTON);
         strOK.setDefaultCommand(cmd);
         strOK.setItemCommandListener(this);
         append(strOK);
         cityList.setLabel(Astromaximum.getstr(105));//Cities
-    }
+    }    
 
     //#if "imeiCheck" @ protection
     static int hj;
     //#endif
     private final int IMEI_LEN = 15;
+
     /**
      * @noinspection InfiniteLoopStatement
      */
@@ -115,8 +116,7 @@ class Options extends GeoList implements ItemCommandListener{
                     }
                 }
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Astromaximum.log(ex.toString());
         }
 //#endif
@@ -125,27 +125,26 @@ class Options extends GeoList implements ItemCommandListener{
     public void commandAction(Command c, Displayable d) {
         if (d != this) {
             if (c.getCommandType() == Command.OK) { // delete city entrance from Alert
-            try {
-                RecordEnumeration rece = rs.enumerateRecords(this, null, false);
-                int nextID = rece.nextRecordId();
-                rs.deleteRecord(nextID);
-                //            rs.closeRecordStore();
-                curCity = oldc.getBytes();
-                //Astromaximum.dataFile.geoposData=initDB(false);
-                init();
-            }
-            catch (Exception ex) {
-            }
+                try {
+                    RecordEnumeration rece = rs.enumerateRecords(this, null, false);
+                    int nextID = rece.nextRecordId();
+                    rs.deleteRecord(nextID);
+                    //            rs.closeRecordStore();
+                    curCity = oldc.getBytes();
+                    //Astromaximum.dataFile.geoposData=initDB(false);
+                    init();
+                } catch (Exception ex) {
+                }
             }
             Display.getDisplay(Astromaximum.instance).setCurrent(this);
             return;
         }
         if (c.getCommandType() == Command.CANCEL) {
             Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
-        } else
+        } else {
             switch (c.getPriority()) {
                 case 1:
-//#debug debug 
+//#debug debug
                     System.out.println("OK");
                     optFlags = 0;
                     for (int i = 0; i < optList.size(); i++) {
@@ -153,7 +152,7 @@ class Options extends GeoList implements ItemCommandListener{
                             optFlags += (1 << i);
                         }
                     }
-//#debug debug 
+//#debug debug
                     System.out.println(optFlags);
                     saveHistory();
                     curCity = cityList.getString(cityList.getSelectedIndex()).getBytes();
@@ -163,8 +162,7 @@ class Options extends GeoList implements ItemCommandListener{
 //          rs.closeRecordStore();
                         initDB(false);
                         Astromaximum.summary.changeDay(0);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     if (Summary.size != layout.getSelectedIndex()) {
@@ -197,6 +195,7 @@ class Options extends GeoList implements ItemCommandListener{
                         Display.getDisplay(Astromaximum.instance).setCurrent(alert);
                     }
             }
+        }
     }
 
     /**
@@ -229,12 +228,12 @@ class Options extends GeoList implements ItemCommandListener{
         }
 //#if "imeiCheck" @ protection
         if (res == null) {
-            //#if "useMF" @ protection
+    //#if "useMF" @ protection
 //#       res = Astromaximum.instance.getAppProperty("MIDlet-Description");
-            //#else
+    //#else
             res = "";
         }
-        //#endif
+    //#endif
         try {
             while (res.length() < IMEI_LEN) {
                 res += "0";
@@ -259,7 +258,6 @@ class Options extends GeoList implements ItemCommandListener{
 //     }
 //#endif
     }
-
     private StringBuffer imei;
 
     void addImeiChar(char c) {
@@ -288,7 +286,6 @@ class Options extends GeoList implements ItemCommandListener{
 //  protected String getMessage(String string) {
 //    return LocalizationSupport.getMessage(string);
 //  }
-
     void resetStorage() {
         try {
             rs.closeRecordStore();
@@ -297,13 +294,12 @@ class Options extends GeoList implements ItemCommandListener{
             initDB(true);
             Astromaximum.summary.changeDay(0);
             init();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public byte[] initDB(boolean canCreate)  {
+    public byte[] initDB(boolean canCreate) {
         String place = "opt";
         if (canCreate) {
             try {
@@ -376,23 +372,22 @@ class Options extends GeoList implements ItemCommandListener{
 //#mdebug info
             System.out.println("history lock");
             System.out.println(Integer.toBinaryString(Astromaximum.customTime.lockFlags));
-//#enddebug      
-        }
-        catch (Exception ex) {
+//#enddebug
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     void loadHistory() {
-//#debug info 
+//#debug info
         System.out.println("Load history");
         try {
-            ByteArrayInputStream baos = new ByteArrayInputStream(rs.getRecord(2));
-            DataInputStream dis = new DataInputStream(baos);
+            ByteArrayInputStream bais = new ByteArrayInputStream(rs.getRecord(2));
+            DataInputStream dis = new DataInputStream(bais);
             optFlags = dis.readByte();
             timeGap.setSelectedIndex(dis.readByte(), true);
             layout.setSelectedIndex(dis.readByte(), true);
-            Astromaximum.interpreter.fontSize=dis.readByte();
+            Astromaximum.interpreter.fontSize = dis.readByte();
             CustomTime.histCount = dis.readUnsignedShort();
             Astromaximum.customTime.lockFlags = dis.readInt();
             for (int i = 0; i < CustomTime.histCount; i++) {
@@ -404,22 +399,21 @@ class Options extends GeoList implements ItemCommandListener{
                 }
                 Astromaximum.customTime.cg.append(str, null);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             CustomTime.histCount = Astromaximum.customTime.lockFlags = 0;
             Astromaximum.customTime.cg.deleteAll();
             timeGap.setSelectedIndex(2, true);
             layout.setSelectedIndex(0, true);
             optFlags = OPT_FLAGS;
-            Astromaximum.interpreter.fontSize=Font.SIZE_SMALL;
+            Astromaximum.interpreter.fontSize = Font.SIZE_SMALL;
         }
         for (int i = 0; i < optList.size(); i++) {
             optList.setSelectedIndex(i, (optFlags & (1 << i)) != 0);
         }
         localOffset = getLocalOffset();
-//#mdebug info      
+//#mdebug info
         System.out.println(Integer.toBinaryString(Astromaximum.customTime.lockFlags));
-//#enddebug      
+//#enddebug
     }
 
     static long currentTime() {
@@ -437,5 +431,7 @@ class Options extends GeoList implements ItemCommandListener{
     public void commandAction(Command arg0, Item arg1) {
         commandAction(arg0, this);
     }
-//#endif  
+//#endif
 }
+
+// # vi:et:ts=4:sw=4

@@ -1,3 +1,4 @@
+
 /** Interpreter
  * <p>Title: Nomad</p>
  *
@@ -10,13 +11,10 @@
  * @author Andrei Ivushkin
  * @version 1.0
  */
-
-
 //#ifdef build.desktop
 //# package com.sw_axis;
 //# class Interpreter {
 //#else
-
 import javax.microedition.lcdui.*;
 import java.io.*;
 import java.util.*;
@@ -24,13 +22,13 @@ import javax.microedition.rms.*;
 
 class Interpreter extends Canvas implements CommandListener {
 //#if "timeBomb" @ protection
-  static int hj=0x01234567;
+    static int hj = 0x01234567;
 //#endif
     private boolean helpMode;
     private final int HMARGIN;
     private final int VMARGIN;
     static final String[] riseKeys = {"asc", "mc", "dsc", "ic"};
-    private int curX, curY, topLine = 0, lineCount;
+    private int curX,  curY,  topLine = 0,  lineCount;
     int fontSize;
     private int lineHeight;
     static final int T_BUSINESS = 0;
@@ -51,7 +49,6 @@ class Interpreter extends Canvas implements CommandListener {
 //#     Hashtable hamtext=new Hashtable();
 //#     RecordStore rs;
 //#endif
-    
     Interpreter() {
         super();
         setFullScreenMode(true);
@@ -59,7 +56,7 @@ class Interpreter extends Canvas implements CommandListener {
         setCommandListener(this);
         VMARGIN = HMARGIN = getWidth() / 25;
         fontSize = Font.SIZE_SMALL;
-//#ifdef test_rs        
+//#ifdef test_rs
 //#         byte[] text = null;
 //#         String msg="";
 //# try{
@@ -73,10 +70,10 @@ class Interpreter extends Canvas implements CommandListener {
 //#             }
 //#             msg+=Long.toString(sum)+",";
 //#         }
-//# }catch(Exception ex){};        
+//# }catch(Exception ex){};
 //#         Astromaximum.log(msg);
 //#endif
-        
+
 //#ifdef use_amtext
 //#         try {
 //#             rs = RecordStore.openRecordStore("AMtext", "S&W Axis", "AMtext");
@@ -103,7 +100,7 @@ class Interpreter extends Canvas implements CommandListener {
 //#             Astromaximum.log("RS:"+ex.getMessage());
 //#         }
 //#endif
-        
+
     }
 
     /**
@@ -114,7 +111,6 @@ class Interpreter extends Canvas implements CommandListener {
      * @return boolean
      * @noinspection InfiniteLoopStatement
      */
-
     boolean findText(SummItem si, boolean ignoreAllTopics) {
 //    System.out.println("ft");
         txt = "";
@@ -204,8 +200,7 @@ class Interpreter extends Canvas implements CommandListener {
                 case Event.EV_DEGPASS1:
                 case Event.EV_DEGPASS2:
                 case Event.EV_DEGPASS3:
-                    res.append(Astromaximum.PLANETS[(int) params[1]]).append(" ")
-                            .append(params[3]).append("\u00b0").append(Astromaximum.CONSTELL[(int) params[4]]);
+                    res.append(Astromaximum.PLANETS[(int) params[1]]).append(" ").append(params[3]).append("\u00b0").append(Astromaximum.CONSTELL[(int) params[4]]);
                     if (params[5] > 0) {
                         res.append(" ").append(Astromaximum.getstr(133 + (int) params[5]));//deg
                     }
@@ -224,13 +219,13 @@ class Interpreter extends Canvas implements CommandListener {
                             append(" - ").append(Astromaximum.getstr(27)).append(" ").
                             append(Astromaximum.getstr(40 + SummItem.weekPlanets[(int) params[2] - 1]));//of_
                     break;
-                    //      case Event.EV_HELP:
-                    //      case Event.EV_DECUMBITURE:
-                    //        res="";
-                    //        break;
+                //      case Event.EV_HELP:
+                //      case Event.EV_DECUMBITURE:
+                //        res="";
+                //        break;
                 case Event.EV_SIGN_ENTER:
                     res.append(getFullPlanet(params[1])).append(" ").append(Astromaximum.getstr(133) //in
-                    ).append(" ").append(Astromaximum.CONSTELL[(int) params[2]]);
+                            ).append(" ").append(Astromaximum.CONSTELL[(int) params[2]]);
                     break;
                 case Event.EV_ECLIPSE:
                     res.append(Astromaximum.getstr(143)).append(" ").append( //eclipse
@@ -245,25 +240,18 @@ class Interpreter extends Canvas implements CommandListener {
                     break;
                 case Event.EV_RISE:
                     res.append("(-40/+28 ").append(Astromaximum.getstr(129)) //min.
-                            .append(") ").append(getFullPlanet(params[2])).append(" ")
-                            .append(getRiseString((int) params[3]));
+                            .append(") ").append(getFullPlanet(params[2])).append(" ").append(getRiseString((int) params[3]));
                     break;
                 case Event.EV_MOON_MOVE:
                     //        System.out.println(params[4]);
-                    res.append(getFullPlanet(params[4])).append(">")
-                            .append(params[3] == Event.SE_MOON ? "VOC" : getFullPlanet(params[3]));
+                    res.append(getFullPlanet(params[4])).append(">").append(params[3] == Event.SE_MOON ? "VOC" : getFullPlanet(params[3]));
                     break;
                 case Event.EV_ASP_EXACT:
                     if (params[1] == Event.SE_MOON) {
-                        res.append(Astromaximum.PLANETS[(int) params[1]]).append("-")
-                                .append(params[4]).append("\u00b0-")
-                                .append(Astromaximum.PLANETS[(int) params[2]]);
+                        res.append(Astromaximum.PLANETS[(int) params[1]]).append("-").append(params[4]).append("\u00b0-").append(Astromaximum.PLANETS[(int) params[2]]);
                     } else {
-                        res.append(Astromaximum.PLANETS[(int) params[2]]).append("-")
-                                .append(params[5]).append("\u00b0-")
-                                .append(Astromaximum.PLANETS[(int) params[3]]).append(" ");
-                        res.append(Astromaximum.getstr(params[2] <= Event.SE_MARS ?
-                                124 : //+-week
+                        res.append(Astromaximum.PLANETS[(int) params[2]]).append("-").append(params[5]).append("\u00b0-").append(Astromaximum.PLANETS[(int) params[3]]).append(" ");
+                        res.append(Astromaximum.getstr(params[2] <= Event.SE_MARS ? 124 : //+-week
                                 125));//long_aspect
                     }
                     break;
@@ -306,8 +294,6 @@ class Interpreter extends Canvas implements CommandListener {
 //    protected void sizeChanged(int w, int h) {
 //        Astromaximum.instance.recalcBounds(getWidth(),getHeight());
 //    }
-
-
     public void commandAction(Command c, Displayable d) {
         if (c.getPriority() == 1) {
             txt = null;
@@ -377,8 +363,9 @@ class Interpreter extends Canvas implements CommandListener {
     private void renderString(Graphics osg, String s) {
         Font fnt = osg.getFont();
         int len = s.length();
-        if (len == 0)
+        if (len == 0) {
             return;
+        }
         boolean isLastSpace;
         int width = getWidth() - HMARGIN * 2;
         char[] ca = new char[len];
@@ -491,7 +478,7 @@ class Interpreter extends Canvas implements CommandListener {
 //#                         sum+=interp[j];
 //#                     }
 //#                     Astromaximum.log(new Integer(interp.length).toString()+">"+Long.toString(sum));
-//# 
+//#
 //#                 } catch (Exception ex){
 //#                     Astromaximum.log("1:"+ex.getMessage());
 //#                     return null;
@@ -511,7 +498,7 @@ class Interpreter extends Canvas implements CommandListener {
 //#endif
             DataInputStream dis = new DataInputStream(
                     new ByteArrayInputStream(interp));
-            
+
 //      while(true){
             final int evt = dis.readUnsignedShort();
             final int partsz = dis.readInt();
@@ -547,9 +534,11 @@ class Interpreter extends Canvas implements CommandListener {
             }
 //      }
         } catch (IOException ex) {
-          Astromaximum.log("2:"+ex.toString());
+            Astromaximum.log("2:" + ex.toString());
         }
         return res;
     }
 //#endif
 }
+
+// # vi:et:ts=4:sw=4

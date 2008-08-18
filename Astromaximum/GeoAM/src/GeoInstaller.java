@@ -4,12 +4,9 @@
  * Created on 08 February 2007, 18:03
  */
 
-import java.io.DataInputStream;
-import java.io.IOException;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreNotOpenException;
 
 /**
  *
@@ -30,7 +27,7 @@ public class GeoInstaller extends MIDlet implements CommandListener {
 //    Display.getDisplay(this).setCurrent(alert);
         gl = new GeoList(this, Choice.MULTIPLE, "locations.dat");
         gl.setCommandListener(this);
-        Command cmd=new Command(gl.getMessage("Install"), Command.OK, 1);
+        Command cmd = new Command(gl.getMessage("Install"), Command.OK, 1);
         gl.addCommand(cmd);
         try {
             gl.initDB(false);
@@ -42,7 +39,7 @@ public class GeoInstaller extends MIDlet implements CommandListener {
                 gl.cityList.append(gl.extractCityName(gl.extractLocation(i)), null);
             }
             System.out.println(gl.cityList.size());
-            if(gl.cityList.size()==1){
+            if (gl.cityList.size() == 1) {
                 gl.cityList.setSelectedIndex(0, true);
                 commandAction(cmd, gl);
                 quit();
@@ -105,3 +102,5 @@ public class GeoInstaller extends MIDlet implements CommandListener {
         notifyDestroyed();
     }
 }
+
+// # vi:et:ts=4:sw=4

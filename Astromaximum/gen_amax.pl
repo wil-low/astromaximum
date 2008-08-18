@@ -17,6 +17,10 @@ if($winda){
 	$nb_user='%USERPROFILE%/.netbeans/6.0';
 	$platform='D:\WTK251';
 }
+
+our $year_info;
+#$year_info="инфо года";
+
 our $path;
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
@@ -126,7 +130,7 @@ if($islocal and ($config eq 'rebuild')){
 	echo("$cmd\n");
 	mydie("BUILD ERROR") if system($cmd);
 	my @conf=('tb', 'demo', 'imei',
-#	'notest', 'notest_logger', 'imei', 'tb_logger' 
+#	'notest', 'notest_logger', 'imei', 'tb_logger'
 	);
 	my @tmpl=glob("$path/templates/*.jar");
 	foreach(@tmpl){
@@ -352,7 +356,7 @@ sub dbconnect{
 		$DB_SERVER='localhost';
 		$DB_NAME='amax';
 		$DB_PORT='3306';
-		
+
 		$DB_SUPERUSER='root';
 		$DB_SUPERUSER_PWD='toor';
 		$DB_USER='user';
@@ -362,7 +366,7 @@ sub dbconnect{
 		$DB_SERVER='localhost';
 		$DB_NAME='usr_web42_1';
 		$DB_PORT='3306';
-		
+
 		$DB_SUPERUSER='web42';
 		$DB_SUPERUSER_PWD='vSZBWppx';
 		$DB_USER='user';
@@ -458,7 +462,7 @@ sub inject_common{
 			}
 		}
 		$dest=$_[1] if $_[1];
-		my $header=pack('nCCCCn',$year, $month, $day, $hour, $min, $day_count);
+        my $header=pack('nCCnna*',$year, $month, $day, length($year_info), $day_count, $year_info);
 		my $path1=$path;
 
 		$path1.="/data/archive/$year";
@@ -1009,3 +1013,5 @@ sub mydie{
 	close FLOG;
 	die $_[0];
 }
+
+// # vi:et:ts=4:sw=4

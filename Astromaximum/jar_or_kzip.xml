@@ -63,6 +63,7 @@
 	    <arg value="${lang}"/>
 	    <arg value="${basedir}/../loclist_default.txt"/>
 	    <arg value="${basedir}/${dist.dir}/${dist.jar}"/>
+	    <arg value="nomessjar"/>
 	</exec>
     </target>
 

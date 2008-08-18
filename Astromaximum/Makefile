@@ -3,7 +3,7 @@ SOURCE=$(DEST)/source
 
 .PHONY: all gen_amax config template interp mutter relgui test sunrise
 
-all:	gen_amax config template interp mutter relgui
+all:	gen_amax config template interp mutter relgui sunrise
 
 test:	
 	#make mutter; \
@@ -32,13 +32,13 @@ config:
 	perl gen_amax.pl rebuild
 
 mutter:
-	cd mutter2;  make CONF=Release build; cd ..
+	cd mutter2 && make CONF=Release $1 build && cd ..
 
 relgui:
 	cd relgui && make CONF=Release $1 build && cd ..
 
 sunrise:
-	cd sunrise;  make CONF=Release build; cd ..
+	cd sunrise && make CONF=Release $1 build && cd ..
 
 help:
-	@echo "Usage: make [gen_amax|template|interp|config|mutter|relgui]"
+	@echo "Usage: make [all|gen_amax|template|interp|config|mutter|relgui|sunrise]"

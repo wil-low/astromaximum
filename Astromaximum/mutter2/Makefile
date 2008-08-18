@@ -92,3 +92,6 @@ help: .help-pre .help-impl .help-post
 
 # include project implementation makefile
 include nbproject/Makefile-impl.mk
+
+# vi:noet:ts=4:sw=4
+

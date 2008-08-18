@@ -23,7 +23,6 @@
  * @author not attributable
  * @version 1.0
  */
-
 import java.io.*;
 //import java.util.Date;
 //import java.util.TimeZone;
@@ -33,6 +32,7 @@ import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.*;
 
 public class GeoList extends Form implements RecordComparator, RecordFilter, CommandListener {
+
     protected RecordStore rs;
     protected byte[] curCity = null;
     int total;
@@ -43,8 +43,9 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     static long dstStart;
     static long dstEnd;
     static boolean dstExists;
+    static byte[] customData;
     static long tzOffset;
-    static boolean isSouthern=false;
+    static boolean isSouthern = false;
     ChoiceGroup cityList;
 
     public GeoList(MIDlet midlet, int type, String loc) {
@@ -60,8 +61,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
             System.out.println("Year=" + year);
             total = dis.readShort();
             dis.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
         }
         cityList = new ChoiceGroup(null, type);
         append(cityList);
@@ -83,9 +83,8 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
 //#     dateField1.setPreferredSize(117, 50);
 //#else
 //    setTitle("IMEI: "+imei.toString());
-            /*String[] cities = */getAvailableCities();
-        }
-        catch (Exception ex) {
+            /*String[] cities = */            getAvailableCities();
+        } catch (Exception ex) {
         }
         setTitle("Check cities to install:");
 //#endif
@@ -97,24 +96,27 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     public byte[] initDB(boolean canCreate) throws Exception {
 //    System.out.println(STORE_NAME);
 //        String platform = System.getProperty("microedition.platform");
-        try{
+        try {
             rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year).substring(2), main.getAppProperty("MIDlet-Vendor"),
-                        STORE_NAME + Integer.toString(year).substring(2));
-        }catch(RecordStoreNotFoundException ex){
+                    STORE_NAME + Integer.toString(year).substring(2));
+        } catch (RecordStoreNotFoundException ex) {
             rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year).substring(2), false);
         }
         curCity = rs.getRecord(1);
         RecordEnumeration rece = rs.enumerateRecords(this, null, false);
-//#mdebug info 
-    System.out.println(new String(curCity));
-    System.out.println(rece.numRecords());
-//#enddebug    
+//#mdebug info
+        System.out.println(new String(curCity));
+        System.out.println(rece.numRecords());
+//#enddebug
         byte[] nextR;
         nextR = rece.nextRecord();
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(nextR));
-        dis.skip(8);
+        dis.skip(4);
+        customData = null;
+        int count = dis.readUnsignedShort();
+        dis.skip(2);
         dis.readUTF();
-        isSouthern=false;
+        isSouthern = false;
         tzOffset = dis.readUnsignedShort();
         dstExists = (tzOffset & (1 << 15)) == 0;
         tzOffset &= (1 << 15) - 1;
@@ -124,24 +126,32 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
         if (dstExists) {
             d_1 = dis.readInt() * 60000L - tzOffset;
             d_2 = dis.readInt() * 60000L - tzOffset - 3600000L;
-            if(d_1<d_2){ // N hemisphere
-                dstStart=d_1; dstEnd=d_2;
+            if (d_1 < d_2) { // N hemisphere
+                dstStart = d_1;
+                dstEnd = d_2;
+            } else {
+                dstStart = d_2;
+                dstEnd = d_1;
+                isSouthern = true;
             }
-            else{
-                dstStart=d_2; dstEnd=d_1; isSouthern=true;
-            }
-//#mdebug info
-      System.out.println(dstStart);
-      System.out.println(new Date(dstStart).toString());
-      System.out.println(dstEnd);
-      System.out.println(new Date(dstEnd).toString());
-//#enddebug      
+        if (count > 0) {
+           customData = new byte[count];
+           dis.read(customData);
         }
+//#mdebug info
+            System.out.println(dstStart);
+            System.out.println(new Date(dstStart).toString());
+            System.out.println(dstEnd);
+            System.out.println(new Date(dstEnd).toString());
+//#enddebug
+        }
+//        System.out.print("customData=");
+//        System.out.println(customData);
 
 //#mdebug info
-    System.out.print("TZ offset=");
-    System.out.println(tzOffset);
-//#enddebug    
+        System.out.print("TZ offset=");
+        System.out.println(tzOffset);
+//#enddebug
         byte[] data = new byte[dis.available()];
         dis.read(data);
         dis.close();
@@ -155,7 +165,6 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
         return string;
     }
 
-
     String[] getAvailableCities() throws Exception {
         String[] cities = null;
         long ET = System.currentTimeMillis();
@@ -168,22 +177,24 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
         return cities;
     }
 
-
     public int compare(byte[] b0, byte[] b1) {
         String cn0 = extractCityName(b0);
         String cn1 = extractCityName(b1);
         try {
             int cmp = cn0.compareTo(cn1);
-            if (cmp < 0)
+            if (cmp < 0) {
                 return RecordComparator.PRECEDES;
-            if (cmp > 0)
+            }
+            if (cmp > 0) {
                 return RecordComparator.FOLLOWS;
-        }
-        catch (Exception e) {
-            if (cn0 != null)
+            }
+        } catch (Exception e) {
+            if (cn0 != null) {
                 return RecordComparator.PRECEDES;
-            if (cn1 != null)
+            }
+            if (cn1 != null) {
                 return RecordComparator.FOLLOWS;
+            }
         }
         return RecordComparator.EQUIVALENT;
     }
@@ -198,26 +209,30 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
             inputStream.skip(8);
             name = inputStream.readUTF();
             inputStream.close();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return null;
         }
         return name;
     }
 
     public boolean matches(byte[] b) {
-        if (b == null) return false;
+        if (b == null) {
+            return false;
+        }
         String s = extractCityName(b);
-        if (s == null) return false;
+        if (s == null) {
+            return false;
+        }
         return new String(curCity).equals(s);
     }
 
     byte[] extractCityNameBytes(byte[] geo) {
         String s = extractCityName(geo);
-        if (s == null)
+        if (s == null) {
             return null;
-        else
+        } else {
             return s.getBytes();
+        }
     }
 
     byte[] extractLocation(int index) {
@@ -245,10 +260,9 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     void shutdown() {
         try {
             rs.closeRecordStore();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
         }
     }
-
-
 }
+
+// # vi:et:ts=4:sw=4

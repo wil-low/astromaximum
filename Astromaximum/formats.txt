@@ -11,11 +11,11 @@ Used in:
 Header fields:
 	0x0000	short LB	year
 	0x0002	byte		month
-	0x0003	byte		day
-	0x0004	byte		hour
-	0x0005	byte		minute ^ start of period
+	0x0003	byte		day  ^ start of period
+	0x0004	short LB	customData length
 	0x0006	short LB	days in period
-	0x0007  ...			see **Event record**
+    0x0007  byte[]    	customData (for future expansions)
+              ...			see **Event record**
 
 *** Event record ***
 
@@ -59,17 +59,21 @@ Used in:
 Header fields:
 	0x0000	short LB	year
 	0x0002	byte		month
-	0x0003	byte		day
-	0x0004	byte		hour
-	0x0005	byte		minute ^ start of period
+	0x0003	byte		day     ^ start of period
+	0x0004	short LB	customData length
 	0x0006	short LB	days in period
 	0x0008	short LB	city name length
 	0x000a	UTF-8		city name
-## TODO: these fields may result in illegal calculations!!!
-                short LB	timezone offset. DST is applicable if 15th bit (0x8000) is NOT set.
-                            Real TZofs=(tz-16*60)*60000 msec.
-                int LB	DST start date, if applicable (local time), mins
-                int LB	DST end date, if applicable (local time), mins
+            short LB	timezone offset
+
+                DST is applicable if 15th bit (0x8000) is NOT set.
+
+                Real TZofs=(tz-16*60)*60000 msec.
+<if DST applicable>
+            int LB      DST start date (local time), mins
+            int LB      DST end date (local time), mins
+<endif>
+            byte[]    	customData (for future expansions)
 	
 *** data/*.ini ***
 

@@ -1,6 +1,7 @@
 //#ifdef build.desktop
 //# package com.sw_axis;
 //#endif
+
 /**
  * <p>Title: Nomad</p>
  *
@@ -13,7 +14,6 @@
  * @author Andrei Ivushkin
  * @version 1.0
  */
-
 import java.util.*;
 
 class Event {
@@ -31,7 +31,6 @@ class Event {
     static final byte SE_TRUE_NODE = 10;
     static final byte SE_MEAN_APOG = 11;
     static final byte SE_WHITE_MOON = 12;
-
     static final int EV_VOC = 0; // void of course
     static final int EV_SIGN_ENTER = 1; // enter into sign
     static final int EV_ASP_EXACT = 2; // exact aspect
@@ -47,7 +46,6 @@ class Event {
     static final int EV_NAVROZ = 12;  // Navroz
     static final int EV_WEEK = 13;  // week days
     static final int EV_PLANET_HOUR = 14;  // planetary hours
-
     static final int EV_STATUS = 15;
     static final int EV_SUN_RISE = 16;
     static final int EV_MOON_RISE = 17;
@@ -89,7 +87,6 @@ class Event {
     //#if "imeiCheck" @ protection
     static int hj;
 //#endif
-
     byte planet0, planet1 = -1;
     long date0, date1;
     short degree = 127;
@@ -129,7 +126,6 @@ class Event {
         return str;
     }
 
-
     /**
      * setAspExact
      *
@@ -139,7 +135,6 @@ class Event {
     void setDegree(int deg) {
         degree = (short) deg;
     }
-
 
     /**
      * getDegree
@@ -159,10 +154,9 @@ class Event {
      *
      * @return long
      */
-/*  long getJD() {
+    /*  long getJD() {
     return julianDay;
-  }*/
-
+    }*/
     /**
      * Event
      *
@@ -191,11 +185,11 @@ class Event {
         }
         final int f0 = dateBetween(date0, start, end);
         final int f1 = dateBetween(date1, start, end);
-/*    dump();
-    System.out.print(f0);
-    System.out.print("&");
-    System.out.println(f1);
- */
+        /*    dump();
+        System.out.print(f0);
+        System.out.print("&");
+        System.out.println(f1);
+         */
         if (Math.abs(f0 + f1) == 2) {
             return false;
         }
@@ -228,7 +222,6 @@ class Event {
                 Integer.toString(planet1) + "\n");
     }
 //#enddebug
-
     /**
      * @param date0
      * @param start
@@ -258,7 +251,7 @@ class Event {
      * @noinspection AssignmentToMethodParameter,HardcodedFileSeparator
      */
     static String long2String(long date0, int hoursOnly, boolean h24) {
-/* @todo TZ code! */
+        /* @todo TZ code! */
         if (hoursOnly == 1) {
             if (date0 < Summary.period0) {
                 date0 = Summary.period0;//-localOffset(Summary.period0);
@@ -300,12 +293,12 @@ class Event {
     static long localOffset(long date0) { // date0 is in UTC always ?
         long ofs = GeoList.tzOffset;//-GeoList.localOffset;
         if (Options.dstExists) {
-/*
+            /*
             System.out.println(date0);
             System.out.println(GeoList.dstStart);
             System.out.println(GeoList.dstEnd);
             System.out.println(GeoList.isSouthern);
- */
+             */
             int inn = dateBetween(date0, GeoList.dstStart, GeoList.dstEnd);
             if ((inn == 0) ^ GeoList.isSouthern) {
                 ofs += Astromaximum.MSECINDAY / 24;
@@ -313,5 +306,7 @@ class Event {
         }
         return ofs;
     }
-//#endif  
+//#endif
 }
+
+// # vi:et:ts=4:sw=4
