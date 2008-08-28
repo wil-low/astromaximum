@@ -25,7 +25,7 @@ OBJECTDIR=build/Release/GNU-Linux-x86
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/home/willow/amax/sunrise/../../../amax/sunrise/main.o
+	${OBJECTDIR}/main.o
 
 # C Compiler Flags
 CFLAGS=
@@ -46,9 +46,9 @@ LDLIBSOPTIONS=
 sunrise: ${OBJECTFILES}
 	${LINK.c} -o sunrise -s ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/_ext/home/willow/amax/sunrise/../../../amax/sunrise/main.o: ../../../amax/sunrise/main.c 
-	${MKDIR} -p ${OBJECTDIR}/_ext/home/willow/amax/sunrise/../../../amax/sunrise
-	$(COMPILE.c) -O2 -o ${OBJECTDIR}/_ext/home/willow/amax/sunrise/../../../amax/sunrise/main.o ../../../amax/sunrise/main.c
+${OBJECTDIR}/main.o: main.c 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.c) -O2 -o ${OBJECTDIR}/main.o main.c
 
 # Subprojects
 .build-subprojects:

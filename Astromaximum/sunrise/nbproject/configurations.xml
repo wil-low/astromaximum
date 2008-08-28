@@ -12,13 +12,13 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>../../../amax/sunrise/main.c</itemPath>
   </logicalFolder>
   <sourceEncoding>windows-1252</sourceEncoding>
   <projectmakefile>Makefile</projectmakefile>
@@ -35,7 +35,7 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="../../../amax/sunrise/main.c">
+      <item path="main.c">
         <itemTool>0</itemTool>
       </item>
     </conf>
@@ -61,7 +61,7 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="../../../amax/sunrise/main.c">
+      <item path="main.c">
         <itemTool>0</itemTool>
       </item>
     </conf>
