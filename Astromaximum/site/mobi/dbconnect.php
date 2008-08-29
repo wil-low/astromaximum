@@ -16,7 +16,7 @@ if(!$GLOBALS['amax']['is_online']){ // local=true
 	$DB_USER_PWD='user';
 }
 else{
-
+/*
 	$DB_SERVER='localhost';
 	$DB_NAME='usr_web42_1';
 	$DB_PORT='3306';
@@ -25,7 +25,15 @@ else{
 	$DB_SUPERUSER_PWD='vSZBWppx';
 	$DB_USER='user';
 	$DB_USER_PWD='user';
-
+*/
+	$DB_SERVER='localhost';
+	$DB_NAME='amax';
+	$DB_PORT='3306';
+	
+	$DB_SUPERUSER='amaxroot';
+	$DB_SUPERUSER_PWD='B4w0GxFUcT';
+	$DB_USER='user';
+	$DB_USER_PWD='user';
 }
 
 /*

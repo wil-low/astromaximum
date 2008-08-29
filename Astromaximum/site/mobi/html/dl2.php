@@ -4,36 +4,24 @@ $defyear=2008;
 if(isset($_GET['ajax'])){
     $ajax=$_GET['ajax'];
     $EXEC=1;
+	include_once('../config.php');
     include_once("../lang.php");
-    lang_load("mobi/html");
+    lang_load("../html");
     include_once("../dbconnect.php");
     if(!isset($_GET['cid']) || !isset($_GET['stateid'])) echo "dfgsregsr";
     $cid=intval($_GET['cid']); $stateid=intval($_GET['stateid']);
-    $out="{\n";
-    
+    $arr=array();
     if(!$ajax){
-        $out.="\t\"countries\":[\n";
-        $sth=mysql_query("SELECT countries.id, countries.name FROM countries ORDER BY countries.name");
-        while($row=mysql_fetch_row($sth)){
-            $out.="\t\t{\"id\":".$row[0].",\n\t\t\"name\":\"".$row[1]."\"},\n";    
-        }
-        $out.="\t],\n";
+        $stat="SELECT countries.id, countries.name FROM countries ORDER BY countries.name";
     }
     
     if($ajax==1){
-        $out.="\t\"states\":[\n";
-        $out.="\t\t{\"id\":0,\n\t\t\"name\":\"".$i18['ALL_STATES']."\"},\n";
+        array_push($arr, "0=".$i18['ALL_STATES']);
         $stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
             "countries WHERE country_id=%s ORDER BY states.name",quote_smart($cid));
-        $sth=mysql_query($stat);
-        while($row=mysql_fetch_row($sth)){
-            $out.="\t\t{\"id\":".$row[0].",\n\t\t\"name\":\"".$row[1]."\"},\n";    
-        }
-        $out.="\t],\n";
     }
     
     if($ajax==2){
-        $out.="\t\"cities\":[\n";
         $andst='';
         if($stateid){
             $andst=sprintf(" AND state_id=%s",quote_smart($stateid));
@@ -44,14 +32,15 @@ if(isset($_GET['ajax'])){
             " WHERE country_id=%s AND countries.id=country_id".
             " AND city_id=cities.id %s AND year=%s". # year condition
             " ORDER BY cities.name",quote_smart($cid), $andst, quote_smart($defyear));
-//        echo $stat;
-        $sth = mysql_query($stat);
-        while($row=mysql_fetch_row($sth)){
-            $out.="\t\t{\"id\":".$row[0].",\n\t\t\"name\":\"".$row[1]."\"},\n";
-        }
-        $out.="\t],\n";
     }    
-    $out.="\n}\n";
+    $out="";
+	header('Cache-Control: no-cache');
+	$sth=mysql_query($stat); $ii=0;
+	while($row=mysql_fetch_row($sth)){
+		array_push($arr, $row[0].'='.$row[1]);
+		$ii++;
+	}
+	$out.=implode("\t", $arr);
     echo $out;
     $fout=fopen("/tmp/1.txt","w");
     fwrite($fout, $out);
@@ -65,7 +54,7 @@ $step=1;
 $max_cities=5;
 $table_vsize=18;
 $current_year=$GLOBALS['amax']['year'];
-$chac=check_access();
+$chac=0;//check_access();
 if($chac==-1 or $chac==1){
 	reg_warning($i18['PAGE_DLCIT']);
 	return;
@@ -203,6 +192,7 @@ KCAP;
 </form>
 <div id="status">---</div>
 </div>
+<script src="/json2.js" type="text/javascript"></script>            
 <script src="/dl.js" type="text/javascript"></script>            
 
 <?php

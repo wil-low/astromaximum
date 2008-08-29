@@ -41,6 +41,9 @@ swemini: swemini.o libswe.a
 libswe.a: $(SWEOBJ)
 	ar r libswe.a	$(SWEOBJ)
 
+swedll32.dll: $(SWEOBJ)
+	gcc -shared -s -o libswe.so $(SWEOBJ)
+
 libswe.sl: $(SWEOBJ)
 	ld -b -o libswe.sl	$(SWEOBJ)
 

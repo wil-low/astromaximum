@@ -56,11 +56,12 @@ function showc2(mode,val)
         { 
             if(xhr.readyState  == 4) {
                 if(xhr.status  == 200) {
-                    doc = eval('(' + xhr.responseText + ')');
-                    fill_lb(document.main.countries, doc.countries, cid);
+//                    doc = eval('(' + xhr.responseText + ')');
+					var content = xhr.responseText.split("\t");
+                    fill_lb(document.main.countries, content, cid);
                     document.main.countries.selectedIndex=0;
-                    document.main.cid.value=doc.countries[0].id;
-                    showc2(1, doc.countries[0].id);
+                    document.main.cid.value=firstId(content);
+                    showc2(1, document.main.cid.value);
                 }
             }
             
@@ -72,11 +73,12 @@ function showc2(mode,val)
         { 
             if(xhr.readyState  == 4) {
                 if(xhr.status  == 200) {
-                    doc = eval('(' + xhr.responseText + ')');
-                    fill_lb(document.main.states, doc.states, document.main.stateid.value);
+					var content = xhr.responseText.split("\t");
+                    fill_lb(document.main.states, content, document.main.stateid.value);
+					alert(document.main.states.innerHTML);
                     document.main.states.selectedIndex=0;
                     document.main.stateid.value=0;
-                    showc2(2, doc.states[0].id);
+                    showc2(2, firstId(content));
                 }
             }
             
@@ -88,8 +90,8 @@ function showc2(mode,val)
         { 
             if(xhr.readyState  == 4) {
                 if(xhr.status  == 200) {
-                    var doc = eval('(' + xhr.responseText + ')');
-                    fill_lb(document.main.cities, doc.cities, 0);
+					var content = xhr.responseText.split("\t");
+                    fill_lb(document.main.cities, content, 0);
                 }
             }
             
@@ -105,10 +107,14 @@ if(document.main.countries.length==0){
     showc2(0,0,0);
 }
 
+function firstId(arr){
+	return arr[0].split('=')[0];
+}
 function fill_lb(listbox, arr, selindex)
 {
     listbox.options.length=0;
     for(var i = 0; i < arr.length; i++){
-        listbox.options[i] = new Option(arr[i].name, arr[i].id, arr[i].id == selindex);
+		var fld=arr[i].split('=');
+        listbox.options[i] = new Option(fld[1], fld[0], fld[0] == selindex);
     }
 }
