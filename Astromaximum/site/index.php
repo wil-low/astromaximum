@@ -202,12 +202,9 @@ else{
 	}
 	else{
 		if(file_exists($fn)){
-			$manual_requested=preg_match("/^[_\d]+$/is", $main);
-			if($manual_requested){
-				include($fn);
-				if(strcmp($main, '0_0')){
-					echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a></p>";
-				}
+			$topic_requested=preg_match('/^(.+\/)(\d+)_(\d+)\.php$/is', $fn, $matches);
+			if($topic_requested){
+                prepare_topic($matches, $main);
 			}
 			else{
 				include($fn);
@@ -237,5 +234,26 @@ function disable_big_button($id, $label, $check_page, $link_page){
 		$style=' style="color:rgb(133,195,224)"';
 	}
 	return "<div id=\"$id\"$style>$label</div>\n";
+}
+
+function prepare_topic($matches, $main){
+    global $lang_, $i18;
+    $nums=explode('_', $main);
+    if($matches[2]+$matches[3]){
+        if($matches[2]){
+            $fn0=$matches[1].$matches[2].'_0.php';
+        }
+        else{
+            $fn0=$matches[1].$matches[3].'_0.php';
+            
+        }
+        if(file_exists($fn0)){
+            include($fn0);
+            if(strcmp($main, '0_0')){
+                echo "<p><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a><br/></p>";
+            }
+        }
+    }
+    include($matches[0]);
 }
 ?>

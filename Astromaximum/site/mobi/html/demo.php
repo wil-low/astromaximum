@@ -15,16 +15,21 @@ if(check_access()!=-1){
 					$email=$_POST['email'];
 					$sc=get_default_cities($GLOBALS['amax']['def_cities']); 
 					$link_text=midlet_create("demo", $prev_year, $lang, $sc, "mobi/dl", false);
-					$message=file_get_contents("mobi/dl/source/demo.mail");
-					$message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
-					$message=str_replace('[links]', $link_text, $message);
-					$mail=mailtext_w_attach($email, '', 'Astromaximum demo - download link', $message);
-					if(!$mail->ErrorInfo){
-						echo "<p>".sprintf($i18['DEMO_LINK_SENT'], $email)."</p>";
-					}
-					else{
-						echo '<p><span class="alert">'.$mail->ErrorInfo."</span></p>";
-					}
+                    if(!$link_text){
+                        echo '<p><span class="alert">Error</span></p>';
+                    }
+                    else{
+                        $message=file_get_contents("mobi/dl/source/demo.mail");
+                        $message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
+                        $message=str_replace('[links]', $link_text, $message);
+                        $mail=mailtext_w_attach($email, '', 'Astromaximum demo - download link', $message);
+                        if(!$mail->ErrorInfo){
+                            echo "<p>".sprintf($i18['DEMO_LINK_SENT'], $email)."</p>";
+                        }
+                        else{
+                            echo '<p><span class="alert">'.$mail->ErrorInfo."</span></p>";
+                        }
+                    }
 				}
 				else{  # wrong email
 					echo "<p><span class=\"alert\">{$i18['DEMO_EMAIL_WRONG']}</span></p>";
@@ -47,7 +52,7 @@ if(check_access()!=-1){
 	}
 	$sess=session_name().'='.session_id();
 	echo $i18['DEMO_HEADER'];
-	$emailing=sprintf($i18['DEMO_EMAILING'], $GLOBALS['amax']['noreply']);
+	$emailing=sprintf($i18['DEMO_EMAILING'], $GLOBALS['amax']['mail_office']);
 	echo <<<EOF1
 
 <form action="$uri" method="post">

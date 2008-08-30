@@ -215,8 +215,9 @@ ul {
 	margin: 7px 7px 7px 0px;
 }
 #leftColumn p a b {
-	font-weight: normal;
-	color: #606060;
+	font-size: 11px;
+	font-weight: bold;
+	color: #818181;
 }
 #leftColumn p a:hover b {
 	color: #606060;

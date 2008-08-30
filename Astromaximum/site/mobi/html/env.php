@@ -81,6 +81,23 @@ function yesno($val){
 	else{
 		$env[$key]="<span class=\"alert\">MISSING</span>";
 	}
+
+	$key='Default cities';
+	$adc=$GLOBALS['amax']['def_cities'];
+	$dcit=explode(',', get_default_cities($adc));
+//	print_r($dcit);
+	$yprev=$GLOBALS['amax']['year']-1;
+	$value='';
+	for($i=0; $i<count($adc); $i++){
+		$value.="$adc[$i] ";
+		$sql="SELECT 1 FROM locations WHERE city_id = '$dcit[$i]' and year=$yprev";
+		$sth=mysql_query($sql);
+		$value.=yesno($sth && mysql_num_rows($sth));
+		$value.=", ";
+//		echo "$sql<br/>";
+	}
+	$env[$key]=$value;
+
 	$key='Demo cities';
 	$adc=$GLOBALS['amax']['demo_cities'];
 	$dcit=explode(',', get_default_cities($adc));
