@@ -6,22 +6,7 @@ function showc(country,state){
 		frm.submit();
 	}
 }
-function generate(country){
-/*    
-	lst=findObj("chkcit");
-	ind=lst.selectedIndex;
-	if(ind<0){
-		alert("<?php echo $i18['SELCITY_ALERT']?>");
-		return;
-	}
-	if(confirm("<?php echo $i18['SELCITY_GENERATE']?>:\n"+lst.item(ind).text+", "+country+"?")){
-		frm=document.forms.namedItem("main");
-		frm.elements.namedItem("sc").value=lst.item(ind).value;
-		frm.elements.namedItem("Action").value=1;
-		frm.submit();
-	}
-*/
-}
+
 function highlight_gen(lb){
 	if(lb.selectedIndex<0) return;
 	btn=findObj('genbtn');
@@ -56,8 +41,7 @@ function showc2(mode,val)
         { 
             if(xhr.readyState  == 4) {
                 if(xhr.status  == 200) {
-//                    doc = eval('(' + xhr.responseText + ')');
-					var content = xhr.responseText.split("\t");
+                    content = eval('(' + xhr.responseText + ')').content;
                     fill_lb(document.main.countries, content, cid);
                     document.main.countries.selectedIndex=0;
                     document.main.cid.value=firstId(content);
@@ -73,9 +57,8 @@ function showc2(mode,val)
         { 
             if(xhr.readyState  == 4) {
                 if(xhr.status  == 200) {
-					var content = xhr.responseText.split("\t");
+                    content = eval('(' + xhr.responseText + ')').content;
                     fill_lb(document.main.states, content, document.main.stateid.value);
-					alert(document.main.states.innerHTML);
                     document.main.states.selectedIndex=0;
                     document.main.stateid.value=0;
                     showc2(2, firstId(content));
@@ -90,7 +73,7 @@ function showc2(mode,val)
         { 
             if(xhr.readyState  == 4) {
                 if(xhr.status  == 200) {
-					var content = xhr.responseText.split("\t");
+                    content = eval('(' + xhr.responseText + ')').content;
                     fill_lb(document.main.cities, content, 0);
                 }
             }
@@ -103,18 +86,19 @@ function showc2(mode,val)
     xhr.open('GET', url,  true);
     xhr.send(null); 
 }
-if(document.main.countries.length==0){
-    showc2(0,0,0);
-}
 
 function firstId(arr){
-	return arr[0].split('=')[0];
+	return arr[0][0];
 }
+
 function fill_lb(listbox, arr, selindex)
 {
     listbox.options.length=0;
     for(var i = 0; i < arr.length; i++){
-		var fld=arr[i].split('=');
-        listbox.options[i] = new Option(fld[1], fld[0], fld[0] == selindex);
+        listbox.options[i] = new Option(arr[i][1], arr[i][0], arr[i][0] == selindex);
     }
+}
+
+if(document.main.countries.length==0){
+    showc2(0,0,0);
 }

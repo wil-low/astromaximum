@@ -8,6 +8,8 @@ if(isset($_GET['ajax'])){
     include_once("../lang.php");
     lang_load("../html");
     include_once("../dbconnect.php");
+	header('Content-Type: text-javascript;charset=UTF-8');
+	header('Cache-Control: no-cache');
     if(!isset($_GET['cid']) || !isset($_GET['stateid'])) echo "dfgsregsr";
     $cid=intval($_GET['cid']); $stateid=intval($_GET['stateid']);
     $arr=array();
@@ -16,7 +18,7 @@ if(isset($_GET['ajax'])){
     }
     
     if($ajax==1){
-        array_push($arr, "0=".$i18['ALL_STATES']);
+        array_push($arr, '[0,"'.$i18['ALL_STATES'].'"]');
         $stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
             "countries WHERE country_id=%s ORDER BY states.name",quote_smart($cid));
     }
@@ -33,14 +35,14 @@ if(isset($_GET['ajax'])){
             " AND city_id=cities.id %s AND year=%s". # year condition
             " ORDER BY cities.name",quote_smart($cid), $andst, quote_smart($defyear));
     }    
-    $out="";
-	header('Cache-Control: no-cache');
+    $out='{"content":[';
 	$sth=mysql_query($stat); $ii=0;
 	while($row=mysql_fetch_row($sth)){
-		array_push($arr, $row[0].'='.$row[1]);
+		array_push($arr, '['.$row[0].',"'.$row[1].'"]');
 		$ii++;
 	}
-	$out.=implode("\t", $arr);
+	$out.=implode(',', $arr);
+	$out.=']}';
     echo $out;
     $fout=fopen("/tmp/1.txt","w");
     fwrite($fout, $out);
@@ -54,7 +56,7 @@ $step=1;
 $max_cities=5;
 $table_vsize=18;
 $current_year=$GLOBALS['amax']['year'];
-$chac=0;//check_access();
+$chac=check_access();
 if($chac==-1 or $chac==1){
 	reg_warning($i18['PAGE_DLCIT']);
 	return;
@@ -140,11 +142,30 @@ KCAP;
 }
 //print_r($_REQUEST);
 ?>
+<script type="text/javascript">      
+function generate(country){
+    
+	lst=findObj("chkcit");
+	ind=lst.selectedIndex;
+	if(ind<0){
+		alert("<?php echo $i18['SELCITY_ALERT']?>");
+		return;
+	}
+	var lbc=document.main.countries;
+	country=lbc.item(lbc.selectedIndex).text;
+	if(confirm("<?php echo $i18['SELCITY_GENERATE']?>:\n"+lst.item(ind).text+", "+country+"?")){
+		frm=document.forms.namedItem("main");
+		frm.elements.namedItem("sc").value=lst.item(ind).value;
+		frm.elements.namedItem("Action").value=1;
+		frm.submit();
+	}
+}
+</script>
 
 <h4></h4>
           
 <div style="position: absolute;top: 198px;left: 345px;width:660px;">
-<form method="post" action="/?lang=ru&amp;p=dl" name="main">
+<form method="post" action="/?lang=ru&amp;p=dl2" name="main">
 <table class="colorlist">
 <tr><th><b>Шаг 1</b>.
 <select name="y_sel" style="height:auto; width:auto;" onchange="document.forms.namedItem('main').submit()">
@@ -192,9 +213,7 @@ KCAP;
 </form>
 <div id="status">---</div>
 </div>
-<script src="/json2.js" type="text/javascript"></script>            
-<script src="/dl.js" type="text/javascript"></script>            
-
+<script src="/dl.js" type="text/javascript"/>            
 <?php
 function get_selected_cities($param)
 {
