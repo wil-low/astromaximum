@@ -1,12 +1,11 @@
 <?php 
 $EXEC=1;
 
-$META_KEYWORDS='';
-$META_DESCR='';
-$META_TITLE='';
+$META_KEYWORDS=''; $META_DESCR=''; $META_TITLE='';
+$META_CUSTOMSCR=''; $META_CUSTOMFUNC='';
 function output_callback($buffer)
 {
-	global $META_TITLE, $META_KEYWORDS, $META_DESCR;
+	global $META_TITLE, $META_KEYWORDS, $META_DESCR, $META_CUSTOMSCR, $META_CUSTOMFUNC;
 	// fill meta tags
 	if($META_TITLE){ 
 		$META_TITLE.=" - ";
@@ -15,6 +14,11 @@ function output_callback($buffer)
 	$buffer=str_replace("[[title]]", $META_TITLE, $buffer);
 	$buffer=str_replace("[[keywords]]", $META_KEYWORDS, $buffer);
 	$buffer=str_replace("[[description]]", $META_DESCR, $buffer);
+	$buffer=str_replace("[[onload_script]]", 
+		'<script src="'.$META_CUSTOMSCR.'" type="text/javascript"></script>', $buffer);
+	if($META_CUSTOMFUNC)
+		$META_CUSTOMFUNC=' onload="'.$META_CUSTOMFUNC.'"';
+	$buffer=str_replace("[[onload_func]]", $META_CUSTOMFUNC, $buffer);
 	return $buffer;
 }
 
@@ -86,8 +90,9 @@ if(preg_match("/^(demo)$/is", $main)){
 <meta name="description" content="[[description]]"/>
 <link href="astro.css" rel="stylesheet" type="text/css"/>
 <script src="./func.js" type="text/javascript"></script>
+[[onload_script]]
 </head>
-<body>
+<body[[onload_func]]>
 <a id="top"></a>
 <div id="globe">
 <img src="i/globe.jpg" width="956" height="320" usemap="#Map" alt="ASTROMAXIMUM"/>
@@ -167,7 +172,7 @@ FRM;
 ?> 
 </div>
 <?php 
-if(!$user_ok || strcmp($main, 'dl')){ 
+if(!$user_ok || (strcmp($main, 'dl') && strcmp($main, 'dl2'))){ 
 	echo disable_big_button('demo', $btn1, 'demo', $btn1_link);
 	echo disable_big_button('buy', $btn2, 'buy', 'buy');
 }

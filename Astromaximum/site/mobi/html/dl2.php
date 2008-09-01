@@ -52,6 +52,7 @@ if(isset($_GET['ajax'])){
 
 if(!isset($EXEC)) die("Access restricted");
 lang_load("mobi/html");
+$META_CUSTOMSCR='/dl.js'; $META_CUSTOMFUNC='dl_init()';
 $step=1;
 $max_cities=5;
 $table_vsize=18;
@@ -211,9 +212,8 @@ function generate(country){
 </tr>
 </table>
 </form>
-<div id="status">---</div>
+<div id="status"></div>
 </div>
-<script src="/dl.js" type="text/javascript"/>            
 <?php
 function get_selected_cities($param)
 {

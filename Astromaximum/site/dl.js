@@ -35,13 +35,14 @@ function showc2(mode,val)
      }
     var cid=document.main.cid.value;
     var stateid=document.main.stateid.value;
-    document.getElementById('status').innerHTML=mode+','+val+','+cid+','+stateid;
+//    document.getElementById('status').innerHTML=mode+','+val+','+cid+','+stateid;
     if(!mode){
         xhr.onreadystatechange  = function()
         { 
             if(xhr.readyState  == 4) {
                 if(xhr.status  == 200) {
-                    content = eval('(' + xhr.responseText + ')').content;
+                    con = eval('(' + xhr.responseText + ')');
+					var content=con.content;
                     fill_lb(document.main.countries, content, cid);
                     document.main.countries.selectedIndex=0;
                     document.main.cid.value=firstId(content);
@@ -57,7 +58,8 @@ function showc2(mode,val)
         { 
             if(xhr.readyState  == 4) {
                 if(xhr.status  == 200) {
-                    content = eval('(' + xhr.responseText + ')').content;
+                    con = eval('(' + xhr.responseText + ')');
+					var content=con.content;
                     fill_lb(document.main.states, content, document.main.stateid.value);
                     document.main.states.selectedIndex=0;
                     document.main.stateid.value=0;
@@ -73,7 +75,8 @@ function showc2(mode,val)
         { 
             if(xhr.readyState  == 4) {
                 if(xhr.status  == 200) {
-                    content = eval('(' + xhr.responseText + ')').content;
+                    con = eval('(' + xhr.responseText + ')');
+					var content=con.content;
                     fill_lb(document.main.cities, content, 0);
                 }
             }
@@ -99,6 +102,9 @@ function fill_lb(listbox, arr, selindex)
     }
 }
 
-if(document.main.countries.length==0){
-    showc2(0,0,0);
+function dl_init(){
+	if(document.main.countries.length==0){
+//		alert("Loaded");
+	    showc2(0,0,0);
+	}
 }

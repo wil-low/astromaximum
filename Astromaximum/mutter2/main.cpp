@@ -1,3 +1,6 @@
+
+#include "datafile.h"
+
 //---------------------------------------------------------------------------
 #include "events.h"
 #include "evclass.h"
@@ -5,9 +8,6 @@
 #include "assert.h"
 #include <time.h>
 #include "errno.h"
-#ifdef _WIN32_
-#include <dir.h>
-#endif
 #include <fstream>
 #include <unistd.h>
 #include <assert.h>
@@ -363,15 +363,24 @@ int main(int argc, char* argv[]) {
 int test() {
     VAE allDegPass, work, work2;
     int i=6;
+    char fname[]="06test_degpass.binn";
+/*
 // TODO error - strange degree in event #7
     df.calcDegPass(allDegPass, i);
     df.clearDegPass(allDegPass, work, i, work2);
     for (int i = 0; i < 11; i++) {
         work[i]->dump();
     }
-    char fname[]="06test_degpass.binn";
     if (!df.writeSubData(work, EV_DEGREE_PASS, EF_CUMUL_DATE_W | EF_DEGREE | EF_NEXT_DATE2, i, fname)) {
         df.writeSubData(work, EV_DEGREE_PASS, EF_DEGREE | EF_NEXT_DATE2, i, fname);
+    }
+    df.release(work);
+//    df.view(fname, 100);
+*/    
+    df.readSubData(fname, work);
+    for (int i = 0; i < work.size(); i++) {
+        work[i]->dump();
+        printf("\n");
     }
 
     /*    

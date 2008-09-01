@@ -14,7 +14,7 @@
 
 #CFLAGS = -Aa +z -g +DA1.1  	# for HPUX 10.20
 #CFLAGS = -g -O9 -Wall -pedantic 	# for Linux and other gcc systems
-CFLAGS = -g -mtune=native -O2  -Wall -pedantic 	# for Linux and other gcc systems
+CFLAGS = -g -O2  -Wall -pedantic 	# for Linux and other gcc systems
 OP=$(CFLAGS)  
 #CC=cc	# for HPUX 
 CC=gcc	#for Linux

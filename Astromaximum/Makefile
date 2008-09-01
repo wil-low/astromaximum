@@ -22,8 +22,9 @@ template:
 	cp templates/MANIFEST.MF $(SOURCE)
 
 interp:
-	svn export --force interpret $(SOURCE)/interpret; \
-	#svn export --force images/icons $(SOURCE)/icons
+	#svn export --force interpret $(SOURCE)/interpret; \
+	mkdir -p $(SOURCE)/interpret; \
+	cp -R interpret/* $(SOURCE)/interpret; \
 	cp htaccess $(SOURCE)/interpret/.htaccess
 
 config:
