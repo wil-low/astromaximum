@@ -206,9 +206,10 @@ void DataFile::sortVAE(VAE &work) {
 
 void DataFile::AAA() {
     VAE work, assist, vout, work2;
+/*
     getPrevious0dgr();
     exit(0);
-    /*
+    
   calcDegPass(work, 10);
   clearDegPass(work, assist, 10, vout);
   for(int i=0; i<assist.size(); i++){
@@ -484,6 +485,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
             if (evflags & EF_SHORT_DEGREE)
                 fwrite(&ev->degree, 1, 1, fout);
             else {
+// TODO error - strange degree in event #7 - invalid fwrite?
                 sBuf = swapShort(ev->degree);
                 fwrite(&sBuf, 2, 1, fout);
             }
@@ -586,6 +588,7 @@ bool DataFile::readSubData(const char* fname, VAE & v) {
             if (evflags & EF_SHORT_DEGREE)
                 fread(&ev->degree, 1, 1, fin);
             else {
+// TODO error - strange degree in event #7 - invalid fread?
                 fread(&sBuf, 2, 1, fin);
                 ev->degree = swapShort(sBuf);
             }
@@ -921,7 +924,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
                 calcDegPass(allDegPass, i);
                 clearDegPass(allDegPass, work, i, work2);
                 sprintf(fname, "degpass%02u.bin", i);
-                if (i == SE_MOON) {
+                if (i == SE_MOON) {  // bad&good degrees only
                     writeSubData(work, EV_DEGREE_PASS, EF_CUMUL_DATE_W | EF_DATE | EF_DEGREE, i, fname);
                     sprintf(fname, "degall01.bin");
                     writeSubData(work2, EV_DEGREE_PASS, EF_CUMUL_DATE_W | EF_DATE | EF_DEGREE, i, fname);

@@ -48,7 +48,7 @@ if($#ARGV!=0 and scalar(@ARGV)<2){
 	die <<EOF;
 Astrological events calculator
 Usage: 
-	perl geoCoord.pl <year> [tzonly|clean|fnfix] common|<country group code list>|all
+	geoCoord.pl <year> [tzonly|clean|fnfix] common|<country group code list>|all
 Options:
 	tzonly - only update timezone dates, no calculation
 	clean - regenerate city coords

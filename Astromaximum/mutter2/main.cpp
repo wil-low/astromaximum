@@ -26,6 +26,8 @@ int test();
 sAphRecord aphetics[SE_SATURN + 1];
 clock_t c_start, c_end;
 
+DataFile df;
+
 void myexit(int ret) {
     chdir(mypath);
     c_end = clock();
@@ -134,7 +136,6 @@ int main(int argc, char* argv[]) {
     assert(sizeof (sMatrix) == 9);
     assert(EV_LAST == 50);
     if (argc < 2) myexit(NOT_ENOUGH_PARAMS);
-    DataFile df;
     char buf[20];
     sEphRecord *ephData = NULL;
     int year;
@@ -158,9 +159,6 @@ int main(int argc, char* argv[]) {
             double jd = swe_julday(year, mon, day, hr, SE_GREG_CAL);
             printf("%f\n", jd);
             myexit(0);
-        }
-        if (strcmp(argv[2], "_test_") == 0) {
-            myexit(test());
         }
         if (strcmp(argv[2], "revjul") == 0) {
             double jd;
@@ -324,6 +322,9 @@ int main(int argc, char* argv[]) {
         printf("Done.\n");
     } else {
         VAE work, assist, vout, work2;
+        if (strcmp(argv[2], "_test_") == 0) {
+            myexit(test());
+        }
         if (strcmp(argv[2], "electio") == 0) {
             //      df.loadAphetics(aphetics);
             df.choice(EV_APHETICS, work, assist, vout, work2, argv[3]);
@@ -340,8 +341,6 @@ int main(int argc, char* argv[]) {
                 if (argc > 5 && sscanf(argv[5], "%d", &alt) == 1) {
                     df.Alt = alt;
                 }
-                // TODO remove this line
-                //      df.stepCount=8000;
                 df.choice(EV_NAVROZ, work, assist, vout, work2, argv[2]);
                 df.calcAscData();
 
@@ -362,6 +361,20 @@ int main(int argc, char* argv[]) {
 }
 
 int test() {
+    VAE allDegPass, work, work2;
+    int i=6;
+// TODO error - strange degree in event #7
+    df.calcDegPass(allDegPass, i);
+    df.clearDegPass(allDegPass, work, i, work2);
+    for (int i = 0; i < 11; i++) {
+        work[i]->dump();
+    }
+    char fname[]="06test_degpass.binn";
+    if (!df.writeSubData(work, EV_DEGREE_PASS, EF_CUMUL_DATE_W | EF_DEGREE | EF_NEXT_DATE2, i, fname)) {
+        df.writeSubData(work, EV_DEGREE_PASS, EF_DEGREE | EF_NEXT_DATE2, i, fname);
+    }
+
+    /*    
     double tm = 2451655.252083;
     Event ev(tm, 0);
     ev.dump();
@@ -371,6 +384,7 @@ int test() {
     assert(tm == tm2);
     Event ev2(tm2, 0);
     ev2.dump();
+ */
     return 0;
 }
 

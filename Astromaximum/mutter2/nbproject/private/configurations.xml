@@ -9,7 +9,7 @@
         <array_repeat_threshold>10</array_repeat_threshold>
       </gdbdebugger>
       <runprofile version="5">
-        <args>2008 geo0- -71.98 -13.51 3381 </args>
+        <args>2007 _test_</args>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <console-type>0</console-type>

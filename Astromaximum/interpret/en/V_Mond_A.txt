@@ -63,5 +63,5 @@
 
 
 
-%255,1%@Everything is already in the past.|Future depends on what has been done.@
+%255,1%@Everything is already in the past: future depends on what has been done.@
 
