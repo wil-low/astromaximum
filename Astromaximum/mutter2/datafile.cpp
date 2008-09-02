@@ -195,6 +195,7 @@ void DataFile::AscendingTest() {
                 }
                 cur = work[i]->date[0];
             }
+            release(work);
         }
     closedir(dir);
 
@@ -350,6 +351,8 @@ void DataFile::calcDegPass(VAE & vae, int planet) {
 
 DataFile::~DataFile() {
     release(events);
+    swe_close();
+    delete[] ascData;
 }
 
 void DataFile::release(VAE & v) {
@@ -453,6 +456,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
                 printf("\nError overflow %d at:", delta);
                 ev->dump();
                 printf("\n");
+                fclose(fout);
                 return false;
             }
             short d = delta;
@@ -464,6 +468,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
             if (abs(delta) > 127) {
                 printf("\nError overflow %d at:", delta);
                 ev->dump();
+                fclose(fout);
                 return false;
             }
             char d = delta;

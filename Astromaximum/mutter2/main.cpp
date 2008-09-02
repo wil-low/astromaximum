@@ -25,6 +25,7 @@ int test();
 
 sAphRecord aphetics[SE_SATURN + 1];
 clock_t c_start, c_end;
+sEphRecord *ephData = NULL;
 
 DataFile df;
 
@@ -35,6 +36,7 @@ void myexit(int ret) {
     //    if(!ret)
     //        printf("\nExecution time %d clocks (cps=%d)\n", c_end-c_start, cps);
     //    printf("\nExit code: %d. Restored curdir: %s\n", ret, mypath);
+    delete[] ephData;
     exit(ret);
 }
 
@@ -137,7 +139,6 @@ int main(int argc, char* argv[]) {
     assert(EV_LAST == 50);
     if (argc < 2) myexit(NOT_ENOUGH_PARAMS);
     char buf[20];
-    sEphRecord *ephData = NULL;
     int year;
     if (sscanf(argv[1], "%4d", &year) != 1)
         myexit(INVALID_YEAR);
@@ -317,8 +318,6 @@ int main(int argc, char* argv[]) {
     if (argc == 2) { // only year specified
         df.AAA(); // calculate common.dat
         //  df.saveFile(outFile);
-        delete[] ephData;
-        ephData = NULL;
         printf("Done.\n");
     } else {
         VAE work, assist, vout, work2;
@@ -351,10 +350,6 @@ int main(int argc, char* argv[]) {
                 }
             }
         }
-        delete[] ephData;
-    }
-    if (df.ascData) {
-        delete[] df.ascData;
     }
     printf("\nFinished.\n");
     myexit(0);
@@ -364,7 +359,7 @@ int test() {
     VAE allDegPass, work, work2;
     int i=6;
     char fname[]="06test_degpass.binn";
-/*
+
 // TODO error - strange degree in event #7
     df.calcDegPass(allDegPass, i);
     df.clearDegPass(allDegPass, work, i, work2);
@@ -375,14 +370,17 @@ int test() {
         df.writeSubData(work, EV_DEGREE_PASS, EF_DEGREE | EF_NEXT_DATE2, i, fname);
     }
     df.release(work);
-//    df.view(fname, 100);
-*/    
+    printf("\n\n----View:\n");
+    df.view(fname, 100);
+    printf("\n\n----Alternate:\n");
+    
     df.readSubData(fname, work);
     for (int i = 0; i < work.size(); i++) {
         work[i]->dump();
         printf("\n");
     }
 
+    df.release(work);
     /*    
     double tm = 2451655.252083;
     Event ev(tm, 0);
