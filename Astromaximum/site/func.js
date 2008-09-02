@@ -8,6 +8,7 @@ function checkCheckBox(b){
 		alert('Please check the box to continue.');
 	}
 	else{
+        b.form.demo.value=b.form.agree.value;
 		b.form.submit();
 	}
 }

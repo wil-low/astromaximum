@@ -14,8 +14,9 @@ function output_callback($buffer)
 	$buffer=str_replace("[[title]]", $META_TITLE, $buffer);
 	$buffer=str_replace("[[keywords]]", $META_KEYWORDS, $buffer);
 	$buffer=str_replace("[[description]]", $META_DESCR, $buffer);
-	$buffer=str_replace("[[onload_script]]", 
-		'<script src="'.$META_CUSTOMSCR.'" type="text/javascript"></script>', $buffer);
+    if($META_CUSTOMSCR)
+		$META_CUSTOMSCR='<script src="'.$META_CUSTOMSCR.'" type="text/javascript"></script>';
+	$buffer=str_replace("[[onload_script]]", $META_CUSTOMSCR, $buffer);
 	if($META_CUSTOMFUNC)
 		$META_CUSTOMFUNC=' onload="'.$META_CUSTOMFUNC.'"';
 	$buffer=str_replace("[[onload_func]]", $META_CUSTOMFUNC, $buffer);

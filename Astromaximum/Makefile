@@ -22,10 +22,13 @@ template:
 	cp templates/MANIFEST.MF $(SOURCE)
 
 interp:
-	#svn export --force interpret $(SOURCE)/interpret; \
-	mkdir -p $(SOURCE)/interpret; \
-	cp -R interpret/* $(SOURCE)/interpret; \
-	cp htaccess $(SOURCE)/interpret/.htaccess
+	cp -Rf interpret $(SOURCE)/interpret; \
+	cp htaccess $(SOURCE)/interpret/.htaccess; \
+	cp *.comm $(SOURCE)
+	mkdir -p $(DEST)/files $(DEST)/inbox $(SOURCE)/restore; \
+	touch $(DEST)/gen_amax.log; \
+	chmod a+w  $(DEST)/files $(DEST)/inbox $(SOURCE) $(SOURCE)/restore \
+		$(DEST)/gen_amax.log
 
 config:
 	mkdir -p Astromaximum/deploy;perl size_join.pl;perl ph_join.pl; \

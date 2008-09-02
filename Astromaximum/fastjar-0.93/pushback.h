@@ -1,5 +1,5 @@
 /*
-  dostime.h - function prototypes
+  pushback.h - header for pushback.c
   Copyright (C) 1999  Bryan Burns
   
   This program is free software; you can redistribute it and/or
@@ -14,9 +14,19 @@
   
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
 
-time_t dos2unixtime(unsigned long dostime);
-unsigned long dostime(int, int, int, int, int, int);
-unsigned long unix2dostime(time_t*);
+struct pb_file {
+  unsigned int buff_amt;
+  ub1 pb_buff[RDSZ];
+  int fd;
+  ub1 *next;
+};
+
+typedef struct pb_file pb_file;
+
+
+void pb_init(pb_file *, int);
+int pb_push(pb_file *, void *, int);
+int pb_read(pb_file *, void *, int);

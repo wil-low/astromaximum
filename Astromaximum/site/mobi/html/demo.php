@@ -5,12 +5,12 @@ include_once("mobi/ipblock.php");
 allow_ip('demo',false);
 if(check_access()!=-1){
 	$uri=htmlentities($_SERVER['REQUEST_URI']);
-	if(isset($_POST["agree"]) && isset($_POST['p_captcha'])){
+	if(isset($_POST["demo"]) && isset($_POST['p_captcha'])){
 		$captcha=$_POST['p_captcha'];
 		if(is_captcha($captcha)){
-			$choice=$_POST["agree"];
+            $is_demo=$_POST["demo"];
 			$prev_year=$GLOBALS['amax']['year']-1;
-			if(strcmp($choice,"demo")==0){
+			if($is_demo){ // demo
 				if(isset($_POST["email"]) && check_email_address($_POST["email"])){
 					$email=$_POST['email'];
 					$sc=get_default_cities($GLOBALS['amax']['def_cities']); 
@@ -36,6 +36,9 @@ if(check_access()!=-1){
 				}
 			}
 			else{ # demo cities
+                $choice=0;
+                if(isset($_POST["agree"]))
+                    $choice=$_POST["agree"];
 				if(is_numeric($choice) && ($choice>=0) && ($choice<count($GLOBALS['amax']['demo_cities']))){
 					echo "<p>".sprintf($i18['READY_CITIES'], $GLOBALS['amax']['demo_cities'][$choice], $prev_year)."</p>\n";				
 					$sc=get_default_cities($GLOBALS['amax']['demo_cities'][$choice]); 
@@ -57,22 +60,26 @@ if(check_access()!=-1){
 
 <form action="$uri" method="post">
 <p>{$emailing} <input name="email" type="text"/></p>
-<p><input name="btnDemo" type="button" onclick="citySelector(this)"/></p>
+<!--<p><input name="btnDemo" type="button" onclick="citySelector(this)"/></p>-->
 <p>{$i18['CAPTCHA_PROMPT']}</p>
 <p><img src="mobi/kcaptcha?$sess" alt="Captcha">
 <input name="p_captcha" type="text"/>
 </p>
 <p><span class="fine">{$i18['DEMO_CALGEN']}:</span><br/><br/>
-<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> 
+<!--<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> -->
 <b>ASTROMAXIMUM</b> {$i18['DEMO_DEMO']}<br/><br/>
-<p>{$i18['DEMO_DLCITY']}</p><br/>
+<input type="hidden" name="demo" value="0"/>
+<input type="button" class="ok_on" value="OK" onclick="this.form.demo.value=1;form.submit()"/>
+<br/><br/></p>
+<p></p>
+<p>{$i18['DEMO_DLCITY']}</p>
 <span class="fine">{$i18['SELCITY_GENERATE']}:</span><br/><br/>
 
 EOF1;
 	foreach($GLOBALS['amax']['demo_cities'] as $i=>$city){
 		echo '<input type="radio" name="agree" value="'.$i.'" style="width:auto; border: 0px"/> '.$city." &nbsp; &nbsp;\n";
 	}
-	echo '<br/><br/><input type="button" class="ok_on" value="OK" onclick="checkCheckBox(this)"/></form>';
+	echo '<br/><br/><input type="submit" class="ok_on" value="OK"/></form>';
 	return;
 }
 $press_enter=sprintf($i18['DEMO_ENTER'],$i18['LOG_IN']);

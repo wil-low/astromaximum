@@ -124,6 +124,8 @@ class Interpreter extends Canvas implements CommandListener {
             return false;
 //            txt = s = Astromaximum.getstr(110);//demo texts
         } else {
+            if(si.type == Event.EV_HELP) // Help ignores selected topic
+                ignoreAllTopics = true;
             StringBuffer sb = new StringBuffer(s);
             if (!ignoreAllTopics) {
                 //    System.out.println("FullText:");

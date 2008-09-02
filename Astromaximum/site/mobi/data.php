@@ -4,6 +4,7 @@ include_once('config.php');
 include_once('dbconnect.php');
 $PREFIX='Cities';
 if(true /*|| check_access()*/){
+    $type='';
 	if(isset($_GET['r'])){
 		$type='r';
 	}
@@ -13,6 +14,8 @@ if(true /*|| check_access()*/){
 	if(isset($_GET['t'])){
 		$type='t';
 	}
+    if(!isset($_GET[$type]))
+        data_gone();
 	$dig=$_GET[$type];
 	$idd=substr($dig, -4);
 	$ye=substr($dig, 0,2);
@@ -21,11 +24,8 @@ if(true /*|| check_access()*/){
 		"SELECT COUNT(*) FROM files WHERE id='%s' AND end_tm>NOW() AND NOT deleted", quote_smart($dig));
 	$sth=mysql_query($stat);
 	$count=mysql_fetch_row($sth);
-	if($count[0]!=1){
-		header("HTTP/1.0 410 Gone");
-		echo "Sorry, wrong URL or no file present.";
-		exit;
-	}
+	if($count[0]!=1)
+        data_gone();
 	$stat=sprintf(
 		"UPDATE files SET used='t' WHERE id='%s'", quote_smart($dig));
 	mysql_query($stat);
@@ -34,6 +34,8 @@ if(true /*|| check_access()*/){
 	}
 
 	$handle = fopen($fn, "rb");
+	if(!$handle)
+        data_gone();
 	$clen=filesize($fn);
 	$data = fread($handle, $clen);
 	fclose($handle);
@@ -47,6 +49,11 @@ if(true /*|| check_access()*/){
 	header("Content-Length: $clen");
 	header("Content-Disposition: attachment; filename=\"$PREFIX'$ye-$idd.ja$type\"", false);
 	echo $data;
+}
 
+function data_gone(){
+    header("HTTP/1.0 410 Gone");
+    echo "Sorry, wrong URL or no file present.";
+    exit;
 }
 ?>

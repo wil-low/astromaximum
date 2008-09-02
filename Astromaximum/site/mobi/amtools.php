@@ -309,7 +309,7 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
 }
 
 function fsize_human($fname){
-	$size=filesize($fname);
+	$size=@filesize($fname);
 	if(!$size)
 		return 0;
 	if($size < 1024)
