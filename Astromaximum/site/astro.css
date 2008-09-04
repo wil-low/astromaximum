@@ -111,7 +111,11 @@ ul {
 }
 .shot {
 	margin: 5px;
-	text-align:center;
+    text-align: center;
+}
+
+.shot textarea{
+	font-size: 10px;
 }
 
 /*дизайн*/

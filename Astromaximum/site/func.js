@@ -64,7 +64,7 @@ function do_random(input_id){
 }
 
 function open_scr(lang, n){
-	window.open("/shot.php?lang="+lang+"&n="+n, "", "target=blank, width=260, height=420");
+	window.open("/shot.php?lang="+lang+"&n="+n, "", "target=blank, width=320, height=530");
 }
 
 function citySelector(lang, input_id){

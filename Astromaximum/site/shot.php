@@ -7,6 +7,7 @@ if(isset($_GET['n'])){
 	if($num>=0 && $num<16){
 		$num=sprintf("%02d", $num);
 		$text=$i18["SCRTEXT_$num"];
+        $text=str_replace('\n',"\n", $text);
 		echo <<<EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -17,8 +18,8 @@ if(isset($_GET['n'])){
 </head>
 <body>
 <div class="shot">
-<img src="/i/shot{$num}.jpg" alt=""/>
-<p>{$text}</p>
+<img src="/i/shot{$num}.png" alt=""/><br/><br/>
+<textarea cols="45" rows="12" readonly="readonly">{$text}</textarea>
 <p><a href="#" onclick="window.close()">[ {$i18['CLOSE']} ]</a></p>
 </div>
 </body></html>

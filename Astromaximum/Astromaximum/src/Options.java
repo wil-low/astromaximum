@@ -23,7 +23,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.*;
 import javax.microedition.rms.*;
 
-class Options extends GeoList implements ItemCommandListener {
+class Options extends GeoList implements CommandListener {
 
     private static ChoiceGroup optList;
     private static ChoiceGroup timeGap;
@@ -62,7 +62,7 @@ class Options extends GeoList implements ItemCommandListener {
         setTitle(Astromaximum.getstr(92));//Options
         setCommandListener(this);
         Command cmd = new Command("OK", Command.OK, 1);
-//        addCommand(cmd);
+        addCommand(cmd);
         addCommand(new Command(Astromaximum.getstr(108), Command.ITEM, 2));//Del city
 //    addCommand(new Command("Reset storage",Command.ITEM, 3));
         optList = new ChoiceGroup(null, Choice.MULTIPLE,
@@ -70,10 +70,12 @@ class Options extends GeoList implements ItemCommandListener {
         insert(0, layout);
         insert(0, timeGap);
         insert(0, optList);
+/*      OK button is disabled (relevant for PocketPC only)        
         StringItem strOK = new StringItem("", "OK", Item.BUTTON);
         strOK.setDefaultCommand(cmd);
         strOK.setItemCommandListener(this);
         append(strOK);
+*/
         cityList.setLabel(Astromaximum.getstr(105));//Cities
     }    
 
@@ -141,7 +143,8 @@ class Options extends GeoList implements ItemCommandListener {
         }
         if (c.getCommandType() == Command.CANCEL) {
             Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
-        } else {
+        } 
+        else { // save and return to summary screen
             switch (c.getPriority()) {
                 case 1:
 //#debug debug

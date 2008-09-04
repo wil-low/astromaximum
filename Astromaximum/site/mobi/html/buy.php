@@ -5,7 +5,9 @@ if(isset($_POST["reg_submit"])){
 	echo $i18['INSTR_SENT'];
 	return;
 }
-$chac=check_access(); 
+$chac=check_access();
+$uri=htmlentities($_SERVER['REQUEST_URI']);
+
 if($chac!=-1 and $chac!=1){
 	$y_now=$current_year;
 	$out='';
@@ -41,9 +43,9 @@ if($chac!=-1 and $chac!=1){
 		else{
 			echo sprintf($i18['NO_CALENDAR_DL'], '<a href="#">');
 		}
+        echo "<p><a href=\"$uri\">{$i18['BACK']}</a></p>";        
 		return;
 	}
-	$uri=htmlentities($_SERVER['REQUEST_URI']);
 	echo "<form action=\"$uri\" method=\"post\">\n";
 	$prompt=sprintf($i18['CONFIRM_TRIAL'], $lang_);
 	$str=($tries[0]==1)? $i18['ONE_MORE_COPY']."<br/><br/>": '';
@@ -51,6 +53,7 @@ if($chac!=-1 and $chac!=1){
 	echo "</form>";
 	echo "<br/><br/><br/>\n";
 	echo "<form action=\"$uri\" method=\"post\">\n";
+    echo '<input type="hidden" name="demo" value="0"/>';
 	echo "<h4>".sprintf($i18['DLOAD4YEAR'],"<select name=\"yagree\">$out</select>")."</h4>";
 	echo dload_tries_prompt($tries, 2, '', $i18['GENERATE?']);
 	echo "</form>";

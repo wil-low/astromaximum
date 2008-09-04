@@ -25,6 +25,16 @@ $sett=array(
 	'price'=>'$60',
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder
 	'min_demo_year'=>2005,
+
+	'DB_SERVER'=>'localhost',
+	'DB_NAME'=>'usr_web42_1',
+	'DB_PORT'=>'3306',
+	
+	'DB_SUPERUSER'=>'web42',
+	'DB_SUPERUSER_PWD'=>'vSZBWppx',
+	'DB_USER'=>'user',
+	'DB_USER_PWD'=>'user',
+    
 );
 
 sort($sett['demo_cities']);

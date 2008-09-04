@@ -3,6 +3,7 @@ if(!isset($EXEC)) die("Access restricted");
 include_once("mobi/amtools.php");
 include_once("mobi/ipblock.php");
 allow_ip('demo',false);
+//print_r($_REQUEST);
 if(check_access()!=-1){
 	$uri=htmlentities($_SERVER['REQUEST_URI']);
 	if(isset($_POST["demo"]) && isset($_POST['p_captcha'])){
@@ -76,8 +77,10 @@ if(check_access()!=-1){
 <span class="fine">{$i18['SELCITY_GENERATE']}:</span><br/><br/>
 
 EOF1;
+    $issel=' checked="checked"';
 	foreach($GLOBALS['amax']['demo_cities'] as $i=>$city){
-		echo '<input type="radio" name="agree" value="'.$i.'" style="width:auto; border: 0px"/> '.$city." &nbsp; &nbsp;\n";
+		echo '<input type="radio" name="agree" value="'.$i.'" style="width:auto; border: 0px"'.$issel.'/> '.$city." &nbsp; &nbsp;\n";
+        $issel='';
 	}
 	echo '<br/><br/><input type="submit" class="ok_on" value="OK"/></form>';
 	return;

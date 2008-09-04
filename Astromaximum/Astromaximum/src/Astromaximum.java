@@ -255,6 +255,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
             //    sizer.setSize(logBox.getWidth(), logBox.getHeight());
             log("TZ id=" + TimeZone.getDefault().getID());
             options = new Options();
+            errCode = 41; // XXX
             dataFile = new DataFile();
 //#if logger
       logger("dataFile");
