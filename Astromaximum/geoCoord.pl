@@ -866,10 +866,10 @@ sub get_tz{
 		if($start==9999){
 			die "Cannot handle - too complicated\n";
 		}
-        warn "$ofs, $start, $end, $diff\n";
+        print "$ofs, $start, $end, $diff ";
 		$start=~s/(\d+)\(UTC\)/$1+$ofs/e;
 		$end=~s/(\d+)\(UTC\)/$1+$ofs+$diff/e;
-        warn "becomes\n$ofs, $start, $end, $diff\n";
+        print "=> $ofs, $start, $end, $diff\n";
         my @oo=split(/:/, $ofs);
 		$ofs=($oo[0]*3600+$oo[1]*60+$oo[2])/3600;
 #		die $ofs;

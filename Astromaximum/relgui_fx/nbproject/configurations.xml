@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="45">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>fMain.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+      <itemPath>fMain.fl</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>main.cxx</itemPath>
+      <itemPath>/home/willow/amax/relgui_fx/relgui.cpp</itemPath>
+      <itemPath>relgui.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceEncoding>UTF-8</sourceEncoding>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <cCompilerTool>
+          <commandlineTool>gcc</commandlineTool>
+        </cCompilerTool>
+        <ccCompilerTool>
+          <commandlineTool>g++</commandlineTool>
+          <commandLine>`fox-config --cflags`</commandLine>
+        </ccCompilerTool>
+        <linkerTool>
+          <output>relgui_fx</output>
+          <commandlineTool>g++</commandlineTool>
+          <linkerLibItems>
+            <linkerOptionItem>`fox-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="/home/willow/amax/relgui_fx/relgui.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="fMain.fl">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="fMain.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="main.cxx">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="relgui.h">
+        <itemTool>3</itemTool>
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>MinGW|MinGW</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <cCompilerTool>
+          <developmentMode>5</developmentMode>
+        </cCompilerTool>
+        <ccCompilerTool>
+          <developmentMode>6</developmentMode>
+          <stripSymbols>true</stripSymbols>
+          <includeDirectories>
+            <directoryPath>../../../../../fltk2</directoryPath>
+          </includeDirectories>
+        </ccCompilerTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <linkerTool>
+          <output>relgui</output>
+          <stripSymbols>true</stripSymbols>
+          <linkerLibItems>
+            <linkerOptionItem>`../../../fltk2/fltk2-config --ldflags`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="/home/willow/amax/relgui_fx/relgui.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="fMain.fl">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="fMain.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="main.cxx">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="relgui.h">
+        <itemTool>3</itemTool>
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

@@ -102,7 +102,7 @@ public:
     Event* eventContains(const VAE &work, double moment);
     sAscRecord *ascData;
     void sortVAE(VAE &work);
-    void AscendingTest();
+    int AscendingTest();
     DataFile();
     double Lon, Lat, Alt;
     void choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2,

@@ -170,16 +170,16 @@ void DataFile::dump_location(const char* fname, int num, int secnum) {
     //    printf("Event::_timezone_ = %d\n", Event::_timezone_);
 }
 
-void DataFile::AscendingTest() {
+int DataFile::AscendingTest() {
     DIR *dir;
     struct dirent *ent;
-
+    int err=0; // error counter
     char fulldir[255];
     sprintf(fulldir, "archive/%d", Event::startYear);
     printf("First pass on '%s':\n", fulldir);
     if ((dir = opendir(fulldir)) == NULL) {
         perror("Unable to open directory");
-        exit(1);
+        return -1;
     }
 
     while ((ent = readdir(dir)) != NULL)
@@ -191,6 +191,7 @@ void DataFile::AscendingTest() {
             for (int i = 0; i < work.size(); i++) {
                 if (work[i]->date[0] < cur) {
                     printf("\n%s\n", "*****Ascension order is broken!*****");
+                    err++;
                     break;
                 }
                 cur = work[i]->date[0];
@@ -198,7 +199,7 @@ void DataFile::AscendingTest() {
             release(work);
         }
     closedir(dir);
-
+    return err;
 }
 
 void DataFile::sortVAE(VAE &work) {

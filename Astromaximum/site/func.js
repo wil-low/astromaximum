@@ -1,3 +1,5 @@
+var OpenedHelp=null;
+
 function findObj(id) {
   return (document.all?document.all[id]:document.getElementById(id));
 }
@@ -64,7 +66,13 @@ function do_random(input_id){
 }
 
 function open_scr(lang, n){
-	window.open("/shot.php?lang="+lang+"&n="+n, "", "target=blank, width=320, height=530");
+    var url="/shot.php?lang="+lang+"&n="+n;
+    if(OpenedHelp != null && !OpenedHelp.closed){
+        OpenedHelp.location=url;
+        OpenedHelp.focus();
+    }
+    else
+        OpenedHelp=window.open(url, "", "target=blank, width=320, height=550");
 }
 
 function citySelector(lang, input_id){

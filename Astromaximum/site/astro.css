@@ -115,7 +115,7 @@ ul {
 }
 
 .shot textarea{
-	font-size: 10px;
+	font-size: 12px;
 }
 
 /*дизайн*/
@@ -264,4 +264,16 @@ ul {
 }
 #bottom p {
 	margin: 47px 47px 0 0;
+}
+/* shot.php */
+#shotnav {
+    font-size: 13px;
+    width: 100%;
+    border: 1px;
+}
+#shotnav tr {
+	text-align: center;
+}
+#shotnav td {
+    width: 50%;
 }

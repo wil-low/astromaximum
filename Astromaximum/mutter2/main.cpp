@@ -188,9 +188,11 @@ int main(int argc, char* argv[]) {
     //    printf("Chdir to %s\n", path);
     //    printf("Year = %d\t", year);
     if ((argc > 2) && (strcmp(argv[2], "asctest") == 0)) {
-        df.AscendingTest();
+        int err=df.AscendingTest();
+        if(!err)
+            printf("\nErrors found %d\n", err);
         printf("\n%s\n", "Finished.");
-        myexit(0);
+        myexit(err);
     }
     if ((argc == 5) && (strcmp(argv[2], "view") == 0)) {
         int count = 0;
@@ -314,10 +316,12 @@ int main(int argc, char* argv[]) {
         printf("Done. Restart with the same parameters to calculate common.dat\n");
         myexit(0);
     }
+    int Err=0;
     df.init(ephData, startJD, dayCount);
     if (argc == 2) { // only year specified
         df.AAA(); // calculate common.dat
         //  df.saveFile(outFile);
+        Err=df.AscendingTest();
         printf("Done.\n");
     } else {
         VAE work, assist, vout, work2;
@@ -351,8 +355,10 @@ int main(int argc, char* argv[]) {
             }
         }
     }
+    if(!Err)
+        printf("\nErrors found %d\n", Err);
     printf("\nFinished.\n");
-    myexit(0);
+    myexit(Err);
 }
 
 int test() {

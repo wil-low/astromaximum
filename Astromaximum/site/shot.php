@@ -2,9 +2,10 @@
 $EXEC=1;
 include_once('mobi/lang.php');
 lang_load("mobi/html");
+$SHOT_MAX=15;
 if(isset($_GET['n'])){
 	$num=$_GET['n'];
-	if($num>=0 && $num<16){
+	if($num>=0 && $num<=$SHOT_MAX){
 		$num=sprintf("%02d", $num);
 		$text=$i18["SCRTEXT_$num"];
         $text=str_replace('\n',"\n", $text);
@@ -18,12 +19,25 @@ if(isset($_GET['n'])){
 </head>
 <body>
 <div class="shot">
-<img src="/i/shot{$num}.png" alt=""/><br/><br/>
-<textarea cols="45" rows="12" readonly="readonly">{$text}</textarea>
+<img src="/i/shot{$num}.png" alt="Image {$num}" width="240" height="300"/>
+<table id="shotnav"><tr>
+<td>
+EOF;
+    if($num>0){
+        echo sprintf('<a href="/shot.php?%s&n=%02d">%d &lt;&lt;&lt;</a>', $lang_, $num-1, $num-1);
+    }
+    echo '</td><td>';
+    if($num<$SHOT_MAX){
+        echo sprintf('<a href="/shot.php?%s&n=%02d">&gt;&gt;&gt; %d</a>', $lang_, $num+1, $num+1);
+    }
+    echo <<<EOF1
+</td>
+</tr></table>
+<textarea cols="40" rows="10" readonly="readonly">{$text}</textarea>
 <p><a href="#" onclick="window.close()">[ {$i18['CLOSE']} ]</a></p>
 </div>
 </body></html>
-EOF;
+EOF1;
 	}
 }
 ?>
