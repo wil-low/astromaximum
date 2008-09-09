@@ -25,8 +25,8 @@ OBJECTDIR=build/Release/MinGW-Linux-x86
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o
+	${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o \
+	${OBJECTDIR}/main.o
 
 # C Compiler Flags
 CFLAGS=
@@ -47,13 +47,13 @@ LDLIBSOPTIONS=`../../../fltk2/fltk2-config --ldflags`
 relgui: ${OBJECTFILES}
 	${LINK.cc} -o relgui -s ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/main.o: main.cxx 
-	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -O3 -s -I../../../../../fltk2 -o ${OBJECTDIR}/main.o main.cxx
-
 ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o: /home/willow/amax/relgui_fx/relgui.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx
 	$(COMPILE.cc) -O3 -s -I../../../../../fltk2 -o ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o /home/willow/amax/relgui_fx/relgui.cpp
+
+${OBJECTDIR}/main.o: main.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -O3 -s -I../../../../../fltk2 -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

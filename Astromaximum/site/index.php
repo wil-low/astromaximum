@@ -2,10 +2,11 @@
 $EXEC=1;
 
 $META_KEYWORDS=''; $META_DESCR=''; $META_TITLE='';
-$META_CUSTOMSCR=''; $META_CUSTOMFUNC='';
+$META_CUSTOMSCR=''; $META_CUSTOMFUNC=''; $META_HEAD_ADD='';
 function output_callback($buffer)
 {
-	global $META_TITLE, $META_KEYWORDS, $META_DESCR, $META_CUSTOMSCR, $META_CUSTOMFUNC;
+	global $META_TITLE, $META_KEYWORDS, $META_DESCR,
+        $META_CUSTOMSCR, $META_CUSTOMFUNC,$META_HEAD_ADD;
 	// fill meta tags
 	if($META_TITLE){ 
 		$META_TITLE.=" - ";
@@ -20,6 +21,7 @@ function output_callback($buffer)
 	if($META_CUSTOMFUNC)
 		$META_CUSTOMFUNC=' onload="'.$META_CUSTOMFUNC.'"';
 	$buffer=str_replace("[[onload_func]]", $META_CUSTOMFUNC, $buffer);
+	$buffer=str_replace("[[head_add]]", $META_HEAD_ADD, $buffer);
 	return $buffer;
 }
 
@@ -92,6 +94,7 @@ if(preg_match("/^(demo)$/is", $main)){
 <link href="astro.css" rel="stylesheet" type="text/css"/>
 <script src="./func.js" type="text/javascript"></script>
 [[onload_script]]
+[[head_add]]
 </head>
 <body[[onload_func]]>
 <a id="top"></a>

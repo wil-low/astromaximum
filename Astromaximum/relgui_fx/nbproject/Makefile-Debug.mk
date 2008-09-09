@@ -25,8 +25,8 @@ OBJECTDIR=build/Debug/GNU-Linux-x86
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o
+	${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o \
+	${OBJECTDIR}/main.o
 
 # C Compiler Flags
 CFLAGS=
@@ -47,13 +47,13 @@ LDLIBSOPTIONS=`fox-config --libs`
 relgui_fx: ${OBJECTFILES}
 	g++ -o relgui_fx ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/main.o: main.cxx 
-	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -o ${OBJECTDIR}/main.o main.cxx
-
 ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o: /home/willow/amax/relgui_fx/relgui.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o /home/willow/amax/relgui_fx/relgui.cpp
+
+${OBJECTDIR}/main.o: main.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
