@@ -4,7 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>fMain.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -14,6 +13,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>main.cpp</itemPath>
       <itemPath>/home/willow/amax/relgui_fx/relgui.cpp</itemPath>
       <itemPath>relgui.h</itemPath>
     </logicalFolder>
@@ -22,7 +22,6 @@
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>main.cpp</itemPath>
   </logicalFolder>
   <sourceEncoding>UTF-8</sourceEncoding>
   <projectmakefile>Makefile</projectmakefile>
@@ -52,9 +51,6 @@
         <itemTool>1</itemTool>
       </item>
       <item path="fMain.fl">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="fMain.h">
         <itemTool>3</itemTool>
       </item>
       <item path="main.cpp">
@@ -95,9 +91,6 @@
         <itemTool>1</itemTool>
       </item>
       <item path="fMain.fl">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="fMain.h">
         <itemTool>3</itemTool>
       </item>
       <item path="main.cpp">
