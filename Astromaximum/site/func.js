@@ -72,9 +72,9 @@ function open_scr(lang, n){
         OpenedHelp.focus();
     }
     else
-        OpenedHelp=window.open(url, "", "target=blank, width=320, height=550");
+        OpenedHelp=window.open(url, "", "target=blank, width=420, height=600");
 }
 
 function citySelector(lang, input_id){
-    window.open("/mobi/html/citysel.php?lang="+lang, "", "target=blank, width=500, height=420");
+    window.open("/mobi/html/citysel.php?lang="+lang, "", "target=blank, width=600, height=500");
 }

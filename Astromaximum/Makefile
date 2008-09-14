@@ -24,7 +24,7 @@ template:
 interp:
 	cp -Rf interpret $(SOURCE)/interpret; \
 	cp htaccess $(SOURCE)/interpret/.htaccess; \
-	cp *.comm $(SOURCE)
+	if ls *.comm 2> /dev/null; then cp *.comm $(SOURCE); fi; \
 	mkdir -p $(DEST)/files $(DEST)/inbox $(SOURCE)/restore; \
 	touch $(DEST)/gen_amax.log; \
 	chmod a+w  $(DEST)/files $(DEST)/inbox $(SOURCE) $(SOURCE)/restore \

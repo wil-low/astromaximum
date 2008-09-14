@@ -9,7 +9,7 @@ $out='';
 for($i=0; $i<4; $i++){
 	$out.="<tr>\n";
 	for($j=0; $j<4; $j++){
-        $n=$i*4+$j;
+        $n=$i*4+$j+1;
         $count=sprintf('%02d', $n);
         $img='/i/shot'.$count.'s.png';
 		$out.="\t<td><a href=\"javascript:open_scr('$lang','$count')\"><img src=\"".$img.'" width="79" height="99" alt=""/></a></td>'."\n";

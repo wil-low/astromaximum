@@ -462,10 +462,11 @@ sub inject_common{
 			}
 		}
 		$dest=$_[1] if $_[1];
-        my $header=pack('nCCnna*',$year, $month, $day, length($year_info), $day_count, $year_info);
+	        my $header=pack('nCCnna*',$year, $month, $day, length($year_info), $day_count, $year_info);
 		my $path1=$path;
 
 		$path1.="/data/archive/$year";
+		mydie("No dir $path1") unless -d $path1;
 		open(OUTF, ">$dest") or mydie("$! $dest");
 		binmode(OUTF);
 		print OUTF $header;
