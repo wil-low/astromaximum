@@ -47,13 +47,14 @@ if($chac!=-1 and $chac!=1){
 		return;
 	}
 	echo "<form action=\"$uri\" method=\"post\">\n";
+    echo '<input type="hidden" name="demo" value="0"/>';
 	$prompt=sprintf($i18['CONFIRM_TRIAL'], $lang_);
 	$str=($tries[0]==1)? $i18['ONE_MORE_COPY']."<br/><br/>": '';
 	echo dload_tries_prompt($tries, 0, $str, $prompt);
 	echo "</form>";
 	echo "<br/><br/><br/>\n";
 	echo "<form action=\"$uri\" method=\"post\">\n";
-    echo '<input type="hidden" name="demo" value="0"/>';
+    echo '<input type="hidden" name="demo" value="1"/>';
 	echo "<h4>".sprintf($i18['DLOAD4YEAR'],"<select name=\"yagree\">$out</select>")."</h4>";
 	echo dload_tries_prompt($tries, 2, '', $i18['GENERATE?']);
 	echo "</form>";

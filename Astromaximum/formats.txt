@@ -129,6 +129,7 @@ Errors while running:
     6 - options.resetStorage failed again
     11 - ambuiquity when creating RMS (device-specific), see GeoList.initDB().
         This shouldn't occur at mobile device, only at emulator.
+    13 - recalcBounds error: size*.dat files may be missing in JAR.
     1501 - in Summary when getting Sun day - RMS contains invalid location file
         of different year etc. This shouldn't occur at mobile device, only at
         WTK.

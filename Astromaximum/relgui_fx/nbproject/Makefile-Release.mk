@@ -12,21 +12,22 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=
-CCC=
-CXX=
+CC=gcc
+CCC=g++
+CXX=g++
 FC=
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Release/MinGW-Linux-x86
+OBJECTDIR=build/Release/GNU-Linux-x86
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/_ext/home/willow/ahg/Astromaximum/relgui_fx/../../../../ahg/Astromaximum/relgui_fx/CityItem.o \
+	${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o
 
 # C Compiler Flags
 CFLAGS=
@@ -47,13 +48,17 @@ LDLIBSOPTIONS=`../../../fltk2/fltk2-config --ldflags`
 relgui: ${OBJECTFILES}
 	${LINK.cc} -o relgui -s ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/main.o: main.cxx 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -O3 -s -I../../../../../fltk2 -o ${OBJECTDIR}/main.o main.cxx
+
+${OBJECTDIR}/_ext/home/willow/ahg/Astromaximum/relgui_fx/../../../../ahg/Astromaximum/relgui_fx/CityItem.o: ../../../../ahg/Astromaximum/relgui_fx/CityItem.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/willow/ahg/Astromaximum/relgui_fx/../../../../ahg/Astromaximum/relgui_fx
+	$(COMPILE.cc) -O3 -s -I../../../../../fltk2 -o ${OBJECTDIR}/_ext/home/willow/ahg/Astromaximum/relgui_fx/../../../../ahg/Astromaximum/relgui_fx/CityItem.o ../../../../ahg/Astromaximum/relgui_fx/CityItem.cpp
+
 ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o: /home/willow/amax/relgui_fx/relgui.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx
 	$(COMPILE.cc) -O3 -s -I../../../../../fltk2 -o ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o /home/willow/amax/relgui_fx/relgui.cpp
-
-${OBJECTDIR}/main.o: main.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -O3 -s -I../../../../../fltk2 -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

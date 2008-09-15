@@ -121,6 +121,12 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Flag indicating that midlet is started for the first time
      */
     static boolean firstRun = true;
+    
+    /**
+     * Flag indicating that # key is pressed
+     */
+    static boolean poundPressed = false;
+    
     static private final Hashtable locHash = new Hashtable();
     /**
      * Midlet instance reference

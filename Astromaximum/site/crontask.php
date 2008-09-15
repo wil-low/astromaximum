@@ -1,0 +1,23 @@
+<?php
+    $EXEC=1;
+
+// ?mode=clean_files  - delete outdated files and set 'files.deleted' to true
+    if(isset($_GET['mode']) && strcmp($GET['mode'], 'clean_files')){
+        include_once('mobi/dbconnect.php');
+        $stat='SELECT id FROM files WHERE deleted=\'f\' AND end_tm<NOW()';
+        $sth=mysql_query($stat);
+        $ids=array();
+        while($row=mysql_fetch_row($sth)){
+            array_push($ids, $row[0]);
+            $fn='mobi/dl/files/'.$row[0];
+            @unlink($fn.'.d');
+            @unlink($fn.'.r');
+            @unlink($fn.'.t');
+        }
+//        print_r($ids);
+        if(!empty($ids)){
+            $stat='UPDATE files SET deleted=\'t\' WHERE id IN (\''.implode('\',\'', $ids).'\')';
+            mysql_query($stat);
+        }
+    }
+?>

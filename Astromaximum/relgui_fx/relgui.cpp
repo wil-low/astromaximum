@@ -1,5 +1,6 @@
 #include <fx.h>
 #include "relgui.h"
+#include "CityItem.h"
 
 FXIMPLEMENT(Relgui, FXMainWindow, RelguiMap, ARRAYNUMBER(RelguiMap));
 
@@ -96,8 +97,6 @@ Relgui::Relgui(FXApp *a): FXMainWindow(a,"Relgui",NULL,NULL,DECOR_ALL,0,0,800,60
             lbAvailable=new FXList(fr21, this, ID_LIST_AVAILABLE,
                 LIST_BROWSESELECT|LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0); 
     
-    lbAvailable->appendItem("1", NULL, NULL, FALSE);
-    lbAvailable->appendItem("Привет ребята", NULL, NULL, FALSE);
     txtYear->setText("2008", true);
     lbLang->setNumVisible(3);
     lbLang->appendItem("ru");
@@ -108,11 +107,11 @@ Relgui::Relgui(FXApp *a): FXMainWindow(a,"Relgui",NULL,NULL,DECOR_ALL,0,0,800,60
     txtTimeshift->disable();
     ckDebug->disable();
     txtFilesize->setEditable(false);
-    
     FXString *fileList;
     int count=FXDir::listFiles(fileList, ".", "*", FXDir::AllFiles|FXDir::NoParent);
     for(int i=0; i<count; i++){
-        lbAvailable->appendItem(fileList[i]);
+        CityItem* ci=new CityItem(fileList[i],"","");
+        lbAvailable->appendItem(ci);
     }
     FXDate dt(2008,9,11);
     printf("%d\n", dt.getJulian());
@@ -125,8 +124,8 @@ void Relgui::create(){
 }
 
 void Relgui::moveCity(FXList* dest, FXList* src, FXuint index){
-    FXListItem* item=src->getItem(index);
-    dest->appendItem(new FXListItem(item->getText(), item->getIcon(), item->getData()));
+    CityItem* item=(CityItem*)(src->getItem(index));
+    dest->appendItem(new CityItem(item->getCity(), item->getState(), item->getDatapath()));
     src->removeItem(index);
 }
 

@@ -2,19 +2,11 @@
 
 #define RELGUI_H
 
-class LocRec: public FXObject{
-public:
-    FXString city, state, datapath;
-    LocRec(const FXString& ci, const FXString& st, const FXString& da): city(ci), state(st), datapath(da){};
-};
-
-
 class Relgui: public FXMainWindow{
     FXDECLARE(Relgui);
 private:
     void moveCity(FXList* dest, FXList* src, FXuint index);
     FXList *lbSelected, *lbAvailable;
-    FXObjectListOf<LocRec> cities;
 protected:
     Relgui(){};    
 public:    

@@ -220,6 +220,18 @@ class Summary extends Canvas implements CommandListener, Runnable {
     protected void keyReleased(int keyCode) {
         final int ga = getGameAction(keyCode);
         SummItem si = getSelectedItem();
+        if (Astromaximum.poundPressed) {
+            Astromaximum.poundPressed = false;
+            switch (keyCode) {
+                case Canvas.KEY_POUND:
+                    repaint();
+                    break;
+                case Canvas.KEY_STAR:
+                    Astromaximum.logBox.showLog(this);
+                    break;
+            }
+            return;
+        }
         switch (ga) {
             case Canvas.FIRE:
                 selectSummItem(si, false);
@@ -238,18 +250,34 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 break;
             default:
                 switch (keyCode) {
+// duplicates for game actions :(                    
+                    case Canvas.KEY_NUM5:
+                        selectSummItem(si, false);
+                        return;
+                    case Canvas.KEY_NUM4:
+                        keyNavigate(0);
+                        break;
+                    case Canvas.KEY_NUM6:
+                        keyNavigate(1);
+                        break;
+                    case Canvas.KEY_NUM2:
+                        keyNavigate(2);
+                        break;
+                    case Canvas.KEY_NUM8:
+                        keyNavigate(3);
+                        break;
+                        
                     case Canvas.KEY_NUM1:
 //            changeDay(-1);
                         moveFocus(1);
+                        repaint();
                         break;
 //          case KEY_NUM3:
 //            changeDay(1);
 //            break;
-//#mdebug info
                     case Canvas.KEY_STAR:
-                        si.dump();
+                        setCurPage(Summary.PAGE_HELP);
                         break;
-//#enddebug
                     case Canvas.KEY_NUM9:
                         if (pageNum == PAGE_DECUMB) {
                             return;
@@ -300,10 +328,18 @@ class Summary extends Canvas implements CommandListener, Runnable {
                         }
                         break;
                     case Canvas.KEY_POUND:
-                        Astromaximum.logBox.showLog(this);
+                        // waiting for next digit key
+                        Astromaximum.poundPressed = !Astromaximum.poundPressed;
+                        repaint();
                         break;
                 }
         }
+/*
+        if (Astromaximum.poundPressed) {
+            Summary. getGraphics().setColor(0x008000);
+            osg.drawChar('#', getWidth()-2, 2, Graphics.TOP|Graphics.RIGHT);
+        }
+*/        
     }
 
     /**
@@ -717,6 +753,8 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //  }
     void changeSize() {
         recalcBounds(getWidth(), getHeight());
+        Astromaximum.errCode = 131; // XXX
+        
 //    Astromaximum.log("Bounds="+Integer.toString(bounds.length));
         if (items == null) {
             items = new SummItem[bounds.length / BOUNDS_VARS];
@@ -731,6 +769,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#if logger
       Astromaximum.instance.logger(" si created");
 //#endif
+        Astromaximum.errCode = 132; // XXX
             statItem = getItem(Event.EV_STATUS);
 //      getItem(Event.EV_ZODIAC_SIGN).initString();
         }

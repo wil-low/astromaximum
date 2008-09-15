@@ -4,6 +4,8 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>../../../../ahg/Astromaximum/relgui_fx/CityItem.h</itemPath>
+      <itemPath>relgui.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -13,9 +15,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>main.cpp</itemPath>
+      <itemPath>../../../../ahg/Astromaximum/relgui_fx/CityItem.cpp</itemPath>
+      <itemPath>main.cxx</itemPath>
       <itemPath>/home/willow/amax/relgui_fx/relgui.cpp</itemPath>
-      <itemPath>relgui.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -47,13 +49,19 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="../../../../ahg/Astromaximum/relgui_fx/CityItem.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="../../../../ahg/Astromaximum/relgui_fx/CityItem.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="/home/willow/amax/relgui_fx/relgui.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="fMain.fl">
         <itemTool>3</itemTool>
       </item>
-      <item path="main.cpp">
+      <item path="main.cxx">
         <itemTool>1</itemTool>
       </item>
       <item path="relgui.h">
@@ -87,13 +95,19 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="../../../../ahg/Astromaximum/relgui_fx/CityItem.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="../../../../ahg/Astromaximum/relgui_fx/CityItem.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="/home/willow/amax/relgui_fx/relgui.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="fMain.fl">
         <itemTool>3</itemTool>
       </item>
-      <item path="main.cpp">
+      <item path="main.cxx">
         <itemTool>1</itemTool>
       </item>
       <item path="relgui.h">
