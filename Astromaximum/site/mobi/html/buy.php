@@ -64,7 +64,7 @@ else
 echo "<h4>Выберите вид оплаты:</h4>";
 ?>
 <ul>
-<li><a href="#">PayPal</a></li>
+<li><?php echo anchor('paypal') ?>PayPal</a></li>
 <li><a href="#">Другие</a></li>
 </ul>
 <!--

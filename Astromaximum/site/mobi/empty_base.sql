@@ -369,3 +369,24 @@ INSERT INTO `dic_role` (`id`, `name`) VALUES
 (1, 'Demo user'),
 (2, 'Customer');
 
+--
+-- Структура таблицы `paypal_orders`
+--
+
+CREATE TABLE IF NOT EXISTS `paypal_orders` (
+  `order_id` int(11) NOT NULL auto_increment,
+  `txn_id` varchar(20) NOT NULL,
+  `order_date` datetime NOT NULL,
+  `order_total` decimal(8,2) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `street` varchar(50) NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `state` varchar(50) NOT NULL,
+  `zip` varchar(15) NOT NULL,
+  `country` varchar(50) NOT NULL,
+  `item_name` varchar(50) NOT NULL,
+  PRIMARY KEY  (`order_id`),
+  UNIQUE KEY `txn_id` (`txn_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds Paypal transactions' AUTO_INCREMENT=1 ;

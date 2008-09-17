@@ -26,7 +26,6 @@ OBJECTDIR=build/Debug/GNU-Linux-x86
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/_ext/home/willow/ahg/Astromaximum/relgui_fx/../../../../ahg/Astromaximum/relgui_fx/CityItem.o \
 	${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o
 
 # C Compiler Flags
@@ -52,10 +51,6 @@ ${OBJECTDIR}/main.o: main.cxx
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/main.o main.cxx
 
-${OBJECTDIR}/_ext/home/willow/ahg/Astromaximum/relgui_fx/../../../../ahg/Astromaximum/relgui_fx/CityItem.o: ../../../../ahg/Astromaximum/relgui_fx/CityItem.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/home/willow/ahg/Astromaximum/relgui_fx/../../../../ahg/Astromaximum/relgui_fx
-	$(COMPILE.cc) -g -o ${OBJECTDIR}/_ext/home/willow/ahg/Astromaximum/relgui_fx/../../../../ahg/Astromaximum/relgui_fx/CityItem.o ../../../../ahg/Astromaximum/relgui_fx/CityItem.cpp
-
 ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o: /home/willow/amax/relgui_fx/relgui.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o /home/willow/amax/relgui_fx/relgui.cpp
@@ -70,3 +65,7 @@ ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o: /home/willow/amax/relgui_
 
 # Subprojects
 .clean-subprojects:
+
+# Enable dependency checking
+.KEEP_STATE:
+.KEEP_STATE_FILE:.make.state.${CONF}

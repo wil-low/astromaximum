@@ -4,7 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>../../../../ahg/Astromaximum/relgui_fx/CityItem.h</itemPath>
       <itemPath>relgui.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -15,7 +14,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>../../../../ahg/Astromaximum/relgui_fx/CityItem.cpp</itemPath>
       <itemPath>main.cxx</itemPath>
       <itemPath>/home/willow/amax/relgui_fx/relgui.cpp</itemPath>
     </logicalFolder>
@@ -49,12 +47,6 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="../../../../ahg/Astromaximum/relgui_fx/CityItem.cpp">
-        <itemTool>1</itemTool>
-      </item>
-      <item path="../../../../ahg/Astromaximum/relgui_fx/CityItem.h">
-        <itemTool>3</itemTool>
-      </item>
       <item path="/home/willow/amax/relgui_fx/relgui.cpp">
         <itemTool>1</itemTool>
       </item>
@@ -95,12 +87,6 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="../../../../ahg/Astromaximum/relgui_fx/CityItem.cpp">
-        <itemTool>1</itemTool>
-      </item>
-      <item path="../../../../ahg/Astromaximum/relgui_fx/CityItem.h">
-        <itemTool>3</itemTool>
-      </item>
       <item path="/home/willow/amax/relgui_fx/relgui.cpp">
         <itemTool>1</itemTool>
       </item>

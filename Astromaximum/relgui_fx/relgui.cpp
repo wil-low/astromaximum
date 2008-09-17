@@ -1,6 +1,5 @@
 #include <fx.h>
 #include "relgui.h"
-#include "CityItem.h"
 
 FXIMPLEMENT(Relgui, FXMainWindow, RelguiMap, ARRAYNUMBER(RelguiMap));
 
@@ -71,9 +70,9 @@ Relgui::Relgui(FXApp *a): FXMainWindow(a,"Relgui",NULL,NULL,DECOR_ALL,0,0,800,60
 
             FXHorizontalFrame *fr04=new FXHorizontalFrame(fr01,
                 LAYOUT_SIDE_TOP|LAYOUT_FILL_X,0,0,0,0,0,0,0); 
-                new FXRadioButton(fr04, "City", NULL, 0,
+                new FXRadioButton(fr04, "City", &sortByStateTarget, FXDataTarget::ID_OPTION+0,
                         RADIOBUTTON_NORMAL|LAYOUT_SIDE_TOP|LAYOUT_FILL_X);
-                new FXRadioButton(fr04, "State", NULL, 0,
+                new FXRadioButton(fr04, "State", &sortByStateTarget, FXDataTarget::ID_OPTION+1,
                         RADIOBUTTON_NORMAL|LAYOUT_SIDE_TOP|LAYOUT_FILL_X);
             new FXButton(fr01, "Generate", NULL, 0, 0, BUTTON_NORMAL|LAYOUT_CENTER_X|LAYOUT_FILL_X); 
 
@@ -97,6 +96,12 @@ Relgui::Relgui(FXApp *a): FXMainWindow(a,"Relgui",NULL,NULL,DECOR_ALL,0,0,800,60
             lbAvailable=new FXList(fr21, this, ID_LIST_AVAILABLE,
                 LIST_BROWSESELECT|LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0); 
     
+    sortByState=0;
+    
+    sortByStateTarget.connect(sortByState);
+    sortByStateTarget.setTarget(this);
+    sortByStateTarget.setSelector(ID_RESORT);
+    
     txtYear->setText("2008", true);
     lbLang->setNumVisible(3);
     lbLang->appendItem("ru");
@@ -107,15 +112,18 @@ Relgui::Relgui(FXApp *a): FXMainWindow(a,"Relgui",NULL,NULL,DECOR_ALL,0,0,800,60
     txtTimeshift->disable();
     ckDebug->disable();
     txtFilesize->setEditable(false);
-    FXString *fileList;
-    int count=FXDir::listFiles(fileList, ".", "*", FXDir::AllFiles|FXDir::NoParent);
-    for(int i=0; i<count; i++){
-        CityItem* ci=new CityItem(fileList[i],"","");
-        lbAvailable->appendItem(ci);
+    onGetCityList(NULL,0,NULL);
+}
+
+void Relgui::clearLr(LocRec &lr){
+    for(int i=0; i<lr.no(); i++){
+        delete lr[i];
     }
-    FXDate dt(2008,9,11);
-    printf("%d\n", dt.getJulian());
-    
+    lr.clear();
+}
+
+Relgui::~Relgui(){
+    clearLr(lrAvailable);
 }
 
 void Relgui::create(){
@@ -124,9 +132,11 @@ void Relgui::create(){
 }
 
 void Relgui::moveCity(FXList* dest, FXList* src, FXuint index){
+/*
     CityItem* item=(CityItem*)(src->getItem(index));
     dest->appendItem(new CityItem(item->getCity(), item->getState(), item->getDatapath()));
     src->removeItem(index);
+ */
 }
 
 long Relgui::onListSelected(FXObject* o,FXSelector,void* index){
@@ -137,3 +147,29 @@ long Relgui::onListAvailable(FXObject* o,FXSelector,void* index){
     moveCity(lbSelected, lbAvailable, (FXuint)index);
 }
 
+long Relgui::onGetCityList(FXObject* o,FXSelector sel,void* data){
+    FXString *fileList;
+    clearLr(lrAvailable);
+    int count=FXDir::listFiles(fileList, ".", "*", FXDir::AllFiles|FXDir::NoParent);
+    for(int i=0; i<count; i++){
+        lrAvailable.append(new City(fileList[i], "", ""));
+    }
+    delete[] fileList;
+}
+
+long Relgui::onResortCityList(FXObject* o,FXSelector,void* data){
+    refillList(lbAvailable, lrAvailable);
+    
+}
+
+void Relgui::refillList(FXList *lst, const LocRec &lr) {
+    lst->clearItems();
+    for(int i=0; i<lr.no(); i++){
+        if(sortByState){
+            lst->appendItem(lr[i]->state + ", " + lr[i]->city);
+        }
+        else{
+            lst->appendItem(lr[i]->city + ", " + lr[i]->state);
+        }
+    }
+}
