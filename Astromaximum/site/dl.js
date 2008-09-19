@@ -97,6 +97,7 @@ function firstId(arr){
 function fill_lb(listbox, arr, selindex)
 {
     listbox.options.length=0;
+	alert(arr.length);
     for(var i = 0; i < arr.length; i++){
         listbox.options[i] = new Option(arr[i][1], arr[i][0], arr[i][0] == selindex);
     }

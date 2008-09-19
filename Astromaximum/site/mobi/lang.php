@@ -10,6 +10,9 @@ $GLOBALS['amax']['year']=get_year();
 
 function lang_load($path){
 	global $lang, $i18;
+	if(!preg_match("/^\w\w$/", $lang)){
+		return;
+	}
 	if(!file_exists("$path/$lang.msg")){
 		return;
 	}

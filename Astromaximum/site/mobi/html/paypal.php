@@ -5,11 +5,27 @@ $price=$GLOBALS['amax']['price'];
 
 $admin_email='amax-dev@astromaximum.mobi';
 
-$paypal_email=$GLOBALS['amax']['mail_office'];
+$paypal_email='aivush_1217502939_biz@gmail.com';//$GLOBALS['amax']['mail_office'];
 
 $item_name="Astromaximum $cur_year";
 $item_price=substr($price,1).'.00';
 $currency='USD';
+/*
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="aivush_1217502939_biz@gmail.com">
+<input type="hidden" name="item_name" value="dfg">
+<input type="hidden" name="item_number" value="dsgr">
+<input type="hidden" name="amount" value="23.00">
+<input type="hidden" name="no_shipping" value="0">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="lc" value="US">
+<input type="hidden" name="bn" value="PP-BuyNowBF">
+<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+*/
 
 $thisurl='http://'.$_SERVER['SERVER_NAME']."/?$lang_&p=paypal";
 
@@ -90,7 +106,7 @@ if(isset($_GET['mode']) && ($_GET['mode'] == 'cancel')){ // cancelled
 }
 
 echo <<< EOF
-<form method="post" action= "https://www.paypal.com/cgi-bin/webscr">
+<form method="post" action= "https://www.sandbox.paypal.com/cgi-bin/webscr">
 <input type="hidden" name="cmd" value="_xclick"/>
 <input type="hidden" name="business" value="$paypal_email"/>
 <input type="hidden" name="item_name" value="$item_name"/>
@@ -102,7 +118,7 @@ echo <<< EOF
 <input type="hidden" name="return" value="{$thisurl}&mode=success"/>
 <input type="hidden" name="rm" value="2"/>
 <input type="hidden" name="cancel_return" value="{$thisurl}&mode=cancel"/>
-<input type="submit" value="Buy Now"/>
+<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 </form>
 EOF;
 ?>
