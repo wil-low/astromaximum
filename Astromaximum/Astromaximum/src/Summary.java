@@ -267,9 +267,19 @@ class Summary extends Canvas implements CommandListener, Runnable {
                         keyNavigate(3);
                         break;
                         
-                    case Canvas.KEY_NUM1:
-//            changeDay(-1);
-                        moveFocus(1);
+                    case Canvas.KEY_NUM1: // day/week/month <= hotkey
+                    case Canvas.KEY_NUM3:
+                        int delta=(keyCode==KEY_NUM1)? -1: 1;
+                        SummItem topsi=getItem(Event.EV_GRID_DATE);
+                        if(topsi!=null && topsi.isOnPage()){
+                            navigateTopItem(topsi, delta);
+                        }
+                        else{
+                            topsi=getItem(Event.EV_WEEK);
+                            if(topsi!=null && topsi.isOnPage()){
+                                navigateTopItem(topsi, delta);
+                            }
+                        }
                         repaint();
                         break;
 //          case KEY_NUM3:
@@ -1704,7 +1714,24 @@ class Summary extends Canvas implements CommandListener, Runnable {
         osg.drawArc(x, y, wh, wh, 0, 360);
         osg.setColor(old_color);
     }
-
+    
+    void navigateTopItem(SummItem si, int delta) { //shortcut to top item
+        si.selIndex = 1;
+        switch (pageNum) {
+            case Summary.PAGE_MONTH:
+                moveMonth(delta);
+                break;
+            case Summary.PAGE_WEEK:
+                moveDay(delta * rowCount, true);
+                break;
+            default:
+                changeDay(delta);
+                long tm = date.getTime();
+                tm += Event.localOffset(tm);
+                Astromaximum.customTime.dateField.setDate(new Date(tm));
+        }
+    }
+    
     /**
      * @param dir
      * @noinspection AssignmentToMethodParameter
@@ -1720,11 +1747,9 @@ class Summary extends Canvas implements CommandListener, Runnable {
         switch (dn) {
             case 0:
                 break;
-            case 21:
-                changeDay(delta);
-                long tm = date.getTime();
-                tm += Event.localOffset(tm);
-                Astromaximum.customTime.dateField.setDate(new Date(tm));
+            case 21: // Event.EV_WEEK (top date item)
+                navigateTopItem(si,delta);
+
                 //#ifdef ELECTIO
 //#         if(pageNum==PAGE_ELECTIO){
 //#           calcElectio();
@@ -1742,12 +1767,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 moveDay(delta * (vert ? 1 : rowCount), !vert);
                 break;
             case 25: // Event.EV_DATE_GRID:
-                si.selIndex = 1;
-                if (pageNum == Summary.PAGE_MONTH) {
-                    moveMonth(delta);
-                } else {
-                    moveDay(delta * rowCount, true);
-                }
+                navigateTopItem(si,delta);
                 break;
             case 26: // Event.EV_MOON_MOVE
                 if (si.selIndex < si.events.length / 2) { // at head
