@@ -13,7 +13,7 @@
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <console-type>0</console-type>
-        <terminal-type>0</terminal-type>
+        <terminal-type>2</terminal-type>
         <environment>
         </environment>
       </runprofile>

@@ -12,16 +12,16 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=
-CCC=
-CXX=
+CC=gcc
+CCC=g++
+CXX=g++
 FC=
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Release/MinGW-Linux-x86
+OBJECTDIR=build/Release/GNU-Linux-x86
 
 # Object Files
 OBJECTFILES= \
@@ -39,7 +39,7 @@ CXXFLAGS=
 FFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=`../../../fltk2/fltk2-config --ldflags`  
+LDLIBSOPTIONS=`../fltk2/fltk2-config --ldflags`  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS} relgui
@@ -49,11 +49,11 @@ relgui: ${OBJECTFILES}
 
 ${OBJECTDIR}/main.o: main.cxx 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -O3 -s -I../../../fltk2 -o ${OBJECTDIR}/main.o main.cxx
+	$(COMPILE.cc) -O3 -s -I../fltk2 -o ${OBJECTDIR}/main.o main.cxx
 
 ${OBJECTDIR}/fMain.o: fMain.cxx 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -O3 -s -I../../../fltk2 -o ${OBJECTDIR}/fMain.o fMain.cxx
+	$(COMPILE.cc) -O3 -s -I../fltk2 -o ${OBJECTDIR}/fMain.o fMain.cxx
 
 # Subprojects
 .build-subprojects:
@@ -65,3 +65,7 @@ ${OBJECTDIR}/fMain.o: fMain.cxx
 
 # Subprojects
 .clean-subprojects:
+
+# Enable dependency checking
+.KEEP_STATE:
+.KEEP_STATE_FILE:.make.state.${CONF}

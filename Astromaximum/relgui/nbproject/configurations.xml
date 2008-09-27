@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>fMain.h</itemPath>
+      <itemPath>main.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -16,7 +17,6 @@
                    projectFiles="true">
       <itemPath>fMain.cxx</itemPath>
       <itemPath>main.cxx</itemPath>
-      <itemPath>main.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -39,14 +39,14 @@
         <ccCompilerTool>
           <commandlineTool>g++</commandlineTool>
           <includeDirectories>
-            <directoryPath>../../../fltk2</directoryPath>
+            <directoryPath>../fltk2</directoryPath>
           </includeDirectories>
         </ccCompilerTool>
         <linkerTool>
           <output>relgui</output>
           <commandlineTool>g++</commandlineTool>
           <linkerLibItems>
-            <linkerOptionItem>`../../../fltk2/fltk2-config --ldflags`</linkerOptionItem>
+            <linkerOptionItem>`../fltk2/fltk2-config --ldflags`</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -68,7 +68,7 @@
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <compilerSet>MinGW|MinGW</compilerSet>
+        <compilerSet>GNU|GNU</compilerSet>
         <platform>2</platform>
       </toolsSet>
       <compileType>
@@ -79,7 +79,7 @@
           <developmentMode>6</developmentMode>
           <stripSymbols>true</stripSymbols>
           <includeDirectories>
-            <directoryPath>../../../fltk2</directoryPath>
+            <directoryPath>../fltk2</directoryPath>
           </includeDirectories>
         </ccCompilerTool>
         <fortranCompilerTool>
@@ -89,7 +89,7 @@
           <output>relgui</output>
           <stripSymbols>true</stripSymbols>
           <linkerLibItems>
-            <linkerOptionItem>`../../../fltk2/fltk2-config --ldflags`</linkerOptionItem>
+            <linkerOptionItem>`../fltk2/fltk2-config --ldflags`</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

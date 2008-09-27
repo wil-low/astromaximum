@@ -23,6 +23,7 @@ private:
     void clearLr(LocRec &lr);
     FXchar sortByState;
     FXDataTarget sortByStateTarget;
+    FXuint year;
 protected:
     Relgui(){};    
     ~Relgui();

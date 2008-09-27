@@ -113,6 +113,7 @@ Relgui::Relgui(FXApp *a): FXMainWindow(a,"Relgui",NULL,NULL,DECOR_ALL,0,0,800,60
     ckDebug->disable();
     txtFilesize->setEditable(false);
     onGetCityList(NULL,0,NULL);
+    onResortCityList(NULL,0,NULL);
 }
 
 void Relgui::clearLr(LocRec &lr){
@@ -150,16 +151,66 @@ long Relgui::onListAvailable(FXObject* o,FXSelector,void* index){
 long Relgui::onGetCityList(FXObject* o,FXSelector sel,void* data){
     FXString *fileList;
     clearLr(lrAvailable);
-    int count=FXDir::listFiles(fileList, ".", "*", FXDir::AllFiles|FXDir::NoParent);
+    char buf[1000];
+    const FXString dir="../data/archive/";
+    int count=FXDir::listFiles(fileList, dir, "*", FXDir::AllFiles|FXDir::NoParent);
     for(int i=0; i<count; i++){
-        lrAvailable.append(new City(fileList[i], "", ""));
+        if(FXPath::match("*.txt", fileList[i])){
+            char *cc=(char*)((dir+fileList[i]).text());
+			FILE *intxt=fopen(cc, "r");
+			if(!intxt){
+				perror("txt open");
+				continue;
+			}
+			int ii=0;
+			char *city, *state, *ind;
+			while(fgets(buf, 1000, intxt)){
+                FXString line(buf);
+                line.trunc(-2);
+/*                
+				if(strstr(buf, "#"))
+					continue;
+				if(ind=strchr(buf, '\r'))
+					*ind=0;
+				if(ind=strchr(buf, '\n'))
+					*ind=0;
+				buf[strlen(buf)-4]='-';
+				state=strrchr(buf, '|')+1;
+				if(ind=strchr(buf, '|'))
+					*ind=0;
+				city=buf;
+				ind=strchr(buf, '!');
+				if(ind){
+					city=ind+1;
+				}
+				ind=strchr(state, '$');
+				if(ind){
+					state=ind+1;
+				}
+//		printf("\nC: %s\tS: %s", city, state);
+				char dpath[1000];
+				sprintf(dpath, "%s/%04d/%s/Data%04d.dat", dir, year, ini, ii);
+ */
+            }
+            fclose(intxt);
+/*            
+				if(fltk::filename_exist(dpath)){
+					sprintf(dpath,"%s:Data%04d %s", ini, ii, city);
+					rec.city=city; rec.state=state; rec.datapath=dpath;
+					v.push_back(rec);
+				}
+				else{
+					printf("No datafile %s\n", dpath);
+				}
+ */
+            lrAvailable.append(new City(fileList[i], "", ""));
+        }
     }
     delete[] fileList;
 }
 
 long Relgui::onResortCityList(FXObject* o,FXSelector,void* data){
     refillList(lbAvailable, lrAvailable);
-    
 }
 
 void Relgui::refillList(FXList *lst, const LocRec &lr) {
