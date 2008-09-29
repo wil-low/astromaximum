@@ -6,8 +6,9 @@ class City: public FXObject
 {
 public:    
     FXString city, state, datapath;
+    FXbool selected;
     City(const FXString& ci, const FXString& st, const FXString& da){
-        city=ci; state=st; datapath=da;
+        city=ci; state=st; datapath=da; selected=false;
     }
 };
 
@@ -16,14 +17,15 @@ typedef FXObjectListOf<City> LocRec;
 class Relgui: public FXMainWindow{
     FXDECLARE(Relgui);
 private:
-    void moveCity(FXList* dest, FXList* src, FXuint index);
+    void moveCity(FXList* lst, FXuint index);
+    void addCityItem(FXList *lst, FXuint i);
     FXList *lbSelected, *lbAvailable;
-    LocRec lrSelected, lrAvailable;
-    void refillList(FXList *lst, const LocRec &lr);
+    LocRec lrCities;
     void clearLr(LocRec &lr);
     FXchar sortByState;
     FXDataTarget sortByStateTarget;
     FXuint year;
+    FXDataTarget yearTarget;
 protected:
     Relgui(){};    
     ~Relgui();
@@ -35,6 +37,7 @@ public:
         ID_LIST_SELECTED=FXMainWindow::ID_LAST,
         ID_LIST_AVAILABLE,
         ID_RESORT,
+        ID_YEAR,
     };
 
     // Message handlers
@@ -48,6 +51,7 @@ FXDEFMAP(Relgui) RelguiMap[]={
     FXMAPFUNC(SEL_DOUBLECLICKED, Relgui::ID_LIST_SELECTED, Relgui::onListSelected),
     FXMAPFUNC(SEL_DOUBLECLICKED, Relgui::ID_LIST_AVAILABLE, Relgui::onListAvailable),
     FXMAPFUNC(SEL_COMMAND, Relgui::ID_RESORT, Relgui::onResortCityList),
+    FXMAPFUNC(SEL_COMMAND, Relgui::ID_YEAR, Relgui::onGetCityList),
 };
 
 #endif
