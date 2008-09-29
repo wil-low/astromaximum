@@ -10,11 +10,11 @@ my $done=0;
 if(!$islocal){
 	$const::DIR_TEMPLATE='source';
 }
-my $nb_user='$HOME/.netbeans/6.0';
+my $nb_user='$HOME/.netbeans/6.1';
 my $platform='$HOME/wtk251';
 our $winda=$^O=~/Win/is;
 if($winda){
-	$nb_user='%USERPROFILE%/.netbeans/6.0';
+	$nb_user='%USERPROFILE%/.netbeans/6.1';
 	$platform='D:\WTK251';
 }
 

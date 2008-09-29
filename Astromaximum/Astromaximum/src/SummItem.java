@@ -157,41 +157,41 @@ class SummItem extends TimerTask implements RecordFilter {
     }
 
     void initString() {
-        str = null;
+        StringBuffer sb=new StringBuffer();
         final Calendar cal = Astromaximum.calendar;
         switch (type) {
             case Event.EV_GRID_DATE:
                 cal.setTime(new Date(events[1].date0));
                 selIndex = 1;
-                str = Astromaximum.months[cal.get(Calendar.MONTH)] + "'" +
-                        Integer.toString(cal.get(Calendar.YEAR)).substring(2, 4);
+                sb.append(Astromaximum.months[cal.get(Calendar.MONTH)]).append("'").
+                        append(Integer.toString(cal.get(Calendar.YEAR)).substring(2, 4));
                 break;
             case Event.EV_WEEK:
                 cal.setTime(new Date(events[1].date0));
                 selIndex = 1;
                 final int weekDay = cal.get(Calendar.DAY_OF_WEEK);
                 if (!Astromaximum.locale.equals("Ru")) {
-                    str = Astromaximum.getstr(weekDay - 1 + 20) + " " +
-                            Astromaximum.months[cal.get(Calendar.MONTH)].substring(0, 3) +
-                            " " + Integer.toString(cal.get(Calendar.DAY_OF_MONTH)) +
-                            " '" + Integer.toString(cal.get(Calendar.YEAR)).substring(2, 4);
+                    sb.append(Astromaximum.getstr(weekDay - 1 + 20)).append(" ").
+                            append(Astromaximum.shortMonths[cal.get(Calendar.MONTH)]).
+                            append(" ").append(cal.get(Calendar.DAY_OF_MONTH)).
+                            append(" '").append(Integer.toString(cal.get(Calendar.YEAR)).substring(2, 4));
                 } else {
-                    str = Astromaximum.getstr(weekDay - 1 + 20) + " " +
-                            Integer.toString(cal.get(Calendar.DAY_OF_MONTH)) + " " +
-                            Astromaximum.months[cal.get(Calendar.MONTH)].substring(0, 3) + " '" +
-                            Integer.toString(cal.get(Calendar.YEAR)).substring(2, 4);
+                    sb.append(Astromaximum.getstr(weekDay - 1 + 20)).append(" ").
+                            append(cal.get(Calendar.DAY_OF_MONTH)).append(" ").
+                            append(Astromaximum.shortMonths[cal.get(Calendar.MONTH)]).append(" '").
+                            append(Integer.toString(cal.get(Calendar.YEAR)).substring(2, 4));
                 }
                 break;
             case Event.EV_VOC:
             case Event.EV_VIA_COMBUSTA:
                 if (events[0] != null) {
-                    str = events[0].getDateString(0, 1) + "-" + events[0].getDateString(1, 1);
+                    sb.append(events[0].getDateString(0, 1)).append("-").append(events[0].getDateString(1, 1));
                 }
                 break;
             case Event.EV_SUN_RISE:
             case Event.EV_MOON_RISE:
                 if (events[0] != null) {
-                    str += events[0].getDateString(0, 1); // rise time
+                    sb.append(events[0].getDateString(0, 1)); // rise time
                 }
 //        if(events[1]!=null) {
 //          str += events[1].getDateString(0, true); // rise time
@@ -200,10 +200,10 @@ class SummItem extends TimerTask implements RecordFilter {
             case Event.EV_STATUS:
                 final SummItem si = owner.getSelectedItem();
                 if (si.type != Event.EV_STATUS) {
-                    str = si.getStatus();
+                    sb.append(si.getStatus());
                 }
-                if (str == null) {
-                    str = Event.long2String(owner.cusTime, 1, false);
+                if (sb.length() == 0) {
+                    sb.append(Event.long2String(owner.cusTime, 1, false));
                     tag = 1;
                 } else {
                     tag = 0;
@@ -243,6 +243,7 @@ class SummItem extends TimerTask implements RecordFilter {
 //          dump();
             selIndex = 0;
         }
+        str=sb.toString();
     }
 
     /**
@@ -344,10 +345,9 @@ class SummItem extends TimerTask implements RecordFilter {
                 switch (tag) {
                     case 1:
                         osg.setColor(Astromaximum.RUBY_COLOR);
-                        Font old = osg.getFont();
-                        osg.setFont(Font.getFont(Font.FACE_SYSTEM, Font.STYLE_UNDERLINED, old.getSize()));
+//                        Font old = osg.getFont();
                         osg.drawString(Astromaximum.URL, left, top, Graphics.BOTTOM | Graphics.LEFT);
-                        osg.setFont(old);
+//                        osg.setFont(old);
                     case 2:
                         for (int i = 0; i < events.length; i++) {
                             drawImg(osg, Summary.imgPlanet, (tag == 1) ? i : i + 7, getX(i, XCENTER), y,
@@ -615,9 +615,6 @@ class SummItem extends TimerTask implements RecordFilter {
                 }
 
                 final Font old = osg.getFont();
-//        if(str.length()<14)
-//          osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_PLAIN,Font.SIZE_LARGE));
-//        System.out.println(str);
                 y = top + height - 2;
 //        if(owner.isShowCustom){
                 int x = getX(0, XCENTER);
@@ -652,15 +649,15 @@ class SummItem extends TimerTask implements RecordFilter {
                         osg.drawString(str, x, y, Graphics.HCENTER | Graphics.BASELINE);
                     }
                 }
-                osg.setFont(old);
+//                osg.setFont(old);
                 if (Summary.isInCurrentDay(now)) {
                     osg.setColor(Astromaximum.RUBY_COLOR);
                     if (Summary.IMG_HEIGHT == 12) {
-                        osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_LARGE));
+//                        osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_LARGE));
                     }
                     osg.drawString(Event.long2String(now, 1, false),
                             getX(1, XCENTER), y, Graphics.HCENTER | Graphics.BASELINE);
-                    osg.setFont(old);
+//                    osg.setFont(old);
                 }
 //        osg.setColor(Astromaximum.DIMMED_COLOR);
 //        osg.drawString(Long.toString(Runtime.getRuntime().freeMemory()>>10)+"k",
@@ -1459,9 +1456,6 @@ class SummItem extends TimerTask implements RecordFilter {
 // @todo zero
         zeroPlaces();
         Date cur = new Date(Summary.firstGridDate.getTime());
-//    final Font oldFont=osg.getFont();
-//    osg.setFont(Font.getFont(Font.FACE_MONOSPACE,Font.STYLE_PLAIN,Font.SIZE_LARGE));
-//    osg.setFont(oldFont);
         final int colWidth = width / owner.colCount;
         final int rowHeight = height / owner.rowCount;
         final int leftm = width - colWidth * owner.colCount;
@@ -1747,7 +1741,7 @@ class SummItem extends TimerTask implements RecordFilter {
         }
 // @todo **********
         osg.setColor(0);
-        osg.setFont(oldFont);
+//        osg.setFont(oldFont);
 // @todo zero
 //        zeroPlaces();
         for (Enumeration e = owner.mIngress.elements(); e.hasMoreElements();) {

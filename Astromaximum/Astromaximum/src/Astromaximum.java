@@ -121,12 +121,10 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Flag indicating that midlet is started for the first time
      */
     static boolean firstRun = true;
-    
     /**
      * Flag indicating that # key is pressed
      */
     static boolean poundPressed = false;
-    
     static private final Hashtable locHash = new Hashtable();
     /**
      * Midlet instance reference
@@ -140,6 +138,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Month names (localized)
      */
     static final String[] months = new String[12];
+    static final String[] shortMonths = new String[12];
     /**
      * Zodiac constellations abbreviated
      */
@@ -252,6 +251,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#endif
             for (int i = 0; i < 12; i++) {
                 months[i] = getstr(7 + i);
+                shortMonths[i] = months[i].substring(0, 3);
             }
 
             errCode = 4; // XXX
@@ -280,7 +280,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#endif
 //        System.out.println("Modem="+customTime.askModem());
 //#debug error
-                errCode = 8; // XXX
+            errCode = 8; // XXX
             Astromaximum.log("Total memory = " + Long.toString(Runtime.getRuntime().totalMemory()));
             options.loadHistory();
             errCode = 9; // XXX
@@ -289,7 +289,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //        log("Options");
 //          System.out.println(Runtime.getRuntime().freeMemory());
 //#debug error
-                System.out.println("Interpreter");
+            System.out.println("Interpreter");
 //        log("customTime");
 //          System.out.println(Runtime.getRuntime().freeMemory());
 //#if perftest == "2"
@@ -509,7 +509,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * @param absDegree int
      * @return sign number
      */
-    static int getSignDegree(int absDegree) {
+    static final int getSignDegree(int absDegree) {
         return absDegree % 30 + 1;
     }
 
@@ -519,7 +519,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * @param idx index
      * @return Event
      */
-    static Event evAt(Vector v, int idx) {
+    static final Event evAt(Vector v, int idx) {
         return (Event) v.elementAt(idx);
     }
 
@@ -585,8 +585,9 @@ public class Astromaximum extends MIDlet implements CommandListener {
     static void evDump(Vector events) {
         System.out.print("Dump events= ");
         System.out.println(events.size());
-        for (Enumeration e = events.elements(); e.hasMoreElements();)
+        for (Enumeration e = events.elements(); e.hasMoreElements();) {
             ((Event) e.nextElement()).dump();
+        }
     }
 //#enddebug
     /**
@@ -695,7 +696,5 @@ public class Astromaximum extends MIDlet implements CommandListener {
     }
   }
 //#endif
-}
-
-// # vi:et:ts=4:sw=4
+}// # vi:et:ts=4:sw=4
 

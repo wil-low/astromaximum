@@ -127,16 +127,6 @@ class Event {
     }
 
     /**
-     * setAspExact
-     *
-     * @param deg char
-     * @throws IllegalArgumentException
-     */
-    void setDegree(int deg) {
-        degree = (short) deg;
-    }
-
-    /**
      * getDegree
      *
      * @return int
@@ -183,18 +173,17 @@ class Event {
         if (date0 == 0) {
             return false;
         }
-        final int f0 = dateBetween(date0, start, end);
-        final int f1 = dateBetween(date1, start, end);
+        final int f = dateBetween(date0, start, end) + dateBetween(date1, start, end);
         /*    dump();
         System.out.print(f0);
         System.out.print("&");
         System.out.println(f1);
          */
-        if (Math.abs(f0 + f1) == 2) {
+        if (f == 2 || f == -2) {
             return false;
         }
         if (special) {
-            if (f0 + f1 == -1) {
+            if (f == -1) {
                 return false;
             }
 //      if(f0*f1==-1)

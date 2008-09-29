@@ -75,8 +75,8 @@ final class DataFile {
             dayCount = is.readShort();
             finalJD = startJD + dayCount * Astromaximum.MSECINDAY;
             if (count > 0) {
-               customData = new byte[count];
-               is.read(customData);
+                customData = new byte[count];
+                is.read(customData);
             }
 //#debug info
             System.out.println(dayCount);
@@ -89,7 +89,8 @@ final class DataFile {
 
         eclipses = getEvents(Event.EV_ECLIPSE, Event.SE_SUN, startJD, finalJD);
         final Vector tmp = getEvents(Event.EV_ECLIPSE, Event.SE_MOON, startJD, finalJD);
-        for (int i = 0; i < tmp.size(); i++) {
+        int tmpsize = tmp.size();
+        for (int i = 0; i < tmpsize; i++) {
             eclipses.addElement(tmp.elementAt(i));
         }
 //#debug error
@@ -347,7 +348,7 @@ final class DataFile {
                 int rub = is.readUnsignedByte();
                 while (evtype != rub) {
                     if (isCommon && Astromaximum.options != null) {
-                        Astromaximum.options.addImeiChar(Integer.toString(ch).charAt(0));
+                        Astromaximum.options.addImeiChar((char) ch);
                     }
                     skipOff = is.readShort() - 3;
                     is.skip(skipOff);
@@ -376,24 +377,24 @@ final class DataFile {
             byte myplanet0 = (byte) planet, myplanet1 = -1;
             int mydgr = 127;
             long mydate0, mydate1;
-/*            
+            /*            
             int skips = 0;
             if (fdate != 0) {
-                skips += 4;
+            skips += 4;
             }
             if (fplanet1 != 0) {
-                ++skips;
+            ++skips;
             }
             if (fplanet2 != 0) {
-                ++skips;
+            ++skips;
             }
             if (fdegree != 0) {
-                ++skips;
-                if (fshort_degree == 0) {
-                    ++skips;
-                }
+            ++skips;
+            if (fshort_degree == 0) {
+            ++skips;
             }
- */
+            }
+             */
             int cumul;
             long date = 0;
             long sJD = startJD, fJD = finalJD;
@@ -507,7 +508,7 @@ final class DataFile {
             if (ev.isInPeriod(dayStart, dayEnd, special)) {
                 flag = true;
                 if (value > 0) {
-                    ev.setDegree(value);
+                    ev.degree = (short) value;
                 }
                 v.addElement(ev);
             } else if (flag) {

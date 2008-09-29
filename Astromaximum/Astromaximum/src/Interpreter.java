@@ -124,8 +124,10 @@ class Interpreter extends Canvas implements CommandListener {
             return false;
 //            txt = s = Astromaximum.getstr(110);//demo texts
         } else {
-            if(si.type == Event.EV_HELP) // Help ignores selected topic
+            if (si.type == Event.EV_HELP) // Help ignores selected topic
+            {
                 ignoreAllTopics = true;
+            }
             StringBuffer sb = new StringBuffer(s);
             if (!ignoreAllTopics) {
                 //    System.out.println("FullText:");
@@ -143,10 +145,11 @@ class Interpreter extends Canvas implements CommandListener {
                     if (topp != T_MEDICINE && topp != T_DECUMB && topp != T_VACATION && topp != T_LOVE) {
                         allowed0 = '@';
                     }
-                    for (int i = 0; i < RESERVED_CHARS.length(); i++) {
+                    final int rclen = RESERVED_CHARS.length();
+                    for (int i = 0; i < rclen; i++) {
                         char rc = RESERVED_CHARS.charAt(i);
                         if (allowed0 != rc && allowed1 != rc) {
-                            for (int j = 0; j < sb.length(); j++) {
+                            for (int j = 0; j < sb.length(); j++) { // do not optimize
                                 if (rc == sb.charAt(j)) {
                                     sb.deleteCharAt(j--);
                                 }
@@ -155,7 +158,8 @@ class Interpreter extends Canvas implements CommandListener {
                     }
                     s = sb.toString();
                     sb = new StringBuffer();
-                    for (int i = 0; i < s.length(); i++) {
+                    int slen = s.length();
+                    for (int i = 0; i < slen; i++) {
                         char rc = s.charAt(i);
                         if (allowed0 == rc || allowed1 == rc) {
                             int pos = s.indexOf(rc, i + 1);
@@ -170,7 +174,7 @@ class Interpreter extends Canvas implements CommandListener {
                     sb = new StringBuffer(s);
                 }
             }
-            for (int i = 0; i < sb.length(); i++) {
+            for (int i = 0; i < sb.length(); i++) { // do not optimize
                 if (RESERVED_CHARS.indexOf(sb.charAt(i)) >= 0) {
                     sb.deleteCharAt(i--);
                 }
