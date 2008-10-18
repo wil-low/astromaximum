@@ -58,15 +58,11 @@ if($chac!=-1 and $chac!=1){
 	echo "<h4>".sprintf($i18['DLOAD4YEAR'],"<select name=\"yagree\">$out</select>")."</h4>";
 	echo dload_tries_prompt($tries, 2, '', $i18['GENERATE?']);
 	echo "</form>";
+    return;
 }
-else
-{
-echo "<h4>Выберите вид оплаты:</h4>";
 ?>
-<ul>
-<li><?php echo anchor('paypal') ?>PayPal</a></li>
-<li><a href="#">Другие</a></li>
-</ul>
+<?php include_once('paypal.php') ?>
+<?php include_once('bank.php') ?>
 <!--
 <p>Пожалуйста, заполните форму регистрации:
 <form id="regform" action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post">
@@ -75,7 +71,7 @@ echo "<h4>Выберите вид оплаты:</h4>";
 <input type="submit" name="reg_submit" value="Зарегистрироваться">  
 </form>
 -->
-<?php } 
+<?php
 
 function dload_tries_prompt($arr, $key, $str, $prompt){
 	global $DLIM;

@@ -76,7 +76,7 @@ int isInPeriod(const struct Event_ *e, long start, long end) {
     return dateBetween(e->date0, start, end) == 0;
 }
     
-int printLocalTime(long date){
+int printLocalTime(time_t date){
     int dst=0;
     date+=tzOffset;
     if (dstExists) {
@@ -96,12 +96,24 @@ int printLocalTime(long date){
 
 int main(int argc, char** argv) { // data filename
     if(argc==1){
+        printf("Usage: sunrise <filename> [YYYY-MM-DD HH:MM]\n");
         printf("Extracts today's sunrise from Astromaximum location file\n");
         return 0;
     }
     FILE *fn=fopen(argv[1], "rb");
     if(!fn)
         return -1;
+    unsigned int my_year=0, my_month=0, my_day=0, my_hour=0, my_min=0;
+    if(argc>=3){
+        if(sscanf(argv[2], "%04d-%02d-%02d", &my_year, &my_month, &my_day) != 3){
+            return 1;
+        }
+        if(argc==4){
+            if(sscanf(argv[3], "%02d:%02d", &my_hour, &my_min) != 2){
+                return 2;
+            }
+        }
+    }
     int df_year=0;
     fread(&df_year, 2, 1, fn);
     fseek(fn, 8, SEEK_SET);
@@ -155,7 +167,19 @@ int main(int argc, char** argv) { // data filename
     int fnext_date2 = (flag & EF_NEXT_DATE2);
     
     time_t dayStart, dayEnd, now; struct tm tm_;
-    time(&dayStart);
+    
+    if(my_year && (df_year == my_year)){ // process entered time as current time
+        memset(&tm_, 0, sizeof(tm_));
+        tm_.tm_year   =   my_year-1900;
+        tm_.tm_mon    =   my_month-1;
+        tm_.tm_mday   =   my_day;
+        tm_.tm_hour   =   my_hour;
+        tm_.tm_min    =   my_min;
+        dayStart=mktime(&tm_);
+    }
+    else{
+        time(&dayStart);
+    }
     gmtime_r(&dayStart, &tm_);
     tm_.tm_year=df_year-1900;
     dayStart=mktime(&tm_);

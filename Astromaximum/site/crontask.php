@@ -19,5 +19,10 @@
             $stat='UPDATE files SET deleted=\'t\' WHERE id IN (\''.implode('\',\'', $ids).'\')';
             mysql_query($stat);
         }
+        
+// delete all old /tmp/sunrise_*
+        foreach (glob('/tmp/sunrise_*') as $filename) {
+            @unlink($filename);
+        }
     }
 ?>

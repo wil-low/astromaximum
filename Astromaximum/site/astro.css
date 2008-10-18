@@ -277,3 +277,10 @@ ul {
 #shotnav td {
     width: 50%;
 }
+.bank {
+    font-size:10px;
+    padding-left:20px;
+    font-weight: bold;
+    height: 20px;
+    vertical-align: bottom;
+}

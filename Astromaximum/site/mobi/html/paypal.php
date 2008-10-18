@@ -106,6 +106,7 @@ if(isset($_GET['mode']) && ($_GET['mode'] == 'cancel')){ // cancelled
 }
 
 echo <<< EOF
+<h4 style="font-size:12px;">1. Оплатить через PayPal:</h4>
 <form method="post" action= "https://www.sandbox.paypal.com/cgi-bin/webscr">
 <input type="hidden" name="cmd" value="_xclick"/>
 <input type="hidden" name="business" value="$paypal_email"/>
@@ -118,7 +119,7 @@ echo <<< EOF
 <input type="hidden" name="return" value="{$thisurl}&mode=success"/>
 <input type="hidden" name="rm" value="2"/>
 <input type="hidden" name="cancel_return" value="{$thisurl}&mode=cancel"/>
-<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" width="200" height="50" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 </form>
 EOF;
 ?>
