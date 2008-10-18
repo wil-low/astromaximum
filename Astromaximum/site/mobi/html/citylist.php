@@ -29,15 +29,14 @@ if(isset($_GET['n']) && $chac>=0){
 	}
 	else{
 		$row=mysql_fetch_row($sth);		
-		$tmpfname = tempnam("/tmp", "SR");
+		$tmpfname = tempnam("/tmp", "sunrise_");
 		$handle = fopen($tmpfname, "wb");
 		fwrite($handle, $row[0]);
 		fclose($handle);
 		$cmd="mobi/sunrise $tmpfname";
 		$ret=0;
-//		echo $cmd;
+//		echo "<br/>$cmd<br/>";
 		exec($cmd, $outp, $ret);
-		unlink($tmpfname);
 		if($ret){
 			echo "<h4>{$i18['CITYLIST_SUNRISE_ERROR']} $ret</h4>";
 		}

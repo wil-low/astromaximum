@@ -106,7 +106,8 @@ function yesno($val){
 	$value='';
 	for($i=0; $i<count($adc); $i++){
 		$value.="$adc[$i] ";
-		$sql="SELECT 1 FROM locations WHERE city_id = '$dcit[$i]' and year=$yprev";
+		$sql=isset($dcit[$i]) ?
+		    "SELECT 1 FROM locations WHERE city_id = '$dcit[$i]' and year=$yprev": '';
 		$sth=mysql_query($sql);
 		$value.=yesno($sth && mysql_num_rows($sth));
 		$value.=", ";

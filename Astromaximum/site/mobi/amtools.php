@@ -72,9 +72,9 @@ function join_datafiles2($year, $destfile, $a_data) # year, destfile, data_listr
 function rm_all($dir)
 {
 	foreach(glob("$dir/*.*") as $fname){
-		unlink($fname);
+		@unlink($fname);
 	}
-	rmdir($dir);
+	@rmdir($dir);
 }
 
 function select_cities($year, $ids, $destfile){

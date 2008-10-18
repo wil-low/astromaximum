@@ -4,7 +4,7 @@ use strict;
 #use warnings;
 #use diagnostics;
 use POSIX;
-
+my $pwdgen_local='../../pwdgen_local.php';
 my $islocal=$0=~/\.pl$/is;
 my $done=0;
 if(!$islocal){
@@ -352,7 +352,7 @@ sub dbconnect{
 	require CGI;
 	my($DB_SERVER,$DB_NAME,$DB_PORT,$DB_SUPERUSER,$DB_SUPERUSER_PWD,$DB_USER,$DB_USER_PWD);
 
-	if(CGI::server_name() eq 'localhost'){ # local=true
+	if(-f $pwdgen_local){ # local=true
 		$DB_SERVER='localhost';
 		$DB_NAME='amax';
 		$DB_PORT='3306';
@@ -363,16 +363,17 @@ sub dbconnect{
 		$DB_USER_PWD='user';
 	}
 	else{
-		$DB_SERVER='localhost';
-		$DB_NAME='usr_web42_1';
+		$DB_SERVER='mysql300.1gb.ua';
+		$DB_NAME='gbua_x_astroc8a';
 		$DB_PORT='3306';
 
-		$DB_SUPERUSER='web42';
-		$DB_SUPERUSER_PWD='r6OvIJkV2U';
+		$DB_SUPERUSER='gbua_x_astroc8a';
+		$DB_SUPERUSER_PWD='f3cf9cc0';
 		$DB_USER='user';
 		$DB_USER_PWD='user';
 	}
 	my $dsn = "DBI:mysql:database=$DB_NAME;host=$DB_SERVER";
+	echo("DSN: $dsn\n");
 	return DBI->connect($dsn, $DB_SUPERUSER, $DB_SUPERUSER_PWD);
 }
 

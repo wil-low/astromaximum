@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
 LOCK TABLES `customers` WRITE;
 INSERT INTO `customers` (`id`, `name`, `realname`, `hash`, `role`, `email`, `subscr_date`, `paymode_id`, `dlcount0`, `dlcount1`, `dlcount2`, `active`) VALUES
-	(1,'vmesiats','Vasyl Mesiats','',0,'kiev999@gmail.com','2007-10-13', 1, -1,-1,-1, 1),
+	(1,'vmesiats','Vasyl Mesiats','',0,'kiev.999@gmail.com','2007-10-13', 1, -1,-1,-1, 1),
 	(2,'aivushkin','Andrei Ivushkin','',0,'aivushkin@gmail.com','2007-10-13', 1,-1,-1,-1, 1),
 	(3,'123456789','Demo','7faa7ccafc874123c1ff345b7becb94c', 1, NULL, NULL, 1, -1,-1,-1,0);
 UNLOCK TABLES;
