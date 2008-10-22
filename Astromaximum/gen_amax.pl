@@ -109,7 +109,8 @@ if($islocal and ($config eq 'rebuild')){
 	my $antpath;
 	my @app=(
 	'/home/willow/nb6/java2/ant/bin/ant',
-	'd:/Program Files/nb6/java2/ant/bin/ant.bat'
+	'd:/Program Files/nb6/java2/ant/bin/ant.bat',
+	'd:/Program Files/nb6/java1/ant/bin/ant.bat',
 	#      '/home/willow/netbeans-5.5.1/ide7/ant/bin/ant',
 	#      'd:/netbeans-5.5/ide7/ant/bin/ant.bat',
 	#      'd:/Program Files/netbeans-5.5.1/ide7/ant/bin/ant.bat'

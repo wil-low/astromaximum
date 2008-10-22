@@ -6,11 +6,11 @@ allow_ip('demo',false);
 //print_r($_REQUEST);
 if(check_access()!=-1){
 	$uri=htmlentities($_SERVER['REQUEST_URI']);
+	$prev_year=$GLOBALS['amax']['year']-1;
 	if(isset($_POST["demo"]) && isset($_POST['p_captcha'])){
 		$captcha=$_POST['p_captcha'];
 		if(is_captcha($captcha)){
             $is_demo=$_POST["demo"];
-			$prev_year=$GLOBALS['amax']['year']-1;
 			if($is_demo){ // demo
 				if(isset($_POST["email"]) && check_email_address($_POST["email"])){
 					$email=$_POST['email'];
@@ -68,7 +68,7 @@ if(check_access()!=-1){
 </p>
 <p><span class="fine">{$i18['DEMO_CALGEN']}:</span><br/><br/>
 <!--<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> -->
-<b>ASTROMAXIMUM</b> {$i18['DEMO_DEMO']}<br/><br/>
+<b>ASTROMAXIMUM</b> {$i18['DEMO_DEMO']} {$prev_year}<br/><br/>
 <input type="hidden" name="demo" value="0"/>
 <input type="button" class="ok_on" value="OK" onclick="this.form.demo.value=1;form.submit()"/>
 <br/><br/></p>

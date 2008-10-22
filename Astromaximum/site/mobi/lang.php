@@ -56,8 +56,11 @@ function reg_warning($subj){
 }
 
 function get_year(){
+// We are starting to offer next year after October 22 inclusively (God's world creation)
+	$next_at='1022';
+
 	$current_year=date("Y");
-	if(date("n")==12){
+	if(strcmp(date("md"),$next_at)>=0){
 		$current_year++;
 	};
 	return $current_year;
