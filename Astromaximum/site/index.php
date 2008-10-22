@@ -176,7 +176,7 @@ FRM;
 ?> 
 </div>
 <?php 
-if(!$user_ok || (strcmp($main, 'dl') && strcmp($main, 'dl2'))){ 
+if($chac<0 || (strcmp($main, 'dl') && strcmp($main, 'dl2'))){ 
 	echo disable_big_button('demo', $btn1, 'demo', $btn1_link);
 	echo disable_big_button('buy', $btn2, 'buy', 'buy');
 }

@@ -47,8 +47,8 @@ function check_user(){
 		alert("Passwords do not match!"); return;
 	}
 	else{
-		if(upw1.length>0 && upw1.length!=9){
-			alert("Password must be 9 digits long!"); return;
+		if(upw1.length>0 && upw1.length<9){
+			alert("Password must be at least 9 characters long!"); return;
 		}
 	}
 	if(findObj('u_paymode').selectedIndex==0){

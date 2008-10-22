@@ -57,6 +57,7 @@ if(check_access()!=-1){
 	$sess=session_name().'='.session_id();
 	echo $i18['DEMO_HEADER'];
 	$emailing=sprintf($i18['DEMO_EMAILING'], $GLOBALS['amax']['mail_office']);
+	$msg_dlcity=sprintf($i18['DEMO_DLCITY'], anchor("dl"), $prev_year);
 	echo <<<EOF1
 
 <form action="$uri" method="post">
@@ -68,15 +69,17 @@ if(check_access()!=-1){
 </p>
 <p><span class="fine">{$i18['DEMO_CALGEN']}:</span><br/><br/>
 <!--<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> -->
-<b>ASTROMAXIMUM</b> {$i18['DEMO_DEMO']} {$prev_year}<br/><br/>
+<b>ASTROMAXIMUM</b> {$i18['DEMO_DEMO']} <b>{$prev_year}</b><br/><br/>
 <input type="hidden" name="demo" value="0"/>
 <input type="button" class="ok_on" value="OK" onclick="this.form.demo.value=1;form.submit()"/>
 <br/><br/></p>
 <p></p>
-<p>{$i18['DEMO_DLCITY']}</p>
-<span class="fine">{$i18['SELCITY_GENERATE']}:</span><br/><br/>
+<p>{$msg_dlcity}</p>
 
 EOF1;
+return; // no demo cities
+
+    echo "<span class=\"fine\">{$i18['SELCITY_GENERATE']}:</span><br/><br/>";
     $issel=' checked="checked"';
 	foreach($GLOBALS['amax']['demo_cities'] as $i=>$city){
 		echo '<input type="radio" name="agree" value="'.$i.'" style="width:auto; border: 0px"'.$issel.'/> '.$city." &nbsp; &nbsp;\n";

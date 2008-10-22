@@ -6,7 +6,7 @@ $max_cities=5;
 $table_vsize=18;
 $current_year=$GLOBALS['amax']['year'];
 $chac=check_access();
-if($chac==-1 or $chac==1){
+if($chac==-1){
 	reg_warning($i18['PAGE_DLCIT']);
 	return;
 }
@@ -21,6 +21,10 @@ if(isset($_POST['y_sel'])){
 		$defyear=$current_year;
 	}
 }
+if($chac==1){ // demo - previous year only
+    $defyear=$current_year-1;
+}
+
 $sc=',';
 if(isset($_POST['sc'])){
 	$sc=$_POST['sc'];
@@ -151,9 +155,10 @@ function highlight_gen(lb){
 ?>
 <select name="y_sel" style="height:auto; width:auto;" onchange="document.forms.namedItem('main').submit()">
 <?php
-$y_now=date("Y");
+$y_now=$current_year;
 for($i=0; $i<3; $i++){
 	$yy=$y_now-$i;
+    if($chac==1 and $yy!=$defyear) continue;
 	echo "<option value=\"$yy\"";
 	if($yy==$defyear) echo " selected=\"selected\"";
 	echo ">$yy</option>\n";
@@ -265,7 +270,7 @@ for($i=0; $i<3; $i++){
 </tr>
 </table>
 </form>
-<p><?php echo sprintf($i18['DL_BEFORE_INSTALL'], anchor('buy'))?></p>
+<p><?php echo sprintf($i18['DL_BEFORE_INSTALL'], anchor( ($chac==1) ? 'demo':'buy' ))?></p>
 </div>
 
 <?php

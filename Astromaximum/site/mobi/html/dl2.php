@@ -170,9 +170,16 @@ function generate(country){
 <table class="colorlist">
 <tr><th><b>Шаг 1</b>.
 <select name="y_sel" style="height:auto; width:auto;" onchange="document.forms.namedItem('main').submit()">
-<option value="2008" selected="selected">2008</option>
-<option value="2007">2007</option>
-<option value="2006">2006</option>
+<?php
+$y_now=$current_year;
+for($i=0; $i<3; $i++){
+	$yy=$y_now-$i;
+    if($chac==1 and $yy!=$defyear) continue;
+	echo "<option value=\"$yy\"";
+	if($yy==$defyear) echo " selected=\"selected\"";
+	echo ">$yy</option>\n";
+}
+?>
 </select>
 </th>
 <th colspan="2">

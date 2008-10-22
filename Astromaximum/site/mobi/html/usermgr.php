@@ -37,15 +37,15 @@ if(isset($_GET['u'])){
 <input type="hidden" name="u_id" value="$id"/>
 <input type="text" name="u_realname" id="u_realname" value="$row[0]"/> realname &nbsp; 
 <p>
-<input type="text" name="u_login" id="u_login" value="$row[1]" maxlength="9"/>
+<input type="text" name="u_login" id="u_login" value="$row[1]" maxlength="15"/>
 <a href="javascript:void(0)" onclick="do_random('u_login');return false">login</a> &nbsp;
 </p> 
 <p><i>Enter new password when changing login !!!</i></p>
 <p>
-<input type="text" name="u_pwd1" id="u_pwd1" value="" size="9" maxlength="9"/> 
+<input type="text" name="u_pwd1" id="u_pwd1" value="" size="20" maxlength="20"/> 
 <a href="javascript:void(0)" onclick="do_random('u_pwd1');findObj('u_pwd2').value=findObj('u_pwd1').value;return false">pwd</a> &nbsp;
-<br/><input type="text" name="u_pwd2" id="u_pwd2" size="9" maxlength="9"> pwd again &nbsp;
-<input type="text" name="u_email" id="u_email" size="48" value="$row[2]"/> e-mail</p>
+<br/><input type="text" name="u_pwd2" id="u_pwd2" size="20" maxlength="20"> pwd again &nbsp;
+<input type="text" name="u_email" id="u_email" size="38" value="$row[2]"/> e-mail</p>
 <p>
 <input type="text" name="u_dlc" value="$row[3]" size="3"/> dl &nbsp; &nbsp; 
 <input type="text" name="u_cityc" value="$row[4]" size="3"/> city &nbsp; &nbsp; 
@@ -110,7 +110,7 @@ if(isset($_POST['u_id'])){
 		if($succ){
 			$pwd1=$_POST['u_pwd1'];
 			$pwd2=$_POST['u_pwd2'];
-			if(strcmp($pwd1, $pwd2)==0 && strlen($pwd1)==9){
+			if(strcmp($pwd1, $pwd2)==0 && strlen($pwd1)>=9){
 				$pwd1=pwd_convert2(pwd_convert1($_POST['u_login'], $pwd1));
 				$stat=sprintf("UPDATE customers set hash=%s WHERE id=%d",
 					quote_smart($pwd1),
