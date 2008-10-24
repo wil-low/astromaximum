@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <time.h>
+#include <assert.h>
 // datafile.h
 typedef enum{
     EF_DATE=0x1, // contains 2nd date - 4b
@@ -116,8 +117,10 @@ int main(int argc, char** argv) { // data filename
     }
     int df_year=0;
     fread(&df_year, 2, 1, fn);
-    fseek(fn, 8, SEEK_SET);
-    short len=readShort(fn);
+    fseek(fn, 2, SEEK_CUR);
+    short cd_len=readShort(fn); // customData length
+    fseek(fn, 2, SEEK_CUR);
+    short len=readShort(fn); // cityName length
     fseek(fn, len, SEEK_CUR);
     tzOffset=readShort(fn);
     dstExists = (tzOffset & (1 << 15))==0;
@@ -135,6 +138,7 @@ int main(int argc, char** argv) { // data filename
             dstStart=d_2; dstEnd=d_1; isSouthern=1;
         }
     }
+    fseek(fn, cd_len, SEEK_CUR);
     struct Event_ last, result;
     result.date0=result.date1=0;
     int evtype=3; // EV_RISE
@@ -144,6 +148,7 @@ int main(int argc, char** argv) { // data filename
         int rub = readUnsignedByte(fn);
         while (evtype != rub) {
             skipOff = readShort(fn) - 3;
+            assert(skipOff>=0);
             fseek(fn, skipOff+1, SEEK_CUR);
             rub = readUnsignedByte(fn);
         }

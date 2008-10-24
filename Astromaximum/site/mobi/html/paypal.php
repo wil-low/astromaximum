@@ -119,7 +119,7 @@ echo <<< EOF
 <input type="hidden" name="return" value="{$thisurl}&mode=success"/>
 <input type="hidden" name="rm" value="2"/>
 <input type="hidden" name="cancel_return" value="{$thisurl}&mode=cancel"/>
-<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" width="200" height="50" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" width="122" height="47" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 </form>
 EOF;
 ?>

@@ -71,12 +71,13 @@ function yesno($val){
 
 	$env['dl/html/.htaccess']=yesno(file_exists($p.'../html/.htaccess'));
 	$key='Demo account';
-	$stat="SELECT name, realname, hash FROM customers WHERE name='{$GLOBALS['amax']['demo_login']}'";
+	$stat="SELECT name, realname, hash, active FROM customers WHERE name='{$GLOBALS['amax']['demo_login']}'";
 	$sth=mysql_query($stat);
 	if($sth and ($row=mysql_fetch_row($sth))){
 		$env[$key]="login: $row[0], realname: $row[1], password valid: ".
 			yesno(strcmp($row[2], pwd_convert2(pwd_convert1($GLOBALS['amax']['demo_login'],
-			$GLOBALS['amax']['demo_pass'])))==0); 
+				$GLOBALS['amax']['demo_pass'])))==0).
+			', active: '. yesno($row[3]); 
 	}
 	else{
 		$env[$key]="<span class=\"alert\">MISSING</span>";
@@ -97,7 +98,7 @@ function yesno($val){
 //		echo "$sql<br/>";
 	}
 	$env[$key]=$value;
-
+/*
 	$key='Demo cities';
 	$adc=$GLOBALS['amax']['demo_cities'];
 	$dcit=explode(',', get_default_cities($adc));
@@ -114,7 +115,7 @@ function yesno($val){
 //		echo "$sql<br/>";
 	}
 	$env[$key]=$value;
-
+*/
 	foreach ($env as $key => $value) {
 	 echo "<tr><td>$key</td><td>$value</td></tr>\n";
 	}

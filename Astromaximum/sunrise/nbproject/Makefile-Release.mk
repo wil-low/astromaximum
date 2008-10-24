@@ -48,7 +48,7 @@ sunrise: ${OBJECTFILES}
 
 ${OBJECTDIR}/main.o: main.c 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.c) -O2 -o ${OBJECTDIR}/main.o main.c
+	$(COMPILE.c) -O2 -DNDEBUG -o ${OBJECTDIR}/main.o main.c
 
 # Subprojects
 .build-subprojects:

@@ -47,6 +47,9 @@
       <compileType>
         <cCompilerTool>
           <developmentMode>5</developmentMode>
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </cCompilerTool>
         <ccCompilerTool>
           <developmentMode>5</developmentMode>
