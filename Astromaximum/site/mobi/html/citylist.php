@@ -2,7 +2,7 @@
 if(!isset($EXEC)) die("Access restricted");
 if(isset($_GET['n']) && $chac>=0){
 	$num=intval($_GET['n']);
-	$current_year=get_year();
+	$current_year=$GLOBALS['amax']['year'];
 	$year=0;
 	if(isset($_GET['y'])) $year=intval($_GET['y']);
     $y_start=($chac==1)? $current_year-1 : $current_year;
@@ -58,16 +58,6 @@ if(isset($_GET['n']) && $chac>=0){
 }	
 if($chac>=0){
 	echo "{$i18['CITYLIST_CLICK']}<br/>";
-    if($chac==1){
-        $citids=get_default_cities($GLOBALS['amax']['demo_cities']);
-        $citids=explode(',', $citids);
-		$comma="<p>{$i18['SEL_DEMOCITY']}: ";
-        foreach($GLOBALS['amax']['demo_cities'] as $i=>$city){
-            echo $comma." <a href=\"?$lang_&amp;p=citylist&amp;n={$citids[$i]}\">{$city}</a>";
-            $comma=',';
-        }
-        echo '</p>';
-    }
 }
 $stat="SELECT id, name FROM countries ORDER BY name";
 $sth=mysql_query($stat);
@@ -92,7 +82,7 @@ foreach($row as $i=>$ctry){
 		echo "\n<p><a id=\"n{$ctry[0]}\"></a><b>{$ctry[1]}</b> - $num &nbsp; ( <a href=\"#top\">^{$i18['UP']}</a> )<br/>\n<span class=\"city\">\n";
 		$comma="";
 		while($row2=mysql_fetch_row($sth)){
-			if($user_ok){
+			if($chac>=0){
 				$row2[0]="<a href=\"?$lang_&amp;p=citylist&amp;n={$row2[1]}\">{$row2[0]}</a>";
 			}
 			echo "$comma ".$row2[0];

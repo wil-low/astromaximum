@@ -1,6 +1,6 @@
 <?php 
 if(!isset($EXEC)) die("Access restricted");
-$current_year=get_year();
+$current_year=$GLOBALS['amax']['year'];
 if(isset($_POST["reg_submit"])){ 
 	echo $i18['INSTR_SENT'];
 	return;

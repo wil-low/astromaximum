@@ -1,6 +1,6 @@
 <?php
 $BIG_SITE="http://astromaximum.de/";
-$MOBI_SITE="http://astromaximum.mobi/";
+$MOBI_SITE="http://mobi.astromaximum.com/";
 $data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
 if(!strpos($data_php, "mobi")){
 	$data_php.="/mobi";
@@ -22,7 +22,7 @@ if($chac==-1){
 		exit;
 	}
 }
-$DEST_URL=array("year", "0_0", "about", "prg&amp;mode=demo", "dcity", "prg&amp;mode=trial");
+$DEST_URL=array("year", "0_0", "about", "prg&amp;mode=demo", "prg&amp;mode=trial");
 
 $chac=check_access();
 $validuser=false;
@@ -63,15 +63,14 @@ if(isset($_POST['btn'])){
 }
 ?>
 <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post"><p>
-<?php echo knopka(1, $validuser, $i18['SEL_DCITY']) ?><br/>
+<?php echo knopka(1, $chac>=0, $i18['SEL_DCITY']) ?><br/>
 <?php echo knopka(2, true, $i18['SEL_AH']) ?><br/>
 <?php echo knopka(3, true, $i18['SEL_ABOUT']) ?></p>
 <p>
 <?php echo knopka(4, true, $i18['SEL_DEMO'].' '.($current_year-1)) ?>*<br/>
-<?php echo knopka(5, true, $i18['SEL_DEMOCITY']) ?>
 </p>
 <p>
-<?php echo knopka(6, $validuser, $current_year) ?>*
+<?php echo knopka(5, $validuser, $current_year) ?>*
 </p></form>
 <p class="centered">* <?php echo $i18['SEL_CHK1'] ?><br/>
 <?php echo "{$i18['SEL_CHK2']} ".gmdate("M j Y") ?>

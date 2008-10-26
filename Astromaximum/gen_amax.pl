@@ -4,7 +4,6 @@ use strict;
 #use warnings;
 #use diagnostics;
 use POSIX;
-my $pwdgen_local='../../pwdgen_local.php';
 my $islocal=$0=~/\.pl$/is;
 my $done=0;
 if(!$islocal){
@@ -54,11 +53,13 @@ if(!$path){
 	#  }
 }
 chomp($path);
+my $pwdgen_local=$path.'/../../pwdgen_local.php';
+
 my $jar_path=$path;
 
 open(FLOG, ">$path/gen_amax.log");
 
-echo("Command line:  @ARGV\n");
+echo("Command line:  $0 @ARGV\n");
 if($islocal){
 	require "$path/genconst.pm";
 

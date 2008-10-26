@@ -16,7 +16,6 @@ $sett=array(
 	'noreply'=>'noreply@astromaximum.com',
 	
 	'def_cities'=>array('m.Olympos'),
-	'demo_cities'=>array("London", "New York", "Moscow", "Kiev"),
 	
 	'demo_login'=>'123456789',
 	'demo_pass'=>'012345678',
@@ -37,6 +36,5 @@ $sett=array(
     
 );
 
-sort($sett['demo_cities']);
 $GLOBALS['amax']=$sett;
 ?>

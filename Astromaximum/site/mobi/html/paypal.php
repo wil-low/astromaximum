@@ -1,6 +1,6 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
-$cur_year=get_year();
+$cur_year=$GLOBALS['amax']['year'];
 $price=$GLOBALS['amax']['price'];
 
 $admin_email='amax-dev@astromaximum.mobi';

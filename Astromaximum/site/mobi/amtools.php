@@ -277,14 +277,16 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
 			}
 //		}
 		$id=$fn;
-		$data_php="http://".dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
-		if(!strpos($data_php, "mobi")){
+		$data_php="http://".$_SERVER['SERVER_NAME'];
+        $abs_path='./';
+		if(strpos($data_php, "mobi") == false){
 			$data_php.="/mobi";
+            $abs_path.='/mobi';
 		}
 		$url=$data_php.'/data.php?r='.$id;
 		$url2=str_replace("?r", "?d", $url);
-		$jarsize=fsize_human("mobi/dl/files/$id.r");
-		$jadsize=fsize_human("mobi/dl/files/$id.d");
+		$jarsize=fsize_human("$abs_path/dl/files/$id.r");
+		$jadsize=fsize_human("$abs_path/dl/files/$id.d");
 		if($is_html){
 			if($EXEC==1){
 				$str.="<h4>{$i18['PC_DL']}:</h4>";

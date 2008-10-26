@@ -6,7 +6,15 @@ if(isset($_REQUEST['lang'])){
 	$lang=strtolower($_REQUEST['lang']);
 }
 $lang_="lang=$lang";
-$GLOBALS['amax']['year']=get_year();
+
+// We are starting to offer next year after October 22 inclusively (God's world creation)
+$next_at='1022'; // MMDD
+
+$current_year=date("Y");
+if(strcmp(date("md"),$next_at)>=0){
+    $current_year++;
+};
+$GLOBALS['amax']['year']=$current_year;
 
 function lang_load($path){
 	global $lang, $i18;
@@ -53,16 +61,5 @@ function dload_prompt($str, $is_disabled){
 function reg_warning($subj){
 	global $i18;
 	echo "<h4>{$i18['REG_REQ']}</h4>".'<p>'.sprintf($i18['RESTRICTED'], $subj).'</p>';
-}
-
-function get_year(){
-// We are starting to offer next year after October 22 inclusively (God's world creation)
-	$next_at='1022';
-
-	$current_year=date("Y");
-	if(strcmp(date("md"),$next_at)>=0){
-		$current_year++;
-	};
-	return $current_year;
 }
 ?>

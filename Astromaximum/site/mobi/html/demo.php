@@ -7,48 +7,34 @@ allow_ip('demo',false);
 if(check_access()!=-1){
 	$uri=htmlentities($_SERVER['REQUEST_URI']);
 	$prev_year=$GLOBALS['amax']['year']-1;
-	if(isset($_POST["demo"]) && isset($_POST['p_captcha'])){
+	if(isset($_POST['p_captcha'])){
 		$captcha=$_POST['p_captcha'];
 		if(is_captcha($captcha)){
-            $is_demo=$_POST["demo"];
-			if($is_demo){ // demo
-				if(isset($_POST["email"]) && check_email_address($_POST["email"])){
-					$email=$_POST['email'];
-					$sc=get_default_cities($GLOBALS['amax']['def_cities']); 
-					$link_text=midlet_create("demo", $prev_year, $lang, $sc, "mobi/dl", false);
-                    if(!$link_text){
-                        echo '<p><span class="alert">Error</span></p>';
+            if(isset($_POST["email"]) && check_email_address($_POST["email"])){
+                $email=$_POST['email'];
+                $sc=get_default_cities($GLOBALS['amax']['def_cities']); 
+                $link_text=midlet_create("demo", $prev_year, $lang, $sc, "mobi/dl", false);
+                if(!$link_text){
+                    echo '<p><span class="alert">Error</span></p>';
+                }
+                else{
+                    $message=file_get_contents("mobi/dl/source/demo.mail");
+                    $message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
+                    $message=str_replace('[links]', $link_text, $message);
+                    $mail=mailtext_w_attach($email, '', 'Astromaximum demo - download link', $message);
+                    if(!$mail->ErrorInfo){
+                        echo "<p>".sprintf($i18['DEMO_LINK_SENT'], $email)."</p>";
+                        echo "<p><a href=\"$uri\">{$i18['BACK']}</a></p>";
+                        return;
                     }
                     else{
-                        $message=file_get_contents("mobi/dl/source/demo.mail");
-                        $message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
-                        $message=str_replace('[links]', $link_text, $message);
-                        $mail=mailtext_w_attach($email, '', 'Astromaximum demo - download link', $message);
-                        if(!$mail->ErrorInfo){
-                            echo "<p>".sprintf($i18['DEMO_LINK_SENT'], $email)."</p>";
-                        }
-                        else{
-                            echo '<p><span class="alert">'.$mail->ErrorInfo."</span></p>";
-                        }
+                        echo '<p><span class="alert">'.$mail->ErrorInfo."</span></p>";
                     }
-				}
-				else{  # wrong email
-					echo "<p><span class=\"alert\">{$i18['DEMO_EMAIL_WRONG']}</span></p>";
-				}
-			}
-			else{ # demo cities
-                $choice=0;
-                if(isset($_POST["agree"]))
-                    $choice=$_POST["agree"];
-				if(is_numeric($choice) && ($choice>=0) && ($choice<count($GLOBALS['amax']['demo_cities']))){
-					echo "<p>".sprintf($i18['READY_CITIES'], $GLOBALS['amax']['demo_cities'][$choice], $prev_year)."</p>\n";				
-					$sc=get_default_cities($GLOBALS['amax']['demo_cities'][$choice]); 
-					$link_text=midlet_create("geo", $prev_year, $lang, $sc, "mobi/dl", true);
-					echo "<p>$link_text</p>";
-				}
-			}
-			echo "<p><a href=\"$uri\">{$i18['BACK']}</a></p>";
-			return;
+                }
+            }
+            else{  # wrong email
+                echo "<p><span class=\"alert\">{$i18['DEMO_EMAIL_WRONG']}</span></p>";
+            }
 		}
 		else{
 			echo "<p><span class=\"alert\">{$i18['CAPTCHA_WRONG']}</span></p>";
@@ -70,24 +56,15 @@ if(check_access()!=-1){
 <p><span class="fine">{$i18['DEMO_CALGEN']}:</span><br/><br/>
 <!--<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> -->
 <b>ASTROMAXIMUM</b> {$i18['DEMO_DEMO']} <b>{$prev_year}</b><br/><br/>
-<input type="hidden" name="demo" value="0"/>
-<input type="button" class="ok_on" value="OK" onclick="this.form.demo.value=1;form.submit()"/>
+<input type="button" class="ok_on" value="OK" onclick="form.submit()"/>
 <br/><br/></p>
 <p></p>
 <p>{$msg_dlcity}</p>
 
 EOF1;
-return; // no demo cities
-
-    echo "<span class=\"fine\">{$i18['SELCITY_GENERATE']}:</span><br/><br/>";
-    $issel=' checked="checked"';
-	foreach($GLOBALS['amax']['demo_cities'] as $i=>$city){
-		echo '<input type="radio" name="agree" value="'.$i.'" style="width:auto; border: 0px"'.$issel.'/> '.$city." &nbsp; &nbsp;\n";
-        $issel='';
-	}
-	echo '<br/><br/><input type="submit" class="ok_on" value="OK"/></form>';
-	return;
+return;
 }
+// guest user warning
 $press_enter=sprintf($i18['DEMO_ENTER'],$i18['LOG_IN']);
 echo <<<EOF2
 <p>{$i18['DEMO_NOTREG']}</p>
