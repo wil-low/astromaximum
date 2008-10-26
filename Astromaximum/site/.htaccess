@@ -1,0 +1,7 @@
+php_flag register_globals off
+RewriteEngine On
+Options +FollowSymlinks
+RewriteCond %{ENV:REDIRECT_MYFLAG} ^$
+RewriteCond %{HTTP_HOST} ^mobi\.astromaximum\.com$
+RewriteRule ^(.+) %{HTTP_HOST}$1 [E=MYFLAG:1]
+RewriteRule ^mobi\.astromaximum\.com(.*) /mobi%{REQUEST_URI} [L]
