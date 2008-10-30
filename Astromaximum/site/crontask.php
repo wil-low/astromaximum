@@ -3,6 +3,7 @@
 
 // ?mode=clean_files  - delete outdated files and set 'files.deleted' to true
     if(isset($_GET['mode']) && strcmp($GET['mode'], 'clean_files')){
+        include_once('mobi/config.php');
         include_once('mobi/dbconnect.php');
         $stat='SELECT id FROM files WHERE deleted=\'f\' AND end_tm<NOW()';
         $sth=mysql_query($stat);

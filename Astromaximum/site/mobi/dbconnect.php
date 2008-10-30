@@ -1,8 +1,5 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
-/* FTP account 
-astromaximumcom a2a0SL2H
-*/
 
 if(!$GLOBALS['amax']['is_online']){ // local=true
 	$DB_SERVER='localhost';

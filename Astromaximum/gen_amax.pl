@@ -112,9 +112,6 @@ if($islocal and ($config eq 'rebuild')){
 	'/home/willow/nb6/java2/ant/bin/ant',
 	'd:/Program Files/nb6/java2/ant/bin/ant.bat',
 	'd:/Program Files/nb6/java1/ant/bin/ant.bat',
-	#      '/home/willow/netbeans-5.5.1/ide7/ant/bin/ant',
-	#      'd:/netbeans-5.5/ide7/ant/bin/ant.bat',
-	#      'd:/Program Files/netbeans-5.5.1/ide7/ant/bin/ant.bat'
 	);
 	foreach (@app){
 		if(-f $_){
@@ -125,10 +122,14 @@ if($islocal and ($config eq 'rebuild')){
 	if(!$antpath){
 		mydie("ANT not found in this system!!!\n");
 	}
+	$antpath="\"$antpath\"";
+	$antpath="sh $antpath" unless $antpath=~/\.bat\"$/;
+	
 	echo("\n--------------------------------\n");
 	echo("--- Config $_ ---\n");
 	echo("--------------------------------\n");
-	my $cmd="sh \"$antpath\" -quiet -f geoLib/build.xml -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" clean jar";
+	my $cmd="$antpath -quiet -f geoLib/build.xml -Dnetbeans.user=\"$nb_user\" ".
+		"-Dplatform.home=\"$platform\" clean jar";
 	echo("$cmd\n");
 	mydie("BUILD ERROR") if system($cmd);
 	my @conf=('tb', 'demo', 'imei',
@@ -142,7 +143,10 @@ if($islocal and ($config eq 'rebuild')){
 		echo("\n--------------------------------\n");
 		echo("--- Config $_ ---\n");
 		echo("--------------------------------\n");
-		my $cmd="sh \"$antpath\" -quiet -f Astromaximum/build.xml -Dconfig.active=$_ -Dconfigs.$_.javac.debug=false -Dconfigs.$_.obfuscation.level=9 -Dconfigs.$_.javac.optimize=true -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
+		my $cmd="$antpath -quiet -f Astromaximum/build.xml -Dconfig.active=$_ ".
+			"-Dconfigs.$_.javac.debug=false -Dconfigs.$_.obfuscation.level=9 ".
+			"-Dconfigs.$_.javac.optimize=true -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" ".
+			"-Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
 		echo("$cmd\n");
 		mydie("BUILD ERROR") if system($cmd);
 	}
@@ -150,7 +154,9 @@ if($islocal and ($config eq 'rebuild')){
 	echo("\n--------------------------------\n");
 	echo("--- Config geo: $conf ---\n");
 	echo("--------------------------------\n");
-	$cmd="sh \"$antpath\" -quiet -f GeoAM/build.xml -Dcjavac.debug=false -Djavac.optimize=true -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
+	$cmd="$antpath -quiet -f GeoAM/build.xml -Dcjavac.debug=false -Djavac.optimize=true ".
+		"-Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" ".
+		"-Dproject.geoLib=\"$path/../geoLib\" clean jar";
 	echo("$cmd\n");
 	mydie("BUILD ERROR") if system($cmd);
 	exit(0);

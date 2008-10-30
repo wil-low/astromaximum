@@ -33,6 +33,7 @@ interp:
 config:
 	mkdir -p Astromaximum/deploy;perl size_join.pl;perl ph_join.pl; \
 	cd swe && make && cd ..; \
+	mkdir -p Astromaximum/deploy; \
 	perl gen_amax.pl rebuild
 
 mutter:
