@@ -10,6 +10,7 @@ REG_REQ=Registration required
 RESTRICTED=%s is allowed for registered customers only.<br/>Please enter your login and password in the form to the left.
 PAGE_NOT_FOUND=Page not found
 BACK_TOPIC=back to topic
+EMAIL=e-mail
 LOGIN=login
 PWD=password
 TEST=Compatibility test

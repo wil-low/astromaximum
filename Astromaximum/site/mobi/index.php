@@ -14,7 +14,7 @@ lang_load("html");
 $chac=check_access();
 $user_ok=($chac>=0 and $chac!=1);
 $custom_content='';
-
+/*
 if(strcmp($main, 'login')==0){
 	$login=''; $pass='';
 	if(isset($_POST['login'])){
@@ -38,6 +38,7 @@ if(strcmp($main, 'login')==0){
 		redirect("?$lang_&amp;p=$main");
 	}	
 }
+*/
 if(!preg_match("/^[\w_\d]+$/is", $main)){
 	$main='home';
 }

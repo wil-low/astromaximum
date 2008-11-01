@@ -66,21 +66,43 @@ function quote_smart($value)
   return $value;
 }
 
+function get_customer_data($str, $hash){ // out: id, name, realname
+    global $EXEC;
+	$arr=array();
+    if(isset($EXEC) && (strlen($str)>0)){
+        switch($EXEC){
+            case 1: $fld='email'; break;
+            case 2: $fld='name'; break;
+            default: return $arr;
+        }
+        $stat=sprintf("SELECT id,name,email,role FROM customers WHERE $fld=%s AND active>0",
+            quote_smart($str));
+        if($hash)
+            $stat.=sprintf(' AND hash=%s', quote_smart($hash));
+//		echo $stat;
+        $sth=mysql_query($stat);
+        if(mysql_num_rows($sth)==1){
+            $arr=mysql_fetch_array($sth);
+        }
+    }
+	return $arr;
+}
+
 function login($user,$pwd){
 	$res=false;
-	$pwd1=pwd_convert1($user, $pwd);
+    $arr=get_customer_data($user, '');
+    if(!count($arr))
+        return false;
+	$pwd1=pwd_convert1($arr[2], $pwd);
 	$pwd2=pwd_convert2($pwd1);
-	$stat=sprintf("SELECT id,realname FROM customers WHERE name=%s AND hash=%s AND active>0",
-		quote_smart($user),quote_smart($pwd2));
-	$sth=mysql_query($stat);
-	if(mysql_num_rows($sth)==1){
-		$row=mysql_fetch_row($sth);
-		$_SESSION['uid']=$row[0];
-		$_SESSION['username']=$row[1];
+    $arr=get_customer_data($user, $pwd2);
+    
+	if(count($arr)){
+		$_SESSION['uid']=$arr[0];
+		$_SESSION['username']=$arr[2];
 		$_SESSION['pwd']=$pwd1;
 		$res=true;
 	}
-	mysql_free_result($sth);
 	return $res;
 }
 
@@ -116,7 +138,7 @@ EOF2;
 
 function check_access(){
 	$pass=pwd_convert2($_SESSION['pwd']);
-	$stat=sprintf("SELECT role FROM customers WHERE id=%s AND hash=%s",
+	$stat=sprintf("SELECT role FROM customers WHERE id=%s AND hash=%s AND active>0",
 		quote_smart($_SESSION['uid']),quote_smart($pass));
 	$sth=mysql_query($stat);
 	if(mysql_num_rows($sth)==1){

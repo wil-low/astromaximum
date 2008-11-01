@@ -35,17 +35,17 @@ if(isset($_GET['u'])){
 <h3>$hdr $row[0]</h3>
 <form id="usredit" action="index.php?$lang_&amp;p=usermgr" method="post">
 <input type="hidden" name="u_id" value="$id"/>
-<input type="text" name="u_realname" id="u_realname" value="$row[0]"/> realname &nbsp; 
+<input type="text" name="u_email" id="u_email" size="38" value="$row[2]"/> e-mail
 <p>
 <input type="text" name="u_login" id="u_login" value="$row[1]" maxlength="15"/>
-<a href="javascript:void(0)" onclick="do_random('u_login');return false">login</a> &nbsp;
+<a href="javascript:void(0)" onclick="do_random('u_login');return false">mobi login</a> &nbsp;
 </p> 
-<p><i>Enter new password when changing login !!!</i></p>
+<p><i>Enter new password when changing email !!!</i></p>
 <p>
 <input type="text" name="u_pwd1" id="u_pwd1" value="" size="20" maxlength="20"/> 
 <a href="javascript:void(0)" onclick="do_random('u_pwd1');findObj('u_pwd2').value=findObj('u_pwd1').value;return false">pwd</a> &nbsp;
 <br/><input type="text" name="u_pwd2" id="u_pwd2" size="20" maxlength="20"> pwd again &nbsp;
-<input type="text" name="u_email" id="u_email" size="38" value="$row[2]"/> e-mail</p>
+<input type="text" name="u_realname" id="u_realname" value="$row[0]"/> realname &nbsp;</p>
 <p>
 <input type="text" name="u_dlc" value="$row[3]" size="3"/> dl &nbsp; &nbsp; 
 <input type="text" name="u_cityc" value="$row[4]" size="3"/> city &nbsp; &nbsp; 
@@ -111,7 +111,7 @@ if(isset($_POST['u_id'])){
 			$pwd1=$_POST['u_pwd1'];
 			$pwd2=$_POST['u_pwd2'];
 			if(strcmp($pwd1, $pwd2)==0 && strlen($pwd1)>=9){
-				$pwd1=pwd_convert2(pwd_convert1($_POST['u_login'], $pwd1));
+				$pwd1=pwd_convert2(pwd_convert1($_POST['u_email'], $pwd1));
 				$stat=sprintf("UPDATE customers set hash=%s WHERE id=%d",
 					quote_smart($pwd1),
 					quote_smart($id)
@@ -152,11 +152,12 @@ if(isset($_POST['u_id'])){
 }
 ?>
 <table class="colorlist">
-<tr><td colspan="6" style="background-color:white; text-align:right">
+<tr><td colspan="8" style="background-color:white; text-align:right">
 <a href="index.php?<?php echo $lang_ ?>&amp;p=usermgr&amp;u=add">Add user</a></td></tr>
-<tr><th>Realname</th><th>email</th><th>dl count</th><th>city count</th><th>past count</th><th>payment</th></tr>
+<tr><th colspan="2">Email</th><th style="width:20px"></th><th>Realname</th><th>Payment</th><th colspan="3">dl, city, past count</th>
+</tr>
 <?php
-$stat="SELECT realname, email, dlcount0, dlcount1, dlcount2, dic_paymode.name, role, hash, active, customers.id ".
+$stat="SELECT email,0,realname,dic_paymode.name,dlcount0,dlcount1,dlcount2,role,hash,active,customers.id ".
 	"from customers, dic_paymode WHERE paymode_id=dic_paymode.id ORDER BY realname";
 $sth=mysql_query($stat);
 $i=0;
@@ -173,12 +174,13 @@ while($row=mysql_fetch_row($sth)){
 	if(strlen($hash)!=32){
 	 	$back=" style=\"background-color: rgb(236,113,113)\""; //password invalid
 	}
-	if($role==0){
+    $email=$row[0];
+	if($role==0){ // admin
 		$row[0].='*';
 	}
-	$row[0]="<a href=\"index.php?$lang_&amp;p=usermgr&amp;u=$id\">$i. ".$row[0]."</a>";
-	$row[1]="<a href=\"mailto:$row[1]\">$row[1]</a>";
-	echo "<tr><td$back>".implode("</td>\n<td>", $row)."</td></tr>";
+	$row[0]="<a href=\"index.php?$lang_&amp;p=usermgr&amp;u=$id\">$row[0]</a>";
+    $row[1]="<a href=\"mailto:{$email}\">mail</a>";
+	echo "<tr><td>$i</td><td$back>".implode("</td>\n<td>", $row)."</td></tr>";
 }
 mysql_free_result($sth);
 ?>

@@ -3,8 +3,8 @@ Dear [realname],
 You have requested a new password for access to [site] 
 Your credentials are now as follows:
 
-  login:     [login]
-  password:  [pwd]
+  mobi login:  [login]
+  password:    [pwd]
 
 Number of Astromaximum copies to download: [dl_count]
 Number of cities to download: [city_count]
@@ -20,8 +20,8 @@ Thank you for using our service.
 Вы запросили новый пароль для доступа на сайт [site]
 Для входа на сайт наберите:
 
-  логин:   [login]
-  пароль:  [pwd]
+  mobi login:  [login]
+  пароль:      [pwd]
 
 Разрешено загрузить копий мидлета на текущий год: [dl_count]
 Разрешено загрузить городов: [city_count]

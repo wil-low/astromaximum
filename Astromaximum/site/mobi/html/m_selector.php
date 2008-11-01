@@ -1,5 +1,5 @@
 <?php
-$BIG_SITE="http://astromaximum.de/";
+$BIG_SITE="http://astromaximum.com/";
 $MOBI_SITE="http://mobi.astromaximum.com/";
 $data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
 if(!strpos($data_php, "mobi")){
@@ -18,7 +18,7 @@ if($chac==-1){
 		include_once("ipblock.php");
 		$msg=allow_ip("mobi_home", true);
 		echo $msg;
-		if(!$msg)	redirect($MOBI_SITE);
+		if(!$msg) redirect($MOBI_SITE);
 		exit;
 	}
 }

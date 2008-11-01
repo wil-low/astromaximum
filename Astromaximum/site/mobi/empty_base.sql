@@ -67,8 +67,8 @@ DROP TABLE IF EXISTS `customers`;
 CREATE TABLE IF NOT EXISTS `customers` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(20) NOT NULL default '',
-  `realname` varchar(50) NOT NULL default 'Unknown',
-  `hash` varchar(32) default NULL,
+  `realname` varchar(50) default 'Unknown',
+  `hash` varchar(32) NOT NULL,
   `role` tinyint(4) NOT NULL default '2',
   `email` varchar(50) default NULL,
   `subscr_date` date default NULL,
@@ -93,8 +93,8 @@ CREATE TABLE IF NOT EXISTS `customers` (
 LOCK TABLES `customers` WRITE;
 INSERT INTO `customers` (`id`, `name`, `realname`, `hash`, `role`, `email`, `subscr_date`, `paymode_id`, `dlcount0`, `dlcount1`, `dlcount2`, `active`) VALUES
 	(1,'vmesiats','Vasyl Mesiats','',0,'kiev.999@gmail.com','2007-10-13', 1, -1,-1,-1, 1),
-	(2,'aivushkin','Andrei Ivushkin','',0,'aivushkin@gmail.com','2007-10-13', 1,-1,-1,-1, 1),
-	(3,'123456789','Demo','7faa7ccafc874123c1ff345b7becb94c', 1, NULL, NULL, 1, -1,-1,-1,0);
+	(2,'88,'Andrei Ivushkin','',0,'aivushkin@gmail.com','2007-10-13', 1,-1,-1,-1, 1),
+	(3,'123456789','Demo','e7f03e6b4f8f54d4699eeef576488243', 1, 'demo@astromaximum.com', NULL, 1, -1,-1,-1,0);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 

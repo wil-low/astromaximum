@@ -10,6 +10,7 @@ REG_REQ=
 RESTRICTED=
 PAGE_NOT_FOUND=Seite nicht gefunden
 BACK_TOPIC=back to topic
+EMAIL=E-mail
 LOGIN=Login
 PWD=Passwort
 TEST=Compatibility test

@@ -60,6 +60,15 @@ if($chac!=-1 and $chac!=1){
 	echo "</form>";
     return;
 }
+/*
+	echo "<form action=\"$uri\" method=\"post\">\n";
+    echo '<input type="hidden" name="demo" value="0"/>';
+	$prompt=sprintf($i18['CONFIRM_TRIAL'], $lang_);
+	echo dload_tries_prompt(-1, 0, '', $prompt);
+	echo "</form>";
+
+return;
+*/
 ?>
 <?php include_once('paypal.php') ?>
 <?php include_once('bank.php') ?>

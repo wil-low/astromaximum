@@ -79,7 +79,10 @@ foreach($row as $i=>$ctry){
 	$stat="SELECT name, id FROM cities WHERE country_id={$ctry[0]} ORDER BY name";
 	if($sth=mysql_query($stat)){
 		$num=mysql_num_rows($sth);
-		echo "\n<p><a id=\"n{$ctry[0]}\"></a><b>{$ctry[1]}</b> - $num &nbsp; ( <a href=\"#top\">^{$i18['UP']}</a> )<br/>\n<span class=\"city\">\n";
+        $tad=htmlspecialchars('http://www.timeanddate.com/search/results.html?query='.$ctry[1]);
+		echo "\n<p><a id=\"n{$ctry[0]}\"></a><b>{$ctry[1]}</b> - $num &nbsp; ".
+            "( <a href=\"{$tad}\">GMT</a> ) &nbsp; ( <a href=\"#top\">^{$i18['UP']}</a> )<br/>\n".
+            "<span class=\"city\">\n";
 		$comma="";
 		while($row2=mysql_fetch_row($sth)){
 			if($chac>=0){

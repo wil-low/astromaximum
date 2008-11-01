@@ -65,6 +65,10 @@ function do_random(input_id){
 	findObj(input_id).value=str;
 }
 
+function fill_input(input_id, value){
+	findObj(input_id).value=value;
+}
+
 function open_scr(lang, n){
     var url="/shot.php?lang="+lang+"&n="+n;
     if(OpenedHelp != null && !OpenedHelp.closed){

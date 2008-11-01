@@ -459,4 +459,8 @@ function check_email_address($email) { # http://www.addedbytes.com/php/email-add
 	}
 	return true;
 }
+
+function hide_email($email){
+    return 'mailto:'.$email;
+}
 ?>

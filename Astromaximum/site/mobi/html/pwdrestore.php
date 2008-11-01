@@ -9,8 +9,8 @@ if($msg) return;
 if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 	$email=$_POST['p_email']; $captcha=$_POST['p_captcha'];
 	if(is_captcha($captcha)){
-		$arr=email2login($email);
-		if(count($arr)){ 
+		$arr=get_customer_data($email, '');
+		if(count($arr) && ($arr[3]!=1)){ // not a Demo
 			$newpass=sprintf("%09d", mt_rand(1, 999999999));
 			include_once("mobi/amtools.php");
 			$tries=get_try_count($arr[0]);
@@ -56,18 +56,3 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 </p>
 <input name="action" type="button" class="ok_on" value="OK" onclick="checkdata()"/>
 </form>
-<?php
-function email2login($mail){
-	$arr=array();
-	if(strlen($mail)>0){
-		$stat=sprintf("SELECT id, name, realname FROM customers WHERE email=%s AND active>0",
-			quote_smart($mail));
-//		echo $stat;
-		$sth=mysql_query($stat);
-		if(mysql_num_rows($sth)==1){
-			$arr=mysql_fetch_array($sth);
-		}
-	}
-	return $arr;
-}
-?>

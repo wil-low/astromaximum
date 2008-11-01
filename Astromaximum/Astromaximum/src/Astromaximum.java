@@ -88,7 +88,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     /**
      * Suggested URL for main web site
      */
-    static final String URL = "http://astromaximum.mobi/";
+    static final String URL = "http://mobi.astromaximum.com/";
     /**
      * Delay (ms) between showing log texts, if logging is on
      * and user pressed "Enter" to bypass it quickly

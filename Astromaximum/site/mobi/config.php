@@ -16,7 +16,8 @@ $sett=array(
 	'noreply'=>'noreply@astromaximum.com',
 	
 	'def_cities'=>array('m.Olympos'),
-	
+
+	'demo_email'=>'demo@astromaximum.com',
 	'demo_login'=>'123456789',
 	'demo_pass'=>'012345678',
 	

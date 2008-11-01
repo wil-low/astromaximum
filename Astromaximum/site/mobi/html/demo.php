@@ -42,13 +42,14 @@ if(check_access()!=-1){
 	}
 	$sess=session_name().'='.session_id();
 	echo $i18['DEMO_HEADER'];
-	$emailing=sprintf($i18['DEMO_EMAILING'], $GLOBALS['amax']['mail_office']);
+    $off_email=$GLOBALS['amax']['mail_office'];
+    $hidden_email=hide_email($off_email);
+	$emailing=sprintf($i18['DEMO_EMAILING'], $hidden_email, $off_email);
 	$msg_dlcity=sprintf($i18['DEMO_DLCITY'], anchor("dl"), $prev_year);
 	echo <<<EOF1
 
 <form action="$uri" method="post">
 <p>{$emailing} <input name="email" type="text"/></p>
-<!--<p><input name="btnDemo" type="button" onclick="citySelector(this)"/></p>-->
 <p>{$i18['CAPTCHA_PROMPT']}</p>
 <p><img src="mobi/kcaptcha?$sess" alt="Captcha">
 <input name="p_captcha" type="text"/>
@@ -66,11 +67,15 @@ return;
 }
 // guest user warning
 $press_enter=sprintf($i18['DEMO_ENTER'],$i18['LOG_IN']);
+$d_email=$GLOBALS['amax']['demo_email'];
+$d_pwd=$GLOBALS['amax']['demo_pass'];
 echo <<<EOF2
 <p>{$i18['DEMO_NOTREG']}</p>
 <ul>
-<li>{$i18['LOGIN']}: {$GLOBALS['amax']['demo_login']}</li>
-<li>{$i18['PWD']}: {$GLOBALS['amax']['demo_pass']}</li>
+<li>{$i18['LOGIN']}:
+<a href="javascript:void(0)" onclick="fill_input('ilog','{$d_email}')">{$d_email}</a></li><br/>
+<li>{$i18['PWD']}:
+<a href="javascript:void(0)" onclick="fill_input('ipwd','{$d_pwd}')">{$d_pwd}</a></li>
 </ul>
 <p>$press_enter</p>
 EOF2;
