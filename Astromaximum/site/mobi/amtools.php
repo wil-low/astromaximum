@@ -258,6 +258,7 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
 		}
 		$cmd="$perl $path2gen/gen_amax.cgi $type $year $lang \"$param\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
 	}
+//	echo $cmd;
 	$ret=0;
 	exec($cmd, $outp, $ret);
 	if($ret){				

@@ -88,7 +88,6 @@ else{
 	$const::DIR_IMG='source/icons';
 }
 
-our $TEST_YEAR=2007; # default year for Demo
 our $config=shift(@ARGV);
 our $year=shift(@ARGV);
 our $lang=shift(@ARGV);
@@ -196,7 +195,6 @@ if($islocal){
 my $dest='';
 
 if($config=~/demo/is){
-	$year=$TEST_YEAR;
 	unless($outfile=~/r$/is){
 		$outfile="$path/Astromaximum/deploy/$const::PRODUCT".'Demo.jar' ;
 	}
