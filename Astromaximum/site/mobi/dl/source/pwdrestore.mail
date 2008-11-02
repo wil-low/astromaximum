@@ -1,9 +1,15 @@
 Dear [realname],
 
-You have requested a new password for access to [site] 
-Your credentials are now as follows:
+You have requested a new password for access to Astromaximum sites. 
 
-  mobi login:  [login]
+To log in from PC, open [site] and enter:
+
+  email:       [email]
+  password:    [pwd]
+
+To log in from mobile phone, open [mobi] and enter:
+
+  login:       [login]
   password:    [pwd]
 
 Number of Astromaximum copies to download: [dl_count]
@@ -17,11 +23,17 @@ Thank you for using our service.
 
 Уважаемый [realname],
 
-Вы запросили новый пароль для доступа на сайт [site]
-Для входа на сайт наберите:
+Вы запросили новый пароль для доступа на сайты Астромаксимума.
 
-  mobi login:  [login]
-  пароль:      [pwd]
+Для входа с PC откройте [site] и введите:
+
+  email:       [email]
+  password:    [pwd]
+
+Для входа с мобильного откройте [mobi] и введите:
+
+  login:       [login]
+  password:    [pwd]
 
 Разрешено загрузить копий мидлета на текущий год: [dl_count]
 Разрешено загрузить городов: [city_count]

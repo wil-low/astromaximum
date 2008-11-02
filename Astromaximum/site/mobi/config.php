@@ -13,6 +13,7 @@ $sett=array(
 	'smtp_pass'=>"d7ee8da9",
 	'mail_office'=>'office@astromaximum.com',
 	'mail_site'=>'http://astromaximum.com',
+	'mail_site_mobi'=>'http://mobi.astromaximum.com',
 	'noreply'=>'noreply@astromaximum.com',
 	
 	'def_cities'=>array('m.Olympos'),

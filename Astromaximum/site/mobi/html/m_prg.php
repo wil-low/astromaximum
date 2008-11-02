@@ -44,8 +44,8 @@ if(!add_file($fn, $type)){
 	exit;
 }
 
-$data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
-if(!strpos($data_php, "mobi")){
+$data_php=$_SERVER['SERVER_NAME'];
+if(strpos($data_php, "mobi") === false){
 	$data_php.="/mobi";
 }
 //echo "http://$data_php/../data.php?t=$fn";

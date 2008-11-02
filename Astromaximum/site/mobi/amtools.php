@@ -268,21 +268,17 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
 		$str='';
 	}
 	else{
-//		if(strcmp($type, "demo")){
-//		$data_php=dirname(dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']));
-//		header("Location: http://$data_php/data.php?d=$fn");
-			if(!add_file($fn, $type{0}." $year $lang")){
-				$str.=mysql_error();
-				error_log($str);
-				return '';
-			}
-//		}
+                if(!add_file($fn, $type{0}." $year $lang")){
+                        $str.=mysql_error();
+                        error_log($str);
+                        return '';
+                }
 		$id=$fn;
 		$data_php="http://".$_SERVER['SERVER_NAME'];
-        $abs_path='./';
-		if(strpos($data_php, "mobi") == false){
+                $abs_path='./';
+		if(strpos($data_php, "mobi") === false){
 			$data_php.="/mobi";
-            $abs_path.='/mobi';
+                        $abs_path.='/mobi';
 		}
 		$url=$data_php.'/data.php?r='.$id;
 		$url2=str_replace("?r", "?d", $url);
@@ -382,9 +378,12 @@ function mailtext_w_attach($to, $realname, $subject, $message){ # returns sent M
 }
 
 function pwd_send($to, $login, $realname, $dl_limits, $pwd){
+        if(!$realname) $realname="customer";
 	$message=file_get_contents("mobi/dl/source/pwdrestore.mail");
 	$message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
+	$message=str_replace('[mobi]', $GLOBALS['amax']['mail_site_mobi'], $message);
 	$message=str_replace('[realname]', $realname, $message);
+	$message=str_replace('[email]', $to, $message);
 	$message=str_replace('[login]', $login, $message);
 	$message=str_replace('[pwd]', $pwd, $message);
 	$message=str_replace('[dl_count]', $dl_limits[0], $message);

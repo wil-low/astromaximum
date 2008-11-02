@@ -166,8 +166,8 @@ SP1;
 else{ 
 	$session_prompt=<<<FRM
 <form id="flog" action="?$lang_&amp;p=login&amp;to=$main" method="post"> 
-<input id="ilog" name="login"/> {$i18['EMAIL']} <br /><br />
-<input id="ipwd" name="pass" type="password"/> {$i18['PWD']} <br /><br />
+<input id="ilog" name="login"/> e-mail <br /><br />
+<input id="ipwd" name="pass" type="password"/> password <br /><br />
 <input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | 
 <a class="loginbutton" href="?$lang_&amp;p=pwdrestore">{$i18['LOST_PWD']}</a>
 </form> 
