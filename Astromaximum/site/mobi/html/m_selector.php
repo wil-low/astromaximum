@@ -22,7 +22,9 @@ if($chac==-1){
 		exit;
 	}
 }
-$DEST_URL=array("year", "0_0", "about", "prg&amp;mode=demo", "prg&amp;mode=trial");
+$DEST_URL=array("year", "about", "prg&amp;mode=demo", "prg&amp;mode=trial");
+
+addNavItem('selector', 'home', 0);
 
 $chac=check_access();
 $validuser=false;
@@ -64,15 +66,11 @@ if(isset($_POST['btn'])){
 ?>
 <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post"><p>
 <?php echo knopka(1, $chac>=0, $i18['SEL_DCITY']) ?><br/>
-<?php echo knopka(2, true, $i18['SEL_AH']) ?><br/>
-<?php echo knopka(3, true, $i18['SEL_ABOUT']) ?></p>
-<p>
-<?php echo knopka(4, true, $i18['SEL_DEMO'].' '.($current_year-1)) ?>*<br/>
-</p>
-<p>
-<?php echo knopka(5, $validuser, $current_year) ?>*
-</p></form>
-<p class="centered">* <?php echo $i18['SEL_CHK1'] ?><br/>
+<?php echo knopka(2, true, $i18['SEL_ABOUT']) ?><br/>
+<?php echo knopka(3, true, $i18['SEL_DEMO'].' '.($current_year-1)) ?>*<br/>
+<?php echo knopka(4, $validuser, $current_year) ?>*
+</form>
+<p>* <?php echo $i18['SEL_CHK1'] ?><br/>
 <?php echo "{$i18['SEL_CHK2']} ".gmdate("M j Y") ?>
 </p>
 <?php

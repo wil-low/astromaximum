@@ -1,6 +1,7 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
-$lang='ru';
+if(!isset($lang))
+    $lang='ru';
 $i18=array();
 if(isset($_REQUEST['lang'])){
 	$lang=strtolower($_REQUEST['lang']);

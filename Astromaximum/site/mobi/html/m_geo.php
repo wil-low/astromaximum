@@ -29,30 +29,29 @@
     
     if($chac==1){
         $defyear=$GLOBALS['amax']['year']-1;
-        echo "<b>Demo $defyear</b><br/>";
-    }
-    else{
-        echo "<b>$defyear</b><br/>";
     }
     
 	if($level==4){
 		$is_allow_dl=1;
 		$tries=($chac==1)? 100: get_try_count(0);
 		$sc=$parm[3];
-		$stat="SELECT cities.name, countries.name FROM cities,countries WHERE cities.id=$sc and countries.id=country_id ORDER BY countries.name,cities.name";
+		$stat="SELECT cities.name, countries.name FROM cities,countries ".
+            "WHERE cities.id=$sc and countries.id=country_id ".
+            "ORDER BY countries.name,cities.name";
 		$sth=mysql_query($stat);
 		if($is_allow_dl && mysql_num_rows($sth)>0){
 			$row = mysql_fetch_row($sth);
-			echo sprintf($i18['READY_CITIES'], "$row[0], $row[1]", $defyear)."<br/>\n";
-			$str=midlet_create("geo", $defyear, $lang, $sc, "dl", true);
+			echo sprintf('<i>%s</i> (%d)', "$row[0], $row[1]", $defyear)."<br/>\n";
+			$str=midlet_create("geo", $defyear, $lang, $sc, "dl", false);
 			if(strlen($str)){
 				dec_try_count(0, 1);
 				echo $str;
 				echo tries_remained($tries[1]-1, $DLIM[1]);
+                echo "<span class=\"alert\">{$i18['VALID_LINKS']}</span>";
 			}
 		}
 		else{
-			echo 'Вам не разрешено загружать города.';
+			echo 'You cannot download cities.';
 		}
 		return;
 	}
@@ -63,30 +62,30 @@
 	$_POST["n$level"]=$entity;
 	$lvl_title=array('Continent', 'Country', 'State', 'City');
 	$res=db_query($level, $parm);
-	for($i=0; $i<$level; $i++){
-		echo make_anchor($i, $parm, $lvl_title[$i], $defyear).'&nbsp;';
-	}
-	if($entity){
-		echo "$entity:<br/>";
-	}
+
 	$cnt=count($res[0]);
 	for($i=0; $i<$cnt; $i++){
 		$newparam=$parm;
 		$newparam[$level]=$res[0][$i];
 		echo make_anchor($level+1, $newparam, $res[1][$i], $defyear)."<br/>\n";	
 	}
-	
+    
 	function db_query($level, $parmarams)
 	{
-		global $cont, $level, $defyear;
+		global $cont, $level, $defyear, $subtitle, $entity;
+        $year_='&amp;y='.$defyear;
 		$i=0; $keys=$values=array();
 		if($level==0){ // continent
 			foreach ($cont as $value => $key) {
 				$keys[$i]=$key; $values[$i]=$value;
 				$i++;
 			}
+            $entity=$defyear;
 		}
 		if($level==1){ // country
+            if(strcmp($parmarams[0], 'ANC') == 0){
+                $parmarams[0]=0;
+            }
 			$query=sprintf("SELECT * from countries where continent=%s ORDER BY name", quote_smart($parmarams[0]));
 	//			echo "$query<br/>";
 			$sth=mysql_query($query);
@@ -107,6 +106,7 @@
 				}
 			}
 			else{
+                addLevelNavItem('');
 				$level++;
 			}
 		}
@@ -127,6 +127,7 @@
 				$i++;
 			}
 		}
+        addLevelNavItem($entity);
 		return array($keys, $values);
 	}
 	
@@ -139,4 +140,13 @@
 		}
 		return $str."\">$text</a>&nbsp;";
 	}
+
+    function addLevelNavItem($text){
+        global $level, $defyear, $parm;
+		$str="geo&amp;lvl=$level&amp;y=$defyear&amp;ent=".urlencode($text);
+		for($j=0; $j<$level; $j++){
+			$str.="&amp;p$j=$parm[$j]";
+		}
+        addNavItem($str, $text, $level+3);
+    }
 ?>

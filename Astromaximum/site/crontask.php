@@ -2,7 +2,8 @@
     $EXEC=1;
 
 // ?mode=clean_files  - delete outdated files and set 'files.deleted' to true
-    if(isset($_GET['mode']) && strcmp($GET['mode'], 'clean_files')){
+    if(file_exists('pwdgen_local.php') ||
+       (isset($_GET['mode']) && strcmp($GET['mode'], 'clean_files'))){
         include_once('mobi/config.php');
         include_once('mobi/dbconnect.php');
         $stat='SELECT id FROM files WHERE deleted=\'f\' AND end_tm<NOW()';
@@ -14,8 +15,8 @@
             @unlink($fn.'.d');
             @unlink($fn.'.r');
             @unlink($fn.'.t');
+            print "$row[0], ";
         }
-//        print_r($ids);
         if(!empty($ids)){
             $stat='UPDATE files SET deleted=\'t\' WHERE id IN (\''.implode('\',\'', $ids).'\')';
             mysql_query($stat);

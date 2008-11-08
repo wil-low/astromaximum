@@ -2,7 +2,7 @@
 	vertical-align:top;
 }
 .center {
-	horizontal-align:center;
+	text-align:center;
 }
 a {
 	color: blue;
@@ -14,10 +14,10 @@ a {
 	height:400pt;
 }
 .hdr {
-	horizontal-align:center; font-style:bold;
+	text-align:center; font-weight:bold;
 }
 .centered {
-	horizontal-align:center;
+	text-align:center;
 }
 div.hr {
 	border: 1px rgb(0,0,0) solid
@@ -31,11 +31,8 @@ div.hr {
 .fine {
 	color:rgb(0,130,0);
 }	
-img {
-	padding-bottom:-2pt;
-}
 .sidepad {
 }
 .numinput {
-	-wap-input-format: "*N"
+	-wap-input-format: "*N";
 }

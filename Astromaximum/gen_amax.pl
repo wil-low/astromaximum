@@ -249,7 +249,7 @@ if($config=~/demo/is){
 	inject_common($year, "$path/$const::DIR_TEMP/c.dat");
 	inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
 	inject_icon('a', "res/");
-	do_jar("AstromaximumDemo", $outfile, $const::PRODUCT);
+	do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
 	do_messjar($outfile);
 	$done=1;
 }
@@ -546,6 +546,7 @@ sub do_jar{
 	my $jad=$outfile;
 	$jad=~s/r$/d/is;
 	$outfile=~s/.+[\/\\]//is;
+    print 'is_local='.int($islocal)."\n";
 	if(!$islocal){
 		require CGI;
 		my $jarurl=$outfile;
@@ -555,6 +556,7 @@ sub do_jar{
 		my $serv='mobi.astromaximum.com';
 		$serv.='/mobi' if $serv!~/mobi/is;
 		$jarurl='http://'.$serv."/data.php?r=".$jarurl;
+        print "$tjad\n$jarurl\n";
 		open(FFF, ">$tjad") or mydie("$jad: $!");
 		print(FFF $template."MIDlet-Jar-URL: $jarurl\n");
 		close(FFF);
@@ -1017,6 +1019,7 @@ sub echo{
 }
 
 sub mydie{
+	print $_[0];
 	print FLOG "DIE: $_[0]";
 	close FLOG;
 	die $_[0];

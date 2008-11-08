@@ -1,5 +1,20 @@
 <?php 
 $EXEC=2;
+$lang='en';
+
+
+function output_callback($buffer)
+{
+	global $subtitle;
+	$buffer=str_replace("[[nav]]", implode(' ', $_SESSION['nav']), $buffer);
+    if($subtitle)
+        $subtitle='<span class="hdr">'.$subtitle.'</span><br/>';
+	$buffer=str_replace("[[subtitle]]", $subtitle, $buffer);
+	return $buffer;
+}
+
+ob_start("output_callback");
+
 include_once('config.php');
 include_once('lang.php');
 include_once('dbconnect.php');
@@ -10,35 +25,16 @@ if(isset($_GET['p'])){
 }
 sess_start();
 $sess=session_name().'='.session_id();
+
+if(!isset($_SESSION['nav']) || !is_array($_SESSION['nav']))
+    $_SESSION['nav'][0]="<a href=\"?$lang_&amp;p=selector&amp;$sess\">home</a>";
+   
 lang_load("html");
 $chac=check_access();
 $user_ok=($chac>=0 and $chac!=1);
 $custom_content='';
-/*
-if(strcmp($main, 'login')==0){
-	$login=''; $pass='';
-	if(isset($_POST['login'])){
-		$login=$_POST['login'];
-	}
-	if(isset($_POST['pass'])){
-		$pass=$_POST['pass'];
-	}
-	if(login($login, $pass)){
-		$main='home';
-		if(isset($_GET['to'])){
-			$main=$_GET['to'];
-		}
-	}
-	else{
-		include_once("ipblock.php");
-		$custom_content=allow_ip('login', false);
-		$main='home';
-	}
-	if(!$custom_content){
-		redirect("?$lang_&amp;p=$main");
-	}	
-}
-*/
+$subtitle='';
+
 if(!preg_match("/^[\w_\d]+$/is", $main)){
 	$main='home';
 }
@@ -61,23 +57,13 @@ if(preg_match("/^(demo)$/is", $main)){
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Astromaximum.mobi</title>
+<title>mobi.astromaximum</title>
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
 <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
-<div id="hdr" class="hdr">
-<?php 
-	if(strcmp($main,"m_home")==0){
-		echo "Astromaximum";
-	}
-	else{
-		echo "<a href=\"?$lang_&amp;p=selector&amp;$sess\">Astromaximum</a>";
-	}
-?>
-</div>
-<div id="cont">
-<p>
+<div id="hdr" class="nav">[[nav]]<hr/></div>
+<div id="cont">[[subtitle]]
 <?php
 	if($custom_content){
 		echo $custom_content;
@@ -102,19 +88,32 @@ if(preg_match("/^(demo)$/is", $main)){
 		}
 	} 
 ?>
-</p>
 </div>
-<div id="ftr">
+<div id="ftr"><hr/>
 <?php
 if($chac!=-1){
-	echo "<div class=\"hr\"></div>";
 	echo "user: ".$_SESSION['username'];
 	echo " &nbsp; <a href=\"dl/logout.php\">logout</a>";
 }
 else{
-	echo '<br/>* for demo:<br/> log: '.$GLOBALS['amax']['demo_login'].
+	echo '* for demo:<br/> log: '.$GLOBALS['amax']['demo_login'].
 		'<br/> pas: '.$GLOBALS['amax']['demo_pass'];
 }
 ?>
 </div>
 </body></html>
+
+<?php
+ob_end_flush();
+
+function addNavItem($linkparam, $title, $crop){
+    global $lang_, $sess;
+    if($crop>=0)
+        $_SESSION['nav']=array_slice($_SESSION['nav'], 0, $crop);
+    if(!strlen($linkparam))
+    	$item = $title;
+    else
+        $item = "<a href=\"?$lang_&amp;p=$linkparam&amp;$sess\">$title</a>";
+    $_SESSION['nav'][$crop-1]=$item;
+}
+?>

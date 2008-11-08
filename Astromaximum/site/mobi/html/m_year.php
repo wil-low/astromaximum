@@ -2,6 +2,8 @@
 	if(!isset($EXEC)) die("Access restricted");
     $where='';
     if($chac<0) return;
+    addNavItem('year', 'cities', 2);
+    $subtitle=$i18['MOBI_YEAR_H'];
     if($chac==1){ // demo - previous year only
         $where='WHERE year='.($GLOBALS['amax']['year']-1);
     }

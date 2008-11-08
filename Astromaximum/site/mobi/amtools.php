@@ -281,10 +281,10 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
                         $abs_path.='/mobi';
 		}
 		$url=$data_php.'/data.php?r='.$id;
-		$url2=str_replace("?r", "?d", $url);
 		$jarsize=fsize_human("$abs_path/dl/files/$id.r");
 		$jadsize=fsize_human("$abs_path/dl/files/$id.d");
 		if($is_html){
+    		$url2=str_replace("?r", "?d", $url);
 			if($EXEC==1){
 				$str.="<h4>{$i18['PC_DL']}:</h4>";
 				$str.="<a href=\"$url\">JAR ($jarsize)</a><br/>";
@@ -301,7 +301,8 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
 			$str.="<br/><br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
 		}
 		else{ # text-only version
-			$str="JAR: $url\n\nJAD: $url2";
+    		$url2=str_replace("?r", "?t", $url);
+			$str="<a href=\"$url2\">{$i18['PHONE_DL']}</a><br>";
 		}
 	}
 	return $str;
@@ -418,7 +419,10 @@ function dec_try_count($id, $key){ // decrease dl limit by $key for current user
 
 function tries_remained($tries, $limit) {
 	global $i18;
-	return sprintf($i18['TRIES_REMAINED'], $tries, $limit);
+    if($tries<0)
+        return '';
+    else
+        return sprintf($i18['TRIES_REMAINED'], $tries, $limit);
 }
 
 

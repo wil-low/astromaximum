@@ -12,6 +12,24 @@ if(strcmp($_REQUEST['mode'], 'demo')==0){
 else if(strcmp($_REQUEST['mode'], 'trial')!=0){
 	exit;
 }
+$languages=array('en', 'ru');
+if(!isset($_POST['l']) || !in_array($_POST['l'], $languages)){
+// ask a language
+    $subtitle='Select Astromaximum language';
+    echo '<form action="'.$_SERVER['REQUEST_URI'].'" method="post">';
+    foreach($languages as $value){
+        echo "<input type=\"radio\" name=\"l\" value=\"$value\">$value</input> ";
+    }
+?>
+<br/><input type="submit"/>
+</form>
+<?php
+    return;
+}
+else{
+    $lang=$_POST['l'];
+}
+
 $timeout_offset=-24;
 $timeout_mins=2880;  
 
