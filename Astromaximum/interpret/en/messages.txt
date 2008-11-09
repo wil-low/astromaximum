@@ -171,6 +171,8 @@
 %155% Go
 %156% Press a key...
 %157% Quit
+%158% Database error
+%159% City database is corrupted. You will need to reinstall additional cities. Do you want to reset the database?
 
 %255% En
 

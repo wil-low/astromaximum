@@ -27,7 +27,7 @@ class Options extends GeoList implements CommandListener {
 
     private static ChoiceGroup optList;
     private static ChoiceGroup timeGap;
-    static ChoiceGroup layout;
+    private static ChoiceGroup layout;
 //#if localtime
 //#   static byte OPT_FLAGS=1;
     //#else
@@ -35,9 +35,11 @@ class Options extends GeoList implements CommandListener {
     //#endif
     static byte optFlags;
     private static long localOffset;
-    private String oldc,  initCity;
+    private String oldc;
     static final int FLG_ALLTEXT = 1;
     private static final int FLG_LOCALTIME = 2;
+    static byte optLayout;
+    static byte optTimeGap;
 
     Options() {
         //#if demo
@@ -64,7 +66,6 @@ class Options extends GeoList implements CommandListener {
         Command cmd = new Command("OK", Command.OK, 1);
         addCommand(cmd);
         addCommand(new Command(Astromaximum.getstr(108), Command.ITEM, 2));//Del city
-//    addCommand(new Command("Reset storage",Command.ITEM, 3));
         optList = new ChoiceGroup(null, Choice.MULTIPLE,
                 sOpt, null);
         insert(0, layout);
@@ -142,6 +143,7 @@ class Options extends GeoList implements CommandListener {
             return;
         }
         if (c.getCommandType() == Command.CANCEL) {
+            setFlags();
             Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
         } 
         else { // save and return to summary screen
@@ -159,7 +161,6 @@ class Options extends GeoList implements CommandListener {
                     System.out.println(optFlags);
                     saveHistory();
                     curCity = cityList.getString(cityList.getSelectedIndex()).getBytes();
-                    localOffset = getLocalOffset();
                     try {
                         rs.setRecord(1, curCity, 0, curCity.length);
 //          rs.closeRecordStore();
@@ -185,7 +186,7 @@ class Options extends GeoList implements CommandListener {
                 case 2: // delete city command
                     String sel = cityList.getString(cityList.getSelectedIndex());
                     System.out.println(sel);
-                    if (!sel.equals(curCity) && cityList.size() > 1) {
+                    if (!sel.equals(new String(curCity)) && cityList.size() > 1) {
                         oldc = new String(curCity);
                         curCity = sel.getBytes();
                         Alert alert = new Alert(Astromaximum.getstr(148),//Confirm
@@ -291,10 +292,15 @@ class Options extends GeoList implements CommandListener {
 //  }
     void resetStorage() {
         try {
-            rs.closeRecordStore();
-            rs = null;
-            RecordStore.deleteRecordStore(STORE_NAME);
-            initDB(true);
+            int count = rs.getNumRecords();
+            RecordEnumeration re = rs.enumerateRecords(null, null, false);
+            while(re.hasNextElement()){
+                int id = re.nextRecordId();
+                if(id>2) // skip first 2 records
+                    rs.deleteRecord(id);
+            }
+            count = rs.getNumRecords();
+            addLocations();
             Astromaximum.summary.changeDay(0);
             init();
         } catch (Exception ex) {
@@ -302,13 +308,12 @@ class Options extends GeoList implements CommandListener {
         }
     }
 
-    public byte[] initDB(boolean canCreate) {
+    public byte[] initDB(boolean canCreate) throws Exception {
         String place = "opt";
         if (canCreate) {
             try {
                 rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year).substring(2),
                         true, RecordStore.AUTHMODE_ANY, true);
-//      rs=RecordStore.openRecordStore(STORE_NAME, "Wiland", "Astromaximum2007");
                 if (rs.getNumRecords() == 0) {
 
                     byte[] cn;
@@ -317,26 +322,9 @@ class Options extends GeoList implements CommandListener {
 //#else
 //#                     cn = new byte[2];
 //#endif
-                    DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
                     rs.addRecord(cn, 0, 1);
                     rs.addRecord(cn, 0, 1);
-                    istr.skip(2);
-                    int numRec = istr.readUnsignedShort();
-                    int rid = -1;
-                    for (int i = 0; i < numRec; i++) {
-                        cn = extractLocation(i);
-                        try {
-                            rid = rs.addRecord(cn, 0, cn.length);
-                        } catch (RecordStoreException ex) {
-                            ex.printStackTrace();
-                        }
-//          System.out.print(rid);
-//          System.out.println(extractCityName(cn));
-                    }
-                    byte[] geo = extractLocation(0);
-//        rs.addRecord(geo, 0, geo.length);
-                    geo = extractCityName(geo).getBytes();
-                    rs.setRecord(1, geo, 0, geo.length);
+                    addLocations();
 //#debug info
                     Astromaximum.log("rs created " + STORE_NAME);
                 }
@@ -350,11 +338,7 @@ class Options extends GeoList implements CommandListener {
                 Astromaximum.log(place + ex.getMessage());
             }
         }
-        try {
-            Astromaximum.dataFile.geoposData = super.initDB(false);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        Astromaximum.dataFile.geoposData = super.initDB(false);
         return null;
     }
 
@@ -362,9 +346,12 @@ class Options extends GeoList implements CommandListener {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
         try {
+            optTimeGap = (byte)timeGap.getSelectedIndex();
+            localOffset = (long)optTimeGap * 3600000;
+            optLayout = (byte)layout.getSelectedIndex();
             dos.writeByte(optFlags);
-            dos.writeByte(timeGap.getSelectedIndex());
-            dos.writeByte(layout.getSelectedIndex());
+            dos.writeByte(optTimeGap);
+            dos.writeByte(optLayout);
             dos.writeByte(Astromaximum.interpreter.fontSize);
             dos.writeShort(CustomTime.histCount);
             dos.writeInt(Astromaximum.customTime.lockFlags);
@@ -388,8 +375,8 @@ class Options extends GeoList implements CommandListener {
             ByteArrayInputStream bais = new ByteArrayInputStream(rs.getRecord(2));
             DataInputStream dis = new DataInputStream(bais);
             optFlags = dis.readByte();
-            timeGap.setSelectedIndex(dis.readByte(), true);
-            layout.setSelectedIndex(dis.readByte(), true);
+            optTimeGap = dis.readByte();
+            optLayout = dis.readByte();
             Astromaximum.interpreter.fontSize = dis.readByte();
             CustomTime.histCount = dis.readUnsignedShort();
             Astromaximum.customTime.lockFlags = dis.readInt();
@@ -410,10 +397,7 @@ class Options extends GeoList implements CommandListener {
             optFlags = OPT_FLAGS;
             Astromaximum.interpreter.fontSize = Font.SIZE_SMALL;
         }
-        for (int i = 0; i < optList.size(); i++) {
-            optList.setSelectedIndex(i, (optFlags & (1 << i)) != 0);
-        }
-        localOffset = getLocalOffset();
+        setFlags();
 //#mdebug info
         System.out.println(Integer.toBinaryString(Astromaximum.customTime.lockFlags));
 //#enddebug
@@ -427,12 +411,38 @@ class Options extends GeoList implements CommandListener {
         return now + localOffset;
     }
 
-    private long getLocalOffset() {
-        return Long.parseLong(timeGap.getString(timeGap.getSelectedIndex())) * 3600000;
+    private void addLocations() throws Exception {
+        DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
+        istr.skip(2);
+        int numRec = istr.readUnsignedShort();
+        int rid = -1;
+        byte[] cn;
+        for (int i = 0; i < numRec; i++) {
+            cn = extractLocation(i);
+            try {
+                rid = rs.addRecord(cn, 0, cn.length);
+            } catch (RecordStoreException ex) {
+                ex.printStackTrace();
+            }
+//          System.out.print(rid);
+//          System.out.println(extractCityName(cn));
+        }
+        byte[] geo = extractLocation(0);
+        geo = extractCityName(geo).getBytes();
+        rs.setRecord(1, geo, 0, geo.length);
     }
 
     public void commandAction(Command arg0, Item arg1) {
         commandAction(arg0, this);
+    }
+
+    private void setFlags() {
+        for (int i = 0; i < optList.size(); i++) {
+            optList.setSelectedIndex(i, (optFlags & (1 << i)) != 0);
+        }
+        timeGap.setSelectedIndex(optTimeGap, true);
+        layout.setSelectedIndex(optLayout, true);
+        localOffset = (long)optTimeGap * 3600000;
     }
 //#endif
 }

@@ -1344,7 +1344,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
             } else {
                 IMG_HEIGHT = IMG_WIDTH = 12;
             }
-            size = Options.layout.getSelectedIndex();
+            size = Options.optLayout;
             if (size == 0) {
                 size = 2;
                 if (h < 210) {

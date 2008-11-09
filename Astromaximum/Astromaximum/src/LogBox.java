@@ -31,6 +31,16 @@ class LogBox extends List implements CommandListener {
         setCommandListener(this);
     }
 
+    void askResetDB() {
+        invoker = Astromaximum.disp.getCurrent();
+        Alert al = new Alert(Astromaximum.getstr(158),
+                Astromaximum.getstr(159), null, AlertType.ERROR);
+        al.addCommand(new Command(Astromaximum.getstr(157), Command.EXIT, 0));
+        al.addCommand(new Command("OK", Command.OK, 10));
+        al.setCommandListener(this);
+        Astromaximum.disp.setCurrent(al);
+    }
+
     void init() {
         setTitle(Astromaximum.getstr(95));
         EMPTY = Astromaximum.getstr(119);
@@ -55,7 +65,7 @@ class LogBox extends List implements CommandListener {
     /**
      * @noinspection InfiniteLoopStatement
      */
-    public void commandAction(Command c, Displayable d) {
+    public void commandAction(Command c, Displayable d){
         switch (c.getCommandType()) {
             case Command.BACK:
                 Astromaximum.disp.setCurrent(invoker);
@@ -67,10 +77,21 @@ class LogBox extends List implements CommandListener {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                } else {
+                } else { // clear logs
                     deleteAll();
                     append(EMPTY, null);
                 }
+            case Command.EXIT: // from Astromaximum()
+                Astromaximum.quit();
+                break;
+            case Command.OK: // from Astromaximum()
+                try{
+                    Astromaximum.options.resetStorage();
+                    Astromaximum.options.initDB(true);
+
+                }
+                catch(Exception ex){};
+                Astromaximum.init2();
                 break;
         }
     }

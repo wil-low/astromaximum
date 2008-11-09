@@ -7,7 +7,7 @@ our $DIR_IMG='images/icons';
 our $DIR_INTERPRET='interpret';
 our $PRODUCT='Astromaximum';
 our $VENDOR='S&W Axis';
-our $VERSION='1.1.1';
+our $VERSION='1.1.2';
 our $USE_AMTEXT=1;
 
 our $UNZIP=q("%s"  %s -x *META-INF* -d %s );

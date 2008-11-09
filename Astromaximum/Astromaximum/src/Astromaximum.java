@@ -162,7 +162,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * @param time any date
      * @return midnight date
      */
-    long getMidnight(long time) {
+    static long getMidnight(long time) {
         calendar.setTime(new Date(time + Event.localOffset(time)));
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
@@ -175,6 +175,8 @@ public class Astromaximum extends MIDlet implements CommandListener {
     static LogBox logBox;
     static Interpreter interpreter;
     static CustomTime customTime;
+    
+    static long start;
     /**
      * Not exactly locale, just language indentifier
      */
@@ -186,7 +188,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     public void startApp() {
         disp = Display.getDisplay(this);
 //#debug
-        long start = System.currentTimeMillis();
+        start = System.currentTimeMillis();
 //        if (firstRun) {
 //        System.gc();
         try {
@@ -267,7 +269,26 @@ public class Astromaximum extends MIDlet implements CommandListener {
       logger("dataFile");
 //#endif
             errCode = 5; // XXX
-            options.initDB(true);
+            try{
+                options.initDB(true);
+                init2();
+            }
+            catch(Exception ex){
+                logBox.askResetDB();
+            }
+        } catch (Exception oome) {
+///#mdebug debug
+            Astromaximum.log("errCode=" + Integer.toString(errCode));
+            Astromaximum.log(oome.toString());
+            logBox.showLog(null);
+            oome.printStackTrace();
+//        quit();
+///#enddebug
+        }
+    }
+    
+    static void init2(){            
+        try {
             int len = dataFile.geoposData.length;
             Astromaximum.log("geopos len=" + new Integer(len).toString());
 //#if logger
@@ -438,7 +459,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //        quit();
 ///#enddebug
         }
-//        }
         summary.repaint();
 //#mdebug
         System.out.print("Initialization took ");
@@ -616,12 +636,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
         interpreter.prepareText();
         interpreter.txt = getstr(91) + " " + str + "||" + getstr(111) + "||" + getstr(156);
         disp.setCurrent(interpreter);
-        /*        final Alert noDate = new Alert(getstr(91) + " " + str, getstr(111), null, AlertType.ERROR);
-        noDate.setTimeout(5000);
-        noDate.addCommand(new Command("OK", Command.STOP, 1));
-        noDate.setCommandListener(this);
-        disp.setCurrent(noDate);
-         */
         calendar.setTime(summary.selDate);
         calendar.set(Calendar.YEAR, Astromaximum.startYear);
         summary.selDate = calendar.getTime();
