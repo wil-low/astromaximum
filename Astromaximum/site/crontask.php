@@ -26,5 +26,8 @@
         foreach (glob('/tmp/sunrise_*') as $filename) {
             @unlink($filename);
         }
+// delete unconfirmed users        
+        $stat='SELECT id FROM files WHERE deleted=\'f\' AND end_tm<NOW()';
+        $sth=mysql_query($stat);
     }
 ?>

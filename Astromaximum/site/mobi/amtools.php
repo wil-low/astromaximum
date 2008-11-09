@@ -393,6 +393,14 @@ function pwd_send($to, $login, $realname, $dl_limits, $pwd){
 	return mailtext_w_attach($to, $realname, 'Astromaximum - new password', $message);
 }
 
+function confirmation_send($to, $realname, $passkey){
+    $message=file_get_contents("mobi/dl/source/confirm.mail");
+	$message=str_replace('[realname]', $realname, $message);
+	$message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
+	$message=str_replace('[key]', $passkey, $message);
+	return mailtext_w_attach($to, $realname, 'Astromaximum - confirm registration', $message);
+}
+
 function get_try_count($id){ // get dl limit for current user, if $id==0
 	if(intval($id)==0){
 		$id=$_SESSION['uid'];

@@ -1,14 +1,76 @@
 <?php 
 if(!isset($EXEC)) die("Access restricted");
 $current_year=$GLOBALS['amax']['year'];
-if(isset($_POST["reg_submit"])){ 
-	echo $i18['INSTR_SENT'];
-	return;
-}
 $chac=check_access();
 $uri=htmlentities($_SERVER['REQUEST_URI']);
 
+$msg=$i18['REGFORM_REQF'];
+
+$email=$email2=$nick=$paymode=$model='';
+
+function present($key){
+    return isset($_POST[$key]) && strlen(trim($_POST[$key]))>0;
+}
+
+function alert($str){
+    global $i18;
+    return '<span class="alert">'.$i18[$str].'</span>';
+}
+
+if(present('email1') && present('email2') && present('nick') && present('p_captcha')
+    && present('paymode') && present('model') && present('agree') &&
+    strcmp($_POST['agree'], 'on') == 0){ 
+
+    $email=$_POST['email1'];
+    $email2=$_POST['email2'];
+    $nick=$_POST['nick'];
+    $paymode=$_POST['paymode'];
+    $model=$_POST['model'];
+
+    do{    
+        if(strcmp($email, $email2) != 0){
+            $msg=alert('REGFE_EM_NOMATCH'); break;
+        }
+        if(!check_email_address($email)){
+            $msg=alert('REGFE_EM_BAD'); break;
+        }
+//TODO: email duplicates prohibited???        
+        $stat=sprintf("SELECT id FROM customers where email=%s LIMIT 1",
+            quote_smart($email));
+        $sth=mysql_query($stat);
+        if(!$sth){
+            echo mysql_error().": >$stat<";
+        }
+        if(mysql_num_rows($sth)==1){
+            $msg=alert('REGFE_EM_EXISTS'); break;
+        }
+        if(!is_captcha($_POST['p_captcha'])){
+            $msg=alert('CAPTCHA_WRONG'); break;
+        }
+// create new customer w/o password
+        $passkey=$nick.$model.date("l dS of F Y h:i:s A").mt_rand();
+        $passkey=pwd_convert2(pwd_convert1($email, $passkey));
+        
+        $stat=sprintf("INSERT INTO customers (realname,email,hash,subscr_date,".
+            "paymode_id,model,active) values (%s,%s,%s,CURRENT_DATE,%d,%s,0)",
+            quote_smart($nick),
+            quote_smart($email),
+            quote_smart($passkey),
+            quote_smart($paymode),
+            quote_smart($model)
+        );
+        if(!mysql_query($stat)){
+            echo mysql_error(); break;
+        }
+        $mail=confirmation_send($email, $nick, $passkey);
+        echo $mail->ErrorInfo.'<br/>'.$i18['INSTR_SENT'];
+        return;
+        
+    }while(0);
+}
+
 if($chac!=-1 and $chac!=1){
+
 	$y_now=$current_year;
 	$out='';
 	for($i=$current_year-1; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
@@ -60,15 +122,44 @@ if($chac!=-1 and $chac!=1){
 	echo "</form>";
     return;
 }
-/*
-	echo "<form action=\"$uri\" method=\"post\">\n";
-    echo '<input type="hidden" name="demo" value="0"/>';
-	$prompt=sprintf($i18['CONFIRM_TRIAL'], $lang_);
-	echo dload_tries_prompt(-1, 0, '', $prompt);
-	echo "</form>";
+$agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang_), false);
+$sess=session_name().'='.session_id();
 
+// TODO: maintain these options when changing dic_paymode table!
+
+echo <<< EOF
+<h4>{$i18['REGFORM_H']}</h4>
+<form id="regform" action="$uri" method="post">
+<p>$msg</p>
+<input type="hidden" name="demo"/>
+<p>{$i18['REGFORM_EMAIL_1']}<br/>
+<input type="text" name="email1" size="25" value="$email"/><br/>
+{$i18['REGFORM_EMAIL_2']}<br/>
+<input type="text" name="email2" size="25" value="$email2"/></p>
+<p>{$i18['REGFORM_NAME']}<br/>
+<input type="text" name="nick" size="25" value="$nick"/></p>
+<p><img src="mobi/kcaptcha?$sess" alt="Captcha">
+<input type="text" name="p_captcha" size="8"/></p>
+<p>{$i18['REGFORM_PAYMODE']}</p>
+<p class="no_border">
+<input type="radio" name="paymode" value="2" checked="checked"/>PayPal<br/>
+<input type="radio" name="paymode" value="4"/>{$i18['REGFORM_OTP']}<br/>
+<input type="radio" name="paymode" value="5"/>{$i18['REGFORM_RAIFF']}<br/>
+</p>
+<p>{$i18['REGFORM_MODEL']}<br/>
+<input type="text" name="model" size="25" value="$model"/></p>
+$agree
+</form>
+EOF;
+
+/*
+echo "<form action=\"$uri\" method=\"post\">\n";
+$prompt=sprintf($i18['CONFIRM_TRIAL'], $lang_);
+echo "<br/>".$str.dload_prompt($prompt, $disabled);
+echo "</form>";
+                                      */
 return;
-*/
+
 ?>
 <?php include_once('paypal.php') ?>
 <?php include_once('bank.php') ?>

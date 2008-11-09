@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
   `dlcount1` int(11) NOT NULL default '8' COMMENT 'City counter',
   `dlcount2` int(11) NOT NULL default '10' COMMENT 'Past years midlet counter',
   `active` tinyint(1) NOT NULL default '1',
+  `model` varchar(50) default NULL COMMENT 'Phone model',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `realname` (`realname`),

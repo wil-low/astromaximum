@@ -2,14 +2,19 @@
 $EXEC=2;
 $lang='en';
 
+$custom_content=''; $subtitle=''; $onload=''; $head='';
 
 function output_callback($buffer)
 {
-	global $subtitle;
+	global $subtitle, $onload, $head;
 	$buffer=str_replace("[[nav]]", implode(' ', $_SESSION['nav']), $buffer);
     if($subtitle)
         $subtitle='<span class="hdr">'.$subtitle.'</span><br/>';
 	$buffer=str_replace("[[subtitle]]", $subtitle, $buffer);
+    if($onload)
+        $onload=' onload="'.$onload.'"';
+	$buffer=str_replace("[[onload]]", $onload, $buffer);
+	$buffer=str_replace("[[head]]", $head, $buffer);
 	return $buffer;
 }
 
@@ -32,8 +37,6 @@ if(!isset($_SESSION['nav']) || !is_array($_SESSION['nav']))
 lang_load("html");
 $chac=check_access();
 $user_ok=($chac>=0 and $chac!=1);
-$custom_content='';
-$subtitle='';
 
 if(!preg_match("/^[\w_\d]+$/is", $main)){
 	$main='home';
@@ -60,8 +63,9 @@ if(preg_match("/^(demo)$/is", $main)){
 <title>mobi.astromaximum</title>
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
 <link rel="stylesheet" type="text/css" href="style.css"/>
+[[head]]
 </head>
-<body>
+<body[[onload]]>
 <div id="hdr" class="nav">[[nav]]<hr/></div>
 <div id="cont">[[subtitle]]
 <?php
@@ -92,12 +96,12 @@ if(preg_match("/^(demo)$/is", $main)){
 <div id="ftr"><hr/>
 <?php
 if($chac!=-1){
-	echo "user: ".$_SESSION['username'];
+	echo $_SESSION['username'];
 	echo " &nbsp; <a href=\"dl/logout.php\">logout</a>";
 }
 else{
-	echo '* for demo:<br/> log: '.$GLOBALS['amax']['demo_login'].
-		'<br/> pas: '.$GLOBALS['amax']['demo_pass'];
+	echo '* for demo:<br/> login: '.$GLOBALS['amax']['demo_login'].
+		'<br/> pass: '.$GLOBALS['amax']['demo_pass'];
 }
 ?>
 </div>

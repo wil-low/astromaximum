@@ -47,7 +47,7 @@
 				dec_try_count(0, 1);
 				echo $str;
 				echo tries_remained($tries[1]-1, $DLIM[1]);
-                echo "<span class=\"alert\">{$i18['VALID_LINKS']}</span>";
+                echo "<br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
 			}
 		}
 		else{

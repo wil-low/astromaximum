@@ -226,7 +226,9 @@ else{
 ?>
 
 </div><!-- end content div -->
-<div id="bottom"><p>Copyright &copy; 2007 S&amp;W Axis. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
+<div id="bottom"><p>Copyright &copy;
+2007-2008
+S&amp;W Axis. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
 </body>
 </html>
 

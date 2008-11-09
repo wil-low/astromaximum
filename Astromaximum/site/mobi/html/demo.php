@@ -49,10 +49,10 @@ if(check_access()!=-1){
 	echo <<<EOF1
 
 <form action="$uri" method="post">
-<p>{$emailing} <input name="email" type="text"/></p>
+<p>{$emailing} <input name="email" type="text" size="25"/></p>
 <p>{$i18['CAPTCHA_PROMPT']}</p>
 <p><img src="mobi/kcaptcha?$sess" alt="Captcha">
-<input name="p_captcha" type="text"/>
+<input name="p_captcha" type="text" size="8"/>
 </p>
 <p><span class="fine">{$i18['DEMO_CALGEN']}:</span><br/><br/>
 <!--<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> -->

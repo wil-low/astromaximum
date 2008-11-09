@@ -159,3 +159,16 @@ CITYLIST_SUNRISE=Восход солнца
 CITYLIST_NOW=Текущее время
 CITYLIST_GMT=Часовой пояс
 CITYLIST_DST= +1 (летнее время)
+
+REGFORM_H=Регистрация нового пользователя
+REGFORM_REQF=Все поля обязательны для заполнения!
+REGFORM_EMAIL_1=Введите e-mail, на который будет выслано подтверждение регистрации
+REGFORM_EMAIL_2=Повторите e-mail
+REGFORM_NAME=Ваше имя на сайте
+REGFORM_PAYMODE=Способ оплаты:
+REGFORM_OTP=Банковский перевод - OTP bank
+REGFORM_RAIFF=Банковский перевод - Raiffeisen bank
+REGFORM_MODEL=Модель Вашего телефона
+REGFE_EM_NOMATCH=Адреса почты не совпадают
+REGFE_EM_BAD=Недопустимый электронный адрес
+REGFE_EM_EXISTS=Пользователь с таким адресом почты уже зарегистрирован

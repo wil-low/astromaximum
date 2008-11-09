@@ -24,7 +24,6 @@ h1, h2, h3, h4 {
 img {
 	border: none;
 }
-
 input {
 	border: 1px solid #336699;
 }
@@ -228,6 +227,9 @@ ul {
 }
 .gogo {
 	padding: 11px 0px 0px 33px;
+}
+.no_border input {
+    border: none;
 }
 /*основной текст*/
 #content {

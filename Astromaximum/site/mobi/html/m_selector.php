@@ -70,10 +70,24 @@ if(isset($_POST['btn'])){
 <?php echo knopka(3, true, $i18['SEL_DEMO'].' '.($current_year-1)) ?>*<br/>
 <?php echo knopka(4, $validuser, $current_year) ?>*
 </form>
-<p>* <?php echo $i18['SEL_CHK1'] ?><br/>
-<?php echo "{$i18['SEL_CHK2']} ".gmdate("M j Y") ?>
+<p>* <?php echo "{$i18['SEL_CHK1']} <b>".gmdate("M d Y") ?></b>
+<br/>&nbsp;&nbsp;
+<span id="phdate">Please check phone's date</span>
 </p>
 <?php
+
+$head = <<< EOF
+<script type="text/javascript">
+function curDate(){
+    var date=new Date();
+    var s=date.toString();
+    s=s.substr(4, 11);
+    document.getElementById("phdate").innerHTML='Phone date: <b>'+s+'</b>';
+}
+</script>
+EOF;
+$onload='curDate()';
+
 function knopka($key, $is_valid, $text){
   global $DEST_URL, $sess, $lang_;
 //  $str="<input type=\"submit\" accesskey=\"$key\" name=\"btn\" value=\"$key\" style=\"width:2em;\"$disa/> ";
