@@ -12,9 +12,8 @@ $frm_act="?$lang_&amp;p=selector";
 if($chac>=0)
     redirect($frm_act);
 ?>
-</p>
 <form action="<?php echo $frm_act ?>" method="post">
-<?php if($chac==-1){ ?>
+<p><?php if($chac==-1){ ?>
 login <input name="login" type="text" size="9" maxlength="9"/><br/>
 pass <input name="pass" type="password" size="9" maxlength="9" class="numinput"/><br/>
 <?php } ?>

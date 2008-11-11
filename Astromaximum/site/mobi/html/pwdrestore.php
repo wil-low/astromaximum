@@ -48,10 +48,10 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 -->
 </script>
 <p><?php echo $i18['PWDR_EMAILING']?></p>
-<form id="pwdrestore" action="<?php echo $_SERVER['REQUEST_URI']?>" method="post">
+<form id="pwdrestore" action="<?php echo htmlentities($_SERVER['REQUEST_URI'])?>" method="post">
 <input name="p_email" type="text" style="width: auto"/>
 <p><?php echo $i18['CAPTCHA_PROMPT']?></p>
-<p><img src="mobi/kcaptcha?<?php echo session_name()?>=<?php echo session_id()?>" alt="Captcha">
+<p><img src="mobi/kcaptcha?<?php echo session_name()?>=<?php echo session_id()?>" alt="Captcha"/>
 <input name="p_captcha" type="text"/>
 </p>
 <input name="action" type="button" class="ok_on" value="OK" onclick="checkdata()"/>

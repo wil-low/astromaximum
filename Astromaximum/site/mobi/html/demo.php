@@ -73,7 +73,7 @@ echo <<<EOF2
 <p>{$i18['DEMO_NOTREG']}</p>
 <ul>
 <li>{$i18['LOGIN']}:
-<a href="javascript:void(0)" onclick="fill_input('ilog','{$d_email}')">{$d_email}</a></li><br/>
+<a href="javascript:void(0)" onclick="fill_input('ilog','{$d_email}')">{$d_email}</a><br/><br/></li>
 <li>{$i18['PWD']}:
 <a href="javascript:void(0)" onclick="fill_input('ipwd','{$d_pwd}')">{$d_pwd}</a></li>
 </ul>

@@ -93,6 +93,24 @@ if(preg_match("/^(demo)$/is", $main)){
 <meta name="description" content="[[description]]"/>
 <link href="astro.css" rel="stylesheet" type="text/css"/>
 <script src="./func.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+<!--
+if (document.images){
+    preload_image_object = new Image();
+    // set image url
+    image_url = new Array();
+    image_url[0] = "i/globe.jpg";
+    image_url[1] = "i/fon.jpg";
+    image_url[2] = "i/button.jpg";
+    
+    var i = 0;
+    for(i=0; i<=2; i++) 
+        preload_image_object.src = image_url[i];
+}
+//-->
+</script>     
+  
 [[onload_script]]
 [[head_add]]
 </head>

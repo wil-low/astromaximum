@@ -16,12 +16,12 @@ $languages=array('en', 'ru');
 if(!isset($_POST['l']) || !in_array($_POST['l'], $languages)){
 // ask a language
     $subtitle='Select Astromaximum language';
-    echo '<form action="'.$_SERVER['REQUEST_URI'].'" method="post">';
+    echo '<form action="'.htmlentities($_SERVER['REQUEST_URI']).'" method="post"><p>';
     foreach($languages as $value){
-        echo "<input type=\"radio\" name=\"l\" value=\"$value\">$value</input> ";
+        echo "<input type=\"radio\" name=\"l\" value=\"$value\"/>$value ";
     }
 ?>
-<br/><input type="submit"/>
+<br/><br/><input type="submit"/></p>
 </form>
 <?php
     return;
@@ -68,7 +68,7 @@ if(strpos($data_php, "mobi") === false){
 }
 //echo "http://$data_php/../data.php?t=$fn";
 echo "<a href=\"http://$data_php/data.php?t=$fn\">{$i18['PHONE_DL']}</a>";
-echo "<br/><span class=\"alert\">{$i18['VALID_LINKS']}</span><br/><br/>";
+echo "<br/><span class=\"fine\">{$i18['VALID_LINKS']}</span><br/><br/>";
 
  
 ?>

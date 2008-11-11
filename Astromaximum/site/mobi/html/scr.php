@@ -21,6 +21,7 @@ $imglist=implode(',', $images);
 
 $META_HEAD_ADD= <<< EOF
 <script type="text/javascript">
+<!--
 var imgs=new Array();
 function preloadImages(){
     for(var i=0; i<preloadImages.arguments.length; i++){
@@ -29,9 +30,10 @@ function preloadImages(){
     }
 }
 preloadImages({$imglist});
+//-->
 </script>
 EOF;
 ?>
-<p><table class="gallery">
+<table class="gallery">
 <?php echo $out ?>
-</table></p>
+</table>

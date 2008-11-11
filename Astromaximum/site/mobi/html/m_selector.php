@@ -64,11 +64,11 @@ if(isset($_POST['btn'])){
 	exit;
 }
 ?>
-<form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post"><p>
+<form action="<?php echo htmlentities($_SERVER['REQUEST_URI']) ?>" method="post"><p>
 <?php echo knopka(1, $chac>=0, $i18['SEL_DCITY']) ?><br/>
 <?php echo knopka(2, true, $i18['SEL_ABOUT']) ?><br/>
 <?php echo knopka(3, true, $i18['SEL_DEMO'].' '.($current_year-1)) ?>*<br/>
-<?php echo knopka(4, $validuser, $current_year) ?>*
+<?php echo knopka(4, $validuser, $current_year) ?>*</p>
 </form>
 <p>* <?php echo "{$i18['SEL_CHK1']} <b>".gmdate("M d Y") ?></b>
 <br/>&nbsp;&nbsp;
@@ -78,12 +78,14 @@ if(isset($_POST['btn'])){
 
 $head = <<< EOF
 <script type="text/javascript">
+<!--
 function curDate(){
     var date=new Date();
     var s=date.toString();
     s=s.substr(4, 11);
     document.getElementById("phdate").innerHTML='Phone date: <b>'+s+'</b>';
 }
+//-->
 </script>
 EOF;
 $onload='curDate()';
