@@ -18,14 +18,13 @@ function alert($str){
 }
 
 if(present('email1') && present('email2') && present('nick') && present('p_captcha')
-    && present('paymode') && present('model') && present('agree') &&
+    && present('paymode') && present('agree') &&
     strcmp($_POST['agree'], 'on') == 0){ 
 
-    $email=$_POST['email1'];
-    $email2=$_POST['email2'];
-    $nick=$_POST['nick'];
+    $email=substr($_POST['email1'], 0, 50);
+    $email2=substr($_POST['email2'], 0, 50);
+    $realname=substr($_POST['nick'], 0, 50);
     $paymode=$_POST['paymode'];
-    $model=$_POST['model'];
 
     do{    
         if(strcmp($email, $email2) != 0){
@@ -47,23 +46,28 @@ if(present('email1') && present('email2') && present('nick') && present('p_captc
         if(!is_captcha($_POST['p_captcha'])){
             $msg=alert('CAPTCHA_WRONG'); break;
         }
-// create new customer w/o password
-        $passkey=$nick.$model.date("l dS of F Y h:i:s A").mt_rand();
+// create new customer with key in place of password
+        $passkey=$realname.$model.date("l dS of F Y h:i:s A").mt_rand();
         $passkey=pwd_convert2(pwd_convert1($email, $passkey));
         
         $stat=sprintf("INSERT INTO customers (realname,email,hash,subscr_date,".
-            "paymode_id,model,active) values (%s,%s,%s,CURRENT_DATE,%d,%s,0)",
-            quote_smart($nick),
+            "paymode_id,active,dlcount0,dlcount1,dlcount2) values ".
+            "(%s,%s,%s,CURRENT_DATE,%d,0,0,0,0)",
+            quote_smart($realname),
             quote_smart($email),
             quote_smart($passkey),
-            quote_smart($paymode),
-            quote_smart($model)
+            quote_smart($paymode)
         );
         if(!mysql_query($stat)){
             echo mysql_error(); break;
         }
-        $mail=confirmation_send($email, $nick, $passkey);
-        echo $mail->ErrorInfo.'<br/>'.$i18['INSTR_SENT'];
+        $mail=confirmation_send($email, $realname, $passkey);
+        if($mail->ErrorInfo){
+            echo 'Error: '.$mail->ErrorInfo;
+        }
+        else{
+            echo $i18['INSTR_SENT'];
+        }
         return;
         
     }while(0);
@@ -130,7 +134,14 @@ $sess=session_name().'='.session_id();
 echo <<< EOF
 <h4>{$i18['REGFORM_H']}</h4>
 <form id="regform" action="$uri" method="post">
-<p>$msg</p>
+<p>{$i18['REGFORM_PAYMODE']}</p>
+<p class="no_border">
+EOF;
+    echo paymode_radio('PayPal', 2, '02', true);
+    echo paymode_radio($i18['REGFORM_OTP'], 4, '04', false);
+    echo paymode_radio($i18['REGFORM_RAIFF'], 5, '05', false);
+echo <<< EOF
+</p>
 <input type="hidden" name="demo"/>
 <p>{$i18['REGFORM_EMAIL_1']}<br/>
 <input type="text" name="email1" size="25" value="$email"/><br/>
@@ -140,14 +151,6 @@ echo <<< EOF
 <input type="text" name="nick" size="25" value="$nick"/></p>
 <p><img src="mobi/kcaptcha?$sess" alt="Captcha">
 <input type="text" name="p_captcha" size="8"/></p>
-<p>{$i18['REGFORM_PAYMODE']}</p>
-<p class="no_border">
-<input type="radio" name="paymode" value="2" checked="checked"/>PayPal<br/>
-<input type="radio" name="paymode" value="4"/>{$i18['REGFORM_OTP']}<br/>
-<input type="radio" name="paymode" value="5"/>{$i18['REGFORM_RAIFF']}<br/>
-</p>
-<p>{$i18['REGFORM_MODEL']}<br/>
-<input type="text" name="model" size="25" value="$model"/></p>
 $agree
 </form>
 EOF;
@@ -186,5 +189,14 @@ function dload_tries_prompt($arr, $key, $str, $prompt){
 		$disabled=true;
 	}
 	return $rem."<br/>".$str.dload_prompt($prompt, $disabled);
+}
+
+function paymode_radio($text, $paymode_id, $popup_id, $is_selected){
+    global $lang_;
+    $chk = $is_selected ? ' checked="checked"' : '';
+    return <<< EOF
+<input type="radio" name="paymode" value="{$paymode_id}"{$chk}/> {$text}&nbsp;
+<a href="/popup.php?{$lang_}&amp;n={$popup_id}" target="_blank"><u>?</u></a><br/>
+EOF;
 }
 ?>

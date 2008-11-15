@@ -16,13 +16,15 @@ $sett=array(
 	'mail_site_mobi'=>'http://mobi.astromaximum.com',
 	'noreply'=>'noreply@astromaximum.com',
 	
+	'mail_event'=>'office@astromaximum.com',
+
 	'def_cities'=>array('m.Olympos'),
 
 	'demo_email'=>'demo@astromaximum.com',
 	'demo_login'=>'123456789',
 	'demo_pass'=>'012345678',
 	
-	'city_count'=>711,
+	'city_count'=>721,
 	'price'=>'$60',
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder
 	'min_demo_year'=>2005,

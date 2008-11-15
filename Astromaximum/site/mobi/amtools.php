@@ -340,46 +340,50 @@ function record_in_range($table, $tm){
 }
 
 function mailtext_w_attach($to, $realname, $subject, $message){ # returns sent Mail object
-   include("mobi/phpmailer/class.phpmailer.php");
-   include("mobi/phpmailer/class.smtp.php");
-   $from=$GLOBALS['amax']['mail_office'];
-  
-   $mail=new PHPMailer();
-   $mail->SetLanguage("en", "mobi/phpmailer/");
-   if($GLOBALS['amax']['is_online']){
-	  $mail->IsSMTP();
-	  $mail->SMTPAuth   = true;                  // enable SMTP authentication
-	//  $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
-	  $mail->Host       = $GLOBALS['amax']['smtp_host'];// sets GMAIL as the SMTP server
-	  $mail->Port       = 25;                   // set the SMTP port 
-	  
-	  $mail->Username   = $GLOBALS['amax']['smtp_user'];
-	  $mail->Password   = $GLOBALS['amax']['smtp_pass'];
-	} 
-   $mail->From       = $from;
+    include_once("mobi/phpmailer/class.phpmailer.php");
+    include_once("mobi/phpmailer/class.smtp.php");
+    $from=$GLOBALS['amax']['mail_office'];
+    
+    $mail=new PHPMailer();
+    $mail->SetLanguage("en", "mobi/phpmailer/");
+    if($GLOBALS['amax']['is_online']){
+        $mail->IsSMTP();
+        $mail->SMTPAuth   = true;                  // enable SMTP authentication
+        //  $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
+        $mail->Host       = $GLOBALS['amax']['smtp_host'];// sets GMAIL as the SMTP server
+        $mail->Port       = 25;                   // set the SMTP port 
+        
+        $mail->Username   = $GLOBALS['amax']['smtp_user'];
+        $mail->Password   = $GLOBALS['amax']['smtp_pass'];
+    } 
+    $mail->From       = $from;
+    
+    $mail->FromName   = 'Astromaximum office';
+    $mail->Subject    = $subject;
+    //	echo $GLOBALS['amax']['restore'];
+    if($tmpfname = tempnam($GLOBALS['amax']['restore'], "")){
+    //		echo $tmpfname;
+        if(strpos($tmpfname, $GLOBALS['amax']['restore'])){
+            $handle = fopen($tmpfname, "w");
+            fwrite($handle, $message);
+            fclose($handle);
+            $mail->AddAttachment($tmpfname, "message.txt","8bit", "text/plain");
+        }
+    }
+    
+    $message=preg_replace("/\-{4,}.+/s", "", $message);
+    $mail->Body = $message;
+    $mail->AddAddress($to,$realname);
+    $mail->Send();
+    return $mail;
+}
 
-   $mail->FromName   = 'Astromaximum office';
-	$mail->Subject    = $subject;
-//	echo $GLOBALS['amax']['restore'];
-	if($tmpfname = tempnam($GLOBALS['amax']['restore'], "")){
-//		echo $tmpfname;
-		if(strpos($tmpfname, $GLOBALS['amax']['restore'])){
-			$handle = fopen($tmpfname, "w");
-			fwrite($handle, $message);
-			fclose($handle);
-			$mail->AddAttachment($tmpfname, "message.txt","8bit", "text/plain");
-		}
-	}
-	
-	$message=preg_replace("/\-{4,}.+/s", "", $message);
-   $mail->Body    = $message;
-	$mail->AddAddress($to,$realname);
-	$mail->Send();
-	return $mail;
+function event_send($topic, $message){
+    return mailtext_w_attach($GLOBALS['amax']['mail_event'], '', 'Amax event - '.$topic, $message);
 }
 
 function pwd_send($to, $login, $realname, $dl_limits, $pwd){
-        if(!$realname) $realname="customer";
+    if(!$realname) $realname="customer";
 	$message=file_get_contents("mobi/dl/source/pwdrestore.mail");
 	$message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
 	$message=str_replace('[mobi]', $GLOBALS['amax']['mail_site_mobi'], $message);
@@ -407,7 +411,7 @@ function get_try_count($id){ // get dl limit for current user, if $id==0
 	}
 	$stat=sprintf("SELECT dlcount0, dlcount1, dlcount2 FROM customers WHERE id=%d", quote_smart($id));
 	$sth=mysql_query($stat);
-	global $DLIM;
+//	global $DLIM;
 	if($sth && ($row=mysql_fetch_row($sth))){
 		return $row;
 	}
@@ -432,7 +436,6 @@ function tries_remained($tries, $limit) {
     else
         return sprintf($i18['TRIES_REMAINED'], $tries, $limit);
 }
-
 
 function is_captcha($captcha){
 	$res=false;
@@ -473,5 +476,16 @@ function check_email_address($email) { # http://www.addedbytes.com/php/email-add
 
 function hide_email($email){
     return 'mailto:'.$email;
+}
+
+function random9(){ // generate 9-digit randoms
+    return sprintf('%09d', mt_rand(0, 999999999));
+}
+
+function show_payment_instructions($payment_id){ // print payment page
+    $fn=sprintf("mobi/html/p_%02d.php", intval($payment_id));
+    if(file_exists($fn)){
+        include($fn);
+    }
 }
 ?>

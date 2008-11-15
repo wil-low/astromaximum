@@ -142,3 +142,5 @@ CITYLIST_SUNRISE=Sunrise
 CITYLIST_NOW=Current time
 CITYLIST_GMT=Time offset
 CITYLIST_DST= +1 (DST)
+
+CONFIRM_THANKS=Dear <b>%s!</b><br/><br/><span class="fine">Thank you for confirming your email address <b>%s</b></span>.<br/><br/>Your login and password for Astromaximum sites have been sent to your email address.<br/>You will be able to download the calendar and cities after payment.
