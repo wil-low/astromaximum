@@ -38,6 +38,7 @@ $sett=array(
 	'DB_USER'=>'user',
 	'DB_USER_PWD'=>'user',
     
+    'paymodes'=>array(2, 4, 5),
 );
 
 $GLOBALS['amax']=$sett;

@@ -483,9 +483,45 @@ function random9(){ // generate 9-digit randoms
 }
 
 function show_payment_instructions($payment_id){ // print payment page
-    $fn=sprintf("mobi/html/p_%02d.php", intval($payment_id));
-    if(file_exists($fn)){
-        include($fn);
+    global $lang_, $i18, $META_HEAD_ADD;
+    $payment_id=sprintf('%02d', $payment_id);
+    $tabs='<div class="tabs"><ul class="tabNavigation">';
+    foreach($GLOBALS['amax']['paymodes'] as $key){
+        $key2=sprintf('%02d', $key);
+        $tabs.='<li><a class="" href="#a'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a></li>\n";
     }
+    $tabs.='</ul>';
+    $META_HEAD_ADD = <<< EOF
+<script type="text/javascript" src="jquery-1.2.6.min.js"></script>
+<script type="text/javascript">
+<!--
+$(document).ready(init);
+function init() {
+    var tabContainers = $('div.tabs > div'); // получаем массив контейнеров
+    tabContainers.hide().filter('#a{$payment_id}').show();
+    // далее обрабатывается клик по вкладке
+    $('div.tabs ul.tabNavigation a').click(function () {
+        tabContainers.hide(); // прячем все табы
+        tabContainers.filter(this.hash).show(); // показываем содержимое текущего
+        $('div.tabs ul.tabNavigation a').removeClass('selected'); // у всех убираем класс 'selected'
+        $(this).addClass('selected'); // текушей вкладке добавляем класс 'selected'
+        return false;
+    }).filter('#a{$payment_id}').click();
+}
+//-->
+</script>
+EOF;
+
+    echo $tabs;
+    foreach($GLOBALS['amax']['paymodes'] as $key){
+        $key2=sprintf('%02d', $key);
+        echo '<div id="a'.$key2.'">';
+        $fn="mobi/html/p_$key2.php";
+        if(file_exists($fn)){
+            include($fn);
+        }
+        echo "</div>\n";
+    }
+    echo '</div>';
 }
 ?>

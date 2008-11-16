@@ -37,7 +37,7 @@ include_once('mobi/config.php');
 include_once('mobi/lang.php');
 include_once('mobi/dbconnect.php');
 lang_load("mobi/html");
-$chac=check_access();
+list($chac, $chac_pay)=check_access();
 $user_ok=($chac>=0 and $chac!=1);
 $show_topics=1;
 $custom_content='';
@@ -167,6 +167,9 @@ if($user_ok){
 	if(strcmp($main, 'demo')){
 		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
 	}
+	if(strcmp($main, 'dl')){
+		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
+	}
 	$btn2=$i18['TRIAL'];
 }
 if($chac==1){
@@ -191,10 +194,10 @@ FRM;
 ?> 
 </div>
 <?php 
-if($chac<0 || (strcmp($main, 'dl') && strcmp($main, 'dl2'))){ 
-	echo disable_big_button('demo', $btn1, 'demo', $btn1_link);
+//if($chac<0 || (strcmp($main, 'dl') && strcmp($main, 'dl2'))){ 
+	echo disable_big_button('demo', $btn1, $btn1_link, $btn1_link);
 	echo disable_big_button('buy', $btn2, 'buy', 'buy');
-}
+//}
 ?>
 <div id="leftColumn">
 <?php	echo $session_prompt ?>

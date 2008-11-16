@@ -31,6 +31,19 @@ if(isset($_GET['u'])){
 			$sel=($row[7]==$rowp[0])? ' selected="selected"': '';
 			$paymode.="<option value=\"$rowp[0]\"$sel>$rowp[1]</option>\n";
 		}
+        if(!$row[8]){
+            $rolelist="<b>Administrator</b>";
+        }
+        else{
+            $rolelist='<select name="u_role" id="u_role" style="width:10em">';
+            $stat="SELECT id, name from dic_role WHERE id>0 ORDER BY id";
+            $sth=mysql_query($stat);
+            while($rowp=mysql_fetch_row($sth)){
+                $sel=($row[8]==$rowp[0])? ' selected="selected"': '';
+                $rolelist.="<option value=\"$rowp[0]\"$sel>$rowp[1]</option>\n";
+            }
+            $rolelist.='</select>';
+        }
 		echo <<<EOF
 <h3>$hdr $row[0]</h3>
 <form id="usredit" action="index.php?$lang_&amp;p=usermgr" method="post">
@@ -49,15 +62,17 @@ if(isset($_GET['u'])){
 <p>
 <input type="text" name="u_dlc" value="$row[3]" size="3"/> dl &nbsp; &nbsp; 
 <input type="text" name="u_cityc" value="$row[4]" size="3"/> city &nbsp; &nbsp; 
-<input type="text" name="u_pastc" value="$row[5]" size="3"/> past &nbsp; &nbsp;
-Paymode: 
+<input type="text" name="u_pastc" value="$row[5]" size="3"/> past</p>
+<p>Paymode: 
 <select name="u_paymode" id="u_paymode" style="width:10em">
 <option value="0"></option>
 $paymode
 </select>
+&nbsp; &nbsp;
+Role:
+$rolelist
 </p>
-<p> 
-<input type="checkbox" name="u_active" id="u_active"$active/> Active &nbsp; &nbsp; 
+<p><input type="checkbox" name="u_active" id="u_active"$active/> Active &nbsp; 
 <input type="checkbox" name="u_notify" id="u_notify"/> E-mail credentials to this user</a></p>
 <p>
 <input type="button" name="action" value="$act" onclick="check_user()"/>
@@ -77,7 +92,7 @@ if(isset($_POST['u_id'])){
 		$succ=false;
 		if($is_num){
 			$stat=sprintf("UPDATE customers set realname=%s, name=%s, email=%s, dlcount0=%d, dlcount1=%d, dlcount2=%d, ".
-				"active=%d, paymode_id=%d WHERE id=%d",
+				"active=%d, paymode_id=%d, role=%d WHERE id=%d",
 				quote_smart($_POST['u_realname']),
 				quote_smart($_POST['u_login']),
 				quote_smart($_POST['u_email']),
@@ -86,13 +101,14 @@ if(isset($_POST['u_id'])){
 				quote_smart($_POST['u_pastc']),
 				quote_smart($active),
 				quote_smart($_POST['u_paymode']),
+				quote_smart($_POST['u_role']),
 				quote_smart($id)
 			);
 			$succ=mysql_query($stat);
 		}
 		if(strcmp($id, "add")==0){
-			$stat=sprintf("INSERT INTO customers(realname, name, email, dlcount0, dlcount1, dlcount2, active, subscr_date, paymode_id) ".
-				"VALUES (%s, %s, %s, %d, %d, %d, %d, CURRENT_DATE, %d)",
+			$stat=sprintf("INSERT INTO customers(realname, name, email, dlcount0, dlcount1, dlcount2, active, subscr_date, paymode_id, role) ".
+				"VALUES (%s, %s, %s, %d, %d, %d, %d, CURRENT_DATE, %d, %d)",
 				quote_smart($_POST['u_realname']),
 				quote_smart($_POST['u_login']),
 				quote_smart($_POST['u_email']),
@@ -100,7 +116,8 @@ if(isset($_POST['u_id'])){
 				quote_smart($_POST['u_cityc']),
 				quote_smart($_POST['u_pastc']),
 				quote_smart($active),
-				quote_smart($_POST['u_paymode'])
+				quote_smart($_POST['u_paymode']),
+				quote_smart($_POST['u_role'])
 			);
 			$succ=mysql_query($stat);
 			if($succ){
@@ -177,6 +194,9 @@ while($row=mysql_fetch_row($sth)){
     $email=$row[0];
 	if($role==0){ // admin
 		$row[0].='*';
+	}
+	if($role==3){ // prospect
+		$row[0].=' !!!';
 	}
 	$row[0]="<a href=\"index.php?$lang_&amp;p=usermgr&amp;u=$id\">$row[0]</a>";
     $row[1]="<a href=\"mailto:{$email}\">mail</a>";

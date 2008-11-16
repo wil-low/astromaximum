@@ -66,7 +66,7 @@ function quote_smart($value)
   return $value;
 }
 
-function get_customer_data($str, $hash){ // out: id, name, realname
+function get_customer_data($str, $hash){ // out: id, name, realname, role
     global $EXEC;
 	$arr=array();
     if(isset($EXEC) && (strlen($str)>0)){
@@ -119,7 +119,7 @@ function pwd_convert2($pwd){
 }
 
 function reject2index($url){
-	$chac=check_access();
+	list($chac, $chac_pay)=check_access();
 	if($chac!=0){
 		redirect($url);
 	}
@@ -136,16 +136,16 @@ EOF2;
 	exit;
 }
 
-function check_access(){
+function check_access(){ // out: (role, paymode)
 	$pass=pwd_convert2($_SESSION['pwd']);
-	$stat=sprintf("SELECT role FROM customers WHERE id=%s AND hash=%s AND active>0",
+	$stat=sprintf("SELECT role, paymode_id FROM customers WHERE id=%s AND hash=%s AND active>0",
 		quote_smart($_SESSION['uid']),quote_smart($pass));
 	$sth=mysql_query($stat);
 	if(mysql_num_rows($sth)==1){
 		$row=mysql_fetch_row($sth);
-		return $row[0]; 
+		return $row;
 	}
-	return -1;
+	return array(-1,-1);
 }
 
 function add_file($id, $type){

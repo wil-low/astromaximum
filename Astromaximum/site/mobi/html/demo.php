@@ -3,8 +3,7 @@ if(!isset($EXEC)) die("Access restricted");
 include_once("mobi/amtools.php");
 include_once("mobi/ipblock.php");
 allow_ip('demo',false);
-//print_r($_REQUEST);
-if(check_access()!=-1){
+if($chac!=-1){
 	$uri=htmlentities($_SERVER['REQUEST_URI']);
 	$prev_year=$GLOBALS['amax']['year']-1;
 	if(isset($_POST['p_captcha'])){

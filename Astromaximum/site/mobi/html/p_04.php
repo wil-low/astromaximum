@@ -7,7 +7,7 @@
 
     <tr><td class="bank">гривня</td><td>&nbsp;</td></tr>
 
-    <tr><td width="30%">Отримувач</td>
+    <tr><td width="180px">Отримувач</td>
         <td>Місяць Василь Миколайович</td></tr>
     <tr><td>ІПН</td>
         <td>2322506618</td></tr>

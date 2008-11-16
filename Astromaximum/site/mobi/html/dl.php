@@ -5,12 +5,16 @@ $step=1;
 $max_cities=5;
 $table_vsize=18;
 $current_year=$GLOBALS['amax']['year'];
-$chac=check_access();
 if($chac==-1){
 	reg_warning($i18['PAGE_DLCIT']);
 	return;
 }
-include_once('mobi/amtools.php');
+
+if($chac==3){ // unpaid
+    show_payment_instructions($chac_pay);
+    return;
+}
+
 $tries=get_try_count(0);
 global $DLIM;
 $is_allow_dl=($tries[1]!=0);
@@ -128,8 +132,7 @@ function highlight_gen(lb){
 }
 -->
 </script>
-<h4></h4>
-<div style="position: absolute;top: 198px;left: 345px;width:660px;">
+<div style="width:660px;">
 <form method="post" action="/?<?php echo $lang_ ?>&amp;p=dl" name="main">
 <table class="colorlist">
 <tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.

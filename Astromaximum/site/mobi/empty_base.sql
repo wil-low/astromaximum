@@ -348,7 +348,9 @@ CREATE TABLE IF NOT EXISTS `dic_paymode` (
 INSERT INTO `dic_paymode` (`id`, `name`) VALUES
 (1, 'No payment'),
 (2, 'PayPal'),
-(3, 'Cash');
+(3, 'Cash'),
+(4, 'OTP bank'),
+(5, 'Raiffeisen bank');
 
 --
 -- Структура таблицы `dic_role`
@@ -367,8 +369,9 @@ CREATE TABLE IF NOT EXISTS `dic_role` (
 
 INSERT INTO `dic_role` (`id`, `name`) VALUES
 (0, 'Administrator'),
-(1, 'Demo user'),
-(2, 'Customer');
+(1, 'Demo'),
+(2, 'Customer'),
+(3, 'Prospect');
 
 --
 -- Структура таблицы `paypal_orders`

@@ -1,11 +1,11 @@
 <?php
+if(!isset($EXEC)) die("Access restricted");
 $BIG_SITE="http://astromaximum.com/";
 $MOBI_SITE="http://mobi.astromaximum.com/";
 $data_php=dirname($_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']);
 if(!strpos($data_php, "mobi")){
 	$data_php.="/mobi";
 }
-$chac=check_access();
 if($chac==-1){
 	$login=''; $pass='';
 	if(isset($_POST['login'])){
@@ -26,7 +26,6 @@ $DEST_URL=array("year", "about", "prg&amp;mode=demo", "prg&amp;mode=trial");
 
 addNavItem('selector', 'home', 0);
 
-$chac=check_access();
 $validuser=false;
 if($chac>=0 && $chac!=1){
 	$validuser=true;

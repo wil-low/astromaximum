@@ -35,7 +35,7 @@ if(!isset($_SESSION['nav']) || !is_array($_SESSION['nav']))
     $_SESSION['nav'][0]="<a href=\"?$lang_&amp;p=selector&amp;$sess\">home</a>";
    
 lang_load("html");
-$chac=check_access();
+list($chac, $chac_pay)=check_access();
 $user_ok=($chac>=0 and $chac!=1);
 
 if(!preg_match("/^[\w_\d]+$/is", $main)){

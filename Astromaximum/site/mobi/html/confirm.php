@@ -13,14 +13,14 @@ if(isset($_GET['key'])){
             $sth=mysql_query($stat);
         }while(mysql_num_rows($sth));    
         $pwd=random9();
-        $hash=pwd_convert2(pwd_convert1($usr, $pwd));
-        $stat=sprintf("UPDATE customers SET name='%s', hash='%s', active=1 WHERE id=%d LIMIT 1",
+        $hash=pwd_convert2(pwd_convert1($row[1], $pwd));
+        $stat=sprintf("UPDATE customers SET name='%s', hash='%s', role=3, active=1 WHERE id=%d LIMIT 1",
             $usr, $hash, $row[0]);
-//        $sth=mysql_query($stat);
+        $sth=mysql_query($stat);
         if(true){
             echo sprintf($i18['CONFIRM_THANKS'], $row[2], $row[1]);
             $tries=get_try_count($row[0]);
-//            $mail=pwd_send($row[1], $usr, $row[2], $tries, $pwd);
+            $mail=pwd_send($row[1], $usr, $row[2], $tries, $pwd);
     
             $msg="Email: $row[1]\nNick: $row[2]\nLogin: $usr\nPaymode: $row[3]\nIP: {$_SERVER['REMOTE_ADDR']}";
             event_send('new customer', $msg);

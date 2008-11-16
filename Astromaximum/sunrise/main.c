@@ -77,7 +77,7 @@ int isInPeriod(const struct Event_ *e, long start, long end) {
     return dateBetween(e->date0, start, end) == 0;
 }
     
-int printLocalTime(time_t date){
+int printLocalTime(time_t date, int isSunrise){
     int dst=0;
     date+=tzOffset;
     if (dstExists) {
@@ -88,7 +88,11 @@ int printLocalTime(time_t date){
         }
     }
     struct tm risetime;
-    gmtime_r(&date, &risetime);
+    if(isSunrise)
+        gmtime_r(&date, &risetime);
+    else
+    localtime_r(&date, &risetime);
+    
     printf("%04d-%02d-%02d %02d:%02d\n", 
         risetime.tm_year+1900, risetime.tm_mon+1, risetime.tm_mday,
         risetime.tm_hour, risetime.tm_min);
@@ -287,8 +291,8 @@ int main(int argc, char** argv) { // data filename
         return -1;
     }
 //    printLocalTime(dayStart);
-    printLocalTime(result.date0);
-    int dst=printLocalTime(now);
+    printLocalTime(result.date0, 1);
+    int dst=printLocalTime(now, 0);
     float off=tzOffset/3600.;
     if(off==(int)off){
         printf("GMT %+d", (int)off);

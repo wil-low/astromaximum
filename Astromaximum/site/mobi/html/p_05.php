@@ -2,12 +2,12 @@
     $title='Банковский перевод - Raiffeisen Bank Aval';
     $custom_content='-- примечания --';
 ?>
-<table style="font-size:12px;">
+<table style="font-size:12px">
     <tr height="35px"><td colspan="2"><b>Оплата банковским переводом - Raiffeisen Bank Aval:</b></td></tr>
 
     <tr><td class="bank">гривня</td><td>&nbsp;</td></tr>
 
-    <tr><td width="30%">Отримувач</td>
+    <tr><td width="180px">Отримувач</td>
         <td>Місяць Василь Миколайович</td></tr>
     <tr><td>ІПН</td>
         <td>2322506618</td></tr>

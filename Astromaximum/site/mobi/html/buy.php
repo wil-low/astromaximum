@@ -1,12 +1,16 @@
 <?php 
 if(!isset($EXEC)) die("Access restricted");
 $current_year=$GLOBALS['amax']['year'];
-$chac=check_access();
 $uri=htmlentities($_SERVER['REQUEST_URI']);
 
 $msg=$i18['REGFORM_REQF'];
 
 $email=$email2=$nick=$paymode=$model='';
+
+if($chac==3){ // unpaid
+    show_payment_instructions($chac_pay);
+    return;
+}
 
 function present($key){
     return isset($_POST[$key]) && strlen(trim($_POST[$key]))>0;
@@ -52,7 +56,7 @@ if(present('email1') && present('email2') && present('nick') && present('p_captc
         
         $stat=sprintf("INSERT INTO customers (realname,email,hash,subscr_date,".
             "paymode_id,active,dlcount0,dlcount1,dlcount2) values ".
-            "(%s,%s,%s,CURRENT_DATE,%d,0,0,0,0)",
+            "(%s,%s,%s,NOW(),%d,0,0,0,0)",
             quote_smart($realname),
             quote_smart($email),
             quote_smart($passkey),
@@ -67,6 +71,7 @@ if(present('email1') && present('email2') && present('nick') && present('p_captc
         }
         else{
             echo $i18['INSTR_SENT'];
+            show_payment_instructions($paymode);
         }
         return;
         
@@ -137,9 +142,12 @@ echo <<< EOF
 <p>{$i18['REGFORM_PAYMODE']}</p>
 <p class="no_border">
 EOF;
-    echo paymode_radio('PayPal', 2, '02', true);
-    echo paymode_radio($i18['REGFORM_OTP'], 4, '04', false);
-    echo paymode_radio($i18['REGFORM_RAIFF'], 5, '05', false);
+
+foreach($GLOBALS['amax']['paymodes'] as $key){
+    $key2=sprintf('%02d', $key);
+    echo paymode_radio($i18['PAYMENT_'.$key2], 2, $key2, true);
+}
+
 echo <<< EOF
 </p>
 <input type="hidden" name="demo"/>

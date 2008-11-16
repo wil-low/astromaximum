@@ -3,7 +3,7 @@ if(!isset($EXEC)) die("Access restricted");
 $cur_year=$GLOBALS['amax']['year'];
 $price=$GLOBALS['amax']['price'];
 
-$admin_email='amax-dev@astromaximum.mobi';
+$admin_email='dev@astromaximum.mobi';
 
 $paypal_email='aivush_1217502939_biz@gmail.com';//$GLOBALS['amax']['mail_office'];
 

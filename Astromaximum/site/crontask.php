@@ -26,8 +26,8 @@
         foreach (glob('/tmp/sunrise_*') as $filename) {
             @unlink($filename);
         }
-// delete unconfirmed users        
-        $stat='SELECT id FROM files WHERE deleted=\'f\' AND end_tm<NOW()';
+// delete unconfirmed users that live more than 24 hr      
+        $stat="DELETE FROM customers WHERE name='' AND active=0 AND subscr_date<SUBTIME(NOW(),'24:00:00')";
         $sth=mysql_query($stat);
     }
 ?>
