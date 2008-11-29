@@ -26,6 +26,13 @@ import java.util.Vector;
  * @noinspection CastToConcreteClass
  */
 final class DataFile {
+//#ifdef freetest
+//#     public static int maxEvents = 0;
+//#     public static int readSubDataCount = 0;
+//#     public static int eventsCount = 0;
+//#     public static Event[] events = new Event[50];
+//#     
+//#endif    
 //#ifndef build.desktop
     private static final int EF_DATE = 0x1; // contains 2nd date - 4b
     private static final int EF_PLANET1 = 0x2; // contains 1nd planet - 1b
@@ -48,7 +55,7 @@ final class DataFile {
     byte[] customData;
     byte[] geoposData;
     static Vector ids = new Vector();    //  private int curRec=-1;
-    private Vector eclipses = null;
+    private Vector eclipses = new Vector();
 
     /**
      * DataFile
@@ -86,12 +93,13 @@ final class DataFile {
             is.close();
         } catch (IOException e) {
         }
-
-        eclipses = getEvents(Event.EV_ECLIPSE, Event.SE_SUN, startJD, finalJD);
-        final Vector tmp = getEvents(Event.EV_ECLIPSE, Event.SE_MOON, startJD, finalJD);
-        int tmpsize = tmp.size();
-        for (int i = 0; i < tmpsize; i++) {
-            eclipses.addElement(tmp.elementAt(i));
+        int cnt = getEvents(Event.EV_ECLIPSE, Event.SE_SUN, startJD, finalJD);
+        for (int i = 0; i < cnt; i++) {
+            eclipses.addElement(DataFile.events[i]);
+        }
+        cnt = getEvents(Event.EV_ECLIPSE, Event.SE_MOON, startJD, finalJD);
+        for (int i = 0; i < cnt; i++) {
+            eclipses.addElement(DataFile.events[i]);
         }
 //#debug error
         System.out.println(Runtime.getRuntime().freeMemory());
@@ -326,8 +334,8 @@ final class DataFile {
 //# 			    next data depends on flags
 //#
     //#endif
-    Vector readSubData(byte[] buf, int evtype, int planet, boolean isCommon, long dayStart, long dayEnd) {
-        final Vector v = new Vector();
+    int readSubData(byte[] buf, int evtype, int planet, boolean isCommon, long dayStart, long dayEnd) {
+        eventsCount = 0;
         int flag;
         int skipOff;
         Event last = new Event(0, 0);
@@ -465,9 +473,9 @@ final class DataFile {
 
                 if (last.isInPeriod(dayStart, dayEnd, false)) {
 //          v.addElement(last);
-                    v.addElement(new Event(last));
+                    events[eventsCount++] = new Event(last);
                 } else {
-                    if (v.size() > 0) {
+                    if (eventsCount > 0) {
                         break;
                     }
 //          is.skip(skips);
@@ -480,12 +488,16 @@ final class DataFile {
 //                if(planet==10) last.dump();
             }
             if (last.isInPeriod(dayStart, dayEnd, false)) {
-                v.addElement(last);
+                events[eventsCount++] = new Event(last);
 //        v.addElement(new Event(last));
             }
         } catch (IOException ex) {
         }
-        return v;
+//#ifdef freetest        
+//#         if(eventsCount > maxEvents) maxEvents = eventsCount;
+//#         ++readSubDataCount;
+//#endif        
+        return eventsCount;
     }
 //#endif
     /**
@@ -502,9 +514,9 @@ final class DataFile {
     void getEventsOnPeriod(Vector v, int evtype, int planet, boolean special,
             long dayStart, long dayEnd, int value) {
         boolean flag = false;
-        final Vector tmp = getEvents(evtype, planet, dayStart, dayEnd);
-        for (Enumeration e = tmp.elements(); e.hasMoreElements();) {
-            final Event ev = (Event) e.nextElement();
+        int cnt = getEvents(evtype, planet, dayStart, dayEnd);
+        for (int i = 0; i < cnt; i++) {
+            final Event ev = DataFile.events[i];
             if (ev.isInPeriod(dayStart, dayEnd, special)) {
                 flag = true;
                 if (value > 0) {
@@ -519,9 +531,10 @@ final class DataFile {
 
     void getAspectsOnPeriod(Vector v, int planet, long dayStart, long dayEnd) {
         boolean flag = false;
-        final Vector tmp = getEvents(Event.EV_ASP_EXACT, planet == Event.SE_MOON ? Event.SE_MOON : -1, dayStart, dayEnd);
-        for (Enumeration e = tmp.elements(); e.hasMoreElements();) {
-            final Event ev = (Event) e.nextElement();
+        int cnt = getEvents(Event.EV_ASP_EXACT, planet == Event.SE_MOON ? 
+            Event.SE_MOON : -1, dayStart, dayEnd);
+        for (int i = 0; i < cnt; i++) {
+            final Event ev = DataFile.events[i];
             if (planet == -1 || ev.planet0 == planet || ev.planet1 == planet) {
                 if (ev.isDateBetween(0, dayStart, dayEnd)) {
 //          ev.dump();
@@ -543,7 +556,7 @@ final class DataFile {
      * @param dayEnd
      * @return Vector
      */
-    Vector getEvents(int evtype, int planet, long dayStart, long dayEnd) {
+    int getEvents(int evtype, int planet, long dayStart, long dayEnd) {
 //    for (Enumeration e = cache.elements() ; e.hasMoreElements() ;) {
 //      final EventCache ev = (EventCache) e.nextElement();
 //      if(ev.planet == planet && ev.eventType == evtype){
@@ -565,10 +578,9 @@ final class DataFile {
     }
 
     Event getEventOnPeriod(int evtype, int planet, boolean special, long dayStart, long dayEnd) {
-        final Vector tmp = getEvents(evtype, planet, dayStart, dayEnd);
-//    final Vector tmp=getEvents(evtype,planet,startJD,finalJD);
-        for (Enumeration e = tmp.elements(); e.hasMoreElements();) {
-            final Event ev = (Event) e.nextElement();
+        int cnt = getEvents(evtype, planet, dayStart, dayEnd);
+        for (int i = 0; i < cnt; i++) {
+            final Event ev = DataFile.events[i];
             if (ev.isInPeriod(dayStart, dayEnd, special)) {
 //        if(evtype==Event.EV_DEGREE_PASS)
 //          ev.dump();

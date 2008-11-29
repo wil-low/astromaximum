@@ -619,31 +619,29 @@ class SummItem extends TimerTask implements RecordFilter {
 //        if(owner.isShowCustom){
                 int x = getX(0, XCENTER);
                 if (str != null) {
-                    if (str.length() >= 9 && str.charAt(2) != ':' && str.charAt(8) == ':') {
-                        x -= old.stringWidth(str) / 2;
-                        String ss = str.substring(0, 5);
+                    int len = str.length();
+                    if (len >= 9 && str.charAt(8) == ':' && str.charAt(2) != ':') {
+                        int strWidth = old.stringWidth(str);
+                        int charWidth = strWidth / len;
+                        x -= strWidth / 2;
                         osg.setColor(Astromaximum.SELECTION_COLOR);
-                        osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
-                        x += old.stringWidth(ss);
+                        osg.drawSubstring(str, 0, 5, x, y, Graphics.LEFT | Graphics.BASELINE);
+                        x += (charWidth * 5);
                         osg.setColor(colo);
-                        ss = str.substring(5, 11);
-                        osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
-                        if (str.length() > 11) {
+                        osg.drawSubstring(str, 5, 6, x, y, Graphics.LEFT | Graphics.BASELINE);
+                        if (len > 11) {
                             int space = 1;
                             if (Summary.IMG_HEIGHT == 12) {
                                 space += 2;
                             }
-                            x += old.stringWidth(ss);
-                            ss = str.substring(11, 11 + space);
-                            osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
-                            x += old.stringWidth(ss);
-                            ss = str.substring(11 + space, 17 + space);
+                            x += (charWidth * 6);
+                            osg.drawSubstring(str, 11, space, x, y, Graphics.LEFT | Graphics.BASELINE);
+                            x += (charWidth * space);
                             osg.setColor(Astromaximum.SELECTION_COLOR);
-                            osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
-                            x += old.stringWidth(ss);
+                            osg.drawSubstring(str, 11 + space, 6, x, y, Graphics.LEFT | Graphics.BASELINE);
+                            x += (charWidth * 6);
                             osg.setColor(colo);
-                            ss = str.substring(17 + space);
-                            osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
+                            osg.drawSubstring(str, 17 + space, len - (17 + space), x, y, Graphics.LEFT | Graphics.BASELINE);
                         }
                     } else {
                         osg.drawString(str, x, y, Graphics.HCENTER | Graphics.BASELINE);
@@ -1525,8 +1523,8 @@ class SummItem extends TimerTask implements RecordFilter {
                     }
                 }
                 /* @todo Moon phase drawing in week mode */
-                for (Enumeration e = owner.moonPhase.elements(); e.hasMoreElements();) {
-                    eclipse = (Event) e.nextElement();
+                for (int i = 0; i < Summary.moonPhaseCount; i++) {
+                    eclipse = Summary.aMoonPhase[i];
                     if (eclipse.isDateBetween(0, ld, ld2)) {
                         owner.drawPhase(osg, leftm + Summary.IMG_WIDTH * 5 / 2,
                                 yy - Summary.IMG_HEIGHT, Summary.IMG_HEIGHT, eclipse.planet1);
@@ -1617,8 +1615,9 @@ class SummItem extends TimerTask implements RecordFilter {
 // @todo zero in week
         zeroPlaces();
         // @todo Aspect drawing in week mode
-        for (Enumeration e = owner.mAsp.elements(); e.hasMoreElements();) {
-            ev = (Event) e.nextElement();
+        int acnt = Summary.aAspects.length;
+        for (int i = 0; i < acnt; i++) {
+            ev = Summary.aAspects[i];
             long date = ev.date0;
             if (ev.isDateBetween(0, fgd, fgd2)) {
                 final int day = (int) ((date - fgd) / Astromaximum.MSECINDAY);

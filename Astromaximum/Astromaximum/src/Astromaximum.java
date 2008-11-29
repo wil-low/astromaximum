@@ -403,19 +403,23 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //      }
 //        log("SDS before");
             errCode = 10; // XXX
-            summary.moonPhase = Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE, Event.SE_MOON,
+            int cnt = Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE, Event.SE_MOON,
                     dataFile.startJD, dataFile.finalJD);
+            Summary.aMoonPhase = new Event[cnt];
+            System.arraycopy(DataFile.events, 0, Summary.aMoonPhase, 0, cnt);
+            Summary.moonPhaseCount = cnt;
+            DataFile.readSubDataCount=0;
 //#if logger
       logger("moonPhase");
 //#endif
             errCode = 11; // XXX
-            Vector nav = dataFile.getEvents(Event.EV_NAVROZ, Event.SE_SUN, 0, dataFile.finalJD);
+            cnt = dataFile.getEvents(Event.EV_NAVROZ, Event.SE_SUN, 0, dataFile.finalJD);
 //        evDump(nav);
-            if (nav.size() != 2) {
+            if (cnt != 2) {
                 errCode = 12; // XXX
                 throw new Exception("Navroz event count != 2");
             }
-            nav.copyInto(summary.aNavroz);
+            System.arraycopy(DataFile.events, 0, summary.aNavroz, 0, cnt);
 //      dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 1, dataFile.finalJD).copyInto(summary.aNavroz);
 //#if logger
       logger("Navroz");
@@ -449,7 +453,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
             errCode = 17; // XXX
             firstRun = false;
 //#endif
-
         } catch (Exception oome) {
 ///#mdebug debug
             Astromaximum.log("errCode=" + Integer.toString(errCode));
@@ -467,7 +470,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#enddebug
         summary.startRealtime();
 //    log("SDS after");
-//      disp.setCurrent(summary);
+//      disp.setCurrent(summary); 
     }
 
     /**

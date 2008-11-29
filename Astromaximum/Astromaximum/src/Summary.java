@@ -86,8 +86,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
     static Image imgPanel;
     static Image imgService;
     static Image imgOpaq;
-    Vector moonPhase;
+    static int moonPhaseCount;
+    static Event[] aMoonPhase;
     final Event[] aNavroz = new Event[2];
+    static Event[] aAspects;
     private final Command[] cmds = new Command[9];
     static Image imgPanelSmall;
 
@@ -428,9 +430,9 @@ class Summary extends Canvas implements CommandListener, Runnable {
         SummItem si0 = getItem(Event.EV_ECLIPSE, 0);
         si0.tag = 0;
         si0.events[0] = si.events[0] = null;
-        for (Enumeration e = moonPhase.elements(); e.hasMoreElements();) {
-            Event ph = (Event) e.nextElement();
-            if (ph.isDateBetween(0, period0, period1)) {
+        for (int i = 0; i< moonPhaseCount; i++) {
+            Event ph = aMoonPhase[i];
+            if (aMoonPhase[i].isDateBetween(0, period0, period1)) {
                 si.events[0] = ph;
                 si.tag += 2;
                 break;
@@ -1263,7 +1265,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
     final Vector mSelDeg = new Vector();
     final Vector mRetro = new Vector();
     final Vector mIngress = new Vector();
-    Vector mAsp = new Vector();
 
     void gatherMonth() {
 //    long tick=System.currentTimeMillis();
@@ -1304,8 +1305,8 @@ class Summary extends Canvas implements CommandListener, Runnable {
             mSelDeg.removeAllElements();
             for (int i = Event.SE_SUN; i <= Event.SE_PLUTO; i++) {
                 if (i != Event.SE_MOON) {
-                    mergeEvents(mSelDeg, Astromaximum.dataFile.getEvents(
-                            Event.EV_DEGREE_PASS, i, period0, period1), false);
+                    Astromaximum.dataFile.getEvents(Event.EV_DEGREE_PASS, i, period0, period1);
+                    mergeDataFileEvents(mSelDeg, false);
                 }
             }
             for (int i = 0; i < mSelDeg.size(); i++) { // do not optimize
@@ -1313,7 +1314,9 @@ class Summary extends Canvas implements CommandListener, Runnable {
                     mSelDeg.removeElementAt(i--);
                 }
             }
-            mAsp = Astromaximum.dataFile.getEvents(Event.EV_ASP_EXACT, -1, period0, period1);
+            int cnt = Astromaximum.dataFile.getEvents(Event.EV_ASP_EXACT, -1, period0, period1);
+            aAspects = new Event[cnt];
+            System.arraycopy(DataFile.events, 0, aAspects, 0, cnt);
         }
     }
 
@@ -1463,6 +1466,25 @@ class Summary extends Canvas implements CommandListener, Runnable {
         }
     }
 
+    private static void mergeDataFileEvents(Vector dest, boolean isSort) {
+        for (int i = 0; i < DataFile.eventsCount; i++) {
+            final Event ev = DataFile.events[i];
+            if (isSort) {
+                int idx = 0;
+                final long dat = ev.date0;
+                final int sz = dest.size();
+                while (idx < sz && dat > Astromaximum.evAt(dest, idx).date0) {
+                    ++idx;
+                }
+                dest.insertElementAt(ev, idx);
+            } else {
+                dest.addElement(ev);
+            }
+//      System.out.println("Iteration");
+//      evDump
+        }
+    }
+
     void startRealtime() {
         timer = new Timer();
         timer.schedule(new SummItem(1), DELAY, DELAY);
@@ -1487,8 +1509,8 @@ class Summary extends Canvas implements CommandListener, Runnable {
             }
         }
         period1 = period0 + Astromaximum.MSECINDAY - 1;
-        for (int i = moonPhase.size() - 1; i >= 0; i--) {
-            Event ph = Astromaximum.evAt(moonPhase, i);
+        for (int i = moonPhaseCount - 1; i >= 0; i--) {
+            Event ph = aMoonPhase[i];
             if (ph.date0 <= startDate) {
                 getItem(Event.EV_MOON_PHASE, 1).events[0] = ph;
                 break;
@@ -1896,8 +1918,8 @@ class Summary extends Canvas implements CommandListener, Runnable {
     }
 
     void calcPhase(long date) {
-        for (int i = moonPhase.size() - 1; i >= 0; i--) {
-            Event ph = Astromaximum.evAt(moonPhase, i);
+        for (int i = moonPhaseCount - 1; i >= 0; i--) {
+            Event ph = aMoonPhase[i];
             if (ph.date0 < date) {
                 getItem(Event.EV_MOON_PHASE, 0).events[0] = ph;
                 break;
