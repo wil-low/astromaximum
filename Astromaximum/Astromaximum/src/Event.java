@@ -44,7 +44,7 @@ class Event {
     static final int EV_SET = 10;  // rising & setting
     static final int EV_DECL_EXACT = 11;  // declination
     static final int EV_NAVROZ = 12;  // Navroz
-    static final int EV_WEEK = 13;  // week days
+    static final int EV_TOP_DAY = 13;  // week days
     static final int EV_PLANET_HOUR = 14;  // planetary hours
     static final int EV_STATUS = 15;
     static final int EV_SUN_RISE = 16;
@@ -55,11 +55,11 @@ class Event {
     static final int EV_NIGHT_HOURS = 21;
     static final int EV_SUN_DAY = 22;
     static final int EV_MOON_DAY = 23;
-    static final int EV_GRID_DATE = 24;
+    static final int EV_TOP_MONTH = 24;
     static final int EV_MOON_PHASE = 25;
     static final int EV_ZODIAC_SIGN = 26;
     static final int EV_PANEL = 27;
-    static final int EV_FAST_BUTTON = 28;
+    static final int EV_TOPIC_BUTTON = 28;
     static final int EV_DEG_2ND = 29; // degrees on second page
     static final int EV_WEEK_GRID = 30;
     static final int EV_MONTH_GRID = 31;

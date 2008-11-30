@@ -41,7 +41,7 @@ class SummItem extends TimerTask implements RecordFilter {
     int selIndex;
     int nowSelection = -1;
     int cusSelection = -1;
-    private final int page;
+    int page;
     //#if "imeiCheck" @ protection
     static int hj;
     //#endif
@@ -75,7 +75,7 @@ class SummItem extends TimerTask implements RecordFilter {
         topics.put(new Integer(Event.EV_DECUMBITURE), "#");
         topics.put(new Integer(Event.EV_TITHI), "}{~*^$>@=");
         topics.put(new Integer(Event.EV_MOON_MOVE), "*^$}>@");
-        topics.put(new Integer(Event.EV_WEEK), "^}{~=$");
+        topics.put(new Integer(Event.EV_TOP_DAY), "^}{~=$");
         topics.put(new Integer(Event.EV_ECLIPSE), "*^$}>@");
         topics.put(new Integer(Event.EV_PLANET_HOUR), "*^$}{~#=");
 ///////////////
@@ -123,7 +123,7 @@ class SummItem extends TimerTask implements RecordFilter {
         width = w;
         height = h;
         this.page = page;
-        if (type == Event.EV_FAST_BUTTON || type == Event.EV_ECLIPSE ||
+        if (type == Event.EV_TOPIC_BUTTON || type == Event.EV_ECLIPSE ||
                 type == Event.EV_MOON_PHASE || type == Event.EV_HELP) {
             tag = (byte) rowCount;
             rowCount = 1;
@@ -147,8 +147,8 @@ class SummItem extends TimerTask implements RecordFilter {
                 widths[0] = 800;
                 widths[1] = 200;
                 break;
-            case Event.EV_GRID_DATE:
-            case Event.EV_WEEK:
+            case Event.EV_TOP_MONTH:
+            case Event.EV_TOP_DAY:
                 widths[0] = widths[2] = 150;
                 widths[1] = 700;
                 selIndex = 1;
@@ -160,13 +160,13 @@ class SummItem extends TimerTask implements RecordFilter {
         StringBuffer sb=new StringBuffer();
         final Calendar cal = Astromaximum.calendar;
         switch (type) {
-            case Event.EV_GRID_DATE:
+            case Event.EV_TOP_MONTH:
                 cal.setTime(new Date(events[1].date0));
                 selIndex = 1;
                 sb.append(Astromaximum.months[cal.get(Calendar.MONTH)]).append("'").
                         append(Integer.toString(cal.get(Calendar.YEAR)).substring(2, 4));
                 break;
-            case Event.EV_WEEK:
+            case Event.EV_TOP_DAY:
                 cal.setTime(new Date(events[1].date0));
                 selIndex = 1;
                 final int weekDay = cal.get(Calendar.DAY_OF_WEEK);
@@ -260,7 +260,7 @@ class SummItem extends TimerTask implements RecordFilter {
             if (!isEmpty() && haveTopic(type)) {
                 osg.setColor(Astromaximum.TOPIC_COLOR);
                 switch (type) {
-                    case Event.EV_WEEK:
+                    case Event.EV_TOP_DAY:
                         osg.fillRect(getX(1, XLEFT), top + 1, width * widths[1] / 1000 - 1, height - 2);
                         break;
                     case Event.EV_MOON_MOVE:
@@ -410,8 +410,8 @@ class SummItem extends TimerTask implements RecordFilter {
                         }
                 }
                 break;
-            case Event.EV_GRID_DATE:
-            case Event.EV_WEEK:
+            case Event.EV_TOP_MONTH:
+            case Event.EV_TOP_DAY:
                 osg.drawString(str, getX(1, XCENTER), top + height - 2, Graphics.BOTTOM | Graphics.HCENTER);
                 if (isSelected) {
                     for (int i = 0; i <= 2; i += 2) {
@@ -602,7 +602,7 @@ class SummItem extends TimerTask implements RecordFilter {
             case Event.EV_PANEL:
                 drawImg(osg, Summary.imgPanel, 9, left + width / 2, top + height / 2, Graphics.HCENTER | Graphics.VCENTER);
                 break;
-            case Event.EV_FAST_BUTTON:
+            case Event.EV_TOPIC_BUTTON:
                 osg.setColor(Interpreter.topic == tag ? Astromaximum.BLUE_COLOR : Astromaximum.SEA_COLOR);
                 osg.fillRect(left + 2, top + 2, width - 4, height - 4);
                 drawImg(osg, Summary.imgPanel, tag, left + width / 2, top + height / 2,
@@ -1069,7 +1069,7 @@ class SummItem extends TimerTask implements RecordFilter {
                 return new long[]{Event.EV_DEGPASS0 + dgr / 90, plt, dgr, Astromaximum.getSignDegree(dgr),
                             dgr / 30, evi.getDegType(), d0, d1
                         };
-            case Event.EV_WEEK:
+            case Event.EV_TOP_DAY:
                 return new long[]{t, -1, plt, 0, 0};
             case Event.EV_DECUMBITURE:
                 return new long[]{t, -1, plt, d0, 0};
@@ -1118,13 +1118,13 @@ class SummItem extends TimerTask implements RecordFilter {
     }
 
     private String getStatus() {
-        if (type == Event.EV_FAST_BUTTON) {
+        if (type == Event.EV_TOPIC_BUTTON) {
             return Astromaximum.getstr(50 + tag);//fb
         }
         if (type == Event.EV_PANEL) {
             return Astromaximum.getstr(102);//topics
         }
-        if (type == Event.EV_WEEK) {
+        if (type == Event.EV_TOP_DAY) {
             return Astromaximum.getstr(27) + " " + Astromaximum.getstr( //Day, of_
                     40 + weekPlanets[events[1].planet0 - 1]);
         }
@@ -1380,7 +1380,7 @@ class SummItem extends TimerTask implements RecordFilter {
                     return owner.pageNum == Summary.PAGE_PANEL;
                 case Event.EV_ASP_EXACT:
                 case Event.EV_PANEL:
-                case Event.EV_FAST_BUTTON:
+                case Event.EV_TOPIC_BUTTON:
                 case Event.EV_WEEK_GRID:
                 case Event.EV_MONTH_GRID:
                     return false;

@@ -24,7 +24,7 @@ class Interpreter extends Canvas implements CommandListener {
 //#if "timeBomb" @ protection
     static int hj = 0x01234567;
 //#endif
-    private boolean helpMode;
+//    private boolean helpMode;
     private final int HMARGIN;
     private final int VMARGIN;
     static final String[] riseKeys = {"asc", "mc", "dsc", "ic"};
@@ -36,13 +36,14 @@ class Interpreter extends Canvas implements CommandListener {
     static final int T_LICENSE = 2;
     static final int T_EMPLOY = 3;
     static final int T_REALTY = 4;
-    private static final int T_VACATION = 5;
-    private static final int T_MEDICINE = 6;
+    static final int T_VACATION = 5;
+    static final int T_MEDICINE = 6;
     static final int T_DECUMB = 7;
-    private static final int T_LOVE = 8;
+    static final int T_LOVE = 8;
+    static final int T_NONE = 10;
     String txt = "";
     static final String RESERVED_CHARS = "}$>*^{~#=@\0";
-    static int topic = 10;
+    static int topic = T_NONE;
     boolean isLogged = false;
 
 //#ifdef use_amtext
@@ -138,9 +139,9 @@ class Interpreter extends Canvas implements CommandListener {
                 if (params[0] == Event.EV_MOON_MOVE) {
                     allowed0 = '@';
                 } else {
-                    topp = isTopicTitle ? topic : 10;
+                    topp = isTopicTitle ? topic : T_NONE;
                 }
-                if (topp != 10) {
+                if (topp != T_NONE) {
                     allowed1 = RESERVED_CHARS.charAt(topp);
                     if (topp != T_MEDICINE && topp != T_DECUMB && topp != T_VACATION && topp != T_LOVE) {
                         allowed0 = '@';
@@ -220,7 +221,7 @@ class Interpreter extends Canvas implements CommandListener {
                 case Event.EV_VIA_COMBUSTA:
                     res.append("Via Combusta");
                     break;
-                case Event.EV_WEEK:
+                case Event.EV_TOP_DAY:
                     res.append(Astromaximum.getstr((int) params[2] - 1)).
                             append(" - ").append(Astromaximum.getstr(27)).append(" ").
                             append(Astromaximum.getstr(40 + SummItem.weekPlanets[(int) params[2] - 1]));//of_

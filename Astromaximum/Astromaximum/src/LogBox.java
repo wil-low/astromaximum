@@ -104,6 +104,12 @@ class LogBox extends List implements CommandListener {
         al.addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 0));
         al.addCommand(new Command(Astromaximum.getstr(155), Command.STOP, 10));
         al.setCommandListener(this);
+        String tick = Astromaximum.instance.getAppProperty("MIDlet-Name");
+        String s = Astromaximum.instance.getAppProperty("MIDlet-Version");
+        if (s != null)
+            tick = "v." + s;
+        tick += " - " + Astromaximum.getstr(255);
+        al.setTicker(new Ticker(tick));
         Astromaximum.disp.setCurrent(al);
     }
 

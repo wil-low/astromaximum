@@ -1,4 +1,4 @@
-﻿!!type EV_WEEK
+﻿!!type EV_TOP_DAY
 !!params 1
 !!planet -1
 %2% }(+)for concluding agreements;|(-)for active actions, making decisions.}|{(-)for far trips, especially to the east.{|^(+)for buying land for building on it, founding a house, repair, agricultural works, planting.^|--|days of the week begin with sunrise.|--|~(+)for preparing medicines and surgery.~=|--|(+)for marriage, new clothes, fortune telling, rituals aimed at prosperity.=

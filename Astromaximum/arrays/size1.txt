@@ -3,8 +3,8 @@
 //     left, top, width, height, page, subitems-horiz, subitems-vertical, type, 
 //     nleft, int nright, int nup, int ndown
       {1,0,12,10,24,1,1,27,-1,1,-1,1}, //0 PANEL
-      {18,0,75,9,760,3,1,13,21,21,-1,1}, //0 EV_WEEK
-      {13,0,70,9,6,3,1,24,25,25,27,27}, //0 DATE_GRID
+      {18,0,75,9,760,3,1,13,21,21,-1,1}, //0 EV_TOPIC_BUTTON
+      {13,0,70,9,6,3,1,24,25,25,27,27}, //0 EV_TOP_MONTH
       {1,8,99,92,2,1,1,30,24,24,24,24}, //0 WEEK_GRID
       {1,18,99,82,4,1,1,31,23,23,23,23}, //0 MONTH_GRID
       {1,95,99,5,0,12,1,26,-1,1,-1,1}, //zodiac sign

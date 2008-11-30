@@ -408,7 +408,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
             Summary.aMoonPhase = new Event[cnt];
             System.arraycopy(DataFile.events, 0, Summary.aMoonPhase, 0, cnt);
             Summary.moonPhaseCount = cnt;
-            DataFile.readSubDataCount=0;
 //#if logger
       logger("moonPhase");
 //#endif

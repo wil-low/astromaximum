@@ -26,13 +26,9 @@ import java.util.Vector;
  * @noinspection CastToConcreteClass
  */
 final class DataFile {
-//#ifdef freetest
-//#     public static int maxEvents = 0;
-//#     public static int readSubDataCount = 0;
-//#     public static int eventsCount = 0;
-//#     public static Event[] events = new Event[50];
-//#     
-//#endif    
+    private static int eventsCount = 0;
+    public static Event[] events = new Event[50];
+
 //#ifndef build.desktop
     private static final int EF_DATE = 0x1; // contains 2nd date - 4b
     private static final int EF_PLANET1 = 0x2; // contains 1nd planet - 1b
@@ -340,7 +336,7 @@ final class DataFile {
         int skipOff;
         Event last = new Event(0, 0);
         int fnext_date2;
-//    if(planet==10){
+//    if(planet==SE_TRUE_NODE){
 //      System.out.println(new Date(dayStart));
 //      System.out.println(new Date(dayEnd));
 //    }
@@ -485,7 +481,7 @@ final class DataFile {
                 last.degree = (short) mydgr;
                 last.date0 = mydate0;
                 last.date1 = mydate1;
-//                if(planet==10) last.dump();
+//                if(planet==SE_TRUE_NODE) last.dump();
             }
             if (last.isInPeriod(dayStart, dayEnd, false)) {
                 events[eventsCount++] = new Event(last);
@@ -493,10 +489,6 @@ final class DataFile {
             }
         } catch (IOException ex) {
         }
-//#ifdef freetest        
-//#         if(eventsCount > maxEvents) maxEvents = eventsCount;
-//#         ++readSubDataCount;
-//#endif        
         return eventsCount;
     }
 //#endif

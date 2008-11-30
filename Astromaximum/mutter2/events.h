@@ -56,7 +56,7 @@ typedef enum {
     EV_SET, // setting
     EV_DECL_EXACT, // declination
     EV_NAVROZ, // Navroz
-    EV_WEEK, // week
+    EV_TOP_DAY, // week
     EV_PLANET_HOUR, // planetary hours
     EV_STATUS,
     EV_SUN_RISE,
@@ -67,11 +67,11 @@ typedef enum {
     EV_NIGHT_HOURS,
     EV_SUN_DAY,
     EV_MOON_DAY,
-    EV_GRID_DATE,
+    EV_TOP_MONTH,
     EV_MOON_PHASE,
     EV_ZODIAC_SIGN,
     EV_PANEL,
-    EV_FAST_BUTTON,
+    EV_TOPIC_BUTTON,
     EV_DEG_2ND,
     EV_WEEK_GRID,
     EV_MONTH_GRID,

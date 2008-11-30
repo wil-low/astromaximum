@@ -103,7 +103,7 @@
 %90% Help
 %91% Today
 %92% Options
-%93% W/o theme
+%93% Topics
 %94% Back
 %95% Log
 %96% Clear
@@ -173,6 +173,8 @@
 %157% Quit
 %158% Database error
 %159% City database is corrupted. You will need to reinstall additional cities. Do you want to reset the database?
+%160% No topic
+%161% Menu
 
 %255% En
 
