@@ -22,7 +22,7 @@ template:
 	cp templates/MANIFEST.MF $(SOURCE)
 
 interp:
-	cp -Rf interpret $(SOURCE); \
+	cp -Rf Astromaximum/interpret $(SOURCE); \
 	cp htaccess $(SOURCE)/interpret/.htaccess; \
 	if ls *.comm 2> /dev/null; then cp *.comm $(SOURCE); fi; \
 	mkdir -p $(DEST)/files $(DEST)/inbox $(SOURCE)/restore; \

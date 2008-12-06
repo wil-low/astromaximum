@@ -25,18 +25,6 @@ our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
 our $PREFIX='Cities';
 
-our %eventType=qw(EV_VOC 0 EV_SIGN_ENTER 1 EV_ASP_EXACT 2 EV_RISE 3 EV_DEGREE_PASS 4
-EV_VIA_COMBUSTA 5 EV_RETROGRADE 6 EV_ECLIPSE 7 EV_TITHI 8 EV_NAKSHATRA 9 EV_SET 10
-EV_DECL_EXACT 11 EV_NAVROZ 12 EV_TOP_DAY 13 EV_PLANET_HOUR 14 EV_STATUS 15 EV_SUN_RISE 16
-EV_MOON_RISE 17 EV_MOON_MOVE 18 EV_SEL_DEGREES 19 EV_DAY_HOURS 20 EV_NIGHT_HOURS 21
-EV_SUN_DAY 22 EV_MOON_DAY 23 EV_TOP_MONTH 24 EV_MOON_PHASE 25 EV_ZODIAC_SIGN 26
-EV_PANEL 27 EV_TOPIC_BUTTON 28 EV_DEG_2ND 29 EV_WEEK_GRID 30 EV_MONTH_GRID 31
-EV_DECUMBITURE 32 EV_DECUMB_ASPECT 33 EV_DECUMB_BEGIN 34 EV_SUN_DEGREE_LARGE 35
-EV_MOON_SIGN_LARGE 36 EV_HELP 37 EV_ASP_EXACT_MOON 38 EV_DEGPASS0 39 EV_DEGPASS1 40
-EV_DEGPASS2 41 EV_DEGPASS3 42 EV_HELP0 43 EV_HELP1 44 EV_ASTRORISE 45 EV_ASTROSET 46
-EV_APHETICS 47 EV_FAST 48 EV_ASCAPHETICS 49 EV_MSG 50 EV_LAST 51
-);
-
 our %eventFlags=qw(EF_PLANET1 2 EF_PLANET2 4 EF_DEGREE 8 EF_SHORT_DEGREE 64);
 our $output=''; our $paramcount=0; our $outbuf; our $errors=0;
 our %hash;
@@ -80,7 +68,7 @@ if($islocal){
 	require "$path/Crc32.pm";
 	rm_all("$path/$const::DIR_TEMP");
 }
-else{
+else{    # site has different folder structure
 	my $id;
 	($const::DIR_TEMP, $id)=random('source');
 	$jar_path.='/../';
@@ -829,7 +817,7 @@ sub inject_lang{ # lang, isdemo
 	my @bins=glob("$path/$const::DIR_INTERPRET/$lang/*.txt");
 	unless(scalar(@bins)){
 		echo("\nNo files for '$lang' language ($path/$const::DIR_INTERPRET/$lang/*.txt)\n\n");
-		return;
+		exit(1);
 	}
 	my @buf;
 	my $body;
@@ -842,22 +830,22 @@ sub inject_lang{ # lang, isdemo
 #	if($demo){
 #		echo("Demo mode: filtering events\n");
 #		foreach(@demo_allowed){
-#			my $id=$eventType{$_};
+#			my $id=$tools::eventType{$_};
 #			mydie("Unknown demo event <$_>, $id") unless defined($id);
 #			$demo_events{$_}=$id;
 #		}
 #	}
 #	else{
-#		%demo_events=%eventType;
+#		%demo_events=%tools::eventType;
 #	}
-	my %demo_events=%eventType;
+	my %demo_events=%tools::eventType;
 
 	echo("Cleaning $dest dir\n");
 	my @clean=glob("$dest/*");
 	foreach (@clean){
 		unlink $_ if $_=~/[\/\\]\d+$/is;
 	}
-	#mydie($eventType{'EV_VOC'});
+	#mydie($tools::eventType{'EV_VOC'});
 	foreach my $ff(@bins){
 	  next if $ff!~/\.txt$/is;
 	  open(InF, "<$ff") or mydie("No file $ff");
@@ -868,7 +856,7 @@ sub inject_lang{ # lang, isdemo
 		$buf[0]=~/\!\!type\s*(\w+)/i;
 		my $evt=$1;
 
-		if($eventType{$evt}!~/^\d+$/){
+		if($tools::eventType{$evt}!~/^\d+$/){
 			echo("Event $evt not defined in $ff! Skipped\n");
 			next;
 		}
@@ -933,10 +921,10 @@ sub inject_lang{ # lang, isdemo
 		};
 		#	mydie($flag);
 		echo("$len, $planet\n");
-		$output=pack('nNcnna*',$eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
+		$output=pack('nNcnna*',$tools::eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
 		#	mydie($output);
 		if($config ne 'lang'){
-			open(OF, ">$dest/$eventType{$evt}") or mydie("No file $dest/$eventType{$evt}");
+			open(OF, ">$dest/$tools::eventType{$evt}") or mydie("No file $dest/$tools::eventType{$evt}");
 			binmode(OF);
 			print OF $output;
 			close(OF);
@@ -956,6 +944,7 @@ sub inject_lang{ # lang, isdemo
 	}
 	else{
 		echo("\n-------- $errors error(s) found. Compilation aborted! --------\n");
+        exit(1);
 	}
 
 	#my $inp=<STDIN>;

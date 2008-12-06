@@ -84,7 +84,7 @@
 
     <target name="post-compile">
       <uptodate property="size2dat.notRequired">
-        <srcfiles dir= "../arrays" includes="**/size?.txt"/>
+        <srcfiles dir= "${basedir}/arrays" includes="**/size?.txt"/>
         <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
       </uptodate>
       <antcall target="size.compile"/>

@@ -15,13 +15,6 @@
  */
 //#define imgPhase
 
-//#ifdef build.desktop
-//# package com.sw_axis;
-//#
-//# import java.awt.Canvas;
-//#
-//# class Summary extends Canvas{
-//#else
 import java.io.*;
 import javax.microedition.lcdui.*;
 import java.util.*;
@@ -33,7 +26,7 @@ import java.util.*;
 class Summary extends Canvas implements CommandListener, Runnable {
 //#ifdef UseBuffer
 //#   static Image offScreenBuffer;
-    //#endif
+//#endif
     static int moonPhaseH;
 //  static private SummItem timerTask;
     //  private SummItem prevPH;
@@ -48,7 +41,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
     //  static boolean isCurDay;
     private int previousPage = PAGE_SUMMARY;
     int pageNum;
-    //#if "imeiCheck" @ protection
+//#if "imeiCheck" @ protection
     static int hj;
 //#endif
     //  private boolean fullScreen=true;
@@ -68,10 +61,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
     private static final byte[] weekStartHour = {0, 3, 6, 2, 5, 1, 4};
     private static final byte[] decumbAspects = {45, 15, 30, 30, 15, 45, 45, 15, 30, 30, 15, 45};
     static final byte[] decumbKeys = {0, 1, 2, 3, 2, 1, 3, 1, 2, 3, 2, 1, 4};
-    private static final int PAGE_MONTH = 2;//6;
-    private static final int PAGE_WEEK = 1;//7;
-    static final int PAGE_PANEL = 3;//4;
-    static final int PAGE_DECUMB = 0;//5;
+    static final int PAGE_DECUMB = 0;
+    private static final int PAGE_WEEK = 1;
+    private static final int PAGE_MONTH = 2;
+    static final int PAGE_PANEL = 3;
     static final int PAGE_SUMMARY = 4;
     static final int PAGE_HELP = 8;
     //#ifdef ELECTIO
@@ -210,11 +203,9 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 items[i].render(osg, false, now, isShowCustom);
             }
         }
-/*
-        if(isMenuVisible){
-            renderMenu(osg);
-        }
- */
+        SummItem si = getItem(Event.EV_PANEL);
+        System.out.print("Panel on page: ");
+        System.out.println(si.isOnPage());
         items[selItem].render(osg, true, now, isShowCustom);
     }
 
@@ -1983,7 +1974,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
         }
         
     }
-//#endif
 }
 
 // # vi:et:ts=4:sw=4
