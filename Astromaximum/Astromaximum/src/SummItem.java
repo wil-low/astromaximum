@@ -13,11 +13,6 @@
  * @noinspection CastToConcreteClass
  */
 //#define aspswap
-//#ifdef build.desktop
-//# package com.sw_axis;
-//# import java.awt.Frame;
-//# class SummItem{
-//#else
 import javax.microedition.lcdui.*;
 import java.util.*;
 import javax.microedition.rms.RecordFilter;
@@ -1837,7 +1832,6 @@ class SummItem extends TimerTask implements RecordFilter {
             }
         }
     }
-//#endif
 }
 
 // # vi:et:ts=4:sw=4

@@ -1,7 +1,7 @@
 DEST=site/mobi/dl
 SOURCE=$(DEST)/source
 
-.PHONY: all gen_amax config template interp mutter relgui test sunrise
+.PHONY: all gen_amax config template interp mutter relgui test sunrise swe
 
 all:	gen_amax config template interp mutter relgui sunrise
 
@@ -30,9 +30,11 @@ interp:
 	chmod a+w  $(DEST)/files $(DEST)/inbox $(SOURCE) $(SOURCE)/restore \
 		$(DEST)/gen_amax.log
 
+swe:
+	cd swe && make clean && make && cd ..
+
 config:
 	mkdir -p Astromaximum/deploy;perl size_join.pl;perl ph_join.pl; \
-	cd swe && make clean && make && cd ..; \
 	mkdir -p Astromaximum/deploy; \
 	perl gen_amax.pl rebuild
 

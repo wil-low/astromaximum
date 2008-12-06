@@ -95,6 +95,9 @@
       <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../size2dat.pl"/>
       </exec>
+      <delete dir="${preprocessed.dir}" includes="size*.dat" failonerror="true"/>
+      <delete dir="${build.classes.dir}" includes="size*.dat" failonerror="true"/>
+      <delete dir="${preverify.sources.dir}" includes="size*.dat" failonerror="true"/>
     </target>
     
 

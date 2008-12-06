@@ -1,13 +1,5 @@
-//#ifdef build.desktop
-//# package com.sw_axis;
-//# import java.awt.Frame;
-//# import java.awt.event.WindowAdapter;
-//# import java.awt.event.WindowEvent;
-//#else
-
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
-//#endif
 import java.io.*;
 import java.util.*;
 
@@ -15,22 +7,6 @@ import java.util.*;
 import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreNotOpenException;
 
-//#ifdef build.desktop
-//# public class Astromaximum extends Frame{
-//#   public Astromaximum() {
-//#     addWindowListener(new WindowAdapter() {
-//#       public void windowClosing(WindowEvent evt) {
-//#         exitForm(evt);
-//#       }
-//#     });
-//#     setBounds(0,0,200,200);
-//#     setTitle("Astromaximum Desktop");
-//#   }
-//#   private void exitForm(WindowEvent evt) {
-//#     System.exit(0);
-//#   }
-//#
-//#else
 /**
  * Main class of application. Provides useful routines and runs all other
  * objects.
@@ -102,7 +78,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Secret variable for IMEI protection. Available with "imeiCheck" ability
      */
     static int hj;
-    //#endif
     /**
      * Attempt to figure out possible bugs in live system; holds constant values
      * in order to find the place where an Exception occured; errCode is shown

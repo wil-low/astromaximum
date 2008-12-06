@@ -1,7 +1,3 @@
-//#ifdef build.desktop
-//# package com.sw_axis;
-//#endif
-
 /**
  * <p>Title: Nomad</p>
  *
@@ -17,7 +13,6 @@
 import java.util.*;
 
 class Event {
-    //#ifndef build.desktop
     static final byte SE_SUN = 0;
     static final byte SE_MOON = 1;
     static final byte SE_MERCURY = 2;
@@ -295,7 +290,6 @@ class Event {
         }
         return ofs;
     }
-//#endif
 }
 
 // # vi:et:ts=4:sw=4

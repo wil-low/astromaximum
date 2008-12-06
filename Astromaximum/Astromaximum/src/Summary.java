@@ -203,9 +203,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 items[i].render(osg, false, now, isShowCustom);
             }
         }
-        SummItem si = getItem(Event.EV_PANEL);
-        System.out.print("Panel on page: ");
-        System.out.println(si.isOnPage());
         items[selItem].render(osg, true, now, isShowCustom);
     }
 

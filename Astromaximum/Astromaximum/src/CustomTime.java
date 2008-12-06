@@ -1,13 +1,5 @@
 //#define timeHistory
 
-//#ifdef build.desktop
-//# package com.sw_axis;
-//# import java.awt.Frame;
-//# import java.awt.event.WindowAdapter;
-//# import java.awt.event.WindowEvent;
-//#
-//# class CustomTime extends Frame{
-//#else
 //import java.io.ByteArrayOutputStream;
 //import java.io.DataInputStream;
 //import java.io.DataOutputStream;
@@ -354,7 +346,6 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
         cg.setSelectedIndex(0, true);
         return true;
     }
-//#endif
 }
 
 // # vi:et:ts=4:sw=4

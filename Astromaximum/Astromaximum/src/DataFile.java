@@ -1,8 +1,4 @@
 //#define optRead
-//#ifdef build.desktop
-//# package com.sw_axis;
-//#else
-
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -11,7 +7,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
 
-//#endif
 /**
  * <p>Title: Astromaximum</p>
  * <p/>

@@ -11,12 +11,6 @@
  * @author not attributable
  * @version 1.0
  */
-//#ifdef build.desktop
-//# package com.sw_axis;
-//# import java.awt.Frame;
-//#
-//# class Options extends Frame{
-//#else
 import java.io.*;
 import java.util.Random;
 import java.util.Vector;
@@ -444,7 +438,6 @@ class Options extends GeoList implements CommandListener {
         layout.setSelectedIndex(optLayout, true);
         localOffset = (long)optTimeGap * 3600000;
     }
-//#endif
 }
 
 // # vi:et:ts=4:sw=4

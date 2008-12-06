@@ -11,10 +11,6 @@
  * @author Andrei Ivushkin
  * @version 1.0
  */
-//#ifdef build.desktop
-//# package com.sw_axis;
-//# class Interpreter {
-//#else
 import javax.microedition.lcdui.*;
 import java.io.*;
 import java.util.*;
@@ -545,7 +541,6 @@ class Interpreter extends Canvas implements CommandListener {
         }
         return res;
     }
-//#endif
 }
 
 // # vi:et:ts=4:sw=4

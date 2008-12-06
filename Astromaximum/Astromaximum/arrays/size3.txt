@@ -2,10 +2,10 @@
 
 #   l, t, w, h   page    ho,ve    event type               l, r, u, d
 
-{   1, 0,12,10,    31,    1, 1,   EV_PANEL            ,   -1, 1,-1, 1  }   # 0 PANEL
+{   1, 0,12, 9,   255,    1, 1,   EV_PANEL            ,   -1, 1,-1, 1  }   # 0 PANEL
 {  18, 0,75, 9,   760,    3, 1,   EV_TOP_DAY          ,   21,21,-1, 1  }   # 0 EV_TOP_DAY
 {  28, 0,40, 9,     6,    3, 1,   EV_TOP_MONTH        ,   25,25,27,27  }   # 0 EV_TOP_MONTH
-{   1, 8,99,92,     2,    1, 1,   EV_WEEK_GRID        ,   24,24,24,24  }   # 0 WEEK_GRID
+{   1,10,99,89,     2,    1, 1,   EV_WEEK_GRID        ,   24,24,24,24  }   # 0 WEEK_GRID
 {   1,18,99,82,     4,    1, 1,   EV_MONTH_GRID       ,   23,23,23,23  }   # 0 MONTH_GRID
 {   1,95,99, 5,     0,   12, 1,   EV_ZODIAC_SIGN      ,   -1, 1,-1, 1  }   # zodiac sign
 {   1,12,70,10,    16,    1, 1,   EV_VOC              ,   -1, 6,-1, 1  }   # 1 voc
@@ -55,10 +55,10 @@
 {   5,64,30,27,     8,    1, 6,   EV_TOPIC_BUTTON     ,    2, 1,-3, 3  }   # 12 EV_TOPIC_BUTTON
 {  35,64,30,27,     8,    1, 7,   EV_TOPIC_BUTTON     ,   -1, 1,-3, 2  }   # 12 EV_TOPIC_BUTTON
 {  65,64,30,27,     8,    1, 8,   EV_TOPIC_BUTTON     ,   -1,-2,-3, 1  }   # 12 EV_TOPIC_BUTTON
-{   1, 1,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-1, 2  }   # DECUMBITURE
-{  23, 1,65, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 1  }   # DECUMBITURE
-{   1, 7,87, 6,     1,    0, 1,   EV_DECUMB_BEGIN     ,   39,41,-1, 2  }   # DECUMB_BEGIN
-{  89, 7,10, 7,     1,    1, 2,   EV_MOON_PHASE       ,   -1, 1,-2, 2  }   # 25 MOON_PHASE
+{  12, 1,10, 7,     1,    1, 2,   EV_MOON_PHASE       ,   -1, 1,-2, 2  }   # 25 MOON_PHASE
+{  23, 1,66, 6,     1,    0, 1,   EV_DECUMB_BEGIN     ,   39,41,-2, 2  }   # DECUMB_BEGIN
+{   1, 9,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23, 9,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 1  }   # DECUMBITURE
 {   1,16,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
 {  23,16,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
 {   1,22,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
