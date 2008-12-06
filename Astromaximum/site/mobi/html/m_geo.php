@@ -45,7 +45,8 @@
 			$str=midlet_create("geo", $defyear, $lang, $sc, "dl", false);
 			if(strlen($str)){
 				dec_try_count(0, 1);
-				echo $str;
+                $lines=explode("\n", $str);
+				echo "<a href=\"$str[1]\">{$i18['PHONE_DL']}</a>"; // JAD only
 				echo tries_remained($tries[1]-1, $DLIM[1]);
                 echo "<br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
 			}

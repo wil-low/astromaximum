@@ -21,11 +21,15 @@ if(true /*|| check_access()*/){
 	$ye=substr($dig, 0,2);
 	$fn="$DIR_FILES/".$dig.".$type";
 	$stat=sprintf(
-		"SELECT COUNT(*) FROM files WHERE id='%s' AND end_tm>NOW() AND NOT deleted", quote_smart($dig));
+		"SELECT type FROM files WHERE id='%s' AND end_tm>NOW() AND NOT deleted", quote_smart($dig));
 	$sth=mysql_query($stat);
-	$count=mysql_fetch_row($sth);
-	if($count[0]!=1)
+	if(mysql_affected_rows() != 1)
         data_gone();
+	$row=mysql_fetch_row($sth);
+    if(strcmp($row[0]{0}, 'g') != 0){ // not a geoAM
+        $PREFIX = 'Amax';
+    }
+    
 	$stat=sprintf(
 		"UPDATE files SET used='t' WHERE id='%s'", quote_smart($dig));
 	mysql_query($stat);

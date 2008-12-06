@@ -133,5 +133,6 @@ Errors while running:
     1501 - in Summary when getting Sun day - RMS contains invalid location file
         of different year etc. This shouldn't occur at mobile device, only at
         WTK.
-
+    SecurityException - Astromaximum.getstr() cannot find localized string
+    
 images/icons contains *.PNG for geoAM icons, and a*.PNG for Astromaximum icons

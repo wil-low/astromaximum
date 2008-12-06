@@ -24,6 +24,7 @@ our $path;
 our $file_sign="\x50\x4B\x03\x04";
 our $fdir_sign="\x50\x4B\x01\x02";
 our $PREFIX='Cities';
+our $GeoAMclass='GeoInstaller';
 
 our %eventFlags=qw(EF_PLANET1 2 EF_PLANET2 4 EF_DEGREE 8 EF_SHORT_DEGREE 64);
 our $output=''; our $paramcount=0; our $outbuf; our $errors=0;
@@ -72,7 +73,7 @@ else{    # site has different folder structure
 	my $id;
 	($const::DIR_TEMP, $id)=random('source');
 	$jar_path.='/../';
-	$const::DIR_INTERPRET='source/'.$const::DIR_INTERPRET;
+	$const::DIR_INTERPRET='source/interpret';
 	$const::DIR_IMG='source/icons';
 }
 
@@ -246,7 +247,7 @@ if($config=~/geo-$/is){
 	unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
 	my $locname=inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 	inject_icon('');
-	do_jar($locname, $outfile, 'GeoInstaller');
+	do_jar($locname, $outfile, $GeoAMclass);
 	do_messjar($outfile);
 	$done=1;
 }
@@ -539,17 +540,26 @@ sub do_jar{
 		require CGI;
 		my $jarurl=$outfile;
 		$jarurl=~s/\..+//is;
+        my $pf=$PREFIX;
+        if($mainclass ne $GeoAMclass){
+            $pf='Amax';
+        }
+		$jarurl=~/(\d\d).+?(\d{4})$/is;
+		$outfile="$pf'$1-$2.jar";
 		my $tjad=$jad;
 		$tjad=~s/d$/t/is;
-		my $serv='mobi.astromaximum.com';
-		$serv.='/mobi' if $serv!~/mobi/is;
-		$jarurl='http://'.$serv."/data.php?r=".$jarurl;
+        if($config=~/demo/){ # demo is received by email link
+            $jarurl=$outfile;
+        }
+        else{
+            my $serv='mobi.astromaximum.com';
+            $serv.='/mobi' if $serv!~/mobi/is;
+            $jarurl='http://'.$serv."/data.php?r=".$jarurl;
+        }
         print "$tjad\n$jarurl\n";
 		open(FFF, ">$tjad") or mydie("$jad: $!");
 		print(FFF $template."MIDlet-Jar-URL: $jarurl\n");
 		close(FFF);
-		$jarurl=~/(\d\d).+?(\d{4})$/is;
-		$outfile="$PREFIX'$1-$2.jar";
 	}
 	$template.="MIDlet-Jar-URL: $outfile\n";
 	open(FFF, ">$jad") or mydie("$jad: $!");

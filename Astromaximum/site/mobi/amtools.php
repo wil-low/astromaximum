@@ -287,12 +287,12 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
     		$url2=str_replace("?r", "?d", $url);
 			if($EXEC==1){
 				$str.="<h4>{$i18['PC_DL']}:</h4>";
-				$str.="<a href=\"$url\">JAR ($jarsize)</a><br/>";
+				$str.="<a href=\"$url\">JAR ($jarsize)</a><br/>\n";
 			}
 			else{
 				$str.="<h4>{$i18['PHONE_DL']}:</h4>";
 			}
-			$str.="<a href=\"$url2\">JAD ($jadsize)</a><br>";
+			$str.="<a href=\"$url2\">JAD ($jadsize)</a><br>\n";
 	
 	#				$url=str_replace("?d", "?t", $url);
 	#				echo "<h4>{$i18['PHONE_DL']}:</h4>";
@@ -302,10 +302,10 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
 		}
 		else{ # text-only version
     		$url2=str_replace("?r", "?t", $url);
-			$str="<a href=\"$url2\">{$i18['PHONE_DL']}</a><br>";
+			$str="$url\n$url2\n";
 		}
 	}
-	return $str;
+	return $str; // 1st is JAR, 2nd is JAD
 }
 
 function fsize_human($fname){
