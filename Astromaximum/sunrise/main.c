@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <assert.h>
+#include <string.h>
 // datafile.h
 typedef enum{
     EF_DATE=0x1, // contains 2nd date - 4b
