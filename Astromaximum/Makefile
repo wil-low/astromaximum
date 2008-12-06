@@ -6,8 +6,8 @@ SOURCE=$(DEST)/source
 all:	gen_amax config template interp mutter relgui sunrise
 
 test:	
-	#make mutter; \
-	#rm -f data/archive/2008/test/Data0000.dat; \
+	#make mutter; 
+	#rm -f data/archive/2008/test/Data0000.dat; 
 	perl geoCoord.pl 2008 test; \
 	mutter2/mutter2 2008 dump test 0 -2
 
@@ -32,18 +32,19 @@ interp:
 
 config:
 	mkdir -p Astromaximum/deploy;perl size_join.pl;perl ph_join.pl; \
-	cd swe && make && cd ..; \
+	cd swe && make clean && make && cd ..; \
 	mkdir -p Astromaximum/deploy; \
 	perl gen_amax.pl rebuild
 
 mutter:
-	cd mutter2 && make CONF=Release $1 build && cd ..
+	cd mutter2 && make CONF=Release clean build && cd ..
 
 relgui:
-	cd relgui && make CONF=Release $1 build && cd ..
+	cd relgui && make CONF=Release clean build && cd ..
 
 sunrise:
-	cd sunrise && make CONF=Release $1 build && cd ..
+	cd sunrise && make CONF=Release clean build && cd ..
 
 help:
 	@echo "Usage: make [all|gen_amax|template|interp|config|mutter|relgui|sunrise]"
+

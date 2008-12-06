@@ -1,5 +1,5 @@
 #
-# Gererated Makefile - do not edit!
+# Generated Makefile - do not edit!
 #
 # Edit the Makefile in the project folder instead (../Makefile). Each target
 # has a -pre and a -post target defined where you can add customized code.
@@ -17,11 +17,14 @@ CCC=g++
 CXX=g++
 FC=
 
+# Macros
+PLATFORM=GNU-Linux-x86
+
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Profiling/GNU-Linux-x86
+OBJECTDIR=build/Profiling/${PLATFORM}
 
 # Object Files
 OBJECTFILES= \
@@ -43,22 +46,26 @@ FFLAGS=
 LDLIBSOPTIONS=-L../swe -lswe
 
 # Build Targets
-.build-conf: ${BUILD_SUBPROJECTS} mutter2prof
+.build-conf: ${BUILD_SUBPROJECTS}
+	${MAKE}  -f nbproject/Makefile-Profiling.mk mutter2prof
 
 mutter2prof: ${OBJECTFILES}
 	${LINK.cc} -pg -o mutter2prof ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/evclass.o: evclass.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -DANSITZ -I../swe -o ${OBJECTDIR}/evclass.o evclass.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -DANSITZ -I../swe -MMD -MP -MF $@.d -o ${OBJECTDIR}/evclass.o evclass.cpp
 
 ${OBJECTDIR}/datafile.o: datafile.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -DANSITZ -I../swe -o ${OBJECTDIR}/datafile.o datafile.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -DANSITZ -I../swe -MMD -MP -MF $@.d -o ${OBJECTDIR}/datafile.o datafile.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -DANSITZ -I../swe -o ${OBJECTDIR}/main.o main.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -DANSITZ -I../swe -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
@@ -72,5 +79,6 @@ ${OBJECTDIR}/main.o: main.cpp
 .clean-subprojects:
 
 # Enable dependency checking
-.KEEP_STATE:
-.KEEP_STATE_FILE:.make.state.${CONF}
+.dep.inc: .depcheck-impl
+
+include .dep.inc

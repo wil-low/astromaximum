@@ -9,11 +9,11 @@ my $done=0;
 if(!$islocal){
 	$const::DIR_TEMPLATE='source';
 }
-my $nb_user='$HOME/.netbeans/6.1';
+my $nb_user='$HOME/.netbeans/6.5';
 my $platform='$HOME/wtk251';
 our $winda=$^O=~/Win/is;
 if($winda){
-	$nb_user='%USERPROFILE%/.netbeans/6.1';
+	$nb_user='%USERPROFILE%/.netbeans/6.5';
 	$platform='D:\WTK251';
 }
 
@@ -108,7 +108,7 @@ if($islocal and ($config eq 'rebuild')){
 	echo("Rebuilding all configs...\n");
 	my $antpath;
 	my @app=(
-	'/home/willow/nb6/java2/ant/bin/ant',
+	'/home/willow/nb65/java2/ant/bin/ant',
 	'd:/Program Files/nb6/java2/ant/bin/ant.bat',
 	'd:/Program Files/nb6/java1/ant/bin/ant.bat',
 	);

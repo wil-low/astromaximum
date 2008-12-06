@@ -1,5 +1,5 @@
 #
-# Gererated Makefile - do not edit!
+# Generated Makefile - do not edit!
 #
 # Edit the Makefile in the project folder instead (../Makefile). Each target
 # has a -pre and a -post target defined where you can add customized code.
@@ -17,11 +17,14 @@ CCC=g++
 CXX=g++
 FC=
 
+# Macros
+PLATFORM=GNU-Linux-x86
+
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Debug/GNU-Linux-x86
+OBJECTDIR=build/Debug/${PLATFORM}
 
 # Object Files
 OBJECTFILES= \
@@ -42,18 +45,21 @@ FFLAGS=
 LDLIBSOPTIONS=`../fltk2/fltk2-config --ldflags`  
 
 # Build Targets
-.build-conf: ${BUILD_SUBPROJECTS} relgui
+.build-conf: ${BUILD_SUBPROJECTS}
+	${MAKE}  -f nbproject/Makefile-Debug.mk relgui
 
 relgui: ${OBJECTFILES}
 	g++ -o relgui ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/main.o: main.cxx 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I../fltk2 -o ${OBJECTDIR}/main.o main.cxx
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../fltk2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cxx
 
 ${OBJECTDIR}/fMain.o: fMain.cxx 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I../fltk2 -o ${OBJECTDIR}/fMain.o fMain.cxx
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../fltk2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fMain.o fMain.cxx
 
 # Subprojects
 .build-subprojects:
@@ -67,5 +73,6 @@ ${OBJECTDIR}/fMain.o: fMain.cxx
 .clean-subprojects:
 
 # Enable dependency checking
-.KEEP_STATE:
-.KEEP_STATE_FILE:.make.state.${CONF}
+.dep.inc: .depcheck-impl
+
+include .dep.inc
