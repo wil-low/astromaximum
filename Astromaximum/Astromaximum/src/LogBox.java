@@ -91,7 +91,7 @@ class LogBox extends List implements CommandListener {
 
                 }
                 catch(Exception ex){};
-                Astromaximum.init2();
+                Astromaximum.instance.init2();
                 break;
         }
     }
@@ -107,8 +107,8 @@ class LogBox extends List implements CommandListener {
         String tick = Astromaximum.instance.getAppProperty("MIDlet-Name");
         String s = Astromaximum.instance.getAppProperty("MIDlet-Version");
         if (s != null)
-            tick = "v." + s;
-        tick += " - " + Astromaximum.getstr(255);
+            tick += " v" + s;
+        tick += " " + Astromaximum.getstr(255);
         al.setTicker(new Ticker(tick));
         Astromaximum.disp.setCurrent(al);
     }

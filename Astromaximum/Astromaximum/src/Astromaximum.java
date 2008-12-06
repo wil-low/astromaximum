@@ -287,7 +287,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
         }
     }
     
-    static void init2(){            
+    void init2(){            
         try {
             int len = dataFile.geoposData.length;
             Astromaximum.log("geopos len=" + new Integer(len).toString());
