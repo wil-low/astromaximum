@@ -32,7 +32,7 @@ DataFile df;
 void myexit(int ret) {
     chdir(mypath);
     c_end = clock();
-    long cps = CLOCKS_PER_SEC;
+    //    long cps = CLOCKS_PER_SEC;
     //    if(!ret)
     //        printf("\nExecution time %d clocks (cps=%d)\n", c_end-c_start, cps);
     //    printf("\nExit code: %d. Restored curdir: %s\n", ret, mypath);
@@ -138,7 +138,7 @@ int main(int argc, char* argv[]) {
     assert(sizeof (sMatrix) == 9);
     assert(EV_LAST == 50);
     if (argc < 2) myexit(NOT_ENOUGH_PARAMS);
-    char buf[20];
+//    char buf[20];
     int year;
     if (sscanf(argv[1], "%4d", &year) != 1)
         myexit(INVALID_YEAR);
@@ -147,10 +147,10 @@ int main(int argc, char* argv[]) {
         if (strcmp(argv[2], "jul") == 0) {
             int mon, day;
             float hr;
-            if (sscanf(argv[3], "%02d-%02d*%02d", &mon) != 1) {
+            if (sscanf(argv[3], "%02d-%*02d*%*02d", &mon) != 1) {
                 myexit(NOT_ENOUGH_PARAMS);
             }
-            if (sscanf(argv[4], "%02d-%02d*%02d", &day) != 1) {
+            if (sscanf(argv[4], "%02d-%*02d*%*02d", &day) != 1) {
                 myexit(NOT_ENOUGH_PARAMS);
             }
             if (sscanf(argv[5], "%f", &hr) != 1) {
@@ -182,7 +182,7 @@ int main(int argc, char* argv[]) {
             myexit(0);
         }
     }
-    printf("Local timezone offset %d\n", Event::_timezone_);
+    printf("Local timezone offset %ld\n", Event::_timezone_);
     //    printf("Curdir: %s\n", mypath);
     //    printf("argv[0] is: %s\n", path);
     //    printf("Chdir to %s\n", path);
@@ -214,7 +214,7 @@ int main(int argc, char* argv[]) {
         }
         fprintf(sql, "TRUNCATE TABLE `_voc`; BEGIN;\n");
         if (df.readSubData("voc01.bin", work)) {
-            for (int i = 0; i < work.size(); i++) {
+            for (uint i = 0; i < work.size(); i++) {
                 Event *ev = work[i];
                 fprintf(sql, "INSERT INTO `_voc` VALUES (%s, %s);\n",
                         ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
@@ -243,7 +243,7 @@ int main(int argc, char* argv[]) {
          */
         fprintf(sql, "TRUNCATE TABLE `_sundgr`; BEGIN;\n");
         if (df.readSubData("degpass00.bin", work)) {
-            for (int i = 0; i < work.size(); i++) {
+            for (uint i = 0; i < work.size(); i++) {
                 Event *ev = work[i];
                 fprintf(sql, "INSERT INTO `_sundgr` VALUES (%s, %s, %d);\n",
                         ev->date_sql(buf0, 0), ev->date_sql(buf1, 1), ev->degree & 0x3fff);
@@ -299,7 +299,7 @@ int main(int argc, char* argv[]) {
         }
 
         printf("\nSteps = %d\n", stepCount);
-        for (int i = 0; i < stepCount; i++) {
+        for (uint i = 0; i < stepCount; i++) {
             for (int body = 0; body < 13; body++) {
                 swe_calc_ut(endJD, PLANETS[body], SEFLG_SWIEPH, data, serr);
                 ephData[i].data[body] = data[0];
@@ -381,7 +381,7 @@ int test() {
     printf("\n\n----Alternate:\n");
     
     df.readSubData(fname, work);
-    for (int i = 0; i < work.size(); i++) {
+    for (uint i = 0; i < work.size(); i++) {
         work[i]->dump();
         printf("\n");
     }

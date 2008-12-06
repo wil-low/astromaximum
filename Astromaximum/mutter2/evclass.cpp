@@ -14,7 +14,7 @@ long Event::_timezone_ = 0;
 double Event::EPOCH = 0;
 static const double SECINDAY = 24 * 3600;
 
-const char *month_name[][4] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+const char *month_name[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
 Event::Event(double jd, unsigned char planet) {
@@ -72,13 +72,13 @@ void Event::dump2() {
     printf("\n* %s - ", asctime(st));
     st = gmtime(&date[1]);
     printf("%s", asctime(st));
-    printf("   %d - %d\n", date[0], date[1]);
+    printf("   %ld - %ld\n", date[0], date[1]);
     printf("  degree=%X", degree);
     printf("  planets %u - %u", planetId[0], planetId[1]);
 }
 
 void Event::dump3() {
-    printf("%d - %d", date[0], date[1]);
+    printf("%ld - %ld", date[0], date[1]);
     printf("\tdegree=%X", degree);
     printf("  planets %u - %u", planetId[0], planetId[1]);
 }

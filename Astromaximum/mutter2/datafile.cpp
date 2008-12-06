@@ -68,14 +68,14 @@ struct less_event {
     }
 };
 
-void DataFile::view(const char* fname, int count) {
+void DataFile::view(const char* fname, uint count) {
     VAE work;
     readSubData(fname, work);
     if (count > work.size()) {
         count = work.size();
     }
     printf("\nContents of %s (%d of %d):\n", fname, count, work.size());
-    for (int i = 0; i < count; i++) {
+    for (uint i = 0; i < count; i++) {
         work[i]->dump();
         /*
                 work[i]->print_date(0);
@@ -88,7 +88,7 @@ void DataFile::view(const char* fname, int count) {
 }
 
 void DataFile::get_loc_contents(const char* fname, bool is_output, LOC_CONTENTS &v) {
-    char fn[200], cityname[200];
+    char cityname[200]; //, fn[200];
     FILE *fin = fopen(fname, "rb");
     assert(fin);
     v.clear();
@@ -113,7 +113,7 @@ void DataFile::get_loc_contents(const char* fname, bool is_output, LOC_CONTENTS 
             long dt = 60 * ((long) (name_len + i));
             Event ev(Event::calcJD(dt), 0);
             if (is_output)
-                printf("\n  %s  %d", ev.date_sql(cityname, 0), ev.date[0]);
+                printf("\n  %s  %ld", ev.date_sql(cityname, 0), ev.date[0]);
         }
     }
     int i = 0;
@@ -138,7 +138,7 @@ void DataFile::get_loc_contents(const char* fname, bool is_output, LOC_CONTENTS 
 }
 
 void DataFile::dump_section(const char* fname, pair<int, int> sec) {
-    const char TMPFILE[] = "~tmp";
+//    const char TMPFILE[] = "~tmp";
     FILE *fin = fopen(fname, "rb");
     if (!fin) return;
     int ii = sec.first;
@@ -155,16 +155,16 @@ void DataFile::dump_section(const char* fname, pair<int, int> sec) {
 
 void DataFile::dump_location(const char* fname, int num, int secnum) {
     // -1 - everything, -2 - sections only, 0..n - single section
-    char fn[200], cityname[200];
+    char fn[200]; //, cityname[200];
     sprintf(fn, "archive/%d/%s/Data%04d.dat", Event::startYear, fname, num);
     LOC_CONTENTS secofs;
     get_loc_contents(fn, secnum < 0, secofs);
     if (secnum == -2) return;
     if (secnum == -1) {
-        for (int i = 0; i < secofs.size(); i++) {
+        for (uint i = 0; i < secofs.size(); i++) {
             dump_section(fn, secofs[i]);
         }
-    } else if (secnum >= 0 && secnum < secofs.size()) {
+    } else if (secnum >= 0 && secnum < (int)secofs.size()) {
         dump_section(fn, secofs[secnum]);
     }
     //    printf("Event::_timezone_ = %d\n", Event::_timezone_);
@@ -188,7 +188,7 @@ int DataFile::AscendingTest() {
             VAE work;
             readSubData(ent->d_name, work);
             long cur = 0;
-            for (int i = 0; i < work.size(); i++) {
+            for (uint i = 0; i < work.size(); i++) {
                 if (work[i]->date[0] < cur) {
                     printf("\n%s\n", "*****Ascension order is broken!*****");
                     err++;
@@ -261,7 +261,7 @@ void DataFile::AAA() {
     //  readSubData("aphetics00.bin",work);
     //  readSubData("geo0-rise00.bin",work);
     release(work);
-    for (int i = 0; i < work.size(); i++) {
+    for (uint i = 0; i < work.size(); i++) {
         work[i]->dump();
     }
 
@@ -281,7 +281,7 @@ void DataFile::calcAspExact(VAE & moonvae, VAE & vae) {
             matrix[i][j].counter = 0;
         }
 
-    for (int c = 0; c < stepCount; c++) {
+    for (uint c = 0; c < stepCount; c++) {
         for (int i = 0; i < PLANET_COUNT; i++)
             for (int j = i + 1; j < PLANET_COUNT; j++) {
                 int aspindex = aspectExists(c, i, j, 0.01);
@@ -336,7 +336,7 @@ void DataFile::calcDegPass(VAE & vae, int planet) {
     vae.push_back(ev);
     int lastd = ev->degree;
     double cur = startJD;
-    for (int i = 1; i < stepCount; i++) {
+    for (uint i = 1; i < stepCount; i++) {
         cur += MINUTE_STEP;
         int dgr = (int) ephData[i].data[planet];
         if (lastd != dgr) {
@@ -357,14 +357,14 @@ DataFile::~DataFile() {
 }
 
 void DataFile::release(VAE & v) {
-    for (int i = 0; i < v.size(); i++)
+    for (uint i = 0; i < v.size(); i++)
         delete v[i];
     v.clear();
 }
 
 void DataFile::clearDegPass(VAE & src, VAE & dest, int id, VAE & destall) {
     static const int degarray[14] = {17, 68, 126, 174, 222, 280, 329, 22, 72, 129, 180, 228, 288, 333};
-    for (int i = 0; i < src.size(); i++) {
+    for (uint i = 0; i < src.size(); i++) {
         Event *ev = src[i];
         int degree = ev->degree & 0x3fff;
         int idx = -1;
@@ -388,7 +388,7 @@ void DataFile::clearDegPass(VAE & src, VAE & dest, int id, VAE & destall) {
 
 void DataFile::clearSignEnter(VAE & src, VAE & dest) {
     int sign = -1;
-    for (int i = 0; i < src.size(); i++) {
+    for (uint i = 0; i < src.size(); i++) {
         Event *ev = src[i];
         int dgr = ev->degree;
         int new_sign = dgr / 30;
@@ -405,7 +405,7 @@ void DataFile::clearViaCombusta(VAE & src, VAE & dest) {
     Event *tmp;
     if ((src[0]->degree >= limit[0]) && (src[0]->degree < limit[1]))
         tmp = new Event(startJD, 0); // starting may be in VC
-    for (int i = 1; i < src.size(); i++) {
+    for (uint i = 1; i < src.size(); i++) {
         Event *ev = src[i];
         if (ev->degree == limit[0])
             tmp = new Event(ev->julianDay, 0);
@@ -449,7 +449,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
     //  if(evtype==EV_ASTRORISE) PERIOD=6*60*60;
     //  v[0]->dump();
     //  v[1]->dump();
-    for (int i = 0; i < v.size(); i++) {
+    for (uint i = 0; i < v.size(); i++) {
         Event *ev = v[i];
         if ((evflags & EF_CUMUL_DATE_W) && (i > 0)) {
             int delta = (ev->date[0] - cumul - PERIOD) / 60;
@@ -613,7 +613,7 @@ err:
 }
 
 int DataFile::select(VAE & src, double jdstart, double jdend, char planet, bool both, VAE & dest) {
-    for (int i = 0; i < src.size(); i++) {
+    for (uint i = 0; i < src.size(); i++) {
         Event *ev = src[i];
         double evd = ev->julianDay;
         bool save = false;
@@ -635,9 +635,9 @@ int DataFile::select(VAE & src, double jdstart, double jdend, char planet, bool 
 
 void DataFile::clearAphetics(aphRecord *arr, int planet, int mins, VAE &dest) {
     VAE work;
-    int value = arr[0].data[planet];
-    int idx = 0;
-    int i = 1;
+    uint value = arr[0].data[planet];
+    uint idx = 0;
+    uint i = 1;
     for (; i < stepCount; i++) {
         if (value != arr[i].data[planet]) {
             Event* ev = new Event(idx * MINUTE_STEP + startJD, planet);
@@ -663,8 +663,8 @@ void DataFile::clearAphetics(aphRecord *arr, int planet, int mins, VAE &dest) {
             }
         }
     }
-    int sign = -1;
-    for (int i = 0; i < work.size(); i++) {
+//    int sign = -1;
+    for (uint i = 0; i < work.size(); i++) {
         Event *ev = work[i];
         //    int new_sign=ev->degree;
         //    if(sign!=new_sign){
@@ -673,7 +673,7 @@ void DataFile::clearAphetics(aphRecord *arr, int planet, int mins, VAE &dest) {
         //    }
     }
     // ball calculation
-    for (int i = 0; i < dest.size(); i++) {
+    for (uint i = 0; i < dest.size(); i++) {
         Event *ev = dest[i];
         int peregr = 0;
         int ball = 64 + 4 - 2 - 2; // DIRECT+SLOW+RAISEMOON + 50
@@ -681,7 +681,7 @@ void DataFile::clearAphetics(aphRecord *arr, int planet, int mins, VAE &dest) {
             ball -= 5;
             peregr = 1;
         }
-        for (int j = 0; j<sizeof (ApheBalls) / sizeof (int); j++) {
+        for (uint j = 0; j<sizeof (ApheBalls) / sizeof (int); j++) {
             if (ev->degree & (1 << j)) {
                 ball += ApheBalls[j];
             }
@@ -718,7 +718,7 @@ void DataFile::doAphetics(VAE &work) {
             sprintf(fname, "degpass%02d.bin", i);
         }
         readSubData(fname, work);
-        for (int j = 0; j < work.size(); j++) {
+        for (uint j = 0; j < work.size(); j++) {
             //      work[j]->dump2();
             calcAphetics(balls, work[j]);
         }
@@ -729,7 +729,7 @@ void DataFile::doAphetics(VAE &work) {
     // ____________________
     //      sun heart
 
-    for (int i = 0; i < stepCount; i++) {
+    for (uint i = 0; i < stepCount; i++) {
         double sun = ephData[i].data[SE_SUN];
         for (int j = SE_MOON; j <= SE_SATURN; j++) {
             double aspa = (ephData[i].data[j] - sun);
@@ -750,7 +750,7 @@ void DataFile::doAphetics(VAE &work) {
     for (int i = SE_MERCURY; i <= SE_SATURN; i++) {
         sprintf(fname, "retro%02d.bin", i);
         readSubData(fname, work);
-        for (int j = 0; j < work.size(); j++) {
+        for (uint j = 0; j < work.size(); j++) {
             addBalls(balls, work[j], (1 << AF_RETRO));
         }
         release(work);
@@ -760,7 +760,7 @@ void DataFile::doAphetics(VAE &work) {
     for (int i = SE_SUN; i <= SE_SATURN; i++) {
         sprintf(fname, "fast%02d.bin", i);
         readSubData(fname, work);
-        for (int j = 0; j < work.size(); j++) {
+        for (uint j = 0; j < work.size(); j++) {
             addBalls(balls, work[j], (1 << AF_FAST));
         }
         release(work);
@@ -768,14 +768,14 @@ void DataFile::doAphetics(VAE &work) {
     // growing moon
     sprintf(fname, "phase01.bin");
     readSubData(fname, work);
-    for (int j = 0; j < work.size(); j++) {
+    for (uint j = 0; j < work.size(); j++) {
         if (work[j]->planetId[1] <= 1) {
             addBalls(balls, work[j], (1 << AF_GROWINGMOON));
         }
     }
     release(work);
 
-    for (int i = 0; i < stepCount; i++) {
+    for (uint i = 0; i < stepCount; i++) {
         for (int j = SE_SUN; j <= SE_SATURN; j++) {
             int dj = (int) ephData[i].data[j];
             int sj = dj / 30;
@@ -825,8 +825,8 @@ void DataFile::doAphetics(VAE &work) {
 }
 
 void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2,
-        char* prefix) {
-    char extra_plt[] = {SE_TRUE_NODE, SE_MEAN_APOG, 17};
+        const char* prefix) {
+//    char extra_plt[] = {SE_TRUE_NODE, SE_MEAN_APOG, 17};
     char fname[200];
     double endJD;
     double geopos[3] = {Lon, Lat, Alt}, tret[2];
@@ -894,7 +894,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             readSubData("aspects01.bin", assist);
             double st;
             st = startJD;
-            for (int i = 0; i < work.size(); i++) {
+            for (uint i = 0; i < work.size(); i++) {
                 int sz;
                 sz = select(assist, st, work[i]->julianDay, SE_MOON, true, vout);
                 Event *last;
@@ -994,13 +994,13 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
                         endJD = tret[1] + 0.01;
                     }
                     VAE output;
-                    for (int k = 0; k < vout.size(); k++) {
+                    for (uint k = 0; k < vout.size(); k++) {
                         double jstart = vout[k]->julianDay;
                         double jend = (k == vout.size() - 1) ? startJD + dayCount : vout[k + 1]->julianDay;
                         select(work, jstart, jend, -1, false, assist);
                         assist.insert(assist.begin(), vout[k]);
                         int md = 1;
-                        for (int i = 0; i < assist.size(); i++) {
+                        for (uint i = 0; i < assist.size(); i++) {
                             assist[i]->degree = md;
                             md++;
                             output.push_back(assist[i]);
@@ -1053,7 +1053,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
                 endJD = startJD;
                 int phase = -1;
                 double min = 360;
-                for (int j = 0; j < stepCount; j++) {
+                for (uint j = 0; j < stepCount; j++) {
                     double pos = ephData[j].data[i];
                     if (phase >= 0) {
                         double aspa = (pos - ascData[j].data[phase]);
@@ -1117,7 +1117,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
                 endJD = startJD;
                 ev = NULL;
                 Event *evFast = NULL;
-                for (int i = 0; i < stepCount; i++) {
+                for (uint i = 0; i < stepCount; i++) {
                     swe_calc_ut(endJD, body, EFLAG | SEFLG_SPEED, data, serr);
                     if (body >= SE_MERCURY) {
                         isRetro = data[3] < 0;
@@ -1188,7 +1188,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             int tith;
             tith = -1;
             st = startJD;
-            for (int i = 0; i < stepCount; i++) {
+            for (uint i = 0; i < stepCount; i++) {
                 double delta = ephData[i].data[SE_MOON] - ephData[i].data[SE_SUN];
                 NormAngle(delta);
                 int new_tith = (int) (delta / 12) + 1;
@@ -1210,7 +1210,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             printf("Nakshatra:  ");
             tith = -1;
             st = startJD;
-            for (int i = 0; i < stepCount; i++) {
+            for (uint i = 0; i < stepCount; i++) {
                 int new_tith = (int) (ephData[i].data[SE_MOON]*28. / 360.) + 1;
                 if (tith != new_tith) {
                     ev = new Event(st, SE_MOON);
@@ -1233,7 +1233,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             bool flag;
             flag = false;
             ev = NULL;
-            for (int i = 0; i < stepCount; i++) {
+            for (uint i = 0; i < stepCount; i++) {
                 swe_calc_ut(st, SE_SUN, EFLAG | SEFLG_EQUATORIAL, data, serr);
                 decl = data[1];
                 swe_calc_ut(st, SE_MOON, EFLAG | SEFLG_EQUATORIAL, data, serr);
@@ -1276,7 +1276,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             work.push_back(ev);
             readSubData("signenter00.bin", assist);
             assert(assist.size() > 0);
-            for (int i = 0; i < assist.size(); i++)
+            for (uint i = 0; i < assist.size(); i++)
                 if (assist[i]->degree == 0) {
                     swe_rise_trans(assist[i]->julianDay, SE_SUN, NULL, EFLAG, SE_CALC_RISE, geopos, 0, 20, &tret[0], serr);
                     ev = new Event(tret[0], SE_SUN);
@@ -1292,7 +1292,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             printf("Moon phases...");
             readSubData("aspects01.bin", work);
             int idx;
-            for (int i = 0; i < work.size(); i++) {
+            for (uint i = 0; i < work.size(); i++) {
                 if (work[i]->planetId[1] != SE_SUN)
                     continue;
                 int dgr = work[i]->degree;
@@ -1302,13 +1302,13 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
                     assist.push_back(work[i]);
                 }
             }
-            for (int i = 0; i < assist.size(); i++)
+            for (uint i = 0; i < assist.size(); i++)
                 if (assist[i]->planetId[1] == 0) {
                     idx = i;
                     break;
                 }
             idx = 4 - (idx % 4);
-            for (int i = 0; i < assist.size(); i++) {
+            for (uint i = 0; i < assist.size(); i++) {
                 assist[i]->planetId[1] = idx % 4;
                 idx++;
             }
@@ -1317,13 +1317,16 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             assist.clear();
             release(work);
             break;
+        default:
+            printf("Unsupported option %d\n", et);
+            exit(1);
     }
 
 }
 
 int DataFile::getAspIndex(int angle) {
     int idx = -1;
-    for (int i = 0; i<sizeof (ASP_ANGLES) / sizeof (char); i++)
+    for (uint i = 0; i<sizeof (ASP_ANGLES) / sizeof (char); i++)
         if (ASP_ANGLES[i] == angle) {
             idx = i;
             break;
@@ -1388,6 +1391,7 @@ int DataFile::calcAphetics(aphRecord *balls, const Event *ev) {
         aph |= (1 << AF_DECANE);
     }
     addBalls(balls, ev, aph);
+    return 0;
 }
 
 void DataFile::addBalls(aphRecord *balls, const Event *ev, int value) {
@@ -1459,7 +1463,7 @@ void DataFile::calcAscData() {
     sAscRecord *myascData = new sAscRecord[stepCount];
     double endJD = startJD;
     printf("\n AscData for %.2f, %.2f, %.0f:    ", Lat, Lon, Alt);
-    for (int i = 0; i < stepCount; i++) {
+    for (uint i = 0; i < stepCount; i++) {
         swe_houses(endJD, Lat, Lon, 'P', cusps, ascmc);
         myascData[i].data[0] = cusps[1]; //asc
         myascData[i].data[1] = cusps[7]; //dsc
@@ -1484,7 +1488,7 @@ void DataFile::doAscAphetics(VAE &work) {
     double oldtm = endJD;
     int oldstep = 0;
     int ascsign[2], ascplt[2];
-    for (int i = 0; i < stepCount; i++) {
+    for (uint i = 0; i < stepCount; i++) {
         for (int j = 0; j < 2; j++) {
             ascsign[j] = (int) (ascData[i].data[j] / 30);
             ascplt[j] = OWN_SIGN_REVERSE[ascsign[j]];
@@ -1533,7 +1537,7 @@ void DataFile::doAscAphetics(VAE &work) {
 }
 
 Event* DataFile::eventContains(const VAE &work, double moment) {
-    for (int i = 0; i < work.size(); i++) {
+    for (uint i = 0; i < work.size(); i++) {
         if (work[i]->julianDay > moment) {
             return work[i - 1];
         }
@@ -1541,14 +1545,14 @@ Event* DataFile::eventContains(const VAE &work, double moment) {
     return NULL;
 }
 
-int DataFile::aspectExists(int step, int p0, int p1, double delta) {
+int DataFile::aspectExists(uint step, int p0, int p1, double delta) {
     int aspindex = -1;
     if (step < stepCount) {
         double ang0 = ephData[step].data[p0], ang1 = ephData[step].data[p1];
         double aspa = (ang0 - ang1);
         if (aspa < 0) aspa += 360;
         if (aspa > 180) aspa = 360 - aspa;
-        for (int cnt = 0; cnt<sizeof (ASP_ANGLES) / sizeof (char); cnt++) {
+        for (uint cnt = 0; cnt<sizeof (ASP_ANGLES) / sizeof (char); cnt++) {
             double d = aspa - ASP_ANGLES[cnt];
             d = d - int(d / 360.);
             if (fabs(d) < delta) {
@@ -1570,7 +1574,7 @@ void DataFile::VOC_generate(EventType et, VAE & work, VAE & assist, VAE & vout, 
     readSubData("aspects01.bin", assist);
     double st;
     st = startJD;
-    for (int i = 0; i < work.size(); i++) {
+    for (uint i = 0; i < work.size(); i++) {
         int sz;
         sz = select(assist, st, work[i]->julianDay, SE_MOON, true, vout);
         Event *last;

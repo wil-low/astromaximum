@@ -93,12 +93,12 @@ private:
     void get_loc_contents(const char* fname, bool is_output, LOC_CONTENTS &v);
     void dump_section(const char* fname, pair<int, int> sec);
 public:
-    unsigned int dayCount, stepCount;
+    uint dayCount, stepCount;
     bool readSubData(const char* fname, VAE & v);
     bool writeSubData(const VAE & v, EventType evtype, int evflags, int planet, char* fname);
     void release(VAE & v);
     bool aph_ne(const Event* ev0, const Event* ev1);
-    int aspectExists(int step, int p0, int p1, double delta);
+    int aspectExists(uint step, int p0, int p1, double delta);
     Event* eventContains(const VAE &work, double moment);
     sAscRecord *ascData;
     void sortVAE(VAE &work);
@@ -106,10 +106,10 @@ public:
     DataFile();
     double Lon, Lat, Alt;
     void choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2,
-            char* prefix = "");
+            const char* prefix = "");
     void init(sEphRecord *ephdata, double start, unsigned int count);
     void AAA();
-    void view(const char* fname, int count);
+    void view(const char* fname, uint count);
     void dump_location(const char* fname, int num, int secnum);
     ~DataFile();
     bool loadAphetics(sAphRecord *data);

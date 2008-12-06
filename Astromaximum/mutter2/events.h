@@ -96,6 +96,7 @@ typedef enum {
     EV_LAST // last - do not use
 } EventType;
 
+typedef unsigned int uint;
 
 #endif
 
