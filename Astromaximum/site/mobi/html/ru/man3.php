@@ -3,12 +3,12 @@ if(!isset($EXEC)) die("Access restricted");
 $META_TITLE='Установка дополнительных городов';
 $META_KEYWORDS='руководство пользователя, мануал, установка на телефон, установка городов';
 $META_DESCR='';
-$page_t="http://astromaximum.de/?$lang_&amp;p=";
+$page_t="/?$lang_&amp;p=citylist";
 ?>
 <h4>Установка дополнительных городов</h4>
 <p>Восходы светил и другие события зависят от местоположения наблюдателя. На нашем сайте
 доступны <b><?php echo $GLOBALS['amax']['city_count'] ?></b> городов мира.
-&nbsp;&nbsp;&nbsp;<a href="<?php echo $page_t."citylist" ?>"><br/>Посмотреть список городов &gt;&gt;&gt;</a>
+&nbsp;&nbsp;&nbsp;<a href="<?php echo $page_t ?>"><br/>Посмотреть список городов &gt;&gt;&gt;</a>
 </p>
 <p><b>ASTROMAXIMUM</b> по умолчанию поставляется с единственной
 встроенной локацией - г. Олимп (Греция). После успешного запуска календаря Вы

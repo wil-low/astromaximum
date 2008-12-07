@@ -89,7 +89,7 @@ if(!file_exists($fn)){
 <meta name="keywords" content="[[keywords]]"/>
 <meta name="description" content="[[description]]"/>
 <link href="astro.css" rel="stylesheet" type="text/css"/>
-<script src="./func.js" type="text/javascript"></script>
+<script src="/func.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 <!--
@@ -97,9 +97,9 @@ if (document.images){
     preload_image_object = new Image();
     // set image url
     image_url = new Array();
-    image_url[0] = "i/globe.jpg";
-    image_url[1] = "i/fon.jpg";
-    image_url[2] = "i/button.jpg";
+    image_url[0] = "/i/globe.jpg";
+    image_url[1] = "/i/fon.jpg";
+    image_url[2] = "/i/button.jpg";
     
     var i = 0;
     for(i=0; i<=2; i++) 
@@ -114,7 +114,7 @@ if (document.images){
 <body[[onload_func]]>
 <a id="top"></a>
 <div id="globe">
-<img src="i/globe.jpg" width="956" height="320" usemap="#Map" alt="ASTROMAXIMUM"/>
+<img src="/i/globe.jpg" width="956" height="320" usemap="#Map" alt="ASTROMAXIMUM"/>
 <map id="Map" name="Map">
 	<area shape="circle" coords="178,132,95" href="?<?php echo $lang_ ?>" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" />
 	<area shape="rect" coords="443,87,859,165" href="?<?php echo $lang_ ?>" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" />
@@ -178,7 +178,7 @@ if($chac==1){
 if($chac!=-1){
 	$session_prompt=<<<SP1
 <p>{$i18['WELCOME']}, <b>{$_SESSION['username']}</b> ! </p>
-<p><a href="mobi/dl/logout.php"><strong>{$i18['LOGOUT']}</strong></a></p> 
+<p><a href="/mobi/dl/logout.php"><strong>{$i18['LOGOUT']}</strong></a></p> 
 SP1;
 }
 else{ 

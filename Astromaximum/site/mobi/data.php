@@ -57,7 +57,7 @@ if(true /*|| check_access()*/){
 
 function data_gone(){
     header("HTTP/1.0 410 Gone");
-    echo "Sorry, wrong URL or no file present.";
+    echo "Sorry, wrong URL or no file is available.";
     exit;
 }
 ?>

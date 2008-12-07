@@ -10,7 +10,7 @@ function showc(country,state){
 function highlight_gen(lb){
 	if(lb.selectedIndex<0) return;
 	btn=findObj('genbtn');
-	btn.style.background="url('i/btn_on.png')";
+	btn.style.background="url('/i/btn_on.png')";
 	btn.style.fontWeight="bold";
 }
 

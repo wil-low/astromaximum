@@ -17,7 +17,7 @@ if(isset($_POST['p_email']) && isset($_POST['p_captcha'])){
 			$mail=pwd_send($email, $arr[1], $arr[2], $tries, $newpass);
 			if(!$mail->ErrorInfo){
 				echo $i18['PWDR_SENT'];
-				$pwd=pwd_convert2(pwd_convert1($arr[1], $newpass));
+				$pwd=pwd_convert2(pwd_convert1($arr[2], $newpass));
 				$stat=sprintf("UPDATE customers set hash=%s WHERE id=%d",
 					quote_smart($pwd), quote_smart($arr[0]));
 				if(!mysql_query($stat)){

@@ -106,8 +106,8 @@ function login($user,$pwd){
 	return $res;
 }
 
-function pwd_convert1($login, $pwd){
-	$pwd=sha1($pwd.md5($login));
+function pwd_convert1($email, $pwd){
+	$pwd=sha1($pwd.md5($email));
 	$pwd=substr($pwd, 5, 16).substr($pwd, -16);
 	return $pwd;
 }

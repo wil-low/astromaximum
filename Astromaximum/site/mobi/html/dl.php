@@ -41,8 +41,8 @@ if(strlen($act)){
 	if(!$tries[1]){
 		if(isset($_POST['p_captcha'])){ // check captcha
 			if(is_captcha($_POST['p_captcha'])){
-				$stat=sprintf("UPDATE customers SET city_limit=city_limit+1, dlcount1=$DLIM[1] WHERE id=%d",
-					$_SESSION['uid']);
+				$stat=sprintf("UPDATE customers SET city_limit=city_limit+1, ".
+                    "dlcount1=$DLIM[1] WHERE id=%d", $_SESSION['uid']);
 				if(mysql_query($stat)){
 					$tries=get_try_count(0);
 					$is_allow_dl=($tries[1]!=0);
@@ -68,9 +68,9 @@ KCAP1;
 <form id="pwdrestore" action="{$_SERVER['REQUEST_URI']}" method="post">
 <p>{$i18['CAPTCHA_PROMPT']}</p>
 <p><img src="mobi/kcaptcha?$param" alt="Captcha">
-<input name="p_captcha" type="text"/>
+<input name="p_captcha" type="text" size="6"/>
 </p>
-<input name="Action" type="submit" value="OK"/>
+<input name="Action" type="submit" value="OK" class="ok_on"/>
 </form>			
 KCAP;
 		return;
@@ -104,10 +104,11 @@ KCAP;
 <!--	
 function showc(country,state){
 	frm=document.forms.namedItem("main");
-	if(frm.elements.namedItem('cid').value!=country || frm.elements.namedItem('stateid').value!=state){
-		frm.elements.namedItem('stateid').value=state;
-		frm.elements.namedItem('cid').value=country;
-		frm.submit();
+	if(frm.elements.namedItem('cid').value!=country ||
+        frm.elements.namedItem('stateid').value!=state){
+            frm.elements.namedItem('stateid').value=state;
+            frm.elements.namedItem('cid').value=country;
+            frm.submit();
 	}
 }
 function generate(country){
@@ -156,7 +157,8 @@ function highlight_gen(lb){
 		$lb1.="<option value=\"".$row[0].'"'.$selflag.">".$row[1]."</option>\n";
 	}
 ?>
-<select name="y_sel" style="height:auto; width:auto;" onchange="document.forms.namedItem('main').submit()">
+<select name="y_sel" style="height:auto; width:auto;"
+    onchange="document.forms.namedItem('main').submit()">
 <?php
 $y_now=$current_year;
 for($i=0; $i<3; $i++){
@@ -218,7 +220,8 @@ for($i=0; $i<3; $i++){
 	
 	if(!$tries[1]){ // limit exceeded
 		echo "\n<input type=\"hidden\" name=\"rmore\"/>";
-		$gen_prop=" onclick=\"this.form.elements.namedItem('Action').value=1; this.form.submit()\"";
+		$gen_prop=" style=\"background:url('/i/btn_on.png'); font-weight:bold;\" ".
+            "onclick=\"this.form.elements.namedItem('Action').value=1; this.form.submit()\"";
 		$btnlbl=$i18['REQUEST_MORE'];
 	}
 ?>
@@ -286,7 +289,9 @@ function get_selected_cities($param)
 	}
 	$sc1=trim($sc,",");
 	if($sc1){
-		$stat="SELECT cities.id, cities.name, countries.name FROM cities,countries WHERE cities.id IN ($sc1) and countries.id=country_id ORDER BY countries.name,cities.name";
+		$stat="SELECT cities.id, cities.name, countries.name FROM cities,countries ".
+            "WHERE cities.id IN ($sc1) and countries.id=country_id ".
+            "ORDER BY countries.name,cities.name";
 		return mysql_query($stat);
 	}
 	return null;
