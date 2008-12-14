@@ -67,7 +67,8 @@ class LogBox extends List implements CommandListener {
             case Command.STOP:
                 if (c.getPriority() == 10) { // from ShowAbout
                     try {
-                        Astromaximum.instance.platformRequest(Astromaximum.URL);
+                        Astromaximum.instance.platformRequest("http://" +
+                                Astromaximum.URL);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -75,6 +76,7 @@ class LogBox extends List implements CommandListener {
                     deleteAll();
                     append(EMPTY, null);
                 }
+                break;
             case Command.EXIT: // from Astromaximum()
                 Astromaximum.quit();
                 break;

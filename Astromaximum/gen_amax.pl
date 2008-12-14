@@ -518,9 +518,9 @@ sub do_jar{
 	$template=~s/<VERSION>/$const::VERSION/isg;
 	$template=~s/<VENDOR>/$const::VENDOR/isg;
 	$template=~s/<MAINCLASS>/$mainclass/isg;
-	#    $template=~s/<CODE>/$code/isg;
-	#	$jad=~s/<DESC>/$desc/isg;
-	#    $template=~s/<JAR>/$fname\.jar/isg;
+	
+	my $desc = ($mainclass eq $GeoAMclass)? $const::DESCR_GEO: $const::DESCR_CALENDAR;
+	$template=~s/<DESCR>/$desc/isg;
 
 	open(INF, ">$path/$const::DIR_TEMPLATE/mf") or die("$path/$const::DIR_TEMPLATE/mf $!");
 	print INF $template;

@@ -5,10 +5,13 @@ our $DIR_OUTPUT='Astromaximum/deploy';
 our $DIR_TEMP='.temp';
 our $DIR_IMG='images/icons'; 
 our $DIR_INTERPRET='Astromaximum/interpret';
+our $MIDLET='Amax';
 our $PRODUCT='Astromaximum';
 our $VENDOR='S&W Axis';
-our $VERSION='1.1.4';
-our $USE_AMTEXT=1;
+our $VERSION='1.1.5';
+our $DESCR_CALENDAR='Astrological calendar';
+our $DESCR_GEO='Astromaximum city file';
+our $USE_AMTEXT=0;
 
 our $UNZIP=q("%s"  %s -x *META-INF* -d %s );
 #our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );

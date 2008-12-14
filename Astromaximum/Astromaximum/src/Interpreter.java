@@ -22,7 +22,7 @@ class Interpreter extends Canvas implements CommandListener {
 //#endif
 //    private boolean helpMode;
     private final int HMARGIN;
-    private final int VMARGIN;
+    private int VMARGIN;
     static final String[] riseKeys = {"asc", "mc", "dsc", "ic"};
     private int curX,  curY,  topLine = 0,  lineCount;
     int fontSize;
@@ -41,6 +41,7 @@ class Interpreter extends Canvas implements CommandListener {
     static final String RESERVED_CHARS = "}$>*^{~#=@\0";
     static int topic = T_NONE;
     boolean isLogged = false;
+    final Command[] cmds = new Command[3];
 
 //#ifdef use_amtext
 //#     Hashtable hamtext=new Hashtable();
@@ -51,7 +52,8 @@ class Interpreter extends Canvas implements CommandListener {
         setFullScreenMode(true);
 //    offScreenBuffer=Image.createImage(getWidth()-HMARGIN*2,getHeight()*VMARGIN*2);
         setCommandListener(this);
-        VMARGIN = HMARGIN = getWidth() / 25;
+        
+        HMARGIN = getWidth() / 25;
         fontSize = Font.SIZE_SMALL;
 //#ifdef test_rs
 //#         byte[] text = null;
@@ -100,6 +102,16 @@ class Interpreter extends Canvas implements CommandListener {
 
     }
 
+    void recreateCommands() {
+        cmds[0] = new Command(Astromaximum.getstr(94), Command.BACK, 1);//back
+        cmds[1] = new Command(Astromaximum.getstr(140), Command.BACK, 2);//text font
+        cmds[2] = new Command(Astromaximum.getstr(90), Command.BACK, 3);//help
+
+        addCommand(cmds[0]);
+        addCommand(cmds[1]);
+        addCommand(cmds[2]);
+    }
+    
     /**
      * findText
      *
@@ -298,30 +310,38 @@ class Interpreter extends Canvas implements CommandListener {
 //        Astromaximum.instance.recalcBounds(getWidth(),getHeight());
 //    }
     public void commandAction(Command c, Displayable d) {
-        if (c.getPriority() == 1) {
-            txt = null;
-            System.gc();
-            Astromaximum.summary.dontRender();
-        }
-        if (c.getPriority() == 2) {
-            switch (fontSize) {
-                case Font.SIZE_LARGE:
-                    fontSize = Font.SIZE_SMALL;
-                    break;
-                case Font.SIZE_MEDIUM:
-                    fontSize = Font.SIZE_LARGE;
-                    break;
-                case Font.SIZE_SMALL:
-                    fontSize = Font.SIZE_MEDIUM;
-                    break;
+        int priority = c.getPriority();
+        if (d == Astromaximum.menu){
+            if (c.getCommandType() == Command.OK) {
+                priority = Astromaximum.menu.getSelectedIndex() + 1;
             }
-            repaint();
-            Astromaximum.options.saveHistory();
         }
-        if (c.getPriority() == 3) {
-            Astromaximum.summary.setCurPage(Summary.PAGE_HELP);
-            Astromaximum.summary.dontRender();
-
+        switch (priority) {
+            case 1:
+                txt = null;
+                System.gc();
+                Astromaximum.summary.dontRender();
+                break;
+            case 2:
+                switch (fontSize) {
+                    case Font.SIZE_LARGE:
+                        fontSize = Font.SIZE_SMALL;
+                        break;
+                    case Font.SIZE_MEDIUM:
+                        fontSize = Font.SIZE_LARGE;
+                        break;
+                    case Font.SIZE_SMALL:
+                        fontSize = Font.SIZE_MEDIUM;
+                        break;
+                }
+                repaint();
+                Astromaximum.options.saveHistory();
+            case 4:
+                Astromaximum.disp.setCurrent(this);
+                break;
+            case 3:
+                Astromaximum.summary.setCurPage(Summary.PAGE_HELP);
+                Astromaximum.summary.dontRender();
         }
 
     }
@@ -342,25 +362,31 @@ class Interpreter extends Canvas implements CommandListener {
 //#endif
         graphics.setColor(Astromaximum.CURRENT_MONTH_COLOR);
         graphics.fillRect(0, 0, graphics.getClipWidth(), graphics.getClipHeight());
+
+        int wid2 = Summary.imgService.getHeight() / 2;
+        SummItem.drawImg(graphics, Summary.imgPanel, 9, wid2 + 1, wid2 + 1, Graphics.VCENTER | Graphics.HCENTER);
+        SummItem.drawImg(graphics, Summary.imgService, 0, wid2 * 4 + 1, wid2 + 1,
+                Graphics.VCENTER | Graphics.HCENTER);
+        graphics.setColor(Astromaximum.BORDER_COLOR);
+        graphics.drawRect(0, 0, wid2 *2 + 2, wid2 * 2 + 2);
+        graphics.drawRect(wid2 * 3, 0, wid2 *2 + 2, wid2 * 2 + 2);
+
+        graphics.setClip(0, VMARGIN, graphics.getClipWidth(), graphics.getClipHeight() - VMARGIN);
+        
         graphics.setColor(0);
         Font oldFont = graphics.getFont();
         graphics.setFont(Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, fontSize));
+
         lineHeight = graphics.getFont().getHeight();
         curY = topLine;
         curX = 0;
         graphics.translate(HMARGIN - graphics.getTranslateX(), VMARGIN - graphics.getTranslateY());
-        drawArticle(graphics, txt);
+        renderString(graphics, txt);
+
 //#ifdef UseBuffer
 //#     graphics.drawImage(Summary.offScreenBuffer, 0, 0, Graphics.LEFT | Graphics.TOP);
 //#endif
         graphics.setFont(oldFont);
-    }
-
-    private void drawArticle(Graphics osg, String string) {
-//    Font oldFont=osg.getFont();
-//    osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_UNDERLINED,fontSize));
-        renderString(osg, string);
-//    osg.setFont(oldFont);
     }
 
     private void renderString(Graphics osg, String s) {
@@ -406,6 +432,7 @@ class Interpreter extends Canvas implements CommandListener {
 
     void prepareText() {
         lineCount = topLine = 0;
+        VMARGIN = Summary.imgService.getHeight() + 6;
     }
 
     private void newLine() {
@@ -430,6 +457,10 @@ class Interpreter extends Canvas implements CommandListener {
                 }
                 break;
             default: //case Canvas.FIRE:
+                if (keyCode == Canvas.KEY_NUM0) {
+                    Astromaximum.instance.showMenu(this, cmds);
+                }
+                else {
 //#if logger
         if(isLogged){
 ///#           Astromaximum.instance.logger("Stopping log...");
@@ -441,17 +472,30 @@ class Interpreter extends Canvas implements CommandListener {
           Astromaximum.summary.dontRender();
         }
 //#else
-//#                 Astromaximum.summary.dontRender();
+//#                     Astromaximum.summary.dontRender();
 //#endif
-                break;
+                }
         }
     }
 
     protected void pointerPressed(int x, int y) {
-        y -= VMARGIN;
-        if (y > topLine && y < curY) {
-            topLine += (getHeight() / 2 - y - VMARGIN);
-            repaint();
+        if (y < VMARGIN){
+           x = x / (Summary.imgService.getHeight() + 2);
+           switch (x) {
+               case 0:
+                   Astromaximum.instance.showMenu(this, cmds);
+                   break;
+               case 1:
+                   Astromaximum.summary.dontRender();
+                   break;
+           }
+        }
+        else{
+            y -= VMARGIN;
+            if (y > topLine && y < curY) {
+                topLine += (getHeight() / 2 - y - VMARGIN);
+                repaint();
+            }
         }
     }
 

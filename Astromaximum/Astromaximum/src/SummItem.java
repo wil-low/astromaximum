@@ -341,7 +341,8 @@ class SummItem extends TimerTask implements RecordFilter {
                     case 1:
                         osg.setColor(Astromaximum.RUBY_COLOR);
 //                        Font old = osg.getFont();
-                        osg.drawString(Astromaximum.URL, left, top, Graphics.BOTTOM | Graphics.LEFT);
+                        osg.drawString(Astromaximum.URL, width / 2, top - 2,
+                                Graphics.BOTTOM | Graphics.HCENTER);
 //                        osg.setFont(old);
                     case 2:
                         for (int i = 0; i < events.length; i++) {
@@ -1344,7 +1345,7 @@ class SummItem extends TimerTask implements RecordFilter {
         return idx;
     }
 
-    private static void drawImg(Graphics osg, Image image, int index, int left, int top, int anchor) {
+    static void drawImg(Graphics osg, Image image, int index, int left, int top, int anchor) {
         final int h = image.getHeight();
 //#if "2.0"!="2.0"
 //#     osg.drawRegion(image,h*index,0,h,h, Sprite.TRANS_NONE,left,top,anchor);

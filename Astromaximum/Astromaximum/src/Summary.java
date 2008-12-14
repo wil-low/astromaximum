@@ -39,7 +39,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
     static int size;
     int selItem;
     //  static boolean isCurDay;
-    private int previousPage = PAGE_SUMMARY;
     int pageNum;
 //#if "imeiCheck" @ protection
     static int hj;
@@ -86,7 +85,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
     final Command[] cmds = new Command[7];
     static Image imgPanelSmall;
     static boolean isMenuVisible = false;
-    private static List menu;
     /**
      * Summary
      */
@@ -320,7 +318,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
                         setCurPage(pn);
                         break;
                     case Canvas.KEY_NUM0:
-                        Astromaximum.disp.setCurrent(menu);
+                        Astromaximum.instance.showMenu(this, cmds);
 //                        menuItem.page = 255 - menuItem.page;
 //                        repaint();
 /*                        
@@ -819,6 +817,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
         }
         final int sind = si.selIndex;
         switch (si.type) {
+            case Event.EV_PANEL:
+                // pressing activates immediately
+                selectSummItem(si, false);
+                return;
             case Event.EV_TOP_MONTH:
             case Event.EV_TOP_DAY:
                 if (sind != 1) {
@@ -845,21 +847,22 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 y -= si.top;
                 x -= si.left;
                 final int ss = x * colCount / si.width + y * rowCount / si.height * colCount;
-                moveDay(ss - selCell, true);
-                repaint();
-                if (pageNum == PAGE_WEEK)
-                    if(x < IMG_WIDTH * 2) {
-                        showMoonIngress();
-                        return;
+                boolean isMoved = moveDay(ss - selCell, true);
+                if(isMoved){
+                    repaint();
+                    if (pageNum == PAGE_WEEK) {
+                        if(x < IMG_WIDTH * 2) {
+                            showMoonIngress();
+                            return;
+                        }
+                        if(x < IMG_WIDTH * 4) {
+                            si = new SummItem(Event.EV_TOP_DAY);
+                            si.events = new Event[1];
+                            si.setEvents(0, new Event(0, ss + 1));
+                            selectSummItem(si, false);
+                            return;
+                        }
                     }
-                    if(x < IMG_WIDTH * 4) {
-                        si = new SummItem(Event.EV_TOP_DAY);
-                        si.events = new Event[1];
-                        si.setEvents(0, new Event(0, ss + 1));
-                        selectSummItem(si, false);
-                        return;
-                }
-                if (ss == selCell) {
                     showDaySummary();
                 }
                 return;
@@ -889,16 +892,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 break;
             case Event.EV_PANEL:
                 keyReleased(Canvas.KEY_NUM0);
-/*
-                int pn;
-                if (pageNum == PAGE_PANEL) {
-                    pn = previousPage;
-                } else {
-                    previousPage = pageNum;
-                    pn = PAGE_PANEL;
-                }
-                setCurPage(pn);
- */
                 break;
             case Event.EV_TOPIC_BUTTON:
                 switch (si.tag) {
@@ -1030,12 +1023,13 @@ class Summary extends Canvas implements CommandListener, Runnable {
      */
     public void commandAction(Command c, Displayable d) {
         switch (c.getCommandType()) {
-            case Command.OK:
-                Astromaximum.disp.setCurrent(this);
-                commandAction(cmds[menu.getSelectedIndex()], this);
-                return;
+            case Command.CANCEL:
             case Command.BACK:
                 Astromaximum.disp.setCurrent(this);
+                return;
+            case Command.OK:
+                Astromaximum.disp.setCurrent(this);
+                commandAction(cmds[Astromaximum.menu.getSelectedIndex()], this);
                 return;
         }
         if (pageNum == PAGE_DECUMB) {
@@ -1146,13 +1140,8 @@ class Summary extends Canvas implements CommandListener, Runnable {
         }
         recalcAllSelections();
         if (oldPage != pageNum) {
-            selItem = -1;
-            if (pageNum != PAGE_WEEK && pageNum != PAGE_MONTH) {
-                moveFocus(1);
-            }
-            if (pageNum != PAGE_DECUMB && pageNum != PAGE_HELP) {
-                moveFocus(1);
-            }
+            selItem = 0;
+            moveFocus(1);
         }
         final SummItem selsi = getItem(Event.EV_TITHI);
         if (selsi != null && selsi.isOnPage()) {
@@ -1236,7 +1225,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
      * @param delta      int
      * @param changePage
      */
-    void moveDay(int delta, boolean changePage) {
+    boolean moveDay(int delta, boolean changePage) {
 //    System.out.println("Was "+Event.long2String(selDate.getTime(),0,false));
         long tmp = Astromaximum.instance.changeDate(selDate, delta);
 //    System.out.println(" now= "+Event.long2String(selDate.getTime(),0,false));
@@ -1247,6 +1236,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
             moveFocus(delta < 0 ? -1 : 1);
         }
 //    System.out.println(" now= "+Event.long2String(selDate.getTime(),0,false));
+        return tmp != 0;
     }
 
     void setCell(long date1, boolean changePage) {
@@ -1513,6 +1503,13 @@ class Summary extends Canvas implements CommandListener, Runnable {
         timer.schedule(new SummItem(1), DELAY, DELAY);
     }
 
+    void stopRealtime() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
     void calcDecumbiture() {
         Interpreter.topic = Interpreter.T_DECUMB;
         long startDate = Astromaximum.customTime.decumbDate;
@@ -1668,9 +1665,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#if imgPhase
         img = null;
 //#endif
-        if (timer != null) {
-            timer.cancel();
-        }
+        stopRealtime();
         progress = 0;
     }
 
@@ -1899,17 +1894,8 @@ class Summary extends Canvas implements CommandListener, Runnable {
         //#endif
                 cmdCount = 7;
         }
-// Main menu form        
-        menu=new List(Astromaximum.getstr(161), List.IMPLICIT);
-        for (int i = 0; i < cmdCount; i++) {
+        for (int i = 0; i < cmdCount; i++)
             addCommand(cmds[i]);
-            menu.append(cmds[i].getLabel(), null);
-        }
-        Command ok = new Command(Astromaximum.getstr(98), Command.OK, 0);
-        menu.addCommand(ok);
-        menu.addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 0));
-        menu.setSelectCommand(ok);
-        menu.setCommandListener(this);
     }
     
     private Timer timer;

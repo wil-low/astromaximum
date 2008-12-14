@@ -64,7 +64,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     /**
      * Suggested URL for main web site
      */
-    static final String URL = "http://mobi.astromaximum.com/";
+    static final String URL = "mobi.astromaximum.com";
     /**
      * Delay (ms) between showing log texts, if logging is on
      * and user pressed "Enter" to bypass it quickly
@@ -150,6 +150,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     static LogBox logBox;
     static Interpreter interpreter;
     static CustomTime customTime;
+    static List menu;
     
     static long start;
     /**
@@ -161,11 +162,13 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Start application, initialize all subsystems
      */
     public void startApp() {
+        if (!firstRun) {
+            summary.startRealtime();
+            return;
+        }
         disp = Display.getDisplay(this);
 //#debug
         start = System.currentTimeMillis();
-//        if (firstRun) {
-//        System.gc();
         try {
             instance = this;
 //      InputStream iis=getClass().getResourceAsStream("/Amaxdata.dat");
@@ -190,11 +193,9 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#endif
             logBox = new LogBox();
 
-            interpreter = new Interpreter();
             errCode = 1; // XXX
-            interpreter.addCommand(new Command(getstr(94), Command.BACK, 1));//back
-            interpreter.addCommand(new Command(getstr(140), Command.BACK, 2));//text font
-            interpreter.addCommand(new Command(getstr(90), Command.BACK, 3));//help
+            interpreter = new Interpreter();
+            interpreter.recreateCommands();
             locale = getstr(255);
             errCode = 101; // XXX
 
@@ -443,15 +444,13 @@ public class Astromaximum extends MIDlet implements CommandListener {
         System.out.println(" msec.");
 //#enddebug
         summary.startRealtime();
-//    log("SDS after");
-//      disp.setCurrent(summary); 
     }
 
     /**
      * Pause is not implemented
      */
     public void pauseApp() {
-        /**@todo Implement pauseApp behavior here*/
+        summary.stopRealtime();
     }
 
     /**
@@ -639,6 +638,21 @@ public class Astromaximum extends MIDlet implements CommandListener {
             locHash.put(key, str);
         }
         return str;
+    }
+
+    void showMenu(CommandListener listener, Command[] cmds) {
+        menu=new List(Astromaximum.getstr(161), List.IMPLICIT);
+        int cmdCount = cmds.length;
+        for (int i = 0; i < cmdCount; i++) {
+            if (cmds[i] != null)
+                menu.append(cmds[i].getLabel(), null);
+        }
+        Command ok = new Command(Astromaximum.getstr(98), Command.OK, 0);
+        menu.addCommand(ok);
+        menu.addCommand(new Command(Astromaximum.getstr(97), Command.CANCEL, 4));
+        menu.setSelectCommand(ok);
+        menu.setCommandListener(listener);
+        Astromaximum.disp.setCurrent(menu);
     }
 
 //#if "timeBomb" @ protection
