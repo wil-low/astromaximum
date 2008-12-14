@@ -448,8 +448,8 @@ class SummItem extends TimerTask implements RecordFilter {
                         osg.setColor(Astromaximum.CUST_COLOR);
                     }
                     osg.drawString(ev.getDateString(0, 1),
-                            xr + 1, top + height - 1,
-                            Graphics.BASELINE | Graphics.LEFT);
+                            xr + 1, top + height / 2 + 1,
+                            Graphics.TOP | Graphics.LEFT);
                 }
                 break;
             case Event.EV_MOON_RISE:
@@ -470,7 +470,7 @@ class SummItem extends TimerTask implements RecordFilter {
                             osg.setColor(Astromaximum.CUST_COLOR);
                         }
                         osg.drawString(ev.getDateString(0, 1),
-                                xr + 1, top + height - 1, Graphics.BASELINE | Graphics.LEFT);
+                                xr + 1, top + height / 2 + 1, Graphics.TOP | Graphics.LEFT);
                     }
                 }
                 break;
@@ -496,7 +496,7 @@ class SummItem extends TimerTask implements RecordFilter {
                         osg.setColor(Astromaximum.CUST_COLOR);
                     }
                     osg.drawString(Integer.toString(events[i].getDegree()),
-                            x100, top + height - 1, Graphics.BASELINE | Graphics.HCENTER);
+                            x100, top + 2, Graphics.TOP | Graphics.HCENTER);
                 }
                 break;
             case Event.EV_MOON_MOVE:
@@ -671,7 +671,7 @@ class SummItem extends TimerTask implements RecordFilter {
                         day = -(day - 359);
                     }
                     osg.drawString(Integer.toString(day),
-                            getX(i, XCENTER), top + height, Graphics.BASELINE | Graphics.HCENTER);
+                            getX(i, XCENTER), top + 2, Graphics.TOP | Graphics.HCENTER);
                 }
                 break;
             case Event.EV_ZODIAC_SIGN:
