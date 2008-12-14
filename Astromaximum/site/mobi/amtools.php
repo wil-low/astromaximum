@@ -229,7 +229,9 @@ function get_default_cities($arr){
 	return substr($ids, 0, -1);
 }
 
-function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out - string with links
+function midlet_create($type, $year, $lang, $param, $path2gen, $flag){
+// $flag: 2= html, 1=text, 0=number 
+// out - string with links
 	global $DIR_FILES, $DIR_SOURCE, $i18, $EXEC;
 
 	$timeout_offset=-24;
@@ -268,41 +270,44 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $is_html){ // out
 		$str='';
 	}
 	else{
-                if(!add_file($fn, $type{0}." $year $lang")){
-                        $str.=mysql_error();
-                        error_log($str);
-                        return '';
-                }
+		if(!add_file($fn, $type{0}." $year $lang")){
+			$str.=mysql_error();
+			error_log($str);
+			return '';
+		}
 		$id=$fn;
 		$data_php="http://".$_SERVER['SERVER_NAME'];
-                $abs_path='./';
+		          $abs_path='./';
 		if(strpos($data_php, "mobi") === false){
 			$data_php.="/mobi";
-                        $abs_path.='/mobi';
+		                  $abs_path.='/mobi';
 		}
 		$url=$data_php.'/data.php?r='.$id;
 		$jarsize=fsize_human("$abs_path/dl/files/$id.r");
 		$jadsize=fsize_human("$abs_path/dl/files/$id.d");
-		if($is_html){
-    		$url2=str_replace("?r", "?d", $url);
-			if($EXEC==1){
-				$str.="<h4>{$i18['PC_DL']}:</h4>";
-				$str.="<a href=\"$url\">JAR ($jarsize)</a><br/>\n";
-			}
-			else{
-				$str.="<h4>{$i18['PHONE_DL']}:</h4>";
-			}
-			$str.="<a href=\"$url2\">JAD ($jadsize)</a><br>\n";
-	
-	#				$url=str_replace("?d", "?t", $url);
-	#				echo "<h4>{$i18['PHONE_DL']}:</h4>";
-	#				echo "<a href='$url'>JAD</a><br>";
-			$str.="<br/>{$i18['BOTH_FILES']}";
-			$str.="<br/><br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
-		}
-		else{ # text-only version
-    		$url2=str_replace("?r", "?t", $url);
-			$str="$url\n$url2\n";
+		switch($flag){
+			case 2:
+		 		$url2=str_replace("?r", "?d", $url);
+				if($EXEC==1){
+					$str.="<h4>{$i18['PC_DL']}:</h4>";
+					$str.="<a href=\"$url\">JAR ($jarsize)</a><br/>\n";
+				}
+				else{
+					$str.="<h4>{$i18['PHONE_DL']}:</h4>";
+				}
+				$str.="<a href=\"$url2\">JAD ($jadsize)</a><br>\n";
+		#				$url=str_replace("?d", "?t", $url);
+		#				echo "<h4>{$i18['PHONE_DL']}:</h4>";
+		#				echo "<a href='$url'>JAD</a><br>";
+				$str.="<br/>{$i18['BOTH_FILES']}";
+				$str.="<br/><br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
+				break;
+			case 1:
+		 		$url2=str_replace("?r", "?t", $url);
+				$str="$url\n$url2\n";
+				break;
+			case 0:
+				$str = $id;
 		}
 	}
 	return $str; // 1st is JAR, 2nd is JAD

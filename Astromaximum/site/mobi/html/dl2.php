@@ -124,7 +124,7 @@ KCAP;
 		if($is_allow_dl && mysql_num_rows($sth)>0){
 			$row = mysql_fetch_row($sth);
 			echo "<p>".sprintf($i18['READY_CITIES'], "$row[1], $row[2]", $defyear)."</p>\n";
-			$str=midlet_create("geo", $defyear, $lang, $sc, "mobi/dl", true);
+			$str=midlet_create("geo", $defyear, $lang, $sc, "mobi/dl", 2);
 			if(strlen($str)){
 				dec_try_count(0, 1);
 				echo "$str";

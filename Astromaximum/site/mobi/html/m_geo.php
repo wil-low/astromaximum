@@ -42,7 +42,7 @@
 		if($is_allow_dl && mysql_num_rows($sth)>0){
 			$row = mysql_fetch_row($sth);
 			echo sprintf('<i>%s</i> (%d)', "$row[0], $row[1]", $defyear)."<br/>\n";
-			$str=midlet_create("geo", $defyear, $lang, $sc, "dl", false);
+			$str=midlet_create("geo", $defyear, $lang, $sc, "dl", 1);
 			if(strlen($str)){
 				dec_try_count(0, 1);
                 $lines=explode("\n", $str);

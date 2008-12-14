@@ -105,7 +105,7 @@ if($chac!=-1 and $chac!=1){
 		if($is_allow_dl){
 			$sc=get_default_cities($GLOBALS['amax']['def_cities']); 
 			echo tries_remained($tries[$dl_key]-1, $DLIM[$dl_key]);
-			$str=midlet_create("tb", $year, $lang, $sc, "mobi/dl", true);
+			$str=midlet_create("tb", $year, $lang, $sc, "mobi/dl", 2);
 			if(strlen($str)){
 				dec_try_count(0, $dl_key);
 				echo $str;
