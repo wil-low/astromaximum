@@ -31,19 +31,14 @@ if(isset($_GET['u'])){
 			$sel=($row[7]==$rowp[0])? ' selected="selected"': '';
 			$paymode.="<option value=\"$rowp[0]\"$sel>$rowp[1]</option>\n";
 		}
-        if(!$row[8]){
-            $rolelist="<b>Administrator</b>";
-        }
-        else{
-            $rolelist='<select name="u_role" id="u_role" style="width:10em">';
-            $stat="SELECT id, name from dic_role WHERE id>0 ORDER BY id";
-            $sth=mysql_query($stat);
-            while($rowp=mysql_fetch_row($sth)){
-                $sel=($row[8]==$rowp[0])? ' selected="selected"': '';
-                $rolelist.="<option value=\"$rowp[0]\"$sel>$rowp[1]</option>\n";
-            }
-            $rolelist.='</select>';
-        }
+		$rolelist='<select name="u_role" id="u_role" style="width:10em">';
+		$stat="SELECT id, name from dic_role ORDER BY id";
+		$sth=mysql_query($stat);
+		while($rowp=mysql_fetch_row($sth)){
+			$sel=($row[8]==$rowp[0])? ' selected="selected"': '';
+			$rolelist.="<option value=\"$rowp[0]\"$sel>$rowp[1]</option>\n";
+		}
+		$rolelist.='</select>';
 		echo <<<EOF
 <h3>$hdr $row[0]</h3>
 <form id="usredit" action="index.php?$lang_&amp;p=usermgr" method="post">
