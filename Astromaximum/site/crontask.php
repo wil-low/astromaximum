@@ -1,6 +1,14 @@
 <?php
     $EXEC=1;
-
+/*
+    $fn = tempnam("/tmp", "CRON");
+	$ctab = fopen($fn, 'w');
+	fwrite($ctab, "3 3 3 3 3 date\n");
+	fclose($ctab);
+	echo "crontab $fn ";
+	system("crontab $ctab");
+	exit;
+*/	
 // ?mode=clean_files  - delete outdated files and set 'files.deleted' to true
     if(file_exists('pwdgen_local.php') ||
        (isset($_GET['mode']) && strcmp($GET['mode'], 'clean_files'))){

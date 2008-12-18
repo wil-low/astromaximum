@@ -111,7 +111,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
         }
         setFullScreenMode(true);
         setCommandListener(this);
-        pageNum = PAGE_SUMMARY;
+        pageNum = -1;
     }
 
     /**
@@ -176,11 +176,12 @@ class Summary extends Canvas implements CommandListener, Runnable {
     void setLayout(byte layoutNum) {
         items = null;
         size = layoutNum;
-        pageNum = Summary.PAGE_SUMMARY;
+        pageNum = PAGE_SUMMARY;
         selItem = 1;
         changeSize();
         gatherSummary(Astromaximum.summary.date.getTime());
-        setCurPage(Summary.PAGE_SUMMARY);
+        setCurPage(PAGE_SUMMARY);
+        selectFirstItem();
     }
 
     private void cycleLayout() {
@@ -877,6 +878,14 @@ class Summary extends Canvas implements CommandListener, Runnable {
         }
     }
 
+    private void selectFirstItem() {
+        selItem = 0;
+        if (!getSelectedItem().isOnPage())
+            moveFocus(1);
+        // skip EV_PANEL
+        moveFocus(1);
+    }
+
     private void selectSummItem(SummItem si, boolean ignoreAllTopics) {
         switch (si.type) {
             case Event.EV_STATUS:
@@ -892,7 +901,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 keyReleased(Canvas.KEY_NUM0);
                 break;
             case Event.EV_BACK:
-                setCurPage(Summary.PAGE_SUMMARY);
+                setCurPage(PAGE_SUMMARY);
                 break;
             case Event.EV_TOPIC_BUTTON:
                 switch (si.tag) {
@@ -1123,8 +1132,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
         }
         recalcAllSelections();
         if (oldPage != pageNum) {
-            selItem = 0;
-            moveFocus(1);
+            selectFirstItem();
         }
         final SummItem selsi = getItem(Event.EV_TITHI);
         if (selsi != null && selsi.isOnPage()) {
@@ -1414,9 +1422,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#if logger
       Astromaximum.instance.logger("setCurPage");
 //#endif
-        selItem = 0;
-        moveFocus(1);
-//    disp.setCurrent(summary);
         Astromaximum.options.addImeiChar(this);
     }
 
