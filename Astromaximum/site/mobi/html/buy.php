@@ -79,7 +79,6 @@ if(present('email1') && present('email2') && present('nick') && present('p_captc
 }
 
 if($chac!=-1 and $chac!=1){
-
 	$y_now=$current_year;
 	$out='';
 	for($i=$current_year-1; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
@@ -131,6 +130,12 @@ if($chac!=-1 and $chac!=1){
 	echo "</form>";
     return;
 }
+
+include_once("mobi/ipblock.php");
+$msg=allow_ip('buy', false);
+echo $msg;
+if($msg) return;
+
 $agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang_), false);
 $sess=session_name().'='.session_id();
 

@@ -65,18 +65,19 @@ sub convert{
 	my $header_main=$head_t.'<div id="hdr" class="hdr">'.$header.'</div>';
 	my $tit;
 	if($body=~s/<title>(.+)<\/title>//is){
-		$tit="<h4>$1</h4>";
+		$tit="\$topic='$1';";
+#		$tit="<h4>$1</h4>";
 #		$header_main=~s/%TITLE%/$tit/is;
 	}
 	my $footer='<div id="ftr">'.$header.'</div></body></html>';
-	$body=~s/<img (\w[\d_]+)\s*>/<img src="mobi\/i\/$1\.gif" alt="$alter->{$1}" width="$img_dim" height="$img_dim"\/>/isg;
+	$body=~s/<img (\w[\d_]+)\s*>/<img src="\/mobi\/i\/$1\.gif" alt="$alter->{$1}" width="$img_dim" height="$img_dim"\/>/isg;
 	$body=~s/<a (\w[\d_]+)>/<a href="?lang=$lang&amp;p=$1">/isg;
 #	$body=~s/<i>/<span class="comment">/isg;
 #	$body=~s/<b>/<span class="alert">/isg;
 #	$body=~s/<\/[ib]>/<\/span>/isg;
 #	$body='<div id="cont">'.$body.'</div>';
 #	$body="$header_main\n$body\n$footer";
-	$body=$tit.$body;
+	$body="<?php\n$tit\n\$body = <<< EOF$body\nEOF;\n?>";
 	open(OUTF, ">$fn" ) or die "$! $fn";
 	binmode(OUTF);
 	print(OUTF $body);

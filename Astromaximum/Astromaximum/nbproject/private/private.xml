@@ -11,19 +11,18 @@
             <line>0</line>
         </file>
         <file>
-            <url>src/SummItem.java</url>
-            <line>0</line>
-            <line>1027</line>
-        </file>
-        <file>
             <url>src/DataFile.java</url>
             <line>300</line>
         </file>
         <file>
+            <url>src/SummItem.java</url>
+            <line>0</line>
+            <line>1028</line>
+        </file>
+        <file>
             <url>src/Summary.java</url>
-            <line>903</line>
-            <line>1072</line>
-            <line>1903</line>
+            <line>896</line>
+            <line>1066</line>
         </file>
     </editor-bookmarks>
 </project-private>

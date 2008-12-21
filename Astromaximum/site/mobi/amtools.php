@@ -497,7 +497,7 @@ function show_payment_instructions($payment_id){ // print payment page
     }
     $tabs.='</ul>';
     $META_HEAD_ADD = <<< EOF
-<script type="text/javascript" src="jquery-1.2.6.min.js"></script>
+<script type="text/javascript" src="/jquery-1.2.6.min.js"></script>
 <script type="text/javascript">
 <!--
 $(document).ready(init);

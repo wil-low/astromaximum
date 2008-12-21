@@ -2,7 +2,9 @@
 if(!isset($EXEC)) die("Access restricted");
 include_once("mobi/amtools.php");
 include_once("mobi/ipblock.php");
-allow_ip('demo',false);
+$msg=allow_ip('demo',false);
+echo $msg;
+if($msg) return;
 if($chac!=-1){
 	$uri=htmlentities($_SERVER['REQUEST_URI']);
 	$prev_year=$GLOBALS['amax']['year']-1;

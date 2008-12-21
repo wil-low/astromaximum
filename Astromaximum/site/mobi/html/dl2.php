@@ -1,67 +1,20 @@
 <?php
-$defyear=2008;
-
-if(isset($_GET['ajax'])){
-    $ajax=$_GET['ajax'];
-    $EXEC=1;
-	include_once('../config.php');
-    include_once("../lang.php");
-    lang_load("../html");
-    include_once("../dbconnect.php");
-	header('Content-Type: text-javascript;charset=UTF-8');
-	header('Cache-Control: no-cache');
-    if(!isset($_GET['cid']) || !isset($_GET['stateid'])) echo "dfgsregsr";
-    $cid=intval($_GET['cid']); $stateid=intval($_GET['stateid']);
-    $arr=array();
-    if(!$ajax){
-        $stat="SELECT countries.id, countries.name FROM countries ORDER BY countries.name";
-    }
-    
-    if($ajax==1){
-        array_push($arr, '[0,"'.$i18['ALL_STATES'].'"]');
-        $stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
-            "countries WHERE country_id=%s ORDER BY states.name",quote_smart($cid));
-    }
-    
-    if($ajax==2){
-        $andst='';
-        if($stateid){
-            $andst=sprintf(" AND state_id=%s",quote_smart($stateid));
-        }
-        $stat=sprintf(
-            "SELECT cities.id, cities.name FROM cities,countries".
-            ",locations". # year condition
-            " WHERE country_id=%s AND countries.id=country_id".
-            " AND city_id=cities.id %s AND year=%s". # year condition
-            " ORDER BY cities.name",quote_smart($cid), $andst, quote_smart($defyear));
-    }    
-    $out='{"content":[';
-	$sth=mysql_query($stat); $ii=0;
-	while($row=mysql_fetch_row($sth)){
-		array_push($arr, '['.$row[0].',"'.$row[1].'"]');
-		$ii++;
-	}
-	$out.=implode(',', $arr);
-	$out.=']}';
-    echo $out;
-    $fout=fopen("/tmp/1.txt","w");
-    fwrite($fout, $out);
-    fclose($fout);
-    return;
-}
-
 if(!isset($EXEC)) die("Access restricted");
 lang_load("mobi/html");
-$META_CUSTOMSCR='/dl.js'; $META_CUSTOMFUNC='dl_init()';
 $step=1;
 $max_cities=5;
 $table_vsize=18;
 $current_year=$GLOBALS['amax']['year'];
-if($chac==-1 or $chac==1){
+if($chac==-1){
 	reg_warning($i18['PAGE_DLCIT']);
 	return;
 }
-include_once('mobi/amtools.php');
+
+if($chac==3){ // unpaid
+    show_payment_instructions($chac_pay);
+    return;
+}
+
 $tries=get_try_count(0);
 global $DLIM;
 $is_allow_dl=($tries[1]!=0);
@@ -72,6 +25,10 @@ if(isset($_POST['y_sel'])){
 		$defyear=$current_year;
 	}
 }
+if($chac==1){ // demo - previous year only
+    $defyear=$current_year-1;
+}
+
 $sc=',';
 if(isset($_POST['sc'])){
 	$sc=$_POST['sc'];
@@ -84,8 +41,8 @@ if(strlen($act)){
 	if(!$tries[1]){
 		if(isset($_POST['p_captcha'])){ // check captcha
 			if(is_captcha($_POST['p_captcha'])){
-				$stat=sprintf("UPDATE customers SET city_limit=city_limit+1, dlcount1=$DLIM[1] WHERE id=%d",
-					$_SESSION['uid']);
+				$stat=sprintf("UPDATE customers SET city_limit=city_limit+1, ".
+                    "dlcount1=$DLIM[1] WHERE id=%d", $_SESSION['uid']);
 				if(mysql_query($stat)){
 					$tries=get_try_count(0);
 					$is_allow_dl=($tries[1]!=0);
@@ -111,9 +68,9 @@ KCAP1;
 <form id="pwdrestore" action="{$_SERVER['REQUEST_URI']}" method="post">
 <p>{$i18['CAPTCHA_PROMPT']}</p>
 <p><img src="mobi/kcaptcha?$param" alt="Captcha">
-<input name="p_captcha" type="text"/>
+<input name="p_captcha" type="text" size="6"/>
 </p>
-<input name="Action" type="submit" value="OK"/>
+<input name="Action" type="submit" value="OK" class="ok_on"/>
 </form>			
 KCAP;
 		return;
@@ -142,17 +99,25 @@ KCAP;
 }
 //print_r($_REQUEST);
 ?>
-<script type="text/javascript">      
+
+<script type="text/javascript">
+<!--	
+function showc(country,state){
+	frm=document.forms.namedItem("main");
+	if(frm.elements.namedItem('cid').value!=country ||
+        frm.elements.namedItem('stateid').value!=state){
+            frm.elements.namedItem('stateid').value=state;
+            frm.elements.namedItem('cid').value=country;
+            frm.submit();
+	}
+}
 function generate(country){
-    
 	lst=findObj("chkcit");
 	ind=lst.selectedIndex;
 	if(ind<0){
 		alert("<?php echo $i18['SELCITY_ALERT']?>");
 		return;
 	}
-	var lbc=document.main.countries;
-	country=lbc.item(lbc.selectedIndex).text;
 	if(confirm("<?php echo $i18['SELCITY_GENERATE']?>:\n"+lst.item(ind).text+", "+country+"?")){
 		frm=document.forms.namedItem("main");
 		frm.elements.namedItem("sc").value=lst.item(ind).value;
@@ -160,15 +125,40 @@ function generate(country){
 		frm.submit();
 	}
 }
+function highlight_gen(lb){
+	if(lb.selectedIndex<0) return;
+	btn=findObj('genbtn');
+	btn.style.background="url('i/btn_on.png')";
+	btn.style.fontWeight="bold";
+}
+-->
 </script>
-
-<h4></h4>
-          
-<div style="position: absolute;top: 198px;left: 345px;width:660px;">
-<form method="post" action="/?lang=ru&amp;p=dl2" name="main">
+<div style="width:660px;">
+<form method="post" action="/?<?php echo $lang_ ?>&amp;p=dl" name="main">
 <table class="colorlist">
-<tr><th><b>Шаг 1</b>.
-<select name="y_sel" style="height:auto; width:auto;" onchange="document.forms.namedItem('main').submit()">
+<tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
+<?php
+// First listbox
+	$cnum=0; $lb1='';
+	if(isset($_POST['cid'])){
+		$cnum=$_POST['cid'];
+	}
+	$sth=mysql_query("SELECT countries.id, countries.name FROM countries ORDER BY countries.name");
+	while($row=mysql_fetch_row($sth)){
+		if(!$cnum){
+			$cnum=$row[0];
+			$_POST['cid']=$cnum;
+		}
+		$selflag='';
+		if($row[0]==$cnum){
+			$cur_country=$row[1];
+			$selflag=' selected="selected"';
+		}
+		$lb1.="<option value=\"".$row[0].'"'.$selflag.">".$row[1]."</option>\n";
+	}
+?>
+<select name="y_sel" style="height:auto; width:auto;"
+    onchange="document.forms.namedItem('main').submit()">
 <?php
 $y_now=$current_year;
 for($i=0; $i<3; $i++){
@@ -183,43 +173,112 @@ for($i=0; $i<3; $i++){
 </th>
 <th colspan="2">
 <span style="white-space: nowrap; font-size:11px">
+<?php
+	if($tries[1]!=-1){ 
+		echo sprintf($i18['LOAD_LEFT'], $DLIM[1]-$tries[1], $DLIM[1]);
+	} 
+?>
 </span>
 </th>
 </tr>
 <tr>
-<th><b>Шаг 2</b>. 
-Страна</th>
-<th><b>Шаг 3</b>. 
-Регион</th>
+<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
+<?php
+	echo $i18['H_COUNTRY'];
+?>
+</th>
+<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
+<?php
+	echo $i18['H_STATE'];
+	$stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
+		"countries WHERE country_id=%s ORDER BY states.name",quote_smart($cnum));
+	$sth=mysql_query($stat);
+	$cur_state=''; $lb2='';
+	$allst=$i18['ALL_STATES'];
+	$statenum=0;
+	if(isset($_POST['stateid'])){
+		$statenum=$_POST['stateid'];
+	}
+	$selflag='';
+	if(!$statenum){
+		$selflag=' selected="selected"';
+	}
+	$state_count=mysql_num_rows($sth);
+
+	$lb2.="<option value=\"0\" $selflag>&gt;&gt;".$allst."&lt;&lt;</option>\n";
+	while($row = mysql_fetch_row($sth)){
+		$selflag='';
+		if($row[0]==$statenum){
+			$cur_state=$row[1];
+			$selflag=' selected="selected"';
+		}
+		$lb2.="<option value=\"$row[0]\"$selflag>$row[1]</option>\n";
+	}
+	mysql_free_result($sth);
+	$gen_prop=" onclick=\"generate()\"";
+	$btnlbl=$i18['GET_DATA'];
+	
+	if(!$tries[1]){ // limit exceeded
+		echo "\n<input type=\"hidden\" name=\"rmore\"/>";
+		$gen_prop=" style=\"background:url('/i/btn_on.png'); font-weight:bold;\" ".
+            "onclick=\"this.form.elements.namedItem('Action').value=1; this.form.submit()\"";
+		$btnlbl=$i18['REQUEST_MORE'];
+	}
+?>
+</th>
 <th>
 <span class="bums">
-<input id="genbtn" type="button" value="генерировать" onclick="generate('Armenia')"/>
+<input id="genbtn" type="button" value="<?php echo "$btnlbl\"$gen_prop"?>/>
 </span> 
 </th>
 </tr>
 <tr>
 <td><!-- 1st listbox -->
-<select name="countries" size="18" onchange="showc2(1,item(selectedIndex).value);" class="lb">
+<select size="<?php echo $table_vsize ?>" onchange="showc(item(selectedIndex).value,0);" class="lb">
+<?php echo $lb1 ?>
 </select>
 </td>
 <td><!-- 2nd listbox -->
-<select name="states" size="18" onchange="showc2(2,item(selectedIndex).value);" class="lb">
+<?php
+ echo "<select size=\"$table_vsize\" onchange=\"showc($cnum,item(selectedIndex).value);\" class=\"lb\">";
+ echo $lb2
+?>
 </select>
 </td>
+<?php
+	$andst='';
+	if($statenum){
+		$andst=sprintf(" AND state_id=%s",quote_smart($statenum));
+	}
+	$stat=sprintf(
+		"SELECT cities.id, cities.name FROM cities,countries".
+		",locations". # year condition
+		" WHERE country_id=%s AND countries.id=country_id".
+		" AND city_id=cities.id %s AND year=%s". # year condition
+		" ORDER BY cities.name",quote_smart($cnum), $andst, quote_smart($defyear));
+	$sth = mysql_query($stat);
+?>
 <td>
-<select name="cities" id="chkcit" size="18" class="lb" onchange="highlight_gen(this)">
+<select id="chkcit" size="<?php echo $table_vsize ?>" class="lb" onchange="highlight_gen(this)">
+<?php
+	while($row = mysql_fetch_row($sth)){
+		echo "<option value=\"$row[0]\">$row[1]</option>\n";
+	}
+	mysql_free_result($sth);
+	
+?>
 </select>
 <input type="hidden" name="Action" value=""/>
-<input type="hidden" name="cid" value="0"/>
+<input type="hidden" name="cid" value=""/>
 <input type="hidden" name="stateid" value="0"/>
-<input type="hidden" name="sc" value=","/>
-<input type="hidden" name="lang" value="<?php echo $lang ?>"/>
+<input type="hidden" name="sc" value="<?php echo $sc ?>"/>
 </td>
 </tr>
 </table>
 </form>
-<div id="status"></div>
+<p><?php echo sprintf($i18['DL_BEFORE_INSTALL'], anchor( ($chac==1) ? 'demo':'buy' ))?></p>
 </div>
+
 <?php
 function get_selected_cities($param)
 {
@@ -230,7 +289,9 @@ function get_selected_cities($param)
 	}
 	$sc1=trim($sc,",");
 	if($sc1){
-		$stat="SELECT cities.id, cities.name, countries.name FROM cities,countries WHERE cities.id IN ($sc1) and countries.id=country_id ORDER BY countries.name,cities.name";
+		$stat="SELECT cities.id, cities.name, countries.name FROM cities,countries ".
+            "WHERE cities.id IN ($sc1) and countries.id=country_id ".
+            "ORDER BY countries.name,cities.name";
 		return mysql_query($stat);
 	}
 	return null;

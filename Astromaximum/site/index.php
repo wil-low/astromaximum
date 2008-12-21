@@ -88,7 +88,7 @@ if(!file_exists($fn)){
 <meta name="copyright" content="Copyright (c) by S&amp;W Axis"/>
 <meta name="keywords" content="[[keywords]]"/>
 <meta name="description" content="[[description]]"/>
-<link href="astro.css" rel="stylesheet" type="text/css"/>
+<link href="/astro.css" rel="stylesheet" type="text/css"/>
 <script src="/func.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -167,7 +167,7 @@ if($user_ok){
 	if(strcmp($main, 'demo')){
 		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
 	}
-	if(strcmp($main, 'dl')){
+	if(strcmp($main, 'dl') && strcmp($main, 'dl2')){
 		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
 	}
 	$btn2=$i18['TRIAL'];
@@ -206,17 +206,17 @@ FRM;
 if(preg_match("/^man\d$/is", $main)){
     echo "<h5>".$i18['MAN_TOPICS']."</h5>";
     for($i=0; $i<=4; $i++){
-        echo "<p>".anchor("man$i")."<img src=\"i/ico.gif\" alt=\"\"/> <br/><b>".$i18["MAN_$i"]."</b></a></p>\n";
+        echo "<p>".anchor("man$i")."<img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18["MAN_$i"]."</b></a></p>\n";
     }
     $pdf_path="mobi/html/amax-manual-$lang.pdf";
-    echo "<p><a href=\"$pdf_path\"><img src=\"i/ico.gif\" alt=\"\"/> <br/><b>".$i18['MAN_PDF']." (PDF ".
+    echo "<p><a href=\"$pdf_path\"><img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18['MAN_PDF']." (PDF ".
         fsize_human($pdf_path).")</b></a></p>\n";
 }
 else{
     if($show_topics){
-        echo "<h5>".$i18['THEMES_CAL']."</h5>";
+        echo "<h5>".$i18['THEME_0']."</h5>";
         for($i=1; $i<=9; $i++){
-            echo "<p>".anchor("0_$i")."<img src=\"i/ico.gif\" alt=\"\"/> <br/><b>".$i18["THEME_$i"]."</b></a></p>\n";
+            echo "<p>".anchor("0_$i")."<img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18["THEME_$i"]."</b></a></p>\n";
         }
     }
 }
@@ -231,14 +231,19 @@ else{
 		if(file_exists($fn)){
 			$topic_requested=preg_match('/^(.+\/)(\d+)_(\d+)\.php$/is', $fn, $matches);
 			if($topic_requested){
-                prepare_topic($matches, $main);
+				if($matches[2]==0 || $user_ok){ # grant access only to 0_*.php if not guest
+	            prepare_topic($matches, $main);
+	         }
+	         else{
+					reg_warning($i18['PAGE_READTHEMES']);
+				}
 			}
 			else{
 				include($fn);
 			}
 		}
 		else{
-			echo "<h3>{$i18['PAGE_NOT_FOUND']}</h3>";
+			echo "<h3>{$i18['PAGE_NOT_FOUND']}</h3>\n";
 		}
 	} 
 ?>
@@ -268,6 +273,9 @@ function disable_big_button($id, $label, $check_page, $link_page){
 function prepare_topic($matches, $main){
     global $lang_, $i18;
     $nums=explode('_', $main);
+    $num = $nums[0]? $nums[0]: $nums[1];
+    include($matches[0]);
+    $topic1=$topic; $body1=$body;
     if($matches[2]+$matches[3]){
         if($matches[2]){
             $fn0=$matches[1].$matches[2].'_0.php';
@@ -278,11 +286,13 @@ function prepare_topic($matches, $main){
         }
         if(file_exists($fn0)){
             include($fn0);
+            $topic = $i18["THEME_$num"]." - $topic";
+            echo "<h4>$topic</h4>\n$body";
             if(strcmp($main, '0_0')){
-                echo "<p><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a><br/></p>";
+                echo "<p><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a><br/></p>\n";
             }
         }
     }
-    include($matches[0]);
+     echo "<h4>$topic1</h4>\n$body1";
 }
 ?>

@@ -89,10 +89,10 @@ ul {
 	height: 190pt;
 }
 .colorlist table {
-	width: 90%;
+/*	width: 600px;*/
 }
 .colorlist th {
-	width: 222px;
+	width: 190px;
 /*	vertical-align: top; */
 	background-color: #C5E1EF;
 	padding: 7px;

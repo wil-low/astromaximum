@@ -1,8 +1,8 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
 echo "<h4>".$i18['PWDRESTORE']."</h4>";
-include_once("mobi/ipblock.php");
 include_once("mobi/amtools.php");
+include_once("mobi/ipblock.php");
 $msg=allow_ip('pwd_rest', false);
 echo $msg;
 if($msg) return;

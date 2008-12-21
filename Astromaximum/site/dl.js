@@ -1,97 +1,66 @@
-function showc(country,state){
-	frm=document.forms.namedItem("main");
-	if(frm.elements.namedItem('cid').value!=country || frm.elements.namedItem('stateid').value!=state){
-		frm.elements.namedItem('stateid').value=state;
-		frm.elements.namedItem('cid').value=country;
-		frm.submit();
+function showc(mode, lb)
+{
+	showc2(mode, lb.item(lb.selectedIndex).value);
+}
+
+function highlight_gen(is_sel)
+{
+	if(findObj('rmore'))
+		return;
+	lb=findObj('chkcit');
+	btn=findObj('genbtn');
+	if(is_sel){
+		btn.style.background="url('/i/btn_on.png')";
+		btn.style.fontWeight="bold";
+	}
+	else{
+		btn.style.background="url('/i/btn_off.png')";
+		btn.style.fontWeight="normal";
 	}
 }
 
-function highlight_gen(lb){
-	if(lb.selectedIndex<0) return;
-	btn=findObj('genbtn');
-	btn.style.background="url('/i/btn_on.png')";
-	btn.style.fontWeight="bold";
-}
-
-function showc2(mode,val)
-{ 
-    var xhr; 
-    try {
-        xhr = new ActiveXObject('Msxml2.XMLHTTP');
-    }
-    catch (e) {
-        try {
-            xhr = new ActiveXObject('Microsoft.XMLHTTP');
-        }
-        catch (e2) {
-            try {
-                xhr = new XMLHttpRequest();
-            }
-            catch (e3) {
-                xhr = false;
-            }
-        }
-     }
-    var cid=document.main.cid.value;
-    var stateid=document.main.stateid.value;
-//    document.getElementById('status').innerHTML=mode+','+val+','+cid+','+stateid;
+function showc2(mode)
+{
+    highlight_gen(false);
+    var cb;
+    var val1;
     if(!mode){
-        xhr.onreadystatechange  = function()
-        { 
-            if(xhr.readyState  == 4) {
-                if(xhr.status  == 200) {
-                    con = eval('(' + xhr.responseText + ')');
-					var content=con.content;
-                    fill_lb(document.main.countries, content, cid);
-                    document.main.countries.selectedIndex=0;
-                    document.main.cid.value=firstId(content);
-                    showc2(1, document.main.cid.value);
-                }
-            }
-            
-        }; 
+        cb=function(data){
+            var content=data.content;
+            fill_lb(document.main.countries, content, cid);
+            document.main.countries.selectedIndex=0;
+            document.main.cid.value=content[0][0];
+            showc2(1);
+        };
+    }
+    else{
+	    val1=$("select").get(mode);
+	    val1=val1.item(val1.selectedIndex).value;
     }
     if(mode==1){
-        document.main.cid.value=val;
-        xhr.onreadystatechange  = function()
-        { 
-            if(xhr.readyState  == 4) {
-                if(xhr.status  == 200) {
-                    con = eval('(' + xhr.responseText + ')');
-					var content=con.content;
-                    fill_lb(document.main.states, content, document.main.stateid.value);
-                    document.main.states.selectedIndex=0;
-                    document.main.stateid.value=0;
-                    showc2(2, firstId(content));
-                }
-            }
-            
-        }; 
+        document.main.cid.value=val1;
+        cb=function(data){
+            var content=data.content;
+            fill_lb(document.main.states, content, stateid);
+            document.main.states.selectedIndex=0;
+            document.main.stateid.value=0;
+            showc2(2);
+        };
     }
     if(mode==2){
-        document.main.stateid.value=val;
-        xhr.onreadystatechange  = function()
-        { 
-            if(xhr.readyState  == 4) {
-                if(xhr.status  == 200) {
-                    con = eval('(' + xhr.responseText + ')');
-					var content=con.content;
-                    fill_lb(document.main.cities, content, 0);
-                }
-            }
-            
+        document.main.stateid.value=val1;
+        cb=function(data){
+        	var content=data.content;
+        	fill_lb(document.main.cities, content, 0);
         }; 
     }
-    var url='/mobi/html/dl2.php?lang=' + document.main.lang.value + '&ajax='+mode+'&cid=' + document.main.cid.value +
-        '&stateid=' + document.main.stateid.value;
+    var cid=document.main.cid.value;
+    var stateid=document.main.stateid.value;
+    var url='/mobi/html/dl.php?lang=' + document.main.lang.value + 
+        '&ajax='+mode+'&cid=' + cid +
+        '&stateid=' + stateid;
 //    alert(url);
-    xhr.open('GET', url,  true);
-    xhr.send(null); 
-}
-
-function firstId(arr){
-	return arr[0][0];
+    $.getJSON(url, {}, cb);
 }
 
 function fill_lb(listbox, arr, selindex)
@@ -104,8 +73,6 @@ function fill_lb(listbox, arr, selindex)
 }
 
 function dl_init(){
-	if(document.main.countries.length==0){
-//		alert("Loaded");
-	    showc2(0,0,0);
-	}
+//	alert("Loaded");
+	showc2(0);
 }
