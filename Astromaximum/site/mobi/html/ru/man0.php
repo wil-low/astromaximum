@@ -4,6 +4,8 @@ $META_TITLE='Инструкция';
 $META_KEYWORDS='руководство пользователя, мануал, установка на телефон, установка городов';
 $META_DESCR='';
 $page_t="http://astromaximum.de/?$lang_&amp;p=";
+$anchor_email = fill_input_str('ilog', $GLOBALS['amax']['demo_email']);
+$anchor_pass = fill_input_str('ipwd', $GLOBALS['amax']['demo_pass']);
 ?>
 <h4>Подготовка к установке</h4>
 <p>Астрологический календарь <b>ASTROMAXIMUM</b> может быть установлен на любой телефон,
@@ -19,8 +21,8 @@ $page_t="http://astromaximum.de/?$lang_&amp;p=";
 не все страницы сайта.</p>
 <p>Демо-аккаунт:</p>
 <ul>
-<li>e-mail: <?php echo $GLOBALS['amax']['demo_email']?></li>
-<li>password: <?php echo $GLOBALS['amax']['demo_pass']?></li>
+<li>e-mail: <?php echo $anchor_email ?></li>
+<li>password: <?php echo $anchor_pass ?></li>
 </ul>
 
 <p>Календарь может быть установлен на мобильный телефон различными способами. Способ установки зависит как 

@@ -529,4 +529,10 @@ EOF;
     }
     echo '</div>';
 }
+
+function fill_input_str($id, $text){
+    global $i18;
+    return "<a href=\"javascript:void(0)\" onclick=\"fill_input('$id','$text')\" ".
+        "alt=\"{$i18['FILL_INPUT']}\">$text</a>";
+}
 ?>

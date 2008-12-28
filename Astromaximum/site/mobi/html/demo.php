@@ -68,15 +68,16 @@ return;
 }
 // guest user warning
 $press_enter=sprintf($i18['DEMO_ENTER'],$i18['LOG_IN']);
-$d_email=$GLOBALS['amax']['demo_email'];
-$d_pwd=$GLOBALS['amax']['demo_pass'];
+$anchor_email = fill_input_str('ilog', $GLOBALS['amax']['demo_email']);
+$anchor_pass = fill_input_str('ipwd', $GLOBALS['amax']['demo_pass']);
+
 echo <<<EOF2
 <p>{$i18['DEMO_NOTREG']}</p>
 <ul>
 <li>{$i18['LOGIN']}:
-<a href="javascript:void(0)" onclick="fill_input('ilog','{$d_email}')">{$d_email}</a><br/><br/></li>
+$anchor_email<br/><br/></li>
 <li>{$i18['PWD']}:
-<a href="javascript:void(0)" onclick="fill_input('ipwd','{$d_pwd}')">{$d_pwd}</a></li>
+$anchor_pass</li>
 </ul>
 <p>$press_enter</p>
 EOF2;
