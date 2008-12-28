@@ -5,7 +5,7 @@
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
-    <property name="year" value="2008"/>
+    <property name="year" value="2009"/>
     <property name="lang" value="ru"/>
     
     <import file="nbproject/build-impl.xml"/>
@@ -85,77 +85,28 @@
     <target name="post-compile">
       <uptodate property="size2dat.notRequired">
         <srcfiles dir= "${basedir}/arrays" includes="**/size?.txt"/>
-        <globmapper from="size*.txt" to="${basedir}/src/res/size*.dat" handledirsep="yes"/>
+        <globmapper from="size*.txt" to="${basedir}/arrays/size*.dat" handledirsep="yes"/>
       </uptodate>
       <antcall target="size.compile"/>
     </target>
    
-    <target name="size.compile" description="Size to dat files" unless="size2dat.notRequired">
+    <target name="size.compile" description="Size to dat conversion" unless="size2dat.notRequired">
       <echo message="Invoking size2dat.pl:"/>
       <exec executable="perl" failonerror="true">
         <arg value="${basedir}/../size2dat.pl"/>
       </exec>
-      <delete dir="${preprocessed.dir}" includes="size*.dat" failonerror="true"/>
-      <delete dir="${build.classes.dir}" includes="size*.dat" failonerror="true"/>
-      <delete dir="${preverify.sources.dir}" includes="size*.dat" failonerror="true"/>
     </target>
     
+    <target name="post-preverify" description="Copy size.dat files">
+        <copy todir="${preverify.classes.dir}/res" failonerror="true">
+            <fileset dir="${basedir}/arrays" includes="**/size*.dat"/>
+        </copy>
+    </target>
 
     <target name="post-jar" description="Copy into common dir">
 	<antcall target="copy.template" inheritall="true" inheritrefs="true">
 	    <param name="gen.conf" value="${config.active}"/>
 	</antcall>
     </target>
-<!--    
-    <target name="jar" depends="init,preverify,create-jad,set-keystore-password,set-alias-password,pre-jar" description="Build jar and application descriptor.">
-        <dirname file="${dist.dir}/${dist.jar}" property="dist.jar.dir"/>
-        <mkdir dir="${dist.jar.dir}"/>
-        <jar compress="${jar.compress}" jarfile="${dist.dir}/${dist.jar}" manifest="${build.dir}/manifest.mf" manifestencoding="UTF-8">
-            <fileset dir="${preverify.classes.dir}"/>
-            <fileset dir="${obfuscated.classes.dir}">
-                <exclude name="**/*.class"/>
-            </fileset>
-        </jar>
-        <nb-jad jadfile="${dist.dir}/${dist.jad}" jarfile="${dist.dir}/${dist.jar}" url="${dist.jar}" sign="${sign.enabled}" keystore="${sign.keystore}" keystorepassword="${sign.keystore.password}" alias="${sign.alias}" aliaspassword="${sign.alias.password}" encoding="${javac.encoding}"/>
-        <antcall target="post-jar" inheritall="true" inheritrefs="true"/>
-    </target>
-   
-    <target name="pre-preverify">
-      <condition property="build.desktop">
-        <contains string="${abilities}" substring="build.desktop"/>
-      </condition>
-      <condition property="no.messjar">
-        <isset property="build.desktop"/>
-      </condition>
-      <echo message="post-init bd=${build.desktop}"/>
-      <antcall target="instead-preverify" inheritall="true" inheritrefs="true"/>
-   </target>
-   
-    <target name="preverify" depends="init,compile,obfuscate,pre-preverify" description="Preverify project classes." unless="build.desktop">
-        <echo message="preverify=${build.desktop}"/>
-        <mkdir dir="${preverify.classes.dir}"/>
-        <nb-preverify srcdir="${obfuscated.classes.dir}" destdir="${preverify.classes.dir}" classpath="${platform.bootclasspath}" configuration="${platform.configuration}" platformhome="${platform.home}" platformtype="${platform.type}" commandline="${platform.preverifycommandline}"/>
-        <antcall target="post-preverify" inheritall="true" inheritrefs="true"/>
-    </target>
-    
-    <target name="instead-preverify" if="build.desktop">
-        <mkdir dir="${preverify.classes.dir}"/>
-        <copy todir="${preverify.classes.dir}">
-          <fileset dir="${obfuscated.classes.dir}"/>
-        </copy>
-    </target>
 
-    <target name="run" depends="init,jar" description="Run MIDlet suite.">
-      <antcall target="run.me" inheritall="true" inheritrefs="true"/>
-      <antcall target="run.desktop" inheritall="true" inheritrefs="true"/>
-    </target>
-
-    <target name="run.me" unless="build.desktop">
-        <nb-run jadfile="${dist.dir}/${dist.jad}" jarfile="${dist.dir}/${dist.jar}" jadurl="${dist.jad.url}" device="${platform.device}" platformhome="${platform.home}" platformtype="${platform.type}" execmethod="${run.method}" securitydomain="${evaluated.run.security.domain}" commandline="${platform.runcommandline}" classpath="${platform.bootclasspath}:${dist.dir}/${dist.jar}" cmdoptions="${run.cmd.options}"/>
-    </target>
-    
-    <target name="run.desktop" if="build.desktop">
-      <java jar="${dist.dir}/${dist.jar}" fork="true"/>
-    </target>
--->    
 </project>

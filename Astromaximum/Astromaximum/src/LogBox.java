@@ -109,7 +109,7 @@ class LogBox extends List implements CommandListener {
         Astromaximum.disp.setCurrent(al);
     }
 
-    static String access(String str, int param) {
+    static String decipherPngCodeSection(String str, int param) {
         String ss = "";
         int idx = str.indexOf('.');
         while (idx >= 0) {

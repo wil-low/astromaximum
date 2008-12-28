@@ -42,30 +42,35 @@ class Options extends GeoList implements CommandListener {
         super(Astromaximum.instance, Choice.EXCLUSIVE, "locations.dat");
         //#endif
         String[] sTimeGap = {"-2", "-1", "0", "1", "2"};
-        timeGap = new ChoiceGroup(Astromaximum.getstr(118),//Correction_hr
+        timeGap = new ChoiceGroup(Astromaximum.getstr(118), // Correction_hr
                 Choice.POPUP, sTimeGap, null);
         timeGap.setSelectedIndex(2, true);
 
-        String[] sLayout = {Astromaximum.getstr(107), "1", "2", "3"};//Auto
-        layout = new ChoiceGroup(Astromaximum.getstr(106),//Screen
+        String[] sLayout = new String[Summary.MAX_LAYOUT_NUM + 1];
+        sLayout[0] = Astromaximum.getstr(107); // "Auto"
+        for (int i = 1; i <= Summary.MAX_LAYOUT_NUM; i++)
+            sLayout[i] = Integer.toString(i);
+        
+        layout = new ChoiceGroup(Astromaximum.getstr(106), // Screen
                 Choice.POPUP, sLayout, null);
 
         String[] sOpt = {
-            Astromaximum.getstr(104),//Use all texts
-            Astromaximum.getstr(103),//Local time
+            Astromaximum.getstr(104), // Use all texts
+            Astromaximum.getstr(103), // Local time
         };
         optFlags = OPT_FLAGS;
         setTitle(Astromaximum.getstr(92));//Options
         setCommandListener(this);
         Command cmd = new Command("OK", Command.OK, 1);
         addCommand(cmd);
-        addCommand(new Command(Astromaximum.getstr(108), Command.ITEM, 2));//Del city
+        addCommand(new Command(Astromaximum.getstr(108), Command.ITEM, 2)); // Delete city
         optList = new ChoiceGroup(null, Choice.MULTIPLE,
                 sOpt, null);
         insert(0, layout);
         insert(0, timeGap);
         insert(0, optList);
-/*      OK button is disabled (relevant for PocketPC only)        
+/*
+        OK button is disabled (relevant for PocketPC only)
         StringItem strOK = new StringItem("", "OK", Item.BUTTON);
         strOK.setDefaultCommand(cmd);
         strOK.setItemCommandListener(this);
@@ -137,7 +142,7 @@ class Options extends GeoList implements CommandListener {
             return;
         }
         if (c.getCommandType() == Command.CANCEL) {
-            setFlags();
+            updateChoices();
             Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
         } 
         else { // save and return to summary screen
@@ -153,6 +158,7 @@ class Options extends GeoList implements CommandListener {
                     }
 //#debug debug
                     System.out.println(optFlags);
+                    optLayout = (byte)layout.getSelectedIndex();
                     saveHistory();
                     curCity = cityList.getString(cityList.getSelectedIndex()).getBytes();
                     try {
@@ -163,14 +169,8 @@ class Options extends GeoList implements CommandListener {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if (Summary.size != layout.getSelectedIndex()) {
-                        Astromaximum.summary.items = null;
-                        Astromaximum.summary.pageNum = Summary.PAGE_SUMMARY;
-                        Astromaximum.summary.selItem = 1;
-                        Astromaximum.summary.changeSize();
-                        Astromaximum.summary.gatherSummary(Astromaximum.summary.date.getTime());
-                        Astromaximum.summary.setCurPage(Summary.PAGE_SUMMARY);
-//          Astromaximum.summary.repaint();
+                    if (Summary.size != optLayout) {
+                        Astromaximum.summary.setLayout(optLayout);
                     }
                     Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.summary);
                     break;
@@ -342,7 +342,6 @@ class Options extends GeoList implements CommandListener {
         try {
             optTimeGap = (byte)timeGap.getSelectedIndex();
             localOffset = (long)optTimeGap * 3600000;
-            optLayout = (byte)layout.getSelectedIndex();
             dos.writeByte(optFlags);
             dos.writeByte(optTimeGap);
             dos.writeByte(optLayout);
@@ -360,6 +359,7 @@ class Options extends GeoList implements CommandListener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        updateChoices();
     }
 
     void loadHistory() {
@@ -391,7 +391,7 @@ class Options extends GeoList implements CommandListener {
             optFlags = OPT_FLAGS;
             Astromaximum.interpreter.fontSize = Font.SIZE_SMALL;
         }
-        setFlags();
+        updateChoices();
 //#mdebug info
         System.out.println(Integer.toBinaryString(Astromaximum.customTime.lockFlags));
 //#enddebug
@@ -430,7 +430,7 @@ class Options extends GeoList implements CommandListener {
         commandAction(arg0, this);
     }
 
-    private void setFlags() {
+    private void updateChoices() {
         for (int i = 0; i < optList.size(); i++) {
             optList.setSelectedIndex(i, (optFlags & (1 << i)) != 0);
         }

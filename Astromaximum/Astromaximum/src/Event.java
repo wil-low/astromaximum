@@ -77,7 +77,10 @@ class Event {
     static final int EV_FAST = 48;
     static final int EV_ASCAPHETICS = 49;
     static final int EV_MSG = 50;
-    static final int EV_LAST = 51;  // last - do not use
+    static final int EV_BACK = 51;
+    static final int EV_LAST = 52;  // last - do not use
+
+    // Any changes above must be synched with %eventType in tools.pm !!!
 
     //#if "imeiCheck" @ protection
     static int hj;

@@ -121,7 +121,6 @@ class Interpreter extends Canvas implements CommandListener {
      * @noinspection InfiniteLoopStatement
      */
     boolean findText(SummItem si, boolean ignoreAllTopics) {
-//    System.out.println("ft");
         txt = "";
         final long[] params = si.getParams(si.selIndex);
         if (params == null) {
@@ -306,9 +305,12 @@ class Interpreter extends Canvas implements CommandListener {
         return s.length() > 1;
     }
 
-//    protected void sizeChanged(int w, int h) {
-//        Astromaximum.instance.recalcBounds(getWidth(),getHeight());
-//    }
+/*
+    protected void sizeChanged(int w, int h) {
+        Astromaximum.instance.recalcBounds(getWidth(),getHeight());
+    }
+*/
+
     public void commandAction(Command c, Displayable d) {
         int priority = c.getPriority();
         if (d == Astromaximum.menu){
@@ -319,23 +321,10 @@ class Interpreter extends Canvas implements CommandListener {
         switch (priority) {
             case 1:
                 txt = null;
-                System.gc();
                 Astromaximum.summary.dontRender();
                 break;
             case 2:
-                switch (fontSize) {
-                    case Font.SIZE_LARGE:
-                        fontSize = Font.SIZE_SMALL;
-                        break;
-                    case Font.SIZE_MEDIUM:
-                        fontSize = Font.SIZE_LARGE;
-                        break;
-                    case Font.SIZE_SMALL:
-                        fontSize = Font.SIZE_MEDIUM;
-                        break;
-                }
-                repaint();
-                Astromaximum.options.saveHistory();
+                cycleFontSize();
             case 4:
                 Astromaximum.disp.setCurrent(this);
                 break;
@@ -387,6 +376,22 @@ class Interpreter extends Canvas implements CommandListener {
 //#     graphics.drawImage(Summary.offScreenBuffer, 0, 0, Graphics.LEFT | Graphics.TOP);
 //#endif
         graphics.setFont(oldFont);
+    }
+
+    private void cycleFontSize() {
+        switch (fontSize) {
+            case Font.SIZE_SMALL:
+                fontSize = Font.SIZE_MEDIUM;
+                break;
+            case Font.SIZE_MEDIUM:
+                fontSize = Font.SIZE_LARGE;
+                break;
+            case Font.SIZE_LARGE:
+                fontSize = Font.SIZE_SMALL;
+                break;
+        }
+        repaint();
+        Astromaximum.options.saveHistory();
     }
 
     private void renderString(Graphics osg, String s) {
@@ -443,6 +448,18 @@ class Interpreter extends Canvas implements CommandListener {
 
     protected void keyReleased(int keyCode) {
         final int ga = getGameAction(keyCode);
+        if (Astromaximum.poundPressed) { // process shifted keys
+            Astromaximum.poundPressed = false;
+            switch (keyCode) {
+                case Canvas.KEY_POUND: // ## does nothing
+                    repaint();
+                    break;
+                case Canvas.KEY_NUM1: // #1 cycles font
+                    cycleFontSize();
+                    break;
+            }
+            return;
+        }
         switch (ga) {
             case Canvas.UP:
                 if (topLine + VMARGIN * 3 < getHeight()) {
@@ -456,11 +473,17 @@ class Interpreter extends Canvas implements CommandListener {
                     repaint();
                 }
                 break;
-            default: //case Canvas.FIRE:
-                if (keyCode == Canvas.KEY_NUM0) {
-                    Astromaximum.instance.showMenu(this, cmds);
-                }
-                else {
+            default:
+                switch (keyCode) {
+                    case Canvas.KEY_POUND: // # is like Shift
+                        // waiting for next digit key
+                        Astromaximum.poundPressed = !Astromaximum.poundPressed;
+                        repaint();
+                        break;
+                    case Canvas.KEY_NUM0:
+                        Astromaximum.instance.showMenu(this, cmds);
+                        break;
+                    default:
 //#if logger
         if(isLogged){
 ///#           Astromaximum.instance.logger("Stopping log...");

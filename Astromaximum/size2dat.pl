@@ -23,8 +23,8 @@ foreach my $ff(@bins){
 	open($InF, "<$ff") or die "No file";
 	$ff=~/.+[\\\/](\w+)\./is;
 	my $fname=$1;
-	open(OutF, ">$path/Astromaximum/src/res/$fname.dat") or
-        die "No file $path/Astromaximum/src/res/$fname.dat";
+	open(OutF, ">$path/Astromaximum/arrays/$fname.dat") or
+        die "No file $path/Astromaximum/arrays/$fname.dat";
 	binmode(OutF);
 	my $count=-1;
 	my @buf=<$InF>;

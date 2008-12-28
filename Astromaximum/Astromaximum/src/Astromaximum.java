@@ -400,6 +400,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
       logger("Navroz");
 //#endif
             errCode = 13; // XXX
+            Summary.size = Options.optLayout;
             summary.changeSize();
 //#if logger
       logger("changeSize");
@@ -607,8 +608,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Show alert about impossible Today date
      */
     public void reportTodayError() {
-        String str = summary.selDate.toString();
-        str = str.substring(0, 11) + str.substring(str.length() - 4);
+        String str = localizedDateString(summary.selDate);
         interpreter.prepareText();
         interpreter.txt = getstr(91) + " " + str + "||" + getstr(111) + "||" + getstr(156);
         disp.setCurrent(interpreter);
@@ -638,6 +638,22 @@ public class Astromaximum extends MIDlet implements CommandListener {
             locHash.put(key, str);
         }
         return str;
+    }
+
+    static String localizedDateString(Date date) {
+        calendar.setTime(date);
+        final int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+        StringBuffer sb=new StringBuffer(Astromaximum.getstr(weekDay - 1 + 20) + " ");
+        if (!locale.equals("Ru")) {
+            sb.append(Astromaximum.shortMonths[calendar.get(Calendar.MONTH)]).
+                    append(" ").append(calendar.get(Calendar.DAY_OF_MONTH)).
+                    append(" '").append(Integer.toString(calendar.get(Calendar.YEAR)).substring(2, 4));
+        } else {
+            sb.append(calendar.get(Calendar.DAY_OF_MONTH)).append(" ").
+                    append(Astromaximum.shortMonths[calendar.get(Calendar.MONTH)]).append(" '").
+                    append(Integer.toString(calendar.get(Calendar.YEAR)).substring(2, 4));
+        }
+        return sb.toString();
     }
 
     void showMenu(CommandListener listener, Command[] cmds) {
