@@ -42,6 +42,7 @@ switch ($_GET['action']) {
       // membership, etc.  
  
       echo "<h3>Thank you for your order.</h3>";
+      echo "We will contact you by email after checkout and provide username and password.<br/><br/>";
       foreach ($_POST as $key => $value) { echo "$key: $value<br>"; }
       
       // You could also simply re-direct them to another page, or your own 
@@ -49,7 +50,7 @@ switch ($_GET['action']) {
       // order based on a database (which can be modified with the IPN code 
       // below).
       
-      return;
+      break;
       
    case 'cancel':       // Order was canceled...
 
@@ -57,7 +58,7 @@ switch ($_GET['action']) {
  
       echo "The order was canceled.";
       
-      return;
+      break;
       
    case 'ipn':          // Paypal is calling page for IPN validation...
    
@@ -87,9 +88,37 @@ switch ($_GET['action']) {
          $body .= " at ".date('g:i A')."\n\nDetails:\n";
          
          foreach ($p->ipn_data as $key => $value) { $body .= "\n$key: $value"; }
+
+	 // create order at last
+	
+	    $order_date = date("Y-m-d H:i:s",strtotime ($_POST["payment_date"])); 
+	
+	    $stat = sprintf("INSERT INTO paypal_orders SET 
+	        txn_id      = %s,
+	        order_date  = %s,
+	        order_total = %s,
+	        payer_id    = %s,
+	        payer_email = %s,
+	        item_name   = %s, 
+	        first_name  = %s,
+	        last_name   = %s,
+	        street      = %s, 
+	        city        = %s, 
+	        state       = %s, 
+	        zip         = %s, 
+	        country     = %s",
+	    qsmart('txn_id'), quote_smart($order_date), quote_smart($item_price),
+	    qsmart('payer_id'), qsmart('payer_email'), qsmart('item_name'), qsmart('first_name'),
+	    qsmart('last_name'), qsmart('address_street'), qsmart('address_city'), qsmart('address_state'), 
+	    qsmart('address_zip'), qsmart('address_country'));
+	 //    echo $stat;
+	    if(!mysql_query($stat)) echo mysql_error();
+	    
+	    $order_id = mysql_insert_id();
+	 $body .= "\nOrder id: $order_id";
          event_send($subject, $body);
       }
-      return;
+      break;
  }     
 /*
 if(isset($_GET['mode']) && ($_GET['mode'] =='success')){ // successful payment
@@ -174,31 +203,13 @@ if(isset($_GET['mode']) && ($_GET['mode'] == 'cancel')){ // cancelled
     return;    
 }
 */
-echo <<< EOF
-<h4 style="font-size:12px;">1. Оплатить через PayPal:</h4>
-<form method="post" action= "https://www.sandbox.paypal.com/cgi-bin/webscr">
-<input type="hidden" name="cmd" value="_xclick"/>
-<input type="hidden" name="business" value="$paypal_email"/>
-<input type="hidden" name="item_name" value="$item_name"/>
-<input type="hidden" name="item_number" value=""/>
-<input type="hidden" name="amount" value="$item_price"/>
-<input type="hidden" name="currency_code" value="$currency"/>
-<input type="hidden" name="no_shipping" value="1"/>
-<input type="hidden" name="notify_url" value="{$thisurl}&action=ipn"/>
-<input type="hidden" name="return" value="{$thisurl}&action=success"/>
-<input type="hidden" name="rm" value="2"/>
-<input type="hidden" name="cancel_return" value="{$thisurl}&action=cancel"/>
-<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" 
-	width="122" height="47" border="0" name="submit" 
-	alt="PayPal - The safer, easier way to pay online!"/>
-</form>
-EOF;
 
 function qsmart($post_key)
 {
-	if(!isset($_POST[$post_key])) 
+	global $p;
+	if(!isset($p->ipn_data[$post_key])) 
 		return "''";
 	else
-		return quote_smart($_POST[$post_key]);
+		return quote_smart($p->ipn_data[$post_key]);
 }
 ?>
