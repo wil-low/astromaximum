@@ -82,7 +82,7 @@ if(isset($_GET['mode']) && ($_GET['mode'] =='success')){ // successful payment
         state       = %s, 
         zip         = %s, 
         country     = %s",
-    qsmart('txn_id'), quote_smart($order_date), quote_smart($price),
+    qsmart('txn_id'), quote_smart($order_date), quote_smart($item_price),
     qsmart('payer_id'), qsmart('payer_email'), qsmart('item_name'), qsmart('first_name'),
     qsmart('last_name'), qsmart('address_street'), qsmart('address_city'), qsmart('address_state'), 
     qsmart('address_zip'), qsmart('address_country'));

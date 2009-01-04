@@ -144,6 +144,7 @@ if (document.images){
 <div id="menu">
 <a href="?<?php echo "$lang_\">".$i18['MNU_HOME']?></a> | 
 <?php echo anchor('man0').$i18['MNU_MAN']?></a> | 
+<a href="/wiki">wiki</a> | 
 <?php echo anchor('scr').$i18['MNU_SCRSHOTS'] ?></a> | 
 <?php echo anchor('buy').$i18['MNU_BUY'] ?></a> | 
 <?php echo anchor('citylist').$i18['MNU_CITYLIST'] ?></a> |
