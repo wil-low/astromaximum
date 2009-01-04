@@ -59,7 +59,7 @@ class LogBox extends List implements CommandListener {
     /**
      * @noinspection InfiniteLoopStatement
      */
-    public void commandAction(Command c, Displayable d){
+    public void commandAction(Command c, Displayable d) {
         switch (c.getCommandType()) {
             case Command.BACK:
                 Astromaximum.disp.setCurrent(invoker);
@@ -81,12 +81,13 @@ class LogBox extends List implements CommandListener {
                 Astromaximum.quit();
                 break;
             case Command.OK: // from Astromaximum()
-                try{
+                try {
                     Astromaximum.options.resetStorage();
                     Astromaximum.options.initDB(true);
 
+                } catch (Exception ex) {
                 }
-                catch(Exception ex){};
+                ;
                 Astromaximum.instance.init2();
                 break;
         }
@@ -102,8 +103,9 @@ class LogBox extends List implements CommandListener {
         al.setCommandListener(this);
         String tick = Astromaximum.instance.getAppProperty("MIDlet-Name");
         String s = Astromaximum.instance.getAppProperty("MIDlet-Version");
-        if (s != null)
+        if (s != null) {
             tick += " v" + s;
+        }
         tick += " " + Astromaximum.getstr(255);
         al.setTicker(new Ticker(tick));
         Astromaximum.disp.setCurrent(al);

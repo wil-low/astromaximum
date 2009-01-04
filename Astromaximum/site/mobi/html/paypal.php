@@ -10,21 +10,12 @@ $paypal_email='aivush_1217502939_biz@gmail.com';//$GLOBALS['amax']['mail_office'
 $item_name="Astromaximum $cur_year";
 $item_price=substr($price,1).'.00';
 $currency='USD';
+
 /*
-<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_xclick">
-<input type="hidden" name="business" value="aivush_1217502939_biz@gmail.com">
-<input type="hidden" name="item_name" value="dfg">
-<input type="hidden" name="item_number" value="dsgr">
-<input type="hidden" name="amount" value="23.00">
-<input type="hidden" name="no_shipping" value="0">
-<input type="hidden" name="no_note" value="1">
-<input type="hidden" name="currency_code" value="USD">
-<input type="hidden" name="lc" value="US">
-<input type="hidden" name="bn" value="PP-BuyNowBF">
-<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
+echo "<pre>";
+print_r ($_POST);
+echo "</pre>";
+echo "<br/>$item_name, $item_price, $currency <br/>";
 */
 
 $thisurl='http://'.$_SERVER['SERVER_NAME']."/?$lang_&p=paypal";
@@ -35,7 +26,7 @@ if(isset($_GET['mode']) && ($_GET['mode'] =='success')){ // successful payment
     $postdata='';
     foreach ($_POST as $key=>$value) $postdata.=$key."=".urlencode($value)."&";
     $postdata .= "cmd=_notify-validate"; 
-    $curl = curl_init("https://www.paypal.com/cgi-bin/webscr");
+    $curl = curl_init("https://www.sandbox.paypal.com/cgi-bin/webscr");
     curl_setopt ($curl, CURLOPT_HEADER, 0); 
     curl_setopt ($curl, CURLOPT_POST, 1);
     curl_setopt ($curl, CURLOPT_POSTFIELDS, $postdata);
@@ -61,13 +52,13 @@ if(isset($_GET['mode']) && ($_GET['mode'] =='success')){ // successful payment
 // check payment attributes
 
     if($item_name != $_POST['item_name'] ||
-        $price != $_POST['mc_gross'] ||
+        $item_price != $_POST['mc_gross'] ||
         $currency != $_POST["mc_currency"]){
-            mail($admin_email, "IPN error", "Payment amount mismatch\r\nTransaction ID: ".$_POST["txn_id"]);
+            event_send("IPN error", "Payment amount mismatch\r\nTransaction ID: ".$_POST["txn_id"]);
             die("Out of money? Please contact ".$admin_email);
     }
     
-    if($_POST['payment_status'] != 'completed'){
+    if(strtolower($_POST['payment_status']) != 'completed'){
         if($_POST['pending_reason'] != 'intl'){ // we're not in USA
             die ('Payment status is: '.$_POST['payment_status'].', reason: '. $_POST['pending_reason']);
         }
@@ -77,23 +68,29 @@ if(isset($_GET['mode']) && ($_GET['mode'] =='success')){ // successful payment
 
     $order_date = date("Y-m-d H:i:s",strtotime ($_POST["payment_date"])); 
 
-    mysql_query("INSERT INTO paypal_orders SET 
-        txn_id      = '".$_POST["txn_id"]."',
-        order_date  = '$order_date',
-        order_total = $price,
-        payer_id    = '".$_POST["payer_id"]."',
-        payer_email = '".$_POST["payer_email"]."',
-        item_name   = '".mysql_escape_string($_POST["item_name"])."', 
-        first_name  = '".mysql_escape_string($_POST["first_name"])."',
-        last_name   = '".mysql_escape_string($_POST["last_name"])."',
-        street      = '".mysql_escape_string($_POST["address_street"])."', 
-        city        = '".mysql_escape_string($_POST["address_city"])."', 
-        state       = '".mysql_escape_string($_POST["address_state"])."', 
-        zip         = '".mysql_escape_string($_POST["address_zip"])."', 
-        country     = '".mysql_escape_string($_POST["address_country"])."'" );
+    $stat = sprintf("INSERT INTO paypal_orders SET 
+        txn_id      = %s,
+        order_date  = %s,
+        order_total = %s,
+        payer_id    = %s,
+        payer_email = %s,
+        item_name   = %s, 
+        first_name  = %s,
+        last_name   = %s,
+        street      = %s, 
+        city        = %s, 
+        state       = %s, 
+        zip         = %s, 
+        country     = %s",
+    qsmart('txn_id'), quote_smart($order_date), quote_smart($price),
+    qsmart('payer_id'), qsmart('payer_email'), qsmart('item_name'), qsmart('first_name'),
+    qsmart('last_name'), qsmart('address_street'), qsmart('address_city'), qsmart('address_state'), 
+    qsmart('address_zip'), qsmart('address_country'));
+//    echo $stat;
+    if(!mysql_query($stat)) echo mysql_error();
     
     $order_id = mysql_insert_id();
-    mail($admin_email, "New order", "New order\r\nOrder ID: ". $order_id."\r\nTransaction ID: "
+    event_send("New order", "New order\r\nOrder ID: ". $order_id."\r\nTransaction ID: "
         .$_POST["txn_id"]);
     
     echo "Thank you, your payment is accepted. We will contact you by email after checkout and provide username and password";
@@ -122,4 +119,12 @@ echo <<< EOF
 <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" width="122" height="47" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 </form>
 EOF;
+
+function qsmart($post_key)
+{
+    if(!isset($_POST[$post_key])) 
+	return "''";
+    else
+	return quote_smart($_POST[$post_key]);
+}
 ?>
