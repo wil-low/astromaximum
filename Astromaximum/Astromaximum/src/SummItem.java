@@ -633,15 +633,15 @@ class SummItem extends TimerTask implements RecordFilter {
                         osg.drawString(str, x, y, Graphics.HCENTER | Graphics.BASELINE);
                     }
                 }
-//                osg.setFont(old);
+                osg.setFont(old);
                 if (Summary.isInCurrentDay(now)) {
                     osg.setColor(Astromaximum.RUBY_COLOR);
                     if (Summary.IMG_HEIGHT == 12) {
-//                        osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_LARGE));
+                        osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_LARGE));
                     }
                     osg.drawString(Event.long2String(now, 1, false),
                             getX(1, XCENTER), y, Graphics.HCENTER | Graphics.BASELINE);
-//                    osg.setFont(old);
+                    osg.setFont(old);
                 }
 //        osg.setColor(Astromaximum.DIMMED_COLOR);
 //        osg.drawString(Long.toString(Runtime.getRuntime().freeMemory()>>10)+"k",

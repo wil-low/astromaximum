@@ -19,6 +19,11 @@ import java.io.*;
 import javax.microedition.lcdui.*;
 import java.util.*;
 
+//#ifdef screenshot
+//# import javax.microedition.io.*;
+//# import javax.microedition.io.file.*;
+//#endif
+
 /**
  *
  * @author willow
@@ -85,7 +90,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
     static Event[] aMoonPhase;
     final Event[] aNavroz = new Event[2];
     static Event[] aAspects;
-    final Command[] cmds = new Command[7];
+    final Command[] cmds = new Command[10];
     static Image imgPanelSmall;
     static boolean isMenuVisible = false;
     /**
@@ -1085,6 +1090,11 @@ class Summary extends Canvas implements CommandListener, Runnable {
             setCurPage(PAGE_SUMMARY);
             repaint();
              */
+//#ifdef screenshot
+//# 			case 99: // screenshot
+//# 				takeShots();
+//# 				break;
+//#endif
         }
     }
 
@@ -1125,7 +1135,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#if logger
       Astromaximum.instance.logger("after setCell");
 //#endif
-            gatherMonth();
+            gatherMonthWeek();
 //#if logger
       Astromaximum.instance.logger("gatherMonth");
 //#endif
@@ -1247,7 +1257,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
         selCell = diff + first - 1;
         if (changePage) {
 //      System.out.println(selMonth);
-            gatherMonth();
+            gatherMonthWeek();
         }
     }
     
@@ -1255,7 +1265,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
     final Vector mRetro = new Vector();
     final Vector mIngress = new Vector();
 
-    void gatherMonth() {
+    void gatherMonthWeek() {
 //    long tick=System.currentTimeMillis();
         final int cells = rowCount * colCount;
         SummItem.places = new byte[cells];
@@ -1866,10 +1876,14 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 cmds[4] = new Command(Astromaximum.getstr(160), Command.SCREEN, 4);//No topic
                 cmds[5] = new Command(Astromaximum.getstr(152), Command.SCREEN, 6);//Website
                 cmds[6] = new Command(Astromaximum.getstr(157), Command.SCREEN, 7);//Quit
+                cmdCount = 7;
+//#ifdef screenshot
+//# 				cmds[7] = new Command("Screenshots", Command.SCREEN, 99);//Screenshots
+//# 				++cmdCount;
+//#endif
         //#ifdef ELECTIO
 //#       cmds[7]=new Command(Astromaximum.getstr("Aphetics"),Command.SCREEN,7);
         //#endif
-                cmdCount = 7;
         }
         for (int i = 0; i < cmdCount; i++)
             addCommand(cmds[i]);
@@ -1953,6 +1967,67 @@ class Summary extends Canvas implements CommandListener, Runnable {
         else
             setCurPage(Summary.PAGE_HELP);
     }
+
+//#ifdef screenshot
+//# 	void takeShots() {
+//# 		Astromaximum.calendar.set(Calendar.YEAR,2008);
+//# 		Astromaximum.calendar.set(Calendar.MONTH,Calendar.JANUARY);
+//# 		Astromaximum.calendar.set(Calendar.DAY_OF_MONTH,1);
+//# 		Astromaximum.calendar.set(Calendar.HOUR_OF_DAY,0);
+//# 		Astromaximum.calendar.set(Calendar.MINUTE,0);
+//# 		Astromaximum.calendar.set(Calendar.SECOND,0);
+//# 		selDate.setTime(Astromaximum.calendar.getTime().getTime());
+//# 		showDaySummary();
+//# 
+//# 		for (int i=0; i < 366; i++) {
+//# 			screenShot();
+//# 			changeDay(1);
+//# 		}
+//# 	}
+//# 
+//# 	void screenShot() {
+//# 		int w = getWidth(), h = getHeight();
+//# 		Image image = Image.createImage(w, h);
+//# 		render (image.getGraphics());
+//#         Astromaximum.calendar.setTime(date);
+//# 
+//#         String fname = formatDate2d(Calendar.YEAR) + formatDate2d(Calendar.MONTH) +
+//# 				formatDate2d(Calendar.DAY_OF_MONTH);
+//# 		try{
+//# 			FileConnection fc = (FileConnection)Connector.open("file:///root1/" + fname + ".gif");
+//# 			if(!fc.exists())
+//# 				fc.create();
+//# 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//# 			AnimatedGifEncoder encoder = new AnimatedGifEncoder();
+//# 			System.out.print(fname + " open");
+//# 			encoder.start(bos);
+//# 			encoder.addFrame(image);
+//# 			System.out.print(", rgb");
+//# 			encoder.finish();
+//# 			OutputStream os = fc.openOutputStream();
+//# 			os.write(bos.toByteArray());
+//# 			fc.close();
+//# 		}
+//# 		catch(Exception e){
+//# 			e.printStackTrace();
+//# 		}
+//# 		System.out.println(", created");
+//# 	}
+//# 
+//# 	String formatDate2d (int field) {
+//# 		int num = Astromaximum.calendar.get(field);
+//# 		if (field == Calendar.MONTH)
+//# 			++num;
+//# 		if (num > 99){
+//# 			num %= 100;
+//# 		}
+//# 		String s = Integer.toString(num);
+//# 		if (num < 10)
+//# 			s = "0" + s;
+//# 		return s;
+//# 	}
+//#endif
+
 }
 
 // # vi:et:ts=4:sw=4

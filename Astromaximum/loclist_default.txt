@@ -1,3 +1,2 @@
 UA:Data0000 Kiev
 US:Data0000 New York
-PO:Data0006 Sydney

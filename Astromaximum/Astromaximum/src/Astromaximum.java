@@ -166,6 +166,23 @@ public class Astromaximum extends MIDlet implements CommandListener {
             summary.startRealtime();
             return;
         }
+//#ifdef screenshot
+//# 		System.out.println(System.getProperty("microedition.io.file.FileConnection.version"));
+//#endif
+/*
+		try{
+			FileConnection fc = (FileConnection)Connector.open("file:///root1/image.png");
+			if(!fc.exists())
+				fc.create();
+			OutputStream os = fc.openOutputStream();
+			os.write('c');
+			fc.close();
+		}
+		catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+		System.exit(0);
+ */
         disp = Display.getDisplay(this);
 //#debug
         start = System.currentTimeMillis();
@@ -366,18 +383,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#endif
 //#if perftest=="0"
 
-//      if(!dataFile.isDateAvailable(summary.selDate)){
-//        //#if Demo
-//        //#       calendar.set(Calendar.YEAR,2006);
-//        //#       calendar.set(Calendar.MONTH,Calendar.DECEMBER);
-//        //#       calendar.set(Calendar.DAY_OF_MONTH,14);
-//        //#       grid.selDate=calendar.getTime();
-//        //#       showDaySummary(grid.selDate);
-//        //#else
-//	reportTodayError();
-//       //#endif
-//      }
-//        log("SDS before");
             errCode = 10; // XXX
             int cnt = Astromaximum.dataFile.getEvents(Event.EV_MOON_PHASE, Event.SE_MOON,
                     dataFile.startJD, dataFile.finalJD);
@@ -395,7 +400,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
                 throw new Exception("Navroz event count != 2");
             }
             System.arraycopy(DataFile.events, 0, summary.aNavroz, 0, cnt);
-//      dataFile.getEvents(Event.EV_NAVROZ,Event.SE_SUN, 1, dataFile.finalJD).copyInto(summary.aNavroz);
 //#if logger
       logger("Navroz");
 //#endif
@@ -413,7 +417,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //      evDump(dataFile.getEvents(Event.EV_RISE, Event.SE_MOON, 0, dataFile.finalJD));
             errCode = 15; // XXX
             summary.setToday();
-//      summary.showDaySummary();
 //#if logger
       logger("showDaySummary");
 //#endif
@@ -444,12 +447,10 @@ public class Astromaximum extends MIDlet implements CommandListener {
         System.out.print(System.currentTimeMillis() - start);
         System.out.println(" msec.");
 //#enddebug
-        summary.startRealtime();
+
+         summary.startRealtime();
     }
 
-    /**
-     * Pause is not implemented
-     */
     public void pauseApp() {
         summary.stopRealtime();
     }

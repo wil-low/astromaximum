@@ -9,6 +9,7 @@
         <file>
             <url>src/Astromaximum.java</url>
             <line>0</line>
+            <line>173</line>
         </file>
         <file>
             <url>src/DataFile.java</url>
@@ -21,8 +22,15 @@
         </file>
         <file>
             <url>src/Summary.java</url>
-            <line>896</line>
-            <line>1066</line>
+            <line>901</line>
+            <line>1071</line>
         </file>
     </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/home/willow/amax/Astromaximum/build.xml</file>
+        <file>file:/home/willow/amax/Astromaximum/src/Astromaximum.java</file>
+        <file>file:/home/willow/amax/Astromaximum/src/Event.java</file>
+        <file>file:/home/willow/amax/Astromaximum/src/SummItem.java</file>
+        <file>file:/home/willow/amax/Astromaximum/src/Summary.java</file>
+    </open-files>
 </project-private>
