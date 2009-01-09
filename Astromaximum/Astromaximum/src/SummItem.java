@@ -1205,7 +1205,7 @@ class SummItem extends TimerTask implements RecordFilter {
         }
     }
 
-    //#mdebug info
+//#mdebug info
     void dump() {
         System.out.println("**SummItem dump**");
         System.out.print("Type: ");
@@ -1220,6 +1220,7 @@ class SummItem extends TimerTask implements RecordFilter {
         }
     }
 //#enddebug
+
     void prepareTithi() {
         if (type != Event.EV_TITHI) {
             return;
@@ -1241,8 +1242,7 @@ class SummItem extends TimerTask implements RecordFilter {
         if (Summary.isCurrentDay) {
             selIndex = nowSelection;
         } else {
-//#debug info
-            Astromaximum.log("not current!");
+//          Astromaximum.log("not current!");
             selIndex = 0;
         }
     }

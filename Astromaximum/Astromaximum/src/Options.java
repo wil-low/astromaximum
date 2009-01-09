@@ -29,6 +29,9 @@ class Options extends GeoList implements CommandListener {
     //#endif
     static byte optFlags;
     private static long localOffset;
+//#ifdef freetest
+//#     static boolean isRealtimeOff = false;
+//#endif
     private String oldc;
     static final int FLG_ALLTEXT = 1;
     private static final int FLG_LOCALTIME = 2;
@@ -398,6 +401,11 @@ class Options extends GeoList implements CommandListener {
     }
 
     static long currentTime() {
+//#ifdef freetest
+//#         if (isRealtimeOff)
+//#             return Astromaximum.dataFile.startJD - Astromaximum.MSECINDAY * 40;
+//#endif
+
         long now = System.currentTimeMillis();
         if ((optFlags & FLG_LOCALTIME) != 0) {
             now -= Event.localOffset(now);
