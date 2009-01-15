@@ -1474,8 +1474,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
     }
 
     void startRealtime() {
+		SummItem si = new SummItem(1);
+		si.run();
         timer = new Timer();
-        timer.schedule(new SummItem(1), DELAY, DELAY);
+        timer.schedule(si, DELAY, DELAY);
     }
 
     void stopRealtime() {
