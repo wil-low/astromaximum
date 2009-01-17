@@ -1978,10 +1978,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //# 		try{
 //#             for (int i=0; i < Astromaximum.dataFile.dayCount; ++i) {
 //#                 changeDay(1);
-//#                 for (int page = PAGE_SUMMARY; page <= PAGE_LAST; ++page) {
+//# //                for (int page = PAGE_SUMMARY; page <= PAGE_LAST; ++page) {
 //#                     setCurPage(PAGE_SUMMARY);
-//#                     screenShot(w, h, page);
-//#                 }
+//#                     screenShot(w, h, 4);
+//# //                }
 //#             }
 //#             System.out.println("Shots completed!");
 //#             System.out.println("Use 'sh raw2gif.sh " + Integer.toString(w) + " " +

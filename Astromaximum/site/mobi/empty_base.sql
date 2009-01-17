@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
 LOCK TABLES `customers` WRITE;
 INSERT INTO `customers` (`id`, `name`, `realname`, `hash`, `role`, `email`, `subscr_date`, `paymode_id`, `dlcount0`, `dlcount1`, `dlcount2`, `active`) VALUES
 	(1,'vmesiats','Vasyl Mesiats','',0,'kiev.999@gmail.com','2007-10-13', 1, -1,-1,-1, 1),
-	(2,'88,'Andrei Ivushkin','',0,'aivushkin@gmail.com','2007-10-13', 1,-1,-1,-1, 1),
+	(2,'88','Andrei Ivushkin','',0,'aivushkin@gmail.com','2007-10-13', 1,-1,-1,-1, 1),
 	(3,'123456789','Demo','e7f03e6b4f8f54d4699eeef576488243', 1, 'demo@astromaximum.com', '2007-10-13', 1, -1,-1,-1,0);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
@@ -219,47 +219,26 @@ UNLOCK TABLES;
 /*!40000 ALTER TABLE `states` ENABLE KEYS */;
 
 --
--- Table structure for table `_sundgr`
+-- Table structure for table `astrodata`
 --
 
-DROP TABLE IF EXISTS `_sundgr`;
-CREATE TABLE `_sundgr` (
-  `start` datetime NOT NULL,
-  `end` datetime NOT NULL,
-  `dgr` int(11) NOT NULL,
-  PRIMARY KEY  (`start`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Sun degrees for current year';
-
---
--- Table structure for table `_voc`
---
-
-DROP TABLE IF EXISTS `_voc`;
-CREATE TABLE `_voc` (
-  `start` datetime NOT NULL,
-  `end` datetime NOT NULL,
-  PRIMARY KEY  (`start`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='VOC for current year';
-
---
--- Dumping data for table `vocs`
---
-
-
-/*!40000 ALTER TABLE `_voc` DISABLE KEYS */;
-LOCK TABLES `_voc` WRITE;
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `_voc` ENABLE KEYS */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
+DROP TABLE IF EXISTS `astrodata`;
+CREATE TABLE IF NOT EXISTS `astrodata` (
+  `id` int(11) NOT NULL auto_increment,
+  `type` tinyint(4) NOT NULL,
+  `date0` datetime NOT NULL,
+  `date1` datetime default NULL,
+  `planet0` int(11) default NULL,
+  `planet1` int(11) default NULL,
+  `degree` int(11) default NULL,
+  `link1` int(11) default NULL,
+  `link2` int(11) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `date0` (`date0`),
+  KEY `link1` (`link1`),
+  KEY `link2` (`link2`),
+  KEY `type` (`type`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds astrological data in unified Event fields' AUTO_INCREMENT=1 ;
 
 --
 -- Table structure for table `ipblock`

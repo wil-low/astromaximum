@@ -5,7 +5,6 @@
 #include "events.h"
 #include "evclass.h"
 #include "datafile.h"
-#include "assert.h"
 #include <time.h>
 #include "errno.h"
 #include <fstream>
@@ -136,7 +135,7 @@ int main(int argc, char* argv[]) {
 #endif
 
     assert(sizeof (sMatrix) == 9);
-    assert(EV_LAST == 50);
+    assert(EV_LAST == 52);
     if (argc < 2) myexit(NOT_ENOUGH_PARAMS);
 //    char buf[20];
     int year;
@@ -212,6 +211,8 @@ int main(int argc, char* argv[]) {
             printf("Cannot create file %s: %s", fn, strerror(ern));
             myexit(-1);
         }
+        writeSQL(sql, "voc01.bin", EV_VOC);
+        writeSQL(sql, "degpass00.bin", EV_VOC);
         fprintf(sql, "TRUNCATE TABLE `_voc`; BEGIN;\n");
         if (df.readSubData("voc01.bin", work)) {
             for (uint i = 0; i < work.size(); i++) {

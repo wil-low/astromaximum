@@ -80,7 +80,8 @@ class Event {
     static final int EV_BACK = 51;
     static final int EV_LAST = 52;  // last - do not use
 
-    // Any changes above must be synched with %eventType in tools.pm !!!
+    // Any changes above must be synched with %eventType in tools.pm
+    // and EventType in mutter2/events.h !!!
 
     //#if "imeiCheck" @ protection
     static int hj;

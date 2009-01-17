@@ -1,6 +1,5 @@
 <?php 
 $EXEC = 1;
-header("Content-type: image/png");
 include_once('config.php');
 include_once("amtools.php");
 include_once("lang.php");
@@ -21,6 +20,7 @@ if(!file_exists($imgfile) or abs(filemtime($imgfile)-mktime())>$update_sec){
 //	fclose($ttmp);
 }
 $sun_degree=0;
+header("Content-type: image/png");
 readfile($imgfile);
 return;
 

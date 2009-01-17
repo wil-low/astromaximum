@@ -4,17 +4,19 @@
 
 #ifndef __BCPLUSPLUS__
 #include "sweodef.h"
-extern "C" double swe_julday(int, int, int, double, int);
-extern "C" void swe_revjul(double, int, int*, int*, int*, double*);
-extern "C" int swe_calc_ut(double, int, int, double*, char*);
-extern "C" int32 swe_rise_trans(
+extern "C" {
+    double swe_julday(int, int, int, double, int);
+    void swe_revjul(double, int, int*, int*, int*, double*);
+    int swe_calc_ut(double, int, int, double*, char*);
+    int32 swe_rise_trans(
         double, int, char*, int, int, double*, double, double, double*, char*);
-extern "C" int32 swe_sol_eclipse_when_glob(double, int, int, double*, int, char*);
-extern "C" int32 swe_lun_eclipse_when(double, int, int, double*, int, char*);
-extern "C" void swe_set_ephe_path(char*);
-extern "C" void swe_close(void);
-extern "C" int swe_houses(double, double, double, int, double*, double*);
-extern "C" int swe_day_of_week(double);
+    int32 swe_sol_eclipse_when_glob(double, int, int, double*, int, char*);
+    int32 swe_lun_eclipse_when(double, int, int, double*, int, char*);
+    void swe_set_ephe_path(char*);
+    void swe_close(void);
+    int swe_houses(double, double, double, int, double*, double*);
+    int swe_day_of_week(double);
+}
 #endif
 #include "swephexp.h"
 
@@ -93,6 +95,8 @@ typedef enum {
     EV_APHETICS,
     EV_FAST,
     EV_ASCAPHETICS,
+    EV_MSG,
+    EV_BACK,
     EV_LAST // last - do not use
 } EventType;
 
