@@ -1,11 +1,14 @@
 <?php 
+$EXEC = 1;
 header("Content-type: image/png");
+include_once('config.php');
 include_once("amtools.php");
 include_once("lang.php");
-$update_sec=1*3600;
+$update_sec=1;//*3600;
 //$lang='ru';
 //$tmp=realpath(".")."/dl/source/info.dat";
 //@unlink($tmp);
+$background=realpath(".")."/dl/source/informer.png";
 $imgfile=realpath(".")."/dl/source/info-$lang.png";
 $now=gmdate('Y-m-d H:i:s');
 //info_regenerate($imgfile, $now, $lang);
@@ -13,7 +16,7 @@ $now=gmdate('Y-m-d H:i:s');
 //return;
 //die($imgfile);
 if(!file_exists($imgfile) or abs(filemtime($imgfile)-mktime())>$update_sec){
-	info_regenerate($imgfile, $now, $lang);
+	info_regenerate($imgfile, $background, $now, $lang);
 //	$ttmp=fopen($tmp, "w");
 //	fclose($ttmp);
 }
@@ -21,10 +24,10 @@ $sun_degree=0;
 readfile($imgfile);
 return;
 
-function info_regenerate($fname, $tm, $lang){
-	global $sun_degree, $i18;
+function info_regenerate($fname, $fback, $tm, $lang){
+	global $sun_degree, $i18, $EXEC;
 	$h=95; $w=150;
-	$im = @imagecreatefrompng("dl/source/informer.png")
+	$im = @imagecreatefrompng($fback)
 	      or die("Cannot Initialize new GD image stream");
 	include_once("dbconnect.php");
 	lang_load(realpath("html")); 
@@ -45,7 +48,7 @@ function info_regenerate($fname, $tm, $lang){
 	$px     = (imagesx($im) - imagefontwidth(2) * strlen($now)) / 2;
 //	imagestring($im, 2, $px, $h-12, $now, $black);
 
-	$font = 'DejaVuSans.ttf';
+	$font = 'dl/source/DejaVuSans.ttf';
 //	$title="В этот день:";
 //	imagettftext($im, 7, 0, 80, 14, $black, $font, $title);
 	if(record_in_range("_voc", $tm)){
@@ -56,7 +59,7 @@ function info_regenerate($fname, $tm, $lang){
 		$sun_degree=record_in_range("_sundgr", $tm);
 		$text=file(realpath(".").sprintf("/dl/source/interpret/$lang/Grade%01d.txt", $sun_degree/90));
 		$text=array_filter($text, "find_dgr");
-		print_r($sun);
+		//print_r($sun);
 		$text=trim(array_shift($text));
 		$text=preg_replace("/.+?%\d+%\s+/is", "", $text);
 	//	echo($sun);
