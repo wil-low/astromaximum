@@ -19,9 +19,9 @@ import java.io.*;
 import javax.microedition.lcdui.*;
 import java.util.*;
 
-//#ifdef screenshot
-//# import javax.microedition.io.*;
-//# import javax.microedition.io.file.*;
+//#ifdef freetest
+//#     import javax.microedition.io.*;
+//#     import javax.microedition.io.file.*;
 //#endif
 
 /**
@@ -530,8 +530,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 
         //****** TITHI
         final Vector tith = new Vector();
-//#debug
-        System.out.println("Tithi!");
+//        System.out.println("Tithi!");
         Astromaximum.dataFile.getEventsOnPeriod(tith, Event.EV_TITHI, Event.SE_MOON,
                 false, period0, period1, 0);
 //    Astromaximum.evDump(tith);
@@ -871,10 +870,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 }
                 return;
         }
-//#mdebug debug
-//    System.out.print("Oldsel ");
-//    System.out.println(oldSelection);
-//#enddebug
         if (oldSelection == selItem && sind == oldEvent) {
             selectSummItem(si, false);
         } else {
@@ -1090,7 +1085,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
             setCurPage(PAGE_SUMMARY);
             repaint();
              */
-//#ifdef screenshot
+//#ifdef freetest
 //# 			case 99: // screenshot
 //# 				takeShots();
 //# 				break;
@@ -1479,8 +1474,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
     }
 
     void startRealtime() {
+		SummItem si = new SummItem(1);
+		si.run();
         timer = new Timer();
-        timer.schedule(new SummItem(1), DELAY, DELAY);
+        timer.schedule(si, DELAY, DELAY);
     }
 
     void stopRealtime() {
@@ -1877,9 +1874,9 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 cmds[5] = new Command(Astromaximum.getstr(152), Command.SCREEN, 6);//Website
                 cmds[6] = new Command(Astromaximum.getstr(157), Command.SCREEN, 7);//Quit
                 cmdCount = 7;
-//#ifdef screenshot
-//# 				cmds[7] = new Command("Screenshots", Command.SCREEN, 99);//Screenshots
-//# 				++cmdCount;
+//#ifdef freetest
+//#  				cmds[7] = new Command("Screenshots", Command.SCREEN, 99);//Screenshots
+//#  				++cmdCount;
 //#endif
         //#ifdef ELECTIO
 //#       cmds[7]=new Command(Astromaximum.getstr("Aphetics"),Command.SCREEN,7);
@@ -1968,50 +1965,55 @@ class Summary extends Canvas implements CommandListener, Runnable {
             setCurPage(Summary.PAGE_HELP);
     }
 
-//#ifdef screenshot
+//#ifdef freetest
 //# 	void takeShots() {
-//# 		Astromaximum.calendar.set(Calendar.YEAR,2008);
-//# 		Astromaximum.calendar.set(Calendar.MONTH,Calendar.JANUARY);
-//# 		Astromaximum.calendar.set(Calendar.DAY_OF_MONTH,1);
-//# 		Astromaximum.calendar.set(Calendar.HOUR_OF_DAY,0);
-//# 		Astromaximum.calendar.set(Calendar.MINUTE,0);
-//# 		Astromaximum.calendar.set(Calendar.SECOND,0);
+//#         Options.isRealtimeOff = true;
+//#         System.out.println("Please wait while capturing screenshots...");
+//# 
+//# 		Astromaximum.calendar.setTime(new Date(Astromaximum.dataFile.startJD - Astromaximum.MSECINDAY));
 //# 		selDate.setTime(Astromaximum.calendar.getTime().getTime());
 //# 		showDaySummary();
-//# 
-//# 		for (int i=0; i < 366; i++) {
-//# 			screenShot();
-//# 			changeDay(1);
-//# 		}
-//# 	}
-//# 
-//# 	void screenShot() {
 //# 		int w = getWidth(), h = getHeight();
+//# 
+//# 		try{
+//#             for (int i=0; i < Astromaximum.dataFile.dayCount; ++i) {
+//#                 changeDay(1);
+//#                 for (int page = PAGE_SUMMARY; page <= PAGE_LAST; ++page) {
+//#                     setCurPage(PAGE_SUMMARY);
+//#                     screenShot(w, h, page);
+//#                 }
+//#             }
+//#             System.out.println("Shots completed!");
+//#             System.out.println("Use 'sh raw2gif.sh " + Integer.toString(w) + " " +
+//#                     Integer.toString(h-1) + "'\nto convert screenshots into GIF\n");
+//# 		}
+//# 		catch(IOException e){
+//# 			e.printStackTrace();
+//# 		}
+//#         Options.isRealtimeOff = false;
+//#         setToday();
+//#     }
+//# 
+//# 	void screenShot(int w, int h, int num) throws IOException {
 //# 		Image image = Image.createImage(w, h);
 //# 		render (image.getGraphics());
 //#         Astromaximum.calendar.setTime(date);
-//# 
 //#         String fname = formatDate2d(Calendar.YEAR) + formatDate2d(Calendar.MONTH) +
-//# 				formatDate2d(Calendar.DAY_OF_MONTH);
-//# 		try{
-//# 			FileConnection fc = (FileConnection)Connector.open("file:///root1/" + fname + ".gif");
-//# 			if(!fc.exists())
-//# 				fc.create();
-//# 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//# 			AnimatedGifEncoder encoder = new AnimatedGifEncoder();
-//# 			System.out.print(fname + " open");
-//# 			encoder.start(bos);
-//# 			encoder.addFrame(image);
-//# 			System.out.print(", rgb");
-//# 			encoder.finish();
-//# 			OutputStream os = fc.openOutputStream();
-//# 			os.write(bos.toByteArray());
-//# 			fc.close();
-//# 		}
-//# 		catch(Exception e){
-//# 			e.printStackTrace();
-//# 		}
-//# 		System.out.println(", created");
+//# 				formatDate2d(Calendar.DAY_OF_MONTH) + "-" + Integer.toString(num);
+//#         int rgbData[] = new int[w * h];
+//#         FileConnection fc = (FileConnection)Connector.open("file:///root1/" + fname + ".raw");
+//#         if(!fc.exists())
+//#             fc.create();
+//#         image.getRGB(rgbData, 0, w, 0, 0, w, h);
+//#         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//#         DataOutputStream dos = new DataOutputStream(bos);
+//#         for (int i = 0; i < rgbData.length; i++) {
+//#             dos.writeInt (rgbData[i]);
+//#         }
+//#         OutputStream os = fc.openOutputStream();
+//#         os.write(bos.toByteArray());
+//#         fc.close();
+//#         System.out.println(fname + ".raw written");
 //# 	}
 //# 
 //# 	String formatDate2d (int field) {

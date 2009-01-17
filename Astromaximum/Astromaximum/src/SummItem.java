@@ -605,6 +605,32 @@ class SummItem extends TimerTask implements RecordFilter {
 //        if(owner.isShowCustom){
                 int x = getX(0, XCENTER);
                 if (str != null) {
+                    if (str.length() >= 9 && str.charAt(2) != ':' && str.charAt(8) == ':') {
+                        x -= old.stringWidth(str) / 2;
+                        String ss = str.substring(0, 5);
+                        osg.setColor(Astromaximum.SELECTION_COLOR);
+                        osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
+                        x += old.stringWidth(ss);
+                        osg.setColor(colo);
+                        ss = str.substring(5, 11);
+                        osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
+                        if (str.length() > 11) {
+                            int space = 1;
+                            if (Summary.IMG_HEIGHT == 12) {
+                                space += 2;
+                            }
+                            x += old.stringWidth(ss);
+                            ss = str.substring(11, 11 + space);
+                            osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
+                            x += old.stringWidth(ss);
+                            ss = str.substring(11 + space, 17 + space);
+                            osg.setColor(Astromaximum.SELECTION_COLOR);
+                            osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
+                            x += old.stringWidth(ss);
+                            osg.setColor(colo);
+                            ss = str.substring(17 + space);
+                            osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
+/*
                     int len = str.length();
                     if (len >= 9 && str.charAt(8) == ':' && str.charAt(2) != ':') {
                         int strWidth = old.stringWidth(str);
@@ -628,6 +654,7 @@ class SummItem extends TimerTask implements RecordFilter {
                             x += (charWidth * 6);
                             osg.setColor(colo);
                             osg.drawSubstring(str, 17 + space, len - (17 + space), x, y, Graphics.LEFT | Graphics.BASELINE);
+ */
                         }
                     } else {
                         osg.drawString(str, x, y, Graphics.HCENTER | Graphics.BASELINE);
@@ -1205,7 +1232,7 @@ class SummItem extends TimerTask implements RecordFilter {
         }
     }
 
-    //#mdebug info
+//#mdebug info
     void dump() {
         System.out.println("**SummItem dump**");
         System.out.print("Type: ");
@@ -1220,6 +1247,7 @@ class SummItem extends TimerTask implements RecordFilter {
         }
     }
 //#enddebug
+
     void prepareTithi() {
         if (type != Event.EV_TITHI) {
             return;
@@ -1241,8 +1269,7 @@ class SummItem extends TimerTask implements RecordFilter {
         if (Summary.isCurrentDay) {
             selIndex = nowSelection;
         } else {
-//#debug info
-            Astromaximum.log("not current!");
+//          Astromaximum.log("not current!");
             selIndex = 0;
         }
     }

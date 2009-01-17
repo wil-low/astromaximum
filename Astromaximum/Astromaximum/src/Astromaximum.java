@@ -166,7 +166,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
             summary.startRealtime();
             return;
         }
-//#ifdef screenshot
+//#ifdef freetest
 //# 		System.out.println(System.getProperty("microedition.io.file.FileConnection.version"));
 //#endif
 /*

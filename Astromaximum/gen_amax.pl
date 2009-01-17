@@ -42,6 +42,10 @@ if(!$path){
 	#  }
 }
 chomp($path);
+
+#my $rev = get_revision("$path/Astromaximum");
+#die $rev;
+
 my $pwdgen_local=$path.'/../../pwdgen_local.php';
 
 my $jar_path=$path;
@@ -253,7 +257,7 @@ if($config=~/geo-$/is){
 }
 
 if($islocal){
-	if($config=~/(notest|freetest|screenshot)$/is){
+	if($config=~/(notest|freetest)$/is){
 		unzip("$path/$const::DIR_TEMPLATE/Astromaximum-$config.jar");
 		inject_lang($lang);
 		inject_common($year, "$path/$const::DIR_TEMP/common.dat");
@@ -519,8 +523,19 @@ sub do_jar{
 	$template=~s/<VENDOR>/$const::VENDOR/isg;
 	$template=~s/<MAINCLASS>/$mainclass/isg;
 	
-	my $desc = ($mainclass eq $GeoAMclass)? $const::DESCR_GEO: $const::DESCR_CALENDAR;
+	my $desc;
+	my $rev;
+	if ($mainclass eq $GeoAMclass) {
+		$desc = $const::DESCR_GEO;
+		$rev = get_revision("../GeoAM");
+	}
+	else {
+		$desc = $const::DESCR_CALENDAR;
+		$rev = get_revision("../Astromaximum");
+	}
 	$template=~s/<DESCR>/$desc/isg;
+	$template=~s/<REVISION>/$rev/isg;
+	echo("Revision = $rev\n");
 
 	open(INF, ">$path/$const::DIR_TEMPLATE/mf") or die("$path/$const::DIR_TEMPLATE/mf $!");
 	print INF $template;
@@ -1022,6 +1037,13 @@ sub mydie{
 	print FLOG "DIE: $_[0]";
 	close FLOG;
 	die $_[0];
+}
+
+sub get_revision{ # path
+	my $cmd = "hg log  --template '{rev}\\n' '$_[0]' | head -n 1";
+	my $rev = `$cmd`;
+	die "Invalid revision: $rev\n" unless $rev=~/^\d+$/;
+	return $rev;
 }
 
 // # vi:et:ts=4:sw=4
