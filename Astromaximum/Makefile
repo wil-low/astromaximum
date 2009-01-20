@@ -12,7 +12,7 @@ test:
 	mutter2/mutter2 2008 dump test 0 -2
 
 gen_amax:
-	mkdir -p $(DEST) $(SOURCE); \
+	mkdir -p $(DEST) $(SOURCE) site/i/daily; \
 	cat tools.pm genconst.pm gen_amax.pl > $(DEST)/gen_amax.cgi
 
 template:
@@ -24,6 +24,7 @@ template:
 interp:
 	cp -Rf Astromaximum/interpret $(SOURCE); \
 	cp htaccess $(SOURCE)/interpret/.htaccess; \
+	cp htaccess site/i/daily/.htaccess; \
 	if ls *.comm 2> /dev/null; then cp *.comm $(SOURCE); fi; \
 	mkdir -p $(DEST)/files $(DEST)/inbox $(SOURCE)/restore; \
 	touch $(DEST)/gen_amax.log; \

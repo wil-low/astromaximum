@@ -1,4 +1,14 @@
 <?php
+if (isset ($_GET['p'])) { // daily screen number
+	$page = intval ($_GET['p']);
+	$today = gmdate ('ymd');
+	$ifile = "i/daily/$today-$page.png";
+	header ("Content-type: image/png");
+	if (file_exists ($ifile))
+		readfile($ifile);
+	exit;
+}
+// screenshot output
 $EXEC=1;
 include_once('mobi/lang.php');
 lang_load("mobi/html");

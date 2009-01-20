@@ -1984,8 +1984,8 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //# //                }
 //#             }
 //#             System.out.println("Shots completed!");
-//#             System.out.println("Use 'sh raw2gif.sh " + Integer.toString(w) + " " +
-//#                     Integer.toString(h-1) + "'\nto convert screenshots into GIF\n");
+//#             System.out.println("Use 'sh raw2image.sh " + Integer.toString(w) + " " +
+//#                     Integer.toString(h-1) + "'\nto convert screenshots\n");
 //# 		}
 //# 		catch(IOException e){
 //# 			e.printStackTrace();
