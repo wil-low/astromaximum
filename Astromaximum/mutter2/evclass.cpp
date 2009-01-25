@@ -104,4 +104,10 @@ void Event::print_date(int i) {
 #endif
 }
 
+char *Event::getInsertStr(char *s, int type) {
+    char buf0[100], buf1[100];
+    sprintf(s, "%d, %s, %s, %d, %d, %d", type,
+        date_sql(buf0, 0), date_sql(buf1, 1), planetId[0], planetId[1], degree);
+    return s;
+}
 // # vi:et:ts=4:sw=4

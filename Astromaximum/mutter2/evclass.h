@@ -28,6 +28,7 @@ public:
     void dump2();
     void dump3();
     char *date_sql(char *str, int i);
+    char *getInsertStr(char *s, int type);
 private:
 };
 #endif

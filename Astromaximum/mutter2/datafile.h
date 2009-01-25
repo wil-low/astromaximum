@@ -94,6 +94,7 @@ private:
     void dump_section(const char* fname, pair<int, int> sec);
 public:
     uint dayCount, stepCount;
+    void writeSQL (FILE* fout, const char* bin_fname, EventType type);
     bool readSubData(const char* fname, VAE & v);
     bool writeSubData(const VAE & v, EventType evtype, int evflags, int planet, char* fname);
     void release(VAE & v);

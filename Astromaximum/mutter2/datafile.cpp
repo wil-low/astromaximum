@@ -1624,4 +1624,23 @@ double DataFile::getPrevious0dgr() {
     return st;
 }
 
+void DataFile::writeSQL (FILE* fout, const char* bin_fname, EventType type)
+{
+    VAE work;
+
+    if (readSubData(bin_fname, work)) {
+        fprintf (fout, "/* Events of '%s' */\n", bin_fname);
+        char buf[10000];
+        fprintf(fout, "INSERT INTO astrodata (type,date0,date1,planet0,planet1, degree) VALUES\n");
+        for (uint i = 0; i < work.size(); i++) {
+            if (i)
+                fprintf (fout, ",");
+            fprintf(fout, "\n  (%s)", work[i]->getInsertStr(buf, type));
+        }
+        fprintf(fout, ";\n\n");
+        release(work);
+    } else {
+        printf("\n'%s' file error!", bin_fname);
+    }
+}
 // # vi:et:ts=4:sw=4

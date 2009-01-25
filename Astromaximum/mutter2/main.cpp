@@ -201,9 +201,7 @@ int main(int argc, char* argv[]) {
         myexit(0);
     }
     if (argc == 3 && strcmp(argv[2], "sql") == 0) { // Creating SQL file
-        VAE work;
         char fn[100];
-        char buf0[100], buf1[100];
         sprintf(fn, "../site/%04d.sql", year);
         FILE *sql = fopen(fn, "w");
         if (!sql) {
@@ -211,51 +209,13 @@ int main(int argc, char* argv[]) {
             printf("Cannot create file %s: %s", fn, strerror(ern));
             myexit(-1);
         }
-        writeSQL(sql, "voc01.bin", EV_VOC);
-        writeSQL(sql, "degpass00.bin", EV_VOC);
-        fprintf(sql, "TRUNCATE TABLE `_voc`; BEGIN;\n");
-        if (df.readSubData("voc01.bin", work)) {
-            for (uint i = 0; i < work.size(); i++) {
-                Event *ev = work[i];
-                fprintf(sql, "INSERT INTO `_voc` VALUES (%s, %s);\n",
-                        ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
-                //                ev->dump();
-            }
-            fprintf(sql, "COMMIT;\n\n");
-        } else {
-            printf("\nVOC file error!");
-        }
-        df.release(work);
-        /*
-                fprintf(sql, "TRUNCATE TABLE `_vc`; BEGIN;\n");
-                if(df.readSubData("via01.bin", work)){
-                    for(int i=0; i<work.size(); i++){
-                        Event *ev=work[i];
-                        fprintf(sql, "INSERT INTO `_vc` VALUES (%s, %s);\n",
-                                ev->date_sql(buf0, 0), ev->date_sql(buf1, 1));
-        //                ev->dump();
-                    }
-                    fprintf(sql, "COMMIT;\n\n");
-                }
-                else{
-                    printf("\nVC file error!");
-                }
-                df.release(work);
-         */
-        fprintf(sql, "TRUNCATE TABLE `_sundgr`; BEGIN;\n");
-        if (df.readSubData("degpass00.bin", work)) {
-            for (uint i = 0; i < work.size(); i++) {
-                Event *ev = work[i];
-                fprintf(sql, "INSERT INTO `_sundgr` VALUES (%s, %s, %d);\n",
-                        ev->date_sql(buf0, 0), ev->date_sql(buf1, 1), ev->degree & 0x3fff);
-                //                ev->dump();
-            }
-            fprintf(sql, "COMMIT;\n\n");
-        } else {
-            printf("\nSun degree file error!");
-        }
-        df.release(work);
-
+        char path[200];
+        sprintf(path, "%s/../data", mypath);
+        chdir(path);
+//        printf("%s", getcwd(path, 200));
+//        exit(0);
+        df.writeSQL(sql, "voc01.bin", EV_VOC);
+        df.writeSQL(sql, "degpass00.bin", EV_DEGREE_PASS);
         fclose(sql);
         printf("\nSQL created: %s\n", fn);
         myexit(0);
