@@ -446,6 +446,10 @@ class Options extends GeoList implements CommandListener {
         layout.setSelectedIndex(optLayout, true);
         localOffset = (long)optTimeGap * 3600000;
     }
+
+	String getCurrentCity() {
+		return cityList.getString(cityList.getSelectedIndex());
+	}
 }
 
 // # vi:et:ts=4:sw=4

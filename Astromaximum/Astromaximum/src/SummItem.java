@@ -1150,8 +1150,13 @@ class SummItem extends TimerTask implements RecordFilter {
             return Astromaximum.getstr(94); // back
         }
         if (type == Event.EV_TOP_DAY) {
-            return Astromaximum.getstr(27) + " " + Astromaximum.getstr( //Day, of_
-                    40 + weekPlanets[events[1].planet0 - 1]);
+//#ifdef freetest
+//# 	        if (Options.isRealtimeOff)
+//# 				return Astromaximum.options.getCurrentCity();
+//# 			else
+//#endif
+				return Astromaximum.getstr(27) + " " + Astromaximum.getstr( //Day, of_
+						40 + weekPlanets[events[1].planet0 - 1]);
         }
         if (type == Event.EV_SUN_RISE || type == Event.EV_MOON_RISE) {
             return Astromaximum.getstr(145); // planets in axes

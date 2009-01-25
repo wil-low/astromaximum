@@ -297,6 +297,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
             errCode = 8; // XXX
             Astromaximum.log("Total memory = " + Long.toString(Runtime.getRuntime().totalMemory()));
             options.loadHistory();
+            options.init();
             errCode = 9; // XXX
 //      System.gc();
 //        dataFile.fillCache();

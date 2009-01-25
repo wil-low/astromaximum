@@ -1041,7 +1041,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 showHelp();
                 break;
             case 2: // Options
-                Astromaximum.options.init();
                 Astromaximum.disp.setCurrent(Astromaximum.options);
                 break;
             case 3: // Topic
@@ -1970,18 +1969,18 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         Options.isRealtimeOff = true;
 //#         System.out.println("Please wait while capturing screenshots...");
 //# 
-//# 		Astromaximum.calendar.setTime(new Date(Astromaximum.dataFile.startJD - Astromaximum.MSECINDAY));
+//# 		Astromaximum.calendar.setTime(new Date(Astromaximum.dataFile.startJD));
 //# 		selDate.setTime(Astromaximum.calendar.getTime().getTime());
 //# 		showDaySummary();
 //# 		int w = getWidth(), h = getHeight();
 //# 
 //# 		try{
 //#             for (int i=0; i < Astromaximum.dataFile.dayCount; ++i) {
-//#                 changeDay(1);
 //# //                for (int page = PAGE_SUMMARY; page <= PAGE_LAST; ++page) {
 //#                     setCurPage(PAGE_SUMMARY);
 //#                     screenShot(w, h, 4);
 //# //                }
+//#                 changeDay(1);
 //#             }
 //#             System.out.println("Shots completed!");
 //#             System.out.println("Use 'sh raw2image.sh " + Integer.toString(w) + " " +
