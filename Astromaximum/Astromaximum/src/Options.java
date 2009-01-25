@@ -289,14 +289,14 @@ class Options extends GeoList implements CommandListener {
 //  }
     void resetStorage() {
         try {
-            int count = rs.getNumRecords();
+//            int count = rs.getNumRecords();
             RecordEnumeration re = rs.enumerateRecords(null, null, false);
             while(re.hasNextElement()){
                 int id = re.nextRecordId();
                 if(id>2) // skip first 2 records
                     rs.deleteRecord(id);
             }
-            count = rs.getNumRecords();
+//            count = rs.getNumRecords();
             addLocations();
             Astromaximum.summary.changeDay(0);
             init();
@@ -417,12 +417,11 @@ class Options extends GeoList implements CommandListener {
         DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
         istr.skip(2);
         int numRec = istr.readUnsignedShort();
-        int rid = -1;
         byte[] cn;
         for (int i = 0; i < numRec; i++) {
             cn = extractLocation(i);
             try {
-                rid = rs.addRecord(cn, 0, cn.length);
+                rs.addRecord(cn, 0, cn.length);
             } catch (RecordStoreException ex) {
                 ex.printStackTrace();
             }
@@ -434,9 +433,11 @@ class Options extends GeoList implements CommandListener {
         rs.setRecord(1, geo, 0, geo.length);
     }
 
-    public void commandAction(Command arg0, Item arg1) {
-        commandAction(arg0, this);
-    }
+// --Commented out by Inspection START (25.01.09 13:17):
+//    public void commandAction(Command arg0, Item arg1) {
+//        commandAction(arg0, this);
+//    }
+// --Commented out by Inspection STOP (25.01.09 13:17)
 
     private void updateChoices() {
         for (int i = 0; i < optList.size(); i++) {
@@ -447,7 +448,7 @@ class Options extends GeoList implements CommandListener {
         localOffset = (long)optTimeGap * 3600000;
     }
 
-	String getCurrentCity() {
+    String getCurrentCity() {
 		return cityList.getString(cityList.getSelectedIndex());
 	}
 }

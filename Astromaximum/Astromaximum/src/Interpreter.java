@@ -18,7 +18,7 @@ import javax.microedition.rms.*;
 
 class Interpreter extends Canvas implements CommandListener {
 //#if "timeBomb" @ protection
-    static int hj = 0x01234567;
+    static final int hj = 0x01234567;
 //#endif
 //    private boolean helpMode;
     private final int HMARGIN;
@@ -140,7 +140,7 @@ class Interpreter extends Canvas implements CommandListener {
             if (!ignoreAllTopics) {
                 //    System.out.println("FullText:");
                 //    System.out.println(s);
-                char allowed0 = 0, allowed1 = 0;
+                char allowed0 = 0, allowed1;
                 isTopicTitle = si.haveTopic((int) params[0]);
                 int topp = topic;
                 if (params[0] == Event.EV_MOON_MOVE) {
@@ -400,7 +400,6 @@ class Interpreter extends Canvas implements CommandListener {
         if (len == 0) {
             return;
         }
-        boolean isLastSpace;
         int width = getWidth() - HMARGIN * 2;
         char[] ca = new char[len];
         s.getChars(0, len, ca, 0);
@@ -420,14 +419,10 @@ class Interpreter extends Canvas implements CommandListener {
                 newLine();
             }
             osg.drawChars(ca, start, wlen, curX, curY, Graphics.LEFT | Graphics.TOP);
-            isLastSpace = false;
             if (curc == '|') {
                 newLine();
             } else {
-                if (!isLastSpace) {
-                    curX += cw + spaceW;
-                    isLastSpace = true;
-                }
+                curX += cw + spaceW;
             }
             start += wlen + 1;
         }

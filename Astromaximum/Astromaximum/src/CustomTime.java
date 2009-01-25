@@ -27,7 +27,7 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
     /**
      * Secret variable for timeBomb protection (end of time range)
      */
-    static int hj = 0x89abcdef;
+    static final int hj = 0x89abcdef;
 //#endif
     private int invoker = Event.EV_ASP_EXACT_MOON;
     final DateField timeField;

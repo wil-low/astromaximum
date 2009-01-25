@@ -33,6 +33,9 @@ our %hash;
 
 $0=~/(.+)[\\\/]/is;
 $path=$1;
+while ($path=~s/\/\.\.$//) {
+    $path=~s/\/[^\/]+$//;
+}
 if(!$path){
 	#	if($winda){
 	$path='.';
@@ -42,9 +45,6 @@ if(!$path){
 	#  }
 }
 chomp($path);
-
-#my $rev = get_revision("$path/Astromaximum");
-#die $rev;
 
 my $pwdgen_local=$path.'/../../pwdgen_local.php';
 
@@ -203,12 +203,14 @@ $delta=2880 unless $delta;
 
 if($config=~/geo-$/is){
 	unless($outfile=~/r$/is){
-		$outfile="$path/Astromaximum/deploy/Geo$ye.jar";
+		$outfile="$path/Astromaximum/deploy/$ye"."_Geo.jar";
 	}
 }
 
+my $ye_prod=$ye.'_'.$const::PRODUCT;
+
 if($outfile eq '-'){
-	$outfile="$path/Astromaximum/deploy/$const::PRODUCT$ye.jar" ;
+	$outfile="$path/Astromaximum/deploy/$ye_prod.jar" ;
 	echo("Outfile is '-', setting to $outfile\n");
 }
 $outfile=ensure_slash($outfile);
@@ -228,7 +230,7 @@ if($config=~/tb/is){
 	inject_common($year, "$path/$const::DIR_TEMP/common.dat");
 	inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 	inject_icon('a', "res/");
-	do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
+	do_jar($ye_prod, $outfile, $const::PRODUCT);
 	$done=1;
 	do_messjar($outfile);
 }
@@ -242,7 +244,7 @@ if($config=~/demo/is){
 	inject_common($year, "$path/$const::DIR_TEMP/c.dat");
 	inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
 	inject_icon('a', "res/");
-	do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
+	do_jar($ye_prod, $outfile, $const::PRODUCT);
 	do_messjar($outfile);
 	$done=1;
 }
@@ -263,7 +265,7 @@ if($islocal){
 		inject_common($year, "$path/$const::DIR_TEMP/common.dat");
 		inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 		inject_icon('a', "res/");
-		do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
+		do_jar($ye_prod, $outfile, $const::PRODUCT);
 		do_messjar($outfile);
 		$done=1;
 	}
@@ -277,7 +279,7 @@ if($islocal){
 		inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 		inject_amdata();
 		inject_icon('a', "res/");
-		do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
+		do_jar($ye_prod, $outfile, $const::PRODUCT);
 		do_messjar($outfile);
 		$done=1;
 	}
@@ -291,7 +293,7 @@ if($islocal){
 		inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 		inject_amdata();
 		inject_icon('a', "res/");
-		do_jar("$const::PRODUCT$ye", $outfile, $const::PRODUCT);
+		do_jar($ye_prod, $outfile, $const::PRODUCT);
 		do_messjar($outfile);
 		$done=1;
 	}
@@ -429,7 +431,7 @@ sub inject_locations{
 	}
 	echo("$_[2] written\n");
 	$locname='Geo' if $locnum>1;
-	return $locname."'$ye";
+	return $ye.'_'.$locname;
 }
 
 sub inject_common{
@@ -514,7 +516,7 @@ sub writeData
 
 sub do_jar{
 	my($prod, $outfile, $mainclass)=@_;
-	open(INF, "<$path/$const::DIR_TEMPLATE/MANIFEST.MF") or die($!);
+	open(INF, "<$path/$const::DIR_TEMPLATE/MANIFEST.MF") or mydie($!);
 	my @data=<INF>;
 	close(INF);
 	my $template=join("",@data);
@@ -527,17 +529,17 @@ sub do_jar{
 	my $rev;
 	if ($mainclass eq $GeoAMclass) {
 		$desc = $const::DESCR_GEO;
-		$rev = get_revision("../GeoAM");
+		$rev = get_revision(1);
 	}
 	else {
 		$desc = $const::DESCR_CALENDAR;
-		$rev = get_revision("../Astromaximum");
+		$rev = get_revision(0);
 	}
 	$template=~s/<DESCR>/$desc/isg;
 	$template=~s/<REVISION>/$rev/isg;
 	echo("Revision = $rev\n");
 
-	open(INF, ">$path/$const::DIR_TEMPLATE/mf") or die("$path/$const::DIR_TEMPLATE/mf $!");
+	open(INF, ">$path/$const::DIR_TEMPLATE/mf") or mydie("$path/$const::DIR_TEMPLATE/mf $!");
 	print INF $template;
 	print INF "\r\n";
 	close(INF);
@@ -560,7 +562,7 @@ sub do_jar{
             $pf='Amax';
         }
 		$jarurl=~/(\d\d).+?(\d{4})$/is;
-		$outfile="$pf'$1-$2.jar";
+		$outfile="$1_$pf-$2.jar";
 		my $tjad=$jad;
 		$tjad=~s/d$/t/is;
         if($config=~/demo/){ # demo is received by email link
@@ -1039,11 +1041,21 @@ sub mydie{
 	die $_[0];
 }
 
-sub get_revision{ # path
-	my $cmd = "hg log  --template '{rev}\\n' '$_[0]' | head -n 1";
-	my $rev = `$cmd`;
-	die "Invalid revision: $rev\n" unless $rev=~/^\d+$/;
-	return $rev;
+sub get_revision{ # num
+    open (REV, "<$path/rev.txt") or mydie ("Revision file error: $!");
+    my @revs = <REV>;
+    close (REV);
+    echo (scalar(@revs)."\n");
+    my $result;
+    if (scalar(@revs) == 1) {
+        my @body = split (/\s/s, "@revs");
+        $result = $body[$_[0]];
+    } else {
+        $result = $revs[$_[0]];
+    }
+    echo("revision='$result'\n");
+    mydie ("No revision") unless $result > 0;
+	return $result;
 }
 
 // # vi:et:ts=4:sw=4

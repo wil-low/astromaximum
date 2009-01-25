@@ -38,8 +38,8 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     int total;
     int year;
     protected final String STORE_NAME = "Astromaximum";
-    protected String LOC;
-    private MIDlet main;
+    protected final String LOC;
+    private final MIDlet main;
     static long dstStart;
     static long dstEnd;
     static boolean dstExists;
@@ -167,7 +167,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     }
 
     String[] getAvailableCities() throws Exception {
-        String[] cities = null;
+        String[] cities;
         long ET = System.currentTimeMillis();
         RecordEnumeration re = rs.enumerateRecords(null, this, false);
         cities = new String[re.numRecords()];
@@ -204,7 +204,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
         if (b.length < 1024) {
             return null;
         }
-        String name = null;
+        String name;
         try {
             DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(b));
             inputStream.skip(8);
@@ -227,14 +227,16 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
         return new String(curCity).equals(s);
     }
 
-    byte[] extractCityNameBytes(byte[] geo) {
-        String s = extractCityName(geo);
-        if (s == null) {
-            return null;
-        } else {
-            return s.getBytes();
-        }
-    }
+// --Commented out by Inspection START (25.01.09 13:16):
+//    byte[] extractCityNameBytes(byte[] geo) {
+//        String s = extractCityName(geo);
+//        if (s == null) {
+//            return null;
+//        } else {
+//            return s.getBytes();
+//        }
+//    }
+// --Commented out by Inspection STOP (25.01.09 13:16)
 
     byte[] extractLocation(int index) {
         byte[] res = null;

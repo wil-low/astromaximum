@@ -21,8 +21,7 @@ import java.util.Vector;
  * @noinspection CastToConcreteClass
  */
 final class DataFile {
-    private static int eventsCount = 0;
-    public static Event[] events = new Event[50];
+    public static final Event[] events = new Event[50];
 
 //#ifndef build.desktop
     private static final int EF_DATE = 0x1; // contains 2nd date - 4b
@@ -46,7 +45,7 @@ final class DataFile {
     byte[] customData;
     byte[] geoposData;
     static Vector ids = new Vector();    //  private int curRec=-1;
-    private Vector eclipses = new Vector();
+    private final Vector eclipses = new Vector();
 
     /**
      * DataFile
@@ -326,7 +325,7 @@ final class DataFile {
 //#
     //#endif
     int readSubData(byte[] buf, int evtype, int planet, boolean isCommon, long dayStart, long dayEnd) {
-        eventsCount = 0;
+        int eventsCount=0;
         int flag;
         int skipOff;
         Event last = new Event(0, 0);

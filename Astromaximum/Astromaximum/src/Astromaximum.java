@@ -95,7 +95,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     /**
      * Flag indicating that midlet is started for the first time
      */
-    static boolean firstRun = true;
+    private static boolean firstRun = true;
     /**
      * Flag indicating that # key is pressed
      */
@@ -113,7 +113,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Month names (localized)
      */
     static final String[] months = new String[12];
-    static final String[] shortMonths = new String[12];
+    private static final String[] shortMonths = new String[12];
     /**
      * Zodiac constellations abbreviated
      */
@@ -152,7 +152,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     static CustomTime customTime;
     static List menu;
     
-    static long start;
+    private static long start;
     /**
      * Not exactly locale, just language indentifier
      */
@@ -425,7 +425,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
             summary.stop();
 //#if logger
       if(interpreter.isLogged){
-        Thread.currentThread().sleep(3000);
+        Thread.sleep(3000);
         interpreter.isLogged=false;
       }
       disp.setCurrent(summary);

@@ -36,7 +36,7 @@ class SummItem extends TimerTask implements RecordFilter {
     int selIndex;
     int nowSelection = -1;
     int cusSelection = -1;
-    int page;
+    private int page;
     //#if "imeiCheck" @ protection
     static int hj;
     //#endif
@@ -425,20 +425,10 @@ class SummItem extends TimerTask implements RecordFilter {
                 xr = getX(0, XLEFT);
                 String tmp = Integer.toString(Astromaximum.getSignDegree(ev.getDegree())) + "\u00b0";
                 osg.drawString(tmp, xr + 1, top, Graphics.TOP | Graphics.LEFT);
+                osg.setColor(0);
                 drawImg(osg, Summary.imgZodiac, ev.getDegree() / 30,
                         xr + osg.getFont().stringWidth(tmp) + 2, top + 1, Graphics.TOP | Graphics.LEFT);
-                osg.setColor(0);
-                if (ev.date0 >= Summary.period0) {
-                    if (Summary.isCurrentDay && contains(ev, now)) {
-                        osg.setColor(Astromaximum.RUBY_COLOR);
-                    }
-                    if (isCus && contains(ev, owner.cusTime)) {
-                        osg.setColor(Astromaximum.CUST_COLOR);
-                    }
-                    osg.drawString(ev.getDateString(0, 1),
-                            xr + 1, top + height / 2 + 1,
-                            Graphics.TOP | Graphics.LEFT);
-                }
+                drawSignString(osg, ev, now, isCus, xr);
                 break;
             case Event.EV_MOON_RISE:
                 drawRiseSetCell(osg, now);
@@ -450,16 +440,7 @@ class SummItem extends TimerTask implements RecordFilter {
 //          ev.dump();
                     drawImg(osg, Summary.imgZodiac, ev.getDegree(),
                             xr + 1, top + 1, Graphics.TOP | Graphics.LEFT);
-                    if (ev.date0 >= Summary.period0) {
-                        if (Summary.isCurrentDay && contains(ev, now)) {
-                            osg.setColor(Astromaximum.RUBY_COLOR);
-                        }
-                        if (isCus && contains(ev, owner.cusTime)) {
-                            osg.setColor(Astromaximum.CUST_COLOR);
-                        }
-                        osg.drawString(ev.getDateString(0, 1),
-                                xr + 1, top + height / 2 + 1, Graphics.TOP | Graphics.LEFT);
-                    }
+                    drawSignString(osg, ev, now, isCus, xr);
                 }
                 break;
             case Event.EV_MOON_PHASE:
@@ -863,6 +844,20 @@ class SummItem extends TimerTask implements RecordFilter {
                     }
                 }
                 break;
+        }
+    }
+
+    private void drawSignString(Graphics osg, Event ev, long now, boolean isCus, int x) {
+        if (ev.date0 >= Summary.period0) {
+            if (Summary.isCurrentDay && contains(ev, now)) {
+                osg.setColor(Astromaximum.RUBY_COLOR);
+            }
+            if (isCus && contains(ev, owner.cusTime)) {
+                osg.setColor(Astromaximum.CUST_COLOR);
+            }
+            osg.drawString(ev.getDateString(0, 1),
+                    x + 1, top + height / 2 + 1,
+                    Graphics.TOP | Graphics.LEFT);
         }
     }
 
@@ -1434,14 +1429,17 @@ class SummItem extends TimerTask implements RecordFilter {
     public void run() {
         if (type == 1) {
             owner.recalcAllSelections();
+/*
             long tick = Options.currentTime();
             for (int i = 0; i < owner.items.length; i++) {
                 SummItem si = owner.items[i];
                 if (si != null && si.isOnPage()) {
                     si.initString();
+                    si.recalcSelection(tick, true);
                     si.recalcSelection(tick, false);
                 }
             }
+ */
 //#if "imeiCheck" @ protection
             /* todo DataFile.hj=Options.hj */
             DataFile.hj = Options.hj * (int) ((tick << 10) & 0x6fedc6);
@@ -1701,7 +1699,7 @@ class SummItem extends TimerTask implements RecordFilter {
 // @todo zero
         zeroPlaces();
         Date cur = new Date(Summary.firstGridDate.getTime());
-        final Font oldFont = osg.getFont();
+//        final Font oldFont = osg.getFont();
         final int colWidth = width / owner.colCount;
         final int rowHeight = height / owner.rowCount;
         final int leftm = width - colWidth * owner.colCount;

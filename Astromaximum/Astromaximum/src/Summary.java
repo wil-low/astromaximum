@@ -77,6 +77,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
     //#   static final int PAGE_ELECTIO=9;
     //#endif
     private static int PAGE_LAST;
+    private static final SummItem siTimer = new SummItem(1);
 
     static int IMG_HEIGHT;
     static int IMG_WIDTH;
@@ -92,7 +93,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
     static Event[] aAspects;
     final Command[] cmds = new Command[10];
     static Image imgPanelSmall;
-    static boolean isMenuVisible = false;
     /**
      * Summary
      */
@@ -811,7 +811,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
         for (int i = 0; i < len; i++) {
             SummItem it = items[i];
             oldEvent = it.selIndex;
-            if (it != null && it.isOnPage() && !it.isEmpty() && it.checkSelection(x, y)) {
+            if (it.isOnPage() && !it.isEmpty() && it.checkSelection(x, y)) {
                 si = it;
                 selItem = i;
                 break;
@@ -938,10 +938,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 }
                 break;
         }
-    }
-
-    String getSummaryTitle() {
-        return title;
     }
 
     /**
@@ -1473,10 +1469,9 @@ class Summary extends Canvas implements CommandListener, Runnable {
     }
 
     void startRealtime() {
-		SummItem si = new SummItem(1);
-		si.run();
+		siTimer.run();
         timer = new Timer();
-        timer.schedule(si, DELAY, DELAY);
+        timer.schedule(siTimer, DELAY, DELAY);
     }
 
     void stopRealtime() {
@@ -1930,18 +1925,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 break;
             }
         }
-    }
-    
-    void renderMenu(Graphics osg) {
-        osg.setColor(Astromaximum.BORDER_COLOR);
-        osg.fillRect(30, 30, getWidth()-60, getHeight()-60);
-        osg.setColor(Astromaximum.GRAY_COLOR);
-        for (int i = 0; i < cmds.length; i++) {
-            if (cmds[i] != null) {
-                osg.drawString(cmds[i].getLabel(), 35, 35+20*i, Graphics.TOP|Graphics.LEFT);
-            }
-        }
-        
     }
 
     void showWeekdayHelp(int day) {
