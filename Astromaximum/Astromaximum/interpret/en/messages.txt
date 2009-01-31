@@ -165,16 +165,18 @@
 %149% Set date
 %150% Sun day 
 %151% Week
-%152% Website
-%153% At the site
-%154% you can download more cities and read astrological reference.
+%152% About...
+%153% All rights reserved.
+%154% demo
 %155% Go
-%156% Press a key...
+%156% Press "Select" or "5" key...
 %157% Quit
 %158% Database error
 %159% City database is corrupted. You will need to reinstall additional cities. Do you want to reset the database?
 %160% No topic
 %161% Menu
+%162% - astrological calendar for mobile devices
+%163% Version
 
 %255% En
 

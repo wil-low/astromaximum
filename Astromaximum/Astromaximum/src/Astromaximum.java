@@ -162,27 +162,16 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Start application, initialize all subsystems
      */
     public void startApp() {
+        logBox = new LogBox();
+        errCode = 1; // XXX
         if (!firstRun) {
+            log("after pause");
             summary.startRealtime();
             return;
         }
 //#ifdef freetest
 //# 		System.out.println(System.getProperty("microedition.io.file.FileConnection.version"));
 //#endif
-/*
-		try{
-			FileConnection fc = (FileConnection)Connector.open("file:///root1/image.png");
-			if(!fc.exists())
-				fc.create();
-			OutputStream os = fc.openOutputStream();
-			os.write('c');
-			fc.close();
-		}
-		catch(Exception e){
-			System.out.println(e.getMessage());
-		}
-		System.exit(0);
- */
         disp = Display.getDisplay(this);
 //#debug
         start = System.currentTimeMillis();
@@ -208,9 +197,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#if logger
       long afterLS=Runtime.getRuntime().freeMemory();
 //#endif
-            logBox = new LogBox();
-
-            errCode = 1; // XXX
             interpreter = new Interpreter();
             interpreter.recreateCommands();
             locale = getstr(255);
@@ -267,6 +253,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
                 init2();
             }
             catch(Exception ex){
+                ex.printStackTrace();
                 logBox.askResetDB();
             }
         } catch (Exception oome) {
@@ -453,7 +440,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     }
 
     public void pauseApp() {
-        summary.stopRealtime();
+//        summary.stopRealtime();
     }
 
     /**
@@ -481,6 +468,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#         } catch (RecordStoreException ex) {}
 //#endif
         options.shutdown();
+        firstRun = true;
         instance.destroyApp(true);
         instance.notifyDestroyed();
     }
@@ -492,6 +480,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
      */
     static void log(String string) {
 ///#mdebug debug
+        System.out.println(string);
         if (logBox.size() > 0 && logBox.getString(0).equals(LogBox.EMPTY)) {
             logBox.delete(0);
         }
@@ -499,7 +488,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
         while (logBox.size() > 30) {
             logBox.delete(0);
         }
-        System.out.println(string);
 ///#enddebug
     }
 
@@ -607,19 +595,12 @@ public class Astromaximum extends MIDlet implements CommandListener {
     }
 
     /**
-     * Show alert about impossible Today date
+     * Show alert inside Interpreter
      */
-    public void reportTodayError() {
-        String str = localizedDateString(summary.selDate);
+    public void alert(String str) {
         interpreter.prepareText();
-        interpreter.txt = getstr(91) + " " + str + "||" + getstr(111) + "||" + getstr(156);
+        interpreter.txt = str;
         disp.setCurrent(interpreter);
-        calendar.setTime(summary.selDate);
-        calendar.set(Calendar.YEAR, Astromaximum.startYear);
-        summary.selDate = calendar.getTime();
-//#debug error
-        System.out.println(summary.selDate);
-
     }
 
     /**
@@ -671,6 +652,27 @@ public class Astromaximum extends MIDlet implements CommandListener {
         menu.setSelectCommand(ok);
         menu.setCommandListener(listener);
         Astromaximum.disp.setCurrent(menu);
+    }
+
+    void showAbout() {
+        String msg = "Astromaximum " + Integer.toString(startYear) + " " +
+                getstr(162) + "||Web: http://" + URL;
+        String tick = getAppProperty("MIDlet-Version");
+        if (tick != null) {
+            tick = getstr(163) + " " + tick;
+        }
+        tick += " " + getstr(255);
+        String rev = getAppProperty("Hg-Revision");
+        if (rev != null) {
+            tick += ", r" + rev;
+        }
+        msg += "||" + tick;
+//#ifdef demo
+//#         msg += " " + getstr(154);
+//#endif
+        msg += "||Copyright 2007, S&W Axis|" + getstr(153);
+        msg += "||" + getstr(156);
+        alert(msg);
     }
 
 //#if "timeBomb" @ protection

@@ -77,7 +77,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
     //#   static final int PAGE_ELECTIO=9;
     //#endif
     private static int PAGE_LAST;
-    private static final SummItem siTimer = new SummItem(1);
 
     static int IMG_HEIGHT;
     static int IMG_WIDTH;
@@ -1056,7 +1055,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 Astromaximum.customTime.init(pageNum);
                 break;
             case 6: // Website
-                Astromaximum.logBox.showAbout(this);
+                Astromaximum.instance.showAbout();
                 break;
             case 7: // Quit
                 Astromaximum.quit();
@@ -1081,8 +1080,26 @@ class Summary extends Canvas implements CommandListener, Runnable {
             repaint();
              */
 //#ifdef freetest
-//# 			case 99: // screenshot
-//# 				takeShots();
+//# 			case 50: // extra menu
+//#                 List lst = new List("Extra menu", List.IMPLICIT);
+//#                 lst.append("Screenshots", null);
+//#                 lst.append("BM year", null);
+//# 				lst.addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 1));
+//# 				lst.setSelectCommand(new Command("Open", Command.ITEM, 51));
+//#                 lst.setCommandListener(this);
+//#                 Astromaximum.disp.setCurrent(lst);
+//# 				break;
+//# 			case 51: // extra menu handler
+//#                 lst = (List)d;
+//#                 switch(lst.getSelectedIndex()) {
+//#                     case 0:
+//#                         takeShots();
+//#                         break;
+//#                     case 1: // benchmark year
+//#                         benchmarkYear();
+//#                         break;
+//#                 }
+//#                 Astromaximum.disp.setCurrent(this);
 //# 				break;
 //#endif
         }
@@ -1091,7 +1108,17 @@ class Summary extends Canvas implements CommandListener, Runnable {
     void setToday() {
         selDate.setTime(Astromaximum.getMidnight(Options.currentTime()));
         if (!Astromaximum.dataFile.isDateAvailable(selDate)) {
-            Astromaximum.instance.reportTodayError();
+            String str = Astromaximum.getstr(91) + " " +
+                Astromaximum.localizedDateString(selDate) + "||" +
+                Astromaximum.getstr(111) + "||" + Astromaximum.getstr(156);
+
+            Astromaximum.instance.alert(str);
+            Astromaximum.calendar.setTime(selDate);
+            Astromaximum.calendar.set(Calendar.YEAR, Astromaximum.startYear);
+            selDate = Astromaximum.calendar.getTime();
+//#debug error
+            System.out.println(selDate);
+
         }
         showDaySummary();
     }
@@ -1469,9 +1496,9 @@ class Summary extends Canvas implements CommandListener, Runnable {
     }
 
     void startRealtime() {
-		siTimer.run();
-        timer = new Timer();
-        timer.schedule(siTimer, DELAY, DELAY);
+        SummItem siTimer = new SummItem(1);
+        siTimer.run();
+        new Timer().schedule(siTimer, DELAY, DELAY);
     }
 
     void stopRealtime() {
@@ -1869,7 +1896,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 cmds[6] = new Command(Astromaximum.getstr(157), Command.SCREEN, 7);//Quit
                 cmdCount = 7;
 //#ifdef freetest
-//#  				cmds[7] = new Command("Screenshots", Command.SCREEN, 99);//Screenshots
+//#  				cmds[7] = new Command("Extra", Command.SCREEN, 50);//Screenshots
 //#  				++cmdCount;
 //#endif
         //#ifdef ELECTIO
@@ -1948,12 +1975,36 @@ class Summary extends Canvas implements CommandListener, Runnable {
     }
 
 //#ifdef freetest
-//# 	void takeShots() {
+//#     void benchmarkYear() {
+//#         System.out.println("Starting year wide benchmark...");
 //#         Options.isRealtimeOff = true;
-//#         System.out.println("Please wait while capturing screenshots...");
+//#         int repeatCount = 1;
+//#         long tm = System.currentTimeMillis();
+//#         for(int i = 0; i< repeatCount; i++) {
+//#             setNewYearDate();
+//#             showDaySummary();
+//#             for (int j=0; j < Astromaximum.dataFile.dayCount; ++j) {
+//#                 changeDay(1);
+//#                 if (j % 10 == 0)
+//#                     System.out.println(j);
+//#             }
+//#         }
+//#         tm = System.currentTimeMillis() - tm;
+//#         Astromaximum.log("Ttl: " + Long.toString(tm));
+//#         Astromaximum.log("Avg: " + Long.toString(tm * 1000/ (Astromaximum.dataFile.dayCount * repeatCount)));
+//#         Options.isRealtimeOff = false;
+//#         setToday();
+//#     }
 //# 
+//#     void setNewYearDate() {
 //# 		Astromaximum.calendar.setTime(new Date(Astromaximum.dataFile.startJD));
 //# 		selDate.setTime(Astromaximum.calendar.getTime().getTime());
+//#     }
+//# 
+//# 	void takeShots() {
+//#         System.out.println("Please wait while capturing screenshots...");
+//#         Options.isRealtimeOff = true;
+//#         setNewYearDate();
 //# 		showDaySummary();
 //# 		int w = getWidth(), h = getHeight();
 //# 

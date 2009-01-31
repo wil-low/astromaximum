@@ -64,6 +64,7 @@ class Options extends GeoList implements CommandListener {
         optFlags = OPT_FLAGS;
         setTitle(Astromaximum.getstr(92));//Options
         setCommandListener(this);
+        addCommand(new Command(Astromaximum.getstr(94), Command.CANCEL, 1));
         Command cmd = new Command("OK", Command.OK, 1);
         addCommand(cmd);
         addCommand(new Command(Astromaximum.getstr(108), Command.ITEM, 2)); // Delete city
@@ -204,8 +205,6 @@ class Options extends GeoList implements CommandListener {
      * @noinspection UnusedParameters
      */
     void addImeiChar(Object obj) {
-//#debug debug
-        Astromaximum.log("App IMEI=" + imei);
         String res = "";
         if (DataFile.ids == null) {
             DataFile.ids = new Vector();
@@ -228,6 +227,7 @@ class Options extends GeoList implements CommandListener {
             }
         }
 //#if "imeiCheck" @ protection
+       Astromaximum.log("App IMEI=" + imei);
         if (res == null) {
     //#if "useMF" @ protection
 //#       res = Astromaximum.instance.getAppProperty("MIDlet-Description");

@@ -93,28 +93,6 @@ class LogBox extends List implements CommandListener {
         }
     }
 
-    void showAbout(Displayable displayable) {
-        invoker = displayable;
-        Alert al = new Alert(Astromaximum.getstr(152),
-                Astromaximum.getstr(153) + " " + Astromaximum.URL + " " +
-                Astromaximum.getstr(154), null, AlertType.INFO);
-        al.addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 0));
-        al.addCommand(new Command(Astromaximum.getstr(155), Command.STOP, 10));
-        al.setCommandListener(this);
-        String tick = Astromaximum.instance.getAppProperty("MIDlet-Name");
-        String ver = Astromaximum.instance.getAppProperty("MIDlet-Version");
-        if (ver != null) {
-            tick += " v" + ver;
-        }
-        tick += " " + Astromaximum.getstr(255);
-        String rev = Astromaximum.instance.getAppProperty("Hg-Revision");
-        if (rev != null) {
-            tick += ", r" + rev;
-        }
-        al.setTicker(new Ticker(tick));
-        Astromaximum.disp.setCurrent(al);
-    }
-
     static String decipherPngCodeSection(String str, int param) {
         String ss = "";
         int idx = str.indexOf('.');

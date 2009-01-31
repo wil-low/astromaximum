@@ -1429,21 +1429,9 @@ class SummItem extends TimerTask implements RecordFilter {
     public void run() {
         if (type == 1) {
             owner.recalcAllSelections();
-/*
-            long tick = Options.currentTime();
-            for (int i = 0; i < owner.items.length; i++) {
-                SummItem si = owner.items[i];
-                if (si != null && si.isOnPage()) {
-                    si.initString();
-                    si.recalcSelection(tick, true);
-                    si.recalcSelection(tick, false);
-                }
-            }
- */
 //#if "imeiCheck" @ protection
-            /* todo DataFile.hj=Options.hj */
+            long tick = Options.currentTime();
             DataFile.hj = Options.hj * (int) ((tick << 10) & 0x6fedc6);
-
 //#endif
 //      GeoList.localOffset=TimeZone.getDefault().getRawOffset();
 //      System.out.println(GeoList.localOffset);

@@ -54,7 +54,6 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
         LOC = loc;
 //    addCommand(new Command(LocalizationSupport.getMessage("Back"),
 //        Command.BACK, 1));
-        addCommand(new Command(getMessage("Cancel"), Command.CANCEL, 1));
         try {
             DataInputStream dis = new DataInputStream(getClass().getResourceAsStream(LOC));
             year = dis.readShort();
@@ -264,6 +263,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
         try {
             rs.closeRecordStore();
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }
