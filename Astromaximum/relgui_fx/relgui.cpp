@@ -98,7 +98,7 @@ Relgui::Relgui(FXApp *a): FXMainWindow(a,"",NULL,NULL,DECOR_ALL,0,0,1000,600){
             FRAME_NORMAL|LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0,0,0,0,0); 
         
             lbAvailable=new FXList(fr21, this, ID_LIST_AVAILABLE,
-                LIST_BROWSESELECT|LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0); 
+                LIST_BROWSESELECT|LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0);
     
     sortByState=0;
     sortByStateTarget.connect(sortByState);
@@ -147,10 +147,12 @@ void Relgui::moveCity(FXList* lst, FXuint index){
 
 long Relgui::onListSelected(FXObject* o,FXSelector,void* index){
     moveCity((FXList*)o, (FXuint)index);
+    return 1;
 }
 
 long Relgui::onListAvailable(FXObject* o,FXSelector,void* index){
     moveCity((FXList*)o, (FXuint)index);
+    return 1;
 }
 
 long Relgui::onGetCityList(FXObject* o,FXSelector sel,void* data){
@@ -203,6 +205,7 @@ long Relgui::onGetCityList(FXObject* o,FXSelector sel,void* data){
     delete[] fileList;
     onResortCityList(NULL,0,NULL);
     getApp()->endWaitCursor();
+    return 1;
 }
 
 long Relgui::onResortCityList(FXObject* o,FXSelector,void* data){
@@ -212,6 +215,7 @@ long Relgui::onResortCityList(FXObject* o,FXSelector,void* data){
         addCityItem(lrCities[i]->selected ? lbSelected: lbAvailable, i);
     }
     lbAvailable->sortItems();
+    return 1;
 }
 
 void Relgui::addCityItem(FXList *lst, FXuint i) {

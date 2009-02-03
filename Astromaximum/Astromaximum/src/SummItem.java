@@ -17,7 +17,7 @@ import javax.microedition.lcdui.*;
 import java.util.*;
 import javax.microedition.rms.RecordFilter;
 
-class SummItem extends TimerTask implements RecordFilter {
+final class SummItem extends TimerTask implements RecordFilter {
 
     private static final int XLEFT = 0;
     private static final int XCENTER = 1;

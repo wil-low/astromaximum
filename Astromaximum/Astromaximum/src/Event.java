@@ -12,7 +12,7 @@
  */
 import java.util.*;
 
-class Event {
+final class Event {
     static final byte SE_SUN = 0;
     static final byte SE_MOON = 1;
     static final byte SE_MERCURY = 2;
