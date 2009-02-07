@@ -95,7 +95,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     public byte[] initDB(boolean canCreate) throws Exception {
 //    System.out.println(STORE_NAME);
 //        String platform = System.getProperty("microedition.platform");
-        String storeName = STORE_NAME + Integer.toString(year).substring(2);
+        String storeName = getStoreName();
         try {
             rs = RecordStore.openRecordStore(storeName, main.getAppProperty("MIDlet-Vendor"),
                     storeName);
@@ -163,6 +163,10 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
 
     String getMessage(String string) {
         return string;
+    }
+
+    String getStoreName() {
+        return Integer.toString(year).substring(2) + "_ " + STORE_NAME;
     }
 
     String[] getAvailableCities() throws Exception {

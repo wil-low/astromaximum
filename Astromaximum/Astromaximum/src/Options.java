@@ -309,7 +309,8 @@ class Options extends GeoList implements CommandListener {
         String place = "opt";
         if (canCreate) {
             try {
-                rs = RecordStore.openRecordStore(STORE_NAME + Integer.toString(year).substring(2),
+                String storeName = getStoreName();
+                rs = RecordStore.openRecordStore(storeName,
                         true, RecordStore.AUTHMODE_ANY, true);
                 if (rs.getNumRecords() == 0) {
 
@@ -323,7 +324,7 @@ class Options extends GeoList implements CommandListener {
                     rs.addRecord(cn, 0, 1);
                     addLocations();
 //#debug info
-                    Astromaximum.log("rs created " + STORE_NAME);
+                    Astromaximum.log("rs created " + storeName);
                 }
             } catch (RecordStoreFullException ex) {
                 Astromaximum.log(place + ex.getMessage());
