@@ -31,7 +31,7 @@ import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.*;
 
-public class GeoList extends Form implements RecordComparator, RecordFilter, CommandListener {
+class GeoList extends Form implements RecordComparator, RecordFilter, CommandListener {
 
     protected RecordStore rs;
     protected byte[] curCity = null;
@@ -48,7 +48,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     static boolean isSouthern = false;
     ChoiceGroup cityList;
 
-    public GeoList(MIDlet midlet, int type, String loc) {
+    GeoList(MIDlet midlet, int type, String loc) {
         super("");
         main = midlet;
         LOC = loc;
@@ -92,7 +92,7 @@ public class GeoList extends Form implements RecordComparator, RecordFilter, Com
     public void commandAction(Command c, Displayable d) {
     }
 
-    public byte[] initDB(boolean canCreate) throws Exception {
+    byte[] initDB(boolean canCreate) throws RecordStoreException, IOException {
 //    System.out.println(STORE_NAME);
 //        String platform = System.getProperty("microedition.platform");
         String storeName = getStoreName();

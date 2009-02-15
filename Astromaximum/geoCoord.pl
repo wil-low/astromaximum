@@ -17,6 +17,13 @@ our $mypath=$1;
 $mypath='./' unless $mypath;
 require $mypath.'tz_patches.pm';
 =head
+my $module = "custom_coords.pm";
+
+require $mypath.$module;
+
+amax_geo::custom(\$module);
+
+
 my $rule='01Apr@3.5';
 print "Old\n\t";
 print scalar(decode_time(2008, $rule));
@@ -48,14 +55,16 @@ if($#ARGV!=0 and scalar(@ARGV)<2){
 	die <<EOF;
 Astrological events calculator
 Usage: 
-	geoCoord.pl <year> [tzonly|clean|fnfix] common|<country group code list>|all
+    geoCoord.pl <year> [tzonly|clean|fnfix|mod] <module>|common|<country group code list>|all
 Options:
-	tzonly - only update timezone dates, no calculation
-	clean - regenerate city coords
-	fnfix - rename files to new convention (deprecated)
+    tzonly - only update timezone dates, no calculation
+    clean  - regenerate city coords
+    fnfix  - rename files to new convention (deprecated)
+    mod    - do not calculate, use <module> to modify existing data
+        syntax: amax_geo::custom(\$hdr, \$custom, \$geo)
 
-	common - calculate common.dat for this year
-	all - calculate all cities
+    common - calculate common.dat for this year
+    all    - calculate all cities
 EOF
 }
 my %MSK=(

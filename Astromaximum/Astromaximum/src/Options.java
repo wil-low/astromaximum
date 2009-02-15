@@ -305,7 +305,7 @@ class Options extends GeoList implements CommandListener {
         }
     }
 
-    public byte[] initDB(boolean canCreate) throws Exception {
+    public byte[] initDB(boolean canCreate) throws RecordStoreException, IOException {
         String place = "opt";
         if (canCreate) {
             try {
@@ -326,10 +326,6 @@ class Options extends GeoList implements CommandListener {
 //#debug info
                     Astromaximum.log("rs created " + storeName);
                 }
-            } catch (RecordStoreFullException ex) {
-                Astromaximum.log(place + ex.getMessage());
-            } catch (RecordStoreNotFoundException ex) {
-                Astromaximum.log(place + ex.getMessage());
             } catch (RecordStoreException ex) {
                 Astromaximum.log(place + ex.getMessage());
             } catch (IOException ex) {
@@ -414,7 +410,7 @@ class Options extends GeoList implements CommandListener {
         return now + localOffset;
     }
 
-    private void addLocations() throws Exception {
+    private void addLocations() throws RecordStoreException, IOException {
         DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
         istr.skip(2);
         int numRec = istr.readUnsignedShort();

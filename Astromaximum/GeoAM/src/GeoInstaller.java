@@ -7,6 +7,7 @@
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import javax.microedition.rms.RecordStoreException;
+import java.io.IOException;
 
 /**
  *
@@ -41,15 +42,14 @@ public class GeoInstaller extends MIDlet implements CommandListener {
                 return;
             }
             Display.getDisplay(this).setCurrent(gl);
-        } catch (Exception ex) {
-            Alert alert = new Alert("Error",
-                    "Astromaximum cities database is not found. Please install Astromaximum" +
-                    Integer.toString(gl.year).substring(2) + " first: <" + ex.getMessage() + ">",
-                    null, AlertType.ERROR);
-            alert.addCommand(new Command("OK", Command.ITEM, 1));
-            alert.setTimeout(Alert.FOREVER);
-            alert.setCommandListener(this);
-            Display.getDisplay(this).setCurrent(alert);
+        }
+        catch (RecordStoreException ex) {
+            reportError("Astromaximum cities database is not found. Please install Astromaximum " +
+                    Integer.toString(gl.year) + ": <" + ex.getMessage() + ">", Command.ITEM);
+        }
+        catch (IOException ex) {
+            reportError("Cannot read Astromaximum cities database. Please reinstall Astromaximum " +
+                    Integer.toString(gl.year) + ": <" + ex.getMessage() + ">", Command.ITEM);
         }
     }
 
@@ -68,8 +68,8 @@ public class GeoInstaller extends MIDlet implements CommandListener {
                 if (gl.cityList.getSelectedFlags(selArray) > 0) {
                     for (int i = 0; i < selArray.length; i++) {
                         if (selArray[i]) {
-                            byte[] cn = gl.extractLocation(i);
                             try {
+                                byte[] cn = gl.extractLocation(i);
                                 gl.rs.addRecord(cn, 0, cn.length);
                             } catch (RecordStoreException ex) {
                                 msg = "An error occured when installing cities!  " + ex.toString();
@@ -95,6 +95,14 @@ public class GeoInstaller extends MIDlet implements CommandListener {
         Display.getDisplay(this).setCurrent(null);
         destroyApp(true);
         notifyDestroyed();
+    }
+
+    private void reportError(String str, int commandType) {
+        Alert alert = new Alert("Error", str, null, AlertType.ERROR);
+        alert.addCommand(new Command("OK", commandType, 1));
+        alert.setTimeout(Alert.FOREVER);
+        alert.setCommandListener(this);
+        Display.getDisplay(this).setCurrent(alert);
     }
 }
 
