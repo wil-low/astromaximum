@@ -392,7 +392,6 @@ sub inject_locations{
 				my $fn="$path/data/archive/$_[0]/$1/$2.dat";
 				if(!$locname){
 					$locname=$3;
-					chomp($locname);
 				}
 				my $dfile=ensure_slash($fn);
 				push(@fn, $dfile);
@@ -423,7 +422,6 @@ sub inject_locations{
 			push(@data, $row[1]);
 			if(!$locname){
 				$locname=$row[0];
-				chomp($locname);
 			}
 		}
 		$sth->finish;
@@ -432,6 +430,7 @@ sub inject_locations{
 	}
 	echo("$_[2] written\n");
 	$locname='Geo' if $locnum>1;
+	$locname=~s/[\n\r]//sg;
 	return $ye.$locname;
 }
 
