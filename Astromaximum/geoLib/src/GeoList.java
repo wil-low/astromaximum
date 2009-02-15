@@ -166,7 +166,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     }
 
     String getStoreName() {
-        return Integer.toString(year).substring(2) + "_ " + STORE_NAME;
+        return Integer.toString(year).substring(2) + STORE_NAME;
     }
 
     String[] getAvailableCities() throws Exception {

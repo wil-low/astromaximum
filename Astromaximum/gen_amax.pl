@@ -207,7 +207,7 @@ if($config=~/geo-$/is){
 	}
 }
 
-my $ye_prod=$ye.'_'.$const::PRODUCT;
+my $ye_prod=$ye.$const::PRODUCT;
 my $suite="$const::PRODUCT$ye";
 
 if($outfile eq '-'){
@@ -432,7 +432,7 @@ sub inject_locations{
 	}
 	echo("$_[2] written\n");
 	$locname='Geo' if $locnum>1;
-	return $ye.'_'.$locname;
+	return $ye.$locname;
 }
 
 sub inject_common{
