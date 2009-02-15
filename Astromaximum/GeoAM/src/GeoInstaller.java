@@ -35,13 +35,11 @@ public class GeoInstaller extends MIDlet implements CommandListener {
                 gl.cityList.append(gl.extractCityName(gl.extractLocation(i)), null);
             }
             System.out.println(gl.cityList.size());
+            Display.getDisplay(this).setCurrent(gl);
             if (gl.cityList.size() == 1) {
                 gl.cityList.setSelectedIndex(0, true);
                 commandAction(cmd, gl);
-                quit();
-                return;
             }
-            Display.getDisplay(this).setCurrent(gl);
         }
         catch (RecordStoreException ex) {
             reportError("Astromaximum cities database is not found. Please install Astromaximum " +
@@ -62,7 +60,7 @@ public class GeoInstaller extends MIDlet implements CommandListener {
     public void commandAction(Command c, Displayable d) {
         switch (c.getCommandType()) {
             case Command.OK:
-                String msg = "Cities installed";
+                String msg = "Cities installed: ";
                 AlertType at = AlertType.INFO;
                 boolean[] selArray = new boolean[gl.cityList.size()];
                 if (gl.cityList.getSelectedFlags(selArray) > 0) {
@@ -70,14 +68,15 @@ public class GeoInstaller extends MIDlet implements CommandListener {
                         if (selArray[i]) {
                             try {
                                 byte[] cn = gl.extractLocation(i);
+                                msg += gl.extractCityName(cn) + "; ";
                                 gl.rs.addRecord(cn, 0, cn.length);
                             } catch (RecordStoreException ex) {
-                                msg = "An error occured when installing cities!  " + ex.toString();
+                                msg = "An error occured when installing cities!  " + ex.toString() + "  ";
                                 at = AlertType.ERROR;
                             }
                         }
                     }
-                    Alert alert = new Alert("GeoInstaller", msg, null, at);
+                    Alert alert = new Alert("GeoInstaller", msg.substring(0, msg.length()-2), null, at);
                     alert.addCommand(new Command("Close", Command.CANCEL, 1));
                     alert.setCommandListener(this);
                     alert.setTimeout(Alert.FOREVER);
