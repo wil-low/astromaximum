@@ -27,7 +27,7 @@ $sett=array(
 	'city_count'=>721,
 	'price'=>'$60',
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder
-	'min_demo_year'=>2005,
+	'min_demo_year'=>2000,
 
 	'DB_SERVER'=>'mysql300.1gb.ua',
 	'DB_NAME'=>'gbua_x_astroc8a',
