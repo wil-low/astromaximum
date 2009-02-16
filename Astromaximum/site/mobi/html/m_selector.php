@@ -21,6 +21,7 @@ if($chac==-1){
 		if(!$msg) redirect($MOBI_SITE);
 		exit;
 	}
+	list($chac, $chac_pay)=check_access();
 }
 $DEST_URL=array("year", "about", "prg&amp;mode=demo", "prg&amp;mode=trial");
 

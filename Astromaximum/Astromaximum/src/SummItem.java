@@ -1106,7 +1106,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                             if (dat <= d0) {
                                 id1 = counter;
                             }
-                            if (id2 == -1 && dat >= d1) {
+                            else if (id2 == -1 && dat >= d1) {
                                 id2 = counter;
                             }
                         }
@@ -1182,7 +1182,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                                 sel.getDateString(1, hrOnly);
                     }
             }
-//#mdebug
+/*
             Astromaximum.calendar.setTime(new Date(sel.date0));
             System.out.print("Status GMT= ");
             System.out.print(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH));
@@ -1190,7 +1190,7 @@ final class SummItem extends TimerTask implements RecordFilter {
             System.out.print(Astromaximum.calendar.get(Calendar.HOUR_OF_DAY));
             System.out.print(":");
             System.out.println(Event.to2String(Astromaximum.calendar.get(Calendar.MINUTE)));
-//#enddebug
+*/
         }
         return s;
     }

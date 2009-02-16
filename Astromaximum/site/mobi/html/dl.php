@@ -10,8 +10,13 @@ if(isset($_GET['ajax'])){
     include_once("../dbconnect.php");
 	header('Content-Type: text-javascript;charset=UTF-8');
 	header('Cache-Control: no-cache');
-    if(!isset($_GET['cid']) || !isset($_GET['stateid'])) echo "dfgsregsr";
-    $cid=intval($_GET['cid']); $stateid=intval($_GET['stateid']);
+	$cid =0; $stateid=0;
+    if(isset($_GET['cid']))
+    	$cid=intval($_GET['cid']);
+	if(isset($_GET['stateid']))
+    	 $stateid=intval($_GET['stateid']);
+    if(isset($_GET['y']))
+    	$defyear=intval($_GET['y']);
     $arr=array();
     if(!$ajax){
         $stat="SELECT countries.id, countries.name FROM countries ORDER BY countries.name";
@@ -29,13 +34,14 @@ if(isset($_GET['ajax'])){
             $andst=sprintf(" AND state_id=%s",quote_smart($stateid));
         }
         $stat=sprintf(
-            "SELECT cities.id, cities.name FROM cities,countries".
-            ",locations". # year condition
+            "SELECT cities.id, cities.name FROM cities,countries,locations".
             " WHERE country_id=%s AND countries.id=country_id".
-            " AND city_id=cities.id %s AND year=%s". # year condition
+            " AND city_id=cities.id %s".
+            " AND locations.city_id=cities.id AND year=%d".
             " ORDER BY cities.name",
             quote_smart($cid), $andst, quote_smart($defyear));
-    }    
+//        die($stat);
+	}    
     $out='{"content":[';
 	$sth=mysql_query($stat); $ii=0;
 	while($row=mysql_fetch_row($sth)){
@@ -186,8 +192,8 @@ function generate(){
 	onchange="document.forms.namedItem('main').submit()">
 <?php
 $y_now=$current_year;
-for($i=0; $i<5; $i++){
-	$yy=$y_now-$i;
+for($i=$y_now; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
+	$yy=$i;
     if($chac==1 and $yy!=$defyear) continue;
 	echo "<option value=\"$yy\"";
 	if($yy==$defyear) echo " selected=\"selected\"";

@@ -91,7 +91,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     /**
      * GMT calendar instance for Date/time calculations
      */
-    static final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));//TimeZone.getDefault());
+    static Calendar calendar;
     /**
      * Flag indicating that midlet is started for the first time
      */
@@ -164,11 +164,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     public void startApp() {
         logBox = new LogBox();
         errCode = 1; // XXX
-        if (!firstRun) {
-            log("after pause");
-            summary.startRealtime();
-            return;
-        }
+        calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));//TimeZone.getDefault());
 //#ifdef freetest
 //# 		System.out.println(System.getProperty("microedition.io.file.FileConnection.version"));
 //#endif
@@ -449,6 +445,8 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * @param unconditional API standard
      */
     public void destroyApp(boolean unconditional) {
+        options.shutdown();
+        firstRun = true;
         dataFile = null;
         summary = null;
         interpreter = null;
@@ -467,8 +465,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#             interpreter.rs.closeRecordStore();
 //#         } catch (RecordStoreException ex) {}
 //#endif
-        options.shutdown();
-        firstRun = true;
         instance.destroyApp(true);
         instance.notifyDestroyed();
     }

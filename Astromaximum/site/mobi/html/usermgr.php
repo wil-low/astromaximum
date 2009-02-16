@@ -8,7 +8,7 @@ if(isset($_GET['u'])){
 	$id=$_GET['u'];
 	if(strcmp($id, 'add')==0){
 		global $DLIM;
-		$row=array("", "", "", $DLIM[0], $DLIM[1], $DLIM[2], 1, 0); // defaults for new user
+		$row=array("", "", "", $DLIM[0], $DLIM[1], $DLIM[2], 1, 0, 3); // defaults for new user
 		$hdr="Add new user:";
 		$act="Add";
 	}

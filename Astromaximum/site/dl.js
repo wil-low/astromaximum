@@ -56,9 +56,11 @@ function showc2(mode)
     }
     var cid=document.main.cid.value;
     var stateid=document.main.stateid.value;
+    var year=document.main.y_sel.value;
     var url='/mobi/html/dl.php?lang=' + document.main.lang.value + 
         '&ajax='+mode+'&cid=' + cid +
-        '&stateid=' + stateid;
+        '&stateid=' + stateid +
+        '&y=' + year;
 //    alert(url);
     $.getJSON(url, {}, cb);
 }

@@ -198,8 +198,8 @@ final class Event {
      * @noinspection UseOfSystemOutOrSystemErr
      */
     void dump() {
-        System.out.print(new Date(date0) + " - " + new Date(date1));
-//    System.out.print(getDateString(0,false)+" - "+getDateString(1,false));
+//        System.out.print(new Date(date0) + " - " + new Date(date1));
+        System.out.print (getDateString(0, 0) + " - " + getDateString(1, 0));
         final int dgr = getDegree();
         final int goodbad = getDegType();
         System.out.print("  degree=" + Integer.toString(dgr));

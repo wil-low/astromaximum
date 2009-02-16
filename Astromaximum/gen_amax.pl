@@ -174,7 +174,7 @@ if($config=~/amtext/is){
 	print(OUT $out);
 	close(OUT);
 	#	$outfile=~s/\.jar/-$lang.jar/is;
-	do_jar('AMtext', $outfile, "TextInstaller");
+	do_jar('AMtext', 'AMtext', $outfile, "TextInstaller");
 	$done=1;
 }
 else{
@@ -207,7 +207,8 @@ if($config=~/geo-$/is){
 	}
 }
 
-my $ye_prod=$ye.'_'.$const::PRODUCT;
+my $ye_prod=$ye.$const::PRODUCT;
+my $suite="$const::PRODUCT$ye";
 
 if($outfile eq '-'){
 	$outfile="$path/Astromaximum/deploy/$ye_prod.jar" ;
@@ -230,7 +231,7 @@ if($config=~/tb/is){
 	inject_common($year, "$path/$const::DIR_TEMP/common.dat");
 	inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 	inject_icon('a', "res/");
-	do_jar($ye_prod, $outfile, $const::PRODUCT);
+	do_jar($suite, $ye_prod, $outfile, $const::PRODUCT);
 	$done=1;
 	do_messjar($outfile);
 }
@@ -244,7 +245,7 @@ if($config=~/demo/is){
 	inject_common($year, "$path/$const::DIR_TEMP/c.dat");
 	inject_locations($year, $loclist, "$path/$const::DIR_TEMP/l.dat");
 	inject_icon('a', "res/");
-	do_jar($ye_prod, $outfile, $const::PRODUCT);
+	do_jar($suite, $ye_prod, $outfile, $const::PRODUCT);
 	do_messjar($outfile);
 	$done=1;
 }
@@ -253,7 +254,7 @@ if($config=~/geo-$/is){
 	unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
 	my $locname=inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 	inject_icon('');
-	do_jar($locname, $outfile, $GeoAMclass);
+	do_jar($locname, $locname, $outfile, $GeoAMclass);
 	do_messjar($outfile);
 	$done=1;
 }
@@ -265,7 +266,7 @@ if($islocal){
 		inject_common($year, "$path/$const::DIR_TEMP/common.dat");
 		inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 		inject_icon('a', "res/");
-		do_jar($ye_prod, $outfile, $const::PRODUCT);
+		do_jar($suite, $ye_prod, $outfile, $const::PRODUCT);
 		do_messjar($outfile);
 		$done=1;
 	}
@@ -279,7 +280,7 @@ if($islocal){
 		inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 		inject_amdata();
 		inject_icon('a', "res/");
-		do_jar($ye_prod, $outfile, $const::PRODUCT);
+		do_jar($suite, $ye_prod, $outfile, $const::PRODUCT);
 		do_messjar($outfile);
 		$done=1;
 	}
@@ -293,7 +294,7 @@ if($islocal){
 		inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 		inject_amdata();
 		inject_icon('a', "res/");
-		do_jar($ye_prod, $outfile, $const::PRODUCT);
+		do_jar($suite, $ye_prod, $outfile, $const::PRODUCT);
 		do_messjar($outfile);
 		$done=1;
 	}
@@ -391,7 +392,6 @@ sub inject_locations{
 				my $fn="$path/data/archive/$_[0]/$1/$2.dat";
 				if(!$locname){
 					$locname=$3;
-					chomp($locname);
 				}
 				my $dfile=ensure_slash($fn);
 				push(@fn, $dfile);
@@ -422,7 +422,6 @@ sub inject_locations{
 			push(@data, $row[1]);
 			if(!$locname){
 				$locname=$row[0];
-				chomp($locname);
 			}
 		}
 		$sth->finish;
@@ -431,7 +430,8 @@ sub inject_locations{
 	}
 	echo("$_[2] written\n");
 	$locname='Geo' if $locnum>1;
-	return $ye.'_'.$locname;
+	$locname=~s/[\n\r]//sg;
+	return $ye.$locname;
 }
 
 sub inject_common{
@@ -515,11 +515,12 @@ sub writeData
 }
 
 sub do_jar{
-	my($prod, $outfile, $mainclass)=@_;
+	my($suite, $prod, $outfile, $mainclass)=@_;
 	open(INF, "<$path/$const::DIR_TEMPLATE/MANIFEST.MF") or mydie($!);
 	my @data=<INF>;
 	close(INF);
 	my $template=join("",@data);
+	$template=~s/<SUITENAME>/$suite/isg;
 	$template=~s/<PRODUCT>/$prod/isg;
 	$template=~s/<VERSION>/$const::VERSION/isg;
 	$template=~s/<VENDOR>/$const::VENDOR/isg;
