@@ -32,8 +32,8 @@
     }
     
 	if($level==4){
-		$is_allow_dl=1;
-		$tries=($chac==1)? 100: get_try_count(0);
+		$tries=($chac==1)? array(0, 100, 0): get_try_count(0);
+		$is_allow_dl=$tries[1]!=0;
 		$sc=$parm[3];
 		$stat="SELECT cities.name, countries.name FROM cities,countries ".
             "WHERE cities.id=$sc and countries.id=country_id ".
@@ -45,14 +45,15 @@
 			$str=midlet_create("geo", $defyear, $lang, $sc, "dl", 1);
 			if(strlen($str)){
 				dec_try_count(0, 1);
-                $lines=explode("\n", $str);
-				echo "<a href=\"$str[1]\">{$i18['PHONE_DL']}</a>"; // JAD only
+				$lines=explode("\n", $str);
+				echo "<a href=\"$lines[1]\">{$i18['PHONE_DL']} JAD</a><br/>"; // JAD only
+				echo "<a href=\"$lines[0]\">{$i18['PHONE_DL']} JAR</a><br/>"; // JAR only
 				echo tries_remained($tries[1]-1, $DLIM[1]);
-                echo "<br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
+				echo "<br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
 			}
 		}
 		else{
-			echo 'You cannot download cities.';
+			echo 'City download limit exceeded';
 		}
 		return;
 	}
