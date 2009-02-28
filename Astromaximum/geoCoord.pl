@@ -861,7 +861,9 @@ sub get_tz{
                                 last;
                             }
                             else{
-                                die "\nDifficulty here ".$first_date->{start}." ". $rulerow->{end};
+                                warn "\nWarning: Year not found? Difficulty here ".$first_date->{start}." ". $rulerow->{end};
+                                $start=$end=$diff='';
+                                last;
                             }
 						}
 						$first_date=$rulerow;
