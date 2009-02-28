@@ -459,6 +459,9 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Stop the MIDlet, saving {@link Options}
      */
     static void quit() {
+        String isApplet = System.getProperty("microemu.applet");
+        if (isApplet != null && isApplet.equals("true"))
+            return;
         Display.getDisplay(instance).setCurrent(null);
 //#ifdef use_amtext
 //#         try {
