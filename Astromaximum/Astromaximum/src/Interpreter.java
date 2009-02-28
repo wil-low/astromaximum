@@ -42,6 +42,7 @@ class Interpreter extends Canvas implements CommandListener {
     static int topic = T_NONE;
     boolean isLogged = false;
     final Command[] cmds = new Command[3];
+    private boolean mousePressed = false;
 
 //#ifdef use_amtext
 //#     Hashtable hamtext=new Hashtable();
@@ -441,7 +442,13 @@ class Interpreter extends Canvas implements CommandListener {
         ++lineCount;
     }
 
+    protected void keyPressed(int keyCode) {
+        mousePressed = true;
+    }
+
     protected void keyReleased(int keyCode) {
+        if (!mousePressed) return;
+        mousePressed = false;
         final int ga = getGameAction(keyCode);
         if (Astromaximum.poundPressed) { // process shifted keys
             Astromaximum.poundPressed = false;

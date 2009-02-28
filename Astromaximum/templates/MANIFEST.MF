@@ -7,4 +7,5 @@ MIDlet-Version: <VERSION>
 MIDlet-1: <PRODUCT>,/res/icon.png,<MAINCLASS>
 MIDlet-Info-URL: http://astromaximum.com/
 MIDlet-Description: <DESCR>
-Hg-Revision: <REVISION>
+X-Midlet-Version: <VERSION>
+X-Hg-Revision: <REVISION>

@@ -653,12 +653,12 @@ public class Astromaximum extends MIDlet implements CommandListener {
     void showAbout() {
         String msg = "Astromaximum " + Integer.toString(startYear) + " " +
                 getstr(162) + "||Web: http://" + URL;
-        String tick = getAppProperty("MIDlet-Version");
+        String tick = getAppProperty("X-Midlet-Version");
         if (tick != null) {
             tick = getstr(163) + " " + tick;
         }
         tick += " " + getstr(255);
-        String rev = getAppProperty("Hg-Revision");
+        String rev = getAppProperty("X-Hg-Revision");
         if (rev != null) {
             tick += ", r" + rev;
         }

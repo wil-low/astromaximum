@@ -51,6 +51,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#endif
     //  private boolean fullScreen=true;
     private boolean needRender = true;
+    private boolean mousePressed = false;
     //  private Image imgLogo;
     private SummItem statItem;
     private static final byte[] hourSeq = {Event.SE_SUN, Event.SE_VENUS, Event.SE_MERCURY,
@@ -231,12 +232,13 @@ class Summary extends Canvas implements CommandListener, Runnable {
         items[selItem].render(osg, true, now, isShowCustom);
     }
 
-    /**
-     * keyPressed
-     *
-     * @param keyCode int
-     */
+    protected void keyPressed(int keyCode) {
+        mousePressed = true;
+    }
+
     protected void keyReleased(int keyCode) {
+        if (!mousePressed) return;
+        mousePressed = false;
         final int ga = getGameAction(keyCode);
         SummItem si = getSelectedItem();
         if (Astromaximum.poundPressed) { // process shifted keys
@@ -1997,19 +1999,19 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         Options.isRealtimeOff = false;
 //#         setToday();
 //#     }
-//# 
+//#
 //#     void setNewYearDate() {
 //# 		Astromaximum.calendar.setTime(new Date(Astromaximum.dataFile.startJD));
 //# 		selDate.setTime(Astromaximum.calendar.getTime().getTime());
 //#     }
-//# 
+//#
 //# 	void takeShots() {
 //#         System.out.println("Please wait while capturing screenshots...");
 //#         Options.isRealtimeOff = true;
 //#         setNewYearDate();
 //# 		showDaySummary();
 //# 		int w = getWidth(), h = getHeight();
-//# 
+//#
 //# 		try{
 //#             for (int i=0; i < Astromaximum.dataFile.dayCount; ++i) {
 //# //                for (int page = PAGE_SUMMARY; page <= PAGE_LAST; ++page) {
@@ -2028,7 +2030,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         Options.isRealtimeOff = false;
 //#         setToday();
 //#     }
-//# 
+//#
 //# 	void screenShot(int w, int h, int num) throws IOException {
 //# 		Image image = Image.createImage(w, h);
 //# 		render (image.getGraphics());
@@ -2050,7 +2052,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         fc.close();
 //#         System.out.println(fname + ".raw written");
 //# 	}
-//# 
+//#
 //# 	String formatDate2d (int field) {
 //# 		int num = Astromaximum.calendar.get(field);
 //# 		if (field == Calendar.MONTH)
