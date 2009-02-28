@@ -1877,8 +1877,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
     private void recreateCommands() {
         int cmdCount;
         for (int i = 0; i < cmds.length; i++) {
-            removeCommand(cmds[i]);
-            cmds[i] = null;
+            if (cmds[i] != null) {
+                removeCommand(cmds[i]);
+                cmds[i] = null;
+            }
         }
         switch (Interpreter.topic){
             case Interpreter.T_DECUMB:
