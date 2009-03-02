@@ -266,7 +266,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     void init2(){            
         try {
             int len = dataFile.geoposData.length;
-            Astromaximum.log("geopos len=" + new Integer(len).toString());
+            Astromaximum.log("geopos len=" + Integer.toString(len));
 //#if logger
       logger("initDB");
 //#endif
@@ -495,7 +495,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * @param absDegree int
      * @return sign number
      */
-    static final int getSignDegree(int absDegree) {
+    static int getSignDegree(int absDegree) {
         return absDegree % 30 + 1;
     }
 
@@ -505,7 +505,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * @param idx index
      * @return Event
      */
-    static final Event evAt(Vector v, int idx) {
+    static Event evAt(Vector v, int idx) {
         return (Event) v.elementAt(idx);
     }
 

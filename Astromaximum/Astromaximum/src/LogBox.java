@@ -87,7 +87,6 @@ class LogBox extends List implements CommandListener {
 
                 } catch (Exception ex) {
                 }
-                ;
                 Astromaximum.instance.init2();
                 break;
         }

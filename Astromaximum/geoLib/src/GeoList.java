@@ -224,11 +224,8 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
             return false;
         }
         String s = extractCityName(b);
-        if (s == null) {
-            return false;
+        return s != null && new String(curCity).equals(s);
         }
-        return new String(curCity).equals(s);
-    }
 
 // --Commented out by Inspection START (25.01.09 13:16):
 //    byte[] extractCityNameBytes(byte[] geo) {
