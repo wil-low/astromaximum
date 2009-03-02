@@ -59,7 +59,7 @@ sub writeData # srcfile, destfile, imeichar
 	close(INF);
 	if(length($body)>8){
 		print OUTF pack('c',$imeichar).$body; #
-		print("$src $imeichar\n");
+#		print("$src $imeichar\n");
 	}
 	close(OUTF);
 }
