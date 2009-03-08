@@ -37,5 +37,8 @@
 // delete unconfirmed users that live more than 24 hr      
         $stat="DELETE FROM customers WHERE name='' AND active=0 AND subscr_date<SUBTIME(NOW(),'24:00:00')";
         $sth=mysql_query($stat);
+// disable prospect users that live more than 7 days w/o payment      
+        $stat="UPDATE customers SET active=0 WHERE role=3 AND subscr_date<DATE_SUB(NOW(), INTERVAL 7 DAY)";
+        $sth=mysql_query($stat);
     }
 ?>

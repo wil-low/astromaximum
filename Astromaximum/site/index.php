@@ -52,9 +52,11 @@ if(strcmp($main, 'login')==0){
 	}
 	if(login($login, $pass)){
 		$main='home';
+		list($chac, $chac_pay)=check_access();
 		if(isset($_GET['to']) && strcmp($_GET['to'],'demo')==0){
 			$main=$_GET['to'];
 		}
+		if ($chac == 3) $main = 'buy';
 	}
 	else{
 		include_once("mobi/ipblock.php");
@@ -173,7 +175,7 @@ if($user_ok){
 	}
 	$btn2=$i18['TRIAL'];
 }
-if($chac==1){
+if($chac==1 || $chac==3){
 	$btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_count']} ".$i18['_CITIES'];
 }
 if($chac!=-1){

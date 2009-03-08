@@ -11,10 +11,11 @@ if (empty($_GET['action'])){
 $cur_year=$GLOBALS['amax']['year'];
 $price=$GLOBALS['amax']['price'];
 
-$paypal_email='aivush_1217502939_biz@gmail.com';//$GLOBALS['amax']['mail_office'];
+//$paypal_email='aivush_1217502939_biz@gmail.com';
+$paypal_email=$GLOBALS['amax']['paypal_email'];
 
 $item_name="Astromaximum $cur_year";
-$item_price=substr($price,1).'.00';
+$item_price='0.01'; //substr($price,1).'.00';
 $currency='USD';
 
 /*
@@ -27,8 +28,7 @@ $thisurl='http://'.$_SERVER['SERVER_NAME']."/?$lang_&p=paypal";
 
 require_once('mobi/paypal/paypal.class.php');  // include the class file
 $p = new paypal_class;             // initiate an instance of the class
-$p->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';   // testing paypal url
-//$p->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';     // paypal url
+$p->paypal_url = $GLOBALS['amax']['paypal_url'].'/cgi-bin/webscr';
 
 switch ($_GET['action']) {
 

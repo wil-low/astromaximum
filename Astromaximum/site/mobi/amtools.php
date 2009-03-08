@@ -403,7 +403,9 @@ function pwd_send($to, $login, $realname, $dl_limits, $pwd){
 }
 
 function confirmation_send($to, $realname, $passkey){
-    $message=file_get_contents("mobi/dl/source/confirm.mail");
+	global $lang;
+    $message=file_get_contents("mobi/html/$lang/confirm.mail");
+	if (!$message) return -1;
 	$message=str_replace('[realname]', $realname, $message);
 	$message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
 	$message=str_replace('[key]', $passkey, $message);
@@ -490,7 +492,7 @@ function random9(){ // generate 9-digit randoms
 function show_payment_instructions($payment_id){ // print payment page
     global $lang_, $i18, $META_HEAD_ADD;
     $payment_id=sprintf('%02d', $payment_id);
-    $tabs='<div class="tabs"><ul class="tabNavigation">';
+    $tabs="<h4>{$i18['REGFORM_PAYMODE']}</h4>".'<div class="tabs"><ul class="tabNavigation">';
     foreach($GLOBALS['amax']['paymodes'] as $key){
         $key2=sprintf('%02d', $key);
         $tabs.='<li><a class="" href="#a'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a></li>\n";
@@ -518,6 +520,7 @@ function init() {
 EOF;
 
     echo $tabs;
+	echo '<div id="#a00"></div>';
     foreach($GLOBALS['amax']['paymodes'] as $key){
         $key2=sprintf('%02d', $key);
         echo '<div id="a'.$key2.'">';

@@ -73,7 +73,7 @@ if($chac==-1){
 }
 
 if($chac==3){ // unpaid
-    show_payment_instructions($chac_pay);
+    show_payment_instructions(0);
     return;
 }
 

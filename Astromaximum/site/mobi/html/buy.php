@@ -8,7 +8,7 @@ $msg=$i18['REGFORM_REQF'];
 $email=$email2=$nick=$paymode=$model='';
 
 if($chac==3){ // unpaid
-    show_payment_instructions($chac_pay);
+    show_payment_instructions(0);
     return;
 }
 
@@ -22,13 +22,11 @@ function alert($str){
 }
 
 if(present('email1') && present('email2') && present('nick') && present('p_captcha')
-    && present('paymode') && present('agree') &&
-    strcmp($_POST['agree'], 'on') == 0){ 
+    && present('agree') && strcmp($_POST['agree'], 'on') == 0){ 
 
     $email=substr($_POST['email1'], 0, 50);
     $email2=substr($_POST['email2'], 0, 50);
     $realname=substr($_POST['nick'], 0, 50);
-    $paymode=$_POST['paymode'];
 
     do{    
         if(strcmp($email, $email2) != 0){
@@ -60,7 +58,7 @@ if(present('email1') && present('email2') && present('nick') && present('p_captc
             quote_smart($realname),
             quote_smart($email),
             quote_smart($passkey),
-            quote_smart($paymode)
+            2
         );
         if(!mysql_query($stat)){
             echo mysql_error(); break;
@@ -71,7 +69,7 @@ if(present('email1') && present('email2') && present('nick') && present('p_captc
         }
         else{
             echo $i18['INSTR_SENT'];
-            show_payment_instructions($paymode);
+//            show_payment_instructions($paymode);
         }
         return;
         
@@ -132,9 +130,9 @@ if($chac!=-1 and $chac!=1){
 }
 
 include_once("mobi/ipblock.php");
-$msg=allow_ip('buy', false);
-echo $msg;
-if($msg) return;
+//$msg=allow_ip('buy', false);
+//echo $msg;
+//if($msg) return;
 
 $agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang_), false);
 $sess=session_name().'='.session_id();
@@ -142,17 +140,17 @@ $sess=session_name().'='.session_id();
 // TODO: maintain these options when changing dic_paymode table!
 
 echo <<< EOF
-<h4>{$i18['REGFORM_H']}</h4>
+{$i18['REGFORM_DESC']}
 <form id="regform" action="$uri" method="post">
+EOF;
+/*
 <p>{$i18['REGFORM_PAYMODE']}</p>
 <p class="no_border">
-EOF;
-
 foreach($GLOBALS['amax']['paymodes'] as $key){
     $key2=sprintf('%02d', $key);
     echo paymode_radio($i18['PAYMENT_'.$key2], 2, $key2, true);
 }
-
+*/
 echo <<< EOF
 </p>
 <input type="hidden" name="demo"/>

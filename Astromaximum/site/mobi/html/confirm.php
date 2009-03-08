@@ -24,7 +24,7 @@ if(isset($_GET['key'])){
     
             $msg="Email: $row[1]\nNick: $row[2]\nLogin: $usr\nPaymode: $row[3]\nIP: {$_SERVER['REMOTE_ADDR']}";
             event_send('new customer', $msg);
-            show_payment_instructions($row[4]);
+//            show_payment_instructions($row[4]);
         }
         else{
             event_send('error confirm.php', mysql_error()."\n$stat");
