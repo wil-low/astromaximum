@@ -44,7 +44,7 @@ $sett=array(
 	'paypal_email'=>'paypal@astromaximum.com',
 
 //	'paypal_url'=>'https://www.sandbox.paypal.com',
-//	'paypal_email'=>''aivush_1217502939_biz@gmail.com'',
+//	'paypal_email'=>'aivush_1217502939_biz@gmail.com',
 );
 
 $GLOBALS['amax']=$sett;
