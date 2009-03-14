@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <time.h>
-#include <assert.h>
 #include <string.h>
 // datafile.h
 typedef enum{
@@ -17,6 +16,26 @@ typedef enum{
 
 long dstStart=0, dstEnd=0, tzOffset=0;
 int isSouthern=0, dstExists=0;
+
+void gmtime_fun(const time_t* time_in, struct tm* time_out)
+{
+#ifdef __LINUX__
+	gmtime_r (time_in, time_out);
+#else
+	struct tm* p_tm = gmtime (time_in);
+	memcpy (time_out, p_tm, sizeof(*time_out));
+#endif
+}
+
+void localtime_fun(const time_t* time_in, struct tm* time_out)
+{
+#ifdef __LINUX__
+	localtime_r (time_in, time_out);
+#else
+	struct tm* p_tm = localtime (time_in);
+	memcpy (time_out, p_tm, sizeof(*time_out));
+#endif
+}
 
 short swapShort(short var) {
     var=(var & 0xff)<<8 | ((var >> 8) & 0xff);
@@ -90,9 +109,9 @@ int printLocalTime(time_t date, int isSunrise){
     }
     struct tm risetime;
     if(isSunrise)
-        gmtime_r(&date, &risetime);
+        gmtime_fun(&date, &risetime);
     else
-    localtime_r(&date, &risetime);
+		localtime_fun(&date, &risetime);
     
     printf("%04d-%02d-%02d %02d:%02d\n", 
         risetime.tm_year+1900, risetime.tm_mon+1, risetime.tm_mday,
@@ -153,7 +172,11 @@ int main(int argc, char** argv) { // data filename
         int rub = readUnsignedByte(fn);
         while (evtype != rub) {
             skipOff = readShort(fn) - 3;
-            assert(skipOff>=0);
+            if (skipOff < 0) {
+				printf ("skipOff < 0 at %s, ln %d\n", __FILE__, __LINE__);
+				return 3;
+			}
+				
             fseek(fn, skipOff+1, SEEK_CUR);
             rub = readUnsignedByte(fn);
         }
@@ -176,8 +199,9 @@ int main(int argc, char** argv) { // data filename
     int fshort_degree = (flag & EF_SHORT_DEGREE);
     int fnext_date2 = (flag & EF_NEXT_DATE2);
     
-    time_t dayStart, dayEnd, now; struct tm tm_;
-    
+    time_t dayStart, dayEnd, now; 
+	struct tm tm_;
+	
     if(my_year && (df_year == my_year)){ // process entered time as current time
         memset(&tm_, 0, sizeof(tm_));
         tm_.tm_year   =   my_year-1900;
@@ -190,7 +214,7 @@ int main(int argc, char** argv) { // data filename
     else{
         time(&dayStart);
     }
-    gmtime_r(&dayStart, &tm_);
+    gmtime_fun(&dayStart, &tm_);
     tm_.tm_year=df_year-1900;
     dayStart=mktime(&tm_);
     now=dayStart;
