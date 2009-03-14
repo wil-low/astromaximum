@@ -1,14 +1,5 @@
 <?php
     $EXEC=1;
-/*
-    $fn = tempnam("/tmp", "CRON");
-	$ctab = fopen($fn, 'w');
-	fwrite($ctab, "3 3 3 3 3 date\n");
-	fclose($ctab);
-	echo "crontab $fn ";
-	system("crontab $ctab");
-	exit;
-*/	
 // ?mode=clean_files  - delete outdated files and set 'files.deleted' to true
     if(file_exists('pwdgen_local.php') ||
        (isset($_GET['mode']) && strcmp($GET['mode'], 'clean_files'))){
@@ -41,4 +32,8 @@
         $stat="UPDATE customers SET active=0 WHERE role=3 AND subscr_date<DATE_SUB(NOW(), INTERVAL 7 DAY)";
         $sth=mysql_query($stat);
     }
+
+/*
+	after October 23, set for all Customers dl_count0-1 to 0, and role = prospect
+*/
 ?>

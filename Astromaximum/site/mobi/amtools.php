@@ -492,7 +492,7 @@ function random9(){ // generate 9-digit randoms
 function show_payment_instructions($payment_id){ // print payment page
     global $lang_, $i18, $META_HEAD_ADD;
     $payment_id=sprintf('%02d', $payment_id);
-    $tabs="<h4>{$i18['REGFORM_PAYMODE']}</h4>".'<div class="tabs"><ul class="tabNavigation">';
+    $tabs='<h4>'.sprintf ($i18['REGFORM_PAYMODE'], $GLOBALS['amax']['year']).'</h4><div class="tabs"><ul class="tabNavigation">';
     foreach($GLOBALS['amax']['paymodes'] as $key){
         $key2=sprintf('%02d', $key);
         $tabs.='<li><a class="" href="#a'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a></li>\n";
@@ -523,7 +523,7 @@ EOF;
 	echo '<div id="#a00"></div>';
     foreach($GLOBALS['amax']['paymodes'] as $key){
         $key2=sprintf('%02d', $key);
-        echo '<div id="a'.$key2.'">';
+        echo '<div id="a'.$key2.'" style="display:none">';
         $fn="mobi/html/p_$key2.php";
         if(file_exists($fn)){
             include($fn);

@@ -173,7 +173,9 @@ if($user_ok){
 	if(strcmp($main, 'dl') && strcmp($main, 'dl2')){
 		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
 	}
-	$btn2=$i18['TRIAL'];
+	$try_count = get_try_count(0);
+	if ($try_count[0] != 0)
+		$btn2=$i18['TRIAL'];
 }
 if($chac==1 || $chac==3){
 	$btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_count']} ".$i18['_CITIES'];
@@ -197,10 +199,8 @@ FRM;
 ?> 
 </div>
 <?php 
-//if($chac<0 || (strcmp($main, 'dl') && strcmp($main, 'dl2'))){ 
-	echo disable_big_button('demo', $btn1, $btn1_link, $btn1_link);
-	echo disable_big_button('buy', $btn2, 'buy', 'buy');
-//}
+echo show_big_button('demo', $btn1, $btn1_link, $btn1_link);
+echo show_big_button('buy', $btn2, 'buy', 'buy');
 ?>
 <div id="leftColumn">
 <?php	echo $session_prompt ?>
@@ -261,7 +261,7 @@ S&amp;W Axis. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com"
 <?php
 ob_end_flush();
 
-function disable_big_button($id, $label, $check_page, $link_page){
+function show_big_button($id, $label, $check_page, $link_page){
 	global $main, $lang_;
 	$style='';
 	if(strcmp($main, $check_page)){
