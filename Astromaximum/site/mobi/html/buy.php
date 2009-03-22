@@ -145,8 +145,20 @@ $sess=session_name().'='.session_id();
 
 // TODO: maintain these options when changing dic_paymode table!
 
+$link['02'] = "http://$lang.wikipedia.com/wiki/PayPal";
+
+$langwiki = strcmp($lang, 'ru') == 0 ? '' : "$lang:";
+$link['04'] = "/wiki/doku.php/{$langwiki}bill";
+
+$out='';
+foreach($GLOBALS['amax']['paymodes'] as $key){
+    $key2=sprintf('%02d', $key);
+    $out.='<li>'.$i18['PAYMENT_'.$key2].
+		' <a href="'.$link[$key2].'" target="_blank"><img src="/i/info.png" width="12" height="12" alt="?"/></a></li>';
+}
+$desc=sprintf($i18['REGFORM_DESC'], "<ul>$out</ul>");
 echo <<< EOF
-{$i18['REGFORM_DESC']}
+$desc
 <form id="regform" action="$uri" method="post">
 EOF;
 /*
