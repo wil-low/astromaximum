@@ -1,6 +1,6 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
-reject2index("index.php?$lang_");
+reject2index();
 //print_r($_REQUEST);
 include_once("mobi/amtools.php");
 $row=array();
@@ -41,7 +41,7 @@ if(isset($_GET['u'])){
 		$rolelist.='</select>';
 		echo <<<EOF
 <h3>$hdr $row[0]</h3>
-<form id="usredit" action="index.php?$lang_&amp;p=usermgr" method="post">
+<form id="usredit" action="usermgr" method="post">
 <input type="hidden" name="u_id" value="$id"/>
 <input type="text" name="u_email" id="u_email" size="38" value="$row[2]"/> e-mail
 <p>
@@ -165,7 +165,7 @@ if(isset($_POST['u_id'])){
 ?>
 <table class="colorlist">
 <tr><td colspan="8" style="background-color:white; text-align:right">
-<a href="index.php?<?php echo $lang_ ?>&amp;p=usermgr&amp;u=add">Add user</a></td></tr>
+<a href="usermgr/u=add">Add user</a></td></tr>
 <tr><th colspan="2">Email</th><th style="width:20px"></th><th>Realname</th><th>Payment</th><th colspan="3">dl, city, past count</th>
 </tr>
 <?php
@@ -193,7 +193,7 @@ while($row=mysql_fetch_row($sth)){
 	if($role==3){ // prospect
 		$row[0].=' !!!';
 	}
-	$row[0]="<a href=\"index.php?$lang_&amp;p=usermgr&amp;u=$id\">$row[0]</a>";
+	$row[0]="<a href=\"usermgr/u=$id\">$row[0]</a>";
     $row[1]="<a href=\"mailto:{$email}\">mail</a>";
 	echo "<tr><td>$i</td><td$back>".implode("</td>\n<td>", $row)."</td></tr>";
 }

@@ -24,7 +24,7 @@ print_r ($_POST);
 echo "</pre>";
 echo "<br/>$item_name, $item_price, $currency <br/>";
 */
-$thisurl='http://'.$_SERVER['SERVER_NAME']."/?$lang_&p=paypal";
+$thisurl='http://'.$_SERVER['SERVER_NAME']."/$lang/paypal";
 
 require_once('mobi/paypal/paypal.class.php');  // include the class file
 $p = new paypal_class;             // initiate an instance of the class

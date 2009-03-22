@@ -29,6 +29,10 @@ ob_start("output_callback");
 
 include_once('mobi/amtools.php');
 $main='home';
+if(!isset($_GET['lang'])){
+	redirect('/ru/main');
+    return;
+}
 if(isset($_GET['p'])){
 	$main=$_GET['p'];
 }
@@ -57,15 +61,12 @@ if(strcmp($main, 'login')==0){
 			$main=$_GET['to'];
 		}
 		if ($chac == 3) $main = 'buy';
-	}
+ 	}
 	else{
 		include_once("mobi/ipblock.php");
-		$custom_content=allow_ip('login', false);
 		$main='home';
 	}
-	if(!$custom_content){
-		redirect("?$lang_&amp;p=$main");
-	}	
+	redirect("../$main");
 }
 if(!preg_match("/^[\w_\d]+$/is", $main)){
 	$main='home';
@@ -118,8 +119,8 @@ if (document.images){
 <div id="globe">
 <img src="/i/globe.jpg" width="956" height="320" usemap="#Map" alt="ASTROMAXIMUM"/>
 <map id="Map" name="Map">
-	<area shape="circle" coords="178,132,95" href="?<?php echo $lang_ ?>" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" />
-	<area shape="rect" coords="443,87,859,165" href="?<?php echo $lang_ ?>" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" />
+	<area shape="circle" coords="178,132,95" href="/<?php echo "$lang/home" ?>" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" />
+	<area shape="rect" coords="443,87,859,165" href="/<?php echo "$lang/home" ?>" alt="ASTROMAXIMUM" title="ASTROMAXIMUM" />
 </map>
 </div>
 <div id="logoText"><?php echo $i18['AMAX_LOGO'] ?></div>
@@ -128,6 +129,7 @@ if (document.images){
 </noscript>
 <div id="lang">
 <?php
+// language selection
 	$lng=array('DE', 'EN', 'RU');
 	for($i=0; $i<count($lng); $i++){
 		if($i) echo " | ";
@@ -136,7 +138,7 @@ if (document.images){
 			echo "<b>$lng[$i]</b>";
 		}
 		else{
-			echo "<a href=\"?lang=$lng2&amp;p=$main\">$lng[$i]</a>";
+			echo "<a href=\"/$lng2/$main\">$lng[$i]</a>";
 		}
 	}
 ?>
@@ -144,13 +146,13 @@ if (document.images){
 <p><b>GMT <?php echo gmstrftime("%H:%M") ?></b></p>
 </div>
 <div id="menu">
-<a href="?<?php echo "$lang_\">".$i18['MNU_HOME']?></a> | 
-<?php echo anchor('man0').$i18['MNU_MAN']?></a> | 
+<a href="main"><?php echo $i18['MNU_HOME']?></a> | 
+<a href="man0"><?php echo $i18['MNU_MAN']?></a> | 
 <a href="/wiki">wiki</a> | 
-<?php echo anchor('scr').$i18['MNU_SCRSHOTS'] ?></a> | 
-<?php echo anchor('buy').$i18['MNU_BUY'] ?></a> | 
-<?php echo anchor('citylist').$i18['MNU_CITYLIST'] ?></a> |
-<?php echo anchor('dl').$i18['MNU_DLCIT'] ?></a> | 
+<a href="scr"><?php echo $i18['MNU_SCRSHOTS'] ?></a> | 
+<a href="buy"><?php echo $i18['MNU_BUY'] ?></a> | 
+<a href="citylist"><?php echo $i18['MNU_CITYLIST'] ?></a> |
+<a href="dl"><?php echo $i18['MNU_DLCIT'] ?></a> | 
 <a href="#"><?php echo $i18['MNU_CONTACTS']?></a>
 <?php 
 //echo "<br/>";print_r($_REQUEST);
@@ -159,10 +161,10 @@ $btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 
-	<a href="?$lang_&amp;p=env">окружение</a> |  
-	<a href="?$lang_&amp;p=db_stats">статистика</a> |  
-	<a href="?$lang_&amp;p=upload">загрузка городов</a> |
-	<a href="?$lang_&amp;p=usermgr">пользователи</a> |
+	<a href="env">окружение</a> |  
+	<a href="db_stats">статистика</a> |  
+	<a href="upload">загрузка городов</a> |
+	<a href="usermgr">пользователи</a> |
 	</p>
 ADMIN_TB;
 }
@@ -188,11 +190,11 @@ SP1;
 }
 else{ 
 	$session_prompt=<<<FRM
-<form id="flog" action="?$lang_&amp;p=login&amp;to=$main" method="post"> 
+<form id="flog" action="login/to=$main" method="post"> 
 <input id="ilog" name="login"/> e-mail <br /><br />
 <input id="ipwd" name="pass" type="password"/> password <br /><br />
 <input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | 
-<a class="loginbutton" href="?$lang_&amp;p=pwdrestore">{$i18['LOST_PWD']}</a>
+<a class="loginbutton" href="pwdrestore">{$i18['LOST_PWD']}</a>
 </form> 
 FRM;
 } 
@@ -211,7 +213,7 @@ if(preg_match("/^man\d$/is", $main)){
     for($i=0; $i<=4; $i++){
         echo "<p>".anchor("man$i")."<img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18["MAN_$i"]."</b></a></p>\n";
     }
-    $pdf_path="mobi/html/amax-manual-$lang.pdf";
+    $pdf_path="/mobi/html/amax-manual-$lang.pdf";
     echo "<p><a href=\"$pdf_path\"><img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18['MAN_PDF']." (PDF ".
         fsize_human($pdf_path).")</b></a></p>\n";
 }
@@ -265,7 +267,7 @@ function show_big_button($id, $label, $check_page, $link_page){
 	global $main, $lang_;
 	$style='';
 	if(strcmp($main, $check_page)){
-		$label="<a href=\"?$lang_&amp;p=$link_page\">".$label.'</a>';
+		$label="<a href=\"$link_page\">".$label.'</a>';
 	}
 	else{
 		$style=' style="color:rgb(133,195,224)"';
@@ -292,7 +294,7 @@ function prepare_topic($matches, $main){
             $topic = $i18["THEME_$num"]." - $topic";
             echo "<h4>$topic</h4>\n$body";
             if(strcmp($main, '0_0')){
-                echo "<p><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a><br/></p>\n";
+                echo "<p><a href=\"0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a><br/></p>\n";
             }
         }
     }

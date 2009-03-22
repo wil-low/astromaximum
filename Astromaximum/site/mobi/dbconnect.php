@@ -118,22 +118,11 @@ function pwd_convert2($pwd){
 	return $pwd;
 }
 
-function reject2index($url){
+function reject2index(){
 	list($chac, $chac_pay)=check_access();
 	if($chac!=0){
-		redirect($url);
+		redirect("/$lang");
 	}
-}
-
-function redirect($url){
-	echo <<<EOF2
-<html>
-<head>
-<meta http-equiv="refresh" content="0;url=$url">
-</head>
-</html>
-EOF2;
-	exit;
 }
 
 function check_access(){ // out: (role, paymode)

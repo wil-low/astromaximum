@@ -3,7 +3,6 @@ if(!isset($EXEC)) die("Access restricted");
 $META_TITLE='Инструкция';
 $META_KEYWORDS='руководство пользователя, мануал, установка на телефон, установка городов';
 $META_DESCR='';
-$page_t="http://astromaximum.de/?$lang_&amp;p=";
 $anchor_email = fill_input_str('ilog', $GLOBALS['amax']['demo_email']);
 $anchor_pass = fill_input_str('ipwd', $GLOBALS['amax']['demo_pass']);
 ?>

@@ -19,7 +19,7 @@ if($chac!=-1){
                     echo '<p><span class="alert">Error</span></p>';
                 }
                 else{
-                    $message=file_get_contents("mobi/dl/source/demo.mail");
+                    $message=file_get_contents("/mobi/dl/source/demo.mail");
                     $message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
                     $message=str_replace('[javalink]', $link_text, $message);
                     $mail=mailtext_w_attach($email, '', 'Astromaximum demo - download link', $message);
@@ -46,13 +46,13 @@ if($chac!=-1){
     $off_email=$GLOBALS['amax']['mail_office'];
     $hidden_email=hide_email($off_email);
 	$emailing=sprintf($i18['DEMO_EMAILING'], $hidden_email, $off_email);
-	$msg_dlcity=sprintf($i18['DEMO_DLCITY'], "<a href=\"?$lang_&amp;p=dl\" target=\"_blank\">", $prev_year);
+	$msg_dlcity=sprintf($i18['DEMO_DLCITY'], '<a href="dl" target="_blank">', $prev_year);
 	echo <<<EOF1
 
-<form action="$uri" method="post">
+<form action="demo" method="post">
 <p>{$emailing} <input name="email" type="text" size="25"/></p>
 <p>{$i18['CAPTCHA_PROMPT']}</p>
-<p><img src="mobi/kcaptcha?$sess" alt="Captcha">
+<p><img src="/mobi/kcaptcha?$sess" alt="Captcha">
 <input name="p_captcha" type="text" size="8"/>
 </p>
 <p><span class="fine">{$i18['DEMO_CALGEN']}:</span><br/><br/>

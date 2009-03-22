@@ -4,7 +4,7 @@ This file describes special data formats used in the project.
 
 Purpose - contains **Event record** bundle (location-independent)
 Created by:
-	common_create.pl (gathering into single file) - invoked by build.xml
+	gen_amax.pl (gathering into single file) - invoked by build.xml
 Used in:
 	Datafile.java - checking header, loading common data
 	
@@ -14,7 +14,7 @@ Header fields:
 	0x0003	byte		day  ^ start of period
 	0x0004	short LB	customData length
 	0x0006	short LB	days in period
-        0x0007  byte[]    	customData (for future expansions)
+    0x0007  byte[]    	customData (for future expansions)
               ...			see **Event record**
 
 *** Event record ***

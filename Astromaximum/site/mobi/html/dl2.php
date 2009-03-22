@@ -67,7 +67,7 @@ KCAP1;
 <p>$desc</p>
 <form id="pwdrestore" action="{$_SERVER['REQUEST_URI']}" method="post">
 <p>{$i18['CAPTCHA_PROMPT']}</p>
-<p><img src="mobi/kcaptcha?$param" alt="Captcha">
+<p><img src="/mobi/kcaptcha?$param" alt="Captcha">
 <input name="p_captcha" type="text" size="6"/>
 </p>
 <input name="Action" type="submit" value="OK" class="ok_on"/>
@@ -134,7 +134,7 @@ function highlight_gen(lb){
 -->
 </script>
 <div style="width:660px;">
-<form method="post" action="/?<?php echo $lang_ ?>&amp;p=dl" name="main">
+<form method="post" action="dl" name="main">
 <table class="colorlist">
 <tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
 <?php

@@ -1,6 +1,6 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
-reject2index("index.php?$lang_");
+reject2index();
 include_once('mobi/amtools.php');
 lang_load("source");
 ?>

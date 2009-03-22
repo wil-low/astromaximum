@@ -1,9 +1,9 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
 include_once('mobi/amtools.php');
-reject2index("index.php?$lang_");
+reject2index();
 ?>
-	<form method="post" action="<?php echo htmlentities($_SERVER['REQUEST_URI'])?>" enctype="multipart/form-data">
+	<form method="post" action="upload" enctype="multipart/form-data">
 		Upload what: 
 		<select name="restype">
 			<option value="geodata" selected="selected">Geo data</option>

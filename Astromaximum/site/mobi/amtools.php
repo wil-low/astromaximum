@@ -18,6 +18,17 @@ function find_perl(){
 	return $perl;
 }
 
+function redirect($url){
+	echo <<<EOF2
+<html>
+<head>
+<meta http-equiv="refresh" content="0;url=$url">
+</head>
+</html>
+EOF2;
+	exit;
+}
+
 function amtools_random($ye,$path, $ext){
 	do{
 		$id=''; $flag=1;

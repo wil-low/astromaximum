@@ -178,7 +178,7 @@ echo <<< EOF
 <input type="text" name="email2" size="25" value="$email2"/></p>
 <p>{$i18['REGFORM_NAME']}<br/>
 <input type="text" name="nick" size="25" value="$nick"/></p>
-<p><img src="mobi/kcaptcha?$sess" alt="Captcha"/>
+<p><img src="/mobi/kcaptcha?$sess" alt="Captcha"/>
 <input type="text" name="p_captcha" size="8"/></p>
 $agree
 </form>

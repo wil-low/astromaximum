@@ -127,9 +127,9 @@ KCAP1;
 			echo <<< KCAP
 <h4>{$i18['REQUEST_MORE_H']}</h4>			
 <p>$desc</p>
-<form id="pwdrestore" action="{$_SERVER['REQUEST_URI']}" method="post">
+<form id="pwdrestore" action="dl" method="post">
 <p>{$i18['CAPTCHA_PROMPT']}</p>
-<p><img src="mobi/kcaptcha?$param" alt="Captcha">
+<p><img src="/mobi/kcaptcha?$param" alt="Captcha">
 <input name="p_captcha" type="text" size="6"/>
 </p>
 <input name="Action" type="submit" value="OK" class="ok_on"/>
@@ -154,7 +154,7 @@ KCAP;
 			else{
 				echo sprintf($i18['ERROR_CITYGEN'], "$row[1], $row[2]", $defyear);			
 			}
-			echo "<br/><br/><a href=\"{$_SERVER['REQUEST_URI']}\">{$i18['BACK']}</a>";
+			echo "<br/><br/><a href=\"dl\">{$i18['BACK']}</a>";
 		}
 		else{
 			echo 'Вам не разрешено загружать города. Обратитесь в <a href="#">службу поддержки</a>.';
@@ -185,7 +185,7 @@ function generate(){
 //-->
 </script>
 <div>
-<form method="post" action="/?<?php echo $lang_ ?>&amp;p=dl" name="main">
+<form method="post" action="dl" name="main">
 <table class="colorlist">
 <tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
 <select name="y_sel" style="height:auto; width:auto;" 

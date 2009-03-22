@@ -17,7 +17,7 @@ if(isset($_GET['n']) && $chac>=0){
 			echo "<b>$yy</b> | ";
 		}
 		else{
-			echo "<a href=\"?$lang_&amp;p=citylist&amp;n=$num&amp;y=$yy\">$yy</a> | ";
+			echo "<a href=\"citylist/n=$num&amp;y=$yy\">$yy</a> | ";
 		}
 	}
 	echo '</p>';
@@ -53,7 +53,7 @@ if(isset($_GET['n']) && $chac>=0){
 	//		print_r($outp);
 		}
 	}
-	echo "<p><a href=\"?$lang_&amp;p=citylist\">{$i18['MNU_CITYLIST']}</a></p>";
+	echo "<p><a href=\"../citylist\">{$i18['MNU_CITYLIST']}</a></p>";
 	return;
 }	
 if($chac>=0){
@@ -86,7 +86,7 @@ foreach($row as $i=>$ctry){
 		$comma="";
 		while($row2=mysql_fetch_row($sth)){
 			if($chac>=0){
-				$row2[0]="<a href=\"?$lang_&amp;p=citylist&amp;n={$row2[1]}\">{$row2[0]}</a>";
+				$row2[0]="<a href=\"citylist/n={$row2[1]}\">{$row2[0]}</a>";
 			}
 			echo "$comma ".$row2[0];
 			$comma=",";
