@@ -7,6 +7,7 @@ RewriteCond %{HTTP_HOST} ^mobi\.astromaximum\.com$
 RewriteRule ^(.+) %{HTTP_HOST}$1 [E=MYFLAG:1]
 RewriteRule ^mobi\.astromaximum\.com(.*) /mobi%{REQUEST_URI} [L]
 RewriteCond %{HTTP_HOST} ^astromaximum\.com$
+RewriteRule ^(ru|en|de)/shot/(.*)$ /shot.php?lang=$1&n=$2 [L]
 RewriteRule ^(ru|en|de)/(.*)/$ /$1/$2 [R]
 RewriteRule ^(ru|en|de)/([^\?]+)/(.*)$ index.php/?lang=$1&p=$2&$3 [L]
 RewriteRule ^(ru|en|de)/([^\?]+)$ index.php/?lang=$1&p=$2 [L]

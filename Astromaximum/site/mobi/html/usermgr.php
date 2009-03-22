@@ -41,7 +41,7 @@ if(isset($_GET['u'])){
 		$rolelist.='</select>';
 		echo <<<EOF
 <h3>$hdr $row[0]</h3>
-<form id="usredit" action="usermgr" method="post">
+<form id="usredit" action="/$lang/usermgr" method="post">
 <input type="hidden" name="u_id" value="$id"/>
 <input type="text" name="u_email" id="u_email" size="38" value="$row[2]"/> e-mail
 <p>

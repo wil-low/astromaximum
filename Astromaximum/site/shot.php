@@ -2,7 +2,7 @@
 if (isset ($_GET['p'])) { // daily screen number
 	$page = intval ($_GET['p']);
 	$today = gmdate ('ymd');
-	$ifile = "i/daily/$today-$page.png";
+	$ifile = "/i/daily/$today-$page.png";
 	header ("Content-type: image/png");
 	if (file_exists ($ifile))
 		readfile($ifile);
@@ -25,7 +25,7 @@ if(isset($_GET['n'])){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>#{$num}</title>
-<link href="astro.css" rel="stylesheet" type="text/css"/>
+<link href="/astro.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="shot">
@@ -34,11 +34,11 @@ if(isset($_GET['n'])){
 <td>
 EOF;
     if($num>1){
-        echo sprintf('<a href="/shot.php?%s&n=%02d">%d &lt;&lt;&lt;</a>', $lang_, $num-1, $num-1);
+        echo sprintf('<a href="%02d">%d &lt;&lt;&lt;</a>', $num-1, $num-1);
     }
     echo '</td><td>';
     if($num<$SHOT_MAX){
-        echo sprintf('<a href="/shot.php?%s&n=%02d">&gt;&gt;&gt; %d</a>', $lang_, $num+1, $num+1);
+        echo sprintf('<a href="%02d">&gt;&gt;&gt; %d</a>', $num+1, $num+1);
     }
     echo <<<EOF1
 </td>

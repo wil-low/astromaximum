@@ -70,7 +70,7 @@ function fill_input(input_id, value){
 }
 
 function open_scr(lang, n){
-    var url="/shot.php?lang="+lang+"&n="+n;
+    var url="/"+lang+"/shot/"+n;
     if(OpenedHelp != null && !OpenedHelp.closed){
         OpenedHelp.location=url;
         OpenedHelp.focus();

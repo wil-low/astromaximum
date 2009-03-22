@@ -146,25 +146,26 @@ if (document.images){
 <p><b>GMT <?php echo gmstrftime("%H:%M") ?></b></p>
 </div>
 <div id="menu">
-<a href="main"><?php echo $i18['MNU_HOME']?></a> | 
-<a href="man0"><?php echo $i18['MNU_MAN']?></a> | 
-<a href="/wiki">wiki</a> | 
-<a href="scr"><?php echo $i18['MNU_SCRSHOTS'] ?></a> | 
-<a href="buy"><?php echo $i18['MNU_BUY'] ?></a> | 
-<a href="citylist"><?php echo $i18['MNU_CITYLIST'] ?></a> |
-<a href="dl"><?php echo $i18['MNU_DLCIT'] ?></a> | 
-<a href="#"><?php echo $i18['MNU_CONTACTS']?></a>
-<?php 
+<?php
+print_menu('main', 'MNU_HOME', 1);
+print_menu('man0', 'MNU_MAN', 1);
+echo '<a href="/wiki">wiki</a> | ';
+print_menu('scr', 'MNU_SCRSHOTS', 1);
+print_menu('buy', 'MNU_BUY', 1);
+print_menu('citylist', 'MNU_CITYLIST', 1);
+print_menu('dl', 'MNU_DLCIT', 1);
+print_menu('#', 'MNU_CONTACTS', 0);
+echo '</p>';
 //echo "<br/>";print_r($_REQUEST);
 $btn1=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE']; $btn1_link="demo";
 $btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_count']} ".$i18['_CITIES'];
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 
-	<a href="env">окружение</a> |  
-	<a href="db_stats">статистика</a> |  
-	<a href="upload">загрузка городов</a> |
-	<a href="usermgr">пользователи</a> |
+	<a href="/$lang/env">окружение</a> |  
+	<a href="/$lang/db_stats">статистика</a> |  
+	<a href="/$lang/upload">загрузка городов</a> |
+	<a href="/$lang/usermgr">пользователи</a> |
 	</p>
 ADMIN_TB;
 }
@@ -213,7 +214,7 @@ if(preg_match("/^man\d$/is", $main)){
     for($i=0; $i<=4; $i++){
         echo "<p>".anchor("man$i")."<img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18["MAN_$i"]."</b></a></p>\n";
     }
-    $pdf_path="/mobi/html/amax-manual-$lang.pdf";
+    $pdf_path="mobi/html/amax-manual-$lang.pdf";
     echo "<p><a href=\"$pdf_path\"><img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18['MAN_PDF']." (PDF ".
         fsize_human($pdf_path).")</b></a></p>\n";
 }
@@ -300,4 +301,12 @@ function prepare_topic($matches, $main){
     }
      echo "<h4>$topic1</h4>\n$body1";
 }
+
+function print_menu($page, $text, $is_delim)
+{
+	global $lang, $i18;
+	echo "<a href=\"/$lang/$page\">{$i18[$text]}</a>";
+	if ($is_delim) echo ' | ';
+}
+
 ?>
