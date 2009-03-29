@@ -30,7 +30,7 @@ ob_start("output_callback");
 include_once('mobi/amtools.php');
 $main='home';
 if(!isset($_GET['lang'])){
-	redirect('/ru/main');
+	redirect("/ru/$main");
     return;
 }
 if(isset($_GET['p'])){

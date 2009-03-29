@@ -17,7 +17,7 @@ if(isset($_GET['n']) && $chac>=0){
 			echo "<b>$yy</b> | ";
 		}
 		else{
-			echo "<a href=\"citylist/n=$num&amp;y=$yy\">$yy</a> | ";
+			echo "<a href=\"n=$num&amp;y=$yy\">$yy</a> | ";
 		}
 	}
 	echo '</p>';
