@@ -4,7 +4,6 @@
     
 if(!isset($EXEC)){ // don't show PayPal button when in popup
         
-
 $cur_year=$GLOBALS['amax']['year'];
 $price=$GLOBALS['amax']['price'];
 

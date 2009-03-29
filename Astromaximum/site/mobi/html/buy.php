@@ -1,5 +1,6 @@
 <?php 
 if(!isset($EXEC)) die("Access restricted");
+
 $current_year=$GLOBALS['amax']['year'];
 $uri=htmlentities($_SERVER['REQUEST_URI']);
 
@@ -9,16 +10,17 @@ $email=$email2=$nick=$paymode=$model='';
 
 if($chac==3){ // unpaid
     show_payment_instructions(0);
+    echo '<hr><a href="contacts/m=paid">'.$i18['CONTACTS_00'].'</a>';
     return;
-}
-
-function present($key){
-    return isset($_POST[$key]) && strlen(trim($_POST[$key]))>0;
 }
 
 function alert($str){
     global $i18;
     return '<span class="alert">'.$i18[$str].'</span>';
+}
+
+function present($key){
+    return isset($_POST[$key]) && strlen(trim($_POST[$key]))>0;
 }
 
 if(present('email1') && present('email2') && present('nick') && present('p_captcha')
@@ -122,7 +124,7 @@ if($chac!=-1 and $chac!=1){
 		echo "<form action=\"$uri\" method=\"post\">\n";
 		echo '<input type="hidden" name="demo" value="0"/>';
 		$str=($tries[0]==1)? $i18['ONE_MORE_COPY']."<br/><br/>": '';
-		echo dload_tries_prompt($tries, 0, $str, $i18['CONFIRM_TRIAL']);
+		echo dload_tries_prompt($tries, 0, $str, sprintf($i18['CONFIRM_TRIAL'], $lang));
 		echo "</form>";
 	}
 	echo "<br/><br/><br/>\n";
@@ -139,7 +141,7 @@ include_once("mobi/ipblock.php");
 //echo $msg;
 //if($msg) return;
 
-$agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang_), false);
+$agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang), false);
 $sess=session_name().'='.session_id();
 
 // TODO: maintain these options when changing dic_paymode table!
@@ -183,12 +185,6 @@ $agree
 </form>
 EOF;
 
-/*
-echo "<form action=\"$uri\" method=\"post\">\n";
-$prompt=sprintf($i18['CONFIRM_TRIAL'], $lang_);
-echo "<br/>".$str.dload_prompt($prompt, $disabled);
-echo "</form>";
-                                      */
 return;
 
 ?>

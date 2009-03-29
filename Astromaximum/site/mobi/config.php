@@ -17,6 +17,7 @@ $sett=array(
 	'noreply'=>'noreply@astromaximum.com',
 	
 	'mail_event'=>'office@astromaximum.com',
+	'mail_bill'=>'bix@astromaximum.com',
 
 	'def_cities'=>array('m.Olympos'),
 

@@ -501,7 +501,7 @@ function random9(){ // generate 9-digit randoms
 }
 
 function show_payment_instructions($payment_id){ // print payment page
-    global $lang_, $i18, $META_HEAD_ADD;
+    global $lang, $lang_, $i18, $META_HEAD_ADD;
     $payment_id=sprintf('%02d', $payment_id);
     $tabs='<h4>'.sprintf ($i18['REGFORM_PAYMODE'], $GLOBALS['amax']['year']).'</h4><div class="tabs"><ul class="tabNavigation">';
     foreach($GLOBALS['amax']['paymodes'] as $key){

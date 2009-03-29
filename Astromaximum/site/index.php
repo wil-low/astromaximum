@@ -154,7 +154,7 @@ print_menu('scr', 'MNU_SCRSHOTS', 1);
 print_menu('buy', 'MNU_BUY', 1);
 print_menu('citylist', 'MNU_CITYLIST', 1);
 print_menu('dl', 'MNU_DLCIT', 1);
-print_menu('#', 'MNU_CONTACTS', 0);
+print_menu('contacts', 'MNU_CONTACTS', 0);
 echo '</p>';
 //echo "<br/>";print_r($_REQUEST);
 $btn1=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE']; $btn1_link="demo";
