@@ -374,3 +374,24 @@ CREATE TABLE IF NOT EXISTS `paypal_orders` (
   PRIMARY KEY  (`order_id`),
   UNIQUE KEY `txn_id` (`txn_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds Paypal transactions' AUTO_INCREMENT=1 ;
+
+--
+-- Functions
+--
+DELIMITER |
+CREATE FUNCTION AMAX_HASH(user VARCHAR(20), password VARCHAR(50)) 
+	RETURNS varchar(100) CHARSET utf8
+    NO SQL
+    DETERMINISTIC
+    COMMENT 'keep in synch with dbconnect.php::pwd_convert* !'
+	BEGIN
+	    DECLARE pwd1, pwd2 VARCHAR(100);
+	    SET pwd1 = SHA1(CONCAT(password, MD5(user)));
+	    SET pwd1 = CONCAT(SUBSTRING(pwd1, 5+1, 16), RIGHT(pwd1, 16));
+	    SET pwd2 = SHA1(pwd1);
+	    SET pwd2 = CONCAT(SUBSTRING(pwd2, 11+1, 5), SUBSTRING(pwd2, 27+1), 
+	        SUBSTRING(pwd2, 8+1, 3), SUBSTRING(pwd2, 16+1, 11));
+	RETURN pwd2;
+	END
+|
+DELIMITER ;

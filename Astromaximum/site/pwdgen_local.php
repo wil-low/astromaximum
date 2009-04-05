@@ -6,10 +6,24 @@
     if(isset($_POST['email']) && isset($_POST['pwd'])){
         $user=$_POST['email'];
         $pwd=$_POST['pwd'];
-	$pwd1=pwd_convert1($user, $pwd);
-	$pwd2=pwd_convert2($pwd1);
-	echo "<p>Email: $user<br/>Hash: $pwd2</p>";
-        echo "<a href=\"$script\">back</a>";
+		$pwd1=pwd_convert1($user, $pwd);
+		$pwd2=pwd_convert2($pwd1);
+	
+		$sql_pwd = sprintf("SELECT AMAX_HASH(%s, %s)",  
+			quote_smart($user), quote_smart($pwd));
+		$sth = mysql_query($sql_pwd);
+		$pwd3 = '';
+		echo "<p>Email: $user<br/>PHP hash: $pwd2</p>";
+		if($sth) {
+			$arr = mysql_fetch_array($sth);
+			$pwd3 = $arr[0];
+			echo "Mysql hash: ".$pwd3;
+		}
+		else
+			echo mysql_error();
+		if (strcmp($pwd2, $pwd3))
+			echo "<p>Hashes do not match!</p>";
+        echo "<p><a href=\"$script\">back</a></p>";
         return;
     }
 ?>
