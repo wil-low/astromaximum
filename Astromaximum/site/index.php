@@ -86,7 +86,7 @@ if(!file_exists($fn)){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>[[title]]</title>
-<meta name="author" content="Willow"/>
+<meta name="author" content="Unknown"/>
 <meta name="generator" content="Bluefish 1.0.7"/>
 <meta name="copyright" content="Copyright (c) by S&amp;W Axis"/>
 <meta name="keywords" content="[[keywords]]"/>
@@ -147,7 +147,7 @@ if (document.images){
 </div>
 <div id="menu">
 <?php
-print_menu('main', 'MNU_HOME', 1);
+print_menu('home', 'MNU_HOME', 1);
 print_menu('man0', 'MNU_MAN', 1);
 echo '<a href="/wiki">wiki</a> | ';
 print_menu('scr', 'MNU_SCRSHOTS', 1);
