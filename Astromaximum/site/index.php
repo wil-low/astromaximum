@@ -86,8 +86,8 @@ if(!file_exists($fn)){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>[[title]]</title>
-<meta name="author" content="Unknown"/>
-<meta name="generator" content="Bluefish 1.0.7"/>
+<meta name="author" content="S&amp;W Axis"/>
+<meta name="generator" content="PHP"/>
 <meta name="copyright" content="Copyright (c) by S&amp;W Axis"/>
 <meta name="keywords" content="[[keywords]]"/>
 <meta name="description" content="[[description]]"/>
@@ -155,7 +155,6 @@ print_menu('buy', 'MNU_BUY', 1);
 print_menu('citylist', 'MNU_CITYLIST', 1);
 print_menu('dl', 'MNU_DLCIT', 1);
 print_menu('contacts', 'MNU_CONTACTS', 0);
-echo '</p>';
 //echo "<br/>";print_r($_REQUEST);
 $btn1=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE']; $btn1_link="demo";
 $btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_count']} ".$i18['_CITIES'];
@@ -255,7 +254,20 @@ else{
 ?>
 
 </div><!-- end content div -->
-<div id="bottom"><p>Copyright &copy;
+<div id="bottom">
+<div id="banners">
+<!--LiveInternet counter--><script type="text/javascript"><!--
+document.write("<a href='http://www.liveinternet.ru/click' "+
+"target=_blank><img src='http://counter.yadro.ru/hit?t26.11;r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";h"+escape(document.title.substring(0,80))+";"+Math.random()+
+"' alt='' title='LiveInternet counter' "+
+"border='0' width='88' height='15'><\/a>")
+//--></script><!--/LiveInternet-->
+</div>
+<p>Copyright &copy;
 2007-2008
 S&amp;W Axis. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
 </body>
