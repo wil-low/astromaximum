@@ -36,7 +36,7 @@ class Options extends GeoList implements CommandListener {
     static final int FLG_ALLTEXT = 1;
     private static final int FLG_LOCALTIME = 2;
     static byte optLayout;
-    static byte optTimeGap;
+    static byte optTimeGap = 2;
 
     Options() {
         //#if demo
@@ -92,7 +92,6 @@ class Options extends GeoList implements CommandListener {
      */
     void init() {
         cityList.deleteAll();
-        timeGap.setSelectedIndex(2, true);
 
         try {
 //#if Demo
@@ -341,7 +340,7 @@ class Options extends GeoList implements CommandListener {
         DataOutputStream dos = new DataOutputStream(baos);
         try {
             optTimeGap = (byte)timeGap.getSelectedIndex();
-            localOffset = (long)optTimeGap * 3600000;
+            setLocalOffset();
             dos.writeByte(optFlags);
             dos.writeByte(optTimeGap);
             dos.writeByte(optLayout);
@@ -386,7 +385,8 @@ class Options extends GeoList implements CommandListener {
         } catch (Exception ex) {
             CustomTime.histCount = Astromaximum.customTime.lockFlags = 0;
             Astromaximum.customTime.cg.deleteAll();
-            timeGap.setSelectedIndex(2, true);
+            optTimeGap = 2;
+            timeGap.setSelectedIndex(optTimeGap, true);
             layout.setSelectedIndex(0, true);
             optFlags = OPT_FLAGS;
             Astromaximum.interpreter.fontSize = Font.SIZE_SMALL;
@@ -406,10 +406,15 @@ class Options extends GeoList implements CommandListener {
         long now = System.currentTimeMillis();
         if ((optFlags & FLG_LOCALTIME) != 0) {
             now -= Event.localOffset(now);
+            return now;
         }
         return now + localOffset;
     }
 
+    private void setLocalOffset() {
+        localOffset = (long)Integer.parseInt(timeGap.getString(optTimeGap)) * 3600000;
+    }
+    
     private void addLocations() throws RecordStoreException, IOException {
         DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
         istr.skip(2);
@@ -442,7 +447,7 @@ class Options extends GeoList implements CommandListener {
         }
         timeGap.setSelectedIndex(optTimeGap, true);
         layout.setSelectedIndex(optLayout, true);
-        localOffset = (long)optTimeGap * 3600000;
+        setLocalOffset();
     }
 
     String getCurrentCity() {
