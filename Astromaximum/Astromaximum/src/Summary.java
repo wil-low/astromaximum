@@ -845,6 +845,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
                     }
                 }
                 else { // page navigation
+                    mousePressed = true;
                     keyReleased((x-si.left < si.width/2) ?
                         Canvas.KEY_NUM7: Canvas.KEY_NUM9);
                 }
@@ -899,6 +900,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
                 }
                 break;
             case Event.EV_PANEL:
+                mousePressed = true;
                 keyReleased(Canvas.KEY_NUM0);
                 break;
             case Event.EV_BACK:
@@ -1999,19 +2001,19 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         Options.isRealtimeOff = false;
 //#         setToday();
 //#     }
-//#
+//# 
 //#     void setNewYearDate() {
 //# 		Astromaximum.calendar.setTime(new Date(Astromaximum.dataFile.startJD));
 //# 		selDate.setTime(Astromaximum.calendar.getTime().getTime());
 //#     }
-//#
+//# 
 //# 	void takeShots() {
 //#         System.out.println("Please wait while capturing screenshots...");
 //#         Options.isRealtimeOff = true;
 //#         setNewYearDate();
 //# 		showDaySummary();
 //# 		int w = getWidth(), h = getHeight();
-//#
+//# 
 //# 		try{
 //#             for (int i=0; i < Astromaximum.dataFile.dayCount; ++i) {
 //# //                for (int page = PAGE_SUMMARY; page <= PAGE_LAST; ++page) {
@@ -2030,7 +2032,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         Options.isRealtimeOff = false;
 //#         setToday();
 //#     }
-//#
+//# 
 //# 	void screenShot(int w, int h, int num) throws IOException {
 //# 		Image image = Image.createImage(w, h);
 //# 		render (image.getGraphics());
@@ -2052,7 +2054,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         fc.close();
 //#         System.out.println(fname + ".raw written");
 //# 	}
-//#
+//# 
 //# 	String formatDate2d (int field) {
 //# 		int num = Astromaximum.calendar.get(field);
 //# 		if (field == Calendar.MONTH)

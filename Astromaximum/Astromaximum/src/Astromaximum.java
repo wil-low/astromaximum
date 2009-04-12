@@ -425,6 +425,8 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //        quit();
 ///#enddebug
         }
+        summary.moveFocus(-2);
+
         summary.repaint();
 //#mdebug
         System.out.print("Initialization took ");

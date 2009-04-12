@@ -25,7 +25,7 @@ class Options extends GeoList implements CommandListener {
 //#if localtime
 //#   static byte OPT_FLAGS=1;
     //#else
-    private static final byte OPT_FLAGS = 0;
+    private static final byte OPT_FLAGS = 1;
     //#endif
     static byte optFlags;
     private static long localOffset;
@@ -47,7 +47,6 @@ class Options extends GeoList implements CommandListener {
         String[] sTimeGap = {"-2", "-1", "0", "1", "2"};
         timeGap = new ChoiceGroup(Astromaximum.getstr(118), // Correction_hr
                 Choice.POPUP, sTimeGap, null);
-        timeGap.setSelectedIndex(2, true);
 
         String[] sLayout = new String[Summary.MAX_LAYOUT_NUM + 1];
         sLayout[0] = Astromaximum.getstr(107); // "Auto"
@@ -93,6 +92,7 @@ class Options extends GeoList implements CommandListener {
      */
     void init() {
         cityList.deleteAll();
+        timeGap.setSelectedIndex(2, true);
 
         try {
 //#if Demo
