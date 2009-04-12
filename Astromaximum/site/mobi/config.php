@@ -19,7 +19,11 @@ $sett=array(
 	'mail_event'=>'office@astromaximum.com',
 	'mail_bill'=>'bix@astromaximum.com',
 
-	'def_cities'=>array('m.Olympos'),
+	'def_cities'=>array(
+		'ru'=>array('m.Olympos', 'Kiev', 'Moscow'),
+		'en'=>array('m.Olympos', 'London', 'New York'),
+		'de'=>array('m.Olympos', 'Berlin', 'Vienna'),
+	),
 
 	'demo_email'=>'demo@astromaximum.com',
 	'demo_login'=>'123456789',

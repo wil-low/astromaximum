@@ -85,12 +85,22 @@ function yesno($val){
 
 	$key='Default cities';
 	$adc=$GLOBALS['amax']['def_cities'];
-	$dcit=explode(',', get_default_cities($adc));
+	$city_hash = array();
+	$dcit = '';
+	foreach ($adc as $lng=>$list) {
+		foreach ($list as $k=>$val)
+			$city_hash[$val] = 1;
+	}
+	$city_hash = array_keys($city_hash);
+	$dcit = get_default_cities($city_hash);
+	$dcit=explode(',', $dcit);
+//	print_r($city_hash);
 //	print_r($dcit);
 	$yprev=$GLOBALS['amax']['year']-1;
 	$value='';
-	for($i=0; $i<count($adc); $i++){
-		$value.="$adc[$i] ";
+	$i = 0;
+	for($i=0; $i<count($city_hash); $i++){
+		$value.="$city_hash[$i] ";
 		$sql="SELECT 1 FROM locations WHERE city_id = '$dcit[$i]' and year=$yprev";
 		$sth=mysql_query($sql);
 		$value.=yesno($sth && mysql_num_rows($sth));

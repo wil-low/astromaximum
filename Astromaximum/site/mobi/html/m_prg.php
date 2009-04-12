@@ -1,7 +1,6 @@
 <?php
 if(!isset($EXEC)) die("Access restricted");
 $perl=find_perl();
-$default_city_ids=get_default_cities($GLOBALS['amax']['def_cities']);
 if(!isset($_REQUEST['mode'])) exit;
 $year=$GLOBALS['amax']['year'];
 $isdemo=0;
@@ -29,6 +28,8 @@ if(!isset($_POST['l']) || !in_array($_POST['l'], $languages)){
 else{
     $lang=$_POST['l'];
 }
+
+$default_city_ids=get_default_cities($GLOBALS['amax']['def_cities'][$lang]);
 
 $timeout_offset=-24;
 $timeout_mins=2880;  

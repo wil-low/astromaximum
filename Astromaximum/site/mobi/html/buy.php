@@ -107,7 +107,7 @@ if($chac!=-1 and $chac!=1){
 		echo "<h4>".sprintf($i18['DLOAD4YEAR'], $year)."</h4>";
 		if(isset($_POST["agree"])){
 			if($is_allow_dl){
-				$sc=get_default_cities($GLOBALS['amax']['def_cities']); 
+				$sc=get_default_cities($GLOBALS['amax']['def_cities'][$lang]); 
 				echo tries_remained($tries[$dl_key]-1, $DLIM[$dl_key]);
 				$str=midlet_create("tb", $year, $lang, $sc, "mobi/dl", 2);
 				if(strlen($str)){

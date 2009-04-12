@@ -13,7 +13,7 @@ if($chac!=-1){
 		if(is_captcha($captcha)){
             if(isset($_POST["email"]) && check_email_address($_POST["email"])){
                 $email=$_POST['email'];
-                $sc=get_default_cities($GLOBALS['amax']['def_cities']); 
+                $sc=get_default_cities($GLOBALS['amax']['def_cities'][$lang]); 
                 $link_text=midlet_create("demo", $prev_year, $lang, $sc, "mobi/dl", 0);
                 if(!$link_text){
                     echo '<p><span class="alert">Error</span></p>';
