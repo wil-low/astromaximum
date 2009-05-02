@@ -2010,37 +2010,63 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //# 	void takeShots() {
 //#         System.out.println("Please wait while capturing screenshots...");
 //#         Options.isRealtimeOff = true;
-//#         setNewYearDate();
-//# 		showDaySummary();
-//# 		int w = getWidth(), h = getHeight();
+//#         try{
+//#             int w = getWidth(), h = getHeight();
+//#             FileConnection hash_fc = (FileConnection)Connector.open("file:///root1/city_hash.txt");
+//#             if(!hash_fc.exists())
+//#                 hash_fc.create();
+//#             hash_fc.truncate(0);
+//#             DataOutputStream os = hash_fc.openDataOutputStream();
+//#             for (int i = 0; i < Astromaximum.options.cityList.size(); ++i) {
+//#                 Astromaximum.options.loadCity (i);
+//#                 setNewYearDate();
+//#                 showDaySummary();
+//#                 selectFirstItem();
+//#                 keyNavigate(2); keyNavigate(2);
+//#                 String s = Astromaximum.options.getCurrentCity(true);
+//#                 String hash_str = Integer.toHexString(s.hashCode());
+//#                 while (hash_str.length() < 8)
+//#                     hash_str = "0" + hash_str;
+//#                 s = hash_str + ": " + s;
+//#                 System.out.println(s);
+//#                 os.write(s.getBytes());
+//#                 os.write('\n');
 //# 
-//# 		try{
-//#             for (int i=0; i < Astromaximum.dataFile.dayCount; ++i) {
-//# //                for (int page = PAGE_SUMMARY; page <= PAGE_LAST; ++page) {
+//#                 FileConnection fc = (FileConnection)Connector.open("file:///root1/" + hash_str);
+//#                 if (!fc.exists())
+//#                     fc.mkdir();
+//#                 fc.close();
+//#                 for (int j=0; j < Astromaximum.dataFile.dayCount; ++j) {
 //#                     setCurPage(PAGE_SUMMARY);
-//#                     screenShot(w, h, 4);
-//# //                }
-//#                 changeDay(1);
+//#                     screenShot(w, h, hash_str);
+//#                     changeDay(1);
+//#                 }
 //#             }
+//#             hash_fc.close();
 //#             System.out.println("Shots completed!");
 //#             System.out.println("Use 'sh raw2image.sh " + Integer.toString(w) + " " +
-//#                     Integer.toString(h-1) + "'\nto convert screenshots\n");
-//# 		}
-//# 		catch(IOException e){
-//# 			e.printStackTrace();
-//# 		}
+//#                     Integer.toString(h-1) + " " + Astromaximum.getstr(255).toLowerCase() +
+//#                     " " + Integer.toString(Astromaximum.startYear) +
+//#                     "'\nto convert screenshots\n");
+//#         }
+//#         catch(IOException e){
+//#             e.printStackTrace();
+//#         }
 //#         Options.isRealtimeOff = false;
 //#         setToday();
+//#         
 //#     }
 //# 
-//# 	void screenShot(int w, int h, int num) throws IOException {
+//# 	void screenShot(int w, int h, String hash) throws IOException {
 //# 		Image image = Image.createImage(w, h);
 //# 		render (image.getGraphics());
 //#         Astromaximum.calendar.setTime(date);
-//#         String fname = formatDate2d(Calendar.YEAR) + formatDate2d(Calendar.MONTH) +
-//# 				formatDate2d(Calendar.DAY_OF_MONTH) + "-" + Integer.toString(num);
+//#         String fname = hash + "/" + formatDate2d(Calendar.YEAR) + formatDate2d(Calendar.MONTH) +
+//# 				formatDate2d(Calendar.DAY_OF_MONTH);
 //#         int rgbData[] = new int[w * h];
+//# 
 //#         FileConnection fc = (FileConnection)Connector.open("file:///root1/" + fname + ".raw");
+//#         
 //#         if(!fc.exists())
 //#             fc.create();
 //#         image.getRGB(rgbData, 0, w, 0, 0, w, h);

@@ -237,6 +237,7 @@ final class SummItem extends TimerTask implements RecordFilter {
      */
     void render(Graphics osg, boolean isSelected, long now, boolean isCus) {
 //    if((page%2)>0) // on 1st page
+        boolean timeoff = Options.isRealtimeOff;
         if (owner.pageNum != Summary.PAGE_PANEL && type != Event.EV_RISE) {
 
             if (!isEmpty() && haveTopic(type)) {
@@ -287,7 +288,7 @@ final class SummItem extends TimerTask implements RecordFilter {
             }
             return;
         }
-        if (isSelected) {
+        if (!timeoff && isSelected) {
             osg.setColor(Astromaximum.SELECTION_COLOR);
 //      osg.setStrokeStyle(Graphics.DOTTED);
             int l1, t1, w1, h1;
@@ -642,6 +643,17 @@ final class SummItem extends TimerTask implements RecordFilter {
                     }
                 }
                 osg.setFont(old);
+
+                if (timeoff) {
+                    int w = owner.getWidth();
+                    osg.setColor(Astromaximum.BORDER_COLOR);
+                    osg.fillRect(w / 2, top, w /2 , height);
+                    osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_MEDIUM));
+                    osg.setColor(0);
+                    osg.drawString(Astromaximum.options.getCurrentCity(true), w * 3 / 4, y - 2 , Graphics.HCENTER | Graphics.BASELINE);
+                    osg.setFont(old);
+                }
+                else
                 if (Summary.isInCurrentDay(now)) {
                     osg.setColor(Astromaximum.RUBY_COLOR);
                     if (Summary.IMG_HEIGHT == 12) {
@@ -1147,7 +1159,7 @@ final class SummItem extends TimerTask implements RecordFilter {
         if (type == Event.EV_TOP_DAY) {
 //#ifdef freetest
 //# 	        if (Options.isRealtimeOff)
-//# 				return Astromaximum.options.getCurrentCity();
+//# 				return Astromaximum.options.getCurrentCity(false);
 //# 			else
 //#endif
 				return Astromaximum.getstr(27) + " " + Astromaximum.getstr( //Day, of_

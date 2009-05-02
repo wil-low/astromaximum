@@ -163,15 +163,7 @@ class Options extends GeoList implements CommandListener {
                     System.out.println(optFlags);
                     optLayout = (byte)layout.getSelectedIndex();
                     saveHistory();
-                    curCity = cityList.getString(cityList.getSelectedIndex()).getBytes();
-                    try {
-                        rs.setRecord(1, curCity, 0, curCity.length);
-//          rs.closeRecordStore();
-                        initDB(false);
-                        Astromaximum.summary.changeDay(0);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    loadCity (cityList.getSelectedIndex());
                     if (Summary.size != optLayout) {
                         Astromaximum.summary.setLayout(optLayout);
                     }
@@ -199,6 +191,19 @@ class Options extends GeoList implements CommandListener {
         }
     }
 
+    void loadCity (int index) {
+        cityList.setSelectedIndex(index, true);
+        curCity = cityList.getString(index).getBytes();
+        try {
+            rs.setRecord(1, curCity, 0, curCity.length);
+//          rs.closeRecordStore();
+            initDB(false);
+            Astromaximum.summary.changeDay(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * @param obj
      * @noinspection UnusedParameters
@@ -450,8 +455,14 @@ class Options extends GeoList implements CommandListener {
         setLocalOffset();
     }
 
-    String getCurrentCity() {
-		return cityList.getString(cityList.getSelectedIndex());
+    String getCurrentCity(boolean isTrimComma) {
+        String s = cityList.getString(cityList.getSelectedIndex());
+        if (isTrimComma) {
+            int pos = s.indexOf(',');
+            if (pos > 0)
+                s = s.substring(0, pos);
+        }
+		return s;
 	}
 }
 

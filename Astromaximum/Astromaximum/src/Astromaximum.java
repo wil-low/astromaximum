@@ -722,5 +722,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
     }
   }
 //#endif
-}// # vi:et:ts=4:sw=4
+}
+// # vi:et:ts=4:sw=4
 
