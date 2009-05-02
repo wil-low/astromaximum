@@ -51,7 +51,8 @@ if(true /*|| check_access()*/){
 		header('Content-Type: application/java-archive');
 	}
 	header("Content-Length: $clen");
-	header("Content-Disposition: attachment; filename=\"$PREFIX'$ye-$idd.ja$type\"", false);
+	$content='Content-Disposition: attachment; filename="'.$ye.'_'.$PREFIX.'-'.$idd.'.ja'.$type.'"';
+	header($content, false);
 	echo $data;
 }
 

@@ -29,10 +29,6 @@ ob_start("output_callback");
 
 include_once('mobi/amtools.php');
 $main='home';
-if(!isset($_GET['lang'])){
-	redirect("/ru/$main");
-    return;
-}
 if(isset($_GET['p'])){
 	$main=$_GET['p'];
 }
@@ -87,7 +83,7 @@ if(!file_exists($fn)){
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>[[title]]</title>
 <meta name="author" content="S&amp;W Axis"/>
-<meta name="generator" content="PHP"/>
+<meta name="generator" content="Bluefish 1.0.7"/>
 <meta name="copyright" content="Copyright (c) by S&amp;W Axis"/>
 <meta name="keywords" content="[[keywords]]"/>
 <meta name="description" content="[[description]]"/>
@@ -156,8 +152,9 @@ print_menu('citylist', 'MNU_CITYLIST', 1);
 print_menu('dl', 'MNU_DLCIT', 1);
 print_menu('contacts', 'MNU_CONTACTS', 0);
 //echo "<br/>";print_r($_REQUEST);
-$btn1=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE']; $btn1_link="demo";
-$btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_count']} ".$i18['_CITIES'];
+$btn1=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE']; $btn1_link="/$lang/demo";
+$btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_count']} ".
+	$i18['_CITIES'];
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 
@@ -170,10 +167,10 @@ ADMIN_TB;
 }
 if($user_ok){
 	if(strcmp($main, 'demo')){
-		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
+		$btn1=$i18['CITY_BUTTON']; $btn1_link="/$lang/dl";
 	}
 	if(strcmp($main, 'dl') && strcmp($main, 'dl2')){
-		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
+		$btn1=$i18['CITY_BUTTON']; $btn1_link="/$lang/dl";
 	}
 	$try_count = get_try_count(0);
 	if ($try_count[0] != 0)
@@ -190,11 +187,11 @@ SP1;
 }
 else{ 
 	$session_prompt=<<<FRM
-<form id="flog" action="login/to=$main" method="post"> 
+<form id="flog" action="/$lang/login/to=$main" method="post"> 
 <input id="ilog" name="login"/> e-mail <br /><br />
 <input id="ipwd" name="pass" type="password"/> password <br /><br />
 <input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | 
-<a class="loginbutton" href="pwdrestore">{$i18['LOST_PWD']}</a>
+<a class="loginbutton" href="/$lang/pwdrestore">{$i18['LOST_PWD']}</a>
 </form> 
 FRM;
 } 
@@ -202,7 +199,7 @@ FRM;
 </div>
 <?php 
 echo show_big_button('demo', $btn1, $btn1_link, $btn1_link);
-echo show_big_button('buy', $btn2, 'buy', 'buy');
+echo show_big_button('buy', $btn2, 'buy', "/$lang/buy");
 ?>
 <div id="leftColumn">
 <?php	echo $session_prompt ?>
@@ -221,7 +218,7 @@ else{
     if($show_topics){
         echo "<h5>".$i18['THEME_0']."</h5>";
         for($i=1; $i<=9; $i++){
-            echo "<p>".anchor("0_$i")."<img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18["THEME_$i"]."</b></a></p>\n";
+            echo "<p>".anchor("/$lang/0_$i")."<img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18["THEME_$i"]."</b></a></p>\n";
         }
     }
 }

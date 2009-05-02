@@ -124,7 +124,7 @@ if($chac!=-1 and $chac!=1){
 		echo "<form action=\"$uri\" method=\"post\">\n";
 		echo '<input type="hidden" name="demo" value="0"/>';
 		$str=($tries[0]==1)? $i18['ONE_MORE_COPY']."<br/><br/>": '';
-		echo dload_tries_prompt($tries, 0, $str, sprintf($i18['CONFIRM_TRIAL'], $lang));
+		echo dload_tries_prompt($tries, 0, $str, sprintf($i18['CONFIRM_TRIAL'], $lang, $lang));
 		echo "</form>";
 	}
 	echo "<br/><br/><br/>\n";
@@ -141,7 +141,7 @@ include_once("mobi/ipblock.php");
 //echo $msg;
 //if($msg) return;
 
-$agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang), false);
+$agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang, $lang), false);
 $sess=session_name().'='.session_id();
 
 // TODO: maintain these options when changing dic_paymode table!
