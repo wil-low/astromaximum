@@ -1,9 +1,9 @@
 <?php
-if (isset ($_GET['p'])) { // daily screen number
-	$page = intval ($_GET['p']);
+if (isset ($_GET['h'])) { // city hash
+	$hash = $_GET['h'];
 	$lang = $_GET['lang'];
 	$today = gmdate ('ymd');
-	$ifile = "i/daily/$lang/$today-$page.png";
+	$ifile = "i/daily/$lang/$hash/$today.png";
 	header ("Content-type: image/png");
 	if (file_exists ($ifile))
 		readfile($ifile);
