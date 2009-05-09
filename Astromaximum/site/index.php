@@ -126,7 +126,7 @@ if (document.images){
 <div id="lang">
 <?php
 // language selection
-	$lng=array('DE', 'EN', 'RU');
+	$lng=array(/*'DE',*/ 'EN', 'RU');
 	for($i=0; $i<count($lng); $i++){
 		if($i) echo " | ";
 		$lng2=strtolower($lng[$i]);
@@ -153,7 +153,7 @@ print_menu('dl', 'MNU_DLCIT', 1);
 print_menu('contacts', 'MNU_CONTACTS', 0);
 //echo "<br/>";print_r($_REQUEST);
 $btn1=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE']; $btn1_link="/$lang/demo";
-$btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_count']} ".
+$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['price'])."<br/> + {$GLOBALS['amax']['city_count']} ".
 	$i18['_CITIES'];
 if($chac==0){
 	echo <<<ADMIN_TB
@@ -177,7 +177,8 @@ if($user_ok){
 		$btn2=$i18['TRIAL'];
 }
 if($chac==1 || $chac==3){
-	$btn2=$i18['ORDER']." {$GLOBALS['amax']['price']}<br/>+ {$GLOBALS['amax']['city_count']} ".$i18['_CITIES'];
+	$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['price'])."<br/> + {$GLOBALS['amax']['city_count']} ".
+	$i18['_CITIES'];
 }
 if($chac!=-1){
 	$session_prompt=<<<SP1

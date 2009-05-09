@@ -30,7 +30,7 @@ $sett=array(
 	'demo_pass'=>'012345678',
 	
 	'city_count'=>721,
-	'price'=>'$60',
+	'price'=>'58.99',
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder
 	'min_demo_year'=>2000,
 

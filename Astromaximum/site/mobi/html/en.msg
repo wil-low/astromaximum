@@ -7,7 +7,7 @@ CONTACT=Contacts
 LINKS=Links
 MEM_LOGIN=Subscriber login
 REG_REQ=Registration required
-RESTRICTED=%s is allowed for registered customers only.<br/>Please enter your login and password in the form to the left.
+RESTRICTED=Only registered customers can %s.<br/>Please enter your login and password in the form to the left.
 PAGE_NOT_FOUND=Page not found
 BACK_TOPIC=back to topic
 EMAIL=e-mail
@@ -20,7 +20,7 @@ CITY_BUTTON=DOWNLOAD<br/>CITIES
 TRIAL=DOWNLOAD<br/>CALENDAR
 _CITIES=cities
 CITY_MODULE=city data
-ORDER=ORDER
+ORDER=BUY $%s
 LICENSE=License agreement
 DB=Cities database
 DB_ACCESS=Please log in to access the cities database.
@@ -44,6 +44,7 @@ NO_CITIES=No cities in database.
 ALL_STATES=All states
 WELCOME=Welcome
 LOGOUT=logout
+FILL_INPUT=fill input
 INVALID_LOGIN=Invalid username or password!
 PWDRESTORE=Restore credentials
 PWDR_EMAILING=Enter your registration e-mail. Your login and a new password will be sent to it:
@@ -62,78 +63,97 @@ SEL_ABOUT=About calendar
 SEL_DEMO=Demo
 SEL_DEMOCITY=Demo city
 SEL_CLONLY=(clients only)
-SEL_CHK1=Server date:
-MOBI_YEAR_H=Select year
+SEL_CHK1=Check phone date&time before installation:
+SEL_CHK2=today
 LOAD_LEFT=You have downloaded <b>%d</b> cities from <b>%d</b> available.
 VOC_MSG=The affair is rarely concluded to the end. Do not make key decisions. Promises are empty, plans are doubtful.
-IP_BLOCKED=No access. Please visit this page in %d mins.
+IP_BLOCKED=Access denied. Please visit this page in %d mins.
 UP=up
 TRIES_REMAINED=Downloads remained: <b>%s of %s</b>
 ONE_MORE_COPY=In case of crashing of your phone or calendar you can download your backup copy for free
 DLOAD4YEAR=Download <b>ASTROMAXIMUM</b> for %s
-INSTR_SENT=Thank you. Instructions how to purchase astrological calendar have been sent to your e-mail.<br/>After payment you will receive login and password to download ASTROMAXIMUM.
-CONFIRM_TRIAL=I confirm that I have installed and run <a href="?%s&amp;p=demo">the calendar demo</a> successfully
+INSTR_SENT=Thank you. A letter with further instructions has been sent to your e-mail address.
+CONFIRM_TRIAL=I confirm that I have installed and run <a href="/%s/demo">the calendar demo</a> successfully
 GENERATE?=Generate?
 NO_CALENDAR_DL=You are not allowed to download the calendar. Please contact %sour support service</a>.
-DL_BEFORE_INSTALL=%sThe calendar for appropriate year</a> must be installed on your mobile before installing cities.
+DL_BEFORE_INSTALL=%sThe calendar for appropriate year</a> must be installed on your phone before installing cities.
 SELCITY_ALERT=Select a city from the list
 SELCITY_GENERATE=Make midlet for city
-REQUEST_MORE=Request more
+ERROR_CITYGEN=An error occured while generating <i>%s</i> (%d)
+REQUEST_MORE=request more
 REQUEST_MORE_H=Request more cities to download
 REQUEST_MORE_DESC=You will be able to download additional %d cities.
 CAPTCHA_PROMPT=Enter charachers seen on the image:
-CAPTCHA_WRONG=Invalid string entered
+CAPTCHA_WRONG=Invalid charachers entered
 MNU_HOME=home
 MNU_MAN=manual
 MNU_SCRSHOTS=screenshots
 MNU_BUY=purchase
-MNU_CITYLIST=city list
+MNU_CITYLIST=cities GMT
 MNU_DLCIT=download cities
 MNU_CONTACTS=contacts
 ENABLE_JS=Please enable JavaScript in your browser!
 DEMO_CALGEN=Make midlet for calendar
 DEMO_HEADER=<h4>Get demo version</h4><p><b>ASTROMAXIMUM</b> demo contains astrological events for the previous year.</p><p>Since October, 22 you can get a full version for current year free of charge.</p>
 DEMO_DEMO=demo
-DEMO_NOTREG=If you are not a registered user, to get demo version please fill the form to the left:
+DEMO_NOTREG=If you are not a registered user, to get a demo version please fill input boxes to the left:
 DEMO_ENTER=and click "%s"
-DEMO_DLCITY=You can get any of demo cities after installing the calendar
-DEMO_EMAILING=Enter email to which the download link will be sent,<br/>and add <u>%s</u> into your address book.</p><p>Your email:
-DEMO_LINK_SENT=Letter with the download link has been sent to %s.
-DEMO_EMAIL_WRONG=Wrong e-mail
-PAGE_DLCIT=Downloading cities
-THEMES_CAL=calendar topics
-THEME_1=business activities, contract signing
-THEME_2=trading, finance
-THEME_3=licensing, registration
-THEME_4=employment, human resources
-THEME_5=real estate, construction, agriculture
-THEME_6=vacations, education
-THEME_7=love, marriage
-THEME_8=medicine, cosmetics
-THEME_9=disease progress
-MAN_TOPICS=instructions
-MAN_0=preparing installation
-MAN_1=GPRS/EDGE installation
-MAN_2=installation using PC
-MAN_3=city installation
-MAN_4=checking time and timezone settings
-MAN_PDF=user manual
-SCRTEXT_00=Сегодня
-SCRTEXT_01=Введите ниже адрес электронной почты, на который будет выслана ссылка для скачивания,<br/>и добавьте адрес <u>%s</u> в Вашу адресную книгу.</p><p>Ваш email:
+DEMO_DLCITY=You can get any of %sdemo cities for %d</a> after installing the calendar
+DEMO_EMAILING=<span class="alert">Important:</span>Please add <a href="%s">%s</a> into your address book.<br/>Enter email to which the download link will be sent:
+DEMO_LINK_SENT=Download link has been e-mailed to %s.
+DEMO_EMAIL_WRONG=Wrong e-mail address
+PAGE_DLCIT=download cities
+PAGE_READTHEMES=browse all topics
+THEME_0=Calendar topics
+THEME_1=Business activities, contract signing
+THEME_2=Trading, finance
+THEME_3=Licensing, registration
+THEME_4=Employment, HR
+THEME_5=Real estate, construction, agriculture
+THEME_6=Vacations, education
+THEME_7=Love, marriage
+THEME_8=Medicine, cosmetics
+THEME_9=Disease progress
+MAN_TOPICS=Instructions
+MAN_0=Before installation
+MAN_1=GPRS/EDGE install
+MAN_2=Install using PC
+MAN_3=City installation
+MAN_4=Checking time and time zone settings
+MAN_PDF=User manual
+
+SCRTEXT_01=??
+
 SCRTEXT_02=??
+
 SCRTEXT_03=??
+
 SCRTEXT_04=??
+
 SCRTEXT_05=??
+
 SCRTEXT_06=??
+
 SCRTEXT_07=??
+
 SCRTEXT_08=??
+
 SCRTEXT_09=??
+
 SCRTEXT_10=??
+
 SCRTEXT_11=??
+
 SCRTEXT_12=??
+
 SCRTEXT_13=??
+
 SCRTEXT_14=??
+
 SCRTEXT_15=??
+
+SCRTEXT_16=??
+
 CLOSE=close
 CITYLIST_CLICK=Click on a city to get its current time, sunrise and timezone information
 CITYLIST_NOCITY=Data not found
@@ -143,4 +163,28 @@ CITYLIST_NOW=Current time
 CITYLIST_GMT=Time offset
 CITYLIST_DST= +1 (DST)
 
-CONFIRM_THANKS=Dear <b>%s!</b><br/><br/><span class="fine">Thank you for confirming your email address <b>%s</b></span>.<br/><br/>Please make a payment by Paypal using the button below. Your login and password for Astromaximum sites will be sent to your email address after payment.
+REGFORM_DESC=<p>To purchase the calendar, please register a free account on our site.<br/>If no payment is made in 7 days, you account will be deleted automatically.</p><p>Following payment modes are supported:%s</p>
+REGFORM_H=New customer registration
+REGFORM_REQF=All field are mandatory!
+REGFORM_EMAIL_1=E-mail to which you access codes will be sent after the payment
+REGFORM_EMAIL_2=E-mail again
+REGFORM_NAME=Nickname
+REGFORM_PAYMODE=Purchase calendar for year %d:
+REGFORM_MODEL=Your phone model
+REGFE_EM_NOMATCH=E-mail addresses do not match
+REGFE_EM_BAD=Invalid e-mail address
+REGFE_EM_EXISTS=E-mail address is registered already
+
+PAYMENT_02=PayPal
+PAYMENT_04=Bank transfer - OTP bank
+PAYMENT_05=Bank transfer - Raiffeisen bank
+
+CONFIRM_THANKS=Dear <b>%s!</b><br/><br/><span class="fine">Thank you for confirming your email address <b>%s</b></span>.<br/><br/>Your login and password have been sent to your e-mail address. Please log in to Astromaximum site and make the payment.
+
+MISSING_FIELD=Field missing: %s
+CONTACTS_00=Payment notification
+CONTACTS_01=Trouble
+
+BILL_NAME=First and Last name
+BILL_DATE=Date of payment
+BILL_NUM=Bill number
