@@ -2012,44 +2012,43 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         Options.isRealtimeOff = true;
 //#         try{
 //#             int w = getWidth(), h = getHeight();
-//#             FileConnection hash_fc = (FileConnection)Connector.open("file:///root1/city_hash.txt");
-//#             if(!hash_fc.exists())
-//#                 hash_fc.create();
-//#             hash_fc.truncate(0);
-//#             DataOutputStream os = hash_fc.openDataOutputStream();
-//#             for (int i = 0; i < Astromaximum.options.cityList.size(); ++i) {
-//#                 Astromaximum.options.loadCity (i);
+//#             int num = Astromaximum.options.cityList.getSelectedIndex();
+//#             for (int i = num; i <= num; ++i) {
+//# //            for (int i = 0; i < Astromaximum.options.cityList.size(); ++i) {
+//# //                Astromaximum.options.loadCity (i);
 //#                 setNewYearDate();
 //#                 showDaySummary();
 //#                 selectFirstItem();
 //#                 keyNavigate(2); keyNavigate(2);
-//#                 String s = Astromaximum.options.getCurrentCity(true);
+//#                 String s = Astromaximum.options.getCurrentCity(false);
 //#                 String hash_str = Integer.toHexString(s.hashCode());
 //#                 while (hash_str.length() < 8)
 //#                     hash_str = "0" + hash_str;
-//#                 s = hash_str + ": " + s;
-//#                 System.out.println(s);
-//#                 os.write(s.getBytes());
-//#                 os.write('\n');
 //# 
-//#                 FileConnection fc = (FileConnection)Connector.open("file:///root1/" + hash_str);
+//#                 writeString2File(hash_str + ".txt", s);
+//# 
+//#                 System.out.println(hash_str + ": " + s);
+//# 
+//#                 FileConnection fc = (FileConnection)Connector.open(
+//#                         "file:///root1/" + hash_str, Connector.READ_WRITE);
 //#                 if (!fc.exists())
 //#                     fc.mkdir();
 //#                 fc.close();
+//#                 fc = null;
 //#                 for (int j=0; j < Astromaximum.dataFile.dayCount; ++j) {
 //#                     setCurPage(PAGE_SUMMARY);
 //#                     screenShot(w, h, hash_str);
 //#                     changeDay(1);
 //#                 }
 //#             }
-//#             hash_fc.close();
 //#             System.out.println("Shots completed!");
-//#             System.out.println("Use 'sh raw2image.sh " + Integer.toString(w) + " " +
+//#             writeString2File("convert.sh", "sh raw2image.sh " + Integer.toString(w) + " " +
 //#                     Integer.toString(h-1) + " " + Astromaximum.getstr(255).toLowerCase() +
-//#                     " " + Integer.toString(Astromaximum.startYear) +
-//#                     "'\nto convert screenshots\n");
+//#                     " " + Integer.toString(Astromaximum.startYear));
+//#                     
 //#         }
 //#         catch(IOException e){
+//#             System.out.println(e.getMessage());
 //#             e.printStackTrace();
 //#         }
 //#         Options.isRealtimeOff = false;
@@ -2065,19 +2064,27 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //# 				formatDate2d(Calendar.DAY_OF_MONTH);
 //#         int rgbData[] = new int[w * h];
 //# 
-//#         FileConnection fc = (FileConnection)Connector.open("file:///root1/" + fname + ".raw");
+//#         FileConnection fc = (FileConnection)Connector.open(
+//#                 "file:///root1/" + fname + ".raw", Connector.READ_WRITE);
 //#         
 //#         if(!fc.exists())
 //#             fc.create();
+//#         else
+//#             fc.truncate(0);
 //#         image.getRGB(rgbData, 0, w, 0, 0, w, h);
 //#         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 //#         DataOutputStream dos = new DataOutputStream(bos);
 //#         for (int i = 0; i < rgbData.length; i++) {
 //#             dos.writeInt (rgbData[i]);
 //#         }
+//#         dos.close();
 //#         OutputStream os = fc.openOutputStream();
 //#         os.write(bos.toByteArray());
+//#         os.flush();
 //#         fc.close();
+//#         bos.close();
+//#         rgbData = null;
+//#         image = null;
 //#         System.out.println(fname + ".raw written");
 //# 	}
 //# 
@@ -2093,6 +2100,21 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //# 			s = "0" + s;
 //# 		return s;
 //# 	}
+//# 
+//#     void writeString2File (String fname, String str) throws IOException {
+//#         FileConnection hash_fc = (FileConnection)Connector.open(
+//#                 "file:///root1/" + fname, Connector.READ_WRITE);
+//#         if(!hash_fc.exists())
+//#             hash_fc.create();
+//#         else
+//#             hash_fc.truncate(0);
+//#         DataOutputStream os = hash_fc.openDataOutputStream();
+//#         os.write(str.getBytes());
+//#         os.write('\n');
+//#         os.close();
+//#         hash_fc.close();
+//#     }
+//# 
 //#endif
 
 }

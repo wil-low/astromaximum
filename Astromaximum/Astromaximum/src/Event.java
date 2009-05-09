@@ -251,7 +251,6 @@ final class Event {
         date0 += localOffset(date0);
         Astromaximum.calendar.setTime(new Date(date0));
         final StringBuffer s = new StringBuffer();
-
         if (hoursOnly == 0) {
             if (!Astromaximum.locale.equals("Ru")) {
                 s.append(to2String(Astromaximum.calendar.get(Calendar.MONTH) + 1)).
@@ -264,8 +263,15 @@ final class Event {
             }
             s.append(" ");
         }
-        int hh = Astromaximum.calendar.get(Calendar.HOUR_OF_DAY);
-        int mm = Astromaximum.calendar.get(Calendar.MINUTE);
+        int hh = 0, mm = 0;
+        try {
+            hh = Astromaximum.calendar.get(Calendar.HOUR_OF_DAY);
+            mm = Astromaximum.calendar.get(Calendar.MINUTE);
+        }
+        catch (Exception e) {
+            System.out.println("Ex: long2String(" + Long.toString(date0) + ", "
+                + Integer.toString(hoursOnly) +", " + (h24 ? "true" : "false"));
+        }
         if (h24 && hh + mm == 0) {
             hh = 24;
         }

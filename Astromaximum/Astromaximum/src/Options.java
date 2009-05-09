@@ -29,9 +29,7 @@ class Options extends GeoList implements CommandListener {
     //#endif
     static byte optFlags;
     private static long localOffset;
-//#ifdef freetest
-//#     static boolean isRealtimeOff = false;
-//#endif
+    static boolean isRealtimeOff = false;
     private String oldc;
     static final int FLG_ALLTEXT = 1;
     private static final int FLG_LOCALTIME = 2;
