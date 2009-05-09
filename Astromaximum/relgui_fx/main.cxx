@@ -1,4 +1,4 @@
-#include "fx.h"
+#include <fx.h>
 #include "relgui.h"
 
 int main(int argc, char *argv[]){

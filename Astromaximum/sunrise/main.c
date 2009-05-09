@@ -173,9 +173,9 @@ int main(int argc, char** argv) { // data filename
         while (evtype != rub) {
             skipOff = readShort(fn) - 3;
             if (skipOff < 0) {
-				printf ("skipOff < 0 at %s, ln %d\n", __FILE__, __LINE__);
-				return 3;
-			}
+                    printf ("%s: skipOff < 0 at %s, ln %d\n", argv[1], __FILE__, __LINE__);
+                    return 3;
+            }
 				
             fseek(fn, skipOff+1, SEEK_CUR);
             rub = readUnsignedByte(fn);
