@@ -1087,6 +1087,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //# 			case 50: // extra menu
 //#                 List lst = new List("Extra menu", List.IMPLICIT);
 //#                 lst.append("Screenshots", null);
+//#                 lst.append("Print hashes", null);
 //#                 lst.append("BM year", null);
 //# 				lst.addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 1));
 //# 				lst.setSelectCommand(new Command("Open", Command.ITEM, 51));
@@ -1099,7 +1100,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#                     case 0:
 //#                         takeShots();
 //#                         break;
-//#                     case 1: // benchmark year
+//#                     case 1:
+//#                         printHashes();
+//#                         break;
+//#                     case 2:
 //#                         benchmarkYear();
 //#                         break;
 //#                 }
@@ -2002,12 +2006,31 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         setToday();
 //#     }
 //# 
+//#     void printHashes () {
+//#         String hashes = "";
+//#         for (int i = 0; i < Astromaximum.options.cityList.size(); ++i) {
+//#             String city = Astromaximum.options.cityList.getString(i);
+//#             String hash_str = Integer.toHexString(city.hashCode());
+//#             while (hash_str.length() < 8)
+//#                 hash_str = "0" + hash_str;
+//#             hashes += hash_str + ": " + city + "\n";
+//#         }
+//#         try {
+//#             writeString2File("hashes.txt", hashes);
+//#         }
+//#         catch(IOException e){
+//#             System.out.println(e.getMessage());
+//#             e.printStackTrace();
+//#         }
+//#         System.out.println(hashes);
+//#     }
+//# 
 //#     void setNewYearDate() {
 //# 		Astromaximum.calendar.setTime(new Date(Astromaximum.dataFile.startJD));
 //# 		selDate.setTime(Astromaximum.calendar.getTime().getTime());
 //#     }
 //# 
-//# 	void takeShots() {
+//#     void takeShots() {
 //#         System.out.println("Please wait while capturing screenshots...");
 //#         Options.isRealtimeOff = true;
 //#         try{
