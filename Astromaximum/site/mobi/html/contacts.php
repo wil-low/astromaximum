@@ -9,7 +9,7 @@ include_once ('mobi/html/c_paid.php');
 if (!isset($cfields[$mode]))
 	return;
 $sess=session_name().'='.session_id();
-$agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang), false);
+$agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang, $lang), false);
 $arr = $cfields[$mode];
 $field_count = count ($arr);
 echo "<h4>{$arr['header']}</h4>\n";

@@ -19,7 +19,7 @@ if($chac!=-1){
                     echo '<p><span class="alert">Error</span></p>';
                 }
                 else{
-                    $message=file_get_contents("/mobi/dl/source/demo.mail");
+                    $message=file_get_contents("mobi/dl/source/demo.mail");
                     $message=str_replace('[site]', $GLOBALS['amax']['mail_site'], $message);
                     $message=str_replace('[javalink]', $link_text, $message);
                     $mail=mailtext_w_attach($email, '', 'Astromaximum demo - download link', $message);
