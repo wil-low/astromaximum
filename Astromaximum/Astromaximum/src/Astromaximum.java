@@ -62,8 +62,9 @@ public class Astromaximum extends MIDlet implements CommandListener {
      */
     static final int GRAY_COLOR = 0xe0e0e0;
     /**
-     * Suggested URL for main web site
+     * Suggested URL for web site
      */
+    static final String MainURL = "astromaximum.com";
     static final String URL = "mobi.astromaximum.com";
     /**
      * Delay (ms) between showing log texts, if logging is on
@@ -657,7 +658,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
 
     void showAbout() {
         String msg = "Astromaximum " + Integer.toString(startYear) + " " +
-                getstr(162) + "||Web: http://" + URL;
+                getstr(162);
         String tick = getAppProperty("X-Midlet-Version");
         if (tick != null) {
             tick = getstr(163) + " " + tick;
@@ -671,8 +672,10 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#ifdef demo
 //#         msg += " " + getstr(154);
 //#endif
-        msg += "||Copyright 2007, S&W Axis|" + getstr(153);
-        msg += "||" + getstr(156);
+        msg += "||" + getstr(164) + "| " + options.getCurrentCity(false);
+//        msg += "||--" + getstr(156) + "--";
+        msg += "||Web:|http://" + MainURL + "|" + getstr(165) + "|http://" + URL;
+        msg += "||\u00a9 2007, S&W Axis|" + getstr(153);
         alert(msg);
     }
 

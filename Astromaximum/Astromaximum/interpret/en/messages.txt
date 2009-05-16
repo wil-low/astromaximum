@@ -177,6 +177,8 @@
 %161% Menu
 %162% - astrological calendar for mobile devices
 %163% Version
+%164% Current city:
+%165% Mobile version:
 
 %255% En
 
