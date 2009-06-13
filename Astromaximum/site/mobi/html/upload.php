@@ -6,11 +6,14 @@ reject2index();
 	<form method="post" action="upload" enctype="multipart/form-data">
 		Upload what: 
 		<select name="restype">
-			<option value="geodata" selected="selected">Geo data</option>
+			<option value="geoyear" selected="selected">Whole year</option>
+			<option value="geodata">Geo data</option>
 			<option value="tjar">Archive template</option>
 			<option value="tjad">Descriptor template</option>
 			<option value="demo">Demo</option>
-		</select><br/><br/>
+		</select>
+		<input name="error_only" type="checkbox" checked="checked">Report errors only</input>
+		<br/><br/>
 		<input type="file" name="uploaded_file" size="60" value="" style="width:auto"/>
   	<input type="hidden" name="MAX_FILE_SIZE" value="500000" />
 		&nbsp;<input type="submit" name="Action" value="Upload"/>
@@ -27,6 +30,9 @@ reject2index();
 		if(!strlen($restype) || !strlen($fname)){
 			echo "error $fname";
 			return;
+		}
+		if(strcmp($restype,'geoyear')==0){
+			up_geoyear($fname, 'tbz');
 		}
 		if(strcmp($restype,'geodata')==0){
 			up_geodata($fname, 'zip');
@@ -66,6 +72,21 @@ function check_ext($fname, $ext){
 	return 1;
 }
 
+function up_geoyear($fname, $ext){
+	global $DIR_INBOX, $UNTBZ;
+	if (!check_ext($fname, $ext)) 
+		return;
+	$fh = $_FILES['uploaded_file']['tmp_name'];
+	list($dir,$fn)=amtools_random(0,'mobi/dl/inbox','');
+//	echo "$dir";
+	mkdir($dir);
+	$cmd=sprintf($UNTBZ, $fh, $dir);
+	$res=exec($cmd);
+	foreach (glob($dir.'/*', GLOB_ONLYDIR) as $country_dir)
+		process_country($country_dir);
+	rm_all($dir);
+}
+
 function up_geodata($fname, $ext){
 	global $DIR_INBOX, $UNZIP;
 	if (!check_ext($fname, $ext)) 
@@ -76,13 +97,12 @@ function up_geodata($fname, $ext){
 	mkdir($dir);
 	$cmd=sprintf($UNZIP, $fh, $dir);
 	$res=exec($cmd);
-//		echo "<pre>$res</pre>";
-/*		if(!$res){
-		echo "System(unzip) failure<br>";
-		echo 'safe_mode = ' . ini_get('safe_mode') . "<br>";
-		echo 'safe_mode_exec_dir = ' . ini_get('safe_mode_exec_dir') . "<br>";
-	}		
-*/
+	process_country($dir);
+	rm_all($dir);
+}
+
+function process_country($dir){
+	$report_errors_only = isset($_POST['error_only']);
 	$fn=glob("$dir/*.txt");
 	if(count($fn)!=1){
 		upload_error("TXT must be exactly one file in archive $dir/*.txt, not ".count($fn), $dir);
@@ -111,7 +131,7 @@ function up_geodata($fname, $ext){
 			$cc=preg_replace('/^\"/is','',$cc);
 			$cc=preg_replace('/\"\s*$/is','',$cc);
 			$cc=preg_replace('/\#.+/is','',$cc);
-		list($name, $country, $yr, $txtchk, $status, $state)=array('','',0,'','','');
+			list($name, $country, $yr, $txtchk, $status, $state, $is_error)=array('','',0,'','','', true);
 			$rec=explode('|', $cc);
 			if(count($rec)<5){
 				continue;
@@ -130,11 +150,11 @@ function up_geodata($fname, $ext){
 			$curfn=sprintf("$dir/Data%04d.dat",$i++);
 			if(!file_exists($curfn)) continue;
 			$FF0=fopen($curfn,"rb");
-		$tr='';
-		$locdata='';
-		$yr=fread($FF0,2);
-		$yr=current(unpack("S",$yr));
-		if($yr){
+			$tr='';
+			$locdata='';
+			$yr=fread($FF0,2);
+			$yr=current(unpack("S",$yr));
+			if($yr){
 				fseek($FF0,8,0);
 				$len=0;
 				$len=fread($FF0,2);
@@ -147,11 +167,12 @@ function up_geodata($fname, $ext){
 				if(strlen($state)){
 					$tst.=", $state";
 				}
-				if(strcmp($len,$tst)==0){
-					$txtchk="<b>OK</b>";
+				if(strpos($tst, $len)===false){
+					$txtchk="<span class=\"alert\">doesn't match, found <b>$len</b></span>";
 				}
 				else{
-					$txtchk="<span class=\"alert\">doesn't match, found <b>$len</b></span>";
+					$txtchk="<b>OK</b>";
+					$is_error = false;
 				}
 			}
 			else{
@@ -218,14 +239,14 @@ function up_geodata($fname, $ext){
 	#				"SELECT cities.id, countries.id FROM cities,countries WHERE cities.country_id=countries.id ".
 	#				"AND cities.name=\"$name\" AND countries.name=\"$country\"");
 			$status.="$citid, $stateid, $couid";//, #".strlen($locdata)."/$datalen";
-			echo("<tr><td>$name</td><td>$country</td><td>$state</td><td>$yr".
-				"</td><td>$txtchk</td><td>$status</td></tr>\n");
+			if ($is_error || !$report_errors_only)
+				echo("<tr><td>$name</td><td>$country</td><td>$state</td><td>$yr".
+					"</td><td>$txtchk</td><td>$status</td></tr>\n");
 		}
 		echo("</table><p>Added <b>$cou_count</b> countries, <b>$state_count</b> states, ".
 			"<b>$cit_count</b> cities, <b>$locins_count</b> locations.<br>".
-			"Updated <b>$locupd_count</b> locations.");
+			"Updated <b>$locupd_count</b> locations.<br/>");
 	}
-	rm_all($dir);
 }
 	
 function upload_error($msg, $dir){

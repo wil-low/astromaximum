@@ -57,6 +57,7 @@ function amtools_random($ye,$path, $ext){
 
 $UNZIP="unzip %s -d %s -x *META-INF* "; # > /dev/null
 $UNTAR="tar xvf %s -C %s";
+$UNTBZ="tar xjvf %s -C %s";
 $ZIP="fastjar %s ";
 
 function jar($jarpath, $out, $manifest, $srcdir)
@@ -86,8 +87,11 @@ function join_datafiles2($year, $destfile, $a_data) # year, destfile, data_listr
 
 function rm_all($dir)
 {
-	foreach(glob("$dir/*.*") as $fname){
-		@unlink($fname);
+	foreach(glob("$dir/*") as $fname){
+		if (is_dir($fname))
+			rm_all($fname);
+		else
+			@unlink($fname);
 	}
 	@rmdir($dir);
 }
