@@ -71,17 +71,14 @@ Lanús
 Lomas de Zamora
 Mar del Plata
 Morón
-Neuquén
 Paraná
 Posadas
 Quilmes
 Resistencia
 Rio Cuarto
 Rosario
-Salta
 San Fernando del Valle
 San Isidro
-San Luis
 San Nicolás de los Arroyos
 Santa Fe
 Santiago del Estero
@@ -92,7 +89,10 @@ Comodoro Rivadavia
 @ Argentina, La Rioja^ARG
 @ Argentina, Mendoza^ARG
 @ Argentina, Rio Gallegos^ARG
+@ Argentina, Salta^ARG
+Neuquén
 @ Argentina, San Juan^ARG
+@ Argentina, San Luis^ARG
 @ Argentina, San Miguel de Tucumán^ARG
 @ Argentina, San Salvador de Jujuy^ARG
 @ Argentina, Ushuaia^ARG
@@ -1661,6 +1661,7 @@ Vólos
 @ Greenland (DNK), Ittoqqortoormiit (Scoresbysund)^GRL
 @ Greenland (DNK), Nuuk (Godthåb)_GRL
 Godhavn
+Sisimiut
 @ Greenland (DNK), Pituffik (Thule)^GRL
 @ Grenada, Saint George´s_GRD
 @ Guadeloupe (FRA), Pointe-à-Pitre_GLP
@@ -2500,15 +2501,15 @@ Dzjambul (Auliye-Ata)
 Ekibastuz
 Karaganda
 Koktjetav
-Kustanai
 Pavlodar
 Petropavlovsk
-Rudny
 Semipalatinsk (Semey)
 Taldyqorghan
 Temirtau
 Ust-Kamenogorsk (Öskemen)
 @ Kazakhstan, Kzyl-Orda^KAZ
+Kustanai
+Rudny
 @ Kazakhstan, Uralsk (Oral)^KAZ
 @ Kenya, Nairobi_KEN
 Eldoret
@@ -3565,7 +3566,6 @@ Ansan
 Anyang
 Bucheon
 Changweon
-Cheju
 Cheonan
 Cheongju
 Chinhae
@@ -3578,6 +3578,7 @@ Gumi
 Gyeongju
 Inchon
 Iri
+Jeju
 Kangnung
 Kimhae
 Kunsan
@@ -4417,6 +4418,7 @@ Reno
 Sparks
 Sunrise Manor
 @ USA - Nevada, Jackpot^USA
+@ USA - Nevada, West Wendover^USA
 @ USA - New Hampshire, Concord_USA
 Berlin
 Keene

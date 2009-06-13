@@ -18,7 +18,8 @@ Rule C-Eur
 1940	01Apr@2	@
 1942	@	02Nov@3
 1943	29Mar@2	04Oct@3
-1944	03Apr@2	02Oct@3
+1944	FirstMonApr@2	02Oct@3
+1945	FirstMonApr@2	16Sep@3
 1977	FirstSunApr@2	LastSunSep@3
 1978	FirstSunApr@2	01Oct@3
 1979-1980	FirstSunApr@2	LastSunSep@3
@@ -199,7 +200,9 @@ Rule Chile
 1997	FirstSunAfter09Oct@4(UTC)	30Mar@3(UTC)
 1998	27Sep@4(UTC)	FirstSunAfter09Mar@3(UTC)
 1999	FirstSunAfter09Oct@4(UTC)	04Apr@3(UTC)
-2000-max	FirstSunAfter09Oct@4(UTC)	FirstSunAfter09Mar@3(UTC)
+2000-2007	FirstSunAfter09Oct@4(UTC)	FirstSunAfter09Mar@3(UTC)
+2008	FirstSunAfter09Oct@4(UTC)	LastSunMar@3(UTC)
+2009-max	FirstSunAfter09Oct@4(UTC)	FirstSunAfter09Mar@3(UTC)
 
 Antarctica (USA), Palmer
 0	-	1965
@@ -237,7 +240,9 @@ Rule Arg
 1989-1992	FirstSunAfter15Oct@0	FirstSunMar@0
 1993	@	FirstSunMar@0
 1999	FirstSunOct@0	@
-2000	@	FirstSunMar@0
+2000	@	03Mar@0
+2007	30Dec@0	@
+2008-max	FirstSunAfter15Oct@0	FirstSunAfter15Mar@0
 
 # Another hiccup mended by zic in 1999
 Argentina, Buenos Aires
@@ -248,7 +253,7 @@ Argentina, Buenos Aires
 -3	Arg	03Oct1999@0
 -4+1	-	03Oct1999@1
 -4	Arg	03Mar2000@0
--3	-	max
+-3	Arg	max
 
 # Another hiccup mended by zic in 1999
 Argentina, Catamarca
@@ -263,6 +268,7 @@ Argentina, Catamarca
 -4	Arg	03Mar2000@0
 -3	-	01Jun2004@0
 -4	-	20Jun2004@0
+-3	Arg	18Oct2008@0
 -3	-	max
 
 # Another hiccup mended by zic in 1999
@@ -275,7 +281,7 @@ Argentina, Córdoba
 -3	Arg	03Oct1999@0
 -4+1	-	03Oct1999@1
 -4	Arg	03Mar2000@0
--3	-	max
+-3	Arg	max
 
 Argentina, La Rioja
 -4:27:24	-	31Oct1894@0
@@ -288,6 +294,7 @@ Argentina, La Rioja
 -4	-	03Mar2000@0
 -3	-	01Jun2004@0
 -4	-	20Jun2004@0
+-3	Arg	18Oct2008@0
 -3	-	max
 
 # Another hiccup mended by zic in 1999
@@ -307,6 +314,7 @@ Argentina, Mendoza
 -4	Arg	03Mar2004@0
 -3	-	23May2004@0
 -4	-	26Sep2004@0
+-3	Arg	18Oct2008@0
 -3	-	max
 
 # Another hiccup mended by zic in 1999
@@ -320,11 +328,12 @@ Argentina, Rio Gallegos
 -4	Arg	03Mar2000@0
 -3	-	01Jun2004@0
 -4	-	20Jun2004@0
+-3	Arg	18Oct2008@0
 -3	-	max
 
 # Another hiccup mended by zic in 1999
-Argentina, San Miguel de Tucumán
--4:20:52	-	31Oct1894@0
+Argentina, Salta
+-4:21:40	-	31Oct1894@0
 -4:16:48	-	01May1920@0
 -4	-	01Dec1930@0
 -4	Arg	05Oct1969@0
@@ -333,8 +342,7 @@ Argentina, San Miguel de Tucumán
 -3	Arg	03Oct1999@0
 -4+1	-	03Oct1999@1
 -4	Arg	03Mar2000@0
--3	-	01Jun2004@0
--4	-	13Jun2004@0
+-3	Arg	18Oct2008@0
 -3	-	max
 
 # Another hiccup mended by zic in 1999
@@ -350,7 +358,42 @@ Argentina, San Juan
 -4	Arg	03Mar2000@0
 -3	-	31May2004@0
 -4	-	25Jul2004@0
+-3	Arg	18Oct2008@0
 -3	-	max
+
+# Another hiccup mended by zic in 1999
+Argentina, San Luis
+-4:25:24	-	31Oct1894@0
+-4:16:48	-	01May1920@0
+-4	-	01Dec1930@0
+-4	Arg	05Oct1969@0
+-3	Arg	1990
+-3+1	-	14Mar1990@0
+-4	-	15Oct1990@0
+-4+1	-	01Mar1991@0
+-4	-	01Jun1991@0
+-3	-	03Oct1999@0
+-4+1	-	03Mar2000@0
+-3	-	31May2004@0
+-4	-	25Jul2004@0
+-3	Arg	21Jan2008@0
+-3	-	15Mar2009@0
+-4	Arg	max
+
+# Another hiccup mended by zic in 1999
+Argentina, San Miguel de Tucumán
+-4:20:52	-	31Oct1894@0
+-4:16:48	-	01May1920@0
+-4	-	01Dec1930@0
+-4	Arg	05Oct1969@0
+-3	Arg	03Mar1991@0
+-4	-	20Oct1991@0
+-3	Arg	03Oct1999@0
+-4+1	-	03Oct1999@1
+-4	Arg	03Mar2000@0
+-3	-	01Jun2004@0
+-4	-	13Jun2004@0
+-3	Arg	max
 
 # Another hiccup mended by zic in 1999
 Argentina, San Salvador de Jujuy
@@ -366,6 +409,7 @@ Argentina, San Salvador de Jujuy
 -3	Arg	03Oct1999@0
 -4+1	-	03Oct1999@1
 -4	Arg	03Mar2000@0
+-3	Arg	18Oct2008@0
 -3	-	max
 
 # Another hiccup mended by zic in 1999
@@ -379,6 +423,7 @@ Argentina, Ushuaia
 -4	Arg	03Mar2000@0
 -3	-	30May2004@0
 -4	-	20Jun2004@0
+-3	Arg	18Oct2008@0
 -3	-	max
 
 Rule E-EurAsia
@@ -620,8 +665,7 @@ Austria, Vienna (Wien)
 1:05:20	-	01Apr1893@0
 1	C-Eur	1920
 1	Austria	01Apr1940@2
-1	C-Eur	02Apr1945@2
-1+1	-	12Apr1945@3
+1	C-Eur	12Apr1945@3
 1	-	1946
 1	Austria	1981
 1	EU	max
@@ -853,12 +897,25 @@ Rule Brazil
 2005	FirstSunAfter15Oct@0	FirstSunAfter15Feb@0
 2006	FirstSunNov@0	FirstSunAfter15Feb@0
 2007	FirstSunAfter08Oct@0	LastSunFeb@0
-2008-max	FirstSunAfter08Oct@0	FirstSunAfter15Feb@0
+2008-2011	FirstSunAfter15Oct@0	FirstSunAfter15Feb@0
+2012	FirstSunAfter15Oct@0	FirstSunAfter22Feb@0
+2013-2014	FirstSunAfter15Oct@0	FirstSunAfter15Feb@0
+2015	FirstSunAfter15Oct@0	FirstSunAfter22Feb@0
+2016-2022	FirstSunAfter15Oct@0	FirstSunAfter15Feb@0
+2023	FirstSunAfter15Oct@0	FirstSunAfter22Feb@0
+2024-2025	FirstSunAfter15Oct@0	FirstSunAfter15Feb@0
+2026	FirstSunAfter15Oct@0	FirstSunAfter22Feb@0
+2027-2033	FirstSunAfter15Oct@0	FirstSunAfter15Feb@0
+2034	FirstSunAfter15Oct@0	FirstSunAfter22Feb@0
+2035-2036	FirstSunAfter15Oct@0	FirstSunAfter15Feb@0
+2037	FirstSunAfter15Oct@0	FirstSunAfter22Feb@0
+2038-max	FirstSunAfter15Oct@0	FirstSunAfter15Feb@0
 
 Brazil - Acre, Rio Branco
 -4:31:12	-	1914
 -5	Brazil	12Sep1988@0
--5	-	max
+-5	-	24Jun2008@0
+-4	-	max
 
 Brazil - Alagoas, Maceió
 -2:22:52	-	1914
@@ -976,9 +1033,14 @@ Brazil - West Amazonas, Eirunepé
 -5	Brazil	12Sep1988@0
 -5	-	28Sep1993@0
 -5	Brazil	22Sep1994@0
--5	-	max
+-5	-	24Jun2008@0
+-4	-	max
 
-Brazil - West Pará, Santarém	LinkTo	Brazil - Rondônia, Porto Velho
+Brazil - West Pará, Santarém
+-3:38:48	-	1914
+-4	Brazil	12Sep1988@0
+-4	-	24Jun2008@0
+-3	-	max
 
 British Indian Ocean Territory, Diego Garcia
 4:49:40	-	1907
@@ -1000,7 +1062,7 @@ Bulgaria, Sofia
 1:33:16	-	1880
 1:56:56	-	30Nov1894@0
 2	-	02Nov1942@3
-1	C-Eur	02Apr1945@3
+1	C-Eur	02Apr1945@2
 2	-	31Mar1979@23
 2	Bulg	26Sep1982@2
 2	C-Eur	1991
@@ -1547,7 +1609,9 @@ Rule Cuba
 2000-2003	FirstSunApr@0	LastSunOct@1
 2004	FirstSunApr@0	@
 2006	@	LastSunOct@1
-2007-max	FirstSunAfter08Mar@0	LastSunOct@1
+2007	FirstSunAfter08Mar@0	LastSunOct@1
+2008	FirstSunAfter15Mar@0	LastSunOct@1
+2009-max	FirstSunAfter08Mar@0	LastSunOct@1
 
 Cuba, Havana
 -5:29:28	-	1890
@@ -1650,7 +1714,8 @@ Rule Egypt
 1995-2005	LastFriApr@0	LastThuSep@24
 2006	LastFriApr@0	22Sep@0
 2007	LastFriApr@0	07Sep@0
-2008-max	LastFriApr@0	LastThuAug@24
+2008	LastFriApr@0	LastThuAug@24
+2009-max	LastFriApr@0	LastThuSep@24
 
 Egypt, Cairo
 2:05	-	01Oct1900@0
@@ -1893,20 +1958,25 @@ Georgia, Tbilisi
 3	RussiaAsia	27Mar2005@2
 4	-	max
 
+# Note in 1945 rest of Germany except Sovjet dominated Berlin had C-Eur style DST (see Rule Germany)
 Rule Germany
-1945	02Apr@2	@
-1945	24May@2	24Sep@3
-1945	@	18Nov@3
+1945	02Apr@2	16Sep@3
 1946	14Apr@2	07Oct@3
-1947	06Apr@2	@
+1947	06Apr@3	@
 1947	11May@3	29Jun@3
 1947	@	FirstSunOct@3
 1948	18Apr@2	FirstSunOct@3
 1949	10Apr@2	FirstSunOct@3
 
+Rule SovietZone
+1945	02Apr@2	@
+1945	24May@2	24Sep@3
+1945	@	18Nov@3
+
 Germany, Berlin
 0:53:28	-	01Apr1893@0
-1	C-Eur	02Apr1945@2
+1	C-Eur	1945
+1	SovietZone	1946
 1	Germany	1980
 1	EU	max
 
@@ -2070,7 +2140,7 @@ Hungary, Budapest
 1:16:20	-	01Oct1890@0
 1	C-Eur	1918
 1	Hungary	06Apr1941@2
-1	C-Eur	01May1945@23
+1	C-Eur	1945
 1	Hungary	28Sep1980@3
 1	EU	max
 
@@ -2173,7 +2243,7 @@ Rule Iraq
 1984	01Apr@0	01Oct@0
 1985	01Apr@0	LastSunSep@2
 1986-1990	LastSunMar@1	LastSunSep@2
-1991-max	01Apr@3	01Oct@4
+1991-2007	01Apr@3	01Oct@4
 
 Iraq, Baghdad
 2:57:40	-	1890
@@ -2350,12 +2420,13 @@ Rule Jordan
 1993	FirstFriApr@0	FirstFriOct@0
 1994	FirstFriApr@0	FirstFriAfter15Sep@0
 1995-1998	FirstFriApr@0	FirstFriAfter15Sep@1
-1999	01Jul@0	LastThuSep@1
-2000-2002	LastThuMar@0	LastThuSep@1
-2003	LastThuMar@0	24Oct@1
-2004	LastThuMar@0	15Oct@1
-2005	LastThuMar@0	LastFriSep@1
-2006-max	LastThuMar@0	LastFriOct@1
+1999	01Jul@0	LastFriSep@1
+2000-2001	LastThuMar@0	LastFriSep@1
+2002	LastThuMar@24	LastFriSep@1
+2003	LastThuMar@24	24Oct@1
+2004	LastThuMar@24	15Oct@1
+2005	LastThuMar@24	LastFriSep@1
+2006-max	LastThuMar@24	LastFriOct@1
 
 Jordan, Amman
 2:23:44	-	1931
@@ -2693,9 +2764,15 @@ Mauritania, Nouakchott
 -1	-	28Nov1960@0
 0	-	max
 
+Rule Mauritius
+1982	10Oct@0	@
+1983	@	21Mar@0
+2008	LastSunOct@2	@
+2009-max	LastSunOct@2	LastSunMar@3
+
 Mauritius, Port Louis
 3:50	-	1907
-4	-	max
+4	Mauritius	max
 
 Mayotte, Mamoutzou
 3:00:56	-	01Jul1911@0
@@ -2928,12 +3005,15 @@ Rule Morocco
 1976	01May@0	01Aug@0
 1977	01May@0	28Sep@0
 1978	01Jun@0	04Aug@0
+2008	01Jun@0	01Sep@0
+2009	01Jun@0	21Aug@0
+2010-max	01Jun@0	01Sep@0
 
 Morocco, Rabat
 -0:30:20	-	26Oct1913@0
 0	Morocco	16Mar1984@0
 1	-	1986
-0	-	max
+0	Morocco	max
 
 Mozambique, Maputo
 2:10:20	-	01Mar1903@0
@@ -2995,7 +3075,7 @@ Rule Nether
 Netherlands, Amsterdam
 0:19:32	Nether	01Jul1937@0
 0:20	Nether	16May1940@0
-1	C-Eur	02Apr1945@2
+1	C-Eur	1945
 1	Nether	1977
 1	EU	max
 
@@ -3106,7 +3186,7 @@ Rule Norway
 Norway, Oslo
 0:43	-	01Jan1895@0
 1	Norway	10Aug1940@23
-1	C-Eur	02Apr1945@2
+1	C-Eur	1945
 1	Norway	1980
 1	EU	max
 
@@ -3116,6 +3196,8 @@ Oman, Muscat
 
 Rule Pakistan
 2002	FirstSunAfter02Apr@0:01	FirstSunAfter02Oct@0:01
+2008	FirstSunJun@0	LastSunOct@0
+2009	15Apr@0	01Nov@0
 
 Pakistan, Islamabad
 4:28:12	-	1907
@@ -3141,7 +3223,14 @@ Rule Palestine
 2004	FirstFriAfter15Apr@0	01Oct@1
 2005	FirstFriAfter15Apr@0	04Oct@2
 2006	01Apr@0	22Sep@0
-2007-max	01Apr@0	FirstThuAfter08Sep@2
+2007	01Apr@0	FirstThuAfter08Sep@2
+2009-max	LastThuMar@24	LastMonSep@0
+
+Rule Gaza
+2008	LastThuMar@24	LastThuAug@24
+
+Rule WestBank
+2008	LastThuMar@24	01Sep@0
 
 Palestine (Gaza area), Gaza
 2:17:52	-	01Oct1900@0
@@ -3149,9 +3238,19 @@ Palestine (Gaza area), Gaza
 2	EgyptAsia	05Jun1967@0
 2	Israel	1996
 2	Jordan	1999
+2	Palestine	2008
+2	Gaza	2009
 2	Palestine	max
 
-Palestine (West Bank), Jerusalem	LinkTo	Palestine (Gaza area), Gaza
+Palestine (West Bank), Jerusalem
+2:17:52	-	01Oct1900@0
+2	Israel	15May1948@0
+2	EgyptAsia	05Jun1967@0
+2	Israel	1996
+2	Jordan	1999
+2	Palestine	2008
+2	WestBank	2009
+2	Palestine	max
 
 Panama, Panamá City
 -5:18:08	-	1890
@@ -3439,13 +3538,7 @@ Rwanda, Kigali
 2	-	max
 
 Saba Island (NLD), The Bottom	LinkTo	Netherlands Antilles - Curaçao, Willemstad
-
-Rule Barth
-2007-max	20Mar@0	17Oct@0
-
-Saint Barthélemy (FRA), Gustavia
--4:06:08	-	08Jun1911@0
--4	Barth	max
+Saint Barthélemy (FRA), Gustavia	LinkTo	Guadeloupe (FRA), Pointe-à-Pitre
 
 Saint Helena (GBR), Jamestown
 -0:22:48	-	1951
@@ -3498,7 +3591,8 @@ Senegal, Dakar
 Serbia, Belgrade
 1:22	-	1884
 1	-	18Apr1941@23
-1	C-Eur	08May1945@2
+1	C-Eur	1945
+1	-	08May1945@2
 1+1	-	16Sep1945@3
 1	-	27Nov1982@0
 1	EU	max
@@ -3671,8 +3765,7 @@ Sweden, Stockholm
 1	EU	max
 
 Rule Swiss
-1940	02Nov@0	31Dec@0
-1941-1942	FirstSunMay@2	FirstSunOct@0
+1941-1942	FirstMonMay@1	FirstMonOct@2
 
 Switzerland, Bern
 0:34:08	-	12Sep1848@0
@@ -3702,7 +3795,10 @@ Rule Syria
 1997-1998	LastMonMar@0	01Oct@0
 1999-2005	01Apr@0	01Oct@0
 2006	01Apr@0	22Sep@0
-2007-max	LastFriMar@0	02Nov@0
+2007	LastFriMar@0	02Nov@0
+2008	FirstFriApr@0	FirstSatNov@0
+2009	LastFriMar@0	FirstSatNov@0
+2010-max	FirstFriApr@0	FirstSatNov@0
 
 Syria, Damascus
 2:25:12	-	1920
@@ -3787,7 +3883,8 @@ Rule Tunisia
 1989	26Mar@0	LastSunSep@1
 1990	01May@0	LastSunSep@1
 2005	01May@0	30Sep@2
-2006-max	LastSunMar@2	LastSunOct@3
+2006-2008	LastSunMar@2	LastSunOct@3
+2010-max	LastSunMar@2	LastSunOct@3
 
 Tunisia, Tunis
 0:40:44	-	12May1881@0
@@ -4167,6 +4264,14 @@ USA - Nebraska, Lincoln	LinkTo	USA - Illinois, Springfield
 USA - Nebraska, Scottsbluff	LinkTo	USA - Colorado, Denver
 USA - Nevada, Carson City	LinkTo	USA - California, Sacramento
 USA - Nevada, Jackpot	LinkTo	USA - Idaho, Boise
+
+USA - Nevada, West Wendover
+-7:52:58	-	18Nov1883@12:07:02
+-8	US	1946
+-8	Calif	1967
+-8	US	31Oct1999@2
+-7	US	max
+
 USA - New Hampshire, Concord	LinkTo	USA - New York, Albany
 USA - New Jersey, Trenton	LinkTo	USA - New York, Albany
 USA - New Mexico, Santa Fe	LinkTo	USA - Colorado, Denver
@@ -4367,7 +4472,7 @@ Venezuela, Caracas
 -4:27:44	-	1890
 -4:27:40	-	12Feb1912@0
 -4:30	-	1965
--4	-	2008
+-4	-	09Dec2007@3
 -4:30	-	max
 
 Vietnam, Hanoi
