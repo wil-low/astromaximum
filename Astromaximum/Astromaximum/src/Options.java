@@ -312,8 +312,10 @@ class Options extends GeoList implements CommandListener {
         if (canCreate) {
             try {
                 String storeName = getStoreName();
+                Astromaximum.errCode = 51;
                 rs = RecordStore.openRecordStore(storeName,
                         true, RecordStore.AUTHMODE_ANY, true);
+                Astromaximum.errCode = 52;
                 if (rs.getNumRecords() == 0) {
 
                     byte[] cn;
@@ -324,6 +326,7 @@ class Options extends GeoList implements CommandListener {
 //#endif
                     rs.addRecord(cn, 0, 1);
                     rs.addRecord(cn, 0, 1);
+                    Astromaximum.errCode = 53;
                     addLocations();
 //#debug info
                     Astromaximum.log("rs created " + storeName);
@@ -334,6 +337,7 @@ class Options extends GeoList implements CommandListener {
                 Astromaximum.log(place + ex.getMessage());
             }
         }
+                Astromaximum.errCode = 54;
         Astromaximum.dataFile.geoposData = super.initDB(false);
         return null;
     }
@@ -420,7 +424,9 @@ class Options extends GeoList implements CommandListener {
     
     private void addLocations() throws RecordStoreException, IOException {
         DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
+                Astromaximum.errCode = 55;
         istr.skip(2);
+                Astromaximum.errCode = 56;
         int numRec = istr.readUnsignedShort();
         byte[] cn;
         for (int i = 0; i < numRec; i++) {
@@ -428,13 +434,16 @@ class Options extends GeoList implements CommandListener {
             try {
                 rs.addRecord(cn, 0, cn.length);
             } catch (RecordStoreException ex) {
+                Astromaximum.errCode = 57;
                 ex.printStackTrace();
             }
 //          System.out.print(rid);
 //          System.out.println(extractCityName(cn));
         }
         byte[] geo = extractLocation(0);
+                Astromaximum.errCode = 58;
         geo = extractCityName(geo).getBytes();
+                Astromaximum.errCode = 59;
         rs.setRecord(1, geo, 0, geo.length);
     }
 

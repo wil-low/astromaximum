@@ -246,6 +246,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#endif
             errCode = 5; // XXX
             try{
+            errCode = 50; // XXX
                 options.initDB(true);
                 init2();
             }
