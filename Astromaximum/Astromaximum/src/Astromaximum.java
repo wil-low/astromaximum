@@ -602,7 +602,9 @@ public class Astromaximum extends MIDlet implements CommandListener {
      */
     public void alert(String str) {
         interpreter.prepareText();
+        Astromaximum.errCode = 67;
         interpreter.txt = str;
+        Astromaximum.errCode = 68;
         disp.setCurrent(interpreter);
     }
 
@@ -660,11 +662,14 @@ public class Astromaximum extends MIDlet implements CommandListener {
     void showAbout() {
         String msg = "Astromaximum " + Integer.toString(startYear) + " " +
                 getstr(162);
+        Astromaximum.errCode = 61;
         String tick = getAppProperty("X-Midlet-Version");
+        Astromaximum.errCode = 62;
         if (tick != null) {
             tick = getstr(163) + " " + tick;
         }
         tick += " " + getstr(255);
+        Astromaximum.errCode = 63;
         String rev = getAppProperty("X-Hg-Revision");
         if (rev != null) {
             tick += ", r" + rev;
@@ -673,10 +678,13 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#ifdef demo
 //#         msg += " " + getstr(154);
 //#endif
+        Astromaximum.errCode = 64;
         msg += "||" + getstr(164) + "| " + options.getCurrentCity(false);
 //        msg += "||--" + getstr(156) + "--";
+        Astromaximum.errCode = 65;
         msg += "||Web:|http://" + MainURL + "|" + getstr(165) + "|http://" + URL;
         msg += "||\u00a9 2007, S&W Axis|" + getstr(153);
+        Astromaximum.errCode = 66;
         alert(msg);
     }
 

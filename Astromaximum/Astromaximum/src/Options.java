@@ -339,6 +339,11 @@ class Options extends GeoList implements CommandListener {
         }
                 Astromaximum.errCode = 54;
         Astromaximum.dataFile.geoposData = super.initDB(false);
+        if (Astromaximum.dataFile.geoposData[0] == 255) {
+            Astromaximum.errCode = 540 + Astromaximum.dataFile.geoposData[1];
+            throw new NullPointerException();
+        }
+                Astromaximum.errCode = 80;
         return null;
     }
 

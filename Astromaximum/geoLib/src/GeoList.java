@@ -93,6 +93,9 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     }
 
     byte[] initDB(boolean canCreate) throws RecordStoreException, IOException {
+        int errCode = 0;
+        byte[] data = null;
+        try {
 //    System.out.println(STORE_NAME);
 //        String platform = System.getProperty("microedition.platform");
         String storeName = getStoreName();
@@ -102,15 +105,20 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         } catch (RecordStoreNotFoundException ex) {
             rs = RecordStore.openRecordStore(storeName, false);
         }
+        errCode = 1;
         curCity = rs.getRecord(1);
+        errCode = 2;
         RecordEnumeration rece = rs.enumerateRecords(this, null, false);
 //#mdebug info
         System.out.println(new String(curCity));
         System.out.println(rece.numRecords());
 //#enddebug
         byte[] nextR;
+        errCode = 3;
         nextR = rece.nextRecord();
+        errCode = 4;
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(nextR));
+        errCode = 5;
         dis.skip(4);
         customData = null;
         int count = dis.readUnsignedShort();
@@ -152,12 +160,18 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         System.out.print("TZ offset=");
         System.out.println(tzOffset);
 //#enddebug
-        byte[] data = new byte[dis.available()];
+        data = new byte[dis.available()];
+        errCode = 6;
         dis.read(data);
         dis.close();
 //    for(int i=0; i<20; i++){
 //      System.out.print(Integer.toHexString(geoposData[i])+" ");
 //    }
+        }
+        catch (NullPointerException e) {
+            data[0] = (byte)255;
+            data[1] = (byte)errCode;
+        }
         return data;
     }
 
