@@ -123,6 +123,7 @@ mkdir $mypath."data/archive/$year";
 mkdir $mypath."data/ephdata";
 our $path=$mypath."data/archive/";
 our $city_inf;
+our $hrepl=0;
 my $country='';
 my $tz;
 
@@ -359,7 +360,6 @@ sub process_ini{
 		close(InF);
 	#	die "@cities";
 		my $i=0;
-		my $hrepl=0;
 		our $city;
 	#	undef $/ ;
 		my $newdir=ensure_slash(sprintf('%sdata/archive/%d',$mypath,$year));
@@ -493,6 +493,7 @@ sub tz_check{
 		warn("*** $comment: Replaced header in $fname");
 		print "old: ".unpack("H*",$oldhdr)."\nnew: ".unpack("H*",$header)."\n";
 		$body=~s/^.{$hlen}/$header/s;
+#		return 1;
 		open(OutF, ">$fname") or die "$! $fname";
 		binmode(OutF);
 		print OutF $body;
