@@ -108,7 +108,7 @@ final class Event {
      * @return String
      */
     String getDateString(int index, int hoursOnly) {
-        return long2String((index > 0) ? date1 : date0, hoursOnly, index == 1);
+        return long2String((index > 0) ? date1 : date0, hoursOnly, hoursOnly > 0 && index == 1);
     }
 
     /**
