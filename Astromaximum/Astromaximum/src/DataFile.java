@@ -6,6 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
+//#if freetest
+//# import javax.microedition.io.*;
+//#endif
 
 /**
  * <p>Title: Astromaximum</p>
@@ -46,19 +49,15 @@ final class DataFile {
     byte[] geoposData;
     static Vector ids = new Vector();    //  private int curRec=-1;
     private final Vector eclipses = new Vector();
-
+    private final String commonURL = "http://astromaximum.de/microemu/microemu.php?y=";
     /**
      * DataFile
      */
     DataFile() {
         final Calendar cal = Astromaximum.calendar;
-        final DataInputStream is;
+        DataInputStream is = null;
         try {
-//#if demo
-//#             is = new DataInputStream(getClass().getResourceAsStream("/c.dat"));
-//#else
-            is = new DataInputStream(getClass().getResourceAsStream("/common.dat"));
-//#endif
+            is = getInputStream(true);
             Astromaximum.startYear = is.readShort();
             cal.set(Calendar.YEAR, Astromaximum.startYear);
             cal.set(Calendar.MONTH, is.readUnsignedByte() - 1);
@@ -67,6 +66,7 @@ final class DataFile {
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
             customData = null;
+
             int count = is.readUnsignedShort(); // customData length
             startJD = cal.getTime().getTime();
             dayCount = is.readShort();
@@ -78,10 +78,10 @@ final class DataFile {
 //#debug info
             System.out.println(dayCount);
             commonData = new byte[is.available()];
-//            System.out.println(customData);
             is.read(commonData);
             is.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
         }
         int cnt = getEvents(Event.EV_ECLIPSE, Event.SE_SUN, startJD, finalJD);
         for (int i = 0; i < cnt; i++) {
@@ -651,6 +651,46 @@ final class DataFile {
 //    }
 //  }
 //#endif
+
+    DataInputStream getInputStream (boolean isCommon) throws IOException
+    {
+        DataInputStream is = null;
+//#if freetest
+//#         HttpConnection c = (HttpConnection)Connector.open(commonURL + (isCommon ? "0": "1"));
+//#         int rc = c.getResponseCode();
+//#         if (rc != HttpConnection.HTTP_OK) {
+//#             throw new IOException("HTTP response code: " + rc);
+//#         }
+//# 
+//#         is = c.openDataInputStream();
+//#         byte[] buf = new byte[100000];// TODO: hardcode
+//#         int len = (int)c.getLength();
+//#         if (len > 0) {
+//#             int actual = 0;
+//#             int bytesread = 0;
+//#             while ((bytesread != len) && (actual != -1)) {
+//#                 actual = is.read(buf, bytesread, len - bytesread);
+//#                 bytesread += actual;
+//#             }
+//#         }
+//#         else {
+//#             int ch, i = 0;
+//#             while ((ch = is.read()) != -1) {
+//#                 buf[i++] = (byte)ch;
+//#             }
+//#             len = i;
+//#         }
+//#         is.close();
+//#         byte[] buf2 = new byte[len];
+//#         System.arraycopy(buf, 0, buf2, 0, len);
+//#         is = new DataInputStream(new ByteArrayInputStream(buf2));
+//#elif demo
+//#     is = new DataInputStream(getClass().getResourceAsStream(isCommon ? "/c.dat" : "/l.dat"));
+//#else
+    is = new DataInputStream(getClass().getResourceAsStream(isCommon ? "/common.dat" : "/locations.dat"));
+//#endif
+        return is;
+    }
 }
 
 // # vi:et:ts=4:sw=4

@@ -263,8 +263,10 @@ if($islocal){
 	if($config=~/(notest|freetest)$/is){
 		unzip("$path/$const::DIR_TEMPLATE/Astromaximum-$config.jar");
 		inject_lang($lang);
-		inject_common($year, "$path/$const::DIR_TEMP/common.dat");
-		inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
+		if($config!~/freetest$/is){
+			inject_common($year, "$path/$const::DIR_TEMP/common.dat");
+			inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
+		}
 		inject_icon('a', "res/");
 		do_jar($suite, $ye_prod, $outfile, $const::PRODUCT);
 		do_messjar($outfile);
