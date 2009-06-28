@@ -1,7 +1,8 @@
 <?php 
 $EXEC=2;
 $lang='en';
-
+header ("Content-Type: application/xhtml+xml");
+header ("Cache-Control: max-age=3600");
 $custom_content=''; $subtitle=''; $onload=''; $head='';
 
 function output_callback($buffer)
@@ -66,7 +67,7 @@ if(preg_match("/^(demo)$/is", $main)){
 [[head]]
 </head>
 <body[[onload]]>
-<div id="hdr" class="nav">[[nav]]<hr/></div>
+<div id="hdr" class="nav"><p>[[nav]]</p></div>
 <div id="cont">[[subtitle]]
 <?php
 	if($custom_content){
@@ -93,7 +94,7 @@ if(preg_match("/^(demo)$/is", $main)){
 	} 
 ?>
 </div>
-<div id="ftr"><hr/>
+<div id="ftr"><p>
 <?php
 if($chac!=-1){
 	echo $_SESSION['username'];
@@ -104,7 +105,7 @@ else{
 		'<br/> pass: '.$GLOBALS['amax']['demo_pass'];
 }
 ?>
-</div>
+</p></div>
 </body></html>
 
 <?php

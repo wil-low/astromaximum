@@ -14,8 +14,8 @@ if($chac>=0)
 ?>
 <form action="<?php echo $frm_act ?>" method="post">
 <p><?php if($chac==-1){ ?>
-login <input name="login" type="text" size="15"/><br/>
-pass <input name="pass" type="password" size="15"/><br/>
+login <input name="login" type="text" size="15" class="numinput" inputmode="digits"/><br/>
+pass <input name="pass" type="password" size="15" class="numinput" inputmode="digits"/><br/>
 <?php } ?>
 <input type="submit" accesskey="1" name="action" value="Proceed"/></p>
 </form>
