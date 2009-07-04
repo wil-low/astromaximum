@@ -19,11 +19,8 @@ import java.io.*;
 import javax.microedition.lcdui.*;
 import java.util.*;
 
-//#ifdef freetest
-//#     import javax.microedition.io.*;
-//#     import javax.microedition.io.file.*;
-//#endif
-
+import javax.microedition.io.*;
+import javax.microedition.io.file.*;
 /**
  *
  * @author willow
@@ -1717,36 +1714,6 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         timer = new Timer();
 //#         timer.schedule(new SummItem(0), LOGO_DELAY, LOGO_DELAY);
 //#endif
-        DataInputStream dis = new DataInputStream(getClass().getResourceAsStream("/res/panel.png"));
-        try {
-//#ifdef logger
-    Astromaximum.instance.logger(Integer.toString(dis.available()));
-//#endif
-            byte[] buf = new byte[dis.available()];
-            dis.read(buf);
-//#ifdef logger
-    Astromaximum.instance.logger(Integer.toString(buf[1896]));
-    Astromaximum.instance.logger(Integer.toString(buf[1897]));
-//#endif
-            imgPanel = Image.createImage(buf, 0, buf.length);
-//#ifdef logger
-    Astromaximum.instance.logger("imgPanel");
-//#endif
-            dis = new DataInputStream(new ByteArrayInputStream(buf));
-            int chlen = 4, chtype, num = 0;
-            do {
-                dis.skip(chlen + 4);
-                chlen = dis.readInt();
-                chtype = dis.readInt();
-                if (chtype == 0x634f4445) {
-                    dis.read(buf, 0, chlen);
-                    DataFile.ids.addElement(LogBox.decipherPngCodeSection(new String(buf, 0, chlen), num++));
-//                    System.out.println(DataFile.ids.lastElement());
-                    chlen = 0;
-                }
-            } while (chtype != 0x49454e44);
-        } catch (IOException e) {
-        }
     }
 
     void drawPhase(Graphics osg, int x, int y, int wh, int phase) {
@@ -2017,7 +1984,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         Options.isRealtimeOff = false;
 //#         setToday();
 //#     }
-//# 
+//#
 //#     void printHashes () {
 //#         String hashes = "";
 //#         for (int i = 0; i < Astromaximum.options.cityList.size(); ++i) {
@@ -2028,7 +1995,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#             hashes += hash_str + ": " + city + "\n";
 //#         }
 //#         try {
-//#             writeString2File("hashes.txt", hashes);
+//#             writeString2File("file:///root1/hashes.txt", hashes);
 //#         }
 //#         catch(IOException e){
 //#             System.out.println(e.getMessage());
@@ -2036,12 +2003,12 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         }
 //#         System.out.println(hashes);
 //#     }
-//# 
+//#
 //#     void setNewYearDate() {
 //# 		Astromaximum.calendar.setTime(new Date(Astromaximum.dataFile.startJD));
 //# 		selDate.setTime(Astromaximum.calendar.getTime().getTime());
 //#     }
-//# 
+//#
 //#     void takeShots() {
 //#         System.out.println("Please wait while capturing screenshots...");
 //#         Options.isRealtimeOff = true;
@@ -2059,11 +2026,11 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#                 String hash_str = Integer.toHexString(s.hashCode());
 //#                 while (hash_str.length() < 8)
 //#                     hash_str = "0" + hash_str;
-//# 
-//#                 writeString2File(hash_str + ".txt", s);
-//# 
+//#
+//#                 writeString2File("file:///root1/" + hash_str + ".txt", s);
+//#
 //#                 System.out.println(hash_str + ": " + s);
-//# 
+//#
 //#                 FileConnection fc = (FileConnection)Connector.open(
 //#                         "file:///root1/" + hash_str, Connector.READ_WRITE);
 //#                 if (!fc.exists())
@@ -2077,10 +2044,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#                 }
 //#             }
 //#             System.out.println("Shots completed!");
-//#             writeString2File("convert.sh", "sh raw2image.sh " + Integer.toString(w) + " " +
+//#             writeString2File("file:///root1/convert.sh", "sh raw2image.sh " + Integer.toString(w) + " " +
 //#                     Integer.toString(h-1) + " " + Astromaximum.getstr(255).toLowerCase() +
 //#                     " " + Integer.toString(Astromaximum.startYear));
-//#                     
+//#
 //#         }
 //#         catch(IOException e){
 //#             System.out.println(e.getMessage());
@@ -2088,9 +2055,9 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         }
 //#         Options.isRealtimeOff = false;
 //#         setToday();
-//#         
+//#
 //#     }
-//# 
+//#
 //# 	void screenShot(int w, int h, String hash) throws IOException {
 //# 		Image image = Image.createImage(w, h);
 //# 		render (image.getGraphics());
@@ -2098,10 +2065,10 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         String fname = hash + "/" + formatDate2d(Calendar.YEAR) + formatDate2d(Calendar.MONTH) +
 //# 				formatDate2d(Calendar.DAY_OF_MONTH);
 //#         int rgbData[] = new int[w * h];
-//# 
+//#
 //#         FileConnection fc = (FileConnection)Connector.open(
 //#                 "file:///root1/" + fname + ".raw", Connector.READ_WRITE);
-//#         
+//#
 //#         if(!fc.exists())
 //#             fc.create();
 //#         else
@@ -2122,7 +2089,7 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //#         image = null;
 //#         System.out.println(fname + ".raw written");
 //# 	}
-//# 
+//#
 //# 	String formatDate2d (int field) {
 //# 		int num = Astromaximum.calendar.get(field);
 //# 		if (field == Calendar.MONTH)
@@ -2135,23 +2102,21 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //# 			s = "0" + s;
 //# 		return s;
 //# 	}
-//# 
-//#     void writeString2File (String fname, String str) throws IOException {
-//#         FileConnection hash_fc = (FileConnection)Connector.open(
-//#                 "file:///root1/" + fname, Connector.READ_WRITE);
-//#         if(!hash_fc.exists())
-//#             hash_fc.create();
-//#         else
-//#             hash_fc.truncate(0);
-//#         DataOutputStream os = hash_fc.openDataOutputStream();
-//#         os.write(str.getBytes());
-//#         os.write('\n');
-//#         os.close();
-//#         hash_fc.close();
-//#     }
-//# 
 //#endif
 
+    static void writeString2File (String fname, String str) throws IOException {
+        FileConnection hash_fc = (FileConnection)Connector.open(
+                fname, Connector.READ_WRITE);
+        if(!hash_fc.exists())
+            hash_fc.create();
+        else
+            hash_fc.truncate(0);
+        DataOutputStream os = hash_fc.openDataOutputStream();
+        os.write(str.getBytes());
+        os.write('\n');
+        os.close();
+        hash_fc.close();
+    }
 }
 
 // # vi:et:ts=4:sw=4

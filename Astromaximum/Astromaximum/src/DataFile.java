@@ -6,8 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
-//#if freetest
+import javax.microedition.lcdui.Image;
+//#if microemu
 //# import javax.microedition.io.*;
+//# import java.io.OutputStream;
 //#endif
 
 /**
@@ -49,15 +51,46 @@ final class DataFile {
     byte[] geoposData;
     static Vector ids = new Vector();    //  private int curRec=-1;
     private final Vector eclipses = new Vector();
-    private final String commonURL = "http://astromaximum.de/microemu/microemu.php?y=";
+    private String keyCode;
     /**
      * DataFile
      */
     DataFile() {
         final Calendar cal = Astromaximum.calendar;
+        DataInputStream dis = new DataInputStream(getClass().getResourceAsStream("/res/panel.png"));
+        try {
+//#ifdef logger
+    Astromaximum.instance.logger(Integer.toString(dis.available()));
+//#endif
+            byte[] buf = new byte[dis.available()];
+            dis.read(buf);
+//#ifdef logger
+    Astromaximum.instance.logger(Integer.toString(buf[1896]));
+    Astromaximum.instance.logger(Integer.toString(buf[1897]));
+//#endif
+            Summary.imgPanel = Image.createImage(buf, 0, buf.length);
+//#ifdef logger
+    Astromaximum.instance.logger("imgPanel");
+//#endif
+            dis = new DataInputStream(new ByteArrayInputStream(buf));
+            int chlen = 4, chtype, num = 0;
+            do {
+                dis.skip(chlen + 4);
+                chlen = dis.readInt();
+                chtype = dis.readInt();
+                if (chtype == 0x634f4445) {
+                    dis.read(buf, 0, chlen);
+                    ids.addElement(LogBox.decipherPngCodeSection(new String(buf, 0, chlen), num++));
+//                    System.out.println(DataFile.ids.lastElement());
+                    chlen = 0;
+                }
+            } while (chtype != 0x49454e44);
+        } catch (IOException e) {
+        }
         DataInputStream is = null;
         try {
-            is = getInputStream(true);
+            keyCode = (String)ids.elementAt(1);
+            is = getInputStream(0);
             Astromaximum.startYear = is.readShort();
             cal.set(Calendar.YEAR, Astromaximum.startYear);
             cal.set(Calendar.MONTH, is.readUnsignedByte() - 1);
@@ -652,11 +685,16 @@ final class DataFile {
 //  }
 //#endif
 
-    DataInputStream getInputStream (boolean isCommon) throws IOException
+    DataInputStream getInputStream (int filetype) throws IOException
     {
         DataInputStream is = null;
-//#if freetest
-//#         HttpConnection c = (HttpConnection)Connector.open(commonURL + (isCommon ? "0": "1"));
+//#if microemu
+//#         HttpConnection c = (HttpConnection)Connector.open((String)ids.firstElement());
+//#         c.setRequestMethod(HttpConnection.POST);
+//#         String content = Integer.toString(filetype) + ";" + keyCode;
+//#         OutputStream os = c.openOutputStream();
+//#         os.write(content.getBytes());
+//#         System.out.println (content);
 //#         int rc = c.getResponseCode();
 //#         if (rc != HttpConnection.HTTP_OK) {
 //#             throw new IOException("HTTP response code: " + rc);
@@ -683,11 +721,12 @@ final class DataFile {
 //#         is.close();
 //#         byte[] buf2 = new byte[len];
 //#         System.arraycopy(buf, 0, buf2, 0, len);
+//#         System.out.println(new String(buf2));
 //#         is = new DataInputStream(new ByteArrayInputStream(buf2));
 //#elif demo
-//#     is = new DataInputStream(getClass().getResourceAsStream(isCommon ? "/c.dat" : "/l.dat"));
+//#     is = new DataInputStream(getClass().getResourceAsStream(filetype % 2 == 0 ? "/c.dat" : "/l.dat"));
 //#else
-    is = new DataInputStream(getClass().getResourceAsStream(isCommon ? "/common.dat" : "/locations.dat"));
+    is = new DataInputStream(getClass().getResourceAsStream(filetype % 2 == 0 ? "/common.dat" : "/locations.dat"));
 //#endif
         return is;
     }
