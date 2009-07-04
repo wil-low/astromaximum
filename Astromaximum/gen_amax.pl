@@ -9,11 +9,11 @@ my $done=0;
 if(!$islocal){
 	$const::DIR_TEMPLATE='source';
 }
-my $nb_user='$HOME/.netbeans/6.5';
+my $nb_user='$HOME/.netbeans/6.7';
 my $platform='$HOME/wtk251';
 our $winda=$^O=~/Win/is;
 if($winda){
-	$nb_user='%USERPROFILE%/.netbeans/6.5';
+	$nb_user='%USERPROFILE%/.netbeans/6.7';
 	$platform='D:\WTK251';
 }
 
@@ -59,7 +59,7 @@ if($islocal){
 	if(!scalar(@ARGV)){
 		print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
 		print "Parameters:\n";
-		print "\t<config>: [rebuild|notest|imei|tb|demo|join|lang|amtext|cleanup]\n";
+		print "\t<config>: [rebuild|notest|imei|tb|demo|microemu|join|lang|amtext|cleanup]\n";
 		print "\t<year>\n";
 		print "\t<lang>\n";
 		print "\t<loclist file>\n";
@@ -101,9 +101,9 @@ if($islocal and ($config eq 'rebuild')){
 	echo("Rebuilding all configs...\n");
 	my $antpath;
 	my @app=(
-	'/home/willow/nb65/java2/ant/bin/ant',
-	'd:/Program Files/nb6/java2/ant/bin/ant.bat',
-	'd:/Program Files/nb6/java1/ant/bin/ant.bat',
+	'/home/willow/program/nb67/java2/ant/bin/ant',
+	'd:/Program Files/nb7/java2/ant/bin/ant.bat',
+	'd:/Program Files/nb7/java1/ant/bin/ant.bat',
 	);
 	foreach (@app){
 		if(-f $_){
@@ -153,10 +153,10 @@ if($islocal and ($config eq 'rebuild')){
 	mydie("BUILD ERROR") if system($cmd);
 	exit(0);
 }
-our $messjar=1;
+our $messjar=0;
 
 my $argv="@ARGV";
-$messjar=0 if $argv=~/nomessjar/is;
+$messjar=1 if $argv=~/messjar/is;
 
 if($config=~/amtext/is){
 	unzip("$path/$const::DIR_TEMPLATE/AMtext.jar");
@@ -260,13 +260,13 @@ if($config=~/geo-$/is){
 }
 
 if($islocal){
-	if($config=~/(notest|freetest)$/is){
+	if($config=~/(notest|freetest|microemu)$/is){
 		unzip("$path/$const::DIR_TEMPLATE/Astromaximum-$config.jar");
 		inject_lang($lang);
-		if($config!~/freetest$/is){
+		if($config!~/microemu$/is){
 			inject_common($year, "$path/$const::DIR_TEMP/common.dat");
-			inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 		}
+   		inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
 		inject_icon('a', "res/");
 		do_jar($suite, $ye_prod, $outfile, $const::PRODUCT);
 		do_messjar($outfile);
@@ -767,7 +767,7 @@ sub do_timebomb{
 	echo("Begin time:  ".timebomb_install($tm2,$sign[0]));
 
 	#print POSIX::strftime( "Deadline time is  %B %d, %Y - %H:%M:%S GMT\n", $sec,$min,$hour,$mday,$m,$y,$wday );
-	$tm2=POSIX::mktime($sec, $min+$delta, $hour, $mday, $m,$y,0,0,-1)*1000;
+	$tm2=POSIX::mktime($sec, $min + $delta, $hour, $mday, $m,$y,0,0,-1)*1000;
 	echo("  End time:  ".timebomb_install($tm2,$sign[1]));
 
 	echo("Finished.\n");
