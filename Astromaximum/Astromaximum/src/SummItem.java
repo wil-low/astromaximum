@@ -1411,22 +1411,18 @@ final class SummItem extends TimerTask implements RecordFilter {
     }
 
     boolean isEmpty() {
-        try {
-            switch (type) {
-                case Event.EV_STATUS:
-                    return owner.pageNum == Summary.PAGE_PANEL;
-                case Event.EV_ASP_EXACT:
-                case Event.EV_PANEL:
-                case Event.EV_BACK:
-                case Event.EV_TOPIC_BUTTON:
-                case Event.EV_WEEK_GRID:
-                case Event.EV_MONTH_GRID:
-                    return false;
-                default:
-                    return events.length <= 1 && events[0] == null;
-            }
-        } catch (Exception e) {
-            return true;
+        switch (type) {
+            case Event.EV_STATUS:
+                return owner.pageNum == Summary.PAGE_PANEL;
+            case Event.EV_ASP_EXACT:
+            case Event.EV_PANEL:
+            case Event.EV_BACK:
+            case Event.EV_TOPIC_BUTTON:
+            case Event.EV_WEEK_GRID:
+            case Event.EV_MONTH_GRID:
+                return false;
+            default:
+                return (events.length == 0) || (events.length == 1 && events[0] == null);
         }
     }
 

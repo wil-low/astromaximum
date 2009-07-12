@@ -5,7 +5,7 @@
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
-    <property name="year" value="2009"/>
+    <property name="year" value="2008"/>
     <property name="lang" value="ru"/>
     
     <import file="nbproject/build-impl.xml"/>

@@ -19,13 +19,12 @@ import java.io.*;
 import javax.microedition.lcdui.*;
 import java.util.*;
 
-import javax.microedition.io.*;
-import javax.microedition.io.file.*;
+
 /**
  *
  * @author willow
  */
-class Summary extends Canvas implements CommandListener, Runnable {
+class Summary extends Canvas implements CommandListener {
 //#ifdef UseBuffer
 //#   static Image offScreenBuffer;
 //#endif
@@ -2102,21 +2101,21 @@ class Summary extends Canvas implements CommandListener, Runnable {
 //# 			s = "0" + s;
 //# 		return s;
 //# 	}
+//#     static void writeString2File (String fname, String str) throws IOException {
+//#         FileConnection hash_fc = (FileConnection)Connector.open(
+//#                 fname, Connector.READ_WRITE);
+//#         if(!hash_fc.exists())
+//#             hash_fc.create();
+//#         else
+//#             hash_fc.truncate(0);
+//#         DataOutputStream os = hash_fc.openDataOutputStream();
+//#         os.write(str.getBytes());
+//#         os.write('\n');
+//#         os.close();
+//#         hash_fc.close();
+//#     }
 //#endif
 
-    static void writeString2File (String fname, String str) throws IOException {
-        FileConnection hash_fc = (FileConnection)Connector.open(
-                fname, Connector.READ_WRITE);
-        if(!hash_fc.exists())
-            hash_fc.create();
-        else
-            hash_fc.truncate(0);
-        DataOutputStream os = hash_fc.openDataOutputStream();
-        os.write(str.getBytes());
-        os.write('\n');
-        os.close();
-        hash_fc.close();
-    }
 }
 
 // # vi:et:ts=4:sw=4

@@ -6,7 +6,6 @@ use Math::BigInt;
 
 my @str=split(/\n/,<<END);
 "http://astromaximum.com/microemu/microemu.php", # always first!
-"file:///root1/microemu_", # always second!
 "com.sonyericsson.IMEI",
 "com.samsung.IMEI",
 "com.samsung.imei",

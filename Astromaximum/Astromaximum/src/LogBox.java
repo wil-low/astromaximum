@@ -65,26 +65,16 @@ class LogBox extends List implements CommandListener {
                 Astromaximum.disp.setCurrent(invoker);
                 break;
             case Command.STOP:
-                if (c.getPriority() == 10) { // from ShowAbout
-                    try {
-                        Astromaximum.instance.platformRequest("http://" +
-                                Astromaximum.URL);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                } else { // clear logs
-                    deleteAll();
-                    append(EMPTY, null);
-                }
+                deleteAll();
+                append(EMPTY, null);
                 break;
             case Command.EXIT: // from Astromaximum()
                 Astromaximum.quit();
                 break;
             case Command.OK: // from Astromaximum()
+                Astromaximum.options.resetStorage();
                 try {
-                    Astromaximum.options.resetStorage();
                     Astromaximum.options.initDB(true);
-
                 } catch (Exception ex) {
                 }
                 Astromaximum.instance.init2();

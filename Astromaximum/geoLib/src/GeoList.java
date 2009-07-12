@@ -57,7 +57,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         try {
             DataInputStream dis = new DataInputStream(getClass().getResourceAsStream(LOC));
             year = dis.readShort();
-            System.out.println("Year=" + year);
+//            System.out.println("Year=" + year);
             total = dis.readShort();
             dis.close();
         } catch (IOException e) {

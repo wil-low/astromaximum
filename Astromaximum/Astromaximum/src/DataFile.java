@@ -87,10 +87,8 @@ final class DataFile {
             } while (chtype != 0x49454e44);
         } catch (IOException e) {
         }
-        DataInputStream is = null;
         try {
-            keyCode = (String)ids.elementAt(1);
-            is = getInputStream(0);
+            DataInputStream is = getInputStream(0);
             Astromaximum.startYear = is.readShort();
             cal.set(Calendar.YEAR, Astromaximum.startYear);
             cal.set(Calendar.MONTH, is.readUnsignedByte() - 1);
@@ -688,10 +686,10 @@ final class DataFile {
     DataInputStream getInputStream (int filetype) throws IOException
     {
         DataInputStream is = null;
-//#if microemu
+//#if microemu1
 //#         HttpConnection c = (HttpConnection)Connector.open((String)ids.firstElement());
 //#         c.setRequestMethod(HttpConnection.POST);
-//#         String content = Integer.toString(filetype) + ";" + keyCode;
+//#         String content = Integer.toString(filetype) + ";";
 //#         OutputStream os = c.openOutputStream();
 //#         os.write(content.getBytes());
 //#         System.out.println (content);
@@ -699,7 +697,7 @@ final class DataFile {
 //#         if (rc != HttpConnection.HTTP_OK) {
 //#             throw new IOException("HTTP response code: " + rc);
 //#         }
-//# 
+//#
 //#         is = c.openDataInputStream();
 //#         byte[] buf = new byte[100000];// TODO: hardcode
 //#         int len = (int)c.getLength();
@@ -713,7 +711,7 @@ final class DataFile {
 //#         }
 //#         else {
 //#             int ch, i = 0;
-//#             while ((ch = is.read()) != -1) {
+//#             while (i < 100000 && (ch = is.read()) != -1) {
 //#                 buf[i++] = (byte)ch;
 //#             }
 //#             len = i;
@@ -721,7 +719,8 @@ final class DataFile {
 //#         is.close();
 //#         byte[] buf2 = new byte[len];
 //#         System.arraycopy(buf, 0, buf2, 0, len);
-//#         System.out.println(new String(buf2));
+//#         System.out.print("getInputStream ");
+//#         System.out.println(len);
 //#         is = new DataInputStream(new ByteArrayInputStream(buf2));
 //#elif demo
 //#     is = new DataInputStream(getClass().getResourceAsStream(filetype % 2 == 0 ? "/c.dat" : "/l.dat"));
