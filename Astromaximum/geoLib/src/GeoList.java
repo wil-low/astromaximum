@@ -38,7 +38,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     int total;
     int year;
     protected final String STORE_NAME = "Astromaximum";
-    protected final String LOC;
+    protected DataInputStream locStream;
     private final MIDlet main;
     static long dstStart;
     static long dstEnd;
@@ -48,18 +48,17 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     static boolean isSouthern = false;
     ChoiceGroup cityList;
 
-    GeoList(MIDlet midlet, int type, String loc) {
+    GeoList(MIDlet midlet, int type, DataInputStream loc) {
         super("");
         main = midlet;
-        LOC = loc;
+        locStream = loc;
+        locStream.mark(10000000);
 //    addCommand(new Command(LocalizationSupport.getMessage("Back"),
 //        Command.BACK, 1));
         try {
-            DataInputStream dis = new DataInputStream(getClass().getResourceAsStream(LOC));
-            year = dis.readShort();
+            year = locStream.readShort();
 //            System.out.println("Year=" + year);
-            total = dis.readShort();
-            dis.close();
+            total = locStream.readShort();
         } catch (IOException e) {
         }
         cityList = new ChoiceGroup(null, type);
@@ -110,8 +109,8 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         errCode = 2;
         RecordEnumeration rece = rs.enumerateRecords(this, null, false);
 //#mdebug info
-        System.out.println(new String(curCity));
-        System.out.println(rece.numRecords());
+//#         System.out.println(new String(curCity));
+//#         System.out.println(rece.numRecords());
 //#enddebug
         byte[] nextR;
         errCode = 3;
@@ -147,18 +146,18 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
            dis.read(customData);
         }
 //#mdebug info
-            System.out.println(dstStart);
-            System.out.println(new Date(dstStart).toString());
-            System.out.println(dstEnd);
-            System.out.println(new Date(dstEnd).toString());
+//#             System.out.println(dstStart);
+//#             System.out.println(new Date(dstStart).toString());
+//#             System.out.println(dstEnd);
+//#             System.out.println(new Date(dstEnd).toString());
 //#enddebug
         }
 //        System.out.print("customData=");
 //        System.out.println(customData);
 
 //#mdebug info
-        System.out.print("TZ offset=");
-        System.out.println(tzOffset);
+//#         System.out.print("TZ offset=");
+//#         System.out.println(tzOffset);
 //#enddebug
         data = new byte[dis.available()];
         errCode = 6;
@@ -255,19 +254,17 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     byte[] extractLocation(int index) {
         byte[] res = null;
         try {
-            final DataInputStream dis = new DataInputStream(
-                    getClass().getResourceAsStream(LOC));
-            dis.skip(4);
+            locStream.reset();
+            locStream.skip(4);
             int off = 0;
             for (int i = 0; i < index; i++) {
-                off += dis.readShort();
+                off += locStream.readShort();
                 System.out.println(off);
             }
-            final int len = dis.readShort();
-            dis.skip(2 * (total - index - 1) + off);
+            final int len = locStream.readShort();
+            locStream.skip(2 * (total - index - 1) + off);
             res = new byte[len + 1];
-            dis.read(res);
-            dis.close();
+            locStream.read(res);
         } catch (IOException ex) {
 //      ex.printStackTrace();
         }

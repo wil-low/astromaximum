@@ -52,6 +52,9 @@ final class DataFile {
     static Vector ids = new Vector();    //  private int curRec=-1;
     private final Vector eclipses = new Vector();
     private String keyCode;
+//#ifdef microemu
+//#     private Data data = new Data();
+//#endif
     /**
      * DataFile
      */
@@ -683,10 +686,15 @@ final class DataFile {
 //  }
 //#endif
 
-    DataInputStream getInputStream (int filetype) throws IOException
+    DataInputStream getInputStream (int filetype)
     {
+//        System.out.println(new String(data.getLocations()));
+//        System.exit(-1);
         DataInputStream is = null;
-//#if microemu1
+//#if microemu
+//#         is = new DataInputStream (new ByteArrayInputStream (filetype % 2 == 0 ?
+//#             data.getCommon() : data.getLocations()));
+//#elif microemu1
 //#         HttpConnection c = (HttpConnection)Connector.open((String)ids.firstElement());
 //#         c.setRequestMethod(HttpConnection.POST);
 //#         String content = Integer.toString(filetype) + ";";
@@ -728,7 +736,7 @@ final class DataFile {
     is = new DataInputStream(getClass().getResourceAsStream(filetype % 2 == 0 ? "/common.dat" : "/locations.dat"));
 //#endif
         return is;
-    }
+   }
 }
 
 // # vi:et:ts=4:sw=4

@@ -260,13 +260,20 @@ if($config=~/geo-$/is){
 }
 
 if($islocal){
-	if($config=~/(notest|freetest|microemu)$/is){
+    my $com_file = "$path/$const::DIR_TEMP/common.dat";
+    my $loc_file = "$path/$const::DIR_TEMP/locations.dat";
+
+    if($config=~/(notest|freetest|microemu)$/is){
 		unzip("$path/$const::DIR_TEMPLATE/Astromaximum-$config.jar");
 		inject_lang($lang);
-		if($config!~/microemu$/is){
-			inject_common($year, "$path/$const::DIR_TEMP/common.dat");
-		}
-   		inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
+        inject_common($year, $com_file);
+        inject_locations($year, $loclist, $loc_file);
+        if($config eq 'microemu') {
+            datafile_install('COMMON_DAT', $com_file);
+            datafile_install('LOCATIONS_DAT', $loc_file);
+#            unlink($com_file);
+#            unlink($loc_file);
+        }
 		inject_icon('a', "res/");
 		do_jar($suite, $ye_prod, $outfile, $const::PRODUCT);
 		do_messjar($outfile);
@@ -340,11 +347,13 @@ sub inject_amdata{
 sub inject_icon{ # prefix, subdir
 	$ye=~/(\d)$/is;
 	my $prefix=shift;
-	open(INF,"<$path/$const::DIR_IMG/$prefix$1.png") or mydie("Cannot open file $path/$const::DIR_IMG/$prefix$1.png");
+    my $fn = ">$path/$const::DIR_TEMP/$_[0]"."icon.png";
+	open(INF, $fn) or mydie("Cannot open $fn");
 	binmode(INF);
 	my @body=<INF>;
 	close (INF);
-	open(OUTF,">$path/$const::DIR_TEMP/$_[0]"."icon.png") or mydie("Cannot open file $!");
+    $fn = ">$path/$const::DIR_TEMP/$_[0]"."icon.png";
+	open(OUTF, $fn) or mydie("Cannot open $fn");
 	binmode(OUTF);
 	print OUTF join('', @body);
 	close (OutF);
@@ -836,7 +845,41 @@ sub timebomb_install # time, sign
 			return POSIX::strftime( "%B %d, %Y - %H:%M:%S ", $sec,$min,$hour,$mday,$m,$y,$wday).' 0x'.unpack("H*",$hextm)."\n";
 		}
 	}
-	mydie("Operation failed!!!\n");
+	mydie("timebomb_install failed!!!\n");
+}
+
+sub datafile_install # magic string, datafile
+{
+    use MIME::Base64;
+    open(INF, "<$_[1]") or mydie("No file $_[1]");
+    binmode(INF);
+    my @amax_data=<INF>;
+    close(INF);
+    my $magic_content = pack("na*",length($_[0]), $_[0]);
+    my $data=join('', @amax_data);
+
+    $data = encode_base64($data);
+	my $content=pack("na*",length($data), $data);
+	my @classes=glob("$path/$const::DIR_TEMP/*.class");
+	foreach my $class(@classes){
+        echo ("trying $class\n");
+		open(INF, "<$class") or mydie("No file $class");
+		binmode(INF);
+		my @data=<INF>;
+		close(INF);
+		my $body=join('', @data);
+        my @part= split(/$magic_content/s, $body);
+		if(scalar(@part) == 2){
+            $body = $part[0].$content.$part[1];
+			open(INF, ">$class") or mydie("No file $class");
+			binmode(INF);
+			print INF $body;
+			close(INF);
+            echo("Injected $_[0] into $class, content length ".length($content)."\n");
+			return;
+		}
+	}
+#	mydie("datafile_install failed!!!\n");
 }
 
 sub inject_lang{ # lang, isdemo
@@ -896,7 +939,7 @@ sub inject_lang{ # lang, isdemo
 		}
 	  next if $evt ne 'EV_MSG' and $use_amtext;
 	  next if $evt eq 'EV_MSG' and $demo eq 'amtext';
-	  echo("\n**** $ff: *****\n");
+#	  echo("\n**** $ff: *****\n");
 		$buf[1]=~/\!\!params\s*(\d+)/i;
 		$paramcount=$1;
 		$buf[2]=~/\!\!planet\s*(.+)/i;
@@ -950,7 +993,7 @@ sub inject_lang{ # lang, isdemo
 			use bytes; $len=length($outbuf)+11;
 		};
 		#	mydie($flag);
-		echo("$len, $planet\n");
+#		echo("$len, $planet\n");
 		$output=pack('nNcnna*',$tools::eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
 		#	mydie($output);
 		if($config ne 'lang'){
@@ -965,12 +1008,13 @@ sub inject_lang{ # lang, isdemo
 	}
 	if($errors==0){
 		return 0 if $demo;
+        echo("\n---Add these lines into SummItem.java---\n\n");
 		while (my($key, $value) = each %hash) {
 			$value=~s/\\//isg;
 			echo("    topics.put(new Integer(Event.$key), \"$value\");\n");
 			delete $hash{$key};   # This is safe
 		}
-
+        echo("\n---cut here---\n\n");
 	}
 	else{
 		echo("\n-------- $errors error(s) found. Compilation aborted! --------\n");
@@ -1048,7 +1092,7 @@ sub get_revision{ # num
     open (REV, "<$path/rev.txt") or mydie ("Revision file error: $!");
     my @revs = <REV>;
     close (REV);
-    echo (scalar(@revs)."\n");
+#    echo (scalar(@revs)."\n");
     my $result;
     if (scalar(@revs) == 1) {
         my @body = split (/\s/s, "@revs");
@@ -1056,7 +1100,7 @@ sub get_revision{ # num
     } else {
         $result = $revs[$_[0]];
     }
-    echo("revision='$result'\n");
+#    echo("revision='$result'\n");
     mydie ("No revision") unless $result > 0;
 	return $result;
 }
