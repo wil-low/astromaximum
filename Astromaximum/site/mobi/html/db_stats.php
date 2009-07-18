@@ -31,6 +31,7 @@ lang_load("source");
 			while($row2=mysql_fetch_row($sth2)){
 				$bg='';
 				if($row2[0]==0){
+					$bg=" style=\"color:red\"";
 					$row2[0]='';
 				}
 				else{

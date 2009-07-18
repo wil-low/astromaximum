@@ -119,6 +119,7 @@ function pwd_convert2($pwd){
 }
 
 function reject2index(){
+    global $lang;
 	list($chac, $chac_pay)=check_access();
 	if($chac!=0){
 		redirect("/$lang");

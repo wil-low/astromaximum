@@ -1,6 +1,11 @@
 <?php 
 if(!isset($EXEC)) die("Access restricted");
 
+if($chac==-1 or $chac==1){
+	echo '<h3>Page not found</h3>';
+	return;
+}
+
 $current_year=$GLOBALS['amax']['year'];
 $uri=htmlentities($_SERVER['REQUEST_URI']);
 
