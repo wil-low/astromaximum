@@ -65,7 +65,7 @@ if($islocal){
 		print "\t<loclist file>\n";
 		print "\t<output jar>, or '-' for default\n";
 		print "\t[imei|timebomb|tb_timeout]\n";
-		print "\t[nomessjar]\n";
+		print "\t[messjar] (dangerous, can make archive unreadable)\n";
 		exit(1);
 	}
 
@@ -271,8 +271,8 @@ if($islocal){
         if($config eq 'microemu') {
             datafile_install('COMMON_DAT', $com_file);
             datafile_install('LOCATIONS_DAT', $loc_file);
-#            unlink($com_file);
-#            unlink($loc_file);
+            unlink($com_file);
+            unlink($loc_file);
         }
 		inject_icon('a', "res/");
 		do_jar($suite, $ye_prod, $outfile, $const::PRODUCT);
@@ -848,38 +848,73 @@ sub timebomb_install # time, sign
 	mydie("timebomb_install failed!!!\n");
 }
 
-sub datafile_install # magic string, datafile
+sub encode85 # in: filename, out: string
 {
-    use MIME::Base64;
-    open(INF, "<$_[1]") or mydie("No file $_[1]");
+    open (INF, "$path/3d_party/encode85 -w 0 $_[0] |") or mydie("Cannot open pipe $!");
     binmode(INF);
     my @amax_data=<INF>;
     close(INF);
-    my $magic_content = pack("na*",length($_[0]), $_[0]);
-    my $data=join('', @amax_data);
+    my $data = join('', @amax_data);
+=head
+    open (OUTF, ">$_[0].85");
+    binmode (OUTF);
+    print (OUTF $data);
+    close (OUTF);
+=cut
+    return $data;
+}
 
-    $data = encode_base64($data);
-	my $content=pack("na*",length($data), $data);
-	my @classes=glob("$path/$const::DIR_TEMP/*.class");
-	foreach my $class(@classes){
-        echo ("trying $class\n");
-		open(INF, "<$class") or mydie("No file $class");
+sub datafile_install # magic string, datafile, split flag
+{
+    my $magic = $_[0];
+    my $cmd = "grep $magic $path/$const::DIR_TEMP/*.class";
+    my $class_fn = `$cmd`;
+    my $class_body;
+    if ($class_fn =~ /(\w+\.class)/is) {
+        $class_fn = "$path/$const::DIR_TEMP/$1";
+		open(INF, "<$class_fn") or mydie("No file $class_fn");
 		binmode(INF);
 		my @data=<INF>;
 		close(INF);
-		my $body=join('', @data);
-        my @part= split(/$magic_content/s, $body);
-		if(scalar(@part) == 2){
-            $body = $part[0].$content.$part[1];
-			open(INF, ">$class") or mydie("No file $class");
-			binmode(INF);
-			print INF $body;
-			close(INF);
-            echo("Injected $_[0] into $class, content length ".length($content)."\n");
-			return;
-		}
-	}
-#	mydie("datafile_install failed!!!\n");
+		$class_body=join('', @data);
+    }
+    else {
+        mydie("Magic string '$magic' not found in class files");
+    }
+
+    my $class_data;
+    my $data = encode85($_[1]);
+
+    my $SPLIT_CHUNK = 31888;
+    my $idx = 0;
+    my $inject_count = 0;
+    my $again = 1;
+    do {
+        my $magic_str = $_[0].$idx++;
+        my $magic_content = pack("na*",length($magic_str), $magic_str);
+        my @part= split(/$magic_content/s, $class_body);
+        if(scalar(@part) == 2) {
+            $data =~ s/(.{0,$SPLIT_CHUNK})//s;
+            my $chunk = $1;
+            #$again = length ($chunk) == $SPLIT_CHUNK;
+            my $content=pack("na*",length($chunk), $chunk);
+            $class_body = $part[0].$content.$part[1];
+            echo("Injected $magic_str into $class_fn, chunk length ".length($chunk)."\n");
+            ++$inject_count;
+        }
+        else {
+            $again = 0;
+        }
+    }
+    while ($again);
+    if (!$inject_count) {
+        mydie("Inject failed");
+    }
+    open(INF, ">$class_fn") or mydie("No file $class_fn");
+    binmode(INF);
+    print INF $class_body;
+    close(INF);
+    echo("Written $class_fn\n");
 }
 
 sub inject_lang{ # lang, isdemo
@@ -1105,4 +1140,4 @@ sub get_revision{ # num
 	return $result;
 }
 
-// # vi:et:ts=4:sw=4
+# vi:et:ts=4:sw=4

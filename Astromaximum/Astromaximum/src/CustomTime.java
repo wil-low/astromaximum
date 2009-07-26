@@ -32,6 +32,13 @@ final class CustomTime extends Form implements CommandListener, ItemStateListene
     private int invoker = Event.EV_ASP_EXACT_MOON;
     final DateField timeField;
     final DateField dateField;
+//#if microemu
+//#     static final String commons[] = {
+//#         "COMMON_DAT0",
+//#         "COMMON_DAT1",
+//#         "COMMON_DAT2",
+//#     };
+//#endif
     /**
      * Decumbiture date storage variable
      */

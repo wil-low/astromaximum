@@ -125,7 +125,7 @@
         </condition>
         <condition property="no.jbco">
             <or>
-                <isfalse value="${run-microemu}1"/>
+                <isfalse value="${run-microemu}"/>
                 <istrue value="${jbco.up-to-date}"/>
             </or>
         </condition>
@@ -162,13 +162,13 @@
             <arg line="-main-class Astromaximum"/>
             <!--arg line="-jbco:help"/-->
             <arg value="-t:9:bb.jbco_rlaii"  description="Reorder Loads Above Ifs"/>
-            <!--arg value="-t:9:bb.jbco_cb2ji"  description="Convert Branches to JSR Instructions"/>
             <arg value="-t:9:bb.jbco_iii"    description="Indirect If Instructions"/>
             <arg value="-t:9:bb.jbco_ctbcb"  description="Combine Try and Catch Blocks"/>
             <arg value="-t:9:bb.jbco_riitcb" description="Replace If(Non)Nulls with Try-Catch"/>
-            <arg value="-t:2:bb.jbco_plvb"   description="Pack Locals into Bitfields"/>
+            <arg value="-t:2:bb.jbco_plvb"   description="Pack Locals into Bitfields - slow"/>
             <arg value="-t:9:jtp.jbco_gia"   description="Goto Instruction Augmentation"/>
-            <arg value="-t:1:bb.jbco_ptss"   description="Partially Trap Switches"/-->
+            <arg value="-t:3:bb.jbco_ptss"   description="Partially Trap Switches"/>
+            <arg value="-t:2:bb.jbco_cb2ji"  description="Convert Branches to JSR Instructions - verify error"/>
         </java>
         <echo message="ignore me" file="${build.dir}/.jbco-timestamp"/>
         <nb-overrideproperty name="buildsystem.baton" value="${jbco.classes.dir}"/>
