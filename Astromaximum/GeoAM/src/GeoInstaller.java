@@ -7,7 +7,7 @@
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import javax.microedition.rms.RecordStoreException;
-import java.io.IOException;
+import java.io.*;
 
 /**
  *
@@ -20,7 +20,8 @@ public class GeoInstaller extends MIDlet implements CommandListener {
     private boolean interrupt = false;
 
     public void startApp() {
-        gl = new GeoList(this, Choice.MULTIPLE, "locations.dat");
+        gl = new GeoList(this, Choice.MULTIPLE, 
+            new DataInputStream(getClass().getResourceAsStream("locations.dat")));
         gl.setCommandListener(this);
         gl.addCommand(new Command("Cancel", Command.CANCEL, 1));
         Command cmd = new Command(gl.getMessage("Install"), Command.OK, 1);

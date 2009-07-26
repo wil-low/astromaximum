@@ -124,7 +124,7 @@ if($islocal and ($config eq 'rebuild')){
 		"-Dplatform.home=\"$platform\" clean jar";
 	echo("$cmd\n");
 	mydie("BUILD ERROR") if system($cmd);
-	my @conf=('tb', 'demo', 'imei',
+	my @conf=('tb', 'demo', 'imei', 'microemu'
 #	'notest', 'notest_logger', 'imei', 'tb_logger'
 	);
 	my @tmpl=glob("$path/templates/*.jar");

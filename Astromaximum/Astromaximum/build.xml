@@ -142,7 +142,9 @@
         <copy todir="${jbco.classes.dir}" failonerror="true">
             <fileset dir="${buildsystem.baton}" excludes="**/*.class"/>
         </copy>
-        <java jvmargs="-Xms256m -Xmx1024m" classname="soot.jbco.Main">
+        <java classname="soot.jbco.Main">
+            <jvmarg value="-Xms256m"/>
+            <jvmarg value="-Xmx1024m"/>
             <classpath>
                 <path location="${platform.home}/lib/cldcapi11.jar"/>
                 <path location="${platform.home}/lib/midpapi20.jar"/>
