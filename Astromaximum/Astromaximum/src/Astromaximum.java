@@ -158,7 +158,11 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Not exactly locale, just language indentifier
      */
     static String locale = null;
-
+    
+    public static void main(String[] args) {
+        Astromaximum.instance.startApp();
+    }
+    
     /**
      * Start application, initialize all subsystems
      */
@@ -238,9 +242,9 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#endif
             //    sizer.setSize(logBox.getWidth(), logBox.getHeight());
             log("TZ id=" + TimeZone.getDefault().getID());
-            options = new Options();
-            errCode = 41; // XXX
             dataFile = new DataFile();
+            errCode = 41; // XXX
+            options = new Options();
 //#if logger
       logger("dataFile");
 //#endif
@@ -267,8 +271,8 @@ public class Astromaximum extends MIDlet implements CommandListener {
     
     void init2(){            
         try {
-            int len = dataFile.geoposData.length;
-            Astromaximum.log("geopos len=" + Integer.toString(len));
+//            int len = dataFile.geoposData.length;
+//            Astromaximum.log("geopos len=" + Integer.toString(len));
 //#if logger
       logger("initDB");
 //#endif

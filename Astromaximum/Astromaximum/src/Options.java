@@ -37,11 +37,7 @@ class Options extends GeoList implements CommandListener {
     static byte optTimeGap = 2;
 
     Options() {
-        //#if demo
-//#     super(Astromaximum.instance,Choice.EXCLUSIVE,"l.dat");
-        //#else
-        super(Astromaximum.instance, Choice.EXCLUSIVE, "locations.dat");
-        //#endif
+        super(Astromaximum.instance, Choice.EXCLUSIVE, Astromaximum.dataFile.getAmaxStream(1));
         String[] sTimeGap = {"-2", "-1", "0", "1", "2"};
         timeGap = new ChoiceGroup(Astromaximum.getstr(118), // Correction_hr
                 Choice.POPUP, sTimeGap, null);
@@ -428,11 +424,11 @@ class Options extends GeoList implements CommandListener {
     }
     
     private void addLocations() throws RecordStoreException, IOException {
-        DataInputStream istr = new DataInputStream(getClass().getResourceAsStream(LOC));
+        locStream.reset();
                 Astromaximum.errCode = 55;
-        istr.skip(2);
+        locStream.skip(2);
                 Astromaximum.errCode = 56;
-        int numRec = istr.readUnsignedShort();
+        int numRec = locStream.readUnsignedShort();
         byte[] cn;
         for (int i = 0; i < numRec; i++) {
             cn = extractLocation(i);

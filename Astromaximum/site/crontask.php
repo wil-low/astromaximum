@@ -1,5 +1,6 @@
 <?php
     $EXEC=1;
+    die($_SERVER['REMOTE_ADDR']);
 // ?mode=clean_files  - delete outdated files and set 'files.deleted' to true
     if(file_exists('pwdgen_local.php') ||
        (isset($_GET['mode']) && strcmp($GET['mode'], 'clean_files'))){
@@ -23,6 +24,10 @@
         
 // delete all old /tmp/sunrise_*
         foreach (glob('/tmp/sunrise_*') as $filename) {
+            @unlink($filename);
+        }
+// delete all old /tmp/microemu_*
+        foreach (glob('/tmp/microemu_*') as $filename) {
             @unlink($filename);
         }
 // delete unconfirmed users that live more than 24 hr      

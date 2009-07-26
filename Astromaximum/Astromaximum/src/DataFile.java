@@ -6,6 +6,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
+import javax.microedition.lcdui.Image;
+//#if microemu
+//# import javax.microedition.io.*;
+//# import java.io.OutputStream;
+//#endif
 
 /**
  * <p>Title: Astromaximum</p>
@@ -23,7 +28,6 @@ import java.util.Vector;
 final class DataFile {
     public static final Event[] events = new Event[50];
 
-//#ifndef build.desktop
     private static final int EF_DATE = 0x1; // contains 2nd date - 4b
     private static final int EF_PLANET1 = 0x2; // contains 1nd planet - 1b
     private static final int EF_PLANET2 = 0x4; // contains 2nd planet - 1b
@@ -46,19 +50,44 @@ final class DataFile {
     byte[] geoposData;
     static Vector ids = new Vector();    //  private int curRec=-1;
     private final Vector eclipses = new Vector();
-
+    private String keyCode;
     /**
      * DataFile
      */
     DataFile() {
         final Calendar cal = Astromaximum.calendar;
-        final DataInputStream is;
+        DataInputStream dis = new DataInputStream(getClass().getResourceAsStream("/res/panel.png"));
         try {
-//#if demo
-//#             is = new DataInputStream(getClass().getResourceAsStream("/c.dat"));
-//#else
-            is = new DataInputStream(getClass().getResourceAsStream("/common.dat"));
+//#ifdef logger
+    Astromaximum.instance.logger(Integer.toString(dis.available()));
 //#endif
+            byte[] buf = new byte[dis.available()];
+            dis.read(buf);
+//#ifdef logger
+    Astromaximum.instance.logger(Integer.toString(buf[1896]));
+    Astromaximum.instance.logger(Integer.toString(buf[1897]));
+//#endif
+            Summary.imgPanel = Image.createImage(buf, 0, buf.length);
+//#ifdef logger
+    Astromaximum.instance.logger("imgPanel");
+//#endif
+            dis = new DataInputStream(new ByteArrayInputStream(buf));
+            int chlen = 4, chtype, num = 0;
+            do {
+                dis.skip(chlen + 4);
+                chlen = dis.readInt();
+                chtype = dis.readInt();
+                if (chtype == 0x634f4445) {
+                    dis.read(buf, 0, chlen);
+                    ids.addElement(LogBox.decipherPngCodeSection(new String(buf, 0, chlen), num++));
+//                    System.out.println(DataFile.ids.lastElement());
+                    chlen = 0;
+                }
+            } while (chtype != 0x49454e44);
+        } catch (IOException e) {
+        }
+        try {
+            DataInputStream is = getAmaxStream(0);
             Astromaximum.startYear = is.readShort();
             cal.set(Calendar.YEAR, Astromaximum.startYear);
             cal.set(Calendar.MONTH, is.readUnsignedByte() - 1);
@@ -67,6 +96,7 @@ final class DataFile {
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
             customData = null;
+
             int count = is.readUnsignedShort(); // customData length
             startJD = cal.getTime().getTime();
             dayCount = is.readShort();
@@ -78,10 +108,10 @@ final class DataFile {
 //#debug info
             System.out.println(dayCount);
             commonData = new byte[is.available()];
-//            System.out.println(customData);
             is.read(commonData);
             is.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
         }
         int cnt = getEvents(Event.EV_ECLIPSE, Event.SE_SUN, startJD, finalJD);
         for (int i = 0; i < cnt; i++) {
@@ -631,7 +661,8 @@ final class DataFile {
             }
         }
         return null;
-    }//  public void cacheData(int event, int planet) {
+    }
+//  public void cacheData(int event, int planet) {
 //    Vector v =null;// readSubData(geoposData, event, planet);
 //    if (v.size() > 0){
 //      cache.addElement(new EventCache(v, event, planet));
@@ -650,6 +681,160 @@ final class DataFile {
 //      planet=plt;
 //    }
 //  }
+
+
+    DataInputStream getAmaxStream (int filetype)
+    {
+//        System.out.println(new String(data.getLocations()));
+//        System.exit(-1);
+        DataInputStream is = null;
+//#if microemu
+//#         is = new DataInputStream (new ByteArrayInputStream (filetype % 2 == 0 ?
+//#             getAstroData(CustomTime.commons) : getAstroData(Event.locations)));
+//#elif microemu1
+//#         HttpConnection c = (HttpConnection)Connector.open((String)ids.firstElement());
+//#         c.setRequestMethod(HttpConnection.POST);
+//#         String content = Integer.toString(filetype) + ";";
+//#         OutputStream os = c.openOutputStream();
+//#         os.write(content.getBytes());
+//#         System.out.println (content);
+//#         int rc = c.getResponseCode();
+//#         if (rc != HttpConnection.HTTP_OK) {
+//#             throw new IOException("HTTP response code: " + rc);
+//#         }
+//#
+//#         is = c.openDataInputStream();
+//#         byte[] buf = new byte[100000];// TODO: hardcode
+//#         int len = (int)c.getLength();
+//#         if (len > 0) {
+//#             int actual = 0;
+//#             int bytesread = 0;
+//#             while ((bytesread != len) && (actual != -1)) {
+//#                 actual = is.read(buf, bytesread, len - bytesread);
+//#                 bytesread += actual;
+//#             }
+//#         }
+//#         else {
+//#             int ch, i = 0;
+//#             while (i < 100000 && (ch = is.read()) != -1) {
+//#                 buf[i++] = (byte)ch;
+//#             }
+//#             len = i;
+//#         }
+//#         is.close();
+//#         byte[] buf2 = new byte[len];
+//#         System.arraycopy(buf, 0, buf2, 0, len);
+//#         System.out.print("getInputStream ");
+//#         System.out.println(len);
+//#         is = new DataInputStream(new ByteArrayInputStream(buf2));
+//#elif demo
+//#     is = new DataInputStream(getClass().getResourceAsStream(filetype % 2 == 0 ? "/c.dat" : "/l.dat"));
+//#else
+    is = new DataInputStream(getClass().getResourceAsStream(filetype % 2 == 0 ? "/common.dat" : "/locations.dat"));
+//#endif
+        return is;
+   }
+    
+//#if microemu
+//#     static private final int LENGTH_MULTIPLIER = 1300; // / 1000
+//#     private byte[] decodeBuf = null;
+//#     private int decodeIdx = 0;
+//# 
+//#     static long pow85[] = {
+//#         85*85*85*85, 85*85*85, 85*85, 85, 1
+//#     };
+//# 
+//#     byte[] getAstroData (String[] locations)
+//#     {
+//#         int count = 0;
+//#         for (int i = 0; i < locations.length; ++i) {
+//#             count += locations[i].length();
+//#         }
+//#         byte[] arr = new byte[count];
+//#         count = 0;
+//#         for (int i = 0; i < locations.length; ++i) {
+//#             int len = locations[i].length();
+//#             System.arraycopy(locations[i].getBytes(), 0, arr, count, len);
+//#             count += len;
+//#         }
+//#         return decode85(arr);
+//#     }
+//# 
+//#     void wput(long tuple, int bytes) {
+//#         switch (bytes) {
+//#             case 4:
+//#                 decodeBuf[decodeIdx++] = (byte)(tuple >> 24);
+//#                 decodeBuf[decodeIdx++] = (byte)(tuple >> 16);
+//#                 decodeBuf[decodeIdx++] = (byte)(tuple >>  8);
+//#                 decodeBuf[decodeIdx++] = (byte)(tuple);
+//#                 break;
+//#             case 3:
+//#                 decodeBuf[decodeIdx++] = (byte)(tuple >> 24);
+//#                 decodeBuf[decodeIdx++] = (byte)(tuple >> 16);
+//#                 decodeBuf[decodeIdx++] = (byte)(tuple >>  8);
+//#                 break;
+//#             case 2:
+//#                 decodeBuf[decodeIdx++] = (byte)(tuple >> 24);
+//#                 decodeBuf[decodeIdx++] = (byte)(tuple >> 16);
+//#                 break;
+//#             case 1:
+//#                 decodeBuf[decodeIdx++] = (byte)(tuple >> 24);
+//#                 break;
+//#         }
+//#     }
+//# 
+//#     byte[] decode85 (byte[] src)
+//#     {
+//#         decodeIdx = 0;
+//#         decodeBuf = new byte [src.length * LENGTH_MULTIPLIER / 1000];
+//#         long tuple = 0;
+//#         int count = 0;
+//#         for (int i_src = 2; i_src < src.length; ++i_src) { // omit initial <~
+//#             byte c = src[i_src];
+//#             switch (c) {
+//#             default:
+//#                 if (c < '!' || c > 'u') {
+//#debug
+//#                     System.out.println("bad character in ascii85 region: '" + c + "'");
+//#                     return null;
+//#                 }
+//#                 tuple += (c - '!') * pow85[count++];
+//#                 if (count == 5) {
+//#                     wput(tuple, 4);
+//#                     count = 0;
+//#                     tuple = 0;
+//#                 }
+//#                 break;
+//#             case 'z':
+//#                 if (count != 0) {
+//#debug
+//#                     System.out.println("z inside ascii85 5-tuple");
+//#                     return null;
+//#                 }
+//#                 decodeBuf[decodeIdx++] = 0;
+//#                 decodeBuf[decodeIdx++] = 0;
+//#                 decodeBuf[decodeIdx++] = 0;
+//#                 decodeBuf[decodeIdx++] = 0;
+//#                 break;
+//#             case '~':
+//#                 if (src[++i_src] == '>') {
+//#                     if (count > 0) {
+//#                         count--;
+//#                         tuple += pow85[count];
+//#                         wput(tuple, count);
+//#                     }
+//#                     return decodeBuf;
+//#                 }
+//#debug
+//#                 System.out.println("~ without > in ascii85 section, index " + decodeIdx);
+//#                 return null;
+//#             case '\n': case '\r': case '\t': case ' ':
+//#             case '\0': case '\f': case '\b': case 0177:
+//#                 break;
+//#             }
+//#         }
+//#         return decodeBuf;
+//#     }
 //#endif
 }
 

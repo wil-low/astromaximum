@@ -5,9 +5,11 @@
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
-    <property name="year" value="2009"/>
+    <property name="year" value="2008"/>
     <property name="lang" value="ru"/>
-    
+    <property name="soot.dir" value="/home/willow/ahg/soot"/>
+    <property name="microemu.dir" value="../microemulator-2.0.3"/>
+
     <import file="nbproject/build-impl.xml"/>
     <import file="../jar_or_kzip.xml"/> 
     <!--
@@ -103,10 +105,86 @@
         </copy>
     </target>
 
+    <target name="pre-jar" depends="jbco-init, jbco">
+        <echo message="pre-jar ${buildsystem.baton}"/>
+    </target>
+
     <target name="post-jar" description="Copy into common dir">
-	<antcall target="copy.template" inheritall="true" inheritrefs="true">
-	    <param name="gen.conf" value="${config.active}"/>
-	</antcall>
+        <antcall target="copy.template" inheritall="true" inheritrefs="true">
+            <param name="gen.conf" value="${config.active}"/>
+        </antcall>
+    </target>
+
+    <target name="jbco-init" description="Up-to-date check before obfuscation.">
+        <property name="jbco.classes.dir" value="${build.dir}/jbco"/>
+        <uptodate property="jbco.up-to-date" targetfile="${build.dir}/.jbco-timestamp">
+            <srcfiles dir= "${jbco.classes.dir}" includes="**/*.class"/>
+        </uptodate>
+        <condition property="run-microemu">
+            <equals arg1="microemu" arg2="${config.active.name}" casesensitive="false"/>
+        </condition>
+        <condition property="no.jbco">
+            <or>
+                <isfalse value="${run-microemu}"/>
+                <istrue value="${jbco.up-to-date}"/>
+            </or>
+        </condition>
+    </target>
+
+    <target name="skip-jbco" depends="jbco-init" if="jbco.up-to-date">
+        <fail unless="jbco.classes.dir">Must set jbco.classes.dir</fail>
+        <nb-overrideproperty name="buildsystem.baton" value="${jbco.classes.dir}"/>
+    </target>
+
+    <target name="jbco" description="Soot JBCO obfuscation" depends="skip-jbco" unless="no.jbco">
+        <echo message="${buildsystem.baton}"/>
+        <mkdir dir="${jbco.classes.dir}"/>
+        <copy todir="${jbco.classes.dir}" failonerror="true">
+            <fileset dir="${buildsystem.baton}" excludes="**/*.class"/>
+        </copy>
+        <java classname="soot.jbco.Main">
+            <jvmarg value="-Xms256m"/>
+            <jvmarg value="-Xmx1024m"/>
+            <classpath>
+                <path location="${platform.home}/lib/cldcapi11.jar"/>
+                <path location="${platform.home}/lib/midpapi20.jar"/>
+                <path location="${platform.home}/lib/midpapi21.jar"/>
+                <path location="${platform.home}/lib/jsr75.jar"/>
+                <path location="${platform.home}/lib/mmapi.jar"/>
+                <path location="${platform.home}/lib/jsr211.jar"/>
+                <path location="${platform.home}/lib/midpapi21.jar"/>
+                <path location="${soot.dir}/jasminclasses-2.3.0.jar"/>
+                <path location="${soot.dir}/polyglotclasses-1.3.5.jar"/>
+                <path location="${soot.dir}/sootclasses-2.3.0.jar"/>
+                <path location="${buildsystem.baton}"/>
+            </classpath>
+            <arg line="-j2me"/>
+            <arg line="-d ${jbco.classes.dir}" description="output dir"/>
+            <arg line="-process-dir ${buildsystem.baton}"/>
+            <arg line="-main-class Astromaximum"/>
+            <!--arg line="-jbco:help"/-->
+            <arg value="-t:9:bb.jbco_rlaii"  description="Reorder Loads Above Ifs"/>
+            <arg value="-t:9:bb.jbco_iii"    description="Indirect If Instructions"/>
+            <arg value="-t:9:bb.jbco_ctbcb"  description="Combine Try and Catch Blocks"/>
+            <arg value="-t:9:bb.jbco_riitcb" description="Replace If(Non)Nulls with Try-Catch"/>
+            <arg value="-t:2:bb.jbco_plvb"   description="Pack Locals into Bitfields - slow"/>
+            <arg value="-t:9:jtp.jbco_gia"   description="Goto Instruction Augmentation"/>
+            <arg value="-t:3:bb.jbco_ptss"   description="Partially Trap Switches"/>
+            <arg value="-t:2:bb.jbco_cb2ji"  description="Convert Branches to JSR Instructions - verify error"/>
+        </java>
+        <echo message="ignore me" file="${build.dir}/.jbco-timestamp"/>
+        <nb-overrideproperty name="buildsystem.baton" value="${jbco.classes.dir}"/>
+    </target>
+
+    <target name="post-clean" description="Clean JBCO output">
+        <delete file="${build.dir}/.jbco-timestamp"/>
+        <delete dir="${jbco.classes.dir}"/>
+    </target>
+
+    <target name="pre-run" description="Run Microemulator" if="run-microemu">
+        <java jar="${microemu.dir}/microemulator.jar" args="${deployment.jad}"/>
+        <fail>Ignore this error</fail>
     </target>
 
 </project>
+

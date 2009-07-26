@@ -1,10 +1,11 @@
 #!/usr/bin/perl
 use strict;
-use warnings;
-use Digest::Crc32;
-use Math::BigInt lib => 'GMP';
+#use warnings;
+require "./Crc32.pm";
+use Math::BigInt;
 
 my @str=split(/\n/,<<END);
+"http://astromaximum.com/microemu/microemu.php", # always first!
 "com.sonyericsson.IMEI",
 "com.samsung.IMEI",
 "com.samsung.imei",
@@ -30,9 +31,10 @@ my @buf;
 my $crc32=new Digest::Crc32();
 my $imei='';
 for(my $i=0; $i<=$#str; $i++){
-  $str[$i]=~/\"(.+?)\"/is;
-	my $enc=str_encode($1, $i);
-	$imei.=pack('N',length($enc)).$chunk.$enc.pack('N',$crc32->strcrc32($chunk.$enc));
+    $str[$i]=~/\"(.+?)\"/is;
+    print "Added '$1'\n";
+    my $enc=str_encode($1, $i);
+    $imei.=pack('N',length($enc)).$chunk.$enc.pack('N',$crc32->strcrc32($chunk.$enc));
 }
 open(INF, $path."images/panel.png") or die "No file";
 binmode(INF);

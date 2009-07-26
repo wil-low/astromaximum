@@ -89,6 +89,15 @@ final class Event {
     byte planet0, planet1 = -1;
     long date0, date1;
     short degree = 127;
+//#if microemu
+//#     static final String locations[] = {
+//#         "LOCATIONS_DAT0",
+//#         "LOCATIONS_DAT1",
+//#         "LOCATIONS_DAT2",
+//#         "LOCATIONS_DAT3",
+//#         "LOCATIONS_DAT4",
+//#     };
+//#endif
 
     /**
      * @param dat

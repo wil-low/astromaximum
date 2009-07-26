@@ -189,3 +189,4 @@ BILL_NAME=Фамилия и имя
 BILL_DATE=Дата оплаты
 BILL_NUM=Номер счета
 
+MOBI_YEAR_H=Выберите год

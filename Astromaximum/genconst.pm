@@ -13,7 +13,7 @@ our $DESCR_CALENDAR='Astrological calendar';
 our $DESCR_GEO='Astromaximum city file';
 our $USE_AMTEXT=0;
 
-our $UNZIP=q("%s"  %s -x *META-INF* -d %s );
+our $UNZIP=q("%s" -qq %s -x *META-INF* -d %s);
 #our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
 #our $ZIP=q(cd %s & zip -vr %s *);
 #our $JAR=q(jar cvf %s -C %s .);
@@ -24,7 +24,7 @@ sub JAR{
 	$jarpath=~s/[\\\/]+$//is;
 	my $jarchiver='jar';
 	$jarchiver='fastjar' unless $winda;
-	return sprintf("%s/%s cvfm %s %s -C %s .", $jarpath, $jarchiver, $out, $manifest, $srcdir);
+	return sprintf("%s/%s cfm %s %s -C %s .", $jarpath, $jarchiver, $out, $manifest, $srcdir);
 }
 
 1;

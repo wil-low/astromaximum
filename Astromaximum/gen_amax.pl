@@ -9,11 +9,11 @@ my $done=0;
 if(!$islocal){
 	$const::DIR_TEMPLATE='source';
 }
-my $nb_user='$HOME/.netbeans/6.5';
+my $nb_user='$HOME/.netbeans/6.7';
 my $platform='$HOME/wtk251';
 our $winda=$^O=~/Win/is;
 if($winda){
-	$nb_user='%USERPROFILE%/.netbeans/6.5';
+	$nb_user='%USERPROFILE%/.netbeans/6.7';
 	$platform='D:\WTK251';
 }
 
@@ -59,13 +59,13 @@ if($islocal){
 	if(!scalar(@ARGV)){
 		print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
 		print "Parameters:\n";
-		print "\t<config>: [rebuild|notest|imei|tb|demo|join|lang|amtext|cleanup]\n";
+		print "\t<config>: [rebuild|notest|imei|tb|demo|microemu|join|lang|amtext|cleanup]\n";
 		print "\t<year>\n";
 		print "\t<lang>\n";
 		print "\t<loclist file>\n";
 		print "\t<output jar>, or '-' for default\n";
 		print "\t[imei|timebomb|tb_timeout]\n";
-		print "\t[nomessjar]\n";
+		print "\t[messjar] (dangerous, can make archive unreadable)\n";
 		exit(1);
 	}
 
@@ -101,9 +101,9 @@ if($islocal and ($config eq 'rebuild')){
 	echo("Rebuilding all configs...\n");
 	my $antpath;
 	my @app=(
-	'/home/willow/nb65/java2/ant/bin/ant',
-	'd:/Program Files/nb6/java2/ant/bin/ant.bat',
-	'd:/Program Files/nb6/java1/ant/bin/ant.bat',
+	'/home/willow/program/nb67/java2/ant/bin/ant',
+	'd:/Program Files/nb7/java2/ant/bin/ant.bat',
+	'd:/Program Files/nb7/java1/ant/bin/ant.bat',
 	);
 	foreach (@app){
 		if(-f $_){
@@ -124,7 +124,7 @@ if($islocal and ($config eq 'rebuild')){
 		"-Dplatform.home=\"$platform\" clean jar";
 	echo("$cmd\n");
 	mydie("BUILD ERROR") if system($cmd);
-	my @conf=('tb', 'demo', 'imei',
+	my @conf=('tb', 'demo', 'imei', 'microemu'
 #	'notest', 'notest_logger', 'imei', 'tb_logger'
 	);
 	my @tmpl=glob("$path/templates/*.jar");
@@ -153,10 +153,10 @@ if($islocal and ($config eq 'rebuild')){
 	mydie("BUILD ERROR") if system($cmd);
 	exit(0);
 }
-our $messjar=1;
+our $messjar=0;
 
 my $argv="@ARGV";
-$messjar=0 if $argv=~/nomessjar/is;
+$messjar=1 if $argv=~/messjar/is;
 
 if($config=~/amtext/is){
 	unzip("$path/$const::DIR_TEMPLATE/AMtext.jar");
@@ -260,11 +260,20 @@ if($config=~/geo-$/is){
 }
 
 if($islocal){
-	if($config=~/(notest|freetest)$/is){
+    my $com_file = "$path/$const::DIR_TEMP/common.dat";
+    my $loc_file = "$path/$const::DIR_TEMP/locations.dat";
+
+    if($config=~/(notest|freetest|microemu)$/is){
 		unzip("$path/$const::DIR_TEMPLATE/Astromaximum-$config.jar");
 		inject_lang($lang);
-		inject_common($year, "$path/$const::DIR_TEMP/common.dat");
-		inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
+        inject_common($year, $com_file);
+        inject_locations($year, $loclist, $loc_file);
+        if($config eq 'microemu') {
+            datafile_install('COMMON_DAT', $com_file);
+            datafile_install('LOCATIONS_DAT', $loc_file);
+            unlink($com_file);
+            unlink($loc_file);
+        }
 		inject_icon('a', "res/");
 		do_jar($suite, $ye_prod, $outfile, $const::PRODUCT);
 		do_messjar($outfile);
@@ -338,11 +347,13 @@ sub inject_amdata{
 sub inject_icon{ # prefix, subdir
 	$ye=~/(\d)$/is;
 	my $prefix=shift;
-	open(INF,"<$path/$const::DIR_IMG/$prefix$1.png") or mydie("Cannot open file $path/$const::DIR_IMG/$prefix$1.png");
+    my $fn = ">$path/$const::DIR_TEMP/$_[0]"."icon.png";
+	open(INF, $fn) or mydie("Cannot open $fn");
 	binmode(INF);
 	my @body=<INF>;
 	close (INF);
-	open(OUTF,">$path/$const::DIR_TEMP/$_[0]"."icon.png") or mydie("Cannot open file $!");
+    $fn = ">$path/$const::DIR_TEMP/$_[0]"."icon.png";
+	open(OUTF, $fn) or mydie("Cannot open $fn");
 	binmode(OUTF);
 	print OUTF join('', @body);
 	close (OutF);
@@ -765,7 +776,7 @@ sub do_timebomb{
 	echo("Begin time:  ".timebomb_install($tm2,$sign[0]));
 
 	#print POSIX::strftime( "Deadline time is  %B %d, %Y - %H:%M:%S GMT\n", $sec,$min,$hour,$mday,$m,$y,$wday );
-	$tm2=POSIX::mktime($sec, $min+$delta, $hour, $mday, $m,$y,0,0,-1)*1000;
+	$tm2=POSIX::mktime($sec, $min + $delta, $hour, $mday, $m,$y,0,0,-1)*1000;
 	echo("  End time:  ".timebomb_install($tm2,$sign[1]));
 
 	echo("Finished.\n");
@@ -834,7 +845,76 @@ sub timebomb_install # time, sign
 			return POSIX::strftime( "%B %d, %Y - %H:%M:%S ", $sec,$min,$hour,$mday,$m,$y,$wday).' 0x'.unpack("H*",$hextm)."\n";
 		}
 	}
-	mydie("Operation failed!!!\n");
+	mydie("timebomb_install failed!!!\n");
+}
+
+sub encode85 # in: filename, out: string
+{
+    open (INF, "$path/3d_party/encode85 -w 0 $_[0] |") or mydie("Cannot open pipe $!");
+    binmode(INF);
+    my @amax_data=<INF>;
+    close(INF);
+    my $data = join('', @amax_data);
+=head
+    open (OUTF, ">$_[0].85");
+    binmode (OUTF);
+    print (OUTF $data);
+    close (OUTF);
+=cut
+    return $data;
+}
+
+sub datafile_install # magic string, datafile, split flag
+{
+    my $magic = $_[0];
+    my $cmd = "grep $magic $path/$const::DIR_TEMP/*.class";
+    my $class_fn = `$cmd`;
+    my $class_body;
+    if ($class_fn =~ /(\w+\.class)/is) {
+        $class_fn = "$path/$const::DIR_TEMP/$1";
+		open(INF, "<$class_fn") or mydie("No file $class_fn");
+		binmode(INF);
+		my @data=<INF>;
+		close(INF);
+		$class_body=join('', @data);
+    }
+    else {
+        mydie("Magic string '$magic' not found in class files");
+    }
+
+    my $class_data;
+    my $data = encode85($_[1]);
+
+    my $SPLIT_CHUNK = 31888;
+    my $idx = 0;
+    my $inject_count = 0;
+    my $again = 1;
+    do {
+        my $magic_str = $_[0].$idx++;
+        my $magic_content = pack("na*",length($magic_str), $magic_str);
+        my @part= split(/$magic_content/s, $class_body);
+        if(scalar(@part) == 2) {
+            $data =~ s/(.{0,$SPLIT_CHUNK})//s;
+            my $chunk = $1;
+            #$again = length ($chunk) == $SPLIT_CHUNK;
+            my $content=pack("na*",length($chunk), $chunk);
+            $class_body = $part[0].$content.$part[1];
+            echo("Injected $magic_str into $class_fn, chunk length ".length($chunk)."\n");
+            ++$inject_count;
+        }
+        else {
+            $again = 0;
+        }
+    }
+    while ($again);
+    if (!$inject_count) {
+        mydie("Inject failed");
+    }
+    open(INF, ">$class_fn") or mydie("No file $class_fn");
+    binmode(INF);
+    print INF $class_body;
+    close(INF);
+    echo("Written $class_fn\n");
 }
 
 sub inject_lang{ # lang, isdemo
@@ -894,7 +974,7 @@ sub inject_lang{ # lang, isdemo
 		}
 	  next if $evt ne 'EV_MSG' and $use_amtext;
 	  next if $evt eq 'EV_MSG' and $demo eq 'amtext';
-	  echo("\n**** $ff: *****\n");
+#	  echo("\n**** $ff: *****\n");
 		$buf[1]=~/\!\!params\s*(\d+)/i;
 		$paramcount=$1;
 		$buf[2]=~/\!\!planet\s*(.+)/i;
@@ -948,7 +1028,7 @@ sub inject_lang{ # lang, isdemo
 			use bytes; $len=length($outbuf)+11;
 		};
 		#	mydie($flag);
-		echo("$len, $planet\n");
+#		echo("$len, $planet\n");
 		$output=pack('nNcnna*',$tools::eventType{$evt},$len,$planet,$paramcount,$recnum,$outbuf);
 		#	mydie($output);
 		if($config ne 'lang'){
@@ -963,12 +1043,13 @@ sub inject_lang{ # lang, isdemo
 	}
 	if($errors==0){
 		return 0 if $demo;
+        echo("\n---Add these lines into SummItem.java---\n\n");
 		while (my($key, $value) = each %hash) {
 			$value=~s/\\//isg;
 			echo("    topics.put(new Integer(Event.$key), \"$value\");\n");
 			delete $hash{$key};   # This is safe
 		}
-
+        echo("\n---cut here---\n\n");
 	}
 	else{
 		echo("\n-------- $errors error(s) found. Compilation aborted! --------\n");
@@ -1046,7 +1127,7 @@ sub get_revision{ # num
     open (REV, "<$path/rev.txt") or mydie ("Revision file error: $!");
     my @revs = <REV>;
     close (REV);
-    echo (scalar(@revs)."\n");
+#    echo (scalar(@revs)."\n");
     my $result;
     if (scalar(@revs) == 1) {
         my @body = split (/\s/s, "@revs");
@@ -1054,9 +1135,9 @@ sub get_revision{ # num
     } else {
         $result = $revs[$_[0]];
     }
-    echo("revision='$result'\n");
+#    echo("revision='$result'\n");
     mydie ("No revision") unless $result > 0;
 	return $result;
 }
 
-// # vi:et:ts=4:sw=4
+# vi:et:ts=4:sw=4
