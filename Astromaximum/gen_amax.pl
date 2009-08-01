@@ -12,9 +12,11 @@ if(!$islocal){
 my $nb_user='$HOME/.netbeans/6.7';
 my $platform='$HOME/wtk251';
 our $winda=$^O=~/Win/is;
+our $ext = '';
 if($winda){
 	$nb_user='%USERPROFILE%/.netbeans/6.7';
 	$platform='D:\WTK251';
+	$ext = '.exe';
 }
 
 our $year_info;
@@ -54,8 +56,7 @@ open(FLOG, ">$path/gen_amax.log");
 
 echo("Command line:  $0 @ARGV\n");
 if($islocal){
-	require "$path/genconst.pm";
-
+	require 'genconst.pm';
 	if(!scalar(@ARGV)){
 		print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
 		print "Parameters:\n";
@@ -69,8 +70,9 @@ if($islocal){
 		exit(1);
 	}
 
-	require "$path/tools.pm";
-	require "$path/Crc32.pm";
+	require 'tools.pm';
+	require 'Crc32.pm';
+	die '$const::DIR_TEMP' unless $const::DIR_TEMP;
 	rm_all("$path/$const::DIR_TEMP");
 }
 else{    # site has different folder structure
@@ -102,8 +104,7 @@ if($islocal and ($config eq 'rebuild')){
 	my $antpath;
 	my @app=(
 	'/home/willow/program/nb67/java2/ant/bin/ant',
-	'd:/Program Files/nb7/java2/ant/bin/ant.bat',
-	'd:/Program Files/nb7/java1/ant/bin/ant.bat',
+	'd:/Program Files/nb67/java2/ant/bin/ant.bat',
 	);
 	foreach (@app){
 		if(-f $_){
@@ -850,28 +851,31 @@ sub timebomb_install # time, sign
 
 sub encode85 # in: filename, out: string
 {
-    open (INF, "$path/3d_party/encode85 -w 0 $_[0] |") or mydie("Cannot open pipe $!");
+	die "$path/3d_party/encode85$ext not found" unless -e "$path/3d_party/encode85$ext";
+    open (INF, "$path/3d_party/encode85$ext -w 0 $_[0] |") or mydie("Cannot open pipe $!");
     binmode(INF);
     my @amax_data=<INF>;
     close(INF);
     my $data = join('', @amax_data);
-=head
     open (OUTF, ">$_[0].85");
     binmode (OUTF);
     print (OUTF $data);
     close (OUTF);
-=cut
     return $data;
 }
 
 sub datafile_install # magic string, datafile, split flag
 {
     my $magic = $_[0];
-    my $cmd = "grep $magic $path/$const::DIR_TEMP/*.class";
+	my $grep_ver = `grep --version`;
+	die "Not GNU grep command" unless $grep_ver =~/GNU grep/;
+    my $cmd = "grep -r $magic $const::DIR_TEMP";
+	print "$cmd\n";
     my $class_fn = `$cmd`;
+
     my $class_body;
     if ($class_fn =~ /(\w+\.class)/is) {
-        $class_fn = "$path/$const::DIR_TEMP/$1";
+        $class_fn = "$const::DIR_TEMP/$1";
 		open(INF, "<$class_fn") or mydie("No file $class_fn");
 		binmode(INF);
 		my @data=<INF>;
