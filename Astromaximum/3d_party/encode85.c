@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
 		copy85(stdin);
 	else
 		for (i = optind; i < argc; i++) {
-			FILE *fp = fopen(argv[i], "r");
+			FILE *fp = fopen(argv[i], "rb");
 			if (fp == NULL) {
 				perror(argv[i]);
 				return 1;
