@@ -857,10 +857,12 @@ sub encode85 # in: filename, out: string
     my @amax_data=<INF>;
     close(INF);
     my $data = join('', @amax_data);
+=head	
     open (OUTF, ">$_[0].85");
     binmode (OUTF);
     print (OUTF $data);
     close (OUTF);
+=cut
     return $data;
 }
 

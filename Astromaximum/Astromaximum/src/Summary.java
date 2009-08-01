@@ -1126,11 +1126,13 @@ class Summary extends Canvas implements CommandListener {
     void setToday() {
         selDate.setTime(Astromaximum.getMidnight(Options.currentTime()));
         if (!Astromaximum.dataFile.isDateAvailable(selDate)) {
+//#ifndef microemu
             String str = Astromaximum.getstr(91) + " " +
                 Astromaximum.localizedDateString(selDate) + "||" +
                 Astromaximum.getstr(111) + "||" + Astromaximum.getstr(156);
 
             Astromaximum.instance.alert(str);
+//#endif
             Astromaximum.calendar.setTime(selDate);
             Astromaximum.calendar.set(Calendar.YEAR, Astromaximum.startYear);
             selDate = Astromaximum.calendar.getTime();
@@ -1985,7 +1987,7 @@ class Summary extends Canvas implements CommandListener {
 //#         Options.isRealtimeOff = false;
 //#         setToday();
 //#     }
-//# 
+//#
 //#     void printHashes () {
 //#         String hashes = "";
 //#         for (int i = 0; i < Astromaximum.options.cityList.size(); ++i) {
@@ -2004,12 +2006,12 @@ class Summary extends Canvas implements CommandListener {
 //#         }
 //#         System.out.println(hashes);
 //#     }
-//# 
+//#
 //#     void setNewYearDate() {
 //# 		Astromaximum.calendar.setTime(new Date(Astromaximum.dataFile.startJD));
 //# 		selDate.setTime(Astromaximum.calendar.getTime().getTime());
 //#     }
-//# 
+//#
 //#     void takeShots() {
 //#         System.out.println("Please wait while capturing screenshots...");
 //#         Options.isRealtimeOff = true;
@@ -2027,11 +2029,11 @@ class Summary extends Canvas implements CommandListener {
 //#                 String hash_str = Integer.toHexString(s.hashCode());
 //#                 while (hash_str.length() < 8)
 //#                     hash_str = "0" + hash_str;
-//# 
+//#
 //#                 writeString2File("file:///root1/" + hash_str + ".txt", s);
-//# 
+//#
 //#                 System.out.println(hash_str + ": " + s);
-//# 
+//#
 //#                 FileConnection fc = (FileConnection)Connector.open(
 //#                         "file:///root1/" + hash_str, Connector.READ_WRITE);
 //#                 if (!fc.exists())
@@ -2048,7 +2050,7 @@ class Summary extends Canvas implements CommandListener {
 //#             writeString2File("file:///root1/convert.sh", "sh raw2image.sh " + Integer.toString(w) + " " +
 //#                     Integer.toString(h-1) + " " + Astromaximum.getstr(255).toLowerCase() +
 //#                     " " + Integer.toString(Astromaximum.startYear));
-//# 
+//#
 //#         }
 //#         catch(IOException e){
 //#             System.out.println(e.getMessage());
@@ -2056,9 +2058,9 @@ class Summary extends Canvas implements CommandListener {
 //#         }
 //#         Options.isRealtimeOff = false;
 //#         setToday();
-//# 
+//#
 //#     }
-//# 
+//#
 //# 	void screenShot(int w, int h, String hash) throws IOException {
 //# 		Image image = Image.createImage(w, h);
 //# 		render (image.getGraphics());
@@ -2066,10 +2068,10 @@ class Summary extends Canvas implements CommandListener {
 //#         String fname = hash + "/" + formatDate2d(Calendar.YEAR) + formatDate2d(Calendar.MONTH) +
 //# 				formatDate2d(Calendar.DAY_OF_MONTH);
 //#         int rgbData[] = new int[w * h];
-//# 
+//#
 //#         FileConnection fc = (FileConnection)Connector.open(
 //#                 "file:///root1/" + fname + ".raw", Connector.READ_WRITE);
-//# 
+//#
 //#         if(!fc.exists())
 //#             fc.create();
 //#         else
@@ -2090,7 +2092,7 @@ class Summary extends Canvas implements CommandListener {
 //#         image = null;
 //#         System.out.println(fname + ".raw written");
 //# 	}
-//# 
+//#
 //# 	String formatDate2d (int field) {
 //# 		int num = Astromaximum.calendar.get(field);
 //# 		if (field == Calendar.MONTH)
