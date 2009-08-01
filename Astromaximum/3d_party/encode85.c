@@ -1,6 +1,7 @@
 /* encode85 -- convert to ascii85 format */
 
 #include <stdio.h>
+#include <stdlib.h>
 #define	atoi(s)	strtol(s, 0, 0)
 
 static unsigned long width = 72, pos = 0, tuple = 0;
