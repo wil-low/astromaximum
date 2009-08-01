@@ -38,7 +38,9 @@ swe:
 	cd swe && make clean && make && cd ..
 
 config:
-	mkdir -p Astromaximum/deploy;perl size_join.pl;perl ph_join.pl; \
+	mkdir -p Astromaximum/deploy;perl size_join.pl;perl ph_join.pl
+
+rebuild:
 	mkdir -p Astromaximum/deploy; \
 	perl gen_amax.pl rebuild
 
