@@ -50,18 +50,18 @@
 
     <target name="copy.template" description="Copy into common dir">
         <echo message="Copy ${basedir}/../templates/${dist.jar}"/>
-	<copy file="${dist.dir}/${dist.jar}" todir="${basedir}/../templates" />
+	<copy file="${dist.dir}/${dist.jar}" todir="${basedir}/../templates" failonerror="true"/>
 	<antcall target="gen.amax" inheritall="true" inheritrefs="true" />
     </target>
 
     <target name="gen.amax" unless="rebuild.only">
 	<echo message="${rebuild.only}"/>
-	<exec executable="perl" failonerror="true">
-	    <arg value="${basedir}/../gen_amax.pl"/>
+	<exec executable="perl" failonerror="true" dir="${basedir}/..">
+	    <arg value="gen_amax.pl"/>
 	    <arg value="${gen.conf}"/>
 	    <arg value="${year}"/>
 	    <arg value="${lang}"/>
-	    <arg value="${basedir}/../loclist_default.txt"/>
+	    <arg value="loclist_default.txt"/>
 	    <arg value="${basedir}/${dist.dir}/${dist.jar}"/>
 	</exec>
     </target>
