@@ -7,7 +7,7 @@
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
     <property name="year" value="2008"/>
     <property name="lang" value="ru"/>
-    <property name="soot.dir" value="/home/willow/ahg/soot"/>
+    <property name="soot.dir" value="${basedir}/../../soot"/>
     <property name="microemu.dir" value="../microemulator-2.0.3"/>
 
     <import file="nbproject/build-impl.xml"/>
@@ -142,7 +142,7 @@
         <copy todir="${jbco.classes.dir}" failonerror="true">
             <fileset dir="${buildsystem.baton}" excludes="**/*.class"/>
         </copy>
-        <java classname="soot.jbco.Main">
+        <java classname="soot.jbco.Main" failonerror="true">
             <jvmarg value="-Xms256m"/>
             <jvmarg value="-Xmx1024m"/>
             <classpath>
@@ -170,7 +170,7 @@
             <arg value="-t:2:bb.jbco_plvb"   description="Pack Locals into Bitfields - slow"/>
             <arg value="-t:9:jtp.jbco_gia"   description="Goto Instruction Augmentation"/>
             <arg value="-t:3:bb.jbco_ptss"   description="Partially Trap Switches"/>
-            <arg value="-t:2:bb.jbco_cb2ji"  description="Convert Branches to JSR Instructions - verify error"/>
+            <!--arg value="-t:2:bb.jbco_cb2ji"  description="Convert Branches to JSR Instructions - verify error"/-->
         </java>
         <echo message="ignore me" file="${build.dir}/.jbco-timestamp"/>
         <nb-overrideproperty name="buildsystem.baton" value="${jbco.classes.dir}"/>
