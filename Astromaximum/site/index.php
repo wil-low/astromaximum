@@ -87,6 +87,7 @@ if(!file_exists($fn)){
 <meta name="copyright" content="Copyright (c) by S&amp;W Axis"/>
 <meta name="keywords" content="[[keywords]]"/>
 <meta name="description" content="[[description]]"/>
+<meta name="verify-v1" content="A4EqTQ801cLBIuT4iqqotxVkCPj3AFEDhLvhN3xdMXs=" />
 <link href="/astro.css" rel="stylesheet" type="text/css"/>
 <script src="/func.js" type="text/javascript"></script>
 
