@@ -1,9 +1,9 @@
 DEST=site/mobi/dl
 SOURCE=$(DEST)/source
 
-.PHONY: all gen_amax config template interp mutter relgui test sunrise swe
+.PHONY: all gen_amax config rebuild template interp mutter relgui test sunrise encode85 swe
 
-all:	gen_amax config template interp mutter relgui sunrise
+all:	gen_amax config template interp mutter relgui sunrise encode85
 
 test:	
 	#make mutter; 
@@ -53,6 +53,9 @@ relgui:
 sunrise:
 	cd sunrise && make CONF=Release clean build && cd ..
 
+encode85:
+	cd 3d_party && gcc -O2 -o encode85 encode85.c
+
 help:
-	@echo "Usage: make [all|gen_amax|template|interp|config|mutter|relgui|sunrise]"
+	@echo "Usage: make [all|gen_amax|template|interp|config|mutter|relgui|sunrise|encode85|rebuild]"
 

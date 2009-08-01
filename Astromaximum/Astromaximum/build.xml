@@ -7,7 +7,7 @@
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
     <property name="year" value="2008"/>
     <property name="lang" value="ru"/>
-    <property name="soot.dir" value="${basedir}/../../soot"/>
+    <property name="soot.dir" value="../3d_party/soot"/>
     <property name="microemu.dir" value="../microemulator-2.0.3"/>
 
     <import file="nbproject/build-impl.xml"/>
