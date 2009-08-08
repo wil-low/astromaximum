@@ -1,9 +1,8 @@
 <?php
 if (isset ($_GET['h'])) { // city hash
 	$hash = $_GET['h'];
-	$lang = $_GET['lang'];
 	$today = gmdate ('ymd');
-	$ifile = "i/daily/$lang/$hash/$today.png";
+	$ifile = "i/daily/informer/$hash/$today.png";
 	header ("Content-type: image/png");
 	if (file_exists ($ifile))
 		readfile($ifile);
