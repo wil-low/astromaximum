@@ -136,7 +136,7 @@ if($islocal and ($config eq 'rebuild')){
 		echo("\n--------------------------------\n");
 		echo("--- Config $_ ---\n");
 		echo("--------------------------------\n");
-		my $cmd="$antpath -quiet -f Astromaximum/build.xml -Dconfig.active=$_ ".
+		my $cmd="$antpath -f Astromaximum/build.xml -Dconfig.active=$_ ".
 			"-Dconfigs.$_.javac.debug=false -Dconfigs.$_.obfuscation.level=9 ".
 			"-Dconfigs.$_.javac.optimize=true -Drebuild.only=true -Dnetbeans.user=\"$nb_user\" ".
 			"-Dplatform.home=\"$platform\" -Dproject.geoLib=\"$path/../geoLib\" clean jar";
@@ -254,7 +254,7 @@ if($config=~/demo/is){
 if($config=~/geo-$/is){
 	unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
 	my $locname=inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-	inject_icon('');
+	inject_icon('', 'res/');
 	do_jar($locname, $locname, $outfile, $GeoAMclass);
 	do_messjar($outfile);
 	$done=1;
@@ -346,14 +346,15 @@ sub inject_amdata{
 }
 
 sub inject_icon{ # prefix, subdir
+        mkdir "$const::DIR_TEMP/$_[1]";
 	$ye=~/(\d)$/is;
 	my $prefix=shift;
-    my $fn = ">$path/$const::DIR_TEMP/$_[0]"."icon.png";
+        my $fn = "<$path/$const::DIR_IMG/$prefix$1.png";
 	open(INF, $fn) or mydie("Cannot open $fn");
 	binmode(INF);
 	my @body=<INF>;
 	close (INF);
-    $fn = ">$path/$const::DIR_TEMP/$_[0]"."icon.png";
+        $fn = ">$path/$const::DIR_TEMP/$_[0]"."icon.png";
 	open(OUTF, $fn) or mydie("Cannot open $fn");
 	binmode(OUTF);
 	print OUTF join('', @body);
