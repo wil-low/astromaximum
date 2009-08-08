@@ -43,11 +43,11 @@ $srcdir="$dsrc/$fn";
 #	echo "$dsrc/$destfile";
 $type="d $year $lang";
 if($isdemo){
-	$cmd="$perl dl/gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
+	$cmd="$perl dl/gen_amax.cgi demo $year $lang $default_city_ids $dsrc/$fn.r $timeout_offset $timeout_mins";
 }
 else{
 	if(!$user_ok) return; 
-	$cmd="$perl dl/gen_amax.cgi tb $year $lang \"$default_city_ids\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
+	$cmd="$perl dl/gen_amax.cgi tb $year $lang \"$default_city_ids\" $dsrc/$fn.r $timeout_offset $timeout_mins";
 	$type="t $year $lang";
 }
 $ret=0;

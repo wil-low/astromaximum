@@ -270,14 +270,14 @@ function midlet_create($type, $year, $lang, $param, $path2gen, $flag){
 	$is_cal=true;
 #	echo "$dsrc/$destfile";
 	if(strcmp($type, "geo")==0){
-		$cmd="$perl $path2gen/gen_amax.cgi geo- $year $lang $param $dsrc/$fn.r nomessjar";
+		$cmd="$perl $path2gen/gen_amax.cgi geo- $year $lang $param $dsrc/$fn.r";
 	}
 	else{
 		$is_cal=true;
 		if(!preg_match("/^(demo|tb)$/is", $type)){
 			return '';
 		}
-		$cmd="$perl $path2gen/gen_amax.cgi $type $year $lang \"$param\" $dsrc/$fn.r $timeout_offset $timeout_mins nomessjar";
+		$cmd="$perl $path2gen/gen_amax.cgi $type $year $lang \"$param\" $dsrc/$fn.r $timeout_offset $timeout_mins";
 	}
 //	echo $cmd;
 	$ret=0;
