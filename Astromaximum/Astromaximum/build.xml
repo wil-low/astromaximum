@@ -142,7 +142,14 @@
         <copy todir="${jbco.classes.dir}" failonerror="true">
             <fileset dir="${buildsystem.baton}" excludes="**/*.class"/>
         </copy>
-        <java classname="soot.jbco.Main" failonerror="true">
+        <exec executable="sh" failonerror="true">
+            <arg line="jbco.sh"/>
+            <arg line="${buildsystem.baton}"/>
+            <arg line="${jbco.classes.dir}"/>
+            <arg line="${platform.home}/lib"/>
+            <arg line="${soot.dir}"/>
+        </exec>
+        <!--java classname="soot.jbco.Main" failonerror="true">
             <jvmarg value="-Xms256m"/>
             <jvmarg value="-Xmx1024m"/>
             <classpath>
@@ -156,13 +163,13 @@
                 <path location="${soot.dir}/jasminclasses-2.3.0.jar"/>
                 <path location="${soot.dir}/polyglotclasses-1.3.5.jar"/>
                 <path location="${soot.dir}/sootclasses-2.3.0.jar"/>
-                <path location="${buildsystem.baton}"/>
+                <path location="${basedir}/${buildsystem.baton}"/>
             </classpath>
-            <arg line="-j2me"/>
-            <arg line="-d ${jbco.classes.dir}" description="output dir"/>
-            <arg line="-process-dir ${buildsystem.baton}"/>
+            <arg value="-j2me"/>
+            <arg line="-d ${basedir}/${jbco.classes.dir}" description="output dir"/>
+            <arg line="-process-dir ${basedir}/${buildsystem.baton}"/>
             <arg line="-main-class Astromaximum"/>
-            <!--arg line="-jbco:help"/-->
+            <arg value="-v"/>
             <arg value="-t:9:bb.jbco_rlaii"  description="Reorder Loads Above Ifs"/>
             <arg value="-t:9:bb.jbco_iii"    description="Indirect If Instructions"/>
             <arg value="-t:9:bb.jbco_ctbcb"  description="Combine Try and Catch Blocks"/>
@@ -170,8 +177,7 @@
             <arg value="-t:2:bb.jbco_plvb"   description="Pack Locals into Bitfields - slow"/>
             <arg value="-t:9:jtp.jbco_gia"   description="Goto Instruction Augmentation"/>
             <arg value="-t:3:bb.jbco_ptss"   description="Partially Trap Switches"/>
-            <!--arg value="-t:2:bb.jbco_cb2ji"  description="Convert Branches to JSR Instructions - verify error"/-->
-        </java>
+        </java-->
         <echo message="ignore me" file="${build.dir}/.jbco-timestamp"/>
         <nb-overrideproperty name="buildsystem.baton" value="${jbco.classes.dir}"/>
     </target>
