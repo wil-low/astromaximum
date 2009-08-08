@@ -664,6 +664,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     }
 
     void showAbout() {
+        try {
         String msg = "Astromaximum " + Integer.toString(startYear) + " " +
                 getstr(162);
         Astromaximum.errCode = 61;
@@ -679,7 +680,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
             tick += ", r" + rev;
         }
         msg += "||" + tick;
-//#ifdef demo
+//#if demo
 //#         msg += " " + getstr(154);
 //#endif
         Astromaximum.errCode = 64;
@@ -690,6 +691,11 @@ public class Astromaximum extends MIDlet implements CommandListener {
         msg += "||\u00a9 2007, S&W Axis|" + getstr(153);
         Astromaximum.errCode = 66;
         alert(msg);
+        }
+        catch (Exception e) {
+            log (e.getMessage() + ": " + Integer.toString(errCode));
+            logBox.showLog(summary);
+        }
     }
 
 //#if "timeBomb" @ protection

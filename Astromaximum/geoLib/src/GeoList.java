@@ -38,7 +38,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     int total;
     int year;
     protected final String STORE_NAME = "Astromaximum";
-    protected DataInputStream locStream;
+    protected DataInputStream locStream = null;
     private final MIDlet main;
     static long dstStart;
     static long dstEnd;
@@ -48,10 +48,17 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     static boolean isSouthern = false;
     ChoiceGroup cityList;
 
-    GeoList(MIDlet midlet, int type, DataInputStream loc) {
+    GeoList(MIDlet midlet, int type, InputStream loc) {
         super("");
         main = midlet;
-        locStream = loc;
+        try {
+            byte[] buf = new byte[loc.available()];
+            loc.read(buf);
+            loc.close();
+            locStream = new DataInputStream(new ByteArrayInputStream(buf));
+        }
+        catch (IOException e) {}
+
         locStream.mark(10000000);
 //    addCommand(new Command(LocalizationSupport.getMessage("Back"),
 //        Command.BACK, 1));

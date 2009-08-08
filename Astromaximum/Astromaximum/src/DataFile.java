@@ -2,6 +2,7 @@
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -87,7 +88,7 @@ final class DataFile {
         } catch (IOException e) {
         }
         try {
-            DataInputStream is = getAmaxStream(0);
+            DataInputStream is = new DataInputStream(getAmaxStream(0));
             Astromaximum.startYear = is.readShort();
             cal.set(Calendar.YEAR, Astromaximum.startYear);
             cal.set(Calendar.MONTH, is.readUnsignedByte() - 1);
@@ -683,57 +684,17 @@ final class DataFile {
 //  }
 
 
-    DataInputStream getAmaxStream (int filetype)
+    InputStream getAmaxStream (int filetype)
     {
-//        System.out.println(new String(data.getLocations()));
-//        System.exit(-1);
-        DataInputStream is = null;
 //#if microemu
-//#         is = new DataInputStream (new ByteArrayInputStream (filetype % 2 == 0 ?
-//#             getAstroData(CustomTime.commons) : getAstroData(Event.locations)));
-//#elif microemu1
-//#         HttpConnection c = (HttpConnection)Connector.open((String)ids.firstElement());
-//#         c.setRequestMethod(HttpConnection.POST);
-//#         String content = Integer.toString(filetype) + ";";
-//#         OutputStream os = c.openOutputStream();
-//#         os.write(content.getBytes());
-//#         System.out.println (content);
-//#         int rc = c.getResponseCode();
-//#         if (rc != HttpConnection.HTTP_OK) {
-//#             throw new IOException("HTTP response code: " + rc);
-//#         }
-//#
-//#         is = c.openDataInputStream();
-//#         byte[] buf = new byte[100000];// TODO: hardcode
-//#         int len = (int)c.getLength();
-//#         if (len > 0) {
-//#             int actual = 0;
-//#             int bytesread = 0;
-//#             while ((bytesread != len) && (actual != -1)) {
-//#                 actual = is.read(buf, bytesread, len - bytesread);
-//#                 bytesread += actual;
-//#             }
-//#         }
-//#         else {
-//#             int ch, i = 0;
-//#             while (i < 100000 && (ch = is.read()) != -1) {
-//#                 buf[i++] = (byte)ch;
-//#             }
-//#             len = i;
-//#         }
-//#         is.close();
-//#         byte[] buf2 = new byte[len];
-//#         System.arraycopy(buf, 0, buf2, 0, len);
-//#         System.out.print("getInputStream ");
-//#         System.out.println(len);
-//#         is = new DataInputStream(new ByteArrayInputStream(buf2));
+//#         return new ByteArrayInputStream (filetype % 2 == 0 ?
+//#             getAstroData(CustomTime.commons) : getAstroData(Event.locations));
 //#elif demo
-//#     is = new DataInputStream(getClass().getResourceAsStream(filetype % 2 == 0 ? "/c.dat" : "/l.dat"));
+//#         return getClass().getResourceAsStream(filetype % 2 == 0 ? "/c.dat" : "/l.dat");
 //#else
-    is = new DataInputStream(getClass().getResourceAsStream(filetype % 2 == 0 ? "/common.dat" : "/locations.dat"));
+        return getClass().getResourceAsStream(filetype % 2 == 0 ? "/common.dat" : "/locations.dat");
 //#endif
-        return is;
-   }
+    }
     
 //#if microemu
 //#     static private final int LENGTH_MULTIPLIER = 1300; // / 1000
