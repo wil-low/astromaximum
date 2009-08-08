@@ -5,28 +5,29 @@ LNG=$3
 YEAR=$4
 
 OPTIONS="-colorize 28,18,8"
-IMG_PATH=/home/willow/wtk251/appdb/root/filesystem/root1
+IMG_PATH=/d/wtk2.5.1/appdb/root/filesystem/root1
 
-DEST_PATH=$PWD/../site/i/daily/$LNG
+DEST_PATH=$PWD/../site/i/daily
 mkdir -p $DEST_PATH
 cd $IMG_PATH
 
 #convert 090101-4.png -fill "#8699ac" -draw 'rectangle 1,226,140,238' -fill white -draw 'gravity SouthWest text 5,0 Kiev' 090101-4-1.png
 #display 090101-4-1.png
 #exit
-dirs=`find . -wholename './*' -type d -maxdepth 1`
+dirs=`find . -type d -maxdepth 1`
 for i in $dirs; do
-    cd $i;
+    cd $IMG_PATH/$i;
     echo "Converting $PWD";
     mogrify $OPTIONS -format png -size ${IMG_W}x${IMG_H}+1 -depth 8 rgba:*.raw
     cd ..;
 done
 
-find . -name *.raw -delete
+find . -name *.raw -exec rm '{}' \;
 
+cd $IMG_PATH
 dest_arc=$DEST_PATH/informers_${YEAR}_${LNG}.tgz
 tar czf $dest_arc *
-rm -r *
+#rm -r *
 echo "$dest_arc written"
 
 # list \d{6}\-\d\.raw w/o duplicates
