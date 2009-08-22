@@ -90,7 +90,6 @@ if(!file_exists($fn)){
 <meta name="verify-v1" content="A4EqTQ801cLBIuT4iqqotxVkCPj3AFEDhLvhN3xdMXs=" />
 <link href="/astro.css" rel="stylesheet" type="text/css"/>
 <script src="/func.js" type="text/javascript"></script>
-
 <script type="text/javascript">
 <!--
 if (document.images){
@@ -146,7 +145,7 @@ if (document.images){
 <?php
 print_menu('home', 'MNU_HOME', 1);
 print_menu('man0', 'MNU_MAN', 1);
-echo '<a href="/wiki">wiki</a> | ';
+echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . "start\">wiki</a> | ";
 print_menu('scr', 'MNU_SCRSHOTS', 1);
 print_menu('buy', 'MNU_BUY', 1);
 print_menu('citylist', 'MNU_CITYLIST', 1);
@@ -269,6 +268,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 <p>Copyright &copy;
 2007-2008
 S&amp;W Axis. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
+<!--http-accept-language '<?php echo $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?>'-->
 </body>
 </html>
 
