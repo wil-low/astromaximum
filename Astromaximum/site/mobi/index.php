@@ -64,6 +64,7 @@ if(preg_match("/^(demo)$/is", $main)) {
         <title>mobi.astromaximum</title>
         <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
         <link rel="stylesheet" type="text/css" href="style.css"/>
+		<meta name="verify-v1" content="A4EqTQ801cLBIuT4iqqotxVkCPj3AFEDhLvhN3xdMXs=" />
         [[head]]
     </head>
     <body[[onload]]>
