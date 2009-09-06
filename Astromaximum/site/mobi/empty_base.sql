@@ -80,9 +80,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
   `active` tinyint(1) NOT NULL default '1',
   `model` varchar(50) default NULL COMMENT 'Phone model',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `realname` (`realname`),
-  KEY `paymode` (`paymode_id`)
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds customer data' AUTO_INCREMENT=8 ;
 
 --
