@@ -327,7 +327,8 @@ INSERT INTO `dic_paymode` (`id`, `name`) VALUES
 (2, 'PayPal'),
 (3, 'Cash'),
 (4, 'OTP bank'),
-(5, 'Raiffeisen bank');
+(5, 'Raiffeisen bank'),
+(6, 'Plimus');
 
 --
 -- Структура таблицы `dic_role`
