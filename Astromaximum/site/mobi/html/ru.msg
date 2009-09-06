@@ -178,6 +178,7 @@ REGFE_EM_EXISTS=Пользователь с таким адресом почты
 PAYMENT_02=PayPal
 PAYMENT_04=Банковский перевод - OTP bank
 PAYMENT_05=Банковский перевод - Raiffeisen bank
+PAYMENT_06=Plimus
 
 CONFIRM_THANKS=Уважаемый(ая) <b>%s</b>!<br/><br/><span class="fine">Спасибо за подтверждение Вашего электронного адреса <b>%s</b></span>.<br/><br/>На этот адрес Вам высланы коды доступа. Зайдите на сайт Astromaximum, используя полученные логин и пароль, и произведите оплату.
 

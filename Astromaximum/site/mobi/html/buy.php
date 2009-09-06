@@ -1,11 +1,11 @@
 <?php 
 if(!isset($EXEC)) die("Access restricted");
-
+/*
 if($chac==-1 or $chac==1){
 	echo '<h3>Page not found</h3>';
 	return;
 }
-
+*/
 $current_year=$GLOBALS['amax']['year'];
 $uri=htmlentities($_SERVER['REQUEST_URI']);
 
@@ -68,7 +68,7 @@ if(present('email1') && present('email2') && present('nick') && present('p_captc
             2
         );
         if(!mysql_query($stat)){
-            echo mysql_error(); break;
+            echo /*$stat . " " .*/ mysql_error(); break;
         }
         $mail=confirmation_send($email, $realname, $passkey);
         if($mail->ErrorInfo){
@@ -152,9 +152,9 @@ $sess=session_name().'='.session_id();
 // TODO: maintain these options when changing dic_paymode table!
 
 $link['02'] = "http://$lang.wikipedia.com/wiki/PayPal";
-
 $langwiki = strcmp($lang, 'ru') == 0 ? '' : "$lang:";
 $link['04'] = "/wiki/doku.php/{$langwiki}bill";
+$link['06'] = "http://home.plimus.com/ecommerce/";
 
 $out='';
 foreach($GLOBALS['amax']['paymodes'] as $key){

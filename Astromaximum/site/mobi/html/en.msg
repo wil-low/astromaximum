@@ -178,6 +178,7 @@ REGFE_EM_EXISTS=E-mail address is registered already
 PAYMENT_02=PayPal
 PAYMENT_04=Bank transfer - OTP bank
 PAYMENT_05=Bank transfer - Raiffeisen bank
+PAYMENT_06=Plimus
 
 CONFIRM_THANKS=Dear <b>%s!</b><br/><br/><span class="fine">Thank you for confirming your email address <b>%s</b></span>.<br/><br/>Your login and password have been sent to your e-mail address. Please log in to Astromaximum site and make the payment.
 

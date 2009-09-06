@@ -512,11 +512,11 @@ function show_payment_instructions($payment_id){ // print payment page
     global $lang, $lang_, $i18, $META_HEAD_ADD;
     $payment_id=sprintf('%02d', $payment_id);
     $tabs='<h4>'.sprintf ($i18['REGFORM_PAYMODE'], $GLOBALS['amax']['year']).'</h4><div class="tabs"><ul class="tabNavigation">';
-	
+/*	
 	$tabs .= '<li><a class="" href="#">'.$i18['PAYMENT_02'].'</a></li>';
 	$tabs .= '<li><a class="" href="http://astromaximum.com/wiki/doku.php/bill" target="_blank">'.$i18['PAYMENT_04'].'</a></li>';
+*/	
 	
-/*	
     foreach($GLOBALS['amax']['paymodes'] as $key){
         $key2=sprintf('%02d', $key);
         $tabs.='<li><a class="" href="#a'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a></li>\n";
@@ -555,9 +555,6 @@ EOF;
         echo "</div>\n";
     }
     echo '</div>';
-*/
-    $tabs.='</ul>';
-	echo $tabs;
 }
 
 function fill_input_str($id, $text){
