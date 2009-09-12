@@ -1,11 +1,11 @@
 <?php 
 if(!isset($EXEC)) die("Access restricted");
-/*
+
 if($chac==-1 or $chac==1){
 	echo '<h3>Page not found</h3>';
 	return;
 }
-*/
+
 $current_year=$GLOBALS['amax']['year'];
 $uri=htmlentities($_SERVER['REQUEST_URI']);
 
@@ -21,7 +21,11 @@ if($chac==3){ // unpaid
 
 function alert($str){
     global $i18;
-    return '<span class="alert">'.$i18[$str].'</span>';
+    return alert2 ($i18[$str]);
+}
+
+function alert2($str){
+    return '<span class="alert">'.$str.'</span>';
 }
 
 function present($key){
@@ -42,7 +46,7 @@ if(present('email1') && present('email2') && present('nick') && present('p_captc
         if(!check_email_address($email)){
             $msg=alert('REGFE_EM_BAD'); break;
         }
-//TODO: email duplicates prohibited???        
+      
         $stat=sprintf("SELECT id FROM customers where email=%s LIMIT 1",
             quote_smart($email));
         $sth=mysql_query($stat);
@@ -50,7 +54,7 @@ if(present('email1') && present('email2') && present('nick') && present('p_captc
             echo mysql_error().": >$stat<";
         }
         if(mysql_num_rows($sth)==1){
-            $msg=alert('REGFE_EM_EXISTS'); break;
+            $msg=alert2(sprintf($i18['REGFE_EM_EXISTS'], $email)); break;
         }
         if(!is_captcha($_POST['p_captcha'])){
             $msg=alert('CAPTCHA_WRONG'); break;
@@ -143,8 +147,8 @@ if($chac!=-1 and $chac!=1){
 
 include_once("mobi/ipblock.php");
 //$msg=allow_ip('buy', false);
-//echo $msg;
-//if($msg) return;
+echo $msg;
+#if($msg) return;
 
 $agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang, $lang), false);
 $sess=session_name().'='.session_id();
@@ -154,13 +158,14 @@ $sess=session_name().'='.session_id();
 $link['02'] = "http://$lang.wikipedia.com/wiki/PayPal";
 $langwiki = strcmp($lang, 'ru') == 0 ? '' : "$lang:";
 $link['04'] = "/wiki/doku.php/{$langwiki}bill";
-$link['06'] = "http://home.plimus.com/ecommerce/";
+$link['06'] = 'http://home.plimus.com/ecommerce/';
+$link['07'] = 'http://www.shareit.com/';
 
 $out='';
 foreach($GLOBALS['amax']['paymodes'] as $key){
     $key2=sprintf('%02d', $key);
     $out.='<li>'.$i18['PAYMENT_'.$key2].
-		' <a href="'.$link[$key2].'" target="_blank"><img src="/i/info.png" width="12" height="12" alt="?"/></a></li>';
+		' <a href="'.$link[$key2].'" target="_blank"><img src="/i/info.png" width="12" height="12" alt="?"/></a><br/><br/></li>';
 }
 $desc=sprintf($i18['REGFORM_DESC'], "<ul>$out</ul>");
 echo <<< EOF

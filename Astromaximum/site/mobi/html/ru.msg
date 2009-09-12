@@ -173,12 +173,13 @@ REGFORM_PAYMODE=Оплатить покупку календаря за %d го�
 REGFORM_MODEL=Модель Вашего телефона
 REGFE_EM_NOMATCH=Адреса почты не совпадают
 REGFE_EM_BAD=Недопустимый электронный адрес
-REGFE_EM_EXISTS=Пользователь с таким адресом почты уже зарегистрирован
+REGFE_EM_EXISTS=Пользователь с адресом <b>%s</b> уже зарегистрирован
 
 PAYMENT_02=PayPal
 PAYMENT_04=Банковский перевод - OTP bank
 PAYMENT_05=Банковский перевод - Raiffeisen bank
 PAYMENT_06=Plimus
+PAYMENT_07=share-it!
 
 CONFIRM_THANKS=Уважаемый(ая) <b>%s</b>!<br/><br/><span class="fine">Спасибо за подтверждение Вашего электронного адреса <b>%s</b></span>.<br/><br/>На этот адрес Вам высланы коды доступа. Зайдите на сайт Astromaximum, используя полученные логин и пароль, и произведите оплату.
 

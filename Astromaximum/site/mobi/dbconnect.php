@@ -145,3 +145,28 @@ function add_file($id, $type){
 		quote_smart($_SESSION['uid']).")";
 	return mysql_query($stat);	
 }
+
+function insert_order ($order) {
+	$stat="INSERT INTO orders(txn_id, notif_id, status, order_date, order_total, payer_id, " . 
+		"payer_email, first_name, last_name, street, city, state, zip, country, item_name, ".
+		"paymode, payment_descr, currency) VALUES " .
+		quote_smart ($order['txn_id']),
+		quote_smart ($order['notif_id']),
+		quote_smart ($order['status']),
+		quote_smart ($order['order_date']),
+		quote_smart ($order['order_total']),
+		quote_smart ($order['payer_id']),
+		quote_smart ($order['payer_email']),
+		quote_smart ($order['first_name']),
+		quote_smart ($order['last_name']),
+		quote_smart ($order['street']),
+		quote_smart ($order['city']),
+		quote_smart ($order['state']),
+		quote_smart ($order['zip']),
+		quote_smart ($order['country']),
+		quote_smart ($order['item_name']),
+		quote_smart ($order['paymode']),
+		quote_smart ($order['payment_descr']),
+		quote_smart ($order['currency']));
+	return mysql_query($stat);	
+}

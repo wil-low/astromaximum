@@ -43,7 +43,7 @@ $sett=array(
 	'DB_USER'=>'user',
 	'DB_USER_PWD'=>'user',
     
-    'paymodes'=>array(6, 4),
+    'paymodes'=>array(7, 6, 4),
 
 	'paypal_url'=>'https://www.paypal.com',
 	'paypal_email'=>'paypal@astromaximum.com',

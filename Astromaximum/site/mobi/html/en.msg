@@ -166,19 +166,20 @@ CITYLIST_DST= +1 (DST)
 REGFORM_DESC=<p>To purchase the calendar, please register a free account on our site.<br/>If no payment is made in 7 days, you account will be deleted automatically.</p><p>Following payment modes are supported:%s</p>
 REGFORM_H=New customer registration
 REGFORM_REQF=All field are mandatory!
-REGFORM_EMAIL_1=E-mail to which you access codes will be sent after the payment
+REGFORM_EMAIL_1=E-mail where your access codes will be sent after the payment
 REGFORM_EMAIL_2=E-mail again
 REGFORM_NAME=Nickname
 REGFORM_PAYMODE=Purchase calendar for year %d:
 REGFORM_MODEL=Your phone model
 REGFE_EM_NOMATCH=E-mail addresses do not match
 REGFE_EM_BAD=Invalid e-mail address
-REGFE_EM_EXISTS=E-mail address is registered already
+REGFE_EM_EXISTS=E-mail address <b>%s</b> is already registered
 
 PAYMENT_02=PayPal
 PAYMENT_04=Bank transfer - OTP bank
 PAYMENT_05=Bank transfer - Raiffeisen bank
 PAYMENT_06=Plimus
+PAYMENT_07=share-it!
 
 CONFIRM_THANKS=Dear <b>%s!</b><br/><br/><span class="fine">Thank you for confirming your email address <b>%s</b></span>.<br/><br/>Your login and password have been sent to your e-mail address. Please log in to Astromaximum site and make the payment.
 

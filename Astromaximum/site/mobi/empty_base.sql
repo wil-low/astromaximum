@@ -328,7 +328,8 @@ INSERT INTO `dic_paymode` (`id`, `name`) VALUES
 (3, 'Cash'),
 (4, 'OTP bank'),
 (5, 'Raiffeisen bank'),
-(6, 'Plimus');
+(6, 'Plimus'),
+(7, 'share-it!');
 
 --
 -- Структура таблицы `dic_role`
@@ -352,12 +353,14 @@ INSERT INTO `dic_role` (`id`, `name`) VALUES
 (3, 'Prospect');
 
 --
--- Структура таблицы `paypal_orders`
+-- Структура таблицы `orders`
 --
 
-CREATE TABLE IF NOT EXISTS `paypal_orders` (
+CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL auto_increment,
   `txn_id` varchar(20) NOT NULL,
+  `notif_id` int(11) NOT NULL default '1',
+  `status` varchar(50) default NULL,
   `order_date` datetime NOT NULL,
   `order_total` decimal(8,2) NOT NULL,
   `payer_id` varchar(30) NOT NULL,
@@ -370,9 +373,12 @@ CREATE TABLE IF NOT EXISTS `paypal_orders` (
   `zip` varchar(15) NOT NULL,
   `country` varchar(50) NOT NULL,
   `item_name` varchar(50) NOT NULL,
+  `paymode` int(11) default NULL,
+  `payment_descr` varchar(30) default NULL,
+  `currency` varchar(5) default NULL,
   PRIMARY KEY  (`order_id`),
-  UNIQUE KEY `txn_id` (`txn_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Holds Paypal transactions' AUTO_INCREMENT=1 ;
+  KEY `payer_email` (`payer_email`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Holds payment transactions' AUTO_INCREMENT=1 ;
 
 --
 -- Functions
