@@ -71,7 +71,7 @@ if(isset($_POST['btn'])){
 <?php echo knopka(4, $validuser, $current_year) ?>*</p>
 </form>
 <p>* <?php echo "{$i18['SEL_CHK1']} <b>".gmdate("M d Y") ?></b>
-<br/>&nbsp;&nbsp;
+<br/><br/>
 <span id="phdate">Please check phone's date</span>
 </p>
 <?php

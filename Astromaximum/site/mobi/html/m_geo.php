@@ -140,7 +140,7 @@
 		for($j=0; $j<$level; $j++){
 			$str.="&amp;p$j=$params[$j]";
 		}
-		return $str."\">$text</a>&nbsp;";
+		return $str."\">$text</a> ";
 	}
 
     function addLevelNavItem($text){

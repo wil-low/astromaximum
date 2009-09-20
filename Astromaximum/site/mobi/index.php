@@ -99,7 +99,7 @@ if(preg_match("/^(demo)$/is", $main)) {
 <?php
         if($chac!=-1) {
             echo $_SESSION['username'];
-            echo " &nbsp; <a href=\"dl/logout.php\">logout</a>";
+            echo " <a href=\"dl/logout.php\">logout</a>";
         }
         else {
             echo '* for demo:<br/> login: '.$GLOBALS['amax']['demo_login'].
