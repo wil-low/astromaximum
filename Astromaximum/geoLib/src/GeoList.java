@@ -34,7 +34,7 @@ import javax.microedition.rms.*;
 class GeoList extends Form implements RecordComparator, RecordFilter, CommandListener {
 
     protected RecordStore rs;
-    protected byte[] curCity = null;
+    protected String curCity = null;
     int total;
     int year;
     protected final String STORE_NAME = "Astromaximum";
@@ -112,11 +112,11 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
             rs = RecordStore.openRecordStore(storeName, false);
         }
         errCode = 1;
-        curCity = rs.getRecord(1);
+        curCity = new String(rs.getRecord(1));
         errCode = 2;
         RecordEnumeration rece = rs.enumerateRecords(this, null, false);
 //#mdebug info
-//#         System.out.println(new String(curCity));
+//#         System.out.println(curCity);
 //#         System.out.println(rece.numRecords());
 //#enddebug
         byte[] nextR;
@@ -244,7 +244,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
             return false;
         }
         String s = extractCityName(b);
-        return s != null && new String(curCity).equals(s);
+        return s != null && curCity.equals(s);
         }
 
 // --Commented out by Inspection START (25.01.09 13:16):

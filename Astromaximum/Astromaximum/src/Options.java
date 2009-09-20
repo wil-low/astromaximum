@@ -63,9 +63,9 @@ class Options extends GeoList implements CommandListener {
         addCommand(new Command(Astromaximum.getstr(108), Command.ITEM, 2)); // Delete city
         optList = new ChoiceGroup(null, Choice.MULTIPLE,
                 sOpt, null);
-        insert(0, layout);
-        insert(0, timeGap);
-        insert(0, optList);
+        append(optList);
+        append(timeGap);
+        append(layout);
 /*
         OK button is disabled (relevant for PocketPC only)
         StringItem strOK = new StringItem("", "OK", Item.BUTTON);
@@ -129,7 +129,7 @@ class Options extends GeoList implements CommandListener {
                     int nextID = rece.nextRecordId();
                     rs.deleteRecord(nextID);
                     //            rs.closeRecordStore();
-                    curCity = oldc.getBytes();
+                    curCity = oldc;
                     //Astromaximum.dataFile.geoposData=initDB(false);
                     init();
                 } catch (Exception ex) {
@@ -169,9 +169,9 @@ class Options extends GeoList implements CommandListener {
                 case 2: // delete city command
                     String sel = cityList.getString(cityList.getSelectedIndex());
                     System.out.println(sel);
-                    if (!sel.equals(new String(curCity)) && cityList.size() > 1) {
-                        oldc = new String(curCity);
-                        curCity = sel.getBytes();
+                    if (!sel.equals(curCity) && cityList.size() > 1) {
+                        oldc = curCity;
+                        curCity = sel;
                         Alert alert = new Alert(Astromaximum.getstr(148),//Confirm
                                 Astromaximum.getstr(108) + " " + sel + "?", null,//Delete_city
                                 AlertType.CONFIRMATION);
@@ -187,15 +187,19 @@ class Options extends GeoList implements CommandListener {
 
     void loadCity (int index) {
         cityList.setSelectedIndex(index, true);
-        curCity = cityList.getString(index).getBytes();
-        try {
-            rs.setRecord(1, curCity, 0, curCity.length);
-//          rs.closeRecordStore();
-            initDB(false);
-            Astromaximum.summary.changeDay(0);
-        } catch (Exception e) {
-            e.printStackTrace();
+        String newCity = cityList.getString(index);
+        if (!newCity.equals(curCity)) {
+            try {
+                curCity = newCity;
+                rs.setRecord(1, curCity.getBytes(), 0, curCity.length());
+    //          rs.closeRecordStore();
+                initDB(false);
+                System.out.println("LoadCity " + curCity + "!");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        Astromaximum.summary.changeDay(0);
     }
     
     /**
@@ -464,7 +468,7 @@ class Options extends GeoList implements CommandListener {
     }
 
     String getCurrentCity(boolean isTrimComma) {
-        String s = cityList.getString(cityList.getSelectedIndex());
+        String s = curCity;
         if (isTrimComma) {
             int pos = s.indexOf(',');
             if (pos > 0)
