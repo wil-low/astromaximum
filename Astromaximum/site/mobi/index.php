@@ -1,6 +1,18 @@
 <?php 
 $EXEC=2;
 $lang='en';
+include_once('config.php');
+include_once('lang.php');
+include_once('dbconnect.php');
+include_once('amtools.php');
+
+$main='home';
+if(isset($_GET['p'])) {
+    $main=$_GET['p'];
+}
+
+detect_mobile();
+
 header ("Content-Type: application/xhtml+xml");
 header ("Cache-Control: max-age=3600");
 $custom_content=''; $subtitle=''; $onload=''; $head='';
@@ -21,14 +33,6 @@ function output_callback($buffer) {
 
 ob_start("output_callback");
 
-include_once('config.php');
-include_once('lang.php');
-include_once('dbconnect.php');
-include_once('amtools.php');
-$main='home';
-if(isset($_GET['p'])) {
-    $main=$_GET['p'];
-}
 sess_start();
 $sess=session_name().'='.session_id();
 
@@ -97,6 +101,7 @@ if(preg_match("/^(demo)$/is", $main)) {
     </div>
     <div id="ftr"><p>
 <?php
+	if (strpos($main, 'unsupported') === false) {
         if($chac!=-1) {
             echo $_SESSION['username'];
             echo " <a href=\"dl/logout.php\">logout</a>";
@@ -105,7 +110,8 @@ if(preg_match("/^(demo)$/is", $main)) {
             echo '* for demo:<br/> login: '.$GLOBALS['amax']['demo_login'].
                 '<br/> pass: '.$GLOBALS['amax']['demo_pass'];
         }
-        ?>
+	}
+?>
     </p></div>
     </body></html>
 

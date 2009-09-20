@@ -25,17 +25,21 @@ function output_callback($buffer)
 	return $buffer;
 }
 
-ob_start("output_callback");
-
+include_once('mobi/config.php');
+include_once('mobi/lang.php');
+include_once('mobi/dbconnect.php');
 include_once('mobi/amtools.php');
+
 $main='home';
 if(isset($_GET['p'])){
 	$main=$_GET['p'];
 }
+
+detect_mobile();
+
+ob_start("output_callback");
+
 sess_start();
-include_once('mobi/config.php');
-include_once('mobi/lang.php');
-include_once('mobi/dbconnect.php');
 lang_load("mobi/html");
 list($chac, $chac_pay)=check_access();
 $user_ok=($chac>=0 and $chac!=1);

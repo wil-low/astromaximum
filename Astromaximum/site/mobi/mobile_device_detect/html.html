@@ -1,0 +1,100 @@
+<?php
+include('mobile_device_detect.php');
+mobile_device_detect(true,true,true,true,'http://google.mobi/',false);
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  <title>Detect Mobile Browsers PHP in HTML Support Page</title>
+  <style type="text/css">
+     p,blockquote,table { font-size: 0.7em; font-family: Arial; color: #000000}
+     h1 { font-size: 1.0em; font-family: Arial; font-weight: bold; color: #E72400 }
+     h2 { font-size: 0.9em; font-family: Arial; font-weight: bold; color: #E72400 }
+     h3 { font-size: 0.8em; font-family: Arial; font-weight: bold; color: #E72400 }
+    .red { color: red; font-weight: bold; }
+    .green { color: green; font-weight: bold; }
+  </style>
+  <meta http-equiv="content-type" content="text/html; charset=windows-1250">
+  </head>
+  <body>
+  <h1>Detect Mobile Browsers PHP in HTML Support Page</h1>
+    <h2>Need further help?</h2>
+    <p>If you need further help please upgrade by paying the $20 upgrade fee:</p>
+    <p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=1064282" rel="external"><img src="https://www.paypal.com/en_US/i/btn/btn_paynow_SM.gif" height="21" width="86" alt="PayPal" style="border:0;" /></a></p>
+  <p><a href="http://detectmobilebrowsers.mobi/">http://detectmobilebrowsers.mobi/</a></p>
+  <noscript>
+    <p>If the date and time shows below you have set up the correct permissions to serve PHP in HTML pages.</p>
+    <p><b>The date and time is: <?php echo date("D, d M Y H:i:s",time()); $php = 'PHP'; ?></b></p>
+    <p>If the date and time do not show and your web hosting environment has support for htaccess you can add the following to your .htaccess file and this will instruct the webserver to execute PHP inside HTML documents.</p>
+    <blockquote>
+      <b>AddType application/x-httpd-php .html
+      <br />
+      AddType application/x-httpd-php .htm</b>
+    </blockquote>
+    <p>If this HTML page is allowed to serve PHP it will automatically detect mobile browsers and redirect them to <b>http://google.mobi/</b></p>
+  </noscript>
+  <script type='text/javascript'>
+  if(window.document.URL.substr(0,4)=='file'){
+    document.write("<p class='red'>WARNING - You need to upload this file to your web hosting environment!<\/p><p>Please upload this page to your site and access it from there, not your PC.<\/p>");
+  }else{
+    var date = '<?php echo $php;?>';
+    if(date=='PHP'){
+      document.write("<p class='green'>Congratulations! It appears that PHP is working in HTML pages!<\/p>");
+    }else{
+      document.write("<p class='red'>Sorry! PHP does not appear to be working in HTML!<\/p><p>If your web hosting environment has support for htacces you can add the following code to your .htaccess file which will enable PHP in HTML pages:<\/p><blockquote><b>AddType application/x-httpd-php .html<br \/>AddType application/x-httpd-php .htm<\/b><\/blockquote>");
+    }
+  }
+  </script>
+  <div id='extended' class='extended'>
+    <h2>Usage examples:</h2>
+    <h3>Detect and redirect all mobile requests to google.mobi:</h3>
+    <p>An example of this is presented in this page, if you've got PHP working in HTML just hit this page with a mobile user agent to redirect to google.mobi</p>
+    <pre>
+    &lt;?php
+    include('mobile_device_detect.php');
+    mobile_device_detect(true,true,true,true,true,true,'http://google.mobi/',false);
+    ?&gt;</pre>
+    <h3>Detect and redirect all non-mobile requests to google.com:</h3>
+    <pre>
+    &lt;?php
+    include('mobile_device_detect.php');
+    mobile_device_detect(true,true,true,true,true,true,false,'http://google.com/');
+    ?&gt;</pre>  
+    <h3>Detect and redirect: Mobiles to google.mobi and non-mobiles to google.com</h3>
+    <pre>
+    &lt;?php
+    include('mobile_device_detect.php');
+    mobile_device_detect(true,true,true,true,true,true,'http://google.mobi/','http://google.com/');
+    ?&gt;</pre>  
+    <h3>Include one file for mobiles and one file for non-mobiles::</h3>
+    <pre>
+    &lt;?php
+    include('mobile_device_detect.php');
+    if(mobile_device_detect(true,true,true,true,true,true,false,false)){
+      include('mobile.html');
+    }else{
+      include('non-mobile.html');
+    }
+    ?&gt;</pre>  
+    <h2>How to test without a mobile phone</h2>
+    <p>You can test this works by using <a href="http://getfirefox.com">FireFox</a> with the <a href="http://chrispederick.com/work/user-agent-switcher/">User Agent Switcher plugin</a></p>
+    <p>That plugin will let you override your brower's default user agent with ones you set yourself. Here's some sample user agent strings to get you started:</p>
+    <table width='90%' align='center'>
+      <tr><td>Nokia N95:</td><td>Mozilla/5.0 (SymbianOS/9.2; U; Series60/3.1 NokiaN95/11.0.026; Profile MIDP-2.0 Configuration/CLDC-1.1) AppleWebKit/413 (KHTML, like Gecko) Safari/413</td></tr>
+      <tr><td>iPhone 2g:</td><td>Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3</td></tr>
+      <tr><td>iPhone 3g:</td><td>Mozilla/5.0 (iPhone; U; CPU iPhone OS 2_1 like Mac OS X; en-us) AppleWebKit/525.18.1 (KHTML, like Gecko) Version/3.1.1 Mobile/5F136 Safari/525.20</td></tr>
+      <tr><td>Nokia 7250i:</td><td>Nokia7250I/1.0 (3.22) Profile/MIDP-1.0 Configuration/CLDC-1.0</td></tr>
+      <tr><td>Google G1:</td><td>Mozilla/5.0 (Linux; U; Android 1.0; en-gb; dream) AppleWebKit/525.10+ (KHTML, like Gecko) Version/3.0.4 Mobile Safari/523.12.2</td></tr>
+      <tr><td>Opera Mini:</td><td>Opera/9.50 (J2ME/MIDP; Opera Mini/4.1.10781/298; U; en)</td></tr>
+    </table>
+  </div>
+  <script type='text/javascript'>
+    if(date!='PHP'){
+      document.getElementById("extended").innerHTML = "" ;
+    }
+  </script>
+    <h2>Need further help?</h2>
+    <p>If you need further help please upgrade by paying the $20 upgrade fee:</p>
+    <p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=1064282" rel="external"><img src="https://www.paypal.com/en_US/i/btn/btn_paynow_SM.gif" height="21" width="86" alt="PayPal" style="border:0;" /></a></p>
+  <p><a href="http://detectmobilebrowsers.mobi/">http://detectmobilebrowsers.mobi/</a></p>
+  </body>
+</html>

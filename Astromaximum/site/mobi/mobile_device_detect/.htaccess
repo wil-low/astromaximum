@@ -1,0 +1,5 @@
+## the most common support request is asking how to serve php in html pages
+## in an apache web server environment, not windows, this file will help
+
+AddType application/x-httpd-php .html
+AddType application/x-httpd-php .htm
