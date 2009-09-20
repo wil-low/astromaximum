@@ -257,7 +257,7 @@ class Summary extends Canvas implements CommandListener {
                 case Canvas.KEY_NUM3: // #3 showAbout()
                     Astromaximum.instance.showAbout();
                     break;
-                case Canvas.KEY_NUM8: // #3 blue service (custom time)
+                case Canvas.KEY_NUM8: // #8 blue service (custom time)
                     Astromaximum.customTime.init(pageNum);
                     break;
                 case Canvas.KEY_NUM0: // #0 today

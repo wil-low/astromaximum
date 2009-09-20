@@ -183,9 +183,11 @@ class Interpreter extends Canvas implements CommandListener {
                     sb = new StringBuffer(s);
                 }
             }
-            for (int i = 0; i < sb.length(); i++) { // do not optimize
-                if (RESERVED_CHARS.indexOf(sb.charAt(i)) >= 0) {
-                    sb.deleteCharAt(i--);
+            if (si.type != Event.EV_HELP) {
+                for (int i = 0; i < sb.length(); i++) { // do not optimize
+                    if (RESERVED_CHARS.indexOf(sb.charAt(i)) >= 0) {
+                        sb.deleteCharAt(i--);
+                    }
                 }
             }
             s = sb.toString();

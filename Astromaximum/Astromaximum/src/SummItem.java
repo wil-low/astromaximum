@@ -346,8 +346,10 @@ final class SummItem extends TimerTask implements RecordFilter {
                         }
                         break;
                     case 5:
-                        for (int i = 0; i < events.length; i++) {
-                            osg.drawString(Interpreter.riseKeys[i], getX(i, XCENTER), top + height - 1,
+                        osg.drawString(Astromaximum.getstr(166), getX(0, XCENTER), top + height - 1,
+                                Graphics.BASELINE | Graphics.HCENTER);
+                        for (int i = 1; i < events.length; i++) {
+                            osg.drawString(Interpreter.riseKeys[i - 1], getX(i, XCENTER), top + height - 1,
                                     Graphics.BASELINE | Graphics.HCENTER);
                         }
                         break;

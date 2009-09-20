@@ -179,20 +179,8 @@
 %163% Версия
 %164% Текущий город:
 %165% Мобильная версия:
+%166% Клавиши
+
 %255% Ru
 //%161% bad
 //%162% good
-
-
-
-?Interpret=Interpret
-?voc=voc
-
-?Searching...=Searching...
-
-
-__degree\==  degree\=
-
-Ready.=Ready.
-
-

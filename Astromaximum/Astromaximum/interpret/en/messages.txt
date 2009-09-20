@@ -179,21 +179,9 @@
 %163% Version
 %164% Current city:
 %165% Mobile version:
+%166% Hotkeys
 
 %255% En
 
 //%161% bad
 //%162% good
-
-
-
-?Interpret=Interpret
-?voc=voc
-
-?Searching...=Searching...
-
-
-__degree\==  degree\=
-
-Ready.=Ready.
-

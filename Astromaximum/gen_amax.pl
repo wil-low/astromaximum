@@ -999,7 +999,7 @@ sub inject_lang{ # lang, isdemo
 			$line=~s/.*?%(.*?)%\s*//is;
 			write_record($1);
 			#		echo($line."\n");
-			if($evt ne 'EV_MSG'){
+			if($evt !~ /(EV_MSG|EV_HELP)/){
 				for(my $i=0; $i<length($RESERVED_CHARS); $i++){
 					my $char='\\'.substr($RESERVED_CHARS,$i,1);
 					my @cnt=$line=~/([$char])/isg;
