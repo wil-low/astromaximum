@@ -147,9 +147,11 @@ function add_file($id, $type){
 }
 
 function insert_order ($order) {
-	$stat="INSERT INTO orders(txn_id, notif_id, status, order_date, order_total, payer_id, " . 
+	$stat=sprintf ("INSERT INTO orders(create_date, txn_id, notif_id, status, order_date, " .
+		"order_total, payer_id, " . 
 		"payer_email, first_name, last_name, street, city, state, zip, country, item_name, ".
-		"paymode, payment_descr, currency) VALUES " .
+		"paymode, payment_descr, currency) VALUES (NOW(), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, " .
+		"%s, %s, %s, %s, %s, %s, %s, %s)",
 		quote_smart ($order['txn_id']),
 		quote_smart ($order['notif_id']),
 		quote_smart ($order['status']),
@@ -170,3 +172,5 @@ function insert_order ($order) {
 		quote_smart ($order['currency']));
 	return mysql_query($stat);	
 }
+?>
+

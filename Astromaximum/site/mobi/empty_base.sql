@@ -376,6 +376,7 @@ CREATE TABLE `orders` (
   `paymode` int(11) default NULL,
   `payment_descr` varchar(30) default NULL,
   `currency` varchar(5) default NULL,
+  `create_date` datetime default NULL,  
   PRIMARY KEY  (`order_id`),
   KEY `payer_email` (`payer_email`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Holds payment transactions' AUTO_INCREMENT=1 ;

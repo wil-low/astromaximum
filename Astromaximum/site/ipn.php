@@ -17,8 +17,12 @@ else {
 
 $data = implode ("\n", $_POST);
 
-//$data = file_get_contents ("mobi/paypal/shareit.xml");
-//$system = 'Plimus';
+/* 
+//test
+$data = file_get_contents ("mobi/paypal/shareit.xml");
+echo($data);
+$system = 'ShareIt';
+*/
 
 $body = "IPN $system received:\n\n" . $data;
 switch ($system) {
@@ -52,10 +56,10 @@ switch ($system) {
 
 		$shareit_tags = array(
 			'Purchase/PurchaseId' => 'txn_id',
-			'PurchaseItem/NotificationNo' => 'notif_id', # or RunningNo ?
+			'Purchase/PurchaseItem/NotificationNo' => 'notif_id', # or RunningNo ?
 			'Purchase/PaymentStatus' => 'status',
 			'Purchase/PurchaseDate' => 'order_date',
-			'PurchaseItem/ProductSinglePrice' => 'order_total',
+			'Purchase/PurchaseItem/ProductSinglePrice' => 'order_total',
 		#	'' => 'payer_id',
 			'Purchase/CustomerData/BillingContact/Email' => 'payer_email',
 			'Purchase/CustomerData/BillingContact/FirstName' => 'first_name',
@@ -65,7 +69,7 @@ switch ($system) {
 			'Purchase/CustomerData/BillingContact/Address/State' => 'state',
 			'Purchase/CustomerData/BillingContact/Address/PostalCode' => 'zip',
 			'Purchase/CustomerData/BillingContact/Address/Country' => 'country',
-			'PurchaseItem/YourProductId' => 'item_name',
+			'Purchase/PurchaseItem/ProductName' => 'item_name',
 		#	'' => 'paymode',
 			'Purchase/CustomerData/CustomerPaymentData/PaymentMethod' => 'payment_descr',
 			'Purchase/CustomerData/CustomerPaymentData/Currency' => 'currency',
@@ -73,6 +77,7 @@ switch ($system) {
 		$xml = simplexml_load_string($data);
 		$xml = $xml->OrderNotification;
 		$msg = from_xml ($xml, $shareit_tags);
+		$order_info['payer_id'] = 'N/A';
 		break;
 }
 
@@ -116,13 +121,13 @@ function ipn_log ($title, $text) {
 	// Write to log
 	global $ipn_log_file;
 	$fp=fopen($ipn_log_file,'a');
-	fwrite($fp, '---- ' . $title . " ----\n" . $text . "\n\n"); 
+	fwrite($fp, "\n---- " . $title . ' ' . strftime('%Y-%m-%d %H:%M:%S') . " ----\n" . $text . "\n\n"); 
 	fclose($fp);  // close file
 	event_send ($title, $text);
 }
 
 function ipn_dump ($arr) {
-	$result = '';
+	$result = "\n";
 	foreach ($arr as $key => $value) {
 		$result .= "$key => '$value'\n";
 	}
