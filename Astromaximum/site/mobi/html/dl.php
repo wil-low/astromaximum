@@ -66,7 +66,7 @@ EOF;
 $step=1;
 $max_cities=5;
 $table_vsize=18;
-$current_year=$GLOBALS['amax']['year'];
+$current_year=$GLOBALS['amax']['year'] + 1;
 if($chac==-1){
 	reg_warning($i18['PAGE_DLCIT']);
 	return;
