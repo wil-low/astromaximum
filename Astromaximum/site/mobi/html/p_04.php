@@ -1,9 +1,9 @@
 <?php
-    $title='Банковский перевод - OTP Bank';
+    $title=$i18['PAYMENT_04'];
     $custom_content='-- примечания --';
 ?>
 <table style="font-size:12px;">
-    <tr height="35px"><td colspan="2"><b>Оплата банковским переводом - OTP Bank:</b></td></tr>
+    <tr height="35px"><td colspan="2"><b><?php echo $title ?></b></td></tr>
 
     <tr><td class="bank">гривня</td><td>&nbsp;</td></tr>
 
