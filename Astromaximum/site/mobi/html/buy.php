@@ -13,7 +13,7 @@ $msg=$i18['REGFORM_REQF'];
 
 $email=$email2=$nick=$paymode=$model='';
 
-if($chac==3){ // unpaid
+if($chac==-1 or $chac == 1){ // unpaid
     show_payment_instructions(0);
     echo '<hr><a href="contacts/m=paid">'.$i18['CONTACTS_00'].'</a>';
     return;

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<e5Notification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:noNamespaceSchemaLocation="http://xml.element5.com/2.0/notification.xsd"> 
+  <OrderNotification> 
+    <Purchase> 
+      <PurchaseId>137693001</PurchaseId> 
+      <PurchaseDate>2007-07-24T15:24:40</PurchaseDate> 
+      <PurchaseOrigin>Other</PurchaseOrigin> 
+      <PaymentCompleteDate>2007-07-24T15:33:42</PaymentCompleteDate> 
+      <PaymentStatus>complete</PaymentStatus> 
+      <SequentialInvoiceNo>e5-DE-2007-00001091596</SequentialInvoiceNo> 
+      <CustomerData> 
+        <BillingContact> 
+          <LastName>Stange</LastName> 
+          <FirstName>Karsten</FirstName> 
+          <Email>stange@element5.de</Email> 
+          <Address> 
+            <Street1>Vogelsanger Str. 78</Street1> 
+            <City>Koln</City> 
+            <PostalCode>50823</PostalCode> 
+            <CountryId>DE</CountryId> 
+            <Country>Germany</Country> 
+          </Address> 
+        </BillingContact> 
+        <DeliveryContact> 
+          <LastName>Stange</LastName> 
+          <FirstName>Karsten</FirstName> 
+          <Email>stange@element5.de</Email> 
+          <Address> 
+            <Street1>Vogelsanger Str. 78</Street1> 
+            <City>Koln</City>
+            <PostalCode>50823</PostalCode> 
+            <CountryId>DE</CountryId> 
+            <Country>Germany</Country> 
+          </Address> 
+        </DeliveryContact> 
+        <CustomerPaymentData> 
+          <PaymentMethod>Visa</PaymentMethod> 
+          <Currency>EUR</Currency> 
+        </CustomerPaymentData> 
+        <Language>English</Language> 
+        <SubscribeNewsletter>true</SubscribeNewsletter> 
+      </CustomerData> 
+      <PurchaseItem> 
+        <RunningNo>1</RunningNo> 
+        <ProductId>300170245</ProductId> 
+        <ProductName>QA Product XML mails</ProductName> 
+        <NotificationNo>6</NotificationNo> 
+        <DeliveryType>Electronically</DeliveryType> 
+        <Currency>EUR</Currency> 
+        <Quantity>1</Quantity> 
+        <ProductSinglePrice>10.00</ProductSinglePrice> 
+        <VatPct>19.00</VatPct> 
+        <Discount>0.00</Discount> 
+     
+		<ExtendedDownloadPrice>0.00</ExtendedDownloadPrice> 
+        <ManuelOrderPrice>0.00</ManuelOrderPrice> 
+        <ShippingPrice>0.00</ShippingPrice> 
+        <ShippingVatPct>0.00</ShippingVatPct> 
+      </PurchaseItem> 
+    </Purchase> 
+  </OrderNotification> 
+</e5Notification>
+			
