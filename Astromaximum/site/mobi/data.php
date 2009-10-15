@@ -52,8 +52,11 @@ if(true /*|| check_access()*/){
 	}
 	header("Content-Length: $clen");
 	$content='Content-Disposition: attachment; filename="'.$ye.'_'.$PREFIX.'-'.$idd.'.ja'.$type.'"';
-	header($content, false);
-	echo $data;
+	header($content);
+	header('Content-Transfer-Encoding: binary');
+	ob_clean();
+	flush();
+	readfile($fn);
 }
 
 function data_gone(){
