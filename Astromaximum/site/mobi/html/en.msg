@@ -15,12 +15,12 @@ LOGIN=login
 PWD=password
 TEST=Compatibility test
 AMAX_LOGO=astrological calendar for mobile devices
-DEMO=GET DEMO
+DEMO=DOWNLOAD DEMO
 CITY_BUTTON=DOWNLOAD<br/>CITIES
 TRIAL=DOWNLOAD<br/>CALENDAR
 _CITIES=cities
 CITY_MODULE=city data
-ORDER=BUY $%s
+ORDER=BUY %s
 LICENSE=License agreement
 DB=Cities database
 DB_ACCESS=Please log in to access the cities database.
@@ -175,26 +175,31 @@ REGFE_EM_NOMATCH=E-mail addresses do not match
 REGFE_EM_BAD=Invalid e-mail address
 REGFE_EM_EXISTS=E-mail address <b>%s</b> is already registered
 
+PAYLINK=Make a payment:
+
 PAYMENT_02=PayPal
-PAYMENT_04=Bank transfer - OTP bank
-PAYMENT_05=Bank transfer - Raiffeisen bank
+PAYMENT_04=Bank transfer
 PAYMENT_06=Plimus
 PAYMENT_07=share-it!
 
 PAYDESC_02=PayPal description
 PAYDESC_04=OTP bank description
 PAYDESC_05=Raiffeisen bank description
-PAYDESC_06=Plimus description
-PAYDESC_07=share-it! description
+PAYDESC_06=Plimus accepts the following payment types:<ul><li>Credit cards</li><li>PayPal</li><li>Google Checkout</li><li>Bank Transfer, Wire Order, E-Check, or using credit card to order via phone or fax</li></ul>
+PAYDESC_07=share-it! accepts the following payment types:<ul><li>Credit cards: Visa, MasterCard, American Express, JCB, Diner's Club</li><li>PayPal</li><li>WebMoney</li><li>Debit cards: Maestro/Solo (UK)</li><li>Online wire transfers: giropay (Germany), iDEAL (Netherlands), IPS (China)</li><li>and wire transfers, checks, money orders, cash, purchase orders, direct debit</li></ul>
 
 CONFIRM_THANKS=Dear <b>%s!</b><br/><br/><span class="fine">Thank you for confirming your email address <b>%s</b></span>.<br/><br/>Your login and password have been sent to your e-mail address. Please log in to Astromaximum site and make the payment.
 
 MISSING_FIELD=Field missing: %s
-CONTACTS_00=Payment notification
+CONTACTS_00=Notify us about completed payment
 CONTACTS_01=Trouble
 
 BILL_NAME=First and Last name
 BILL_DATE=Date of payment
 BILL_NUM=Bill number
+BILL_EMAIL=E-mail
+BILL_USERNAME=Username
+
+TIT_PAYMENT_SEL=Select payment system
 
 MOBI_YEAR_H=Select year

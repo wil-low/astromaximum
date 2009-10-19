@@ -6,6 +6,8 @@ if($chac==-1 or $chac==1){
 	return;
 }
 */
+$META_TITLE=$i18['TIT_PAYMENT_SEL'];
+
 $current_year=$GLOBALS['amax']['year'];
 $uri=htmlentities($_SERVER['REQUEST_URI']);
 
@@ -13,11 +15,13 @@ $msg=$i18['REGFORM_REQF'];
 
 $email=$email2=$nick=$paymode=$model='';
 
-if($chac==-1 or $chac == 1){ // unpaid
+if($chac==-1 or $chac == 1 or $chac == 3){ // unpaid
+	echo '<h4>'.$META_TITLE.'</h4><ul>';
     foreach($GLOBALS['amax']['paymodes'] as $key){
         $key2=sprintf('%02d', $key);
-        echo '<li><a class="" href="p_'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a></li>\n";
+        echo '<li><a href="p_'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a><br/><br/></li>\n";
     }
+	echo '</ul>';
     return;
 }
 
@@ -28,65 +32,6 @@ function alert($str){
 
 function alert2($str){
     return '<span class="alert">'.$str.'</span>';
-}
-
-function present($key){
-    return isset($_POST[$key]) && strlen(trim($_POST[$key]))>0;
-}
-
-if(present('email1') && present('email2') && present('nick') && present('p_captcha')
-    && present('agree') && strcmp($_POST['agree'], 'on') == 0){ 
-
-    $email=substr($_POST['email1'], 0, 50);
-    $email2=substr($_POST['email2'], 0, 50);
-    $realname=substr($_POST['nick'], 0, 50);
-
-    do{    
-        if(strcmp($email, $email2) != 0){
-            $msg=alert('REGFE_EM_NOMATCH'); break;
-        }
-        if(!check_email_address($email)){
-            $msg=alert('REGFE_EM_BAD'); break;
-        }
-      
-        $stat=sprintf("SELECT id FROM customers where email=%s LIMIT 1",
-            quote_smart($email));
-        $sth=mysql_query($stat);
-        if(!$sth){
-            echo mysql_error().": >$stat<";
-        }
-        if(mysql_num_rows($sth)==1){
-            $msg=alert2(sprintf($i18['REGFE_EM_EXISTS'], $email)); break;
-        }
-        if(!is_captcha($_POST['p_captcha'])){
-            $msg=alert('CAPTCHA_WRONG'); break;
-        }
-// create new customer with key in place of password
-        $passkey=$realname.$model.date("l dS of F Y h:i:s A").mt_rand();
-        $passkey=pwd_convert2(pwd_convert1($email, $passkey));
-        
-        $stat=sprintf("INSERT INTO customers (realname,email,hash,subscr_date,".
-            "paymode_id,active,dlcount0,dlcount1,dlcount2) values ".
-            "(%s,%s,%s,NOW(),%d,0,0,0,0)",
-            quote_smart($realname),
-            quote_smart($email),
-            quote_smart($passkey),
-            2
-        );
-        if(!mysql_query($stat)){
-            echo /*$stat . " " .*/ mysql_error(); break;
-        }
-        $mail=confirmation_send($email, $realname, $passkey);
-        if($mail->ErrorInfo){
-            echo 'Error: '.$mail->ErrorInfo;
-        }
-        else{
-            echo $i18['INSTR_SENT'];
-//            show_payment_instructions($paymode);
-        }
-        return;
-        
-    }while(0);
 }
 
 if($chac!=-1 and $chac!=1){

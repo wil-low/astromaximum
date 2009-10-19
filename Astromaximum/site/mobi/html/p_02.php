@@ -1,5 +1,5 @@
 <?php
-$title='PayPal';
+$META_TITLE='PayPal';
 $custom_content='-- примечания --';
         
 $cur_year=$GLOBALS['amax']['year'];

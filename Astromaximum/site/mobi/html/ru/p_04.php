@@ -1,11 +1,10 @@
 <?php
-    $title=$i18['PAYMENT_04'];
-    $custom_content='-- примечания --';
+    $META_TITLE=$i18['PAYMENT_04'];
 ?>
 <table style="font-size:12px;">
-    <tr height="35px"><td colspan="2"><b><?php echo $title ?></b></td></tr>
+    <tr height="35px"><td colspan="2"><b><?php echo $META_TITLE ?></b></td></tr>
 
-    <tr><td class="bank">гривня</td><td>&nbsp;</td></tr>
+    <tr><td class="bank" colspan="2">Українська гривня</td><td>&nbsp;</td></tr>
 
     <tr><td width="180px">Отримувач</td>
         <td>Місяць Василь Миколайович</td></tr>
@@ -18,7 +17,7 @@
     <tr><td>Рахунок №</td>
         <td>26207301508750</td></tr>
         
-    <tr><td class="bank">US dollar</td><td>&nbsp;</td></tr>
+    <tr><td class="bank" colspan="2">U.S. dollar, Euro, Russian ruble</td><td>&nbsp;</td></tr>
 
     <tr><td>Beneficiary</td>
         <td>Vasyl' Misiats'</td></tr>
@@ -31,5 +30,4 @@
         <td>Raiffeisen Zentralbank Österreich AG, Vienna, Austria<br/>
             SWIFT: RZBAATWW</td></tr>
 </table>
-
 <hr><a href="contacts/m=paid"><?php echo $i18['CONTACTS_00'] ?></a>

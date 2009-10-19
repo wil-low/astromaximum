@@ -20,7 +20,7 @@ CITY_BUTTON=ЗАГРУЗИТЬ<br/>ГОРОДА
 TRIAL=ЗАГРУЗИТЬ<br/>КАЛЕНДАРЬ
 _CITIES=городов
 CITY_MODULE=модуль городов
-ORDER=КУПИТЬ %s $
+ORDER=КУПИТЬ %s
 LICENSE=Лицензия
 DB=База городов
 DB_ACCESS=Зарегистрируйтесь для доступа к базе городов.
@@ -175,17 +175,17 @@ REGFE_EM_NOMATCH=Адреса почты не совпадают
 REGFE_EM_BAD=Недопустимый электронный адрес
 REGFE_EM_EXISTS=Пользователь с адресом <b>%s</b> уже зарегистрирован
 
+PAYLINK=Перейти к оплате:
 PAYMENT_02=PayPal
-PAYMENT_04=Банковский перевод - OTP bank
-PAYMENT_05=Банковский перевод - Raiffeisen bank
+PAYMENT_04=Банковский перевод
 PAYMENT_06=Plimus
 PAYMENT_07=share-it!
 
 PAYDESC_02=PayPal description
 PAYDESC_04=OTP bank description
 PAYDESC_05=Raiffeisen bank description
-PAYDESC_06=Plimus description
-PAYDESC_07=share-it! description
+PAYDESC_06=Plimus принимает следующие способы оплаты:<ul><li>кредитные карты</li><li>PayPal</li><li>Google Checkout</li><li>а также банковские переводы, Wire Order, электронные чеки или заказ по телефону или факсу с использованием кредитной карты</li></ul>
+PAYDESC_07=share-it! принимает следующие способы оплаты:<ul><li>кредитные карты: Visa, MasterCard, American Express, JCB, Diners Club</li><li>PayPal</li><li>WebMoney</li><li>дебетовые карты: Maestro/Solo (Великобритания)</li><li>онлайн-переводы: giropay (Германия), iDEAL (Нидерланды), IPS (Китай)</li><li>а также денежные переводы, чеки, платежные поручения, оплату наличными</li></ul>
 
 CONFIRM_THANKS=Уважаемый(ая) <b>%s</b>!<br/><br/><span class="fine">Спасибо за подтверждение Вашего электронного адреса <b>%s</b></span>.<br/><br/>На этот адрес Вам высланы коды доступа. Зайдите на сайт Astromaximum, используя полученные логин и пароль, и произведите оплату.
 
@@ -196,5 +196,8 @@ CONTACTS_01=Проблема
 BILL_NAME=Фамилия и имя
 BILL_DATE=Дата оплаты
 BILL_NUM=Номер счета
+BILL_EMAIL=E-mail
+BILL_USERNAME=Имя пользователя
 
+TIT_PAYMENT_SEL=Выбор системы оплаты
 MOBI_YEAR_H=Выберите год

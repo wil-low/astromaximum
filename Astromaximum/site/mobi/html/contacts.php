@@ -11,7 +11,8 @@ if (!isset($cfields[$mode]))
 $sess=session_name().'='.session_id();
 $agree=dload_prompt(sprintf($i18['CONFIRM_TRIAL'], $lang, $lang), false);
 $arr = $cfields[$mode];
-$field_count = count ($arr);
+$field_count = count ($arr['captions']);
+
 echo "<h4>{$arr['header']}</h4>\n";
 if (isset ($_POST['agree']) && strcmp ($_POST['agree'], 'on') == 0) {
 	$msg = ''; $content = '';
@@ -38,6 +39,7 @@ if (isset ($_POST['agree']) && strcmp ($_POST['agree'], 'on') == 0) {
 		return;
 	}
 }
+
 $out = '<form id="regform" action="'.$_SERVER['REQUEST_URI'].'" method="post">'."\n<table>";
 for ($i = 0; $i < $field_count; ++$i) {
 	$out .= sprintf('<tr><td>%s</td><td><input type="text" name="f%02d"/></td></tr>', 

@@ -156,9 +156,8 @@ print_menu('citylist', 'MNU_CITYLIST', 1);
 print_menu('dl', 'MNU_DLCIT', 1);
 print_menu('contacts', 'MNU_CONTACTS', 0);
 //echo "<br/>";print_r($_REQUEST);
-$btn1=$i18['DEMO']."<br/>+ ".$i18['CITY_MODULE']; $btn1_link="/$lang/demo";
-$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['price'])."<br/> + {$GLOBALS['amax']['city_count']} ".
-	$i18['_CITIES'];
+$btn1=$i18['DEMO'] . '<br/>' . ($GLOBALS['amax']['year'] - 1); $btn1_link="/$lang/demo";
+$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['year']."<br/> + {$i18['CITY_MODULE']}");
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 
@@ -203,8 +202,8 @@ FRM;
 ?> 
 </div>
 <?php 
-echo show_big_button('demo', $btn1, $btn1_link, $btn1_link);
-echo show_big_button('buy', $btn2, 'buy', "/$lang/buy");
+echo show_big_button('demo', $btn1, $btn1_link, $btn1_link, false);
+echo show_big_button('buy', $btn2, '/^(buy|p_\d\d)$/is', "/$lang/buy", true);
 ?>
 <div id="leftColumn">
 <?php	echo $session_prompt ?>
@@ -270,24 +269,30 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 //--></script><!--/LiveInternet-->
 </div>
 <p>Copyright &copy;
-2007-2008
+2007-2009
 S&amp;W Axis. All rights reserved.   &nbsp;&nbsp;    <a href="http://goglus.com">design goglus</a></p></div>
-<!--http-accept-language '<?php echo $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?>'-->
 </body>
 </html>
 
 <?php
 ob_end_flush();
 
-function show_big_button($id, $label, $check_page, $link_page){
+function show_big_button($id, $label, $check_page, $link_page, $is_regexp){
 	global $main, $lang_;
 	$style='';
-	if(strcmp($main, $check_page)){
+	$enable = 0;
+	if ($is_regexp) {
+		if (!preg_match($check_page, $main))
+			$enable = 1;
+	}
+	else {
+		if(strcmp($main, $check_page))
+			$enable = 1;
+	}
+	if ($enable)
 		$label="<a href=\"$link_page\">".$label.'</a>';
-	}
-	else{
+	else
 		$style=' style="color:rgb(133,195,224)"';
-	}
 	return "<div id=\"$id\"$style>$label</div>\n";
 }
 

@@ -1,4 +1,5 @@
 <?php
+$META_TITLE='share-it!';
 $cur_year=$GLOBALS['amax']['year'];
 $price=$GLOBALS['amax']['price'];
 
@@ -13,7 +14,9 @@ $svc_url='http://www.shareit.com/product.html?productid=' . $products[$lang] .
 	'&backlink=http%3A%2F%2Fastromaximum.com&pc=4995y&currencies=USD&nolselection=1';
 
 echo <<< EOF
-<h4>share-it</h4>
-<a href="$svc_url" target="_blank" title="Trusted and Secure Online Payment Processing via share-it e-commerce partner"><img src="http://a124.e.akamai.net/f/124/5462/2d/images.element5.com/shareit/images/checkout_logo_shi.gif" border="0"></a>
+<h4>share-it!</h4>
+{$i18['PAYDESC_07']}
+<hr><p>{$i18['PAYLINK']}<br/><br/>
+<a href="$svc_url" target="_blank" title="Trusted and Secure Online Payment Processing via share-it e-commerce partner"><img src="http://a124.e.akamai.net/f/124/5462/2d/images.element5.com/shareit/images/checkout_logo_shi.gif" border="0"></a></p>
 EOF;
 ?>
