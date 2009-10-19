@@ -1,11 +1,11 @@
 <?php 
 if(!isset($EXEC)) die("Access restricted");
-
+/*
 if($chac==-1 or $chac==1){
 	echo '<h3>Page not found</h3>';
 	return;
 }
-
+*/
 $current_year=$GLOBALS['amax']['year'];
 $uri=htmlentities($_SERVER['REQUEST_URI']);
 
@@ -14,8 +14,10 @@ $msg=$i18['REGFORM_REQF'];
 $email=$email2=$nick=$paymode=$model='';
 
 if($chac==-1 or $chac == 1){ // unpaid
-    show_payment_instructions(0);
-    echo '<hr><a href="contacts/m=paid">'.$i18['CONTACTS_00'].'</a>';
+    foreach($GLOBALS['amax']['paymodes'] as $key){
+        $key2=sprintf('%02d', $key);
+        echo '<li><a class="" href="p_'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a></li>\n";
+    }
     return;
 }
 

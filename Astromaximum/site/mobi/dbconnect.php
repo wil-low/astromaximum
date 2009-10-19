@@ -173,4 +173,3 @@ function insert_order ($order) {
 	return mysql_query($stat);	
 }
 ?>
-

@@ -501,9 +501,10 @@ function show_payment_instructions($payment_id){ // print payment page
 	
     foreach($GLOBALS['amax']['paymodes'] as $key){
         $key2=sprintf('%02d', $key);
-        $tabs.='<li><a class="" href="#a'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a></li>\n";
+        $tabs.='<li><a class="" href="p_'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a></li>\n";
     }
     $tabs.='</ul>';
+/*	
     $META_HEAD_ADD = <<< EOF
 <script type="text/javascript" src="/jquery-1.2.6.min.js"></script>
 <script type="text/javascript">
@@ -537,6 +538,7 @@ EOF;
         echo "</div>\n";
     }
     echo '</div>';
+	*/
 }
 
 function fill_input_str($id, $text){

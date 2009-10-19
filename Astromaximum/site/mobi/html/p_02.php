@@ -1,8 +1,6 @@
 <?php
-    $title='PayPal';
-    $custom_content='-- примечания --';
-    
-if(!isset($EXEC)){ // don't show PayPal button when in popup
+$title='PayPal';
+$custom_content='-- примечания --';
         
 $cur_year=$GLOBALS['amax']['year'];
 $price=$GLOBALS['amax']['price'];
@@ -33,9 +31,4 @@ echo <<< EOF
 	alt="PayPal - The safer, easier way to pay online!"/>
 </form>
 EOF;
-
-}else{ ?>
-
-PayPal instruction
-
-<?php } ?>
+?>

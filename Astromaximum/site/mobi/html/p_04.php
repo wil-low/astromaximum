@@ -31,3 +31,5 @@
         <td>Raiffeisen Zentralbank Österreich AG, Vienna, Austria<br/>
             SWIFT: RZBAATWW</td></tr>
 </table>
+
+<hr><a href="contacts/m=paid"><?php echo $i18['CONTACTS_00'] ?></a>

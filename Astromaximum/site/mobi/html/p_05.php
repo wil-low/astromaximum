@@ -1,7 +1,3 @@
-<?php
-    $title='Банковский перевод - Raiffeisen Bank Aval';
-    $custom_content='-- примечания --';
-?>
 <table style="font-size:12px">
     <tr height="35px"><td colspan="2"><b>Оплата банковским переводом - Raiffeisen Bank Aval:</b></td></tr>
 
@@ -31,3 +27,5 @@
         <td>American Express Bank Ltd., New York, USA<br/>
             SWIFT: AEIBUS33</td></tr>
 </table>
+
+<hr><a href="contacts/m=paid"><?php echo $i18['CONTACTS_00'] ?></a>

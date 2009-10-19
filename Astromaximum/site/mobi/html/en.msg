@@ -181,6 +181,12 @@ PAYMENT_05=Bank transfer - Raiffeisen bank
 PAYMENT_06=Plimus
 PAYMENT_07=share-it!
 
+PAYDESC_02=PayPal description
+PAYDESC_04=OTP bank description
+PAYDESC_05=Raiffeisen bank description
+PAYDESC_06=Plimus description
+PAYDESC_07=share-it! description
+
 CONFIRM_THANKS=Dear <b>%s!</b><br/><br/><span class="fine">Thank you for confirming your email address <b>%s</b></span>.<br/><br/>Your login and password have been sent to your e-mail address. Please log in to Astromaximum site and make the payment.
 
 MISSING_FIELD=Field missing: %s

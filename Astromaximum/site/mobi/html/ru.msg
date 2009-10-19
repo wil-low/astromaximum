@@ -181,6 +181,12 @@ PAYMENT_05=Банковский перевод - Raiffeisen bank
 PAYMENT_06=Plimus
 PAYMENT_07=share-it!
 
+PAYDESC_02=PayPal description
+PAYDESC_04=OTP bank description
+PAYDESC_05=Raiffeisen bank description
+PAYDESC_06=Plimus description
+PAYDESC_07=share-it! description
+
 CONFIRM_THANKS=Уважаемый(ая) <b>%s</b>!<br/><br/><span class="fine">Спасибо за подтверждение Вашего электронного адреса <b>%s</b></span>.<br/><br/>На этот адрес Вам высланы коды доступа. Зайдите на сайт Astromaximum, используя полученные логин и пароль, и произведите оплату.
 
 MISSING_FIELD=Отсутствует поле: %s
