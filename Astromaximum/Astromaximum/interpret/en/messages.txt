@@ -179,7 +179,7 @@
 %163% Version
 %164% Current city:
 %165% Mobile version:
-%166% Hotkeys
+%166% Keys
 
 %255% En
 
