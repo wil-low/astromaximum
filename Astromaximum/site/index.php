@@ -150,7 +150,8 @@ if (document.images){
 print_menu('home', 'MNU_HOME', 1);
 print_menu('man0', 'MNU_MAN', 1);
 echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . "start\">wiki</a> | ";
-print_menu('scr', 'MNU_SCRSHOTS', 1);
+echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . 
+	"screen\" target=\"_blank\">{$i18['MNU_SCRSHOTS']}</a> | ";
 print_menu('buy', 'MNU_BUY', 1);
 print_menu('citylist', 'MNU_CITYLIST', 1);
 print_menu('dl', 'MNU_DLCIT', 1);
