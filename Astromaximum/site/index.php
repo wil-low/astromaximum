@@ -180,10 +180,12 @@ if($user_ok){
 	if ($try_count[0] != 0)
 		$btn2=$i18['TRIAL'];
 }
+/*
 if($chac==1 || $chac==3){
 	$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['price'])."<br/> + {$GLOBALS['amax']['city_count']} ".
 	$i18['_CITIES'];
 }
+*/
 if($chac!=-1){
 	$session_prompt=<<<SP1
 <p>{$i18['WELCOME']}, <b>{$_SESSION['username']}</b> ! </p>
@@ -221,10 +223,16 @@ if(preg_match("/^man\d$/is", $main)){
 }
 else{
     if($show_topics){
-        echo "<h5>".$i18['THEME_0']."</h5>";
-        for($i=1; $i<=9; $i++){
-            echo "<p>".anchor("/$lang/0_$i")."<img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18["THEME_$i"]."</b></a></p>\n";
-        }
+		echo <<<PROD_INFO
+<div id="productInfo">
+<p><b>Astromaximum {$GLOBALS['amax']['year']}</b></p>
+<p><b>+ {$GLOBALS['amax']['city_count']} {$i18['PRODINFO_CITY']}</b></p>
+<p>{$i18['PRODINFO_VERSION']} {$GLOBALS['amax']['version']}<br/>
+{$i18['PRODINFO_DATE']} {$GLOBALS['amax']['release_date']}</p>
+<p><b>{$i18['PRODINFO_PRICE']} \${$GLOBALS['amax']['price']}</b></p>
+</div>
+<img class="main_scr" src="http://astromaximum.com/wiki/lib/exe/fetch.php/ts_3.gif"/>
+PROD_INFO;
     }
 }
 ?>
@@ -268,6 +276,12 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 "' alt='' title='LiveInternet counter' "+
 "border='0' width='88' height='15'><\/a>")
 //--></script><!--/LiveInternet-->
+</div>
+<div id="contact">
+<p><b>S&amp;W Axis</b></p>
+<p>Kiev, Ukraine</p>
+<img src="/i/email.png"/>
+<p>Skype ID: astromaximum</p>
 </div>
 <p>Copyright &copy;
 2007-2009

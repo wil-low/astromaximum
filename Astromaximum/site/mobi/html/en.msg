@@ -200,6 +200,11 @@ BILL_NUM=Bill number
 BILL_EMAIL=E-mail
 BILL_USERNAME=Username
 
+PRODINFO_CITY=city data
+PRODINFO_VERSION=Version
+PRODINFO_DATE=Release date
+PRODINFO_PRICE=Price
+
 TIT_PAYMENT_SEL=Select payment system
 
 MOBI_YEAR_H=Select year

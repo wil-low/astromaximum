@@ -182,7 +182,7 @@ ul {
 #buy {
 	position: absolute;
 	top: 197px;
-	left: 676px;
+	left: 680px;
 	width: 306px;
 	height: 91px;
 	background: url('/i/button.jpg') no-repeat center center;
@@ -217,6 +217,13 @@ ul {
 	float: left;
 	margin: 7px 7px 7px 0px;
 }
+
+#leftColumn .main_scr {
+	width: 100%;
+	height: 100%;
+	padding: 10px 0px 0px 0px;
+}
+
 #leftColumn p a b {
 	font-size: 11px;
 	font-weight: bold;
@@ -225,6 +232,21 @@ ul {
 #leftColumn p a:hover b {
 	color: #606060;
 }
+
+#productInfo {
+	border: 2px solid #97DD2E;
+	margin: 28px 0px 28px 0px; 
+}
+
+#productInfo p {
+	margin: 8px;
+	font-size: 13px;
+}
+
+#productInfo b {
+	font-weight: bold;
+}
+
 .gogo {
 	padding: 11px 0px 0px 33px;
 }
@@ -235,6 +257,8 @@ ul {
 #content {
 	margin-left: 360px;
 	padding-right: 18px;
+	width: 618px;
+	text-align: justify;
 }
 #usredit input {
 	width: auto;
@@ -284,6 +308,18 @@ ul {
 	margin-top: 8px;
 	margin-left: 8px;
 	text-align: left;
+}
+
+#contact {
+	position: absolute;
+	margin-left: 360px;
+	margin-top: 8px;
+	width: 288px;
+	text-align: left;
+}
+
+#contact p {
+	margin: 0px 0px 0 0;
 }
 .bank {
     font-size:10px;

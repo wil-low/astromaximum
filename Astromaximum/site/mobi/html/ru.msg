@@ -199,5 +199,10 @@ BILL_NUM=Номер счета
 BILL_EMAIL=E-mail
 BILL_USERNAME=Имя пользователя
 
+PRODINFO_CITY=городов
+PRODINFO_VERSION=Версия
+PRODINFO_DATE=Дата выпуска
+PRODINFO_PRICE=Цена
+
 TIT_PAYMENT_SEL=Выбор системы оплаты
 MOBI_YEAR_H=Выберите год
