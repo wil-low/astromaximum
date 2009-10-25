@@ -4,7 +4,7 @@
 <table style="font-size:12px;">
     <tr height="35px"><td colspan="2"><b><?php echo $META_TITLE ?></b></td></tr>
 
-    <tr><td class="bank" colspan="2">Українська гривня</td><td>&nbsp;</td></tr>
+    <tr><td class="bank" colspan="2">Українська гривня, Российский рубль</td><td>&nbsp;</td></tr>
 
     <tr><td width="180px">Отримувач</td>
         <td>Місяць Василь Миколайович</td></tr>
@@ -17,7 +17,7 @@
     <tr><td>Рахунок №</td>
         <td>26207301508750</td></tr>
         
-    <tr><td class="bank" colspan="2">U.S. dollar, Euro, Russian ruble</td><td>&nbsp;</td></tr>
+    <tr><td class="bank" colspan="2">U.S. dollar, Euro</td><td>&nbsp;</td></tr>
 
     <tr><td>Beneficiary</td>
         <td>Vasyl' Misiats'</td></tr>
