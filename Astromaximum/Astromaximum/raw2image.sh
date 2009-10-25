@@ -14,7 +14,7 @@ cd $IMG_PATH
 #convert 090101-4.png -fill "#8699ac" -draw 'rectangle 1,226,140,238' -fill white -draw 'gravity SouthWest text 5,0 Kiev' 090101-4-1.png
 #display 090101-4-1.png
 #exit
-dirs=`find . -type d -maxdepth 1`
+dirs=`/d/prj/msys/1.0/bin/find . -type d -maxdepth 1`
 for i in $dirs; do
     cd $IMG_PATH/$i;
     echo "Converting $PWD";
@@ -22,7 +22,7 @@ for i in $dirs; do
     cd ..;
 done
 
-find . -name *.raw -exec rm '{}' \;
+/d/prj/msys/1.0/bin/find . -name *.raw -exec rm '{}' \;
 
 cd $IMG_PATH
 dest_arc=$DEST_PATH/informers_${YEAR}_${LNG}.tgz

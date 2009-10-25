@@ -61,8 +61,10 @@ class Summary extends Canvas implements CommandListener {
     //  private boolean firstRun=true;
     static boolean isCurrentDay;
     static boolean isShowCustom = false;
+    
     private static final long DELAY = 15 * 1000;
-    private static final long LOGO_DELAY = 200;
+    static final long LOGO_DELAY = 200;
+
     private static final byte[] weekStartHour = {0, 3, 6, 2, 5, 1, 4};
     private static final byte[] decumbAspects = {45, 15, 30, 30, 15, 45, 45, 15, 30, 30, 15, 45};
     static final byte[] decumbKeys = {0, 1, 2, 3, 2, 1, 3, 1, 2, 3, 2, 1, 4};
@@ -136,10 +138,9 @@ class Summary extends Canvas implements CommandListener {
 //#     }
 //#else
         if (goon) {
-            final int x = graphics.getClipX();
-            final int y = graphics.getClipY();
-            final int w = graphics.getClipWidth();
-            final int h = graphics.getClipHeight();
+            graphics.setColor(0);
+            graphics.fillRect(0,0,getWidth(),getHeight());
+            graphics.drawImage(img,getWidth()/2,getHeight()/2,Graphics.HCENTER|Graphics.VCENTER);
             /*
             graphics.drawString(Astromaximum.instance.getAppProperty("MIDlet-Name"),
             w / 2, moonY - 2, Graphics.BOTTOM | Graphics.HCENTER);
@@ -152,6 +153,11 @@ class Summary extends Canvas implements CommandListener {
             yy+=Font.getDefaultFont().getHeight()+2;
             }
              */
+/*
+            final int x = graphics.getClipX();
+            final int y = graphics.getClipY();
+            final int w = graphics.getClipWidth();
+            final int h = graphics.getClipHeight();
 //#ifdef imgPhase
             graphics.setClip(moonX, moonY, img.getWidth(), img.getHeight());
             graphics.drawImage(img, moonX, moonY, Graphics.LEFT | Graphics.TOP);
@@ -159,17 +165,9 @@ class Summary extends Canvas implements CommandListener {
 //#       graphics.setClip(moonX,moonY,width,width);
 //#       graphics.fillArc(moonX,moonY,moonX,moonY,-90,180);
 //#endif
-            graphics.setClip(x, y, w, h);
-//        graphics.setColor(0);
-//        graphics.fillRect(0,0,getWidth(),getHeight());
-//        graphics.drawImage(imgLogo,getWidth()/2,getHeight()/2,Graphics.HCENTER|Graphics.VCENTER);
+            graphics.setClip(x, y, w, h);*/
         } else {
-
             if (needRender) {
-//#if midp2y2007notest
-//# //        DataFile.hj*=(selItem%3+1);
-//# //        System.err.println("hj = " + DataFile.hj );
-//#endif
                 render(graphics);
             }
 //      graphics.drawImage(Astromaximum.offScreenBuffer, 0, 0, Graphics.LEFT | Graphics.TOP);
@@ -742,12 +740,12 @@ class Summary extends Canvas implements CommandListener {
         for (int i = 0; i < selen; i++) {
             if (si.events[i].getDegree() == 2) {
                 long tm = si.events[i].date0;
+                noonTime = tm;
                 tm += Event.localOffset(tm);
                 if (cusTime == 0) {
                     Astromaximum.customTime.timeField.setDate(new Date(
                             tm % Astromaximum.MSECINDAY));
                 }
-                noonTime = tm;
                 break;
             }
         }
@@ -1671,7 +1669,6 @@ class Summary extends Canvas implements CommandListener {
     }
 
     public void stop() {
-        goon = false;
 //#if imgPhase
         img = null;
 //#endif
@@ -1889,7 +1886,7 @@ class Summary extends Canvas implements CommandListener {
     
     private Timer timer;
     private int progress;
-    private boolean goon;
+    boolean goon;
     private Image img;
     private final String moonFile;
     private int moonX;
@@ -1921,6 +1918,8 @@ class Summary extends Canvas implements CommandListener {
                 serviceRepaints();
                 progress += 2;
             }
+            else
+                goon = false;
         }
     }
 
@@ -1975,7 +1974,7 @@ class Summary extends Canvas implements CommandListener {
 //#         Options.isRealtimeOff = false;
 //#         setToday();
 //#     }
-//#
+//# 
 //#     void printHashes () {
 //#         String hashes = "";
 //#         for (int i = 0; i < Astromaximum.options.cityList.size(); ++i) {
@@ -1994,12 +1993,12 @@ class Summary extends Canvas implements CommandListener {
 //#         }
 //#         System.out.println(hashes);
 //#     }
-//#
+//# 
 //#     void setNewYearDate() {
 //# 		Astromaximum.calendar.setTime(new Date(Astromaximum.dataFile.startJD));
 //# 		selDate.setTime(Astromaximum.calendar.getTime().getTime());
 //#     }
-//#
+//# 
 //#     void takeShots() {
 //#         System.out.println("Please wait while capturing screenshots...");
 //#         Options.isRealtimeOff = true;
@@ -2017,11 +2016,11 @@ class Summary extends Canvas implements CommandListener {
 //#                 String hash_str = Integer.toHexString(s.hashCode());
 //#                 while (hash_str.length() < 8)
 //#                     hash_str = "0" + hash_str;
-//#
+//# 
 //#                 writeString2File("file:///root1/" + hash_str + ".txt", s);
-//#
+//# 
 //#                 System.out.println(hash_str + ": " + s);
-//#
+//# 
 //#                 FileConnection fc = (FileConnection)Connector.open(
 //#                         "file:///root1/" + hash_str, Connector.READ_WRITE);
 //#                 if (!fc.exists())
@@ -2038,7 +2037,7 @@ class Summary extends Canvas implements CommandListener {
 //#             writeString2File("file:///root1/convert.sh", "sh raw2image.sh " + Integer.toString(w) + " " +
 //#                     Integer.toString(h-1) + " " + Astromaximum.getstr(255).toLowerCase() +
 //#                     " " + Integer.toString(Astromaximum.startYear));
-//#
+//# 
 //#         }
 //#         catch(IOException e){
 //#             System.out.println(e.getMessage());
@@ -2046,9 +2045,9 @@ class Summary extends Canvas implements CommandListener {
 //#         }
 //#         Options.isRealtimeOff = false;
 //#         setToday();
-//#
+//# 
 //#     }
-//#
+//# 
 //# 	void screenShot(int w, int h, String hash) throws IOException {
 //# 		Image image = Image.createImage(w, h);
 //# 		render (image.getGraphics());
@@ -2056,10 +2055,10 @@ class Summary extends Canvas implements CommandListener {
 //#         String fname = hash + "/" + formatDate2d(Calendar.YEAR) + formatDate2d(Calendar.MONTH) +
 //# 				formatDate2d(Calendar.DAY_OF_MONTH);
 //#         int rgbData[] = new int[w * h];
-//#
+//# 
 //#         FileConnection fc = (FileConnection)Connector.open(
 //#                 "file:///root1/" + fname + ".raw", Connector.READ_WRITE);
-//#
+//# 
 //#         if(!fc.exists())
 //#             fc.create();
 //#         else
@@ -2080,7 +2079,7 @@ class Summary extends Canvas implements CommandListener {
 //#         image = null;
 //#         System.out.println(fname + ".raw written");
 //# 	}
-//#
+//# 
 //# 	String formatDate2d (int field) {
 //# 		int num = Astromaximum.calendar.get(field);
 //# 		if (field == Calendar.MONTH)

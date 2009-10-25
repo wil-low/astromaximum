@@ -411,6 +411,9 @@ public class Astromaximum extends MIDlet implements CommandListener {
       logger("showDaySummary");
 //#endif
             errCode = 16; // XXX
+            while (summary.goon) {
+                Thread.sleep(Summary.LOGO_DELAY);
+            }
             summary.stop();
 //#if logger
       if(interpreter.isLogged){
