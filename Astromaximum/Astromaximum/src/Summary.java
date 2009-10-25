@@ -57,6 +57,7 @@ class Summary extends Canvas implements CommandListener {
     };
     SummItem[] items = null;
     long cusTime = 0;
+    long noonTime = 0;
     //  private boolean firstRun=true;
     static boolean isCurrentDay;
     static boolean isShowCustom = false;
@@ -735,32 +736,19 @@ class Summary extends Canvas implements CommandListener {
         for (int i = 0; i < 24; i++) {
             getItem(i < 12 ? Event.EV_DAY_HOURS : Event.EV_NIGHT_HOURS).setEvents(i % 12, aev[i]);
         }
-//    System.out.print("NH=");
-//    System.out.println(getItem(Event.EV_NIGHT_HOURS).events.length);
-//#if logger
-      Astromaximum.instance.logger(" planetHours");
-//#endif
-//    long pp0=period0 + Astromaximum.MSECINDAY, pp1=period1 + Astromaximum.MSECINDAY;
-//    ev= Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE,Event.SE_SUN,true,
-//      pp0, pp1);
-//    ev.date1=Astromaximum.dataFile.getEventOnPeriod(Event.EV_SET,Event.SE_SUN,false,
-//      pp0, pp1).date0;
-////        ev.dump();
-//    aev=calcPlanetHours(ev,getItem(Event.EV_SUN_RISE).events[0],weekStartHour[(weekDay+1)%7]);
-//    prevPH.setEvents(aev);
-//    prevPH.recalcSelection(period0, true);
-//    prevPH.dump();
-        if (cusTime == 0) {
-            si = getItem(Event.EV_RISE, Event.SE_SUN);
-            int selen = si.events.length;
-            for (int i = 0; i < selen; i++) {
-                if (si.events[i].getDegree() == 2) {
-                    long tm = si.events[i].date0;
-                    tm += Event.localOffset(tm);
+
+        si = getItem(Event.EV_RISE, Event.SE_SUN);
+        int selen = si.events.length;
+        for (int i = 0; i < selen; i++) {
+            if (si.events[i].getDegree() == 2) {
+                long tm = si.events[i].date0;
+                tm += Event.localOffset(tm);
+                if (cusTime == 0) {
                     Astromaximum.customTime.timeField.setDate(new Date(
                             tm % Astromaximum.MSECINDAY));
-                    break;
                 }
+                noonTime = tm;
+                break;
             }
         }
 //#if logger
