@@ -46,13 +46,13 @@ class Options extends GeoList implements CommandListener {
         sLayout[0] = Astromaximum.getstr(107); // "Auto"
         for (int i = 1; i <= Summary.MAX_LAYOUT_NUM; i++)
             sLayout[i] = Integer.toString(i);
-        
-        layout = new ChoiceGroup(Astromaximum.getstr(106), // Screen
-                Choice.POPUP, sLayout, null);
 
-        String[] sOpt = {
-            Astromaximum.getstr(104), // Use all texts
-            Astromaximum.getstr(103), // Local time
+            layout = new ChoiceGroup(Astromaximum.getstr(106), // Screen
+                    Choice.POPUP, sLayout, null);
+
+            String[] sOpt = {
+                Astromaximum.getstr(104), // Use all texts
+                Astromaximum.getstr(103), // Local time
         };
         optFlags = OPT_FLAGS;
         setTitle(Astromaximum.getstr(92));//Options
