@@ -157,7 +157,7 @@ ul {
 }
 #demo {
 	position: absolute;
-	top: 188px;
+	top: 192px;
 	left: 345px;
 	width: 306px;
 	height: 91px;
@@ -165,11 +165,11 @@ ul {
 	font: bold 18px bold Arial Black;
 	color: #215F7C;
 	text-align: center;
-	padding-top: 58px;
+	padding-top: 52px;
 }
 #demo_off {
 	position: absolute;
-	top: 188px;
+	top: 192px;
 	left: 345px;
 	width: 306px;
 	height: 91px;
@@ -177,11 +177,11 @@ ul {
 	font: bold 18px bold Arial Black;
 	color: #85C3E0;
 	text-align: center;
-	padding-top: 58px;
+	padding-top: 52px;
 }
 #buy {
 	position: absolute;
-	top: 188px;
+	top: 192px;
 	left: 680px;
 	width: 306px;
 	height: 91px;
@@ -189,7 +189,7 @@ ul {
 	font: bold 18px bold Arial Black;
 	color: #215F7C;
 	text-align: center;
-	padding-top: 58px;
+	padding-top: 52px;
 }
 /*левое меню*/
 #leftColumn {
