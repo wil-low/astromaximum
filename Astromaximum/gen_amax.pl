@@ -254,7 +254,7 @@ if($config=~/demo/is){
 if($config=~/geo-$/is){
 	unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
 	my $locname=inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-	inject_icon('', 'res/');
+	inject_icon('', '');
 	do_jar($locname, $locname, $outfile, $GeoAMclass);
 	do_messjar($outfile);
 	$done=1;
