@@ -231,7 +231,8 @@ else{
 {$i18['PRODINFO_DATE']} {$GLOBALS['amax']['release_date']}</p>
 <p><b>{$i18['PRODINFO_PRICE']} \${$GLOBALS['amax']['price']}</b></p>
 </div>
-<img class="main_scr" src="http://astromaximum.com/wiki/lib/exe/fetch.php/ts_3.gif"/>
+<!--img class="main_scr" src="/i/p990i_2_bis2.jpg"/-->
+<img class="main_scr" src="/i/diamond_1.jpg"/>
 PROD_INFO;
     }
 }
