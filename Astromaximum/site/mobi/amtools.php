@@ -423,7 +423,7 @@ function get_try_count($id){ // get dl limit for current user, if $id==0
 	if($sth && ($row=mysql_fetch_row($sth))){
 		return $row;
 	}
-	return array(0,0,0);	
+	return array(0,-1,0);	
 }
 
 function dec_try_count($id, $key){ // decrease dl limit by $key for current user, if $id==0
