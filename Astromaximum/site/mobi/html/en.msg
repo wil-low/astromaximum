@@ -94,26 +94,9 @@ MNU_DLCIT=download cities
 MNU_CONTACTS=contacts
 ENABLE_JS=Please enable JavaScript in your browser!
 DEMO_CALGEN=Make midlet for calendar
-DEMO_HEADER=<h4>Get demo version</h4><p><b>ASTROMAXIMUM</b> demo contains astrological events for the previous year.</p><p>Since October, 22 you can get a full version for current year free of charge.</p>
-DEMO_DEMO=demo
-DEMO_NOTREG=If you are not a registered user, to get a demo version please fill input boxes to the left:
-DEMO_ENTER=and click "%s"
-DEMO_DLCITY=You can get any of %sdemo cities for %d</a> after installing the calendar
-DEMO_EMAILING=<span class="alert">Important:</span>Please add <a href="%s">%s</a> into your address book.<br/>Enter email to which the download link will be sent:
-DEMO_LINK_SENT=Download link has been e-mailed to %s.
-DEMO_EMAIL_WRONG=Wrong e-mail address
+DEMO_DLCITY=You can download a city for %d after installing the calendar
 PAGE_DLCIT=download cities
-PAGE_READTHEMES=browse all topics
-THEME_0=Calendar topics
-THEME_1=Business activities, contract signing
-THEME_2=Trading, finance
-THEME_3=Licensing, registration
-THEME_4=Employment, HR
-THEME_5=Real estate, construction, agriculture
-THEME_6=Vacations, education
-THEME_7=Love, marriage
-THEME_8=Medicine, cosmetics
-THEME_9=Illness progress
+
 MAN_TOPICS=Instructions
 MAN_0=Before installation
 MAN_1=GPRS/EDGE install
@@ -121,38 +104,6 @@ MAN_2=Install using PC
 MAN_3=City installation
 MAN_4=Checking time and time zone settings
 MAN_PDF=User manual
-
-SCRTEXT_01=??
-
-SCRTEXT_02=??
-
-SCRTEXT_03=??
-
-SCRTEXT_04=??
-
-SCRTEXT_05=??
-
-SCRTEXT_06=??
-
-SCRTEXT_07=??
-
-SCRTEXT_08=??
-
-SCRTEXT_09=??
-
-SCRTEXT_10=??
-
-SCRTEXT_11=??
-
-SCRTEXT_12=??
-
-SCRTEXT_13=??
-
-SCRTEXT_14=??
-
-SCRTEXT_15=??
-
-SCRTEXT_16=??
 
 CLOSE=close
 CITYLIST_CLICK=Click on a city to get its current time, sunrise and timezone information

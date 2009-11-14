@@ -70,6 +70,7 @@ function yesno($val){
 	}
 
 	$env['dl/html/.htaccess']=yesno(file_exists($p.'../html/.htaccess'));
+/*	
 	$key='Demo account';
 	$stat="SELECT name,realname,hash,active FROM customers WHERE email='{$GLOBALS['amax']['demo_email']}'";
 	$sth=mysql_query($stat);
@@ -82,7 +83,7 @@ function yesno($val){
 	else{
 		$env[$key]="<span class=\"alert\">MISSING</span>";
 	}
-
+*/
 	$key='Default cities';
 	$adc=$GLOBALS['amax']['def_cities'];
 	$city_hash = array();

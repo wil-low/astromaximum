@@ -25,10 +25,6 @@ $sett=array(
 		'de'=>array('m.Olympos', 'Berlin', 'Vienna'),
 	),
 
-	'demo_email'=>'demo@astromaximum.com',
-	'demo_login'=>'123456789',
-	'demo_pass'=>'012345678',
-	
 	'city_count'=>725, //update PRODINFO_CITY in ru.msg
 	'price'=>'58.99',
 	'version'=>'1.1.7 r486',

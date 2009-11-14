@@ -92,8 +92,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
 LOCK TABLES `customers` WRITE;
 INSERT INTO `customers` (`id`, `name`, `realname`, `hash`, `role`, `email`, `subscr_date`, `paymode_id`, `dlcount0`, `dlcount1`, `dlcount2`, `active`) VALUES
 	(1,'vmesiats','Vasyl Mesiats','',0,'kiev.999@gmail.com','2007-10-13', 1, -1,-1,-1, 1),
-	(2,'88','Andrei Ivushkin','',0,'aivushkin@gmail.com','2007-10-13', 1,-1,-1,-1, 1),
-	(3,'123456789','Demo','e7f03e6b4f8f54d4699eeef576488243', 1, 'demo@astromaximum.com', '2007-10-13', 1, -1,-1,-1,0);
+	(2,'88','Andrei Ivushkin','',0,'aivushkin@gmail.com','2007-10-13', 1,-1,-1,-1, 1);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 
@@ -348,7 +347,6 @@ CREATE TABLE IF NOT EXISTS `dic_role` (
 
 INSERT INTO `dic_role` (`id`, `name`) VALUES
 (0, 'Administrator'),
-(1, 'Demo'),
 (2, 'Customer'),
 (3, 'Prospect');
 

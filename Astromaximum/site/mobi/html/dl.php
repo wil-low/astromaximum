@@ -68,11 +68,6 @@ $max_cities=5;
 $table_vsize=18;
 $current_year=$GLOBALS['amax']['year'];
 
-if($chac==-1){
-	reg_warning($i18['PAGE_DLCIT']);
-	return;
-}
-
 if($chac==3){ // unpaid
     show_payment_instructions(0);
     return;
@@ -88,7 +83,7 @@ if(isset($_POST['y_sel'])){
 		$defyear=$current_year;
 	}
 }
-if($chac==1){ // demo - previous year only
+if($chac==-1){ // demo - previous year only
     $defyear=$current_year-1;
 }
 
@@ -101,44 +96,6 @@ if(isset($_POST['Action'])){
 	$act=$_POST['Action'];
 }
 if(strlen($act)){
-	if(!$tries[1]){
-		if(isset($_POST['p_captcha'])){ // check captcha
-			if(is_captcha($_POST['p_captcha'])){
-				$stat=sprintf("UPDATE customers SET city_limit=city_limit+1, ".
-                    "dlcount1=$DLIM[1] WHERE id=%d", $_SESSION['uid']);
-				if(mysql_query($stat)){
-					$tries=get_try_count(0);
-					$is_allow_dl=($tries[1]!=0);
-				}
-				else{
-					echo "Error:".mysql_error();
-				}
-			}
-			else{
-				echo <<<KCAP1
-<h4>{$i18['REQUEST_MORE_H']}</h4>
-{$i18['CAPTCHA_WRONG']}<br/><a href="{$_SERVER['REQUEST_URI']}">{$i18['BACK']}</a>
-KCAP1;
-				return;
-			}
-		}
-		if(isset($_POST['rmore'])){ // requesting more cities
-			$param=session_name().'='.session_id();
-			$desc=sprintf($i18['REQUEST_MORE_DESC'], $DLIM[1]);
-			echo <<< KCAP
-<h4>{$i18['REQUEST_MORE_H']}</h4>			
-<p>$desc</p>
-<form id="pwdrestore" action="dl" method="post">
-<p>{$i18['CAPTCHA_PROMPT']}</p>
-<p><img src="/mobi/kcaptcha?$param" alt="Captcha">
-<input name="p_captcha" type="text" size="6"/>
-</p>
-<input name="Action" type="submit" value="OK" class="ok_on"/>
-</form>			
-KCAP;
-		return;
-		}
-	}
 	if(isset($_POST['sc'])){
 		$sth=get_selected_cities('sc');
 		if($is_allow_dl && mysql_num_rows($sth)>0){
@@ -163,7 +120,6 @@ KCAP;
 		return;
 	}
 }
-//print_r($_REQUEST);
 ?>
 <script type="text/javascript">
 <!--   
