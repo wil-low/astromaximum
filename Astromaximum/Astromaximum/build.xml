@@ -5,9 +5,9 @@
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
-    <property name="year" value="2008"/>
+    <property name="year" value="2009"/>
     <property name="lang" value="ru"/>
-    <property name="soot.dir" value="../3d_party/soot"/>
+    <property name="soot.dir" value="${basedir}/../3d_party/soot"/>
     <property name="microemu.dir" value="../microemulator-2.0.3"/>
 
     <import file="nbproject/build-impl.xml"/>
@@ -142,14 +142,14 @@
         <copy todir="${jbco.classes.dir}" failonerror="true">
             <fileset dir="${buildsystem.baton}" excludes="**/*.class"/>
         </copy>
-        <exec executable="sh" failonerror="true">
+        <!--exec executable="sh" failonerror="true">
             <arg line="jbco.sh"/>
             <arg line="${buildsystem.baton}"/>
             <arg line="${jbco.classes.dir}"/>
             <arg line="${platform.home}/lib"/>
             <arg line="${soot.dir}"/>
-        </exec>
-        <!--java classname="soot.jbco.Main" failonerror="true">
+        </exec-->
+        <java classname="soot.jbco.Main" failonerror="true">
             <jvmarg value="-Xms256m"/>
             <jvmarg value="-Xmx1024m"/>
             <classpath>
@@ -169,7 +169,7 @@
             <arg line="-d ${basedir}/${jbco.classes.dir}" description="output dir"/>
             <arg line="-process-dir ${basedir}/${buildsystem.baton}"/>
             <arg line="-main-class Astromaximum"/>
-            <arg value="-v"/>
+            <!--arg value="-v"/-->
             <arg value="-t:9:bb.jbco_rlaii"  description="Reorder Loads Above Ifs"/>
             <arg value="-t:9:bb.jbco_iii"    description="Indirect If Instructions"/>
             <arg value="-t:9:bb.jbco_ctbcb"  description="Combine Try and Catch Blocks"/>
@@ -177,7 +177,7 @@
             <arg value="-t:2:bb.jbco_plvb"   description="Pack Locals into Bitfields - slow"/>
             <arg value="-t:9:jtp.jbco_gia"   description="Goto Instruction Augmentation"/>
             <arg value="-t:3:bb.jbco_ptss"   description="Partially Trap Switches"/>
-        </java-->
+        </java>
         <echo message="ignore me" file="${build.dir}/.jbco-timestamp"/>
         <nb-overrideproperty name="buildsystem.baton" value="${jbco.classes.dir}"/>
     </target>
