@@ -157,8 +157,8 @@ print_menu('citylist', 'MNU_CITYLIST', 1);
 print_menu('dl', 'MNU_DLCIT', 1);
 print_menu('contacts', 'MNU_CONTACTS', 0);
 //echo "<br/>";print_r($_REQUEST);
-$btn1=$i18['DEMO'] . '<br/>' . ($GLOBALS['amax']['year'] - 1); $btn1_link="/$lang/demo";
-$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['year']."<br/> + {$i18['CITY_MODULE']}");
+$btn1=sprintf($i18['DEMO'], $GLOBALS['amax']['year'] - 1); $btn1_link="/$lang/demo";
+$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['year']);
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 
@@ -215,10 +215,10 @@ echo show_big_button('buy', $btn2, '/^(buy|p_\d\d)$/is', "/$lang/buy", true);
 if(preg_match("/^man\d$/is", $main)){
     echo "<h5>".$i18['MAN_TOPICS']."</h5>";
     for($i=0; $i<=4; $i++){
-        echo "<p>".anchor("man$i")."<img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18["MAN_$i"]."</b></a></p>\n";
+        echo "<p>".anchor("man$i")."<img class=\"point\" src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18["MAN_$i"]."</b></a></p>\n";
     }
     $pdf_path="mobi/html/amax-manual-$lang.pdf";
-    echo "<p><a href=\"$pdf_path\"><img src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18['MAN_PDF']." (PDF ".
+    echo "<p><a href=\"$pdf_path\"><img class=\"point\" src=\"/i/ico.gif\" alt=\"\"/> <br/><b>".$i18['MAN_PDF']." (PDF ".
         fsize_human($pdf_path).")</b></a></p>\n";
 }
 else{
