@@ -21,9 +21,9 @@ our $UNZIP=q("%s" -qq %s -x *META-INF* -d %s);
 
 sub JAR{
 	my ($jarpath, $out, $manifest, $srcdir, $winda)=@_;
-	$jarpath=~s/[\\\/]+$//is;
+	#$jarpath=~s/[\\\/]+$//is;
 	my $jarchiver='jar';
-	$jarchiver='fastjar' unless $winda;
+	$jarchiver='fastjar' unless $^O =~ /msys|Win/;
 	return sprintf("%s/%s cfm %s %s -C %s .", $jarpath, $jarchiver, $out, $manifest, $srcdir);
 }
 

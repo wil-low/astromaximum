@@ -559,6 +559,7 @@ sub do_jar{
 	print INF $template;
 	close(INF);
 	my $cmd=ensure_slash(const::JAR($jar_path, $outfile, "$path/$const::DIR_TEMPLATE/mf", "$path/$const::DIR_TEMP", $winda));
+	$cmd =~ s/\\/\//g;
 	echo("Exec: $cmd\n");
 	mydie("\tERROR: creating archive") if system($cmd);
 	unlink("$path/$const::DIR_TEMPLATE/mf");
@@ -756,8 +757,9 @@ sub mess_direrase {
 }
 
 sub unzip{
-	my $uz='unzip';
-	$uz="$path/$uz" if $winda;
+	my $uz='./unzip';
+	$uz="$path/$uz.exe" if $winda;
+	#die $uz;
 	my $cmd=sprintf($const::UNZIP, $uz, $_[0], "$path/$const::DIR_TEMP");
 	echo("Exec: $cmd\n");
 	system($cmd);
