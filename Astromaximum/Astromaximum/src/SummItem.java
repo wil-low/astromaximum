@@ -1756,22 +1756,35 @@ final class SummItem extends TimerTask implements RecordFilter {
 // @todo zero
 //        zeroPlaces();
         Astromaximum.errCode = 400;
-
+        Astromaximum.log("400:");
         for (Enumeration e = owner.mIngress.elements(); e.hasMoreElements();) {
             ev = (Event) e.nextElement();
             final long date = ev.date0;
-            if (ev.date0 <= Astromaximum.dataFile.startJD || ev.date1 >= Astromaximum.dataFile.finalJD) {
-                continue;
-            }
+            ev.dump();
+/*            Astromaximum.log(Long.toString(date)+ "," +
+                    Long.toString(fgd)+ "," +
+                    Long.toString(fgd2));*/
+//            if (ev.date0 <= Astromaximum.dataFile.startJD || ev.date1 >= Astromaximum.dataFile.finalJD) {
+//                continue;
+//            }
             if (ev.isDateBetween(0, fgd, fgd2)) {
-                Astromaximum.errCode++;
+                Astromaximum.errCode = 1001;
                 final int day = (int) ((date - fgd) / Astromaximum.MSECINDAY);
+                if (day < 0) {
+                    Astromaximum.log("places.size()=" + Integer.toString(places.length)+
+                        " day=" + Integer.toString(day) + " " +
+                        Event.long2String(date, 0, true));
+                }
                 int x = day % owner.colCount * colWidth + 1;
                 y = day / owner.colCount * rowHeight + top + 1;
+                Astromaximum.errCode = 1002;
                 places[day]++;
+                Astromaximum.errCode = 1003;
                 y += (places[day] - 1) * Summary.IMG_HEIGHT;
                 // @todo Ingress drawing
+                Astromaximum.errCode = 1004;
                 drawIngress(osg, ev, x + leftm, y, Graphics.TOP | Graphics.LEFT);
+                Astromaximum.errCode = 1005;
                 if (places[day] > 1) {
                     nodrawNums[day] = true;
                 }

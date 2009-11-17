@@ -187,7 +187,7 @@ final class Event {
         System.out.print("&");
         System.out.println(f1);
          */
-        if (f == 2 || f == -2) {
+        if ((f == 2) || (f == -2)) {
             return false;
         }
         if (special) {
@@ -200,6 +200,10 @@ final class Event {
         return true;
     }
 
+    void dump() {
+        Astromaximum.log (Integer.toString(planet0) + " - " +
+                Integer.toString(planet1) + " " + getDateString(0, 0) + " - " + getDateString(1, 0));
+    }
     //#mdebug info
     /**
      * dump

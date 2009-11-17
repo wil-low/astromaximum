@@ -1292,6 +1292,7 @@ class Summary extends Canvas implements CommandListener {
 //    long tick=System.currentTimeMillis();
         final int cells = rowCount * colCount;
         SummItem.places = new byte[cells];
+        Astromaximum.log("Places: " + Integer.toString(cells));
         getItem(Event.EV_TOP_MONTH).setEvents(1, new Event(selDate.getTime(), -1));
         getItem(Event.EV_TOP_MONTH).initString();
         period0 = firstGridDate.getTime();
@@ -1320,7 +1321,7 @@ class Summary extends Canvas implements CommandListener {
         for (int i = Event.SE_SUN; i <= Event.SE_PLUTO; i++) {
             if (i != Event.SE_MOON || pageNum == PAGE_WEEK) {
                 Astromaximum.dataFile.getEventsOnPeriod(mIngress, Event.EV_SIGN_ENTER,
-                        i, false, period0, period1, 0);
+                        i, true, period0, period1, 0);
             }
         }
         if (pageNum == PAGE_WEEK) {
