@@ -4,8 +4,21 @@ IMG_H=$2
 LNG=$3
 YEAR=$4
 
+FIND=/d/prj/msys/1.0/bin/find
+WTK=/d/wtk2.5.1
+
+if ! [ -e $FIND ]; then
+	FIND=find
+fi
+echo find is at $FIND
+if ! [ -d $WTK ]; then
+	WTK=$HOME/wtk251
+fi
+echo WTK  is at $WTK
+
+exit
 OPTIONS="-colorize 28,18,8"
-IMG_PATH=/d/wtk2.5.1/appdb/root/filesystem/root1
+IMG_PATH=$WTK/appdb/root/filesystem/root1
 
 DEST_PATH=$PWD/../site/i/daily
 mkdir -p $DEST_PATH
@@ -14,7 +27,7 @@ cd $IMG_PATH
 #convert 090101-4.png -fill "#8699ac" -draw 'rectangle 1,226,140,238' -fill white -draw 'gravity SouthWest text 5,0 Kiev' 090101-4-1.png
 #display 090101-4-1.png
 #exit
-dirs=`/d/prj/msys/1.0/bin/find . -type d -maxdepth 1`
+dirs=`$FIND . -type d -maxdepth 1`
 for i in $dirs; do
     cd $IMG_PATH/$i;
     echo "Converting $PWD";
@@ -22,7 +35,7 @@ for i in $dirs; do
     cd ..;
 done
 
-/d/prj/msys/1.0/bin/find . -name *.raw -exec rm '{}' \;
+$FIND . -name *.raw -exec rm '{}' \;
 
 cd $IMG_PATH
 dest_arc=$DEST_PATH/informers_${YEAR}_${LNG}.tgz
