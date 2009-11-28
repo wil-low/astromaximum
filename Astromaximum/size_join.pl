@@ -9,6 +9,7 @@ my($InF,$OutF);
 
 join_phases(9);
 join_phases(12);
+join_phases(24);
 
 sub join_phases
 {
@@ -37,4 +38,5 @@ sub join_phases
 		print $OutF $png;
 	}
 	close($OutF);
+	print "Sizes joined into Astromaximum/src/res/sz$size.dat\n";
 }

@@ -101,8 +101,8 @@ class Summary extends Canvas implements CommandListener {
         progress = 2;
         frameCount = 30;
 //#ifdef imgPhase
-        moonFile = "/res/ph50.dat";
-        img = Astromaximum.extractImg(0, "/res/ph50.dat");
+        moonFile = "/res/ph100.dat";
+        img = Astromaximum.extractImg(0, moonFile);
 //#endif
 //    try {
 //      imgLogo=Image.createImage("/res/logo.png");
@@ -218,7 +218,8 @@ class Summary extends Canvas implements CommandListener {
         osg.fillRect(0, 0, getWidth(), getHeight());
         statItem.initString();
         osg.setColor(0xff0000);
-        osg.setFont(Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_SMALL));
+        osg.setFont(Font.getFont(Astromaximum.options.getFontFace(), Font.STYLE_PLAIN,
+                Astromaximum.options.getFontSize()));
 //    isCurDay=(now>=period0)&&(now<period1);
         int ilen = items.length;
         for (int i = 0; i < ilen; i++) {
@@ -1361,13 +1362,19 @@ class Summary extends Canvas implements CommandListener {
             PAGE_LAST = PAGE_SUMMARY + 1;
             if (h < 230) {
                 moonPhaseH = 28;
-            } else {
+            }
+            else if (h < 480){
                 moonPhaseH = 50;
+            }
+            else {
+                moonPhaseH = 100;
             }
             if (h <= 220) {
                 IMG_HEIGHT = IMG_WIDTH = 9;
-            } else {
+            } else if (h <= 320) {
                 IMG_HEIGHT = IMG_WIDTH = 12;
+            } else {
+                IMG_HEIGHT = IMG_WIDTH = 24;
             }
             if (size == 0) {
                 size = 2;
@@ -1420,6 +1427,30 @@ class Summary extends Canvas implements CommandListener {
                     _bounds[i * BOUNDS_VARS + j] = (short) (bounds[i * BOUNDS_VARS + j] * (j % 2 == 0 ? dx : dy) / 1000);
                 }
             }
+        }
+        String panelNum = size == 4 ? "3" : "";
+        DataInputStream dis = new DataInputStream(getClass().
+                getResourceAsStream("/res/panel" + panelNum + ".png"));
+        try {
+            byte[] buf = new byte[dis.available()];
+            dis.read(buf);
+            imgPanel = Image.createImage(buf, 0, buf.length);
+/*
+            dis = new DataInputStream(new ByteArrayInputStream(buf));
+            int chlen = 4, chtype, num = 0;
+            do {
+                dis.skip(chlen + 4);
+                chlen = dis.readInt();
+                chtype = dis.readInt();
+                if (chtype == 0x634f4445) {
+                    dis.read(buf, 0, chlen);
+                    ids.addElement(LogBox.decipherPngCodeSection(new String(buf, 0, chlen), num++));
+//                    System.out.println(DataFile.ids.lastElement());
+                    chlen = 0;
+                }
+            } while (chtype != 0x49454e44);
+ */
+        } catch (IOException e) {
         }
     }
 

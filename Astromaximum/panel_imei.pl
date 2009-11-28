@@ -4,6 +4,8 @@ use strict;
 require "./Crc32.pm";
 use Math::BigInt;
 
+die "Usage: panel_imei.pl <input> <output>\n" unless $ARGV[2];
+
 my @str=split(/\n/,<<END);
 "http://astromaximum.com/microemu/microemu.php", # always first!
 "com.sonyericsson.IMEI",
@@ -36,14 +38,14 @@ for(my $i=0; $i<=$#str; $i++){
     my $enc=str_encode($1, $i);
     $imei.=pack('N',length($enc)).$chunk.$enc.pack('N',$crc32->strcrc32($chunk.$enc));
 }
-open(INF, $path."images/panel.png") or die "No file";
+open(INF, $path.$ARGV[0]) or die "No input file";
 binmode(INF);
 @buf=<INF>;
 close(INF);
 my $body=join('',@buf);
 my ($before, $after)=$body=~/(.+?)(.{4}IDAT.+)/s;
 $body=$before.$imei.$after;
-open(OUTF, ">$path".'Astromaximum/src/res/panel.png') or die "No file";
+open(OUTF, ">$path".$ARGV[1]) or die "No output file";
 binmode(OUTF);
 print OUTF $body;
 close(OUTF);

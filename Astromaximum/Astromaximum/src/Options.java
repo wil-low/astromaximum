@@ -22,6 +22,8 @@ class Options extends GeoList implements CommandListener {
     private static ChoiceGroup optList;
     private static ChoiceGroup timeGap;
     private static ChoiceGroup layout;
+    private static ChoiceGroup fontSize;
+    private static ChoiceGroup fontFace;
 //#if localtime
 //#   static byte OPT_FLAGS=1;
     //#else
@@ -34,7 +36,11 @@ class Options extends GeoList implements CommandListener {
     static final int FLG_ALLTEXT = 1;
     private static final int FLG_LOCALTIME = 2;
     static byte optLayout;
+    static byte optFontFace;
+    static byte optFontSize;
     static byte optTimeGap = 2;
+    final private int[] FONT_SIZE = {Font.SIZE_SMALL, Font.SIZE_MEDIUM, Font.SIZE_LARGE};
+    final private int[] FONT_FACE = {Font.FACE_PROPORTIONAL, Font.FACE_MONOSPACE};
 
     Options() {
         super(Astromaximum.instance, Choice.EXCLUSIVE, Astromaximum.dataFile.getAmaxStream(1));
@@ -50,10 +56,6 @@ class Options extends GeoList implements CommandListener {
         layout = new ChoiceGroup(Astromaximum.getstr(106), // Screen
                 Choice.POPUP, sLayout, null);
 
-        String[] sOpt = {
-            Astromaximum.getstr(104), // Use all texts
-            Astromaximum.getstr(103), // Local time
-        };
         optFlags = OPT_FLAGS;
         setTitle(Astromaximum.getstr(92));//Options
         setCommandListener(this);
@@ -61,11 +63,44 @@ class Options extends GeoList implements CommandListener {
         Command cmd = new Command("OK", Command.OK, 1);
         addCommand(cmd);
         addCommand(new Command(Astromaximum.getstr(108), Command.ITEM, 2)); // Delete city
+        
+        String[] sOpt = {
+            Astromaximum.getstr(104), // Use all texts
+            Astromaximum.getstr(103), // Local time
+        };
+
         optList = new ChoiceGroup(null, Choice.MULTIPLE,
                 sOpt, null);
         append(optList);
+
         append(timeGap);
         append(layout);
+
+        int propW = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN,
+                Font.SIZE_MEDIUM).stringWidth(Astromaximum.MainURL);
+        int monoW = Font.getFont(Font.FACE_MONOSPACE, Font.STYLE_PLAIN,
+                Font.SIZE_MEDIUM).stringWidth(Astromaximum.MainURL);
+        if (propW != monoW) {
+            sOpt = new String[2];
+            for (int i = 0; i < 2; ++i) {
+                sOpt[i] = Astromaximum.getstr(170 + i);
+            }
+            fontFace = new ChoiceGroup(Astromaximum.getstr(167), Choice.POPUP, sOpt, null);
+            append(fontFace);
+        }
+        else {
+            // create empty, do not append
+            sOpt = new String[1];
+            sOpt[0] = "";
+            fontFace = new ChoiceGroup(null, Choice.POPUP, sOpt, null);
+        }
+        sOpt = new String[3];
+        for (int i = 0; i < 3; ++i) {
+            Font font = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, FONT_SIZE[i]);
+            sOpt[i] = Integer.toString(font.getHeight());
+        }
+        fontSize = new ChoiceGroup(Astromaximum.getstr(168), Choice.POPUP, sOpt, null);
+        append(fontSize);
 /*
         OK button is disabled (relevant for PocketPC only)
         StringItem strOK = new StringItem("", "OK", Item.BUTTON);
@@ -352,10 +387,14 @@ class Options extends GeoList implements CommandListener {
         DataOutputStream dos = new DataOutputStream(baos);
         try {
             optTimeGap = (byte)timeGap.getSelectedIndex();
+            optFontFace = (byte)fontFace.getSelectedIndex();
+            optFontSize = (byte)fontSize.getSelectedIndex();
             setLocalOffset();
             dos.writeByte(optFlags);
             dos.writeByte(optTimeGap);
             dos.writeByte(optLayout);
+            dos.writeByte(optFontFace);
+            dos.writeByte(optFontSize);
             dos.writeByte(Astromaximum.interpreter.fontSize);
             dos.writeShort(CustomTime.histCount);
             dos.writeInt(Astromaximum.customTime.lockFlags);
@@ -382,6 +421,8 @@ class Options extends GeoList implements CommandListener {
             optFlags = dis.readByte();
             optTimeGap = dis.readByte();
             optLayout = dis.readByte();
+            optFontFace = dis.readByte();
+            optFontSize = dis.readByte();
             Astromaximum.interpreter.fontSize = dis.readByte();
             CustomTime.histCount = dis.readUnsignedShort();
             Astromaximum.customTime.lockFlags = dis.readInt();
@@ -398,8 +439,9 @@ class Options extends GeoList implements CommandListener {
             CustomTime.histCount = Astromaximum.customTime.lockFlags = 0;
             Astromaximum.customTime.cg.deleteAll();
             optTimeGap = 2;
-            timeGap.setSelectedIndex(optTimeGap, true);
-            layout.setSelectedIndex(0, true);
+            optLayout = 0;
+            optFontSize = 0;
+            optFontFace = 0;
             optFlags = OPT_FLAGS;
             Astromaximum.interpreter.fontSize = Font.SIZE_SMALL;
         }
@@ -452,19 +494,18 @@ class Options extends GeoList implements CommandListener {
         rs.setRecord(1, geo, 0, geo.length);
     }
 
-// --Commented out by Inspection START (25.01.09 13:17):
-//    public void commandAction(Command arg0, Item arg1) {
-//        commandAction(arg0, this);
-//    }
-// --Commented out by Inspection STOP (25.01.09 13:17)
-
     private void updateChoices() {
-        for (int i = 0; i < optList.size(); i++) {
-            optList.setSelectedIndex(i, (optFlags & (1 << i)) != 0);
-        }
-        timeGap.setSelectedIndex(optTimeGap, true);
-        layout.setSelectedIndex(optLayout, true);
         setLocalOffset();
+        try {
+            for (int i = 0; i < optList.size(); i++) {
+                optList.setSelectedIndex(i, (optFlags & (1 << i)) != 0);
+            }
+            timeGap.setSelectedIndex(optTimeGap, true);
+            layout.setSelectedIndex(optLayout, true);
+            fontSize.setSelectedIndex(optFontSize, true);
+            fontFace.setSelectedIndex(optFontFace, true);
+        }
+        catch (IndexOutOfBoundsException ex){}
     }
 
     String getCurrentCity(boolean isTrimComma) {
@@ -474,8 +515,30 @@ class Options extends GeoList implements CommandListener {
             if (pos > 0)
                 s = s.substring(0, pos);
         }
-		return s;
-	}
+        return s;
+    }
+
+    int getFontFace() {
+        try {
+            return FONT_FACE[optFontFace];
+        }
+        catch (IndexOutOfBoundsException ex) {
+            return Font.FACE_PROPORTIONAL;
+        }
+    }
+
+    int getFontSize(int idx) {
+        try {
+            return FONT_SIZE[idx];
+        }
+        catch (IndexOutOfBoundsException ex) {
+            return Font.SIZE_SMALL;
+        }
+    }
+
+    int getFontSize() {
+        return getFontSize(optFontSize);
+    }
 }
 
 // # vi:et:ts=4:sw=4

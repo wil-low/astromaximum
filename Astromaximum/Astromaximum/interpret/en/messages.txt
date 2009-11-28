@@ -181,6 +181,11 @@
 %165% Mobile version:
 %166% Keys
 
+%167% Font face
+%168% Font size
+%170% proportional
+%171% monospace
+
 %255% En
 
 //%161% bad

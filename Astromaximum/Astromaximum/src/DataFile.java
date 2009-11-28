@@ -57,36 +57,6 @@ final class DataFile {
      */
     DataFile() {
         final Calendar cal = Astromaximum.calendar;
-        DataInputStream dis = new DataInputStream(getClass().getResourceAsStream("/res/panel.png"));
-        try {
-//#ifdef logger
-    Astromaximum.instance.logger(Integer.toString(dis.available()));
-//#endif
-            byte[] buf = new byte[dis.available()];
-            dis.read(buf);
-//#ifdef logger
-    Astromaximum.instance.logger(Integer.toString(buf[1896]));
-    Astromaximum.instance.logger(Integer.toString(buf[1897]));
-//#endif
-            Summary.imgPanel = Image.createImage(buf, 0, buf.length);
-//#ifdef logger
-    Astromaximum.instance.logger("imgPanel");
-//#endif
-            dis = new DataInputStream(new ByteArrayInputStream(buf));
-            int chlen = 4, chtype, num = 0;
-            do {
-                dis.skip(chlen + 4);
-                chlen = dis.readInt();
-                chtype = dis.readInt();
-                if (chtype == 0x634f4445) {
-                    dis.read(buf, 0, chlen);
-                    ids.addElement(LogBox.decipherPngCodeSection(new String(buf, 0, chlen), num++));
-//                    System.out.println(DataFile.ids.lastElement());
-                    chlen = 0;
-                }
-            } while (chtype != 0x49454e44);
-        } catch (IOException e) {
-        }
         try {
             DataInputStream is = new DataInputStream(getAmaxStream(0));
             Astromaximum.startYear = is.readShort();

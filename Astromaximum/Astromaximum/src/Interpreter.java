@@ -55,7 +55,7 @@ class Interpreter extends Canvas implements CommandListener {
         setCommandListener(this);
         
         HMARGIN = getWidth() / 25;
-        fontSize = Font.SIZE_SMALL;
+        fontSize = 0;
 //#ifdef test_rs
 //#         byte[] text = null;
 //#         String msg="";
@@ -357,18 +357,20 @@ class Interpreter extends Canvas implements CommandListener {
 
         int wid2 = Summary.imgService.getHeight() / 2;
         SummItem.drawImg(graphics, Summary.imgPanel, 9, wid2 + 1, wid2 + 1, Graphics.VCENTER | Graphics.HCENTER);
-        SummItem.drawImg(graphics, Summary.imgService, 0, wid2 * 4 + 1, wid2 + 1,
+        SummItem.drawImg(graphics, Summary.imgService, 0, wid2 * 6 + 1, wid2 + 1,
                 Graphics.VCENTER | Graphics.HCENTER);
         graphics.setColor(Astromaximum.BORDER_COLOR);
         graphics.drawRect(0, 0, wid2 *2 + 2, wid2 * 2 + 2);
-        graphics.drawRect(wid2 * 3, 0, wid2 *2 + 2, wid2 * 2 + 2);
+        graphics.drawRect(wid2 * 5, 0, wid2 *2 + 2, wid2 * 2 + 2);
 
         graphics.setClip(0, VMARGIN, graphics.getClipWidth(), graphics.getClipHeight() - VMARGIN);
         
         graphics.setColor(0);
         Font oldFont = graphics.getFont();
-        graphics.setFont(Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, fontSize));
-
+//        graphics.setFont(Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, fontSize));
+        graphics.setFont(Font.getFont(Astromaximum.options.getFontFace(), 
+                Font.STYLE_PLAIN, Astromaximum.options.getFontSize(fontSize)));
+        
         lineHeight = graphics.getFont().getHeight();
         curY = topLine;
         curX = 0;
@@ -382,17 +384,10 @@ class Interpreter extends Canvas implements CommandListener {
     }
 
     private void cycleFontSize() {
-        switch (fontSize) {
-            case Font.SIZE_SMALL:
-                fontSize = Font.SIZE_MEDIUM;
-                break;
-            case Font.SIZE_MEDIUM:
-                fontSize = Font.SIZE_LARGE;
-                break;
-            case Font.SIZE_LARGE:
-                fontSize = Font.SIZE_SMALL;
-                break;
-        }
+        if ((fontSize < 0) || (fontSize >= 2))
+            fontSize = 0;
+        else
+            ++fontSize;
         repaint();
         Astromaximum.options.saveHistory();
     }
@@ -507,12 +502,15 @@ class Interpreter extends Canvas implements CommandListener {
 
     protected void pointerPressed(int x, int y) {
         if (y < VMARGIN){
-           x = x / (Summary.imgService.getHeight() + 2);
+           int wid2 = Summary.imgService.getHeight() / 2;
+           x = (x + 2)/ wid2;
            switch (x) {
                case 0:
+               case 1:
                    Astromaximum.instance.showMenu(this, cmds);
                    break;
-               case 1:
+               case 5:
+               case 6:
                    Astromaximum.summary.dontRender();
                    break;
            }

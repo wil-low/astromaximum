@@ -453,8 +453,6 @@ final class SummItem extends TimerTask implements RecordFilter {
                 } else {
                     owner.drawPhase(osg, left + width / 2 - Summary.IMG_HEIGHT / 2,
                             top + height / 2 - Summary.IMG_HEIGHT / 2, Summary.IMG_HEIGHT, events[0].planet1);
-//          drawImg(osg,Summary.imgPhase,events[0].planet1,
-//              left+width/2,top+height/2,Graphics.VCENTER | Graphics.HCENTER);
                 }
                 break;
             case Event.EV_TITHI:

@@ -17,7 +17,7 @@ my($InF,$OutF);
 
 join_phases(28);
 join_phases(50);
-
+join_phases(100);
 sub join_phases
 {
     my $size=shift;
@@ -41,6 +41,7 @@ sub join_phases
         print $OutF $png;
     }
     close($OutF);
+	print "Phases joined into Astromaximum/src/res/ph$size.dat\n";
 }
 
 # vi:et:ts=4:sw=4
