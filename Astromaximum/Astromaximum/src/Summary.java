@@ -101,7 +101,7 @@ class Summary extends Canvas implements CommandListener {
         progress = 2;
         frameCount = 30;
 //#ifdef imgPhase
-        moonFile = "/res/ph100.dat";
+        moonFile = "/res/ph50.dat";
         img = Astromaximum.extractImg(0, moonFile);
 //#endif
 //    try {
