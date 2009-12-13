@@ -19,7 +19,9 @@ $custom_content=''; $subtitle=''; $onload=''; $head='';
 
 function output_callback($buffer) {
     global $subtitle, $onload, $head;
-    $buffer=str_replace("[[nav]]", implode('/', $_SESSION['nav']), $buffer);
+	$nav = implode('/', $_SESSION['nav']);
+    $nav=str_replace('//', '/', $nav);
+    $buffer=str_replace("[[nav]]", $nav, $buffer);
     if($subtitle)
         $subtitle='<span class="hdr">'.$subtitle.'</span><br/>';
     $buffer=str_replace("[[subtitle]]", $subtitle, $buffer);
@@ -80,18 +82,7 @@ if(preg_match("/^(demo)$/is", $main)) {
         }
         else {
             if(file_exists($fn)) {
-                $manual_requested=preg_match("/^[_\d]+$/is", $main);
-                if($manual_requested) {
-                #				if($user_ok){  # manuals are browsed for free
-                    echo str_replace('src="mobi/', 'src="', file_get_contents($fn));
-                    if(strcmp($main, '0_0')) {
-                        echo "<p><br/><a href=\"?$lang_&amp;p=0_".$main{0}."\"><strong>{$i18['BACK_TOPIC']}</strong></a></p>";
-                    }
-                #				}
-                }
-                else {
-                    include($fn);
-                }
+                include($fn);
             }
             else {
                 echo "<h3>{$i18['PAGE_NOT_FOUND']}</h3>";
@@ -101,15 +92,9 @@ if(preg_match("/^(demo)$/is", $main)) {
     </div>
     <div id="ftr"><p>
 <?php
-	if (strpos($main, 'unsupported') === false) {
-        if($chac!=-1) {
-            echo $_SESSION['username'];
-            echo " <a href=\"dl/logout.php\">logout</a>";
-        }
-        else {
-            echo '* for demo:<br/> login: '.$GLOBALS['amax']['demo_login'].
-                '<br/> pass: '.$GLOBALS['amax']['demo_pass'];
-        }
+	if (!preg_match('/^m_(unsupported|home)$/', $main)) {
+		echo ($chac!=-1) ? $_SESSION['username'] : 'guest';
+		echo " <a href=\"dl/logout.php\">logout</a>";
 	}
 ?>
     </p></div>
@@ -122,10 +107,13 @@ function addNavItem($linkparam, $title, $crop) {
     global $lang_, $sess;
     if($crop>=0)
         $_SESSION['nav']=array_slice($_SESSION['nav'], 0, $crop);
-    if(!strlen($linkparam))
-        $item = $title;
-    else
-        $item = "<a href=\"?$lang_&amp;p=$linkparam&amp;$sess\">$title</a>";
+	$item = '';
+	if (strlen($title)) {
+		if(!strlen($linkparam))
+			$item = $title;
+		else
+			$item = "<a href=\"?$lang_&amp;p=$linkparam&amp;$sess\">$title</a>";
+	}
     $_SESSION['nav'][$crop-1]=$item;
 }
 ?>

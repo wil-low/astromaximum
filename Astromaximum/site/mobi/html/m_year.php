@@ -1,10 +1,9 @@
 <?php
 	if(!isset($EXEC)) die("Access restricted");
     $where='';
-    if($chac<0) return;
     addNavItem('year', 'cities', 2);
     $subtitle=$i18['YEAR'];
-    if($chac==1){ // demo - previous year only
+    if($chac==-1){ // demo - previous year only
         $where='WHERE year='.($GLOBALS['amax']['year']-1);
     }
     $sth=mysql_query("SELECT DISTINCT year FROM locations $where ORDER BY year");

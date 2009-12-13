@@ -10,7 +10,6 @@
 			$parm[$i]=$_GET["p$i"];
 		}
 	}
-	if($chac<0) redirect("/");
 
 	$fd = fopen("continents.txt", 'r');
 	while (!feof($fd)) {
@@ -27,7 +26,7 @@
 		$defyear=$_GET['y'];
 	}
     
-    if($chac==1){
+    if($chac==-1){
         $defyear=$GLOBALS['amax']['year']-1;
     }
     
@@ -42,12 +41,14 @@
 		if($is_allow_dl && mysql_num_rows($sth)>0){
 			$row = mysql_fetch_row($sth);
 			echo sprintf('<i>%s</i> (%d)', "$row[0], $row[1]", $defyear)."<br/>\n";
-			$str=midlet_create("geo", $defyear, $lang, $sc, "dl", 1);
+			$str=midlet_create("geo", $defyear, $lang, $sc, "dl", 0);
 			if(strlen($str)){
+				$data_php=$_SERVER['SERVER_NAME'];
+				if(strpos($data_php, "mobi") === false){
+					$data_php.="/mobi";
+				}
 				dec_try_count(0, 1);
-				$lines=explode("\n", $str);
-				echo "<a href=\"$lines[1]\">{$i18['PHONE_DL']} JAD</a><br/>"; // JAD only
-				echo "<a href=\"$lines[0]\">{$i18['PHONE_DL']} JAR</a><br/>"; // JAR only
+				echo "<a href=\"http://$data_php/data.php?t=$str\">{$i18['PHONE_DL']}</a>";
 				echo tries_remained($tries[1]-1, $DLIM[1]);
 				echo "<br/><span class=\"alert\">{$i18['VALID_LINKS']}</span>";
 			}
@@ -60,6 +61,7 @@
 	$entity='';
 	if(isset($_GET['ent'])){
 		$entity=urldecode($_GET['ent']);
+		$entity=preg_replace('/[<>]/i', '', $entity);
 	}
 	$_POST["n$level"]=$entity;
 	$lvl_title=array('Continent', 'Country', 'State', 'City');
