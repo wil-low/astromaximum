@@ -1321,7 +1321,7 @@ class Summary extends Canvas implements CommandListener {
         for (int i = Event.SE_SUN; i <= Event.SE_PLUTO; i++) {
             if (i != Event.SE_MOON || pageNum == PAGE_WEEK) {
                 Astromaximum.dataFile.getEventsOnPeriod(mIngress, Event.EV_SIGN_ENTER,
-                        i, false, period0, period1, 0);
+                        i, true, period0, period1, 0);
             }
         }
         if (pageNum == PAGE_WEEK) {

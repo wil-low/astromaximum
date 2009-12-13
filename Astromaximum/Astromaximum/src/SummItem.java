@@ -1773,9 +1773,6 @@ final class SummItem extends TimerTask implements RecordFilter {
         for (Enumeration e = owner.mIngress.elements(); e.hasMoreElements();) {
             ev = (Event) e.nextElement();
             final long date = ev.date0;
-            if (ev.date0 <= Astromaximum.dataFile.startJD || ev.date1 >= Astromaximum.dataFile.finalJD) {
-                continue;
-            }
             if (ev.isDateBetween(0, fgd, fgd2)) {
                 final int day = (int) ((date - fgd) / Astromaximum.MSECINDAY);
                 int x = day % owner.colCount * colWidth + 1;
