@@ -1314,7 +1314,6 @@ class Summary extends Canvas implements CommandListener {
             Astromaximum.dataFile.getEventsOnPeriod(mRetro, Event.EV_RETROGRADE, i, false,
                     period0, period1, 0);
         }
-//    Astromaximum.evDump(mRetro);
         for (Enumeration e = mRetro.elements(); e.hasMoreElements();) {
             final Event ev = (Event) e.nextElement();
             ev.degree = (short) ((ev.date0 <= period0 && ev.date1 >= period1) ? 1 : 0);

@@ -331,11 +331,6 @@ final class DataFile {
         int skipOff;
         Event last = new Event(0, 0);
         int fnext_date2;
-//    if(planet==SE_TRUE_NODE){
-//      System.out.println(new Date(dayStart));
-//      System.out.println(new Date(dayEnd));
-//    }
-
         int PERIOD = (evtype == Event.EV_ASCAPHETICS) ? 2 * 60 : 24 * 60;
         try {
             final DataInputStream is = new DataInputStream(new ByteArrayInputStream(buf));
@@ -357,7 +352,6 @@ final class DataFile {
                 skipOff = is.readShort();
                 flag = is.readShort();
                 if (planet == is.readByte()) {
-//          Astromaximum.instance.log("Found!",false);
                     break;
                 } else {
                     is.skip(skipOff - 6);
@@ -376,33 +370,10 @@ final class DataFile {
             byte myplanet0 = (byte) planet, myplanet1 = -1;
             int mydgr = 127;
             long mydate0, mydate1;
-            /*            
-            int skips = 0;
-            if (fdate != 0) {
-            skips += 4;
-            }
-            if (fplanet1 != 0) {
-            ++skips;
-            }
-            if (fplanet2 != 0) {
-            ++skips;
-            }
-            if (fdegree != 0) {
-            ++skips;
-            if (fshort_degree == 0) {
-            ++skips;
-            }
-            }
-             */
             int cumul;
             long date = 0;
             long sJD = startJD, fJD = finalJD;
-            if (planet == Event.SE_MOON) {
-//        fJD+=31*Astromaximum.MSECINDAY;
-            }
-//      Astromaximum.instance.log("Count="+Integer.toString(count),true);
             for (int i = 0; i < count; i++) {
-//////////////
                 if (fcumul_date_b != 0) {
                     if (i != 0) {
                         cumul = is.readByte();
@@ -435,7 +406,6 @@ final class DataFile {
                 } else {
                     mydate1 = mydate0;
                 }
-//        if(mydate>=dayStart){
                 if (fplanet1 != 0) {
                     myplanet0 = is.readByte();
                 }
@@ -452,20 +422,11 @@ final class DataFile {
                 if (fnext_date2 != 0) {
                     last.date1 = mydate0;
                     mydate1 = finalJD;
-//            lastE.date1=mydate;
                 }
-                if (evtype == Event.EV_RETROGRADE) {
-                    if (mydate0 < sJD) {
-                        mydate0 = sJD;
-                    } else if (mydate1 > fJD) {
-                        mydate1 = fJD;
-                    }
-                }
-
                 if (last.isInPeriod(dayStart, dayEnd, false)) {
-//          v.addElement(last);
                     events[eventsCount++] = new Event(last);
-                } else {
+                }
+                else {
                     if (eventsCount > 0) {
                         break;
                     }
@@ -476,11 +437,9 @@ final class DataFile {
                 last.degree = (short) mydgr;
                 last.date0 = mydate0;
                 last.date1 = mydate1;
-//                if(planet==SE_TRUE_NODE) last.dump();
             }
             if (last.isInPeriod(dayStart, dayEnd, false)) {
                 events[eventsCount++] = new Event(last);
-//        v.addElement(new Event(last));
             }
         } catch (IOException ex) {
         }
