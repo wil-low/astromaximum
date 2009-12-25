@@ -530,6 +530,7 @@ sub writeData
 sub do_jar{
 	my($suite, $prod, $outfile, $mainclass)=@_;
 	open(INF, "<$path/$const::DIR_TEMPLATE/MANIFEST.MF") or mydie($!);
+	binmode(INF);
 	my @data=<INF>;
 	close(INF);
 	my $template=join("",@data);
@@ -554,15 +555,15 @@ sub do_jar{
 	echo("Revision = $rev\n");
 
 	open(INF, ">$path/$const::DIR_TEMPLATE/mf") or mydie("$path/$const::DIR_TEMPLATE/mf $!");
+	binmode(INF);
 	print INF $template;
-	print INF "\r\n";
 	close(INF);
 	my $cmd=ensure_slash(const::JAR($jar_path, $outfile, "$path/$const::DIR_TEMPLATE/mf", "$path/$const::DIR_TEMP", $winda));
 	echo("Exec: $cmd\n");
 	mydie("\tERROR: creating archive") if system($cmd);
 	unlink("$path/$const::DIR_TEMPLATE/mf");
 	my $asize= -s $outfile;
-	$template.="\nMIDlet-Jar-Size: $asize\n";
+	$template.="MIDlet-Jar-Size: $asize\r\n";
 	my $jad=$outfile;
 	$jad=~s/r$/d/is;
 	$outfile=~s/.+[\/\\]//is;
@@ -584,11 +585,13 @@ sub do_jar{
 		$jarurl='http://'.$serv."/data.php?r=".$jarurl;
         print "$tjad\n$jarurl\n";
 		open(FFF, ">$tjad") or mydie("$jad: $!");
-		print(FFF $template."MIDlet-Jar-URL: $jarurl\n");
+		binmode(FFF);
+		print(FFF $template."MIDlet-Jar-URL: $jarurl\r\n");
 		close(FFF);
 	}
-	$template.="MIDlet-Jar-URL: $outfile\n";
+	$template.="MIDlet-Jar-URL: $outfile\r\n";
 	open(FFF, ">$jad") or mydie("$jad: $!");
+	binmode(FFF);
 	print(FFF $template);
 	close(FFF);
 }
@@ -1139,6 +1142,7 @@ sub get_revision{ # num
     }
 #    echo("revision='$result'\n");
     mydie ("No revision") unless $result > 0;
+	$result =~ s/[\r\n]//sg;
 	return $result;
 }
 
