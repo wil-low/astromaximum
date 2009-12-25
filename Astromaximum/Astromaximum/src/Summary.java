@@ -1122,6 +1122,8 @@ class Summary extends Canvas implements CommandListener {
 //#endif
             Astromaximum.calendar.setTime(selDate);
             Astromaximum.calendar.set(Calendar.YEAR, Astromaximum.startYear);
+            Astromaximum.calendar.set(Calendar.MONTH, Calendar.JANUARY);
+            Astromaximum.calendar.set(Calendar.DAY_OF_MONTH, 1);
             selDate = Astromaximum.calendar.getTime();
 //#debug error
             System.out.println(selDate);
