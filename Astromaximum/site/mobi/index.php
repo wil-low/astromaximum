@@ -11,10 +11,10 @@ if(isset($_GET['p'])) {
     $main=$_GET['p'];
 }
 
-detect_mobile();
+//detect_mobile();
 
 header ("Content-Type: application/xhtml+xml");
-header ("Cache-Control: max-age=3600");
+//header ("Cache-Control: max-age=3600");
 $custom_content=''; $subtitle=''; $onload=''; $head='';
 
 function output_callback($buffer) {
