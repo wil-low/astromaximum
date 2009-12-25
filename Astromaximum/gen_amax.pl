@@ -579,14 +579,9 @@ sub do_jar{
 		$outfile="$1_$pf-$2.jar";
 		my $tjad=$jad;
 		$tjad=~s/d$/t/is;
-        if($config=~/demo/){ # demo is received by email link
-            $jarurl=$outfile;
-        }
-        else{
-            my $serv='mobi.astromaximum.com';
-            $serv.='/mobi' if $serv!~/mobi/is;
-            $jarurl='http://'.$serv."/data.php?r=".$jarurl;
-        }
+		my $serv='mobi.astromaximum.com';
+		$serv.='/mobi' if $serv!~/mobi/is;
+		$jarurl='http://'.$serv."/data.php?r=".$jarurl;
         print "$tjad\n$jarurl\n";
 		open(FFF, ">$tjad") or mydie("$jad: $!");
 		print(FFF $template."MIDlet-Jar-URL: $jarurl\n");
