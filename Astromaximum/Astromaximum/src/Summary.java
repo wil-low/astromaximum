@@ -35,7 +35,7 @@ class Summary extends Canvas implements CommandListener {
     //  private SummItem prevPH;
     private short[] bounds;
     private short[] _bounds;
-    static final int MAX_LAYOUT_NUM = 3;
+    static final int MAX_LAYOUT_NUM = 4;
     final Date date = new Date();
     private static final int BOUNDS_VARS = 12;
     static long period0;
@@ -1392,6 +1392,9 @@ class Summary extends Canvas implements CommandListener {
             }
             if (size != 2) {
                 PAGE_LAST += 2;
+            }
+            if (size == 4) {
+                ++PAGE_LAST;
             }
             String ext = "/res/sz" + Integer.toString(IMG_HEIGHT) + ".dat";
             imgService = Astromaximum.extractImg(0, ext);
