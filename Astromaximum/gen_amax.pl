@@ -757,7 +757,7 @@ sub mess_direrase {
 }
 
 sub unzip{
-	my $uz='./unzip';
+	my $uz='unzip';
 	$uz="$path/$uz.exe" if $winda;
 	#die $uz;
 	my $cmd=sprintf($const::UNZIP, $uz, $_[0], "$path/$const::DIR_TEMP");
