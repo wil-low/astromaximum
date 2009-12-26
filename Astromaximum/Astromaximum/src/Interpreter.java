@@ -393,11 +393,11 @@ class Interpreter extends Canvas implements CommandListener {
     }
 
     private void renderString(Graphics osg, String s) {
-        Font fnt = osg.getFont();
         int len = s.length();
         if (len == 0) {
             return;
         }
+        Font fnt = osg.getFont();
         int width = getWidth() - HMARGIN * 2;
         char[] ca = new char[len];
         s.getChars(0, len, ca, 0);
@@ -413,16 +413,25 @@ class Interpreter extends Canvas implements CommandListener {
             }
             int wlen = i - start;
             cw = fnt.charsWidth(ca, start, wlen);
-            if (curX + cw > width) {
+            if (cw > width) {
+                wlen = (width - curX) * wlen / cw;
+                curc = '\0';
+            }
+            else if (curX + cw > width) {
                 newLine();
             }
             osg.drawChars(ca, start, wlen, curX, curY, Graphics.LEFT | Graphics.TOP);
-            if (curc == '|') {
-                newLine();
-            } else {
-                curX += cw + spaceW;
+            switch (curc) {
+                case ' ':
+                    curX += cw + spaceW;
+                    ++wlen;
+                    break;
+                case '|':
+                    ++wlen;
+                case '\0':
+                    newLine();
             }
-            start += wlen + 1;
+            start += wlen;
         }
 
         newLine();
