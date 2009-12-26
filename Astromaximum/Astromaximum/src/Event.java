@@ -187,7 +187,7 @@ final class Event {
         System.out.print("&");
         System.out.println(f1);
          */
-        if (f == 2 || f == -2) {
+        if ((f == 2) || (f == -2)) {
             return false;
         }
         if (special) {
