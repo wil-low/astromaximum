@@ -1760,10 +1760,9 @@ final class SummItem extends TimerTask implements RecordFilter {
             if (ev.date0 <= Astromaximum.dataFile.startJD) {
                 continue;
             }
-            final long date = ev.date0;
             if (ev.isDateBetween(0, fgd, fgd2)) {
                 Astromaximum.errCode++;
-                final int day = (int) ((date - fgd) / Astromaximum.MSECINDAY);
+                final int day = (int) ((ev.date0 - fgd) / Astromaximum.MSECINDAY);
                 int x = day % owner.colCount * colWidth + 1;
                 y = day / owner.colCount * rowHeight + top + 1;
                 places[day]++;
