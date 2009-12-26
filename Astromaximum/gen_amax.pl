@@ -60,7 +60,7 @@ if($islocal){
 	if(!scalar(@ARGV)){
 		print "This script generates ready-to-use $const::PRODUCT $const::VERSION distribution.\n";
 		print "Parameters:\n";
-		print "\t<config>: [rebuild|notest|imei|tb|demo|microemu|join|lang|amtext|cleanup]\n";
+		print "\t<config>: [rebuild|notest|imei|tb|demo|microemu|geo-|join|lang|amtext|cleanup]\n";
 		print "\t<year>\n";
 		print "\t<lang>\n";
 		print "\t<loclist file>\n";
@@ -254,7 +254,7 @@ if($config=~/demo/is){
 if($config=~/geo-$/is){
 	unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
 	my $locname=inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-	inject_icon('', '');
+	inject_icon('', 'res/');
 	do_jar($locname, $locname, $outfile, $GeoAMclass);
 	do_messjar($outfile);
 	$done=1;
@@ -346,20 +346,20 @@ sub inject_amdata{
 }
 
 sub inject_icon{ # prefix, subdir
-        mkdir "$const::DIR_TEMP/$_[1]";
-	$ye=~/(\d)$/is;
+    mkdir "$const::DIR_TEMP/$_[1]";
+	my $icon_num = $ye % 2;
 	my $prefix=shift;
-        my $fn = "<$path/$const::DIR_IMG/$prefix$1.png";
+    my $fn = "<$path/$const::DIR_IMG/$prefix$icon_num.png";
 	open(INF, $fn) or mydie("Cannot open $fn");
 	binmode(INF);
 	my @body=<INF>;
 	close (INF);
-        $fn = ">$path/$const::DIR_TEMP/$_[0]"."icon.png";
+    $fn = ">$path/$const::DIR_TEMP/$_[0]"."icon.png";
 	open(OUTF, $fn) or mydie("Cannot open $fn");
 	binmode(OUTF);
 	print OUTF join('', @body);
 	close (OutF);
-	echo("$const::DIR_TEMP/$_[0]"."icon.png written from $path/$const::DIR_IMG/$prefix$1.png\n");
+	echo("$const::DIR_TEMP/$_[0]"."icon.png written from $path/$const::DIR_IMG/$prefix$icon_num.png\n");
 }
 
 sub dbconnect{
