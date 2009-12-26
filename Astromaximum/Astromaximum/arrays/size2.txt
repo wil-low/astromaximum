@@ -2,9 +2,9 @@
 
 #   l, t, w, h   page    ho,ve    event type               l, r, u, d
 
-{   1, 0, 9, 7,   256,    1, 1,   EV_BACK             ,   -1, 1,-1, 1  }   # BACK ARROW
+{   1, 0, 9, 7,   512,    1, 1,   EV_BACK             ,   -1, 1,-1, 1  }   # BACK ARROW
 {   1, 0, 9, 7,   255,    1, 1,   EV_PANEL            ,   -1, 1,-1, 1  }   # 1 PANEL
-{  13, 0,70, 7,   760,    3, 1,   EV_TOP_DAY          ,   21,21,-1, 1  }   # 2 EV_TOP_DAY
+{  13, 0,70, 7,   248,    3, 1,   EV_TOP_DAY          ,   21,21,-1, 1  }   # 2 EV_TOP_DAY
 {  13, 0,70, 7,     6,    3, 1,   EV_TOP_MONTH        ,   25,25,27,27  }   # 3 EV_TOP_MONTH
 {   1,14,99,84,     2,    1, 1,   EV_WEEK_GRID        ,   24,24,24,24  }   # 4 WEEK_GRID
 {   1,18,99,80,     4,    1, 1,   EV_MONTH_GRID       ,   23,23,23,23  }   # 5 MONTH_GRID
@@ -83,14 +83,14 @@
 {  23,76,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
 {   1,82,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
 {  23,82,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1, 9,99, 8,   256,    7, 1,   EV_HELP             ,   39,41,-1, 1  }   # help - planets 1
-{   1,17,99, 8,   256,    6, 2,   EV_HELP             ,   39,41,-1, 1  }   # help - planets 1
-{   1,27,99, 8,   256,    6, 3,   EV_HELP             ,   39,41,-1, 1  }   # help - zodiac 1
-{   1,35,99, 8,   256,    6, 4,   EV_HELP             ,   39,41,-1, 1  }   # help - zodiac 2
-{   1,45,99, 8,   256,    5, 5,   EV_HELP             ,   39,41,-1, 1  }   # help - hotkeys, Asc
-{   1,55,99,12,   256,    6, 6,   EV_HELP             ,   39,41,-1, 1  }   # help - phases
-{   1,69,99, 8,   256,    8, 7,   EV_HELP             ,   39,41,-1, 1  }   # help - aspects
-{   1,79,99, 8,   256,    5, 8,   EV_HELP             ,   39,41,-1, 1  }   # help - tithi
-{   1,88,99,11,   256,    8, 9,   EV_HELP             ,   39,41,-1, 1  }   # help - topics
-{   1, 9,99,89,   512,   10, 0,   EV_ASCAPHETICS      ,   -1, 1,39,41  }   # AscAphetics
+{   1, 9,99, 8,   512,    7, 1,   EV_HELP             ,   39,41,-1, 1  }   # help - planets 1
+{   1,17,99, 8,   512,    6, 2,   EV_HELP             ,   39,41,-1, 1  }   # help - planets 1
+{   1,27,99, 8,   512,    6, 3,   EV_HELP             ,   39,41,-1, 1  }   # help - zodiac 1
+{   1,35,99, 8,   512,    6, 4,   EV_HELP             ,   39,41,-1, 1  }   # help - zodiac 2
+{   1,45,99, 8,   512,    5, 5,   EV_HELP             ,   39,41,-1, 1  }   # help - hotkeys, Asc
+{   1,55,99,12,   512,    6, 6,   EV_HELP             ,   39,41,-1, 1  }   # help - phases
+{   1,69,99, 8,   512,    8, 7,   EV_HELP             ,   39,41,-1, 1  }   # help - aspects
+{   1,79,99, 8,   512,    5, 8,   EV_HELP             ,   39,41,-1, 1  }   # help - tithi
+{   1,88,99,11,   512,    8, 9,   EV_HELP             ,   39,41,-1, 1  }   # help - topics
+{   1, 9,99,89,  1024,   10, 0,   EV_ASCAPHETICS      ,   -1, 1,39,41  }   # AscAphetics
 {   1,93,98, 7,   249,    2, 1,   EV_STATUS           ,   22,22,-1, 1  }   # 15 (39) status line

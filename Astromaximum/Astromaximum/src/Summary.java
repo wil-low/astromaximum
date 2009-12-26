@@ -74,10 +74,7 @@ class Summary extends Canvas implements CommandListener {
     static final int PAGE_MONTH = 2;
     static final int PAGE_PANEL = 3;
     static final int PAGE_SUMMARY = 4;
-    static final int PAGE_HELP = 8;
-    //#ifdef ELECTIO
-    //#   static final int PAGE_ELECTIO=9;
-    //#endif
+    static final int PAGE_HELP = 9;
     private static int PAGE_LAST;
 
     static int IMG_HEIGHT;
@@ -1432,7 +1429,7 @@ class Summary extends Canvas implements CommandListener {
                 }
             }
         }
-        String panelNum = size == 4 ? "3" : "";
+        String panelNum = IMG_HEIGHT == 24 ? "3" : "";
         DataInputStream dis = new DataInputStream(getClass().
                 getResourceAsStream("/res/panel" + panelNum + ".png"));
         try {
