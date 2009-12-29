@@ -315,11 +315,6 @@ final class SummItem extends TimerTask implements RecordFilter {
                 osg.drawRect(l1, t1, w1, h1);
                 osg.drawRect(l1 - 2, t1 - 2, w1 + 4, h1 + 4);
             }
-//      osg.setStrokeStyle(Graphics.SOLID);
-//      if(page % 2 == 0){
-//        osg.setColor(Astromaximum.BORDER_COLOR);
-//        osg.drawRect(left,top,width,height);
-//      }
         }
         int y = top + height / 2;
         osg.setColor(0);
@@ -358,8 +353,6 @@ final class SummItem extends TimerTask implements RecordFilter {
                         for (int i = 0; i < 4; i++) {
                             owner.drawPhase(osg, getX(i + 1, XCENTER) - Summary.IMG_HEIGHT / 2,
                                     y - Summary.IMG_HEIGHT / 2, Summary.IMG_HEIGHT, i);
-//              drawImg(osg,Summary.imgPhase,i,getX(i+1, XCENTER),y,
-//                  Graphics.VCENTER|Graphics.HCENTER);
                         }
                         osg.drawString("VOC", getX(0, XCENTER), top + height - 1,
                                 Graphics.BASELINE | Graphics.HCENTER);
@@ -442,7 +435,6 @@ final class SummItem extends TimerTask implements RecordFilter {
                 ev = events[0];
                 xr = getX(0, XLEFT);
                 if (ev != null) {
-//          ev.dump();
                     drawImg(osg, Summary.imgZodiac, ev.getDegree(),
                             xr + 1, top + 1, Graphics.TOP | Graphics.LEFT);
                     drawSignString(osg, ev, now, isCus, xr);
@@ -587,11 +579,14 @@ final class SummItem extends TimerTask implements RecordFilter {
 
                 final Font old = osg.getFont();
                 y = top + height - 2;
-//        if(owner.isShowCustom){
                 int x = getX(0, XCENTER);
                 if (str != null) {
                     if (str.length() >= 9 && str.charAt(2) != ':' && str.charAt(8) == ':') {
-                        x = (width - old.stringWidth(str)) / 2;
+                        int strw = old.stringWidth(str);
+                        if (strw > width)
+                            x = (width - strw) / 2;
+                        else
+                            x -= strw / 2;
                         String ss = str.substring(0, 5);
                         osg.setColor(Astromaximum.SELECTION_COLOR);
                         osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
@@ -615,7 +610,8 @@ final class SummItem extends TimerTask implements RecordFilter {
                             osg.setColor(colo);
                             ss = str.substring(17 + space);
                             osg.drawString(ss, x, y, Graphics.LEFT | Graphics.BASELINE);
-                            break;
+                            if (strw > width)
+                                break; // do not draw current time
                         }
                     } else {
                         osg.drawString(str, x, y, Graphics.HCENTER | Graphics.BASELINE);
@@ -1688,14 +1684,11 @@ final class SummItem extends TimerTask implements RecordFilter {
         int count2 = 1;
         long fgd;
         final long fgd2;
-        Astromaximum.errCode = 300;
         // weekday numbering
         fgd = Summary.period0;
         fgd2 = Summary.period1;
         for (int row = 0; row < owner.rowCount; row++) {
             for (int col = 0; col < owner.colCount; col++) {
-//        int fontColor=0;
-                Astromaximum.errCode = 300 + 10 * row + col;
                 int fillColor = Astromaximum.DIMMED_COLOR;
                 Astromaximum.calendar.setTime(cur);
                 if (owner.selMonth == Astromaximum.calendar.get(Calendar.MONTH)) {
@@ -1703,10 +1696,8 @@ final class SummItem extends TimerTask implements RecordFilter {
                 }
                 long ld = cur.getTime();
                 ld -= Event.localOffset(ld);
-//        final long ld2=ld+Astromaximum.MSECINDAY;
                 Event eclipse = Astromaximum.dataFile.todayEclipse(ld, 0);
                 if (eclipse != null) {
-//          fontColor=Astromaximum.SELECTION_COLOR;
                     fillColor = 0;
                     nodrawNums[cnt] = true;
                 }
@@ -1716,7 +1707,6 @@ final class SummItem extends TimerTask implements RecordFilter {
                     if (fillColor != 0) {
                         if (type == Event.EV_MONTH_GRID) {
                             fillColor = Astromaximum.GRAY_COLOR;
-//            fontColor=0;
                         }
                     } else {
                         fillColor = Astromaximum.BACK_COLOR;
@@ -1752,8 +1742,6 @@ final class SummItem extends TimerTask implements RecordFilter {
         osg.setColor(0);
 //        osg.setFont(oldFont);
 // @todo zero
-//        zeroPlaces();
-        Astromaximum.errCode = 400;
 
         for (Enumeration e = owner.mIngress.elements(); e.hasMoreElements();) {
             ev = (Event) e.nextElement();
@@ -1761,7 +1749,6 @@ final class SummItem extends TimerTask implements RecordFilter {
                 continue;
             }
             if (ev.isDateBetween(0, fgd, fgd2)) {
-                Astromaximum.errCode++;
                 final int day = (int) ((ev.date0 - fgd) / Astromaximum.MSECINDAY);
                 int x = day % owner.colCount * colWidth + 1;
                 y = day / owner.colCount * rowHeight + top + 1;
@@ -1774,7 +1761,6 @@ final class SummItem extends TimerTask implements RecordFilter {
                 }
             }
         }
-        Astromaximum.errCode = 500;
         for (Enumeration e = owner.mRetro.elements(); e.hasMoreElements();) {
             ev = (Event) e.nextElement();
             int x;
@@ -1782,7 +1768,6 @@ final class SummItem extends TimerTask implements RecordFilter {
                 for (int i = 0; i < 2; i++) {
                     final long date = (i > 0) ? ev.date1 : ev.date0;
                     if (ev.isDateBetween(i, fgd, fgd2)) {
-                        Astromaximum.errCode++;
                         final int day = (int) ((date - fgd) / Astromaximum.MSECINDAY);
                         final int pos = places[day]++;
                         x = day % owner.colCount * colWidth + 1 + leftm;
@@ -1799,7 +1784,6 @@ final class SummItem extends TimerTask implements RecordFilter {
                     }
                 }
             }
-            Astromaximum.errCode = 600;
             y = top - 2;
             x = count * (Summary.IMG_WIDTH + 3);
             if (ev.getDegree() == 0) {
@@ -1818,7 +1802,6 @@ final class SummItem extends TimerTask implements RecordFilter {
             drawImg(osg, Summary.imgService, 1, x + 3, y + 3, Graphics.BOTTOM | Graphics.LEFT);
 //          }
         }
-Astromaximum.errCode = 700;
         /* @todo Day # drawing in week mode */
         cur = new Date(Summary.firstGridDate.getTime());
         cnt = 0;
@@ -1834,7 +1817,6 @@ Astromaximum.errCode = 700;
                     osg.setColor(0);
                 }
                 if (!nodrawNums[cnt++]) {
-                    Astromaximum.errCode = 700 + 10 * row + col;
                     osg.drawString(Integer.toString(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH)),
                             xx + (colWidth / 2), yy,
                             (Graphics.BASELINE) | Graphics.HCENTER);
@@ -1843,7 +1825,6 @@ Astromaximum.errCode = 700;
                 cur.setTime(start + Astromaximum.MSECINDAY);
             }
         }
-        Astromaximum.errCode = 800;
         if (Summary.size > 1) {
             for (int i = 0; i < 7; i++) {
                 osg.setColor(i == 0 ? 0xb00000 : 0);
