@@ -870,7 +870,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             printf("calcAspExact =  %d events\n", work.size());
             sprintf(fname, "aspects.bin");
             sortVAE(work);
-            printf(fname);
+            printf("%s", fname);
             writeSubData(work, EV_ASP_EXACT, EF_CUMUL_DATE_W | EF_PLANET1 | EF_PLANET2 | EF_DEGREE | EF_SHORT_DEGREE, -1, fname);
             release(work);
             sprintf(fname, "aspects01.bin");
