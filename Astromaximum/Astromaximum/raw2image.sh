@@ -16,7 +16,6 @@ if ! [ -d $WTK ]; then
 fi
 echo WTK  is at $WTK
 
-exit
 OPTIONS="-colorize 28,18,8"
 IMG_PATH=$WTK/appdb/root/filesystem/root1
 
