@@ -3,7 +3,7 @@ SOURCE=$(DEST)/source
 
 .PHONY: all gen_amax config rebuild template interp mutter relgui test sunrise encode85 swe
 
-all:	gen_amax config template interp mutter relgui sunrise encode85
+all:	gen_amax config template interp mutter sunrise encode85 relgui
 
 test:	
 	#make mutter; 
