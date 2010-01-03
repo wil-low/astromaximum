@@ -45,6 +45,7 @@ list($chac, $chac_pay)=check_access();
 $user_ok=($chac>=0 and $chac!=1);
 $show_topics=1;
 $custom_content='';
+$buy_page = 'p_07'; // 'buy'
 
 if(strcmp($main, 'login')==0){
 	$login=''; $pass='';
@@ -60,7 +61,7 @@ if(strcmp($main, 'login')==0){
 		if(isset($_GET['to']) && strcmp($_GET['to'],'demo')==0){
 			$main=$_GET['to'];
 		}
-		if ($chac == 3) $main = 'buy';
+		if ($chac == 3) $main = $buy_page;
  	}
 	else{
 		include_once("mobi/ipblock.php");
@@ -152,7 +153,7 @@ print_menu('man0', 'MNU_MAN', 1);
 echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . "start\">wiki</a> | ";
 echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . 
 	"screen\" target=\"_blank\">{$i18['MNU_SCRSHOTS']}</a> | ";
-print_menu('buy', 'MNU_BUY', 1);
+print_menu($buy_page, 'MNU_BUY', 1);
 print_menu('citylist', 'MNU_CITYLIST', 1);
 print_menu('dl', 'MNU_DLCIT', 1);
 print_menu('contacts', 'MNU_CONTACTS', 0);
@@ -206,7 +207,7 @@ FRM;
 </div>
 <?php 
 echo show_big_button('demo', $btn1, $btn1_link, $btn1_link, false);
-echo show_big_button('buy', $btn2, '/^(buy|p_\d\d)$/is', "/$lang/buy", true);
+echo show_big_button('buy', $btn2, '/^(buy|p_\d\d)$/is', "/$lang/$buy_page", true);
 ?>
 <div id="leftColumn">
 <?php	echo $session_prompt ?>
