@@ -158,12 +158,13 @@ long Relgui::onListAvailable(FXObject* o,FXSelector,void* index){
 long Relgui::onGetCityList(FXObject* o,FXSelector sel,void* data){
     FXString *fileList;
     getApp()->beginWaitCursor();
-    setTitle("Relgui - "+FXStringVal(year));
-    clearLr(lrCities);
     char buf[1000];
+    sprintf(buf, "Relgui - %d", year);
+    setTitle(buf);
+    clearLr(lrCities);
     const FXString dir="../data/archive/";
     int count=FXDir::listFiles(fileList, dir, "*", FXDir::AllFiles|FXDir::NoParent);
-    FXRex parser("([^\\|]+?)\\|[\\-\\d\\.]+\\|[\\-\\d\\.]+\\|([^\\|]+?)\\|[A-Z]+", REX_CAPTURE);
+    FXRex parser("([^\\|]+?)\\|[\\-\\d\\.]+\\|[\\-\\d\\.]+\\|([^\\|]+?)\\|[A-Z]+", FXRex::Capture);
     int beg[3], end[3];
     FXString city, state, dpath, ini;
     for(int i=0; i<count; i++){
@@ -182,7 +183,7 @@ long Relgui::onGetCityList(FXObject* o,FXSelector sel,void* data){
                 ii=line.find('#');
                 if(ii>=0) 
                     line.trunc(ii);
-                if(parser.match(line, beg, end, REX_FORWARD, 3)){
+                if(parser.match(line, beg, end, FXRex::Forward, 3)){
                     city=line.mid(beg[1], end[1]-beg[1]);
                     ii=city.find('!');
                     if(ii>=0) 
@@ -194,7 +195,7 @@ long Relgui::onGetCityList(FXObject* o,FXSelector sel,void* data){
                 }
                 char dat[5];
                 sprintf(dat, "%04d", ind++);
-                dpath=dir+FXStringVal(year)+"/"+ini+"/Data"+dat+".dat";
+                dpath=dir+FXString::value(year)+"/"+ini+"/Data"+dat+".dat";
                 if(FXStat::exists(dpath)){
                     lrCities.append(new City(city, state, dpath));
                 }
