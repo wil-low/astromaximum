@@ -4,17 +4,18 @@ use strict;
 #use warnings;
 #use diagnostics;
 use POSIX;
+my $NB_VERSION='6.7';
 my $islocal=$0=~/\.pl$/is;
 my $done=0;
 if(!$islocal){
 	$const::DIR_TEMPLATE='source';
 }
-my $nb_user='$HOME/.netbeans/6.7';
+my $nb_user='$HOME/.netbeans/'.$NB_VERSION;
 my $platform='$HOME/wtk251';
 our $winda=$^O=~/Win/is;
 our $ext = '';
 if($winda){
-	$nb_user='%USERPROFILE%/.netbeans/6.7';
+	$nb_user='%USERPROFILE%/.netbeans/'.$NB_VERSION;
 	$platform='D:\WTK251';
 	$ext = '.exe';
 }
@@ -103,8 +104,8 @@ if($islocal and ($config eq 'rebuild')){
 	echo("Rebuilding all configs...\n");
 	my $antpath;
 	my @app=(
-	'/home/willow/program/nb67/java2/ant/bin/ant',
-	'd:/Program Files/nb67/java2/ant/bin/ant.bat',
+	'/home/willow/program/nb'.$NB_VERSION.'/java2/ant/bin/ant',
+	'd:/Program Files/nb'.$NB_VERSION.'/java2/ant/bin/ant.bat',
 	);
 	foreach (@app){
 		if(-f $_){
