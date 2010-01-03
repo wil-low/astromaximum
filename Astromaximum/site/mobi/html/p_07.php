@@ -5,7 +5,7 @@ $price=$GLOBALS['amax']['price'];
 
 $admin_email='dev@astromaximum.mobi';
 
-$products = array('ru' => 300335555, 'en' => 300334680);
+$products = array('ru' => 300366182, 'en' => 300366177);
 $lngs = array('ru' => '12', 'en' => '1');
 
 $svc_url='http://www.shareit.com/product.html?productid=' . $products[$lang] .
