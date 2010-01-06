@@ -126,13 +126,22 @@ if($islocal and ($config eq 'rebuild')){
 		"-Dplatform.home=\"$platform\" clean jar";
 	echo("$cmd\n");
 	mydie("BUILD ERROR") if system($cmd);
-	my @conf=('tb', 'demo', 'imei', 'microemu'
-#	'notest', 'notest_logger', 'imei', 'tb_logger'
-	);
 	my @tmpl=glob("$path/templates/*.jar");
 	foreach(@tmpl){
 	    unlink $_;
 	}
+	my $conf="DefaultConfiguration";
+	echo("\n--------------------------------\n");
+	echo("--- Config geo: $conf ---\n");
+	echo("--------------------------------\n");
+	$cmd="$antpath -quiet -f GeoAM/build.xml -Dcjavac.debug=false -Djavac.optimize=true ".
+		"-Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" ".
+		"-Dproject.geoLib=\"$path/../geoLib\" clean jar";
+	echo("$cmd\n");
+	mydie("BUILD ERROR") if system($cmd);
+	my @conf=('tb', 'demo', 'imei', 'microemu'
+#	'notest', 'notest_logger', 'imei', 'tb_logger'
+	);
 	foreach(@conf){
 		echo("\n--------------------------------\n");
 		echo("--- Config $_ ---\n");
@@ -144,15 +153,6 @@ if($islocal and ($config eq 'rebuild')){
 		echo("$cmd\n");
 		mydie("BUILD ERROR") if system($cmd);
 	}
-	my $conf="DefaultConfiguration";
-	echo("\n--------------------------------\n");
-	echo("--- Config geo: $conf ---\n");
-	echo("--------------------------------\n");
-	$cmd="$antpath -quiet -f GeoAM/build.xml -Dcjavac.debug=false -Djavac.optimize=true ".
-		"-Drebuild.only=true -Dnetbeans.user=\"$nb_user\" -Dplatform.home=\"$platform\" ".
-		"-Dproject.geoLib=\"$path/../geoLib\" clean jar";
-	echo("$cmd\n");
-	mydie("BUILD ERROR") if system($cmd);
 	exit(0);
 }
 our $messjar=0;
