@@ -45,7 +45,7 @@ list($chac, $chac_pay)=check_access();
 $user_ok=($chac>=0 and $chac!=1);
 $show_topics=1;
 $custom_content='';
-$buy_page = 'p_07'; // 'buy'
+$buy_page = 'buy';
 
 if(strcmp($main, 'login')==0){
 	$login=''; $pass='';
