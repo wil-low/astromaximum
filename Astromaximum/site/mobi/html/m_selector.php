@@ -8,20 +8,17 @@ if(!strpos($data_php, "mobi")){
 }
 if($chac==-1){
 	$login=''; $pass='';
+	$is_entered = 0;
 	if(isset($_POST['login'])){
 		$login=$_POST['login'];
+		$is_entered = 1;
 	}
 	if(isset($_POST['pass'])){
 		$pass=$_POST['pass'];
+		$is_entered = 1;
 	}
-	if(!login($login, $pass)){
-	/*
-		include_once("ipblock.php");
-		$msg=allow_ip("mobi_home", true);
-		echo $msg;
-		if(!$msg) redirect($MOBI_SITE);
-		exit;
-		*/
+	if($is_entered && !login($login, $pass)){
+		echo "Warning: logged as guest";
 	}
 	list($chac, $chac_pay)=check_access();
 }
