@@ -2,6 +2,7 @@
 $EXEC=5;
 include_once('config.php');
 include_once('dbconnect.php');
+include_once('amtools.php');
 $PREFIX='Cities';
 if(true /*|| check_access()*/){
     $type='';
@@ -21,7 +22,7 @@ if(true /*|| check_access()*/){
 	$ye=substr($dig, 0,2);
 	$fn="$DIR_FILES/".$dig.".$type";
 	$stat=sprintf(
-		"SELECT type FROM files WHERE id='%s' AND end_tm>NOW() AND NOT deleted", quote_smart($dig));
+		"SELECT type, user_id, id, end_tm FROM files WHERE id='%s' AND end_tm>NOW() AND NOT deleted", quote_smart($dig));
 	$sth=mysql_query($stat);
 	if(mysql_affected_rows() != 1)
         data_gone();
@@ -40,6 +41,7 @@ if(true /*|| check_access()*/){
 	$handle = fopen($fn, "rb");
 	if(!$handle)
         data_gone();
+	event_send("Midlet $row[0] downloaded by user_id $row[1]", "File id: $row[2], expire time $row[3]");
 	$clen=filesize($fn);
 	$data = fread($handle, $clen);
 	fclose($handle);
@@ -47,7 +49,6 @@ if(true /*|| check_access()*/){
 		header('Content-Type: text/vnd.sun.j2me.app-descriptor; charset=UTF-8');
 	}
 	else{
-//		echo filesize($fn); 
 		header('Content-Type: application/java-archive');
 	}
 	header("Content-Length: $clen");
