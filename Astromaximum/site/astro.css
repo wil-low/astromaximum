@@ -305,20 +305,11 @@ ul {
     width: 50%;
 }
 #banners {
-	position: absolute;
-	margin-top: 8px;
-	margin-left: 8px;
-	text-align: left;
+ MARGIN-TOP: 8px; MARGIN-LEFT: 8px; left:0px; POSITION: absolute; TEXT-ALIGN: left
 }
-
 #contact {
-	position: absolute;
-	margin-left: 360px;
-	margin-top: 8px;
-	width: 288px;
-	text-align: left;
+ MARGIN-TOP: 8px; MARGIN-LEFT: 360px; WIDTH: 288px; left:10px;POSITION: absolute; TEXT-ALIGN: left
 }
-
 #contact p {
 	margin: 0px 0px 0 0;
 }
