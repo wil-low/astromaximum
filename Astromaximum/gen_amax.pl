@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 package main;
 use strict;
+use POSIX;
 #use warnings;
 #use diagnostics;
 use POSIX;
@@ -53,8 +54,9 @@ my $pwdgen_local=$path.'/../../pwdgen_local.php';
 
 my $jar_path=$path;
 
-open(FLOG, ">$path/gen_amax.log");
+open(FLOG, ">>$path/gen_amax.log");
 
+echo("\n\n--- Start ".strftime('%Y-%m-%d %H:%M:%S', localtime). "---\n");
 echo("Command line:  $0 @ARGV\n");
 if($islocal){
 	require 'genconst.pm';
@@ -1051,6 +1053,7 @@ sub inject_lang{ # lang, isdemo
 	}
 	if($errors==0){
 		return 0 if $demo;
+=head
         echo("\n---Add these lines into SummItem.java---\n\n");
 		while (my($key, $value) = each %hash) {
 			$value=~s/\\//isg;
@@ -1058,6 +1061,7 @@ sub inject_lang{ # lang, isdemo
 			delete $hash{$key};   # This is safe
 		}
         echo("\n---cut here---\n\n");
+=cut
 	}
 	else{
 		echo("\n-------- $errors error(s) found. Compilation aborted! --------\n");

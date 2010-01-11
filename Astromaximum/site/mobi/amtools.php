@@ -346,12 +346,12 @@ function record_in_range($table, $tm){
 }
 
 function mailtext_w_attach($to, $realname, $subject, $message){ # returns sent Mail object
-    include_once("mobi/phpmailer/class.phpmailer.php");
-    include_once("mobi/phpmailer/class.smtp.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/mobi/phpmailer/class.phpmailer.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."mobi/phpmailer/class.smtp.php");
     $from=$GLOBALS['amax']['mail_office'];
     
     $mail=new PHPMailer();
-    $mail->SetLanguage("en", "mobi/phpmailer/");
+    $mail->SetLanguage("en", $_SERVER['DOCUMENT_ROOT']."/mobi/phpmailer/");
     if($GLOBALS['amax']['is_online']){
         $mail->IsSMTP();
         $mail->SMTPAuth   = true;                  // enable SMTP authentication
