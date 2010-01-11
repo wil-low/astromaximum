@@ -82,7 +82,7 @@ Relgui::Relgui(FXApp *a): FXMainWindow(a,"",NULL,NULL,DECOR_ALL,0,0,1000,600){
 
         // 2nd column
         FXVerticalFrame *fr10=new FXVerticalFrame(fr00,
-            LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0); 
+            LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0);
         new FXLabel(fr10, "Selected", NULL, LAYOUT_CENTER_X);
         FXVerticalFrame *fr11=new FXVerticalFrame(fr10,
             FRAME_NORMAL|LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0,0,0,0,0); 
@@ -168,7 +168,7 @@ long Relgui::onGetCityList(FXObject* o,FXSelector sel,void* data){
     int beg[3], end[3];
     FXString city, state, dpath, ini;
     for(int i=0; i<count; i++){
-        if(FXPath::match("*.txt", fileList[i])){
+        if(FXPath::match(fileList[i], "*.txt")){
             char *cc=(char*)((dir+fileList[i]).text());
 			FILE *intxt=fopen(cc, "r");
 			if(!intxt){
