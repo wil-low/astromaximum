@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="Astronomer"
+	Name="Astronom"
 	ProjectGUID="{1530205F-691E-4EA6-8B62-11B67D271822}"
 	RootNamespace="Astronomer"
 	Keyword="Win32Proj"
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(FOX_HOME)\include"
+				AdditionalIncludeDirectories="$(FOX_HOME)\include;$(SQLITE_HOME)\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;UNICODE;FOXDLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="FOXDLLD-1.6.lib"
+				AdditionalDependencies="FOXDLLD-1.6.lib sqlite3.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(FOX_HOME)\lib"
+				AdditionalLibraryDirectories="$(FOX_HOME)\lib;$(SQLITE_HOME)\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				EntryPointSymbol="mainCRTStartup"
@@ -179,7 +179,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\AstronomApp.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DraggableView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GlyphManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WheelView.cpp"
 				>
 			</File>
 		</Filter>
@@ -188,6 +204,22 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\AstronomApp.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DraggableView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GlyphManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WheelView.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Файлы ресурсов"

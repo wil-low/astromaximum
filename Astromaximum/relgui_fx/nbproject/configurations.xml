@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="51">
+<configurationDescriptor version="62">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -14,8 +14,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>main.cxx</itemPath>
-      <itemPath>/home/willow/amax/relgui_fx/relgui.cpp</itemPath>
+      <itemPath>relgui.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -28,54 +27,48 @@
     <conf name="Debug" type="1">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
+        <compilerSet>MinGW|MinGW</compilerSet>
+        <platform>3</platform>
       </toolsSet>
       <compileType>
-        <cCompilerTool>
+        <cTool>
           <commandlineTool>gcc</commandlineTool>
-        </cCompilerTool>
-        <ccCompilerTool>
+        </cTool>
+        <ccTool>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>`fox-config --cflags`</commandLine>
+          <incDir>
+            <pElem>../../../fox-1.6.35/include</pElem>
+          </incDir>
+          <commandLine>`sh ../../../fox-1.6.35/fox-config --cflags`</commandLine>
           <warningLevel>2</warningLevel>
-        </ccCompilerTool>
+        </ccTool>
         <linkerTool>
           <output>relgui_fx</output>
+          <linkerAddLib>
+            <pElem>../../../fox-1.6.35/src/.libs</pElem>
+          </linkerAddLib>
           <commandlineTool>g++</commandlineTool>
           <linkerLibItems>
-            <linkerOptionItem>`fox-config --libs`</linkerOptionItem>
+            <linkerOptionItem>`sh ../../../fox-1.6.35/fox-config --libs`</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="/home/willow/amax/relgui_fx/relgui.cpp">
-        <itemTool>1</itemTool>
-      </item>
-      <item path="fMain.fl">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="main.cxx">
-        <itemTool>1</itemTool>
-      </item>
-      <item path="relgui.h">
-        <itemTool>3</itemTool>
-      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
+        <platform>3</platform>
       </toolsSet>
       <compileType>
-        <cCompilerTool>
+        <cTool>
           <developmentMode>5</developmentMode>
-        </cCompilerTool>
-        <ccCompilerTool>
+        </cTool>
+        <ccTool>
           <developmentMode>6</developmentMode>
           <stripSymbols>true</stripSymbols>
           <commandLine>`fox-config --cflags`</commandLine>
-        </ccCompilerTool>
+        </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
@@ -87,18 +80,6 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="/home/willow/amax/relgui_fx/relgui.cpp">
-        <itemTool>1</itemTool>
-      </item>
-      <item path="fMain.fl">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="main.cxx">
-        <itemTool>1</itemTool>
-      </item>
-      <item path="relgui.h">
-        <itemTool>3</itemTool>
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>

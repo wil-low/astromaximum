@@ -16,50 +16,50 @@ CC=gcc
 CCC=g++
 CXX=g++
 FC=
+AS=as.exe
 
 # Macros
-PLATFORM=GNU-Linux-x86
+CND_PLATFORM=MinGW-Windows
+CND_CONF=Debug
+CND_DISTDIR=dist
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Debug/${PLATFORM}
+OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o
+	${OBJECTDIR}/relgui.o
 
 # C Compiler Flags
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=`fox-config --cflags` 
-CXXFLAGS=`fox-config --cflags` 
+CCFLAGS=`sh ../../../fox-1.6.35/fox-config --cflags` 
+CXXFLAGS=`sh ../../../fox-1.6.35/fox-config --cflags` 
 
 # Fortran Compiler Flags
 FFLAGS=
 
+# Assembler Flags
+ASFLAGS=
+
 # Link Libraries and Options
-LDLIBSOPTIONS=`fox-config --libs`  
+LDLIBSOPTIONS=-L../../../fox-1.6.35/src/.libs `sh ../../../fox-1.6.35/fox-config --libs`  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	${MAKE}  -f nbproject/Makefile-Debug.mk relgui_fx
+	${MAKE}  -f nbproject/Makefile-Debug.mk relgui_fx.exe
 
-relgui_fx: ${OBJECTFILES}
+relgui_fx.exe: ${OBJECTFILES}
 	g++ -o relgui_fx ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/main.o: main.cxx 
+${OBJECTDIR}/relgui.o: nbproject/Makefile-${CND_CONF}.mk relgui.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cxx
-
-${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o: /home/willow/amax/relgui_fx/relgui.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx
-	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o /home/willow/amax/relgui_fx/relgui.cpp
+	$(COMPILE.cc) -g -Wall -I../../../fox-1.6.35/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/relgui.o relgui.cpp
 
 # Subprojects
 .build-subprojects:
@@ -67,7 +67,7 @@ ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o: /home/willow/amax/relgui_
 # Clean Targets
 .clean-conf:
 	${RM} -r build/Debug
-	${RM} relgui_fx
+	${RM} relgui_fx.exe
 
 # Subprojects
 .clean-subprojects:

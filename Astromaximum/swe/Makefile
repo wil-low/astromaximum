@@ -41,6 +41,9 @@ libswe.a: $(SWEOBJ)
 libswe.sl: $(SWEOBJ)
 	ld -b -o libswe.sl	$(SWEOBJ)
 
+libswe.so: $(SWEOBJ)
+	$(CC) -shared -s -o libswe.so	$(SWEOBJ)
+
 clean:
 	rm -f *.o swetest libswe*
 	

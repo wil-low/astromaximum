@@ -19,7 +19,7 @@
 
 (define swe:calc
   (get-ffi-obj "swe_calc" libswe 
-               (_fun _double _int32 _int32 (data : (_cvector o _double 6)) (error : (_bytes o 255)) -> 
+               (_fun _double _int32 _int32 (data : (_cvector o _double 6)) (_string/latin-1 = "")#|(error : (_bytes o 256))|# -> 
                      (res : _int32) ->
                      (values res data error))))
 
@@ -28,8 +28,9 @@
    (number->string (inexact->exact(+ 1 (truncate (remainder (truncate angle) 30)))))
    "* "
    (symbol->string (list-ref swe:zodiac-text (inexact->exact(truncate (/ angle 30)))))))
+(swe:get-planet-name swe:moon)
 
-(swe:set-ephe-path "/home/willow/amax/sweph")
+(swe:set-ephe-path "./")
 (for ((i (in-range 1 365)))
-  (let-values (((res data error) (swe:calc (swe:julday 2010 01 i 1. 1) swe:sun 1)))
+  (let-values (((res data error) (swe:calc (swe:julday 2010 01 i 1. 1) swe:moon 1)))
     (printf "~a: ~a (~a)~n" i (cvector-ref data 0) (zodiac-degree (cvector-ref data 0)))))

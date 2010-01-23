@@ -12,24 +12,26 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=gcc
-CCC=g++
-CXX=g++
+CC=
+CCC=
+CXX=
 FC=
+AS=
 
 # Macros
-PLATFORM=GNU-Linux-x86
+CND_PLATFORM=GNU-Windows
+CND_CONF=Release
+CND_DISTDIR=dist
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Release/${PLATFORM}
+OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o
+	${OBJECTDIR}/relgui.o
 
 # C Compiler Flags
 CFLAGS=
@@ -41,25 +43,23 @@ CXXFLAGS=`fox-config --cflags`
 # Fortran Compiler Flags
 FFLAGS=
 
+# Assembler Flags
+ASFLAGS=
+
 # Link Libraries and Options
 LDLIBSOPTIONS=`fox-config --libs`  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	${MAKE}  -f nbproject/Makefile-Release.mk relgui_fx
+	${MAKE}  -f nbproject/Makefile-Release.mk relgui_fx.exe
 
-relgui_fx: ${OBJECTFILES}
+relgui_fx.exe: ${OBJECTFILES}
 	${LINK.cc} -o relgui_fx -s ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/main.o: main.cxx 
+${OBJECTDIR}/relgui.o: nbproject/Makefile-${CND_CONF}.mk relgui.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O3 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cxx
-
-${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o: /home/willow/amax/relgui_fx/relgui.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx
-	${RM} $@.d
-	$(COMPILE.cc) -O3 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o /home/willow/amax/relgui_fx/relgui.cpp
+	$(COMPILE.cc) -O3 -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/relgui.o relgui.cpp
 
 # Subprojects
 .build-subprojects:
@@ -67,7 +67,7 @@ ${OBJECTDIR}/_ext/home/willow/amax/relgui_fx/relgui.o: /home/willow/amax/relgui_
 # Clean Targets
 .clean-conf:
 	${RM} -r build/Release
-	${RM} relgui_fx
+	${RM} relgui_fx.exe
 
 # Subprojects
 .clean-subprojects:
