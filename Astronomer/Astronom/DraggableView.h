@@ -1,10 +1,11 @@
 #pragma once
 #include <fx.h>
+
 class DraggableView : public FXCanvas
 {
 	FXDECLARE(DraggableView)
 public:
-	DraggableView(FXComposite* p,FXuint opts=FRAME_NORMAL,FXint x=0,FXint y=0,FXint w=0,FXint h=0);
+	DraggableView(FXComposite* p, FXuint opts=FRAME_NORMAL,FXint x=0,FXint y=0,FXint w=0,FXint h=0);
 
 	virtual ~DraggableView(void);
 	virtual long onPaint(FXObject*, FXSelector, void*);
@@ -19,14 +20,19 @@ public:
 		ID_LAST
 	};
 
-private:
-	enum mouse_flag_t {
-		MF_NONE = 0,
-		MF_DOWN,
-		MF_MOVE,
-		MF_RESIZE
+protected:
+	enum hotspot_t {
+		HS_NONE = 0,
+		HS_MOVE,
+		HS_RESIZE
 	};
-	mouse_flag_t mouse_flag_;                  // Mouse flag
+	virtual hotspot_t hotSpot (FXint x, FXint y, FXbool down){return HS_NONE;};
+	virtual void dragResize (FXint x, FXint y) {}
+	virtual void dragMove (FXint x, FXint y) {}
+
+	hotspot_t mouse_flag_;                  // Mouse flag
+	FXint pivot_x_, pivot_y_;
+	static const FXint MOUSE_SENSITIVITY;
 protected:
 	DraggableView(){}
 };

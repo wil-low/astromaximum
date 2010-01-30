@@ -1,5 +1,5 @@
 #include "MainForm.h"
-#include "DraggableView.h"
+#include "RectangleView.h"
 #include "WheelView.h"
 #include "Astronom.h"
 
@@ -27,10 +27,10 @@ MainForm::MainForm(FXApp *a)
 	contents=new FXHorizontalFrame(vframe,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
 
 	// LEFT pane to contain the canvas
-	canvasFrame=new FXVerticalFrame(contents,FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0, 0,0,0,0);
+	canvasFrame=new FXVerticalFrame(contents, LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0, 0,0,0,0);
 	canvasFrame->setBackColor(FXRGB(255,255,255));
 
-	new DraggableView(canvasFrame,LAYOUT_EXPLICIT, 100, 350, 100, 200);
+	new RectangleView(canvasFrame, LAYOUT_EXPLICIT, 100, 350, 100, 200);
 
 	// RIGHT pane for the buttons
 	buttonFrame=new FXVerticalFrame(contents,FRAME_SUNKEN|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,10,10);
@@ -66,10 +66,10 @@ long MainForm::onAddView(FXObject*, FXSelector, void*)
 	static int counter = 0;
 	DraggableView* dv = NULL;
 	switch (counter % 2) {
-		case 0:
-			dv = new DraggableView(canvasFrame, LAYOUT_EXPLICIT, 100, 35, 100, 100);
-			break;
 		case 1:
+			dv = new RectangleView(canvasFrame, LAYOUT_EXPLICIT, 100, 35, 100, 100);
+			break;
+		case 0:
 			dv = new WheelView(canvasFrame, LAYOUT_EXPLICIT, 100, 35, 100, 100);
 			break;
 	}

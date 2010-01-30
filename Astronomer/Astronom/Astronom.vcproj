@@ -199,6 +199,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RectangleView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WheelView.cpp"
 				>
 			</File>
@@ -222,6 +226,10 @@
 			</File>
 			<File
 				RelativePath=".\MainForm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RectangleView.h"
 				>
 			</File>
 			<File

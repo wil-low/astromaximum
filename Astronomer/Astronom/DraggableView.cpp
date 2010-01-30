@@ -1,7 +1,5 @@
 #include "DraggableView.h"
-#include "GlyphManager.h"
 
-// Message Map for the Scribble Window class
 FXDEFMAP(DraggableView) DraggableViewMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
@@ -13,11 +11,13 @@ FXDEFMAP(DraggableView) DraggableViewMessageMap[]={
 
 FXIMPLEMENT(DraggableView, FXCanvas, DraggableViewMessageMap, ARRAYNUMBER(DraggableViewMessageMap))
 
-const int MOUSE_SENSITIVITY = 8;
+const FXint DraggableView::MOUSE_SENSITIVITY = 8;
 
 DraggableView::DraggableView(FXComposite* p, FXuint opts, FXint x, FXint y, FXint w, FXint h)
 : FXCanvas(p, this, ID_VIEW, opts, x, y, w, h)
-, mouse_flag_(MF_NONE)
+, mouse_flag_(HS_NONE)
+, pivot_x_(0)
+, pivot_y_(0)
 {
 	drawColor=FXRGB(255,0,0);
 }
@@ -28,63 +28,59 @@ DraggableView::~DraggableView(void)
 
 long DraggableView::onPaint(FXObject* o, FXSelector, void* ptr)
 {
-	FXEvent *ev=(FXEvent*)ptr;
-	FXCanvas* canvas = (FXCanvas*)o;
-	FXDCWindow dc(canvas,ev);
-	dc.setForeground(canvas->getBackColor());
-	dc.fillRectangle(ev->rect.x,ev->rect.y,ev->rect.w,ev->rect.h);
-	dc.setForeground(drawColor);
-	dc.drawRoundRectangle(0, 0, canvas->getWidth() - 1, canvas->getHeight() - 1, 15, 15);
-	dc.setFont(GlyphManager::fntAstro);
-	dc.drawText(10, 100, "sjafjamMIi,ozqtr");
 	return 1;
 }
 
-// Mouse button was pressed somewhere
-long DraggableView::onMouseDown(FXObject* o,FXSelector,void* ptr){
-	FXWindow* win =(FXWindow*) o;
+long DraggableView::onMouseDown(FXObject* o,FXSelector,void* ptr)
+{
+	DraggableView* win =(DraggableView*) o;
 	win->grab();
 	win->raise();
-
 	FXEvent *ev=(FXEvent*)ptr;
-	mouse_flag_ = MF_DOWN;
-	if (ev->win_x < MOUSE_SENSITIVITY && ev->win_y < MOUSE_SENSITIVITY)
-		mouse_flag_ = MF_MOVE;
-	else if (abs(win->getWidth() - ev->win_x < MOUSE_SENSITIVITY) && abs(win->getHeight() - ev->win_y < MOUSE_SENSITIVITY))
-		mouse_flag_ = MF_RESIZE;
+	mouse_flag_ = win->hotSpot (ev->win_x, ev->win_y, true);
 	return 1;
 }
 
-// The mouse has moved, draw a line
-long DraggableView::onMouseMove(FXObject* o, FXSelector, void* ptr){
+long DraggableView::onMouseMove(FXObject* o, FXSelector, void* ptr)
+{
 	FXEvent *ev=(FXEvent*)ptr;
-	FXWindow* win =(FXWindow*) o;
-	
-	FXDefaultCursor cursor_id = DEF_ARROW_CURSOR;
-	if (ev->win_x < 8 && ev->win_y < MOUSE_SENSITIVITY)
-		cursor_id = DEF_MOVE_CURSOR;
-	else if (abs(win->getWidth() - ev->win_x < MOUSE_SENSITIVITY) && abs(win->getHeight() - ev->win_y < MOUSE_SENSITIVITY))
-		cursor_id = DEF_DRAGBR_CURSOR;
-
-	win->setDefaultCursor(getApp()->getDefaultCursor(cursor_id));
-	win->setDragCursor(getApp()->getDefaultCursor(cursor_id));
-	
-	if (mouse_flag_ == MF_MOVE) {
-		win->setX (win->getX() + ev->win_x);
-		win->setY (win->getY() + ev->win_y);
+	DraggableView* win =(DraggableView*) o;
+	if (mouse_flag_ != HS_NONE) {
+		// forbid resize and move if cursor is outside parent
+		FXint tox, toy;
+		win->translateCoordinatesTo(tox, toy, win->getParent(), ev->win_x, ev->win_y);
+		if (win->getParent()->contains(tox, toy) == false)
+			return 0;
 	}
-
-	if (mouse_flag_ == MF_RESIZE && ev->win_x > 2 * MOUSE_SENSITIVITY && ev->win_y > 2 * MOUSE_SENSITIVITY) {
-		win->resize (ev->win_x, ev->win_y);
+	switch (mouse_flag_) {
+		case HS_MOVE:
+			win->dragMove(ev->win_x, ev->win_y);
+			break;
+		case HS_RESIZE:
+			win->dragResize (ev->win_x, ev->win_y);
+			break;
+		default:
+			hotspot_t hs = win->hotSpot (ev->win_x, ev->win_y, false);
+			FXDefaultCursor cursor_id = DEF_ARROW_CURSOR;
+			switch (hs) {
+				case HS_MOVE:
+					cursor_id = DEF_SWATCH_CURSOR;
+					break;
+				case HS_RESIZE:
+					cursor_id = DEF_CROSSHAIR_CURSOR;
+					break;
+			}
+			win->setDefaultCursor(getApp()->getDefaultCursor(cursor_id));
+			win->setDragCursor(getApp()->getDefaultCursor(cursor_id));
+			return 0;
 	}
 	return 1;
 }
 
-
-// The mouse button was released again
-long DraggableView::onMouseUp(FXObject*,FXSelector,void* ptr){
+long DraggableView::onMouseUp(FXObject*,FXSelector,void* ptr)
+{
 	FXEvent *ev=(FXEvent*) ptr;
 	ungrab();
-	mouse_flag_ = MF_NONE;
+	mouse_flag_ = HS_NONE;
 	return 1;
 }
