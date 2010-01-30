@@ -40,7 +40,7 @@ long WheelView::onPaint(FXObject* o, FXSelector, void* ptr)
 	return 1;
 }
 
-DraggableView::hotspot_t WheelView::hotSpot (FXint x, FXint y, FXbool down)
+DraggableView::hotspot_t WheelView::hotSpot (FXint x, FXint y, FXbool down, FXDefaultCursor& cursor)
 {
 	if (down) {
 		pivot_x_ = x;
@@ -49,10 +49,15 @@ DraggableView::hotspot_t WheelView::hotSpot (FXint x, FXint y, FXbool down)
 	FXint dx = x - center_x_;
 	FXint dy = y - center_y_;
 	FXint distance = sqrt (float(dx * dx + dy * dy));
-	if (distance < MOUSE_SENSITIVITY)
+	if (distance < MOUSE_SENSITIVITY) {
+		cursor = DEF_SWATCH_CURSOR;
 		return HS_MOVE;
-	else if (abs(distance - radius_)  < MOUSE_SENSITIVITY)
+	}
+	else if (abs(distance - radius_)  < MOUSE_SENSITIVITY) {
+		cursor = DEF_CROSSHAIR_CURSOR;
 		return HS_RESIZE;
+	}
+	cursor = DEF_ARROW_CURSOR;
 	return HS_NONE;
 }
 

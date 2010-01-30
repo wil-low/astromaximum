@@ -16,7 +16,7 @@ public:
 	long onConfigure(FXObject* o, FXSelector, void* ptr);
 	void create();
 protected:
-	virtual hotspot_t hotSpot (FXint x, FXint y, FXbool down);
+	virtual hotspot_t hotSpot (FXint x, FXint y, FXbool down, FXDefaultCursor& cursor);
 	virtual void dragResize (FXint x, FXint y);
 	virtual void dragMove (FXint x, FXint y);
 	WheelView(){}

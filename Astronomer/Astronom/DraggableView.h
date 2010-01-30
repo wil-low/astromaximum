@@ -26,7 +26,7 @@ protected:
 		HS_MOVE,
 		HS_RESIZE
 	};
-	virtual hotspot_t hotSpot (FXint x, FXint y, FXbool down){return HS_NONE;};
+	virtual hotspot_t hotSpot (FXint x, FXint y, FXbool down, FXDefaultCursor& cursor);
 	virtual void dragResize (FXint x, FXint y) {}
 	virtual void dragMove (FXint x, FXint y) {}
 

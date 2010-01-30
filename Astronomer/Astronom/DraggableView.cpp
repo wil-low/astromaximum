@@ -37,7 +37,8 @@ long DraggableView::onMouseDown(FXObject* o,FXSelector,void* ptr)
 	win->grab();
 	win->raise();
 	FXEvent *ev=(FXEvent*)ptr;
-	mouse_flag_ = win->hotSpot (ev->win_x, ev->win_y, true);
+	FXDefaultCursor cursor;
+	mouse_flag_ = win->hotSpot (ev->win_x, ev->win_y, true, cursor);
 	return 1;
 }
 
@@ -60,16 +61,8 @@ long DraggableView::onMouseMove(FXObject* o, FXSelector, void* ptr)
 			win->dragResize (ev->win_x, ev->win_y);
 			break;
 		default:
-			hotspot_t hs = win->hotSpot (ev->win_x, ev->win_y, false);
 			FXDefaultCursor cursor_id = DEF_ARROW_CURSOR;
-			switch (hs) {
-				case HS_MOVE:
-					cursor_id = DEF_SWATCH_CURSOR;
-					break;
-				case HS_RESIZE:
-					cursor_id = DEF_CROSSHAIR_CURSOR;
-					break;
-			}
+			hotspot_t hs = win->hotSpot (ev->win_x, ev->win_y, false, cursor_id);
 			win->setDefaultCursor(getApp()->getDefaultCursor(cursor_id));
 			win->setDragCursor(getApp()->getDefaultCursor(cursor_id));
 			return 0;
@@ -83,4 +76,10 @@ long DraggableView::onMouseUp(FXObject*,FXSelector,void* ptr)
 	ungrab();
 	mouse_flag_ = HS_NONE;
 	return 1;
+}
+
+DraggableView::hotspot_t DraggableView::hotSpot (FXint x, FXint y, FXbool down, FXDefaultCursor& cursor)
+{
+	cursor = DEF_ARROW_CURSOR;
+	return HS_NONE;
 }

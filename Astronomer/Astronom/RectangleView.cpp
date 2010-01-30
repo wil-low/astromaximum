@@ -11,8 +11,12 @@ FXDEFMAP(RectangleView) RectangleViewMessageMap[]={
 */
 FXIMPLEMENT(RectangleView, DraggableView, 0, 0);//RectangleViewMessageMap, ARRAYNUMBER(RectangleViewMessageMap))
 
+const FXint SIDEFLAG_VERTICAL = 0x1;
+const FXint SIDEFLAG_HORIZONTAL = 0x2;
+
 RectangleView::RectangleView(FXComposite* p, FXuint opts, FXint x, FXint y, FXint w, FXint h)
 : DraggableView(p, opts, x, y, w, h)
+, side_flag_(0)
 {
 }
 
@@ -34,33 +38,54 @@ long RectangleView::onPaint(FXObject* o, FXSelector, void* ptr)
 	return 1;
 }
 
-DraggableView::hotspot_t RectangleView::hotSpot (FXint x, FXint y, FXbool down)
+DraggableView::hotspot_t RectangleView::hotSpot (FXint x, FXint y, FXbool down, FXDefaultCursor& cursor)
 {
 	if (down) {
 		pivot_x_ = x;
 		pivot_y_ = y;
 	}
-	if (y < MOUSE_SENSITIVITY) // move by anywhere in upper edge
+	if (y < MOUSE_SENSITIVITY) { // move by anywhere in upper edge
+		cursor = DEF_SWATCH_CURSOR;
 		return HS_MOVE;
-	if (getHeight() - y < MOUSE_SENSITIVITY) {
-		if (x < MOUSE_SENSITIVITY) {
-			is_right_resize_ = false;
-			return HS_RESIZE;
-		}
-		if (getWidth() - x < MOUSE_SENSITIVITY) {
-			is_right_resize_ = true;
-			return HS_RESIZE;
-		}
 	}
-	return HS_NONE;
+
+	cursor = DEF_ARROW_CURSOR;
+	side_flag_ = 0;
+	if (x < MOUSE_SENSITIVITY) {
+		is_right_resize_ = false;
+		side_flag_ |= SIDEFLAG_VERTICAL;
+	}
+	if (getWidth() - x < MOUSE_SENSITIVITY) {
+		is_right_resize_ = true;
+		side_flag_ |= SIDEFLAG_VERTICAL;
+	}
+	if (getHeight() - y < MOUSE_SENSITIVITY) {
+		side_flag_ |= SIDEFLAG_HORIZONTAL;
+	}
+	switch (side_flag_) {
+		case SIDEFLAG_VERTICAL:
+			cursor = DEF_DRAGV_CURSOR;
+			break;
+		case SIDEFLAG_HORIZONTAL:
+			cursor = DEF_DRAGH_CURSOR;
+			break;
+		case SIDEFLAG_VERTICAL|SIDEFLAG_HORIZONTAL:
+			cursor = is_right_resize_ ? DEF_DRAGBR_CURSOR : DEF_DRAGBL_CURSOR;
+			break;
+	}
+	return side_flag_ ? HS_RESIZE : HS_NONE;
 }
 
 void RectangleView::dragResize (FXint x, FXint y)
 {
 	FXint dx = x - pivot_x_, dy = y - pivot_y_;
-	FXint xx = getX(), yy = getY(), ww = x, hh = y;
+	FXint xx = getX(), yy = getY();
+	FXint ww = (side_flag_ & SIDEFLAG_VERTICAL) ? x : getWidth();
+	FXint hh = (side_flag_ & SIDEFLAG_HORIZONTAL) ? y : getHeight();
 	if (!is_right_resize_) {
-		xx += dx; ww = getWidth() - dx;
+		xx += dx; 
+		if (side_flag_ & SIDEFLAG_VERTICAL)
+			ww = getWidth() - dx;
 	}
 	if (ww > MOUSE_SENSITIVITY && hh > MOUSE_SENSITIVITY)
 		position (xx, yy, ww, hh);

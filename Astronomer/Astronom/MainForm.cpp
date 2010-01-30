@@ -48,7 +48,9 @@ MainForm::MainForm(FXApp *a)
 	new FXButton(buttonFrame,"&Exit",NULL,getApp(),FXApp::ID_QUIT,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
 }
 
-MainForm::~MainForm(){
+MainForm::~MainForm()
+{
+	delete filemenu;
 }
 
 // Create and initialize
