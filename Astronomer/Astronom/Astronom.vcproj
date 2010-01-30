@@ -179,7 +179,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\AstronomApp.cpp"
+				RelativePath=".\Astronom.cpp"
 				>
 			</File>
 			<File
@@ -195,6 +195,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MainForm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WheelView.cpp"
 				>
 			</File>
@@ -205,7 +209,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\AstronomApp.h"
+				RelativePath=".\Astronom.h"
 				>
 			</File>
 			<File
@@ -214,6 +218,10 @@
 			</File>
 			<File
 				RelativePath=".\GlyphManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MainForm.h"
 				>
 			</File>
 			<File

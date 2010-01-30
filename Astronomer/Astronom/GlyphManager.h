@@ -16,7 +16,6 @@ public:
 
 	static FXFont* fntAstro;
 	FXTable* tabFont;
-	virtual long onCmdClose(FXObject*,FXSelector,void*);
 protected:
 	GlyphManager(){}
 };

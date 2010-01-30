@@ -1,14 +1,14 @@
 #include "GlyphManager.h"
 #include "Astronom.h"
 FXFont* GlyphManager::fntAstro = NULL;
-
+/*
 FXDEFMAP(GlyphManager) GlyphManagerMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
 	FXMAPFUNC(SEL_COMMAND,           FXMainWindow::ID_CLOSE,   GlyphManager::onCmdClose),
 };
-
-FXIMPLEMENT(GlyphManager, FXMainWindow, GlyphManagerMessageMap, ARRAYNUMBER(GlyphManagerMessageMap))
+*/
+FXIMPLEMENT(GlyphManager, FXMainWindow, 0, 0);//GlyphManagerMessageMap, ARRAYNUMBER(GlyphManagerMessageMap))
 
 GlyphManager::GlyphManager(FXApp* a)
 : FXMainWindow(a,"Glyph Manager",NULL,NULL,DECOR_ALL,0,0,800,600)
@@ -43,8 +43,3 @@ void GlyphManager::create()
 	FXMainWindow::create();
 }
 
-long GlyphManager::onCmdClose(FXObject*,FXSelector,void*)
-{
-	hide();
-	return 1;
-}

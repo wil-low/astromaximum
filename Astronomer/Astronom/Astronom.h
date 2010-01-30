@@ -18,7 +18,7 @@ public:
 	};
 	
 	long onCmdGlyph(FXObject*, FXSelector, void*);
-
+	long onCmdClose(FXObject*, FXSelector, void*);
 private:
 	MainForm* fMain;
 	GlyphManager* fGlyphManager;
