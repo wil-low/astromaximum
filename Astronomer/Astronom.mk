@@ -1,19 +1,19 @@
 ##
 ## Auto Generated makefile, please do not edit
 ##
-ProjectName:=Astronomer
+ProjectName:=Astronom
 
 ## Debug
 ConfigurationName      :=Debug
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 WorkspacePath          := "/home/willow/prj/amax-hg/Astronomer"
-ProjectPath            := "/home/willow/prj/amax-hg/Astronomer/Astronomer"
+ProjectPath            := "/home/willow/prj/amax-hg/Astronomer"
 CurrentFileName        :=
 CurrentFulePath        :=
 CurrentFileFullPath    :=
 User                   :=Andrei Ivushkin
-Date                   :=23.01.2010
+Date                   :=30.01.2010
 CodeLitePath           :="/home/willow/.codelite"
 LinkerName             :=g++
 ArchiveTool            :=ar rcus
@@ -36,13 +36,13 @@ ArchiveOutputSwitch    :=
 PreprocessOnlySwitch   :=
 CmpOptions             :=`fox-config --cflags` -g $(Preprocessors)
 LinkOptions            := `fox-config --libs` 
-IncludePath            :=  "$(IncludeSwitch)." "$(IncludeSwitch)." 
+IncludePath            :=  "$(IncludeSwitch)." "$(IncludeSwitch)3d_party/sqlite-3.6.22/include" "$(IncludeSwitch)." 
 RcIncludePath          :=
-Libs                   :=
-LibPath                := "$(LibraryPathSwitch)." 
+Libs                   :=$(LibrarySwitch)sqlite3 
+LibPath                := "$(LibraryPathSwitch)." "$(LibraryPathSwitch)3d_party/sqlite-3.6.22/lib" 
 
 
-Objects=$(IntermediateDirectory)/main$(ObjectSuffix) 
+Objects=Astronom/$(IntermediateDirectory)/DraggableView$(ObjectSuffix) Astronom/$(IntermediateDirectory)/GlyphManager$(ObjectSuffix) Astronom/$(IntermediateDirectory)/main$(ObjectSuffix) Astronom/$(IntermediateDirectory)/WheelView$(ObjectSuffix) Astronom/$(IntermediateDirectory)/Astronom$(ObjectSuffix) Astronom/$(IntermediateDirectory)/MainForm$(ObjectSuffix) 
 
 ##
 ## Main Build Tragets 
@@ -62,22 +62,72 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/main$(ObjectSuffix): main.cpp $(IntermediateDirectory)/main$(DependSuffix)
-	@test -d ./Debug || mkdir -p ./Debug
-	$(CompilerName) $(SourceSwitch) "/home/willow/prj/amax-hg/Astronomer/Astronomer/main.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/main$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/main$(DependSuffix): main.cpp
-	@test -d ./Debug || mkdir -p ./Debug
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/main$(ObjectSuffix) -MF$(IntermediateDirectory)/main$(DependSuffix) -MM "/home/willow/prj/amax-hg/Astronomer/Astronomer/main.cpp"
+Astronom/$(IntermediateDirectory)/DraggableView$(ObjectSuffix): Astronom/DraggableView.cpp Astronom/$(IntermediateDirectory)/DraggableView$(DependSuffix)
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	$(CompilerName) $(SourceSwitch) "/home/willow/prj/amax-hg/Astronomer/Astronom/DraggableView.cpp" $(CmpOptions) $(ObjectSwitch)Astronom/$(IntermediateDirectory)/DraggableView$(ObjectSuffix) $(IncludePath)
+Astronom/$(IntermediateDirectory)/DraggableView$(DependSuffix): Astronom/DraggableView.cpp
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MTAstronom/$(IntermediateDirectory)/DraggableView$(ObjectSuffix) -MFAstronom/$(IntermediateDirectory)/DraggableView$(DependSuffix) -MM "/home/willow/prj/amax-hg/Astronomer/Astronom/DraggableView.cpp"
+
+Astronom/$(IntermediateDirectory)/GlyphManager$(ObjectSuffix): Astronom/GlyphManager.cpp Astronom/$(IntermediateDirectory)/GlyphManager$(DependSuffix)
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	$(CompilerName) $(SourceSwitch) "/home/willow/prj/amax-hg/Astronomer/Astronom/GlyphManager.cpp" $(CmpOptions) $(ObjectSwitch)Astronom/$(IntermediateDirectory)/GlyphManager$(ObjectSuffix) $(IncludePath)
+Astronom/$(IntermediateDirectory)/GlyphManager$(DependSuffix): Astronom/GlyphManager.cpp
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MTAstronom/$(IntermediateDirectory)/GlyphManager$(ObjectSuffix) -MFAstronom/$(IntermediateDirectory)/GlyphManager$(DependSuffix) -MM "/home/willow/prj/amax-hg/Astronomer/Astronom/GlyphManager.cpp"
+
+Astronom/$(IntermediateDirectory)/main$(ObjectSuffix): Astronom/main.cpp Astronom/$(IntermediateDirectory)/main$(DependSuffix)
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	$(CompilerName) $(SourceSwitch) "/home/willow/prj/amax-hg/Astronomer/Astronom/main.cpp" $(CmpOptions) $(ObjectSwitch)Astronom/$(IntermediateDirectory)/main$(ObjectSuffix) $(IncludePath)
+Astronom/$(IntermediateDirectory)/main$(DependSuffix): Astronom/main.cpp
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MTAstronom/$(IntermediateDirectory)/main$(ObjectSuffix) -MFAstronom/$(IntermediateDirectory)/main$(DependSuffix) -MM "/home/willow/prj/amax-hg/Astronomer/Astronom/main.cpp"
+
+Astronom/$(IntermediateDirectory)/WheelView$(ObjectSuffix): Astronom/WheelView.cpp Astronom/$(IntermediateDirectory)/WheelView$(DependSuffix)
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	$(CompilerName) $(SourceSwitch) "/home/willow/prj/amax-hg/Astronomer/Astronom/WheelView.cpp" $(CmpOptions) $(ObjectSwitch)Astronom/$(IntermediateDirectory)/WheelView$(ObjectSuffix) $(IncludePath)
+Astronom/$(IntermediateDirectory)/WheelView$(DependSuffix): Astronom/WheelView.cpp
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MTAstronom/$(IntermediateDirectory)/WheelView$(ObjectSuffix) -MFAstronom/$(IntermediateDirectory)/WheelView$(DependSuffix) -MM "/home/willow/prj/amax-hg/Astronomer/Astronom/WheelView.cpp"
+
+Astronom/$(IntermediateDirectory)/Astronom$(ObjectSuffix): Astronom/Astronom.cpp Astronom/$(IntermediateDirectory)/Astronom$(DependSuffix)
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	$(CompilerName) $(SourceSwitch) "/home/willow/prj/amax-hg/Astronomer/Astronom/Astronom.cpp" $(CmpOptions) $(ObjectSwitch)Astronom/$(IntermediateDirectory)/Astronom$(ObjectSuffix) $(IncludePath)
+Astronom/$(IntermediateDirectory)/Astronom$(DependSuffix): Astronom/Astronom.cpp
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MTAstronom/$(IntermediateDirectory)/Astronom$(ObjectSuffix) -MFAstronom/$(IntermediateDirectory)/Astronom$(DependSuffix) -MM "/home/willow/prj/amax-hg/Astronomer/Astronom/Astronom.cpp"
+
+Astronom/$(IntermediateDirectory)/MainForm$(ObjectSuffix): Astronom/MainForm.cpp Astronom/$(IntermediateDirectory)/MainForm$(DependSuffix)
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	$(CompilerName) $(SourceSwitch) "/home/willow/prj/amax-hg/Astronomer/Astronom/MainForm.cpp" $(CmpOptions) $(ObjectSwitch)Astronom/$(IntermediateDirectory)/MainForm$(ObjectSuffix) $(IncludePath)
+Astronom/$(IntermediateDirectory)/MainForm$(DependSuffix): Astronom/MainForm.cpp
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MTAstronom/$(IntermediateDirectory)/MainForm$(ObjectSuffix) -MFAstronom/$(IntermediateDirectory)/MainForm$(DependSuffix) -MM "/home/willow/prj/amax-hg/Astronomer/Astronom/MainForm.cpp"
 
 ##
 ## Clean
 ##
 clean:
-	$(RM) $(IntermediateDirectory)/main$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/main$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/main$(PreprocessSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/DraggableView$(ObjectSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/DraggableView$(DependSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/DraggableView$(PreprocessSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/GlyphManager$(ObjectSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/GlyphManager$(DependSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/GlyphManager$(PreprocessSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/main$(ObjectSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/main$(DependSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/main$(PreprocessSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/WheelView$(ObjectSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/WheelView$(DependSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/WheelView$(PreprocessSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/Astronom$(ObjectSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/Astronom$(DependSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/Astronom$(PreprocessSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/MainForm$(ObjectSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/MainForm$(DependSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/MainForm$(PreprocessSuffix)
 	$(RM) $(OutputFile)
 
--include $(IntermediateDirectory)/*$(DependSuffix)
+-include Astronom/$(IntermediateDirectory)/*$(DependSuffix)
 
 

@@ -1,13 +1,19 @@
 #include "GlyphManager.h"
-
+#include "Astronom.h"
 FXFont* GlyphManager::fntAstro = NULL;
+
+FXDEFMAP(GlyphManager) GlyphManagerMessageMap[]={
+
+	//________Message_Type_____________________ID____________Message_Handler_______
+	FXMAPFUNC(SEL_COMMAND,           FXMainWindow::ID_CLOSE,   GlyphManager::onCmdClose),
+};
+
+FXIMPLEMENT(GlyphManager, FXMainWindow, GlyphManagerMessageMap, ARRAYNUMBER(GlyphManagerMessageMap))
 
 GlyphManager::GlyphManager(FXApp* a)
 : FXMainWindow(a,"Glyph Manager",NULL,NULL,DECOR_ALL,0,0,800,600)
 {
-	fntAstro = new FXFont(getApp(), "Astronom", //"HamburgSymbols",
-		20, FXFont::Normal, FXFont::Straight,FONTENCODING_UNICODE);//""WinStarTT");
-	fntAstro->create();
+	fntAstro = dynamic_cast<Astronom*>(a)->fntAstro;
 	tabFont = new FXTable(this, NULL, ID_TABLE, JUSTIFY_CENTER_X|LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
 	tabFont->setFont(fntAstro);
@@ -28,4 +34,17 @@ GlyphManager::GlyphManager(FXApp* a)
 
 GlyphManager::~GlyphManager(void)
 {
+}
+
+// Create and initialize
+void GlyphManager::create()
+{
+	// Create the windows
+	FXMainWindow::create();
+}
+
+long GlyphManager::onCmdClose(FXObject*,FXSelector,void*)
+{
+	hide();
+	return 1;
 }

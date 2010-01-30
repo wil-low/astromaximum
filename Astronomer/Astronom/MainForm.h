@@ -1,9 +1,9 @@
 #pragma once
 #include <fx.h>
 
-class Astronom : public FXMainWindow {
+class MainForm : public FXMainWindow {
 	// Macro for class hierarchy declarations
-	FXDECLARE(Astronom)
+	FXDECLARE(MainForm)
 public:
 
 	// Messages for our class
@@ -14,18 +14,20 @@ public:
 		ID_LAST
 	};
 
-	// Astronom's constructor
-	Astronom(FXApp* a);
+	// MainForm's constructor
+	MainForm(FXApp* a);
 	virtual void create();
-	virtual ~Astronom();
+	virtual ~MainForm();
 	long onAddView(FXObject*, FXSelector, void*);
-
+	long onCmdGlyph(FXObject*, FXSelector, void*);
+	
 	FXFont *fntAstro;
 
 private:
 	FXHorizontalFrame *contents;                // Content frame
 	FXVerticalFrame   *canvasFrame;             // Canvas frame
 	FXVerticalFrame   *buttonFrame;             // Button frame
+	FXMenuPane* filemenu;
 protected:
-	Astronom(){}
+	MainForm(){}
 };

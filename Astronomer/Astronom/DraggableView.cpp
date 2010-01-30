@@ -13,6 +13,8 @@ FXDEFMAP(DraggableView) DraggableViewMessageMap[]={
 
 FXIMPLEMENT(DraggableView, FXCanvas, DraggableViewMessageMap, ARRAYNUMBER(DraggableViewMessageMap))
 
+const int MOUSE_SENSITIVITY = 8;
+
 DraggableView::DraggableView(FXComposite* p, FXuint opts, FXint x, FXint y, FXint w, FXint h)
 : FXCanvas(p, this, ID_VIEW, opts, x, y, w, h)
 , mouse_flag_(MF_NONE)
@@ -46,9 +48,9 @@ long DraggableView::onMouseDown(FXObject* o,FXSelector,void* ptr){
 
 	FXEvent *ev=(FXEvent*)ptr;
 	mouse_flag_ = MF_DOWN;
-	if (ev->win_x < 8 && ev->win_y < 8)
+	if (ev->win_x < MOUSE_SENSITIVITY && ev->win_y < MOUSE_SENSITIVITY)
 		mouse_flag_ = MF_MOVE;
-	else if (abs(win->getWidth() - ev->win_x < 8) && abs(win->getHeight() - ev->win_y < 8))
+	else if (abs(win->getWidth() - ev->win_x < MOUSE_SENSITIVITY) && abs(win->getHeight() - ev->win_y < MOUSE_SENSITIVITY))
 		mouse_flag_ = MF_RESIZE;
 	return 1;
 }
@@ -57,19 +59,22 @@ long DraggableView::onMouseDown(FXObject* o,FXSelector,void* ptr){
 long DraggableView::onMouseMove(FXObject* o, FXSelector, void* ptr){
 	FXEvent *ev=(FXEvent*)ptr;
 	FXWindow* win =(FXWindow*) o;
-	if (ev->win_x < 8 && ev->win_y < 8)
-		win->setDefaultCursor(getApp()->getDefaultCursor(DEF_MOVE_CURSOR));
-	else if (abs(win->getWidth() - ev->win_x < 8) && abs(win->getHeight() - ev->win_y < 8))
-		win->setDefaultCursor(getApp()->getDefaultCursor(DEF_DRAGBR_CURSOR));
-	else
-		win->setDefaultCursor(getApp()->getDefaultCursor(DEF_ARROW_CURSOR));
+	
+	FXDefaultCursor cursor_id = DEF_ARROW_CURSOR;
+	if (ev->win_x < 8 && ev->win_y < MOUSE_SENSITIVITY)
+		cursor_id = DEF_MOVE_CURSOR;
+	else if (abs(win->getWidth() - ev->win_x < MOUSE_SENSITIVITY) && abs(win->getHeight() - ev->win_y < MOUSE_SENSITIVITY))
+		cursor_id = DEF_DRAGBR_CURSOR;
 
+	win->setDefaultCursor(getApp()->getDefaultCursor(cursor_id));
+	win->setDragCursor(getApp()->getDefaultCursor(cursor_id));
+	
 	if (mouse_flag_ == MF_MOVE) {
 		win->setX (win->getX() + ev->win_x);
 		win->setY (win->getY() + ev->win_y);
 	}
 
-	if (mouse_flag_ == MF_RESIZE) {
+	if (mouse_flag_ == MF_RESIZE && ev->win_x > 2 * MOUSE_SENSITIVITY && ev->win_y > 2 * MOUSE_SENSITIVITY) {
 		win->resize (ev->win_x, ev->win_y);
 	}
 	return 1;

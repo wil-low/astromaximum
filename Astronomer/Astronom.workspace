@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeLite_Workspace Name="Astronomer" Database="./Astronomer.tags">
-  <Project Name="Astronomer" Path="Astronomer/Astronomer.project" Active="Yes"/>
+<CodeLite_Workspace Name="Astronom" Database="./Astronom.tags">
+  <Project Name="Astronom" Path="Astronom.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
-      <Project Name="Astronomer" ConfigName="Debug"/>
+      <Project Name="Astronom" ConfigName="Debug"/>
+      <Project Name="Astronom" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="yes">
-      <Project Name="Astronomer" ConfigName="Release"/>
+    <WorkspaceConfiguration Name="Release" Selected="no">
+      <Project Name="Astronom" ConfigName="Release"/>
+      <Project Name="Astronom" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
