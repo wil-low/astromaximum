@@ -13,6 +13,7 @@ FXIMPLEMENT(GlyphManager, FXMainWindow, 0, 0);//GlyphManagerMessageMap, ARRAYNUM
 GlyphManager::GlyphManager(FXApp* a)
 : FXMainWindow(a,"Glyph Manager",NULL,NULL,DECOR_ALL,0,0,800,600)
 {
+    setTarget(a);
 	fntAstro = dynamic_cast<Astronom*>(a)->fntAstro;
 	tabFont = new FXTable(this, NULL, ID_TABLE, JUSTIFY_CENTER_X|LAYOUT_FILL_X|LAYOUT_FILL_Y);
 

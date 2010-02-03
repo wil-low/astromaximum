@@ -11,6 +11,7 @@ public:
 		ID_CANVAS=FXMainWindow::ID_LAST,
 		ID_CLEAR,
 		ID_ADD,
+		ID_LOCK,
 		ID_LAST
 	};
 
@@ -20,7 +21,8 @@ public:
 	virtual ~MainForm();
 	long onAddView(FXObject*, FXSelector, void*);
 	long onCmdGlyph(FXObject*, FXSelector, void*);
-	
+	long onCmdLock(FXObject*, FXSelector, void*);
+
 	FXFont *fntAstro;
 
 private:
@@ -28,6 +30,7 @@ private:
 	FXVerticalFrame   *canvasFrame;             // Canvas frame
 	FXVerticalFrame   *buttonFrame;             // Button frame
 	FXMenuPane* filemenu;
+	FXCheckButton* btnLock;
 protected:
 	MainForm(){}
 };

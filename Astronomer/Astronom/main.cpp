@@ -5,6 +5,7 @@ int main(int argc,char *argv[])
 {
 	sqlite3 *db;
 	int rc = sqlite3_open("test.sqb", &db);
+	sqlite3_close(db);
 	// Make application
 	Astronom application("Astronom","S&W Axis");
 

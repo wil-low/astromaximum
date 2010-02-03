@@ -13,6 +13,9 @@ FXIMPLEMENT(Astronom, FXApp, AstronomMessageMap, ARRAYNUMBER(AstronomMessageMap)
 
 Astronom::Astronom(const FXString& name, const FXString& vendor)
 : FXApp (name, vendor)
+, fntAstro(NULL)
+, fMain(NULL)
+, fGlyphManager(NULL)
 {
 	fntAstro = new FXFont(this, "Astronom",
 		20, FXFont::Normal, FXFont::Straight,FONTENCODING_UNICODE);
@@ -40,7 +43,11 @@ long Astronom::onCmdGlyph(FXObject*, FXSelector, void*)
 	return 1;
 }
 
-long Astronom::onCmdClose(FXObject*, FXSelector, void*)
+long Astronom::onCmdClose(FXObject* o, FXSelector, void*)
 {
+    if (o == fMain)
+        handle (this, FXSEL(SEL_COMMAND, ID_QUIT), NULL);
+    else
+        o->handle (this, FXSEL(SEL_COMMAND, FXWindow::ID_HIDE), NULL);
 	return 1;
 }

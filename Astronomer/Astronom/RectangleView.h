@@ -5,7 +5,7 @@ class RectangleView : public DraggableView
 {
 	FXDECLARE(RectangleView)
 public:
-	RectangleView(FXComposite* p, FXuint opts, FXint x, FXint y, FXint w, FXint h);
+	RectangleView(FXComposite* p, FXint x, FXint y, FXint w, FXint h);
 	virtual long onPaint(FXObject*, FXSelector, void*);
 	virtual ~RectangleView(void);
 protected:

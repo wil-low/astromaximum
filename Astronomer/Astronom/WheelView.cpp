@@ -10,9 +10,10 @@ FXDEFMAP(WheelView) WheelViewMessageMap[]={
 
 FXIMPLEMENT(WheelView, DraggableView, WheelViewMessageMap, ARRAYNUMBER(WheelViewMessageMap))
 
-WheelView::WheelView(FXComposite* p, FXuint opts, FXint x, FXint y, FXint w, FXint h)
-: DraggableView(p, opts, x, y, w, h)
+WheelView::WheelView(FXComposite* p, FXint x, FXint y, FXint w, FXint h)
+: DraggableView(p, x, y, w, h)
 {
+	onConfigure(this, 0, NULL);
 }
 
 void WheelView::create()
@@ -46,14 +47,12 @@ DraggableView::hotspot_t WheelView::hotSpot (FXint x, FXint y, FXbool down, FXDe
 		pivot_x_ = x;
 		pivot_y_ = y;
 	}
-	FXint dx = x - center_x_;
-	FXint dy = y - center_y_;
-	FXint distance = sqrt (float(dx * dx + dy * dy));
-	if (distance < MOUSE_SENSITIVITY) {
+	FXint dist = distance(x, y, center_x_, center_y_);
+	if (dist < MOUSE_SENSITIVITY) {
 		cursor = DEF_SWATCH_CURSOR;
 		return HS_MOVE;
 	}
-	else if (abs(distance - radius_)  < MOUSE_SENSITIVITY) {
+	else if (abs(dist - radius_)  < MOUSE_SENSITIVITY) {
 		cursor = DEF_CROSSHAIR_CURSOR;
 		return HS_RESIZE;
 	}
@@ -63,10 +62,9 @@ DraggableView::hotspot_t WheelView::hotSpot (FXint x, FXint y, FXbool down, FXDe
 
 void WheelView::dragResize (FXint x, FXint y)
 {
-	FXint dx = x - center_x_;
-	FXint dy = y - center_y_;
-	FXint distance = sqrt (float(dx * dx + dy * dy));
-	position (getX() + center_x_ - distance, getY() + center_y_ - distance, distance * 2, distance * 2);
+    FXint dist = distance(x, y, center_x_, center_y_);
+	if (dist > 2 * MOUSE_SENSITIVITY)
+		position (getX() + center_x_ - dist, getY() + center_y_ - dist, dist * 2, dist * 2);
 }
 
 void WheelView::dragMove (FXint x, FXint y)
@@ -75,7 +73,7 @@ void WheelView::dragMove (FXint x, FXint y)
 	setY (getY() + y - pivot_y_);
 }
 
-long WheelView::onConfigure(FXObject* o, FXSelector, void* ptr)
+long WheelView::onConfigure(FXObject*, FXSelector, void*)
 {
 	center_x_ = getWidth() / 2;
 	center_y_ = getHeight() / 2;

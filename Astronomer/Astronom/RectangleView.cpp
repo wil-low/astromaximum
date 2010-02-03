@@ -14,8 +14,8 @@ FXIMPLEMENT(RectangleView, DraggableView, 0, 0);//RectangleViewMessageMap, ARRAY
 const FXint SIDEFLAG_VERTICAL = 0x1;
 const FXint SIDEFLAG_HORIZONTAL = 0x2;
 
-RectangleView::RectangleView(FXComposite* p, FXuint opts, FXint x, FXint y, FXint w, FXint h)
-: DraggableView(p, opts, x, y, w, h)
+RectangleView::RectangleView(FXComposite* p, FXint x, FXint y, FXint w, FXint h)
+: DraggableView(p, x, y, w, h)
 , side_flag_(0)
 {
 }
@@ -83,7 +83,7 @@ void RectangleView::dragResize (FXint x, FXint y)
 	FXint ww = (side_flag_ & SIDEFLAG_VERTICAL) ? x : getWidth();
 	FXint hh = (side_flag_ & SIDEFLAG_HORIZONTAL) ? y : getHeight();
 	if (!is_right_resize_) {
-		xx += dx; 
+		xx += dx;
 		if (side_flag_ & SIDEFLAG_VERTICAL)
 			ww = getWidth() - dx;
 	}

@@ -5,7 +5,7 @@ class WheelView : public DraggableView
 {
 	FXDECLARE(WheelView)
 public:
-	WheelView(FXComposite* p, FXuint opts, FXint x, FXint y, FXint w, FXint h);
+	WheelView(FXComposite* p, FXint x, FXint y, FXint w, FXint h);
 	virtual ~WheelView(void);
 	enum{
 		ID_WHEEL_VIEW = DraggableView::ID_LAST,
