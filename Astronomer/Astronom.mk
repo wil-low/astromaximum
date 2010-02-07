@@ -10,10 +10,10 @@ OutDir                 := $(IntermediateDirectory)
 WorkspacePath          := "/home/willow/prj/amax-hg/Astronomer"
 ProjectPath            := "/home/willow/prj/amax-hg/Astronomer"
 CurrentFileName        :=
-CurrentFulePath        :=
+CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Andrei Ivushkin
-Date                   :=30.01.2010
+Date                   :=01.02.2010
 CodeLitePath           :="/home/willow/.codelite"
 LinkerName             :=g++
 ArchiveTool            :=ar rcus
@@ -29,6 +29,7 @@ LibraryPathSwitch      :=-L
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
 CompilerName           :=g++
+C_CompilerName         :=g++
 OutputFile             :=$(IntermediateDirectory)/$(ProjectName)
 Preprocessors          :=
 ObjectSwitch           :=-o 
@@ -42,10 +43,10 @@ Libs                   :=$(LibrarySwitch)sqlite3
 LibPath                := "$(LibraryPathSwitch)." "$(LibraryPathSwitch)3d_party/sqlite-3.6.22/lib" 
 
 
-Objects=Astronom/$(IntermediateDirectory)/DraggableView$(ObjectSuffix) Astronom/$(IntermediateDirectory)/GlyphManager$(ObjectSuffix) Astronom/$(IntermediateDirectory)/main$(ObjectSuffix) Astronom/$(IntermediateDirectory)/WheelView$(ObjectSuffix) Astronom/$(IntermediateDirectory)/Astronom$(ObjectSuffix) Astronom/$(IntermediateDirectory)/MainForm$(ObjectSuffix) 
+Objects=Astronom/$(IntermediateDirectory)/DraggableView$(ObjectSuffix) Astronom/$(IntermediateDirectory)/GlyphManager$(ObjectSuffix) Astronom/$(IntermediateDirectory)/main$(ObjectSuffix) Astronom/$(IntermediateDirectory)/WheelView$(ObjectSuffix) Astronom/$(IntermediateDirectory)/Astronom$(ObjectSuffix) Astronom/$(IntermediateDirectory)/MainForm$(ObjectSuffix) Astronom/$(IntermediateDirectory)/RectangleView$(ObjectSuffix) 
 
 ##
-## Main Build Tragets 
+## Main Build Targets 
 ##
 all: $(OutputFile)
 
@@ -104,6 +105,15 @@ Astronom/$(IntermediateDirectory)/MainForm$(DependSuffix): Astronom/MainForm.cpp
 	@test -d Astronom/Debug || mkdir -p Astronom/Debug
 	@$(CompilerName) $(CmpOptions) $(IncludePath) -MTAstronom/$(IntermediateDirectory)/MainForm$(ObjectSuffix) -MFAstronom/$(IntermediateDirectory)/MainForm$(DependSuffix) -MM "/home/willow/prj/amax-hg/Astronomer/Astronom/MainForm.cpp"
 
+Astronom/$(IntermediateDirectory)/RectangleView$(ObjectSuffix): Astronom/RectangleView.cpp Astronom/$(IntermediateDirectory)/RectangleView$(DependSuffix)
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	$(CompilerName) $(SourceSwitch) "/home/willow/prj/amax-hg/Astronomer/Astronom/RectangleView.cpp" $(CmpOptions) $(ObjectSwitch)Astronom/$(IntermediateDirectory)/RectangleView$(ObjectSuffix) $(IncludePath)
+Astronom/$(IntermediateDirectory)/RectangleView$(DependSuffix): Astronom/RectangleView.cpp
+	@test -d Astronom/Debug || mkdir -p Astronom/Debug
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MTAstronom/$(IntermediateDirectory)/RectangleView$(ObjectSuffix) -MFAstronom/$(IntermediateDirectory)/RectangleView$(DependSuffix) -MM "/home/willow/prj/amax-hg/Astronomer/Astronom/RectangleView.cpp"
+
+
+-include Astronom/$(IntermediateDirectory)/*$(DependSuffix)
 ##
 ## Clean
 ##
@@ -126,8 +136,9 @@ clean:
 	$(RM) Astronom/$(IntermediateDirectory)/MainForm$(ObjectSuffix)
 	$(RM) Astronom/$(IntermediateDirectory)/MainForm$(DependSuffix)
 	$(RM) Astronom/$(IntermediateDirectory)/MainForm$(PreprocessSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/RectangleView$(ObjectSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/RectangleView$(DependSuffix)
+	$(RM) Astronom/$(IntermediateDirectory)/RectangleView$(PreprocessSuffix)
 	$(RM) $(OutputFile)
-
--include Astronom/$(IntermediateDirectory)/*$(DependSuffix)
 
 

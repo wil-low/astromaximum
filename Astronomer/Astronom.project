@@ -19,6 +19,8 @@
     <File Name="Astronom/Astronom.h"/>
     <File Name="Astronom/MainForm.cpp"/>
     <File Name="Astronom/MainForm.h"/>
+    <File Name="Astronom/RectangleView.cpp"/>
+    <File Name="Astronom/RectangleView.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Settings Type="Executable">

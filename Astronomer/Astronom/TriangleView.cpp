@@ -81,8 +81,8 @@ void TriangleView::dragResize (FXint x, FXint y)
             break;
         case RIGHT_ANGLE_NE:
             if (side_flag_ == SIDEFLAG_HORIZONTAL) {
-//                setX
-                setWidth(x);
+                setX(getX() + x);
+                setWidth(getWidth() - x);
             }
             else
                 setHeight(y);
