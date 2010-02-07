@@ -1,15 +1,17 @@
 #include "MainForm.h"
+#include "Astronom.h"
+#include "AstroLabel.h"
 #include "RectangleView.h"
 #include "TriangleView.h"
 #include "WheelView.h"
-#include "Astronom.h"
+#include "OcularView.h"
 
 FXDEFMAP(MainForm) MainFormMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
-	FXMAPFUNC(SEL_PAINT,             MainForm::ID_CANVAS,    MainForm::onPaint),
 	FXMAPFUNC(SEL_COMMAND,           MainForm::ID_ADD,       MainForm::onAddView),
-	FXMAPFUNC(SEL_COMMAND,           MainForm::ID_LOCK, MainForm::onCmdLock),
+	FXMAPFUNC(SEL_PAINT,             MainForm::ID_CANVAS,    MainForm::onPaint),
+	FXMAPFUNC(SEL_COMMAND,           MainForm::ID_LOCK,		 MainForm::onCmdLock),
 };
 
 FXIMPLEMENT(MainForm, FXMainWindow, MainFormMessageMap, ARRAYNUMBER(MainFormMessageMap))
@@ -38,6 +40,7 @@ MainForm::MainForm(FXApp *a)
 
 	// Label above the buttons
 	new FXLabel(buttonFrame,"Button Frame",NULL,JUSTIFY_CENTER_X|LAYOUT_FILL_X);
+	new AstroLabel(buttonFrame,"Button Frame",NULL,JUSTIFY_CENTER_X|LAYOUT_FILL_X);
 
 	// Horizontal divider line
 	new FXHorizontalSeparator(buttonFrame,SEPARATOR_RIDGE|LAYOUT_FILL_X);
@@ -58,37 +61,12 @@ MainForm::~MainForm()
 }
 
 // Create and initialize
-void MainForm::create(){
-
+void MainForm::create()
+{
 	// Create the windows
 	FXMainWindow::create();
 	filemenu->create();
-	// Make the main window appear
-	show(PLACEMENT_MAXIMIZED);
-}
-
-long MainForm::onAddView(FXObject*, FXSelector, void*)
-{
-	static int counter = 0;
-	DraggableView* dv = NULL;
-	dv = new TriangleView(canvasFrame, 100, 35, 100, 100, (right_angle_t)(counter % 4));
-/*
-	switch (counter % 3) {
-		case 0:
-			dv = new TriangleView(canvasFrame, 100, 35, 100, 100, RIGHT_ANGLE_NE);
-			break;
-		case 1:
-			dv = new WheelView(canvasFrame, 100, 35, 100, 100);
-			break;
-		case 2:
-			dv = new RectangleView(canvasFrame, 100, 35, 100, 100);
-			break;
-	}*/
-	dv->create();
-	dv->handle(dv, FXSEL(SEL_COMMAND, DraggableView::ID_LOCK), (void*)btnLock->getCheck());
-	dv->raise();
-	++counter;
-	return 1;
+	onAddView(0, 0, 0);
 }
 
 long MainForm::onCmdLock(FXObject*, FXSelector, void* data)
@@ -100,4 +78,32 @@ long MainForm::onCmdLock(FXObject*, FXSelector, void* data)
         child = child->getNext();
     }
     return 1;
+}
+
+long MainForm::onAddView(FXObject*, FXSelector, void*)
+{
+	static int counter = 0;
+	DraggableView* dv = NULL;
+//	dv = new TriangleView(canvasFrame, 100, 35, 100, 100, (right_angle_t)(counter % 4));
+
+	switch (counter % 3) {
+		case 0:
+			dv = new OcularView(canvasFrame, 100, 100, 800, 800);
+			((Astronom*)getApp())->setOcular(dv);
+			break;
+		case 1: {
+			dv = new WheelView(canvasFrame, 100, 35, 100, 100);
+			FXFrame* fr = new AstroLabel(dv, "013tryer\tsdkfka", NULL, LABEL_NORMAL|LAYOUT_EXPLICIT, 100, 35, 100, 10);
+				}
+			break;
+		case 2:
+			dv = new RectangleView(canvasFrame, 100, 35, 100, 100);
+			break;
+	}
+	dv->create();
+	dv->handle(dv, FXSEL(SEL_COMMAND, DraggableView::ID_LOCK), (void*)btnLock->getCheck());
+	dv->raise();
+
+	++counter;
+	return 1;
 }

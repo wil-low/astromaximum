@@ -1,7 +1,7 @@
 #pragma once
 #include <fx.h>
 
-class DraggableView : public FXCanvas
+class DraggableView : public FXComposite
 {
 	FXDECLARE(DraggableView)
 public:
@@ -17,8 +17,7 @@ public:
 
 	// Messages for our class
 	enum{
-		ID_VIEW = FXCanvas::ID_LAST,
-		ID_LOCK,
+		ID_LOCK = FXComposite::ID_LAST,
 		ID_LAST
 	};
     static float distance(FXint x1, FXint y1, FXint x2, FXint y2);

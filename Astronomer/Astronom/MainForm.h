@@ -19,15 +19,17 @@ public:
 	MainForm(FXApp* a);
 	virtual void create();
 	virtual ~MainForm();
+
+
 	long onAddView(FXObject*, FXSelector, void*);
 	long onCmdGlyph(FXObject*, FXSelector, void*);
 	long onCmdLock(FXObject*, FXSelector, void*);
 
 	FXFont *fntAstro;
 
+	FXVerticalFrame   *canvasFrame;             // Canvas frame
 private:
 	FXHorizontalFrame *contents;                // Content frame
-	FXVerticalFrame   *canvasFrame;             // Canvas frame
 	FXVerticalFrame   *buttonFrame;             // Button frame
 	FXMenuPane* filemenu;
 	FXCheckButton* btnLock;

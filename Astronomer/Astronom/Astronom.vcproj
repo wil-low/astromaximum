@@ -183,27 +183,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\DraggableView.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\GlyphManager.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\MainForm.cpp"
+				RelativePath=".\OcularModel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\RectangleView.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\WheelView.cpp"
+				RelativePath=".\OcularView.cpp"
 				>
 			</File>
 		</Filter>
@@ -217,23 +205,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\DraggableView.h"
+				RelativePath=".\common.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GlyphManager.h"
+				RelativePath=".\OcularModel.h"
 				>
 			</File>
 			<File
-				RelativePath=".\MainForm.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RectangleView.h"
-				>
-			</File>
-			<File
-				RelativePath=".\WheelView.h"
+				RelativePath=".\OcularView.h"
 				>
 			</File>
 		</Filter>
@@ -242,6 +222,70 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+		</Filter>
+		<Filter
+			Name="forms"
+			>
+			<File
+				RelativePath=".\GlyphManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GlyphManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MainForm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MainForm.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="views"
+			>
+			<File
+				RelativePath=".\AstroLabel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AstroLabel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DraggableView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DraggableView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RectangleView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RectangleView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TriangleView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TriangleView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WheelView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WheelView.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

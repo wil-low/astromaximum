@@ -4,7 +4,7 @@
 FXDEFMAP(WheelView) WheelViewMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
-	FXMAPFUNC(SEL_CONFIGURE,         DraggableView::ID_VIEW, WheelView::onConfigure),
+	FXMAPFUNC(SEL_CONFIGURE,         0, WheelView::onConfigure),
 //	FXMAPFUNC(SEL_PAINT,             DraggableView::ID_VIEW, WheelView::onPaint),
 };
 
@@ -29,12 +29,12 @@ WheelView::~WheelView(void)
 long WheelView::onPaint(FXObject* o, FXSelector, void* ptr)
 {
 	FXEvent *ev=(FXEvent*)ptr;
-	FXCanvas* canvas = (FXCanvas*)o;
-	FXDCWindow dc(canvas,ev);
-	dc.setForeground(canvas->getBackColor());
+	FXDCWindow dc(this,ev);
+//	dc.setFunction(BLT_SRC_XOR_DST);
+	dc.setForeground(getBackColor());
 	dc.fillRectangle(ev->rect.x,ev->rect.y,ev->rect.w,ev->rect.h);
 	dc.setForeground(drawColor);
-	dc.drawEllipse(0, 0, canvas->getWidth() - 1, canvas->getHeight() - 1);
+	dc.drawEllipse(0, 0, getWidth() - 1, getHeight() - 1);
 	dc.setFont(GlyphManager::fntAstro);
 	dc.drawEllipse(center_x_ - 5, center_y_ - 5, 10, 10);
 	dc.drawText(30, 30, FXString().format("%c%c%c%c", 115, 117, 85, 80));

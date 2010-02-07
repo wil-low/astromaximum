@@ -18,6 +18,7 @@ RectangleView::RectangleView(FXComposite* p, FXint x, FXint y, FXint w, FXint h)
 : DraggableView(p, x, y, w, h)
 , side_flag_(0)
 {
+//	new FXFrame(this, FRAME_NORMAL, 100, 100, 20, 30);
 }
 
 RectangleView::~RectangleView(void)
@@ -27,12 +28,11 @@ RectangleView::~RectangleView(void)
 long RectangleView::onPaint(FXObject* o, FXSelector, void* ptr)
 {
 	FXEvent *ev=(FXEvent*)ptr;
-	FXCanvas* canvas = (FXCanvas*)o;
-	FXDCWindow dc(canvas,ev);
-	dc.setForeground(canvas->getBackColor());
+	FXDCWindow dc(this,ev);
+	dc.setForeground(getBackColor());
 	dc.fillRectangle(ev->rect.x,ev->rect.y,ev->rect.w,ev->rect.h);
 	dc.setForeground(drawColor);
-	dc.drawRoundRectangle(0, 0, canvas->getWidth() - 1, canvas->getHeight() - 1, 15, 15);
+	dc.drawRoundRectangle(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
 	dc.setFont(GlyphManager::fntAstro);
 	dc.drawText(10, 100, "sjafjamMIi,ozqtr");
 	return 1;

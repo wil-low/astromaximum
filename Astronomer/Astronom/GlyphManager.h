@@ -1,6 +1,6 @@
 #pragma once
 #include <fx.h>
-class GlyphManager : FXMainWindow
+class GlyphManager : public FXMainWindow
 {
 	FXDECLARE(GlyphManager)
 public:

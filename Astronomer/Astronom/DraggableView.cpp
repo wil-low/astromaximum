@@ -3,25 +3,26 @@
 FXDEFMAP(DraggableView) DraggableViewMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
-	FXMAPFUNC(SEL_PAINT,             DraggableView::ID_VIEW, DraggableView::onPaint),
-	FXMAPFUNC(SEL_LEFTBUTTONPRESS,   DraggableView::ID_VIEW, DraggableView::onMouseDown),
-	FXMAPFUNC(SEL_LEFTBUTTONRELEASE, DraggableView::ID_VIEW, DraggableView::onMouseUp),
-	FXMAPFUNC(SEL_MOTION,            DraggableView::ID_VIEW, DraggableView::onMouseMove),
+	FXMAPFUNC(SEL_PAINT,             0, DraggableView::onPaint),
+	FXMAPFUNC(SEL_LEFTBUTTONPRESS,   0, DraggableView::onMouseDown),
+	FXMAPFUNC(SEL_LEFTBUTTONRELEASE, 0, DraggableView::onMouseUp),
+	FXMAPFUNC(SEL_MOTION,            0, DraggableView::onMouseMove),
 	FXMAPFUNC(SEL_COMMAND,           DraggableView::ID_LOCK, DraggableView::onCmdLock),
 };
 
-FXIMPLEMENT(DraggableView, FXCanvas, DraggableViewMessageMap, ARRAYNUMBER(DraggableViewMessageMap))
+FXIMPLEMENT(DraggableView, FXComposite, DraggableViewMessageMap, ARRAYNUMBER(DraggableViewMessageMap))
 
 const FXint DraggableView::MOUSE_SENSITIVITY = 8;
 
 DraggableView::DraggableView(FXComposite* p, FXint x, FXint y, FXint w, FXint h)
-: FXCanvas(p, this, ID_VIEW, LAYOUT_EXPLICIT, x, y, w, h)
+: FXComposite(p, LAYOUT_EXPLICIT, x, y, w, h)
 , mouse_flag_(HS_NONE)
 , pivot_x_(0)
 , pivot_y_(0)
 , is_locked_(true)
 {
 	drawColor=FXRGB(255,0,0);
+	setBackColor(FXRGBA(255,255,255, 0));
 	FXTRACE((10, "%s %X\n", __FUNCTION__, this));
 }
 

@@ -20,6 +20,5 @@ protected:
 	virtual void dragResize (FXint x, FXint y);
 	virtual void dragMove (FXint x, FXint y);
 	WheelView(){}
-private:
 	FXint center_x_, center_y_, radius_;
 };

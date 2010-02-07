@@ -44,3 +44,4 @@ void GlyphManager::create()
 	FXMainWindow::create();
 }
 
+
