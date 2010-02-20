@@ -1,28 +1,47 @@
 #pragma once
-
+#include <fx.h>
 const int ZODIAC_SIGN_COUNT = 12;
+
 // zero point of wheel
 enum {
 	ZERO_ASC = 0,
 	ZERO_ARIES = 1
 };
 
+const double DENOMINATOR = 10000.0;
+
 struct OcularDimensions {
 	// all lengths in percents
-	int ascArrowLen;
-	int cuspidLen;
-	int homeLen;
-	int zodiacOuterLen;
-	int zodiacInnerLen;
-	OcularDimensions(){}
-	OcularDimensions(int asc, int cusp, int home, int zouter, int zinner)
-		: ascArrowLen(asc), cuspidLen(cusp), homeLen(home), zodiacOuterLen(zouter), zodiacInnerLen(zinner)
-	{}
+	int ascArrowR; // main arrow
+	int zodiacOuterR; // ring of interleaved signs
+	int zodiac10dgrR;
+	int zodiac5dgrR;
+	int zodiac30dgrR;
+	int innerPlanetLabelR;
+	int innerPlanetR;
+	int zodiacInnerR;
+	int aspectR; 
+};
+
+struct OcularColors {
+	FXColor ocularColor;
+	FXColor contourColor;
+	FXColor mainLineColor;
+	FXColor labelColor;
+	FXColor fillColor;
+	FXColor arrowColor;
+	FXColor cuspidColor;
+	FXColor tick10Color;
+	FXColor innerRColor;
+	FXColor planetTickColor;
+	FXColor aspectTickColor;
 };
 
 namespace astro {
 enum {
 	ID_SET_ZERO = 1000,
 	ID_SET_OCULAR_DIM,
+	ID_SET_OCULAR_COLOR,
+	ID_UPDATE_CHART,
 };
 }

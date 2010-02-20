@@ -29,6 +29,11 @@ DraggableView::~DraggableView(void)
 {
 }
 
+void DraggableView::setGlyphManager(GlyphManager* gm)
+{
+	glyph_manager_ = gm;
+}
+
 long DraggableView::onPaint(FXObject*, FXSelector, void*)
 {
 	return 1;

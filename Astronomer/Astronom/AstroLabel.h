@@ -6,7 +6,7 @@ class AstroLabel : public FXObject
 {
 	FXDECLARE(AstroLabel)
 public:
-	AstroLabel(DraggableView* p, const FXString& text, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
+	AstroLabel(DraggableView* p, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
 	virtual ~AstroLabel(void);
 	long onClicked(FXObject*, FXSelector, void*);
 	long onDrawOnParent(FXObject*, FXSelector, void*);
@@ -15,9 +15,11 @@ public:
 		ID_LAST
 	};
 
+	void setText(const FXString& text, FXFont* font);
+
 	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);
 	AstroLabel(){}
-private:
+protected:
     FXRectangle rect_;
     FXFont* font_;
     FXString text_;

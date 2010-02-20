@@ -1,5 +1,6 @@
 #pragma once
 #include <fx.h>
+class GlyphManager;
 
 class DraggableView : public FXCanvas
 {
@@ -15,6 +16,7 @@ public:
 	long onCmdLock(FXObject*, FXSelector, void*);
 	FXColor            drawColor;               // Color for the line
 
+	void setGlyphManager(GlyphManager* gm);
 	// Messages for our class
 	enum{
 		ID_LOCK = FXCanvas::ID_LAST,
@@ -35,6 +37,7 @@ protected:
 	FXbool is_locked_;
 	FXint pivot_x_, pivot_y_;
 	static const FXint MOUSE_SENSITIVITY;
+	GlyphManager* glyph_manager_;
 protected:
 	DraggableView(){}
 };

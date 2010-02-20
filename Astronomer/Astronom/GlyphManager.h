@@ -14,8 +14,13 @@ public:
 		ID_LAST
 	};
 
-	static FXFont* fntAstro;
+	FXchar getSignLabel(int sign);
+	FXchar getPlanetLabel(int planet);
+
+	FXFont* getFont() const;
 	FXTable* tabFont;
 protected:
 	GlyphManager(){}
+private:
+	FXFont* fntAstro_;
 };

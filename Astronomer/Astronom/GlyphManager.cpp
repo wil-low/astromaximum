@@ -1,6 +1,5 @@
 #include "GlyphManager.h"
 #include "Astronom.h"
-FXFont* GlyphManager::fntAstro = NULL;
 /*
 FXDEFMAP(GlyphManager) GlyphManagerMessageMap[]={
 
@@ -14,10 +13,10 @@ GlyphManager::GlyphManager(FXApp* a)
 : FXMainWindow(a,"Glyph Manager",NULL,NULL,DECOR_ALL,0,0,800,600)
 {
     setTarget(a);
-	fntAstro = dynamic_cast<Astronom*>(a)->fntAstro;
+	fntAstro_ = dynamic_cast<Astronom*>(a)->fntAstro;
 	tabFont = new FXTable(this, NULL, ID_TABLE, JUSTIFY_CENTER_X|LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
-	tabFont->setFont(fntAstro);
+	tabFont->setFont(fntAstro_);
 	tabFont->setEditable(false);
 	tabFont->setRowHeaderMode(LAYOUT_MIN_WIDTH);
 	tabFont->setTableSize(16, 16);
@@ -37,6 +36,11 @@ GlyphManager::~GlyphManager(void)
 {
 }
 
+FXFont* GlyphManager::getFont() const
+{
+	return fntAstro_;
+}
+
 // Create and initialize
 void GlyphManager::create()
 {
@@ -44,4 +48,12 @@ void GlyphManager::create()
 	FXMainWindow::create();
 }
 
+FXchar GlyphManager::getSignLabel(int sign)
+{
+	return sign + '@';
+}
 
+FXchar GlyphManager::getPlanetLabel(int planet)
+{
+	return planet + '0' + 32;
+}

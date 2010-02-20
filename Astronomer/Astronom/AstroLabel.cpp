@@ -11,15 +11,20 @@ FXDEFMAP(AstroLabel) AstroLabelMessageMap[]={
 
 FXIMPLEMENT(AstroLabel, FXObject, AstroLabelMessageMap, ARRAYNUMBER(AstroLabelMessageMap))
 
-AstroLabel::AstroLabel(DraggableView* p, const FXString& text, FXint x, FXint y, FXint w, FXint h)
+AstroLabel::AstroLabel(DraggableView* p, FXint x, FXint y, FXint w, FXint h)
 : rect_(x, y, w, h)
-, font_(GlyphManager::fntAstro)
-, text_(text)
+, font_(NULL)
 {
 }
 
 AstroLabel::~AstroLabel(void)
 {
+}
+
+void AstroLabel::setText(const FXString& text, FXFont* font)
+{
+	text_ = text;
+	font_ = font;
 }
 
 long AstroLabel::onClicked(FXObject*, FXSelector, void*)
@@ -31,7 +36,7 @@ long AstroLabel::onDrawOnParent(FXObject*, FXSelector, void* ptr)
 {
     FXTRACE((10, "%s: %d %d %d %d\n", __FUNCTION__, rect_.x, rect_.y, rect_.w, rect_.h));
     FXDC* dc = (FXDC*)ptr;
-    dc->setForeground(FXRGB(0, 255, 0));
+    dc->setForeground(FXRGB(0, 0, 0));
     dc->setClipRectangle (rect_.x, rect_.y, rect_.w, rect_.h);
 //    dc->drawRectangle (rect_.x, rect_.y, rect_.w - 1, rect_.h - 1);
     FXint tw = font_->getTextWidth(text_);

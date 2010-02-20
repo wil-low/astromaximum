@@ -20,12 +20,13 @@ public:
 		ID_LAST
 	};
 	
+	GlyphManager* fGlyphManager;
+	FXImage* offscreen;
 
 	long onCmdGlyph(FXObject*, FXSelector, void*);
 	long onCmdClose(FXObject*, FXSelector, void*);
 private:
 	MainForm* fMain;
-	GlyphManager* fGlyphManager;
 	OcularModel* mOcular;
 protected:
 	Astronom(){}

@@ -87,12 +87,13 @@ long MainForm::onAddView(FXObject*, FXSelector, void*)
 
 	switch (counter % 3) {
 		case 0:
-			dv = new OcularView(canvasFrame, 10, 10, 180);
+			dv = new OcularView(canvasFrame, 10, 10, 453);
+			dv->setGlyphManager(((Astronom*)getApp())->fGlyphManager);
 			((Astronom*)getApp())->setOcular(dv);
 			break;
 		case 1: {
 			dv = new WheelView(canvasFrame, 100, 35, 50);
-			AstroLabel* fr = new AstroLabel(dv, "013tryer\tsdkfka", 100, 35, 100, 10);
+			AstroLabel* fr = new AstroLabel(dv, 100, 35, 100, 10);
 				}
 			break;
 //		case 1:

@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Chart.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -202,6 +206,10 @@
 			>
 			<File
 				RelativePath=".\Astronom.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Chart.h"
 				>
 			</File>
 			<File
@@ -247,14 +255,6 @@
 			Name="views"
 			>
 			<File
-				RelativePath=".\AstroLabel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\AstroLabel.h"
-				>
-			</File>
-			<File
 				RelativePath=".\DraggableView.cpp"
 				>
 			</File>
@@ -284,6 +284,26 @@
 			</File>
 			<File
 				RelativePath=".\WheelView.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="labels"
+			>
+			<File
+				RelativePath=".\AstroLabel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AstroLabel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PlanetLabel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PlanetLabel.h"
 				>
 			</File>
 		</Filter>
