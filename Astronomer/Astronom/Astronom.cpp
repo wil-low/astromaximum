@@ -18,21 +18,18 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
 , fMain(NULL)
 , fGlyphManager(NULL)
 {
+	new FXToolTip(this);
 	mOcular = new OcularModel;
+	fntAstro = new FXFont(this, "Astronom",
+		10, FXFont::Normal, FXFont::Straight,FONTENCODING_UNICODE);
+	fGlyphManager = new GlyphManager(this);
+	fMain = new MainForm(this);
 }
 
 void Astronom::create()
 {
 	FXApp::create();
-	new FXToolTip(this);
-	fntAstro = new FXFont(this, "Astronom",
-		28, FXFont::Normal, FXFont::Straight,FONTENCODING_UNICODE);
-	fntAstro->create();
-	// Create the application's windows
-	fGlyphManager = new GlyphManager(this);
-	fGlyphManager->create();
-	fMain = new MainForm(this);
-	fMain->create();
+	fMain->show();
 	fMain->maximize();
 }
 

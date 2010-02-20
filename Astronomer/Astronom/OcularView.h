@@ -1,6 +1,7 @@
 #pragma once
 #include "WheelView.h"
 #include "common.h"
+#include <FXArray.h>
 
 class AstroLabel;
 
@@ -8,8 +9,10 @@ class OcularView : public WheelView
 {
 	FXDECLARE(OcularView)
 public:
-	OcularView(FXComposite* p, FXint x, FXint y, FXint w, FXint h);
+	OcularView(FXComposite* p, FXint x, FXint y, FXint r);
 	virtual ~OcularView(void);
+
+	void create();
 	virtual long onPaint(FXObject*, FXSelector, void*);
 	long onCmdSetZero(FXObject*, FXSelector, void*);
 	long onCmdSetDimensions(FXObject*, FXSelector, void*);
@@ -25,9 +28,11 @@ public:
 protected:
 	OcularView(){}
 private:
+    void drawLabels (FXDC& dc, AstroLabel** array, int n);
 	void reorderLabels();
 	int zero_point_;
-	float zero_angle_; 
+	float zero_angle_;
 	OcularDimensions dimensions_;
+	FXArray<AstroLabel> labels_;
 	AstroLabel** zodiac_label_;
 };

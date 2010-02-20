@@ -40,13 +40,12 @@ MainForm::MainForm(FXApp *a)
 
 	// Label above the buttons
 	new FXLabel(buttonFrame,"Button Frame",NULL,JUSTIFY_CENTER_X|LAYOUT_FILL_X);
-	new AstroLabel(buttonFrame,"Button Frame",NULL,JUSTIFY_CENTER_X|LAYOUT_FILL_X);
 
 	// Horizontal divider line
 	new FXHorizontalSeparator(buttonFrame,SEPARATOR_RIDGE|LAYOUT_FILL_X);
 
 	// Button to clear
-	new FXButton(buttonFrame,"&Add",NULL,this,ID_ADD,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
+	new FXButton(buttonFrame,"&Add\tAdd",NULL,this,ID_ADD,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
 
 	// Exit button
 	new FXButton(buttonFrame,"&Exit",NULL,getApp(),FXApp::ID_QUIT,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
@@ -69,12 +68,12 @@ void MainForm::create()
 	onAddView(0, 0, 0);
 }
 
-long MainForm::onCmdLock(FXObject*, FXSelector, void* data)
+long MainForm::onCmdLock(FXObject*, FXSelector, void* ptr)
 {
     FXWindow* child = canvasFrame->getFirst();
     while (child) {
         FXTRACE((10, "onCmdLock-child %X\n", child));
-        child->handle(child, FXSEL(SEL_COMMAND, DraggableView::ID_LOCK), data);
+        child->handle(child, FXSEL(SEL_COMMAND, DraggableView::ID_LOCK), ptr);
         child = child->getNext();
     }
     return 1;
@@ -88,14 +87,15 @@ long MainForm::onAddView(FXObject*, FXSelector, void*)
 
 	switch (counter % 3) {
 		case 0:
-			dv = new OcularView(canvasFrame, 100, 100, 800, 800);
+			dv = new OcularView(canvasFrame, 10, 10, 180);
 			((Astronom*)getApp())->setOcular(dv);
 			break;
 		case 1: {
-			dv = new WheelView(canvasFrame, 100, 35, 100, 100);
-			FXFrame* fr = new AstroLabel(dv, "013tryer\tsdkfka", NULL, LABEL_NORMAL|LAYOUT_EXPLICIT, 100, 35, 100, 10);
+			dv = new WheelView(canvasFrame, 100, 35, 50);
+			AstroLabel* fr = new AstroLabel(dv, "013tryer\tsdkfka", 100, 35, 100, 10);
 				}
 			break;
+//		case 1:
 		case 2:
 			dv = new RectangleView(canvasFrame, 100, 35, 100, 100);
 			break;

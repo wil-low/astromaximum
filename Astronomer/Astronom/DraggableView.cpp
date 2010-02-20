@@ -10,12 +10,12 @@ FXDEFMAP(DraggableView) DraggableViewMessageMap[]={
 	FXMAPFUNC(SEL_COMMAND,           DraggableView::ID_LOCK, DraggableView::onCmdLock),
 };
 
-FXIMPLEMENT(DraggableView, FXComposite, DraggableViewMessageMap, ARRAYNUMBER(DraggableViewMessageMap))
+FXIMPLEMENT(DraggableView, FXCanvas, DraggableViewMessageMap, ARRAYNUMBER(DraggableViewMessageMap))
 
 const FXint DraggableView::MOUSE_SENSITIVITY = 8;
 
 DraggableView::DraggableView(FXComposite* p, FXint x, FXint y, FXint w, FXint h)
-: FXComposite(p, LAYOUT_EXPLICIT, x, y, w, h)
+: FXCanvas(p, NULL, 0, LAYOUT_EXPLICIT, x, y, w, h)
 , mouse_flag_(HS_NONE)
 , pivot_x_(0)
 , pivot_y_(0)
@@ -23,7 +23,6 @@ DraggableView::DraggableView(FXComposite* p, FXint x, FXint y, FXint w, FXint h)
 {
 	drawColor=FXRGB(255,0,0);
 	setBackColor(FXRGBA(255,255,255, 0));
-	FXTRACE((10, "%s %X\n", __FUNCTION__, this));
 }
 
 DraggableView::~DraggableView(void)
@@ -35,9 +34,8 @@ long DraggableView::onPaint(FXObject*, FXSelector, void*)
 	return 1;
 }
 
-long DraggableView::onMouseDown(FXObject* o,FXSelector,void* ptr)
+long DraggableView::onMouseDown(FXObject*,FXSelector,void* ptr)
 {
-	DraggableView* win =(DraggableView*) o;
 	if (is_locked_)
         return 0;
 	grab();
@@ -103,9 +101,9 @@ float DraggableView::distance(FXint x1, FXint y1, FXint x2, FXint y2)
 	return sqrt (float(dx * dx + dy * dy));
 }
 
-long DraggableView::onCmdLock(FXObject*, FXSelector, void* data)
+long DraggableView::onCmdLock(FXObject*, FXSelector, void* ptr)
 {
-    is_locked_ = data != NULL;
+    is_locked_ = ptr != NULL;
     mouse_flag_ = HS_NONE;
     return 0;
 }

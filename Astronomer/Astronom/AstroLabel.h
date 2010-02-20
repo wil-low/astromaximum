@@ -1,17 +1,24 @@
 #pragma once
-#include "DraggableView.h"
+#include <fx.h>
+class DraggableView;
 
-class AstroLabel : public FXLabel
+class AstroLabel : public FXObject
 {
 	FXDECLARE(AstroLabel)
 public:
-	AstroLabel(FXComposite* p,const FXString& text,FXIcon* ic=0,FXuint opts=LABEL_NORMAL,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=DEFAULT_PAD,FXint pr=DEFAULT_PAD,FXint pt=DEFAULT_PAD,FXint pb=DEFAULT_PAD);
+	AstroLabel(DraggableView* p, const FXString& text, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
 	virtual ~AstroLabel(void);
 	long onClicked(FXObject*, FXSelector, void*);
+	long onDrawOnParent(FXObject*, FXSelector, void*);
 	enum{
 		ID_FRAME = FXLabel::ID_LAST,
 		ID_LAST
 	};
+
+	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);
 	AstroLabel(){}
 private:
+    FXRectangle rect_;
+    FXFont* font_;
+    FXString text_;
 };

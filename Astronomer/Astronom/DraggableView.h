@@ -1,7 +1,7 @@
 #pragma once
 #include <fx.h>
 
-class DraggableView : public FXComposite
+class DraggableView : public FXCanvas
 {
 	FXDECLARE(DraggableView)
 public:
@@ -17,7 +17,7 @@ public:
 
 	// Messages for our class
 	enum{
-		ID_LOCK = FXComposite::ID_LAST,
+		ID_LOCK = FXCanvas::ID_LAST,
 		ID_LAST
 	};
     static float distance(FXint x1, FXint y1, FXint x2, FXint y2);
@@ -32,7 +32,7 @@ protected:
 	virtual void dragMove (FXint x, FXint y) {}
 
 	hotspot_t mouse_flag_;                  // Mouse flag
-	bool is_locked_;
+	FXbool is_locked_;
 	FXint pivot_x_, pivot_y_;
 	static const FXint MOUSE_SENSITIVITY;
 protected:
