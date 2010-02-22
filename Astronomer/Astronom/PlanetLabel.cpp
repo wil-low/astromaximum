@@ -19,7 +19,7 @@ PlanetLabel::~PlanetLabel(void)
 {
 }
 
-double PlanetLabel::getLon()
+double PlanetLabel::getAngle()
 {
 	return lon_;
 }
@@ -29,17 +29,8 @@ long PlanetLabel::onClicked(FXObject*, FXSelector, void*)
 	return 1;
 }
 
-long PlanetLabel::onDrawOnParent(FXObject*, FXSelector, void* ptr)
+int PlanetLabel::getType()
 {
-    FXTRACE((10, "%s: %d %d %d %d\n", __FUNCTION__, rect_.x, rect_.y, rect_.w, rect_.h));
-    FXDC* dc = (FXDC*)ptr;
-    dc->setForeground(FXRGB(255, 0, 255));
-    dc->setClipRectangle (rect_.x, rect_.y, rect_.w, rect_.h);
-//    dc->drawRectangle (rect_.x, rect_.y, rect_.w - 1, rect_.h - 1);
-    FXint tw = font_->getTextWidth(text_);
-    FXint th = font_->getTextHeight(text_);
-    dc->drawText(rect_.x + (rect_.w - tw) / 2, rect_.y + (rect_.h + th) / 2, text_);
-    return 0;
+    return TYPE_PLANET;
 }
-
 

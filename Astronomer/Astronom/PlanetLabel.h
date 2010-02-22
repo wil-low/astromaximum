@@ -8,10 +8,8 @@ public:
 	PlanetLabel(double lon, DraggableView* p, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
 	virtual ~PlanetLabel(void);
 	long onClicked(FXObject*, FXSelector, void*);
-	long onDrawOnParent(FXObject*, FXSelector, void*);
-	double getLon();
-
-//	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);
+	virtual double getAngle();
+    virtual int getType();
 	PlanetLabel(){}
 private:
     int planet_id_;

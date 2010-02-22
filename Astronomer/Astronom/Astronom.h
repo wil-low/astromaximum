@@ -19,15 +19,17 @@ public:
 		ID_GLYPH=FXApp::ID_LAST,
 		ID_LAST
 	};
-	
+
 	GlyphManager* fGlyphManager;
 	FXImage* offscreen;
 
 	long onCmdGlyph(FXObject*, FXSelector, void*);
 	long onCmdClose(FXObject*, FXSelector, void*);
+	long onQueryTip(FXObject*, FXSelector, void*);
 private:
 	MainForm* fMain;
 	OcularModel* mOcular;
+	FXToolTip* tooltip_;
 protected:
 	Astronom(){}
 };

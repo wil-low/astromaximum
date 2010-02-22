@@ -7,6 +7,7 @@ FXDEFMAP(AstroLabel) AstroLabelMessageMap[]={
 	//________Message_Type_____________________ID____________Message_Handler_______
 	FXMAPFUNC(SEL_PAINT,             0, AstroLabel::onDrawOnParent),
 	FXMAPFUNC(SEL_CLICKED,           0, AstroLabel::onClicked),
+	FXMAPFUNC(SEL_COMMAND,          AstroLabel::ID_SELECT, AstroLabel::onCmdSelect),
 };
 
 FXIMPLEMENT(AstroLabel, FXObject, AstroLabelMessageMap, ARRAYNUMBER(AstroLabelMessageMap))
@@ -14,6 +15,7 @@ FXIMPLEMENT(AstroLabel, FXObject, AstroLabelMessageMap, ARRAYNUMBER(AstroLabelMe
 AstroLabel::AstroLabel(DraggableView* p, FXint x, FXint y, FXint w, FXint h)
 : rect_(x, y, w, h)
 , font_(NULL)
+, selected_(false)
 {
 }
 
@@ -34,15 +36,23 @@ long AstroLabel::onClicked(FXObject*, FXSelector, void*)
 
 long AstroLabel::onDrawOnParent(FXObject*, FXSelector, void* ptr)
 {
-    FXTRACE((10, "%s: %d %d %d %d\n", __FUNCTION__, rect_.x, rect_.y, rect_.w, rect_.h));
     FXDC* dc = (FXDC*)ptr;
-    dc->setForeground(FXRGB(0, 0, 0));
+    dc->setFont(font_);
     dc->setClipRectangle (rect_.x, rect_.y, rect_.w, rect_.h);
-//    dc->drawRectangle (rect_.x, rect_.y, rect_.w - 1, rect_.h - 1);
+    dc->setForeground(selected_ ? FXRGB(255, 0, 0) : dc->getBackground());
+    dc->drawRectangle(rect_.x, rect_.y, rect_.w - 1, rect_.h - 1);
+    dc->setForeground(FXRGB(0, 0, 0));
     FXint tw = font_->getTextWidth(text_);
     FXint th = font_->getTextHeight(text_);
     dc->drawText(rect_.x + (rect_.w - tw) / 2, rect_.y + (rect_.h + th) / 2, text_);
     return 0;
+}
+
+long AstroLabel::onCmdSelect(FXObject* o, FXSelector sel, void* ptr)
+{
+    selected_ = ptr != 0;
+//    FXTRACE((10, selected_ ? "sel\n" : "unsel\n"));
+    return 1;
 }
 
 void AstroLabel::position(FXint x, FXint y, FXint w, FXint h)
@@ -53,5 +63,20 @@ void AstroLabel::position(FXint x, FXint y, FXint w, FXint h)
         rect_.h = h;
     rect_.x = x - rect_.w / 2;
     rect_.y = y - rect_.h / 2;
+}
+
+double AstroLabel::getAngle()
+{
+    return -1;
+}
+
+int AstroLabel::getType()
+{
+    return TYPE_LAST;
+}
+
+bool AstroLabel::contains(FXint x, FXint y)
+{
+    return rect_.contains(x, y);
 }
 

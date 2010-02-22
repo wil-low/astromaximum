@@ -4,9 +4,9 @@ FXDEFMAP(DraggableView) DraggableViewMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
 	FXMAPFUNC(SEL_PAINT,             0, DraggableView::onPaint),
+	FXMAPFUNC(SEL_MOTION,            0, DraggableView::onMouseMove),
 	FXMAPFUNC(SEL_LEFTBUTTONPRESS,   0, DraggableView::onMouseDown),
 	FXMAPFUNC(SEL_LEFTBUTTONRELEASE, 0, DraggableView::onMouseUp),
-	FXMAPFUNC(SEL_MOTION,            0, DraggableView::onMouseMove),
 	FXMAPFUNC(SEL_COMMAND,           DraggableView::ID_LOCK, DraggableView::onCmdLock),
 };
 

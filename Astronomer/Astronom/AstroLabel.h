@@ -6,21 +6,35 @@ class AstroLabel : public FXObject
 {
 	FXDECLARE(AstroLabel)
 public:
+    enum {
+        TYPE_ZODIAC = 0,
+        TYPE_PLANET,
+        TYPE_HOUSE,
+        TYPE_ASPECT,
+        TYPE_LAST,
+    };
+
 	AstroLabel(DraggableView* p, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
 	virtual ~AstroLabel(void);
-	long onClicked(FXObject*, FXSelector, void*);
+
+	virtual long onClicked(FXObject*, FXSelector, void*);
 	long onDrawOnParent(FXObject*, FXSelector, void*);
+	long onCmdSelect(FXObject*, FXSelector, void*);
+
 	enum{
-		ID_FRAME = FXLabel::ID_LAST,
-		ID_LAST
+		ID_FRAME = 0,
+		ID_SELECT,
+		ID_LAST,
 	};
-
+	virtual double getAngle();
+	virtual int getType();
 	void setText(const FXString& text, FXFont* font);
-
+    bool contains(FXint x, FXint y);
 	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);
 	AstroLabel(){}
 protected:
     FXRectangle rect_;
     FXFont* font_;
     FXString text_;
+    bool selected_;
 };

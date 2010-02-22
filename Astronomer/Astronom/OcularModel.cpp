@@ -1,6 +1,7 @@
 #include "OcularModel.h"
 #include "DraggableView.h"
 #include "Chart.h"
+#include "constants.h"
 
 OcularModel::OcularModel()
 : view_(0)
@@ -44,8 +45,12 @@ void OcularModel::setView(DraggableView* view)
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_SET_OCULAR_COLOR), (void*)&ocolors);
 
 	Chart chart;
-	chart.bodies_[0].prop[BodyProps::bp_Lon] = 112.4; 
-	chart.bodies_[1].prop[BodyProps::bp_Lon] = 12.4; 
-	chart.bodies_[2].prop[BodyProps::bp_Lon] = 88.4; 
+	chart.bodies_[0].prop[BodyProps::bp_Lon] = 112.4;
+	chart.bodies_[1].prop[BodyProps::bp_Lon] = 12.4;
+	chart.bodies_[2].prop[BodyProps::bp_Lon] = 88.4;
+	chart.bodies_[3].prop[BodyProps::bp_Lon] = 89.4;
+	chart.bodies_[4].prop[BodyProps::bp_Lon] = 80.4;
+	chart.bodies_[6].prop[BodyProps::bp_Lon] = 118.4;
+	chart.bodies_[5].prop[BodyProps::bp_Lon] = 68.4;
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_UPDATE_CHART), (void*)&chart);
 }

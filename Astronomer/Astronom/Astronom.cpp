@@ -6,6 +6,7 @@
 FXDEFMAP(Astronom) AstronomMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
+	FXMAPFUNC(SEL_QUERY_TIP,         0,     Astronom::onQueryTip),
 	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_GLYPH,     Astronom::onCmdGlyph),
 	FXMAPTYPE(SEL_CLOSE,             Astronom::onCmdClose),
 };
@@ -17,8 +18,9 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
 , fntAstro(NULL)
 , fMain(NULL)
 , fGlyphManager(NULL)
+, tooltip_(NULL)
 {
-	new FXToolTip(this);
+	tooltip_ = new FXToolTip(this);
 	mOcular = new OcularModel;
 	fntAstro = new FXFont(this, "Astronom",
 		10, FXFont::Normal, FXFont::Straight,FONTENCODING_UNICODE);
@@ -42,6 +44,14 @@ Astronom::~Astronom()
 long Astronom::onCmdGlyph(FXObject*, FXSelector, void*)
 {
 	fGlyphManager->show(PLACEMENT_SCREEN);//handle(this, FXSEL(SEL_COMMAND, FXWindow::ID_SHOW), NULL);
+	return 1;
+}
+
+long Astronom::onQueryTip(FXObject* o, FXSelector, void* ptr)
+{
+//	tooltip_->handle(o, FXSEL(SEL_UPDATE, 0), ptr);
+    tooltip_->hide();
+	tooltip_->show();//handle(o, FXSEL(SEL_TIMEOUT, FXToolTip::ID_TIP_HIDE), ptr);
 	return 1;
 }
 

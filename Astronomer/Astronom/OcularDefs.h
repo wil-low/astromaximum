@@ -1,16 +1,14 @@
 #pragma once
 #include <fx.h>
-const int ZODIAC_SIGN_COUNT = 12;
 
 // zero point of wheel
 enum {
 	ZERO_ASC = 0,
-	ZERO_ARIES = 1
+	ZERO_ARIES = 1,
 };
 
-const double DENOMINATOR = 10000.0;
-
 struct OcularDimensions {
+    int radius;
 	// all lengths in percents
 	int ascArrowR; // main arrow
 	int zodiacOuterR; // ring of interleaved signs
@@ -20,7 +18,7 @@ struct OcularDimensions {
 	int innerPlanetLabelR;
 	int innerPlanetR;
 	int zodiacInnerR;
-	int aspectR; 
+	int aspectR;
 };
 
 struct OcularColors {

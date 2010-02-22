@@ -1,6 +1,6 @@
 #pragma once
 #include "WheelView.h"
-#include "common.h"
+#include "OcularDefs.h"
 #include <vector>
 
 class AstroLabel;
@@ -19,6 +19,8 @@ public:
 	long onCmdSetColors(FXObject*, FXSelector, void* ptr);
 	long onCmdUpdateChart(FXObject*, FXSelector, void* ptr);
 	long onConfigure(FXObject*, FXSelector, void*);
+    long onQueryTip(FXObject*, FXSelector, void*);
+    long onMouseMove(FXObject*, FXSelector, void*);
 
 	void setZeroPoint (int val) {zero_point_ = val;} // ZERO_*
 
@@ -35,12 +37,12 @@ private:
 	typedef std::vector<AstroLabel*> AstroLabelVector;
     void drawLabels (FXDC& dc, const AstroLabelVector& ar);
 	void reorderLabels();
-	void reorderPlanets(int chart_id, const Chart* chart);
 
 	int zero_point_;
-	float zero_angle_;
+	double zero_angle_;
 	OcularDimensions dimensions_;
 	OcularColors colors_;
 
-	AstroLabelVector zodiac_list_, planet_list_, aspect_list_;
+	AstroLabelVector labels_;
+	AstroLabel* cur_label_;
 };

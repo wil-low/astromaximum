@@ -1,5 +1,5 @@
 #pragma once
-#include "common.h"
+#include "OcularDefs.h"
 class DraggableView;
 
 class OcularModel
