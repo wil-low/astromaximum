@@ -11,6 +11,7 @@ FXDEFMAP(OcularView) WheelViewMessageMap[]={
 	FXMAPFUNC(SEL_MOTION,            0, OcularView::onMouseMove),
 //	FXMAPFUNC(SEL_QUERY_TIP,         0, OcularView::onQueryTip),
 	FXMAPFUNC(SEL_CONFIGURE,         0, OcularView::onConfigure),
+	FXMAPFUNC(SEL_RIGHTBUTTONPRESS,   0, OcularView::onRightBtnPress),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_ZERO,     OcularView::onCmdSetZero),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_OCULAR_DIM,     OcularView::onCmdSetDimensions),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_OCULAR_COLOR,  OcularView::onCmdSetColors),
@@ -28,6 +29,11 @@ OcularView::OcularView(FXComposite* p, FXint x, FXint y, FXint r)
 , zero_angle_(180)
 , cur_label_(NULL)
 {
+	popup_ = new FXPopup(this);
+    FXMenuCommand* cmd = new FXMenuCommand(popup_, "Press 10\"12'");
+//	cmd->setFont(fntAstro);
+	new FXMenuCommand(popup_, "Me");
+	new FXMenuCommand(popup_, "Twice");
 }
 
 OcularView::~OcularView(void)
@@ -178,6 +184,11 @@ long OcularView::onConfigure(FXObject* o, FXSelector sel, void* ptr)
 	return 0;
 }
 
+long OcularView::onRightBtnPress(FXObject* o, FXSelector sel, void* ptr)
+{
+
+}
+
 void OcularView::reorderLabels()
 {
     double rad[AstroLabel::TYPE_LAST];
@@ -277,6 +288,7 @@ long OcularView::onMouseMove(FXObject* o, FXSelector sel, void* ptr)
     for (int i = 0; i < labels_.size(); ++i) {
         if (labels_[i]->contains(ev->win_x, ev->win_y)) {
             cur_label_ = labels_[i];
+            break;
         }
     }
     if (cur_label_ != old_cur) {
@@ -284,11 +296,11 @@ long OcularView::onMouseMove(FXObject* o, FXSelector sel, void* ptr)
        	dc.setBackground(getBackColor());
         if (old_cur) {
             old_cur->handle(this, FXSEL(SEL_COMMAND, AstroLabel::ID_SELECT), (void*)0);
-            old_cur->handle(this, FXSEL(SEL_PAINT, 0), &dc);
+            old_cur->handle(this, FXSEL(SEL_PAINT, AstroLabel::ID_FOCUS), &dc);
         }
         if (cur_label_) {
             cur_label_->handle(this, FXSEL(SEL_COMMAND, AstroLabel::ID_SELECT), (void*)1);
-            cur_label_->handle(this, FXSEL(SEL_PAINT, 0), &dc);
+            cur_label_->handle(this, FXSEL(SEL_PAINT, AstroLabel::ID_FOCUS), &dc);
         }
 //        getApp()->handle (this, FXSEL(SEL_QUERY_TIP, 0), 0);
     }

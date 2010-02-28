@@ -21,6 +21,7 @@ public:
 	long onConfigure(FXObject*, FXSelector, void*);
     long onQueryTip(FXObject*, FXSelector, void*);
     long onMouseMove(FXObject*, FXSelector, void*);
+    long onRightBtnPress(FXObject*, FXSelector, void*);
 
 	void setZeroPoint (int val) {zero_point_ = val;} // ZERO_*
 
@@ -45,4 +46,5 @@ private:
 
 	AstroLabelVector labels_;
 	AstroLabel* cur_label_;
+    FXPopup* popup_;
 };

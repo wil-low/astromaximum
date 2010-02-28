@@ -6,6 +6,7 @@ FXDEFMAP(AstroLabel) AstroLabelMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
 	FXMAPFUNC(SEL_PAINT,             0, AstroLabel::onDrawOnParent),
+	FXMAPFUNC(SEL_PAINT,             AstroLabel::ID_FOCUS, AstroLabel::onDrawFocus),
 	FXMAPFUNC(SEL_CLICKED,           0, AstroLabel::onClicked),
 	FXMAPFUNC(SEL_COMMAND,          AstroLabel::ID_SELECT, AstroLabel::onCmdSelect),
 };
@@ -34,18 +35,27 @@ long AstroLabel::onClicked(FXObject*, FXSelector, void*)
 	return 1;
 }
 
-long AstroLabel::onDrawOnParent(FXObject*, FXSelector, void* ptr)
+long AstroLabel::onDrawOnParent(FXObject* o, FXSelector sel, void* ptr)
 {
     FXDC* dc = (FXDC*)ptr;
     dc->setFont(font_);
     dc->setClipRectangle (rect_.x, rect_.y, rect_.w, rect_.h);
-    dc->setForeground(selected_ ? FXRGB(255, 0, 0) : dc->getBackground());
-    dc->drawRectangle(rect_.x, rect_.y, rect_.w - 1, rect_.h - 1);
     dc->setForeground(FXRGB(0, 0, 0));
     FXint tw = font_->getTextWidth(text_);
     FXint th = font_->getTextHeight(text_);
     dc->drawText(rect_.x + (rect_.w - tw) / 2, rect_.y + (rect_.h + th) / 2, text_);
-    return 0;
+    if (selected_)
+        onDrawFocus(o, sel, ptr);
+    return 1;
+}
+
+long AstroLabel::onDrawFocus(FXObject*, FXSelector, void* ptr)
+{
+    FXDC* dc = (FXDC*)ptr;
+    dc->setClipRectangle (rect_.x, rect_.y, rect_.w, rect_.h);
+    dc->setForeground(selected_ ? FXRGB(255, 0, 0) : dc->getBackground());
+    dc->drawRectangle(rect_.x, rect_.y, rect_.w - 1, rect_.h - 1);
+    return 1;
 }
 
 long AstroLabel::onCmdSelect(FXObject* o, FXSelector sel, void* ptr)

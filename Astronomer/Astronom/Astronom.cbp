@@ -76,6 +76,8 @@
 		<Unit filename="TriangleView.h" />
 		<Unit filename="WheelView.cpp" />
 		<Unit filename="WheelView.h" />
+		<Unit filename="ZodiacLabel.cpp" />
+		<Unit filename="ZodiacLabel.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<envvars />

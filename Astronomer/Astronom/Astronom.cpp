@@ -33,6 +33,7 @@ void Astronom::create()
 	FXApp::create();
 	fMain->show();
 	fMain->maximize();
+//	popup_->show();
 }
 
 Astronom::~Astronom()

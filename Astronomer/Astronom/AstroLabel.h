@@ -19,11 +19,13 @@ public:
 
 	virtual long onClicked(FXObject*, FXSelector, void*);
 	long onDrawOnParent(FXObject*, FXSelector, void*);
+    long onDrawFocus(FXObject*, FXSelector, void* ptr);
 	long onCmdSelect(FXObject*, FXSelector, void*);
 
 	enum{
 		ID_FRAME = 0,
 		ID_SELECT,
+		ID_FOCUS,
 		ID_LAST,
 	};
 	virtual double getAngle();
