@@ -187,15 +187,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\constants.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OcularModel.cpp"
+				RelativePath=".\OcularCluster.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OcularView.cpp"
+				RelativePath=".\OcularModel.cpp"
 				>
 			</File>
 		</Filter>
@@ -213,15 +217,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\common.h"
+				RelativePath=".\constants.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OcularCluster.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OcularDefs.h"
 				>
 			</File>
 			<File
 				RelativePath=".\OcularModel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OcularView.h"
 				>
 			</File>
 		</Filter>
@@ -260,6 +268,14 @@
 			</File>
 			<File
 				RelativePath=".\DraggableView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OcularView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OcularView.h"
 				>
 			</File>
 			<File
@@ -304,6 +320,14 @@
 			</File>
 			<File
 				RelativePath=".\PlanetLabel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ZodiacLabel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ZodiacLabel.h"
 				>
 			</File>
 		</Filter>

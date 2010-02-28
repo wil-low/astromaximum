@@ -19,7 +19,7 @@ PlanetLabel::~PlanetLabel(void)
 {
 }
 
-double PlanetLabel::getAngle()
+double PlanetLabel::getAngle() const
 {
 	return lon_;
 }
@@ -29,8 +29,18 @@ long PlanetLabel::onClicked(FXObject*, FXSelector, void*)
 	return 1;
 }
 
-int PlanetLabel::getType()
+int PlanetLabel::getType() const
 {
     return TYPE_PLANET;
+}
+
+double PlanetLabel::getVisibleAngle() const
+{
+	return visibleLon_;
+}
+
+void PlanetLabel::setVisibleAngle(double ang)
+{
+    visibleLon_ = ang;
 }
 

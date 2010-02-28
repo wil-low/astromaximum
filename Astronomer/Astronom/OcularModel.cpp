@@ -19,15 +19,17 @@ void OcularModel::setView(DraggableView* view)
 
 	//TODO: move to config file
 	OcularDimensions odim;
-	odim.ascArrowR = 905.0/906.0 * DENOMINATOR;
-	odim.zodiacOuterR = 718.0/906.0 * DENOMINATOR;
-	odim.zodiac10dgrR = 696.0/906.0 * DENOMINATOR;
-	odim.zodiac5dgrR = 628.0/906.0 * DENOMINATOR;
-	odim.innerPlanetLabelR = 590.0/906.0 * DENOMINATOR;
-	odim.zodiac30dgrR = 0/906.0 * DENOMINATOR;
-	odim.innerPlanetR = 558/906.0 * DENOMINATOR;
-	odim.zodiacInnerR = 338.0/906.0 * DENOMINATOR;
-	odim.aspectR = 328/906.0 * DENOMINATOR;
+	odim.ascArrowR = 650.0/654.0 * DENOMINATOR;
+	odim.zodiacOuterR = 520.0/654.0 * DENOMINATOR;
+	odim.zodiac10dgrR = 504.0/654.0 * DENOMINATOR;
+	odim.zodiac5dgrR = 454.0/654.0 * DENOMINATOR;
+	odim.innerPlanetLabelR = 406.0/654.0 * DENOMINATOR;
+	odim.zodiac30dgrR = 0/654.0 * DENOMINATOR;
+	odim.innerPlanetR = 430/654.0 * DENOMINATOR;
+	odim.zodiacInnerR = 244.0/654.0 * DENOMINATOR;
+	odim.aspectR = 236/654.0 * DENOMINATOR;
+	odim.planetFontSize = 400;
+	odim.zodiacFontSize = 250;
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_SET_OCULAR_DIM), (void*)&odim);
 
 	OcularColors ocolors;
@@ -45,12 +47,12 @@ void OcularModel::setView(DraggableView* view)
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_SET_OCULAR_COLOR), (void*)&ocolors);
 
 	Chart chart;
-	chart.bodies_[0].prop[BodyProps::bp_Lon] = 112.4;
-	chart.bodies_[1].prop[BodyProps::bp_Lon] = 12.4;
-	chart.bodies_[2].prop[BodyProps::bp_Lon] = 88.4;
-	chart.bodies_[3].prop[BodyProps::bp_Lon] = 89.4;
-	chart.bodies_[4].prop[BodyProps::bp_Lon] = 80.4;
-	chart.bodies_[6].prop[BodyProps::bp_Lon] = 118.4;
-	chart.bodies_[5].prop[BodyProps::bp_Lon] = 68.4;
+	chart.bodies_[0].prop[BodyProps::bp_Lon] = 350.4;
+	chart.bodies_[1].prop[BodyProps::bp_Lon] = 352.4;
+	chart.bodies_[2].prop[BodyProps::bp_Lon] = 352.1;
+	chart.bodies_[3].prop[BodyProps::bp_Lon] = 0.4;
+	chart.bodies_[4].prop[BodyProps::bp_Lon] = 1.4;
+	chart.bodies_[6].prop[BodyProps::bp_Lon] = 357.4;
+	chart.bodies_[5].prop[BodyProps::bp_Lon] = 356.4;
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_UPDATE_CHART), (void*)&chart);
 }

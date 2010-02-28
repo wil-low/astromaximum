@@ -24,10 +24,15 @@ AstroLabel::~AstroLabel(void)
 {
 }
 
-void AstroLabel::setText(const FXString& text, FXFont* font)
+void AstroLabel::setText(const FXString& text)
 {
 	text_ = text;
+}
+
+void AstroLabel::setFont(FXFont* font)
+{
 	font_ = font;
+	rect_.h = rect_.w = font->getFontHeight() * 1.5;
 }
 
 long AstroLabel::onClicked(FXObject*, FXSelector, void*)
@@ -75,12 +80,17 @@ void AstroLabel::position(FXint x, FXint y, FXint w, FXint h)
     rect_.y = y - rect_.h / 2;
 }
 
-double AstroLabel::getAngle()
+double AstroLabel::getAngle() const
 {
     return -1;
 }
 
-int AstroLabel::getType()
+double AstroLabel::getVisibleAngle() const
+{
+    return -1;
+}
+
+int AstroLabel::getType() const
 {
     return TYPE_LAST;
 }
@@ -88,5 +98,10 @@ int AstroLabel::getType()
 bool AstroLabel::contains(FXint x, FXint y)
 {
     return rect_.contains(x, y);
+}
+
+const FXRectangle& AstroLabel::getRect() const
+{
+	return rect_;
 }
 

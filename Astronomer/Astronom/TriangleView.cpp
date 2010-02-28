@@ -34,7 +34,7 @@ long TriangleView::onPaint(FXObject* o, FXSelector, void* ptr)
 	dc.fillRectangle(ev->rect.x,ev->rect.y,ev->rect.w,ev->rect.h);
 	dc.setForeground(drawColor);
 	dc.drawLines(vertex_, 4);
-	dc.setFont(glyph_manager_->getFont());
+//	dc.setFont(glyph_manager_->getFont());
 	dc.drawText(10, 100, "s");
 	return 1;
 }

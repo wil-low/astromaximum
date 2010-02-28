@@ -15,21 +15,19 @@ FXIMPLEMENT(Astronom, FXApp, AstronomMessageMap, ARRAYNUMBER(AstronomMessageMap)
 
 Astronom::Astronom(const FXString& name, const FXString& vendor)
 : FXApp (name, vendor)
-, fntAstro(NULL)
 , fMain(NULL)
 , fGlyphManager(NULL)
 , tooltip_(NULL)
 {
 	tooltip_ = new FXToolTip(this);
 	mOcular = new OcularModel;
-	fntAstro = new FXFont(this, "Astronom",
-		10, FXFont::Normal, FXFont::Straight,FONTENCODING_UNICODE);
 	fGlyphManager = new GlyphManager(this);
 	fMain = new MainForm(this);
 }
 
 void Astronom::create()
 {
+	loadFont("Astronom");
 	FXApp::create();
 	fMain->show();
 	fMain->maximize();
@@ -38,8 +36,8 @@ void Astronom::create()
 
 Astronom::~Astronom()
 {
-	delete fntAstro;
 	delete mOcular;
+	clearFonts();
 }
 
 long Astronom::onCmdGlyph(FXObject*, FXSelector, void*)
@@ -68,4 +66,36 @@ long Astronom::onCmdClose(FXObject* o, FXSelector, void*)
 void Astronom::setOcular(DraggableView* dv)
 {
 	mOcular->setView(dv);
+}
+
+FXFont* Astronom::getAstroFont (int size)
+{
+	FXFont* fnt = NULL;
+	std::map<int, FXFont*>::iterator it = astrofont_map_.lower_bound(size);
+	if (it != astrofont_map_.end())
+		fnt = it->second;
+	else 
+		fnt = astrofont_map_.rbegin()->second;
+	return fnt;
+}
+
+void Astronom::clearFonts()
+{
+	for (std::map<int, FXFont*>::iterator it = astrofont_map_.begin(); it != astrofont_map_.end(); ++it)
+		delete (*it).second;
+	astrofont_map_.clear();
+}
+
+void Astronom::loadFont(const FXString& face)
+{
+	const int FONT_SIZES[] = {8, 9, 10, 11, 12, 13, 14, 16, 18, 22, 30, 36, 40, 48, 56, 60};
+	clearFonts();
+	for (int i = 0; i < ARRAYNUMBER(FONT_SIZES); ++i) {
+		FXFont* fnt = new FXFont(this, face,
+			FONT_SIZES[i], FXFont::Normal, FXFont::Straight, FONTENCODING_UNICODE);
+		if (fnt != NULL) {
+			fnt->create();
+			astrofont_map_[FONT_SIZES[i]] = fnt;
+		}
+	}
 }

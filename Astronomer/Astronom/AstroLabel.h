@@ -28,9 +28,15 @@ public:
 		ID_FOCUS,
 		ID_LAST,
 	};
-	virtual double getAngle();
-	virtual int getType();
-	void setText(const FXString& text, FXFont* font);
+	virtual double getAngle() const;
+	virtual double getVisibleAngle() const;
+	virtual void setVisibleAngle(double ang) {};
+
+	virtual int getType() const;
+	const FXRectangle& getRect() const;
+
+	void setText(const FXString& text);
+	void setFont(FXFont* font);
     bool contains(FXint x, FXint y);
 	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);
 	AstroLabel(){}

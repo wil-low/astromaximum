@@ -13,21 +13,20 @@ GlyphManager::GlyphManager(FXApp* a)
 : FXMainWindow(a,"Glyph Manager",NULL,NULL,DECOR_ALL,0,0,800,600)
 {
     setTarget(a);
-	fntAstro_ = dynamic_cast<Astronom*>(a)->fntAstro;
 	tabFont = new FXTable(this, NULL, ID_TABLE, JUSTIFY_CENTER_X|LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
-	tabFont->setFont(fntAstro_);
 	tabFont->setEditable(false);
 	tabFont->setRowHeaderMode(LAYOUT_MIN_WIDTH);
 	tabFont->setTableSize(16, 16);
-	for (int i = 0; i < 16; ++i)
-		tabFont->setRowHeight(i, 34);
-	for (int i = 0; i < 16; ++i)
-		tabFont->setColumnWidth(i, 34);
+	for (int r = 0; r < 16; ++r)
+		tabFont->setRowHeight(r, 34);
+	for (int c = 0; c < 16; ++c)
+		tabFont->setColumnWidth(c, 34);
 
-	for (int i = 0; i < 16; ++i) {
-		for (int j = 0; j < 16; ++j) {
-			tabFont->setItemText(i, j, FXString().assign(FXwchar(i * 16 + j)));
+	for (int r = 0; r < 16; ++r) {
+		for (int c = 0; c < 16; ++c) {
+			tabFont->setItemJustify(r, c, FXTableItem::CENTER_X|FXTableItem::CENTER_Y);
+			tabFont->setItemText(r, c, FXString().assign(FXwchar(r * 16 + c)));
 		}
 	}
 }
@@ -36,16 +35,16 @@ GlyphManager::~GlyphManager(void)
 {
 }
 
-FXFont* GlyphManager::getFont() const
+FXFont* GlyphManager::getFont(int size) const
 {
-	return fntAstro_;
+	return dynamic_cast<Astronom*>(getApp())->getAstroFont(size);
 }
 
 // Create and initialize
 void GlyphManager::create()
 {
-	// Create the windows
 	FXMainWindow::create();
+	tabFont->setFont(getFont(15));
 }
 
 FXchar GlyphManager::getSignLabel(int sign)

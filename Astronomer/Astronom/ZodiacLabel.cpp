@@ -21,9 +21,14 @@ ZodiacLabel::~ZodiacLabel(void)
 {
 }
 
-double ZodiacLabel::getAngle()
+double ZodiacLabel::getAngle() const
 {
 	return sign_ * DEG_PER_SIGN + DEG_PER_SIGN / 2;
+}
+
+double ZodiacLabel::getVisibleAngle() const
+{
+	return getAngle();
 }
 
 long ZodiacLabel::onClicked(FXObject*, FXSelector, void*)
@@ -31,7 +36,7 @@ long ZodiacLabel::onClicked(FXObject*, FXSelector, void*)
 	return 1;
 }
 
-int ZodiacLabel::getType()
+int ZodiacLabel::getType() const
 {
     return TYPE_ZODIAC;
 }

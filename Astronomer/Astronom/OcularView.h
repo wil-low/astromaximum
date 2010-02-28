@@ -5,6 +5,7 @@
 
 class AstroLabel;
 class Chart;
+
 class OcularView : public WheelView
 {
 	FXDECLARE(OcularView)
@@ -36,8 +37,13 @@ protected:
 	OcularView(){}
 private:
 	typedef std::vector<AstroLabel*> AstroLabelVector;
+
     void drawLabels (FXDC& dc, const AstroLabelVector& ar);
+	void drawAspects(FXDC& dc, const AstroLabelVector& ar);
+	void drawPlanetLines(FXDC& dc, const AstroLabelVector& ar);
 	void reorderLabels();
+
+	void spreadLabels (AstroLabelVector& ar, int type, double r);
 
 	int zero_point_;
 	double zero_angle_;

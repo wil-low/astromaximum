@@ -17,10 +17,8 @@ public:
 	FXchar getSignLabel(int sign);
 	FXchar getPlanetLabel(int planet);
 
-	FXFont* getFont() const;
+	FXFont* getFont(int size) const;
 	FXTable* tabFont;
 protected:
 	GlyphManager(){}
-private:
-	FXFont* fntAstro_;
 };

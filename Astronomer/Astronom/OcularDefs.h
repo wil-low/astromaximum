@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OCULAR_DEFS_H
+#define OCULAR_DEFS_H
 #include <fx.h>
 
 // zero point of wheel
@@ -19,6 +20,8 @@ struct OcularDimensions {
 	int innerPlanetR;
 	int zodiacInnerR;
 	int aspectR;
+	int planetFontSize;
+	int zodiacFontSize;
 };
 
 struct OcularColors {
@@ -43,3 +46,4 @@ enum {
 	ID_UPDATE_CHART,
 };
 }
+#endif

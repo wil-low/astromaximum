@@ -8,8 +8,9 @@ public:
 	ZodiacLabel(int sign, DraggableView* p, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
 	virtual ~ZodiacLabel(void);
 	virtual long onClicked(FXObject*, FXSelector, void*);
-	virtual double getAngle();
-    virtual int getType();
+	virtual double getAngle() const;
+    virtual int getType() const;
+	double getVisibleAngle() const;
 //	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);
 	ZodiacLabel(){}
 private:

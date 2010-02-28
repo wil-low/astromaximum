@@ -87,7 +87,7 @@ long MainForm::onAddView(FXObject*, FXSelector, void*)
 
 	switch (counter % 3) {
 		case 0:
-			dv = new OcularView(canvasFrame, 10, 10, 453);
+			dv = new OcularView(canvasFrame, 10, 10, 377);
 			dv->setGlyphManager(((Astronom*)getApp())->fGlyphManager);
 			((Astronom*)getApp())->setOcular(dv);
 			break;
