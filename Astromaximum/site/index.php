@@ -283,7 +283,6 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 <p><b>S&amp;W Axis</b></p>
 <p>Kiev, Ukraine</p>
 <img src="/i/email.gif"/>
-<p>Phone: +38(096)1188888</p>
 <p>Skype ID: astromaximum</p>
 </div>
 <p>Copyright &copy;
