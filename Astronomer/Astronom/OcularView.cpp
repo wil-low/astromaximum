@@ -5,8 +5,8 @@
 #include "Chart.h"
 #include "constants.h"
 #include "OcularCluster.h"
-#include <list>
-#include <set>
+//#include <list>
+//#include <set>
 
 FXDEFMAP(OcularView) WheelViewMessageMap[]={
 
@@ -291,13 +291,14 @@ struct less_deg {
 
 void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
 {
-	OcularCluster world;
+/*	OcularCluster world;
     for (int i = 0; i < ar.size(); ++i) {
 		if (ar[i]->getType() == type) {
 			ar[i]->setVisibleAngle(ar[i]->getAngle());
 			world.insert(ar[i]);
 		}
     }
+    world.sort();
 	bool changed;
 	do {
 		FXTRACE((10, "%s: before:\n", __FUNCTION__));
@@ -305,8 +306,9 @@ void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
 		changed = world.disperse(4);
 		FXTRACE((10, "%s: after:\n", __FUNCTION__));
 		world.print();
+		FXTRACE((10, "%s: end\n", __FUNCTION__));
 	} while(changed);
-/*
+
 	int zero = 0;
 	FXTRACE((10, "%s: before:\n", __FUNCTION__));
 	for (int i = 0; i < claster.size(); ++i) {
@@ -338,7 +340,7 @@ void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
 			if (dist < 0)
 				dist += 360;
 			if (dist > 30){
-				zero=j; 
+				zero=j;
 				//OutputDebugString(IntToStr(zero).c_str());
 				break;
 			}
@@ -346,7 +348,7 @@ void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
 		for (int i=0; i < claster.size(); ++i) {
 			int j = (zero + i) % claster.size(), k = (j + 1) % claster.size();
 			double dist = fabs (claster[k]->getVisibleAngle() - claster[j]->getVisibleAngle());
-			if (dist > 180) 
+			if (dist > 180)
 				dist = 360 - dist;
 			if (dist < DIST) {
 				double new_ang = claster[j]->getVisibleAngle() + DIST;

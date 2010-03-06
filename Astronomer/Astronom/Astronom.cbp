@@ -64,6 +64,8 @@
 		<Unit filename="GlyphManager.h" />
 		<Unit filename="MainForm.cpp" />
 		<Unit filename="MainForm.h" />
+		<Unit filename="OcularCluster.cpp" />
+		<Unit filename="OcularCluster.h" />
 		<Unit filename="OcularModel.cpp" />
 		<Unit filename="OcularModel.h" />
 		<Unit filename="OcularView.cpp" />

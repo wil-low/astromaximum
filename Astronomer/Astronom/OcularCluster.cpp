@@ -1,5 +1,6 @@
 #include "OcularCluster.h"
 #include "AstroLabel.h"
+#include <algorithm>
 
 OcularCluster::OcularCluster()
 : label(NULL)
@@ -20,7 +21,7 @@ void OcularCluster::insert (AstroLabel* label)
 
 void OcularCluster::insert (const OcularCluster& cluster)
 {
-	vec.insert(cluster);
+	vec.push_back(cluster);
 	min_ang = FXMIN(min_ang, cluster.min_ang);
 	max_ang = FXMAX(max_ang, cluster.max_ang);
 }
@@ -28,11 +29,11 @@ void OcularCluster::insert (const OcularCluster& cluster)
 bool OcularCluster::disperse(double dist)
 {
 	bool changed = false;
-	ClusterSet::iterator it = vec.begin();
+	ClusterList::iterator it = vec.begin();
 	while (it != vec.end()) {
-		ClusterSet::iterator it0 = it;
-		(*it).print();
-		ClusterSet::iterator it1 = it0;
+		ClusterList::iterator it0 = it;
+//		(*it).print();
+		ClusterList::iterator it1 = it0;
 		++it1;
 		if (it1 == vec.end())
 			it1 = vec.begin();
@@ -65,7 +66,7 @@ void OcularCluster::append(const OcularCluster& oc)
 		insert(oc.label);
 	}
 	else {
-		for (ClusterSet::const_iterator it = oc.vec.begin(); it != oc.vec.end(); ++it) {
+		for (ClusterList::const_iterator it = oc.vec.begin(); it != oc.vec.end(); ++it) {
 			insert(*it);
 		}
 	}
@@ -86,4 +87,14 @@ void OcularCluster::print()
 	for (OcularCluster::Iter it = vec.begin(); it != vec.end(); ++it) {
 		FXTRACE((10, "%s: %f - %f\n", __FUNCTION__, (*it).getMin(), (*it).getMax()));
 	}
+}
+
+bool less_deg (const OcularCluster& oc1, const OcularCluster& oc2)
+{
+    return oc1.getMin() < oc2.getMin();
+}
+
+void OcularCluster::sort()
+{
+    vec.sort(less_deg);
 }
