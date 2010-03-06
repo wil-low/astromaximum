@@ -47,12 +47,12 @@ void OcularModel::setView(DraggableView* view)
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_SET_OCULAR_COLOR), (void*)&ocolors);
 
 	Chart chart;
-	chart.bodies_[0].prop[BodyProps::bp_Lon] = 350.4;
-	chart.bodies_[1].prop[BodyProps::bp_Lon] = 352.4;
-	chart.bodies_[2].prop[BodyProps::bp_Lon] = 352.1;
-	chart.bodies_[3].prop[BodyProps::bp_Lon] = 0.4;
-	chart.bodies_[4].prop[BodyProps::bp_Lon] = 1.4;
-	chart.bodies_[6].prop[BodyProps::bp_Lon] = 357.4;
-	chart.bodies_[5].prop[BodyProps::bp_Lon] = 356.4;
+	chart.bodies_[0].prop[BodyProps::bp_Lon] = 12;
+	chart.bodies_[1].prop[BodyProps::bp_Lon] = 14.4;
+	chart.bodies_[2].prop[BodyProps::bp_Lon] = 15.1;
+	chart.bodies_[3].prop[BodyProps::bp_Lon] = 2;
+	chart.bodies_[4].prop[BodyProps::bp_Lon] = 3.4;
+	chart.bodies_[6].prop[BodyProps::bp_Lon] = 4.4;
+	chart.bodies_[5].prop[BodyProps::bp_Lon] = 5.4;
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_UPDATE_CHART), (void*)&chart);
 }

@@ -6,7 +6,7 @@
 #include "constants.h"
 #include "OcularCluster.h"
 //#include <list>
-//#include <set>
+#include <algorithm>
 
 FXDEFMAP(OcularView) WheelViewMessageMap[]={
 
@@ -291,77 +291,80 @@ struct less_deg {
 
 void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
 {
-/*	OcularCluster world;
+	FXTRACE((10, "%s\n", __FUNCTION__));
+	OcularCluster::setLabelWidth(5);
+	OcularCluster world;
     for (int i = 0; i < ar.size(); ++i) {
 		if (ar[i]->getType() == type) {
 			ar[i]->setVisibleAngle(ar[i]->getAngle());
-			world.insert(ar[i]);
+			world.insert(OcularCluster(ar[i]));
 		}
     }
-    world.sort();
+	int iter_count = 0;
+		FXTRACE((10, "New iteration: %d\n", ++iter_count));
+		world.print();
+	world.sort();
+		world.print();
+	world.disperse ();
+	world.print();
+
+
+/*
+	const int DIST = 6;
 	bool changed;
-	do {
-		FXTRACE((10, "%s: before:\n", __FUNCTION__));
-		world.print();
-		changed = world.disperse(4);
-		FXTRACE((10, "%s: after:\n", __FUNCTION__));
-		world.print();
-		FXTRACE((10, "%s: end\n", __FUNCTION__));
-	} while(changed);
 
-	int zero = 0;
-	FXTRACE((10, "%s: before:\n", __FUNCTION__));
-	for (int i = 0; i < claster.size(); ++i) {
-		FXTRACE((10, "%s: %f\n", __FUNCTION__, claster[i]->getVisibleAngle()));
-
-	const int DIST = 5;
-	typedef std::list<OcularClaster> OcularClasterList;
-	OcularClasterList v_claster;
+	typedef std::vector<AstroLabel*> OcularClasterList;
+	OcularClasterList claster;
     for (int i = 0; i < ar.size(); ++i) {
 		if (ar[i]->getType() == type) {
-			OcularClaster oc;
-			oc.vec.push_back()
+//			OcularClaster oc;
+//			oc.vec.push_back()
 			ar[i]->setVisibleAngle(FXMAX(ar[i]->getAngle(), DIST));
-			v_claster.push_back(ar[i]);
+			claster.push_back(ar[i]);
 		}
     }
-//	claster.calculate_size();
 	int claster_size = claster.size();
-	if (claster_size > 2) { // do dispersion
-		std::sort (claster.begin(), claster.end(), less_deg);
+	int iter_count = 0;
+	do {
+		changed = false;
+		std::sort (claster.begin(), claster.end(), less_deg());
 		int zero = 0;
-		FXTRACE((10, "%s: before:\n", __FUNCTION__));
-		for (int i = 0; i < claster.size(); ++i) {
-			FXTRACE((10, "%s: %f\n", __FUNCTION__, claster[i]->getVisibleAngle()));
+		double max_dist = 0;
+		FXTRACE((10, "New iteration: %d\n", ++iter_count));
+		for (int i = 0; i < claster_size; ++i) {
+			//FXTRACE((10, "%s: %f\n", __FUNCTION__, claster[i]->getVisibleAngle()));
 			int j = i + 1;
 			if(j == claster.size())
 				j=0;
 			double dist = claster[j]->getVisibleAngle() - claster[i]->getVisibleAngle();
 			if (dist < 0)
 				dist += 360;
-			if (dist > 30){
+			if (dist > max_dist){
 				zero=j;
-				//OutputDebugString(IntToStr(zero).c_str());
-				break;
+				max_dist = dist;
 			}
 		}
-		for (int i=0; i < claster.size(); ++i) {
-			int j = (zero + i) % claster.size(), k = (j + 1) % claster.size();
+		FXTRACE((10, "%s: zero %d, max_dist %f\n", __FUNCTION__, zero, max_dist));
+		for (int i=0; i < claster_size; ++i) {
+			int j = (zero + i) % claster_size, k = (j + 1) % claster_size;
 			double dist = fabs (claster[k]->getVisibleAngle() - claster[j]->getVisibleAngle());
 			if (dist > 180)
 				dist = 360 - dist;
 			if (dist < DIST) {
-				double new_ang = claster[j]->getVisibleAngle() + DIST;
+				double new_ang = claster[j]->getVisibleAngle() - (DIST - dist) / 2;
+				normAngle(new_ang);
+				claster[j]->setVisibleAngle(new_ang);
+				new_ang = claster[k]->getVisibleAngle() + (DIST - dist) / 2;
 				normAngle(new_ang);
 				claster[k]->setVisibleAngle(new_ang);
+				changed = true;
 			}
 		}
 		FXTRACE((10, "%s: after:\n", __FUNCTION__));
-		for (int i=0; i < claster.size(); ++i) {
+		for (int i=0; i < claster_size; ++i) {
 			FXTRACE((10, "%s: %f\n", __FUNCTION__, claster[i]->getVisibleAngle()));
 		}
-	}
-*/
+	} while(changed);*/
 }
 
 void OcularView::drawLabels (FXDC& dc, const AstroLabelVector& ar)

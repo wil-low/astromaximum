@@ -32,7 +32,7 @@ void AstroLabel::setText(const FXString& text)
 void AstroLabel::setFont(FXFont* font)
 {
 	font_ = font;
-	rect_.h = rect_.w = font->getFontHeight() * 1.5;
+	rect_.h = rect_.w = font->getFontHeight() + 3;
 }
 
 long AstroLabel::onClicked(FXObject*, FXSelector, void*)
