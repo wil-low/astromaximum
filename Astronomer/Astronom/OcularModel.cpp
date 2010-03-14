@@ -28,7 +28,7 @@ void OcularModel::setView(DraggableView* view)
 	odim.innerPlanetR = 430/654.0 * DENOMINATOR;
 	odim.zodiacInnerR = 244.0/654.0 * DENOMINATOR;
 	odim.aspectR = 236/654.0 * DENOMINATOR;
-	odim.planetFontSize = 400;
+	odim.planetFontSize = 1000;
 	odim.zodiacFontSize = 250;
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_SET_OCULAR_DIM), (void*)&odim);
 
@@ -47,12 +47,12 @@ void OcularModel::setView(DraggableView* view)
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_SET_OCULAR_COLOR), (void*)&ocolors);
 
 	Chart chart;
-	chart.bodies_[0].prop[BodyProps::bp_Lon] = 12;
-	chart.bodies_[1].prop[BodyProps::bp_Lon] = 14.4;
-	chart.bodies_[2].prop[BodyProps::bp_Lon] = 15.1;
-	chart.bodies_[3].prop[BodyProps::bp_Lon] = 2;
-	chart.bodies_[4].prop[BodyProps::bp_Lon] = 3.4;
-	chart.bodies_[6].prop[BodyProps::bp_Lon] = 4.4;
-	chart.bodies_[5].prop[BodyProps::bp_Lon] = 5.4;
+	chart.bodies_[0].prop[BodyProps::bp_Lon] = 352;
+	chart.bodies_[1].prop[BodyProps::bp_Lon] = 354.4;
+	chart.bodies_[2].prop[BodyProps::bp_Lon] = 355.1;
+	chart.bodies_[3].prop[BodyProps::bp_Lon] = 350;
+	chart.bodies_[4].prop[BodyProps::bp_Lon] = 12.4;
+	chart.bodies_[6].prop[BodyProps::bp_Lon] = 9.4;
+	chart.bodies_[5].prop[BodyProps::bp_Lon] = 10.4;
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_UPDATE_CHART), (void*)&chart);
 }

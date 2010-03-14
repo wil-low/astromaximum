@@ -4,9 +4,8 @@
 #include "ZodiacLabel.h"
 #include "Chart.h"
 #include "constants.h"
-#include "OcularCluster.h"
-//#include <list>
-#include <algorithm>
+#include "CircleSpread/CircleSpread.h"
+//#include <algorithm>
 
 FXDEFMAP(OcularView) WheelViewMessageMap[]={
 
@@ -199,7 +198,6 @@ void OcularView::reorderLabels()
 		}
 		labels_[i]->setFont(glyph_manager_->getFont(font_size));
 	}
-
     double rad[AstroLabel::TYPE_LAST];
 	rad[AstroLabel::TYPE_ZODIAC] = (dimensions_.zodiac10dgrR + dimensions_.zodiac5dgrR) / 2 * radius_ / DENOMINATOR;
 	rad[AstroLabel::TYPE_PLANET] = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
@@ -292,79 +290,24 @@ struct less_deg {
 void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
 {
 	FXTRACE((10, "%s\n", __FUNCTION__));
-	OcularCluster::setLabelWidth(5);
-	OcularCluster world;
+	std::vector<SpreadValue> input;
+	double delta_width = 0;
     for (int i = 0; i < ar.size(); ++i) {
 		if (ar[i]->getType() == type) {
 			ar[i]->setVisibleAngle(ar[i]->getAngle());
-			world.insert(OcularCluster(ar[i]));
+			input.push_back(SpreadValue(ar[i]->getAngle(), ar[i]));
+			delta_width = ar[i]->getRect().w / 2;
 		}
     }
-	int iter_count = 0;
-		FXTRACE((10, "New iteration: %d\n", ++iter_count));
-		world.print();
-	world.sort();
-		world.print();
-	world.disperse ();
-	world.print();
+	double delta_ang = atan (delta_width / r) / DTOR * 2;
+	CircleSpread cspread(input);
 
-
-/*
-	const int DIST = 6;
-	bool changed;
-
-	typedef std::vector<AstroLabel*> OcularClasterList;
-	OcularClasterList claster;
-    for (int i = 0; i < ar.size(); ++i) {
-		if (ar[i]->getType() == type) {
-//			OcularClaster oc;
-//			oc.vec.push_back()
-			ar[i]->setVisibleAngle(FXMAX(ar[i]->getAngle(), DIST));
-			claster.push_back(ar[i]);
-		}
-    }
-	int claster_size = claster.size();
-	int iter_count = 0;
-	do {
-		changed = false;
-		std::sort (claster.begin(), claster.end(), less_deg());
-		int zero = 0;
-		double max_dist = 0;
-		FXTRACE((10, "New iteration: %d\n", ++iter_count));
-		for (int i = 0; i < claster_size; ++i) {
-			//FXTRACE((10, "%s: %f\n", __FUNCTION__, claster[i]->getVisibleAngle()));
-			int j = i + 1;
-			if(j == claster.size())
-				j=0;
-			double dist = claster[j]->getVisibleAngle() - claster[i]->getVisibleAngle();
-			if (dist < 0)
-				dist += 360;
-			if (dist > max_dist){
-				zero=j;
-				max_dist = dist;
-			}
-		}
-		FXTRACE((10, "%s: zero %d, max_dist %f\n", __FUNCTION__, zero, max_dist));
-		for (int i=0; i < claster_size; ++i) {
-			int j = (zero + i) % claster_size, k = (j + 1) % claster_size;
-			double dist = fabs (claster[k]->getVisibleAngle() - claster[j]->getVisibleAngle());
-			if (dist > 180)
-				dist = 360 - dist;
-			if (dist < DIST) {
-				double new_ang = claster[j]->getVisibleAngle() - (DIST - dist) / 2;
-				normAngle(new_ang);
-				claster[j]->setVisibleAngle(new_ang);
-				new_ang = claster[k]->getVisibleAngle() + (DIST - dist) / 2;
-				normAngle(new_ang);
-				claster[k]->setVisibleAngle(new_ang);
-				changed = true;
-			}
-		}
-		FXTRACE((10, "%s: after:\n", __FUNCTION__));
-		for (int i=0; i < claster_size; ++i) {
-			FXTRACE((10, "%s: %f\n", __FUNCTION__, claster[i]->getVisibleAngle()));
-		}
-	} while(changed);*/
+	std::vector<SpreadValue> output;
+	cspread.spread(output, delta_ang, 360);
+    for (int i = 0; i < output.size(); ++i) {
+		AstroLabel* label = static_cast<AstroLabel*>(output[i].ptr_);
+		label->setVisibleAngle(output[i].val_);
+	}
 }
 
 void OcularView::drawLabels (FXDC& dc, const AstroLabelVector& ar)
@@ -441,8 +384,14 @@ void OcularView::drawPlanetLines(FXDC& dc, const AstroLabelVector& ar)
 	for (int i = 0; i < ar.size(); ++i) {
 		if (ar[i]->getType() == AstroLabel::TYPE_PLANET) {
 			double ang = ar[i]->getAngle() + zero_angle_;
+			double planet_r = ar[i]->getRect().w / 2;
 			pt[0] = getXYdeg(ang, zouter);
-			pt[1] = getXYdeg(ar[i]->getVisibleAngle() + zero_angle_, zinner + ar[i]->getRect().w / 2);
+			pt[1] = getXYdeg(ar[i]->getVisibleAngle() + zero_angle_, zinner);
+			double dx = pt[1].x - pt[0].x, dy = pt[0].y - pt[1].y;
+			double ang0 = atan(dy / dx);
+			double hyp = sqrt(dx * dx + dy * dy) - planet_r;
+			pt[1].x = pt[0].x + cos(ang0) * hyp;
+			pt[1].y = pt[0].y - sin(ang0) * hyp;
 			dc.drawLines(pt, 2);
 		}
 	}

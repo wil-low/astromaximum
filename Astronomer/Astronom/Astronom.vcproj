@@ -187,15 +187,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CircleSpread\CircleSpread.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\constants.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OcularCluster.cpp"
 				>
 			</File>
 			<File
@@ -217,11 +217,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\constants.h"
+				RelativePath=".\CircleSpread\CircleSpread.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OcularCluster.h"
+				RelativePath=".\constants.h"
 				>
 			</File>
 			<File
