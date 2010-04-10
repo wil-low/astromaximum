@@ -37,8 +37,8 @@ void ClusterItem::merge(ClusterItem* rhs, double delta)
 
 void ClusterItem::sparce(double delta, double circle_limit)
 {
-	int start_quad = start_orig_ / (circle_limit / 4);
-	int finish_quad = finish_orig_ / (circle_limit / 4);
+	int start_quad = (int)(start_orig_ / (circle_limit / 4));
+	int finish_quad = (int)(finish_orig_ / (circle_limit / 4));
 	double center = (finish_orig_ + start_orig_);
 	if (((start_quad == 0) && (finish_quad == 3)) || ((start_quad == 3) && (finish_quad == 0)))
 		center -= circle_limit;

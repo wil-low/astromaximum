@@ -270,13 +270,14 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 	labels_.clear();
 	FXString label_text;
 	double radius = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
-	for (BodyPropsMap::const_iterator it = chart->bodies_.begin(); it != chart->bodies_.end(); ++it) {
+	for (Chart::BodyPropsMap::const_iterator it = chart->bodies_.begin(); it != chart->bodies_.end(); ++it) {
 		label_text.format("%c", glyph_manager_->getPlanetLabel((*it).first));
 		PlanetLabel* label = new PlanetLabel((*it).second.prop[BodyProps::bp_Lon], this, -100, -100, 20, 20);
 		label->setText(label_text);
 		labels_.push_back(label);
 	}
 	reorderLabels();
+	update();
 	return 1;
 }
 
@@ -303,7 +304,12 @@ void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
 	CircleSpread cspread(input);
 
 	std::vector<SpreadValue> output;
+	printf ("Delta_ang %.02f\n", delta_ang);
 	cspread.spread(output, delta_ang, 360);
+	for (size_t i = 0; i < output.size(); ++i) {
+		printf ("output %d->%.02f\n", output[i].ptr_, output[i].val_);
+	}
+
     for (int i = 0; i < output.size(); ++i) {
 		AstroLabel* label = static_cast<AstroLabel*>(output[i].ptr_);
 		label->setVisibleAngle(output[i].val_);

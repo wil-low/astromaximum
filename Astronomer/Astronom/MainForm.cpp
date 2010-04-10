@@ -28,6 +28,7 @@ MainForm::MainForm(FXApp *a)
 	filemenu=new FXMenuPane(menubar);
 	new FXMenuTitle(menubar, tr("&File"), NULL, filemenu);
 	new FXMenuCommand(filemenu, tr("&Glyph Manager...\tCtl-G\tGlyph Manager"), NULL, getApp(), Astronom::ID_GLYPH);
+	new FXMenuCommand(filemenu, tr("Toggle C&hrono...\tF3\tToggle Chrono"), NULL, getApp(), Astronom::ID_CHRONO);
 
 	contents=new FXHorizontalFrame(vframe,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
 
@@ -46,6 +47,9 @@ MainForm::MainForm(FXApp *a)
 
 	// Button to clear
 	new FXButton(buttonFrame,"&Add\tAdd",NULL,this,ID_ADD,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
+
+	// Button to clear
+	new FXButton(buttonFrame,"+1h",NULL,getApp(),Astronom::ID_INC_HOUR,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
 
 	// Exit button
 	new FXButton(buttonFrame,"&Exit",NULL,getApp(),FXApp::ID_QUIT,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);

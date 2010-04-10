@@ -1,14 +1,15 @@
 #pragma once
+#include "BaseModel.h"
 #include "OcularDefs.h"
-class DraggableView;
 
-class OcularModel
+class OcularModel : BaseModel
 {
 public:
-	OcularModel();
-	virtual ~OcularModel(void);
+	OcularModel(Ephemeris* ephemeris);
+	virtual ~OcularModel();
 	void setView(DraggableView*);
+	void incHour();
 private:
-	DraggableView* view_;
 	OcularDimensions dimensions_;
+	int day_;
 };

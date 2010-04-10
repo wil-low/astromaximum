@@ -1,13 +1,17 @@
 #include "Astronom.h"
+#include "Ephemeris.h"
 #include "MainForm.h"
+#include "Chrono.h"
 #include "GlyphManager.h"
 #include "OcularModel.h"
 
 FXDEFMAP(Astronom) AstronomMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
-	FXMAPFUNC(SEL_QUERY_TIP,         0,     Astronom::onQueryTip),
+	FXMAPFUNC(SEL_QUERY_TIP,         0,                      Astronom::onQueryTip),
 	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_GLYPH,     Astronom::onCmdGlyph),
+	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_CHRONO,    Astronom::onCmdToggleChrono),
+	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_INC_HOUR,  Astronom::onCmdIncHour),
 	FXMAPTYPE(SEL_CLOSE,             Astronom::onCmdClose),
 };
 
@@ -19,10 +23,13 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
 , fGlyphManager(NULL)
 , tooltip_(NULL)
 {
+	char ephe_path[256] = "rerye";
+	ephemeris = new Ephemeris (ephe_path);
 	tooltip_ = new FXToolTip(this);
-	mOcular = new OcularModel;
+	mOcular = new OcularModel(ephemeris);
 	fGlyphManager = new GlyphManager(this);
 	fMain = new MainForm(this);
+	chrono_ = new Chrono(fMain);
 }
 
 void Astronom::create()
@@ -38,11 +45,27 @@ Astronom::~Astronom()
 {
 	delete mOcular;
 	clearFonts();
+	delete ephemeris;
 }
 
 long Astronom::onCmdGlyph(FXObject*, FXSelector, void*)
 {
 	fGlyphManager->show(PLACEMENT_SCREEN);//handle(this, FXSEL(SEL_COMMAND, FXWindow::ID_SHOW), NULL);
+	return 1;
+}
+
+long Astronom::onCmdToggleChrono(FXObject*, FXSelector, void*)
+{
+	if (chrono_->shown())
+		chrono_->hide();
+	else
+		chrono_->show(PLACEMENT_SCREEN);
+	return 1;
+}
+
+long Astronom::onCmdIncHour(FXObject*, FXSelector, void*)
+{
+	mOcular->incHour();
 	return 1;
 }
 

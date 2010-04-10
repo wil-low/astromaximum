@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(FOX_HOME)\include;$(SQLITE_HOME)\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;UNICODE;FOXDLL"
+				AdditionalIncludeDirectories="$(FOX_HOME)\include;$(SQLITE_HOME)\include;$(SWISS_INCDIR)"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;UNICODE;FOXDLL;USE_DLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,11 +61,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="FOXDLLD-1.6.lib sqlite3.lib"
+				AdditionalDependencies="FOXDLLD-1.6.lib sqlite3.lib swedll32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(FOX_HOME)\lib;$(SQLITE_HOME)\lib"
+				AdditionalLibraryDirectories="$(FOX_HOME)\lib;$(SQLITE_HOME)\lib;$(SWISS_LIBDIR)"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				EntryPointSymbol="mainCRTStartup"
 				TargetMachine="1"
 			/>
@@ -118,7 +118,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="$(FOX_HOME)\include"
+				AdditionalIncludeDirectories="$(FOX_HOME)\include;$(SQLITE_HOME)\include;$(SWISS_INCDIR)"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;FOXDLL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -137,9 +137,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="FOXDLL-1.6.lib"
+				AdditionalDependencies="FOXDLL-1.6.lib sqlite3.lib swedll32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(FOX_HOME)\lib"
+				AdditionalLibraryDirectories="$(FOX_HOME)\lib;$(SQLITE_HOME)\lib;$(SWISS_LIBDIR)"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BaseModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Chart.cpp"
 				>
 			</File>
@@ -195,11 +199,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Ephemeris.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\OcularModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TimeLoc.cpp"
 				>
 			</File>
 		</Filter>
@@ -210,6 +222,10 @@
 			>
 			<File
 				RelativePath=".\Astronom.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BaseModel.h"
 				>
 			</File>
 			<File
@@ -225,11 +241,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Ephemeris.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OcularDefs.h"
 				>
 			</File>
 			<File
 				RelativePath=".\OcularModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TimeLoc.h"
 				>
 			</File>
 		</Filter>
@@ -242,6 +266,14 @@
 		<Filter
 			Name="forms"
 			>
+			<File
+				RelativePath=".\Chrono.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Chrono.h"
+				>
+			</File>
 			<File
 				RelativePath=".\GlyphManager.cpp"
 				>

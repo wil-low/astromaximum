@@ -2,7 +2,9 @@
 #include <fx.h>
 #include <map>
 
+class Ephemeris;
 class MainForm;
+class Chrono;
 class GlyphManager;
 class OcularModel;
 class DraggableView;
@@ -20,6 +22,8 @@ public:
 
 	enum{
 		ID_GLYPH=FXApp::ID_LAST,
+		ID_CHRONO,
+		ID_INC_HOUR,
 		ID_LAST
 	};
 
@@ -27,13 +31,17 @@ public:
 	FXImage* offscreen;
 
 	long onCmdGlyph(FXObject*, FXSelector, void*);
+	long onCmdToggleChrono(FXObject*, FXSelector, void*);
+	long onCmdIncHour(FXObject*, FXSelector, void*);
 	long onCmdClose(FXObject*, FXSelector, void*);
 	long onQueryTip(FXObject*, FXSelector, void*);
 private:
 	void clearFonts();
 	void loadFont(const FXString& face);
 
+	Ephemeris* ephemeris;
 	MainForm* fMain;
+	Chrono* chrono_;
 	OcularModel* mOcular;
 	FXToolTip* tooltip_;
 	std::map<int, FXFont*> astrofont_map_;
