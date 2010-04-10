@@ -389,6 +389,8 @@ void OcularView::drawPlanetLines(FXDC& dc, const AstroLabelVector& ar)
 			pt[1] = getXYdeg(ar[i]->getVisibleAngle() + zero_angle_, zinner);
 			double dx = pt[1].x - pt[0].x, dy = pt[0].y - pt[1].y;
 			double ang0 = atan(dy / dx);
+			if (dx < 0)
+				ang0 += PI;
 			double hyp = sqrt(dx * dx + dy * dy) - planet_r;
 			pt[1].x = pt[0].x + cos(ang0) * hyp;
 			pt[1].y = pt[0].y - sin(ang0) * hyp;
