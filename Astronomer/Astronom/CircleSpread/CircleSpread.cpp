@@ -18,7 +18,8 @@ double normalize(double val, double circle_limit)
 
 ClusterItem::ClusterItem (const SpreadValue& input)
 {
-	start_ = finish_ = start_orig_ = finish_orig_ = input.val_;
+	start_ = finish_ = start_orig_ = finish_orig_ = center_ = input.val_;
+	width_ = 0;
 	link_[0] = link_[1] = NULL;
 	delta_list_.push_back(input.ptr_);
 }
@@ -42,7 +43,9 @@ void ClusterItem::sparce(double delta, double circle_limit)
 	if (((start_quad == 0) && (finish_quad == 3)) || ((start_quad == 3) && (finish_quad == 0)))
 		center -= circle_limit;
 	size_t delta_size = delta_list_.size() - 1;
-	start_ = center / 2 - delta * delta_size / 2;
+	center_ = center / 2;
+	width_ = delta * delta_size / 2;
+	start_ = center_ - width_;
 	finish_ = start_ + delta * delta_size;
 	start_ = normalize (start_, circle_limit);
 	finish_ = normalize (finish_, circle_limit);
@@ -132,7 +135,7 @@ bool CircleSpread::spread(std::vector<SpreadValue>& output, double delta, double
 		} while (is_merged);
 		printf("----------\n");
 		cur = cur->next();
-	} while (merge_count);
+	} while (merge_count || cur != head_);
 
 	ClusterItem* ptr = head_;
 	for (size_t i = 0; i < size_; ++i) {
@@ -149,10 +152,9 @@ bool CircleSpread::spread(std::vector<SpreadValue>& output, double delta, double
 
 double CircleSpread::circular_delta (const ClusterItem* lhs, const ClusterItem* rhs) const
 {
-	double delta = rhs->start_ - lhs->finish_;
-	if (delta < - circle_limit_ / 2)
-		delta += circle_limit_;
-	return delta;
+	double delta = normalize(rhs->center_ - lhs->center_, circle_limit_);
+	delta -= (lhs->width_ + rhs->width_);
+	return delta;// < 0 ? -delta : delta;
 }
 
 void CircleSpread::print() const

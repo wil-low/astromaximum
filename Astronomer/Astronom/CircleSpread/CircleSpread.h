@@ -18,6 +18,8 @@ public:
 	void merge(ClusterItem* rhs, double delta);
 	void sparce(double delta, double circle_limit);
 	void print() const;
+    double center_;
+    double width_;
     double start_;
     double finish_;
 	double start_orig_;
