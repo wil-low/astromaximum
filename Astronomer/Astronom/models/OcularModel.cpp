@@ -1,8 +1,8 @@
 #include "OcularModel.h"
-#include "Ephemeris.h"
-#include "DraggableView.h"
-#include "Chart.h"
-#include "constants.h"
+#include "../Ephemeris.h"
+#include "../views/DraggableView.h"
+#include "../Chart.h"
+#include "../utils/constants.h"
 
 OcularModel::OcularModel(Ephemeris* ephemeris)
 : BaseModel(ephemeris)

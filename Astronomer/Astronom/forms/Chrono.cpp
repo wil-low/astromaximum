@@ -1,5 +1,5 @@
 #include "Chrono.h"
-#include "Astronom.h"
+#include "../Astronom.h"
 /*
 FXDEFMAP(GlyphManager) GlyphManagerMessageMap[]={
 

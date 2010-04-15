@@ -1,10 +1,10 @@
 #include "MainForm.h"
-#include "Astronom.h"
-#include "AstroLabel.h"
-#include "RectangleView.h"
-#include "TriangleView.h"
-#include "WheelView.h"
-#include "OcularView.h"
+#include "../Astronom.h"
+#include "../labels/AstroLabel.h"
+#include "../views/RectangleView.h"
+#include "../views/TriangleView.h"
+#include "../views/WheelView.h"
+#include "../views/OcularView.h"
 
 FXDEFMAP(MainForm) MainFormMessageMap[]={
 

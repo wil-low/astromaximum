@@ -1,5 +1,5 @@
 #include "TriangleView.h"
-#include "GlyphManager.h"
+#include "../forms/GlyphManager.h"
 
 
 FXDEFMAP(TriangleView) TriangleViewMessageMap[]={

@@ -1,5 +1,5 @@
 #include "RectangleView.h"
-#include "GlyphManager.h"
+#include "../forms/GlyphManager.h"
 
 /*
 FXDEFMAP(RectangleView) RectangleViewMessageMap[]={

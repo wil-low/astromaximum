@@ -1,5 +1,23 @@
 #include "Ephemeris.h"
 #include "TimeLoc.h"
+
+#ifdef __linux
+    #include "sweodef.h"
+    extern "C" {
+        double swe_julday(int, int, int, double, int);
+        void swe_revjul(double, int, int*, int*, int*, double*);
+        int swe_calc_ut(double, int, int, double*, char*);
+        int32 swe_rise_trans(
+            double, int, char*, int, int, double*, double, double, double*, char*);
+        int32 swe_sol_eclipse_when_glob(double, int, int, double*, int, char*);
+        int32 swe_lun_eclipse_when(double, int, int, double*, int, char*);
+        void swe_set_ephe_path(char*);
+        void swe_close(void);
+        int swe_houses(double, double, double, int, double*, double*);
+        int swe_day_of_week(double);
+    }
+#endif
+
 #include <swephexp.h>
 #include <fxdefs.h>
 

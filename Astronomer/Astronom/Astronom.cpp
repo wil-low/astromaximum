@@ -1,9 +1,9 @@
 #include "Astronom.h"
 #include "Ephemeris.h"
-#include "MainForm.h"
-#include "Chrono.h"
-#include "GlyphManager.h"
-#include "OcularModel.h"
+#include "forms/MainForm.h"
+#include "forms/Chrono.h"
+#include "forms/GlyphManager.h"
+#include "models/OcularModel.h"
 
 FXDEFMAP(Astronom) AstronomMessageMap[]={
 
@@ -97,7 +97,7 @@ FXFont* Astronom::getAstroFont (int size)
 	std::map<int, FXFont*>::iterator it = astrofont_map_.lower_bound(size);
 	if (it != astrofont_map_.end())
 		fnt = it->second;
-	else 
+	else
 		fnt = astrofont_map_.rbegin()->second;
 	return fnt;
 }

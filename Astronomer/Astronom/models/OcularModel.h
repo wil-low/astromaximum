@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseModel.h"
-#include "OcularDefs.h"
+#include "../utils/OcularDefs.h"
 
 class OcularModel : BaseModel
 {

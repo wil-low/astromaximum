@@ -1,10 +1,10 @@
 #include "OcularView.h"
-#include "GlyphManager.h"
-#include "PlanetLabel.h"
-#include "ZodiacLabel.h"
-#include "Chart.h"
-#include "constants.h"
-#include "CircleSpread/CircleSpread.h"
+#include "../forms/GlyphManager.h"
+#include "../labels/PlanetLabel.h"
+#include "../labels/ZodiacLabel.h"
+#include "../Chart.h"
+#include "../utils/constants.h"
+#include "../CircleSpread/CircleSpread.h"
 //#include <algorithm>
 
 FXDEFMAP(OcularView) WheelViewMessageMap[]={

@@ -1,6 +1,6 @@
 #include "AstroLabel.h"
-#include "GlyphManager.h"
-#include "DraggableView.h"
+#include "../forms/GlyphManager.h"
+#include "../views/DraggableView.h"
 
 FXDEFMAP(AstroLabel) AstroLabelMessageMap[]={
 

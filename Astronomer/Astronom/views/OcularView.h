@@ -1,6 +1,6 @@
 #pragma once
 #include "WheelView.h"
-#include "OcularDefs.h"
+#include "../utils/OcularDefs.h"
 #include <vector>
 
 class AstroLabel;

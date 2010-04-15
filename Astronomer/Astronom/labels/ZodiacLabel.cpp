@@ -1,5 +1,5 @@
 #include "ZodiacLabel.h"
-#include "constants.h"
+#include "../utils/constants.h"
 /*
 FXDEFMAP(ZodiacLabel) PlanetLabelMessageMap[]={
 

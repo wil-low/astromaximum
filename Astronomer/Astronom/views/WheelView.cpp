@@ -1,5 +1,5 @@
 #include "WheelView.h"
-#include "GlyphManager.h"
+#include "../forms/GlyphManager.h"
 
 FXDEFMAP(WheelView) WheelViewMessageMap[]={
 
