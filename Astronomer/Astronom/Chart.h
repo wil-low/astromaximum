@@ -10,7 +10,8 @@ public:
 	~Chart();
 	typedef std::map<int, BodyProps> BodyPropsMap;
 	BodyPropsMap bodies_;
-	TimeLoc time_loc_; 
+	TimeLoc time_loc_;
+	int id_;
 };
 
 typedef std::list<Chart> ChartList;

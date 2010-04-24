@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(FOX_HOME)\include;$(SQLITE_HOME)\include;$(SWISS_INCDIR)"
+				AdditionalIncludeDirectories="&quot;$(FOX_HOME)\include&quot;;&quot;$(SQLITE_HOME)\include&quot;;&quot;$(SWISS_INCDIR)&quot;;&quot;$(BOOST_HOME)&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;UNICODE;FOXDLL;USE_DLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -264,6 +264,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\forms\InputForm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\forms\InputForm.h"
+				>
+			</File>
+			<File
 				RelativePath=".\forms\MainForm.cpp"
 				>
 			</File>
@@ -328,6 +336,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\labels\AstroLabelContainer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\labels\AstroLabelContainer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\labels\PlanetLabel.cpp"
 				>
 			</File>
@@ -361,6 +377,18 @@
 			</File>
 			<File
 				RelativePath=".\models\OcularModel.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="widgets"
+			>
+			<File
+				RelativePath=".\widgets\MaskedTextField.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\widgets\MaskedTextField.h"
 				>
 			</File>
 		</Filter>

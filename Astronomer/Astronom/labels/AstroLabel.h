@@ -30,13 +30,17 @@ public:
 	};
 	virtual double getAngle() const;
 	virtual double getVisibleAngle() const;
-	virtual void setVisibleAngle(double ang) {};
-
 	virtual int getType() const;
 	const FXRectangle& getRect() const;
+	int getChartId() const;
+	int getId() const;
 
-	void setText(const FXString& text);
+	void setId(int id, const FXString& text);
+	void setChartId(int id);
 	void setFont(FXFont* font);
+	virtual void setVisibleAngle(double ang) {};
+	virtual void setAngle(double ang) {};
+
     bool contains(FXint x, FXint y);
 	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);
 	AstroLabel(){}
@@ -45,4 +49,6 @@ protected:
     FXFont* font_;
     FXString text_;
     bool selected_;
+	int chart_id_;
+	int id_;
 };

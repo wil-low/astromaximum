@@ -17,6 +17,8 @@ AstroLabel::AstroLabel(DraggableView* p, FXint x, FXint y, FXint w, FXint h)
 : rect_(x, y, w, h)
 , font_(NULL)
 , selected_(false)
+, chart_id_(-1)
+, id_(-1)
 {
 }
 
@@ -24,8 +26,24 @@ AstroLabel::~AstroLabel(void)
 {
 }
 
-void AstroLabel::setText(const FXString& text)
+void AstroLabel::setChartId(int id)
 {
+	chart_id_ = id;
+}
+
+int AstroLabel::getChartId() const
+{
+	return chart_id_;
+}
+
+int AstroLabel::getId() const
+{
+	return id_;
+}
+
+void AstroLabel::setId(int id, const FXString& text)
+{
+	id_ = id;
 	text_ = text;
 }
 

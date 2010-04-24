@@ -5,6 +5,7 @@
 #include "../Chart.h"
 #include "../utils/constants.h"
 #include "../CircleSpread/CircleSpread.h"
+#include <boost/foreach.hpp>
 //#include <algorithm>
 
 FXDEFMAP(OcularView) WheelViewMessageMap[]={
@@ -48,9 +49,9 @@ void OcularView::create()
 	for (int i = 0; i < ZODIAC_SIGN_COUNT; ++i) {
 		label_text.format("%c", glyph_manager_->getSignLabel(i));
 		ZodiacLabel* label = new ZodiacLabel(i, this, -100, -100, 20, 20);
-		label->setText(label_text);
+		label->setId(i, label_text);
 //		label->setFont(glyph_manager_->getFont(dimensions_.fontSize));
-		labels_.push_back(label);
+		labels_.insert(label);
 	}
     WheelView::create();
     reorderLabels();
@@ -163,9 +164,9 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 			dc.drawLines(pt, 2);
 		}
 */
-	drawAspects(dc, labels_);
-	drawPlanetLines (dc, labels_);
-	drawLabels (dc, labels_);
+	drawAspects(dc);
+	drawPlanetLines (dc);
+	drawLabels (dc);
 	return 1;
 }
 
@@ -187,26 +188,26 @@ void OcularView::reorderLabels()
 	int planet_font_size = dimensions_.planetFontSize * radius_ / DENOMINATOR;
 	int zodiac_font_size = dimensions_.zodiacFontSize * radius_ / DENOMINATOR;
 
-	for (int i = 0; i < labels_.size(); ++i) {
+	BOOST_FOREACH (AstroLabel* al, labels_) {
 		int font_size;
-		switch (labels_[i]->getType()) {
+		switch (al->getType()) {
 			case AstroLabel::TYPE_PLANET:
 				font_size = planet_font_size;
 				break;
 			default:
 				font_size = zodiac_font_size;
 		}
-		labels_[i]->setFont(glyph_manager_->getFont(font_size));
+		al->setFont(glyph_manager_->getFont(font_size));
 	}
     double rad[AstroLabel::TYPE_LAST];
 	rad[AstroLabel::TYPE_ZODIAC] = (dimensions_.zodiac10dgrR + dimensions_.zodiac5dgrR) / 2 * radius_ / DENOMINATOR;
 	rad[AstroLabel::TYPE_PLANET] = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
     FXPoint pt;
 
-	spreadLabels(labels_, AstroLabel::TYPE_PLANET, rad[AstroLabel::TYPE_PLANET]);
-	for (int i = 0; i < labels_.size(); ++i) {
-		pt = getXYdeg(zero_angle_ + labels_[i]->getVisibleAngle(), rad[labels_[i]->getType()]);
-		labels_[i]->position(pt.x, pt.y);
+	spreadLabels(0, AstroLabel::TYPE_PLANET, rad[AstroLabel::TYPE_PLANET]);
+	BOOST_FOREACH (AstroLabel* al, labels_) {
+		pt = getXYdeg(zero_angle_ + al->getVisibleAngle(), rad[al->getType()]);
+		al->position(pt.x, pt.y);
 	}
 }
 
@@ -267,14 +268,21 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 {
 //	ChartList* cl = (ChartList*)ptr;
 	Chart* chart = (Chart*)ptr;
-	labels_.clear();
 	FXString label_text;
 	double radius = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
 	for (Chart::BodyPropsMap::const_iterator it = chart->bodies_.begin(); it != chart->bodies_.end(); ++it) {
+		AstroLabel* label = labels_.find_by_chart_id(chart->id_, (*it).first);
+		bool need_insert = !label;
+		if (!label)
+			label = new PlanetLabel(this, -100, -100, 20, 20);
+		label->setAngle((*it).second.prop[BodyProps::bp_Lon]);
 		label_text.format("%c", glyph_manager_->getPlanetLabel((*it).first));
-		PlanetLabel* label = new PlanetLabel((*it).second.prop[BodyProps::bp_Lon], this, -100, -100, 20, 20);
-		label->setText(label_text);
-		labels_.push_back(label);
+		label->setId((*it).first, label_text);
+		label->setChartId(chart->id_);
+		if (need_insert) {
+			std::pair<AlcIter, bool> result = labels_.insert(label);
+			assert (result.second);
+		}
 	}
 	reorderLabels();
 	update();
@@ -288,17 +296,19 @@ struct less_deg {
 	}
 };
 
-void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
+void OcularView::spreadLabels (int chart, int type, double r)
 {
 	FXTRACE((99, "%s\n", __FUNCTION__));
 	std::vector<SpreadValue> input;
 	double delta_width = 0;
-    for (int i = 0; i < ar.size(); ++i) {
-		if (ar[i]->getType() == type) {
-			ar[i]->setVisibleAngle(ar[i]->getAngle());
-			input.push_back(SpreadValue(ar[i]->getAngle(), ar[i]));
-			delta_width = ar[i]->getRect().w / 2;
-		}
+
+	alc_by_chart_type& idx = labels_.get<chart_type_tag>();
+	alc_by_chart_type::iterator it = idx.find(boost::make_tuple(chart, type));
+	while (it != idx.end()) {
+		(*it)->setVisibleAngle((*it)->getAngle());
+		input.push_back(SpreadValue((*it)->getAngle(), *it));
+		delta_width = (*it)->getRect().w / 2;
+		++it;
     }
 	double delta_ang = atan (delta_width / r) / DTOR * 2;
 	CircleSpread cspread(input);
@@ -306,20 +316,18 @@ void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
 	std::vector<SpreadValue> output;
 	FXTRACE((99, "Delta_ang %.02f\n", delta_ang));
 	cspread.spread(output, delta_ang, 360);
-	for (size_t i = 0; i < output.size(); ++i) {
-		FXTRACE((99, "output %d->%.02f\n", output[i].ptr_, output[i].val_));
-	}
 
-    for (int i = 0; i < output.size(); ++i) {
-		AstroLabel* label = static_cast<AstroLabel*>(output[i].ptr_);
-		label->setVisibleAngle(output[i].val_);
+    BOOST_FOREACH (SpreadValue& sv, output) {
+		FXTRACE((99, "output %d->%.02f\n", sv.ptr_, sv.val_));
+		AstroLabel* label = static_cast<AstroLabel*>(sv.ptr_);
+		label->setVisibleAngle(sv.val_);
 	}
 }
 
-void OcularView::drawLabels (FXDC& dc, const AstroLabelVector& ar)
+void OcularView::drawLabels (FXDC& dc)
 {
-    for (int i = 0; i < ar.size(); ++i) {
-        ar[i]->handle(this, FXSEL(SEL_PAINT, 0), &dc);
+	BOOST_FOREACH (AstroLabel* al, labels_) {
+        al->handle(this, FXSEL(SEL_PAINT, 0), &dc);
     }
 }
 
@@ -330,9 +338,9 @@ long OcularView::onMouseMove(FXObject* o, FXSelector sel, void* ptr)
     FXEvent *ev=(FXEvent*)ptr;
     AstroLabel* old_cur = cur_label_;
     cur_label_ = NULL;
-    for (int i = 0; i < labels_.size(); ++i) {
-        if (labels_[i]->contains(ev->win_x, ev->win_y)) {
-            cur_label_ = labels_[i];
+    BOOST_FOREACH (AstroLabel* al, labels_) {
+        if (al->contains(ev->win_x, ev->win_y)) {
+            cur_label_ = al;
             break;
         }
     }
@@ -361,7 +369,7 @@ long OcularView::onQueryTip(FXObject* sender, FXSelector, void*)
     return sender->handle(this,FXSEL(SEL_COMMAND,ID_SETSTRINGVALUE),(void*)&tip);
 }
 
-void OcularView::drawAspects(FXDC& dc, const AstroLabelVector& ar)
+void OcularView::drawAspects(FXDC& dc)
 {
 	double r = radius_ / DENOMINATOR;
 	double zouter = dimensions_.zodiacInnerR * r;
@@ -369,9 +377,9 @@ void OcularView::drawAspects(FXDC& dc, const AstroLabelVector& ar)
 	dc.setForeground(colors_.aspectTickColor);
 	dc.setLineWidth(2);
 	FXPoint pt[2];
-	for (int i = 0; i < ar.size(); ++i) {
-		if (ar[i]->getType() == AstroLabel::TYPE_PLANET) {
-			double ang = ar[i]->getAngle() + zero_angle_;
+	BOOST_FOREACH (AstroLabel* al, labels_) {
+		if (al->getType() == AstroLabel::TYPE_PLANET) {
+			double ang = al->getAngle() + zero_angle_;
 			pt[0] = getXYdeg(ang, zouter);
 			pt[1] = getXYdeg(ang, zinner);
 			dc.drawLines(pt, 2);
@@ -379,7 +387,7 @@ void OcularView::drawAspects(FXDC& dc, const AstroLabelVector& ar)
 	}
 }
 
-void OcularView::drawPlanetLines(FXDC& dc, const AstroLabelVector& ar)
+void OcularView::drawPlanetLines(FXDC& dc)
 {
 	double r = radius_ / DENOMINATOR;
 	double zouter = dimensions_.zodiac5dgrR * r;
@@ -387,12 +395,12 @@ void OcularView::drawPlanetLines(FXDC& dc, const AstroLabelVector& ar)
 	dc.setForeground(colors_.planetTickColor);
 	dc.setLineWidth(1);
 	FXPoint pt[2];
-	for (int i = 0; i < ar.size(); ++i) {
-		if (ar[i]->getType() == AstroLabel::TYPE_PLANET) {
-			double ang = ar[i]->getAngle() + zero_angle_;
-			double planet_r = ar[i]->getRect().w / 2;
+	BOOST_FOREACH (AstroLabel* al, labels_) {
+		if (al->getType() == AstroLabel::TYPE_PLANET) {
+			double ang = al->getAngle() + zero_angle_;
+			double planet_r = al->getRect().w / 2;
 			pt[0] = getXYdeg(ang, zouter);
-			pt[1] = getXYdeg(ar[i]->getVisibleAngle() + zero_angle_, zinner);
+			pt[1] = getXYdeg(al->getVisibleAngle() + zero_angle_, zinner);
 			double dx = pt[1].x - pt[0].x, dy = pt[0].y - pt[1].y;
 			double ang0 = atan(dy / dx);
 			if (dx < 0)

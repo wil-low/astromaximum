@@ -9,9 +9,9 @@ FXDEFMAP(PlanetLabel) PlanetLabelMessageMap[]={
 
 FXIMPLEMENT(PlanetLabel, AstroLabel, PlanetLabelMessageMap, ARRAYNUMBER(PlanetLabelMessageMap))
 
-PlanetLabel::PlanetLabel(double lon, DraggableView* p, FXint x, FXint y, FXint w, FXint h)
+PlanetLabel::PlanetLabel(DraggableView* p, FXint x, FXint y, FXint w, FXint h)
 : AstroLabel(p, x, y, w, h)
-, lon_(lon)
+, lon_(0)
 {
 }
 
@@ -37,6 +37,11 @@ int PlanetLabel::getType() const
 double PlanetLabel::getVisibleAngle() const
 {
 	return visibleLon_;
+}
+
+void PlanetLabel::setAngle(double ang)
+{
+	lon_ = ang;
 }
 
 void PlanetLabel::setVisibleAngle(double ang)

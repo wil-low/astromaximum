@@ -1,6 +1,7 @@
 #pragma once
 #include "WheelView.h"
 #include "../utils/OcularDefs.h"
+#include "../labels/AstroLabelContainer.h"
 #include <vector>
 
 class AstroLabel;
@@ -38,19 +39,19 @@ protected:
 private:
 	typedef std::vector<AstroLabel*> AstroLabelVector;
 
-    void drawLabels (FXDC& dc, const AstroLabelVector& ar);
-	void drawAspects(FXDC& dc, const AstroLabelVector& ar);
-	void drawPlanetLines(FXDC& dc, const AstroLabelVector& ar);
+    void drawLabels (FXDC& dc);
+	void drawAspects(FXDC& dc);
+	void drawPlanetLines(FXDC& dc);
 	void reorderLabels();
 
-	void spreadLabels (AstroLabelVector& ar, int type, double r);
+	void spreadLabels (int chart, int type, double r);
 
 	int zero_point_;
 	double zero_angle_;
 	OcularDimensions dimensions_;
 	OcularColors colors_;
 
-	AstroLabelVector labels_;
+	AstroLabelContainer labels_;
 	AstroLabel* cur_label_;
     FXPopup* popup_;
 };

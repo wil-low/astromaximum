@@ -11,7 +11,7 @@
 FXDEFMAP(MainForm) MainFormMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
-	FXMAPFUNC(SEL_COMMAND,           MainForm::ID_ADD,       MainForm::onAddView),
+//	FXMAPFUNC(SEL_COMMAND,           MainForm::ID_ADD,       MainForm::onAddView),
 	FXMAPFUNC(SEL_PAINT,             MainForm::ID_CANVAS,    MainForm::onPaint),
 	FXMAPFUNC(SEL_COMMAND,           MainForm::ID_LOCK,		 MainForm::onCmdLock),
 };
@@ -29,6 +29,7 @@ MainForm::MainForm(FXApp *a)
 	// File menu
 	filemenu=new FXMenuPane(menubar);
 	new FXMenuTitle(menubar, tr("&File"), NULL, filemenu);
+	new FXMenuCommand(filemenu, tr("&Input data..."), NULL, getApp(), Astronom::ID_INPUTDATA);
 	new FXMenuCommand(filemenu, tr("&Glyph Manager...\tCtrl-G\tGlyph Manager"), NULL, getApp(), Astronom::ID_GLYPH);
 	new FXMenuCommand(filemenu, tr("Toggle C&hrono...\tF3\tToggle Chrono"), NULL, getApp(), Astronom::ID_CHRONO);
 	if (getAccelTable()) {

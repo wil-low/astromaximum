@@ -56,6 +56,7 @@ void OcularModel::setView(DraggableView* view)
 
 	int bodies[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	Chart chart;
+	chart.id_ = 0;
 	chart.time_loc_ = time_loc;
 	BodyProps props;
 	for (int i =  0; i < ARRAYNUMBER(bodies); ++i) {

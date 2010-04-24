@@ -4,6 +4,7 @@
 
 class Ephemeris;
 class MainForm;
+class InputForm;
 class Chrono;
 class GlyphManager;
 class OcularModel;
@@ -24,12 +25,14 @@ public:
 		ID_GLYPH=FXApp::ID_LAST,
 		ID_CHRONO,
 		ID_INC_HOUR,
+		ID_INPUTDATA,
 		ID_LAST
 	};
 
 	GlyphManager* fGlyphManager;
 	FXImage* offscreen;
 
+	long onCmdInputData(FXObject*, FXSelector, void*);
 	long onCmdGlyph(FXObject*, FXSelector, void*);
 	long onCmdToggleChrono(FXObject*, FXSelector, void*);
 	long onCmdIncHour(FXObject*, FXSelector, void*);
@@ -41,7 +44,8 @@ private:
 
 	Ephemeris* ephemeris;
 	MainForm* fMain;
-	Chrono* chrono_;
+	InputForm* fInputData;
+	Chrono* fChrono;
 	OcularModel* mOcular;
 	FXToolTip* tooltip_;
 	std::map<int, FXFont*> astrofont_map_;
