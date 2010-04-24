@@ -18,7 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -62,6 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="FOXDLLD-1.6.lib sqlite3.lib swedll32.lib"
+				OutputFile="$(OutDir)\$(ProjectName)d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(FOX_HOME)\lib;$(SQLITE_HOME)\lib;$(SWISS_LIBDIR)"
 				GenerateDebugInformation="true"
@@ -93,7 +94,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)\bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -119,7 +120,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="$(FOX_HOME)\include;$(SQLITE_HOME)\include;$(SWISS_INCDIR)"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;FOXDLL"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;FOXDLL;USE_DLL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -183,10 +184,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\BaseModel.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Chart.cpp"
 				>
 			</File>
@@ -195,7 +192,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\constants.cpp"
+				RelativePath=".\utils\constants.cpp"
 				>
 			</File>
 			<File
@@ -204,10 +201,6 @@
 			</File>
 			<File
 				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OcularModel.cpp"
 				>
 			</File>
 			<File
@@ -225,31 +218,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\BaseModel.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Chart.h"
 				>
 			</File>
 			<File
-				RelativePath=".\CircleSpread\CircleSpread.h"
+				RelativePath=".\common.h"
 				>
 			</File>
 			<File
-				RelativePath=".\constants.h"
+				RelativePath=".\utils\constants.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Ephemeris.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OcularDefs.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OcularModel.h"
 				>
 			</File>
 			<File
@@ -267,27 +248,27 @@
 			Name="forms"
 			>
 			<File
-				RelativePath=".\Chrono.cpp"
+				RelativePath=".\forms\Chrono.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Chrono.h"
+				RelativePath=".\forms\Chrono.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GlyphManager.cpp"
+				RelativePath=".\forms\GlyphManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GlyphManager.h"
+				RelativePath=".\forms\GlyphManager.h"
 				>
 			</File>
 			<File
-				RelativePath=".\MainForm.cpp"
+				RelativePath=".\forms\MainForm.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\MainForm.h"
+				RelativePath=".\forms\MainForm.h"
 				>
 			</File>
 		</Filter>
@@ -295,43 +276,43 @@
 			Name="views"
 			>
 			<File
-				RelativePath=".\DraggableView.cpp"
+				RelativePath=".\views\DraggableView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\DraggableView.h"
+				RelativePath=".\views\DraggableView.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OcularView.cpp"
+				RelativePath=".\views\OcularView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OcularView.h"
+				RelativePath=".\views\OcularView.h"
 				>
 			</File>
 			<File
-				RelativePath=".\RectangleView.cpp"
+				RelativePath=".\views\RectangleView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\RectangleView.h"
+				RelativePath=".\views\RectangleView.h"
 				>
 			</File>
 			<File
-				RelativePath=".\TriangleView.cpp"
+				RelativePath=".\views\TriangleView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\TriangleView.h"
+				RelativePath=".\views\TriangleView.h"
 				>
 			</File>
 			<File
-				RelativePath=".\WheelView.cpp"
+				RelativePath=".\views\WheelView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\WheelView.h"
+				RelativePath=".\views\WheelView.h"
 				>
 			</File>
 		</Filter>
@@ -339,27 +320,47 @@
 			Name="labels"
 			>
 			<File
-				RelativePath=".\AstroLabel.cpp"
+				RelativePath=".\labels\AstroLabel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\AstroLabel.h"
+				RelativePath=".\labels\AstroLabel.h"
 				>
 			</File>
 			<File
-				RelativePath=".\PlanetLabel.cpp"
+				RelativePath=".\labels\PlanetLabel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\PlanetLabel.h"
+				RelativePath=".\labels\PlanetLabel.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ZodiacLabel.cpp"
+				RelativePath=".\labels\ZodiacLabel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ZodiacLabel.h"
+				RelativePath=".\labels\ZodiacLabel.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="models"
+			>
+			<File
+				RelativePath=".\models\BaseModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\models\BaseModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\models\OcularModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\models\OcularModel.h"
 				>
 			</File>
 		</Filter>
