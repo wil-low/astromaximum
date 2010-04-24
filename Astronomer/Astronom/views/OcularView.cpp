@@ -290,7 +290,7 @@ struct less_deg {
 
 void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
 {
-	FXTRACE((10, "%s\n", __FUNCTION__));
+	FXTRACE((99, "%s\n", __FUNCTION__));
 	std::vector<SpreadValue> input;
 	double delta_width = 0;
     for (int i = 0; i < ar.size(); ++i) {
@@ -304,10 +304,10 @@ void OcularView::spreadLabels (AstroLabelVector& ar, int type, double r)
 	CircleSpread cspread(input);
 
 	std::vector<SpreadValue> output;
-	printf ("Delta_ang %.02f\n", delta_ang);
+	FXTRACE((99, "Delta_ang %.02f\n", delta_ang));
 	cspread.spread(output, delta_ang, 360);
 	for (size_t i = 0; i < output.size(); ++i) {
-		printf ("output %d->%.02f\n", output[i].ptr_, output[i].val_);
+		FXTRACE((99, "output %d->%.02f\n", output[i].ptr_, output[i].val_));
 	}
 
     for (int i = 0; i < output.size(); ++i) {
