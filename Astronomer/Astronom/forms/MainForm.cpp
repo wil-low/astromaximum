@@ -6,6 +6,8 @@
 #include "../views/WheelView.h"
 #include "../views/OcularView.h"
 
+#include <fxkeys.h>
+
 FXDEFMAP(MainForm) MainFormMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
@@ -27,9 +29,12 @@ MainForm::MainForm(FXApp *a)
 	// File menu
 	filemenu=new FXMenuPane(menubar);
 	new FXMenuTitle(menubar, tr("&File"), NULL, filemenu);
-	new FXMenuCommand(filemenu, tr("&Glyph Manager...\tCtl-G\tGlyph Manager"), NULL, getApp(), Astronom::ID_GLYPH);
+	new FXMenuCommand(filemenu, tr("&Glyph Manager...\tCtrl-G\tGlyph Manager"), NULL, getApp(), Astronom::ID_GLYPH);
 	new FXMenuCommand(filemenu, tr("Toggle C&hrono...\tF3\tToggle Chrono"), NULL, getApp(), Astronom::ID_CHRONO);
-
+	if (getAccelTable()) {
+		getAccelTable()->addAccel (MKUINT(KEY_G,CONTROLMASK), getApp(), FXSEL(SEL_COMMAND, Astronom::ID_GLYPH));
+		getAccelTable()->addAccel (MKUINT(KEY_F3, 0), getApp(), FXSEL(SEL_COMMAND, Astronom::ID_CHRONO));
+	}
 	contents=new FXHorizontalFrame(vframe,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
 
 	// LEFT pane to contain the canvas
