@@ -6,7 +6,7 @@ class InputForm : public FXDialogBox
 public:
 	InputForm(FXWindow* wo);
 	~InputForm();
-	
+
 	// Messages for our class
 	enum{
 		ID_NAME=FXDialogBox::ID_LAST,
@@ -21,15 +21,22 @@ public:
 		ID_SEARCH_POINT,
 		ID_SEARCH_STR,
 		ID_SEARCH,
+		ID_ATLAS_COUNTRY,
+		ID_ATLAS_STATE,
+		ID_ATLAS_CITY,
 		ID_LAST
 	};
 	void create();
 
 	long onCmdSearch(FXObject*, FXSelector, void*);
+	long onCmdAccept(FXObject*, FXSelector, void*);
+	long onCmdCancel(FXObject*, FXSelector, void*);
+
 	struct input_data_t {
 		FXString name;
 	} input_data_;
 protected:
 	InputForm(){}
-
+private:
+    FXList *lAtlasCountry_, *lAtlasState_, *lAtlasCity_;
 };

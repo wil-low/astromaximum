@@ -32,6 +32,8 @@ MainForm::MainForm(FXApp *a)
 	new FXMenuCommand(filemenu, tr("&Input data..."), NULL, getApp(), Astronom::ID_INPUTDATA);
 	new FXMenuCommand(filemenu, tr("&Glyph Manager...\tCtrl-G\tGlyph Manager"), NULL, getApp(), Astronom::ID_GLYPH);
 	new FXMenuCommand(filemenu, tr("Toggle C&hrono...\tF3\tToggle Chrono"), NULL, getApp(), Astronom::ID_CHRONO);
+
+	new FXMenuCommand(menubar, tr("&Persons..."), NULL, getApp(), Astronom::ID_PERSONS);
 	if (getAccelTable()) {
 		getAccelTable()->addAccel (MKUINT(KEY_G,CONTROLMASK), getApp(), FXSEL(SEL_COMMAND, Astronom::ID_GLYPH));
 		getAccelTable()->addAccel (MKUINT(KEY_F3, 0), getApp(), FXSEL(SEL_COMMAND, Astronom::ID_CHRONO));
@@ -61,6 +63,8 @@ MainForm::MainForm(FXApp *a)
 	new FXButton(buttonFrame,"&Exit",NULL,getApp(),FXApp::ID_QUIT,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
 
     btnLock = new FXCheckButton(buttonFrame,"&Lock", this, ID_LOCK,CHECKBUTTON_NORMAL,0,0,0,0,10,10,5,5);
+
+    new FXStatusBar(vframe, LAYOUT_FILL_X);
 //    btnLock->setCheck();
 }
 

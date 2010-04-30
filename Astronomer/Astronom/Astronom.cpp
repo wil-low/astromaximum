@@ -1,7 +1,9 @@
 #include "Astronom.h"
+#include "Localizer.h"
 #include "Ephemeris.h"
 #include "forms/MainForm.h"
 #include "forms/InputForm.h"
+#include "forms/PersonsForm.h"
 #include "forms/Chrono.h"
 #include "forms/GlyphManager.h"
 #include "models/OcularModel.h"
@@ -11,6 +13,7 @@ FXDEFMAP(Astronom) AstronomMessageMap[]={
 	//________Message_Type_____________________ID____________Message_Handler_______
 	FXMAPFUNC(SEL_QUERY_TIP,         0,                      Astronom::onQueryTip),
 	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_INPUTDATA, Astronom::onCmdInputData),
+	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_PERSONS,   Astronom::onCmdPersons),
 	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_GLYPH,     Astronom::onCmdGlyph),
 	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_CHRONO,    Astronom::onCmdToggleChrono),
 	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_INC_HOUR,  Astronom::onCmdIncHour),
@@ -25,6 +28,7 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
 , fGlyphManager(NULL)
 , tooltip_(NULL)
 {
+	setTranslator(new Localizer(this));
 	char ephe_path[256] = "rerye";
 	ephemeris = new Ephemeris (ephe_path);
 	tooltip_ = new FXToolTip(this);
@@ -32,6 +36,7 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
 	fGlyphManager = new GlyphManager(this);
 	fMain = new MainForm(this);
 	fInputData = new InputForm(fMain);
+	fPersons = new PersonsForm(fMain);
 	fChrono = new Chrono(fMain);
 }
 
@@ -55,6 +60,13 @@ long Astronom::onCmdInputData(FXObject*, FXSelector, void*)
 {
 	fInputData->show();
 	fInputData->execute(PLACEMENT_SCREEN);
+	return 1;
+}
+
+long Astronom::onCmdPersons(FXObject*, FXSelector, void*)
+{
+	fPersons->show();
+	fPersons->execute(PLACEMENT_SCREEN);
 	return 1;
 }
 

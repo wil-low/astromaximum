@@ -2,7 +2,7 @@
 #include "TimeLoc.h"
 
 #ifdef __linux
-    #include "sweodef.h"
+    #include <sweodef.h>
     extern "C" {
         double swe_julday(int, int, int, double, int);
         void swe_revjul(double, int, int*, int*, int*, double*);

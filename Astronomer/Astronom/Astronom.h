@@ -5,6 +5,7 @@
 class Ephemeris;
 class MainForm;
 class InputForm;
+class PersonsForm;
 class Chrono;
 class GlyphManager;
 class OcularModel;
@@ -26,6 +27,7 @@ public:
 		ID_CHRONO,
 		ID_INC_HOUR,
 		ID_INPUTDATA,
+		ID_PERSONS,
 		ID_LAST
 	};
 
@@ -33,6 +35,7 @@ public:
 	FXImage* offscreen;
 
 	long onCmdInputData(FXObject*, FXSelector, void*);
+	long onCmdPersons(FXObject*, FXSelector, void*);
 	long onCmdGlyph(FXObject*, FXSelector, void*);
 	long onCmdToggleChrono(FXObject*, FXSelector, void*);
 	long onCmdIncHour(FXObject*, FXSelector, void*);
@@ -45,6 +48,7 @@ private:
 	Ephemeris* ephemeris;
 	MainForm* fMain;
 	InputForm* fInputData;
+	PersonsForm* fPersons;
 	Chrono* fChrono;
 	OcularModel* mOcular;
 	FXToolTip* tooltip_;

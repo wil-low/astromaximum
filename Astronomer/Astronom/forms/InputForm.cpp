@@ -6,17 +6,19 @@ FXDEFMAP(InputForm) InputFormMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
 	FXMAPFUNC(SEL_COMMAND,           InputForm::ID_SEARCH,   InputForm::onCmdSearch),
+	FXMAPFUNC(SEL_COMMAND,           InputForm::ID_ACCEPT,   InputForm::onCmdAccept),
+	FXMAPFUNC(SEL_COMMAND,           InputForm::ID_CANCEL,   InputForm::onCmdCancel),
 };
 
 FXIMPLEMENT(InputForm, FXDialogBox, InputFormMessageMap, ARRAYNUMBER(InputFormMessageMap))
 
 InputForm::InputForm(FXWindow* wo)
 : FXDialogBox(wo,"InputForm", DECOR_TITLE|DECOR_CLOSE|DECOR_BORDER|DECOR_SHRINKABLE|DECOR_STRETCHABLE,
-			  100, 100, 400, 400, 0, 0, 0, 0 ,0, 0)
+			  100, 100, 600, 400, 0, 0, 0, 0 ,0, 0)
 {
 	FXVerticalFrame* vframe=new FXVerticalFrame(this,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
 
-	FXMatrix* matrix=new FXMatrix(vframe,4,MATRIX_BY_ROWS|LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
+	FXMatrix* matrix=new FXMatrix(vframe,4,MATRIX_BY_ROWS|LAYOUT_SIDE_TOP|LAYOUT_FILL_X,0,0,0,0, 0,0,0,0);
 		new FXButton(matrix, tr("NewChart"),NULL,NULL);
 		new FXButton(matrix, tr("Now"),NULL,NULL);
 		new FXButton(matrix, tr("Here"),NULL,NULL);
@@ -25,25 +27,25 @@ InputForm::InputForm(FXWindow* wo)
 		new FXTextField(matrix, 30, NULL, ID_NAME);
 		{
 		FXHorizontalFrame* hframe=new FXHorizontalFrame(matrix,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-			MaskedTextField* mtfDate = new MaskedTextField(hframe, 10, NULL, ID_NAME, TEXTFIELD_NORMAL|TEXTFIELD_OVERSTRIKE);
+			MaskedTextField* mtfDate = new MaskedTextField(hframe, 10, NULL, ID_NAME, TEXTFIELD_NORMAL);
 			mtfDate->setText("10.10.2000");
 			mtfDate->setMask("^\\d\\d\\.\\d\\d\\.\\d{4}$");
 			FXComboBox* cbEra = new FXComboBox(hframe, 1, NULL, ID_ERA, TEXTFIELD_NORMAL|COMBOBOX_STATIC);
 			cbEra->fillItems("AC\nBC");
-			MaskedTextField* mtfTime = new MaskedTextField(hframe, 8, NULL, ID_TIME, TEXTFIELD_NORMAL|TEXTFIELD_OVERSTRIKE);
+			MaskedTextField* mtfTime = new MaskedTextField(hframe, 8, NULL, ID_TIME, TEXTFIELD_NORMAL);
 			mtfTime->setText("10:10:20");
 			mtfTime->setMask("^\\d\\d\\:\\d\\d\\:\\d{4}$");
 		}
 		FXComboBox* cbLoc = new FXComboBox(matrix, 1, NULL, ID_LOCATION, TEXTFIELD_NORMAL|LAYOUT_FILL_X);
 		{
 		FXHorizontalFrame* hframe=new FXHorizontalFrame(matrix,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-			MaskedTextField* mtfLon = new MaskedTextField(hframe, 8, NULL, ID_LON, TEXTFIELD_NORMAL|TEXTFIELD_OVERSTRIKE);
-			mtfLon->setText("030°31'E");
-			mtfLon->setMask("^\\d{3}°\\d{2}'[EW]$");
-			MaskedTextField* mtfLat = new MaskedTextField(hframe, 7, NULL, ID_LAT, TEXTFIELD_NORMAL|TEXTFIELD_OVERSTRIKE);
-			mtfLat->setText("50°25'N");
-			mtfLat->setMask("^\\d{2}°\\d{2}'[NS]$");
-			MaskedTextField* mtfTzDiff = new MaskedTextField(hframe, 6, NULL, ID_TZDIFF, TEXTFIELD_NORMAL|TEXTFIELD_OVERSTRIKE|LAYOUT_FILL_X);
+			MaskedTextField* mtfLon = new MaskedTextField(hframe, 8, NULL, ID_LON, TEXTFIELD_NORMAL);
+			mtfLon->setText("030 31'E");
+			mtfLon->setMask("^\\d{3} \\d{2}'[EW]$");
+			MaskedTextField* mtfLat = new MaskedTextField(hframe, 7, NULL, ID_LAT, TEXTFIELD_NORMAL);
+			mtfLat->setText("50 25'N");
+			mtfLat->setMask("^\\d{2} \\d{2}'[NS]$");
+			MaskedTextField* mtfTzDiff = new MaskedTextField(hframe, 6, NULL, ID_TZDIFF, TEXTFIELD_NORMAL|LAYOUT_FILL_X);
 			mtfTzDiff->setText("+03:00");
 			mtfTzDiff->setMask("^[\\+\\-]\\d{2}:\\d{2}$");
 		}
@@ -61,6 +63,12 @@ InputForm::InputForm(FXWindow* wo)
 			new FXTextField(hframe, 10, NULL, ID_SEARCH_STR);
 			new FXButton(hframe, tr("Search"), NULL, this, ID_SEARCH);
 		}
+    {
+    FXHorizontalFrame* hframe=new FXHorizontalFrame(vframe,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
+        lAtlasCountry_ = new FXList(hframe, NULL, ID_ATLAS_COUNTRY, LIST_BROWSESELECT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+        lAtlasState_ = new FXList(hframe, NULL, ID_ATLAS_STATE, LIST_BROWSESELECT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+        lAtlasCity_ = new FXList(hframe, NULL,ID_ATLAS_CITY, LIST_BROWSESELECT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+    }
 }
 
 InputForm::~InputForm(void)
@@ -70,10 +78,25 @@ InputForm::~InputForm(void)
 void InputForm::create()
 {
 	FXDialogBox::create();
+	for (int i = 0; i < 20; ++i) {
+        lAtlasCountry_->appendItem("country");
+        lAtlasState_->appendItem("state");
+        lAtlasCity_->appendItem("city");
+	}
 }
 
 long InputForm::onCmdSearch(FXObject* o, FXSelector, void*)
 {
 	((FXWindow*)o)->hide();
 	return 1;
+}
+
+long InputForm::onCmdAccept(FXObject* o, FXSelector sel, void* ptr)
+{
+	return FXDialogBox::onCmdAccept(o, sel, ptr);
+}
+
+long InputForm::onCmdCancel(FXObject* o, FXSelector sel, void* ptr)
+{
+	return FXDialogBox::onCmdCancel(o, sel, ptr);
 }

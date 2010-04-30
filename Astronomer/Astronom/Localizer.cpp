@@ -1,0 +1,27 @@
+#include "Localizer.h"
+
+FXIMPLEMENT(Localizer, FXTranslator, 0, 0)
+
+Localizer::Localizer(FXApp* a)
+: FXTranslator(a)
+{
+}
+
+void Localizer::load_lang(const FXString& lang)
+{
+    settings_.clear();
+    settings_.parseFile(lang + ".lng", false);
+}
+
+const FXchar* Localizer::tr(const FXchar* context,const FXchar* message,const FXchar* hint) const
+{
+    FXStringDict* dict = settings_.find(context);
+    if (dict) {
+        const FXchar* translated = dict->find(message);
+        if (translated)
+            return translated;
+    }
+    FXString str(message);
+    str += "!";
+    return str.text();
+}

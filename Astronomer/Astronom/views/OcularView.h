@@ -22,6 +22,7 @@ public:
 	long onCmdUpdateChart(FXObject*, FXSelector, void* ptr);
 	long onConfigure(FXObject*, FXSelector, void*);
     long onQueryTip(FXObject*, FXSelector, void*);
+    long onQueryHelp(FXObject*, FXSelector, void*);
     long onMouseMove(FXObject*, FXSelector, void*);
     long onRightBtnPress(FXObject*, FXSelector, void*);
 

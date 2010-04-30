@@ -12,7 +12,7 @@ FXDEFMAP(OcularView) WheelViewMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
 	FXMAPFUNC(SEL_MOTION,            0, OcularView::onMouseMove),
-//	FXMAPFUNC(SEL_QUERY_TIP,         0, OcularView::onQueryTip),
+	FXMAPFUNC(SEL_QUERY_HELP,        0, OcularView::onQueryHelp),
 	FXMAPFUNC(SEL_CONFIGURE,         0, OcularView::onConfigure),
 	FXMAPFUNC(SEL_RIGHTBUTTONPRESS,   0, OcularView::onRightBtnPress),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_ZERO,     OcularView::onCmdSetZero),
@@ -67,13 +67,6 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 	dc.setForeground(drawColor);
 //	dc.drawEllipse(0, 0, getWidth() - 1, getHeight() - 1);
 //	dc.setFont(glyph_manager_->getFont());
-	drawCircle(dc, 5);
-
-	dc.setForeground(colors_.arrowColor);
-	FXPoint pt[2];
-	pt[0] = getCenter();
-	pt[1] = getXYdeg(zero_angle_, radius_);
-	dc.drawLines(pt, 2);
 
 	double r = radius_ / DENOMINATOR;
 	double ang = zero_angle_;
@@ -118,6 +111,15 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 		drawCircle(dc, dimensions_.aspectR * r);
 	}
 	*/
+
+	drawCircle(dc, 5);
+
+	dc.setForeground(colors_.arrowColor);
+	FXPoint pt[2];
+	pt[0] = getCenter();
+	pt[1] = getXYdeg(zero_angle_, radius_);
+	dc.drawLines(pt, 2);
+
 	ang = zero_angle_ * DTOR;
 	delta_ang = 5 * DTOR;
 	double zinner = dimensions_.zodiac5dgrR * r - 1;
@@ -367,6 +369,16 @@ long OcularView::onQueryTip(FXObject* sender, FXSelector, void*)
     if (cur_label_){}
     FXString tip("Hello");
     return sender->handle(this,FXSEL(SEL_COMMAND,ID_SETSTRINGVALUE),(void*)&tip);
+}
+
+long OcularView::onQueryHelp(FXObject* sender, FXSelector, void*)
+{
+    if (cur_label_){
+        FXString help;
+        help.format("Label %d, angle %f", cur_label_->getId(), cur_label_->getAngle());
+        return sender->handle(this,FXSEL(SEL_COMMAND,ID_SETSTRINGVALUE),(void*)&help);
+    }
+    return 0;
 }
 
 void OcularView::drawAspects(FXDC& dc)

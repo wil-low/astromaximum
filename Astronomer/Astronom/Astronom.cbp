@@ -12,7 +12,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
-				<Option parameters="-tracelevel 100" />
+				<Option parameters="-tracelevel 90" />
 				<Compiler>
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
@@ -46,31 +46,43 @@
 			<Add option="-Wall" />
 			<Add option="`fox-config --cflags`" />
 			<Add directory="../3d_party/sqlite-3.6.22/include" />
+			<Add directory="../3d_party/sweph/src" />
+			<Add directory="../3d_party/boost_1_42_0" />
 		</Compiler>
 		<Linker>
 			<Add option="`fox-config --libs`" />
 			<Add library="sqlite3" />
+			<Add library="swe" />
 			<Add directory="../3d_party/sqlite-3.6.22/lib" />
+			<Add directory="../3d_party/sweph/src" />
 		</Linker>
 		<Unit filename="Astronom.cpp" />
 		<Unit filename="Astronom.h" />
 		<Unit filename="Chart.cpp" />
 		<Unit filename="Chart.h" />
+		<Unit filename="CircleSpread/CircleSpread.cpp" />
 		<Unit filename="CircleSpread/CircleSpread.h" />
 		<Unit filename="Ephemeris.cpp" />
 		<Unit filename="Ephemeris.h" />
+		<Unit filename="Localizer.cpp" />
+		<Unit filename="Localizer.h" />
 		<Unit filename="TimeLoc.cpp" />
 		<Unit filename="TimeLoc.h" />
-		<Unit filename="constants.cpp" />
 		<Unit filename="constants.h" />
 		<Unit filename="forms/Chrono.cpp" />
 		<Unit filename="forms/Chrono.h" />
 		<Unit filename="forms/GlyphManager.cpp" />
 		<Unit filename="forms/GlyphManager.h" />
+		<Unit filename="forms/InputForm.cpp" />
+		<Unit filename="forms/InputForm.h" />
 		<Unit filename="forms/MainForm.cpp" />
 		<Unit filename="forms/MainForm.h" />
+		<Unit filename="forms/PersonsForm.cpp" />
+		<Unit filename="forms/PersonsForm.h" />
 		<Unit filename="labels/AstroLabel.cpp" />
 		<Unit filename="labels/AstroLabel.h" />
+		<Unit filename="labels/AstroLabelContainer.cpp" />
+		<Unit filename="labels/AstroLabelContainer.h" />
 		<Unit filename="labels/PlanetLabel.cpp" />
 		<Unit filename="labels/PlanetLabel.h" />
 		<Unit filename="labels/ZodiacLabel.cpp" />
@@ -81,9 +93,13 @@
 		<Unit filename="models/OcularDefs.h" />
 		<Unit filename="models/OcularModel.cpp" />
 		<Unit filename="models/OcularModel.h" />
+		<Unit filename="utils/OcularDefs.h" />
+		<Unit filename="utils/constants.cpp" />
+		<Unit filename="utils/constants.h" />
 		<Unit filename="version.h" />
 		<Unit filename="views/DraggableView.cpp" />
 		<Unit filename="views/DraggableView.h" />
+		<Unit filename="views/OcularView.cpp" />
 		<Unit filename="views/OcularView.h" />
 		<Unit filename="views/RectangleView.cpp" />
 		<Unit filename="views/RectangleView.h" />
@@ -91,6 +107,8 @@
 		<Unit filename="views/TriangleView.h" />
 		<Unit filename="views/WheelView.cpp" />
 		<Unit filename="views/WheelView.h" />
+		<Unit filename="widgets/MaskedTextField.cpp" />
+		<Unit filename="widgets/MaskedTextField.h" />
 		<Extensions>
 			<envvars />
 			<code_completion>
