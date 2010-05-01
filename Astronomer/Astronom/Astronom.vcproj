@@ -119,7 +119,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="$(FOX_HOME)\include;$(SQLITE_HOME)\include;$(SWISS_INCDIR)"
+				AdditionalIncludeDirectories="$(FOX_HOME)\include;$(SQLITE_HOME)\include;$(SWISS_INCDIR);&quot;$(BOOST_HOME)&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;FOXDLL;USE_DLL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -192,11 +192,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\utils\constants.cpp"
+				RelativePath=".\Ephemeris.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Ephemeris.cpp"
+				RelativePath=".\Localizer.cpp"
 				>
 			</File>
 			<File
@@ -226,11 +226,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\utils\constants.h"
+				RelativePath=".\Ephemeris.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Ephemeris.h"
+				RelativePath=".\Localizer.h"
 				>
 			</File>
 			<File
@@ -277,6 +277,14 @@
 			</File>
 			<File
 				RelativePath=".\forms\MainForm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\forms\PersonsForm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\forms\PersonsForm.h"
 				>
 			</File>
 		</Filter>
@@ -389,6 +397,22 @@
 			</File>
 			<File
 				RelativePath=".\widgets\MaskedTextField.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="utils"
+			>
+			<File
+				RelativePath=".\utils\constants.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\utils\constants.h"
+				>
+			</File>
+			<File
+				RelativePath=".\utils\OcularDefs.h"
 				>
 			</File>
 		</Filter>

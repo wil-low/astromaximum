@@ -120,6 +120,7 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 	pt[1] = getXYdeg(zero_angle_, radius_);
 	dc.drawLines(pt, 2);
 
+	dc.setForeground(colors_.mainLineColor);
 	ang = zero_angle_ * DTOR;
 	delta_ang = 5 * DTOR;
 	double zinner = dimensions_.zodiac5dgrR * r - 1;

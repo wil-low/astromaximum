@@ -21,7 +21,5 @@ const FXchar* Localizer::tr(const FXchar* context,const FXchar* message,const FX
         if (translated)
             return translated;
     }
-    FXString str(message);
-    str += "!";
-    return str.text();
+    return message;
 }
