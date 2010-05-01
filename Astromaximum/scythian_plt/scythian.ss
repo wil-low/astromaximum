@@ -15,7 +15,11 @@
                                             [paint-callback rect-painter])))
 (define stest2 (make-area 109 35 400 220 (new sizeable%
                                             [paint-callback rect-painter])))
-  (define main (new mainframe% (area-list (list stest stest2)) (parent frame)))
+(define stest3 (make-area 210 20 290 100 (new sizeable%
+                                            [paint-callback rect-painter])))
+(define stest4 (make-area 309 45 480 120 (new sizeable%
+                                            [paint-callback rect-painter])))
+(define main (new mainframe% (area-list (list stest stest2 stest3 stest4)) (parent frame)))
   ; Show the frame
 ;  (send frame maximize #t)
   (send frame show #t)
