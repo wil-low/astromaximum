@@ -68,7 +68,7 @@ DraggableView::hotspot_t TriangleView::hotSpot (FXint x, FXint y, FXbool down, F
 
 void TriangleView::dragResize (FXint x, FXint y)
 {
-	FXint dx = x - pivot_x_, dy = y - pivot_y_;
+//	FXint dx = x - pivot_x_, dy = y - pivot_y_;
 	if (distance(x, y, vertex_[0].x, vertex_[0].y) < MOUSE_SENSITIVITY * 2)
         return;
     switch (right_angle_) {

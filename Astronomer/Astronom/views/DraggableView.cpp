@@ -17,9 +17,9 @@ const FXint DraggableView::MOUSE_SENSITIVITY = 8;
 DraggableView::DraggableView(FXComposite* p, FXint x, FXint y, FXint w, FXint h)
 : FXCanvas(p, NULL, 0, LAYOUT_EXPLICIT, x, y, w, h)
 , mouse_flag_(HS_NONE)
+, is_locked_(true)
 , pivot_x_(0)
 , pivot_y_(0)
-, is_locked_(true)
 {
 	drawColor=FXRGB(255,0,0);
 	setBackColor(FXRGBA(255,255,255, 0));

@@ -272,7 +272,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 //	ChartList* cl = (ChartList*)ptr;
 	Chart* chart = (Chart*)ptr;
 	FXString label_text;
-	double radius = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
+//	double radius = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
 	for (Chart::BodyPropsMap::const_iterator it = chart->bodies_.begin(); it != chart->bodies_.end(); ++it) {
 		AstroLabel* label = labels_.find_by_chart_id(chart->id_, (*it).first);
 		bool need_insert = !label;
@@ -321,7 +321,7 @@ void OcularView::spreadLabels (int chart, int type, double r)
 	cspread.spread(output, delta_ang, 360);
 
     BOOST_FOREACH (SpreadValue& sv, output) {
-		FXTRACE((99, "output %d->%.02f\n", sv.ptr_, sv.val_));
+		FXTRACE((99, "output %d->%.02f\n", (int)sv.ptr_, sv.val_));
 		AstroLabel* label = static_cast<AstroLabel*>(sv.ptr_);
 		label->setVisibleAngle(sv.val_);
 	}
@@ -351,10 +351,10 @@ long OcularView::onMouseMove(FXObject* o, FXSelector sel, void* ptr)
        	FXDCWindow dc(this);
        	dc.setBackground(getBackColor());
         if (old_cur) {
-			FXEvent ev;
-			ev.rect = old_cur->getRect();
+			FXEvent ev1;
+			ev1.rect = old_cur->getRect();
             old_cur->handle(this, FXSEL(SEL_COMMAND, AstroLabel::ID_SELECT), (void*)0); // unset selection
-			handle(this, FXSEL(SEL_PAINT, 0), (void*)&ev); // repaint background
+			handle(this, FXSEL(SEL_PAINT, 0), (void*)&ev1); // repaint background
         }
         if (cur_label_) {
             cur_label_->handle(this, FXSEL(SEL_COMMAND, AstroLabel::ID_SELECT), (void*)1);

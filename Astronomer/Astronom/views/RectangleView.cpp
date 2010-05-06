@@ -78,7 +78,7 @@ DraggableView::hotspot_t RectangleView::hotSpot (FXint x, FXint y, FXbool down, 
 
 void RectangleView::dragResize (FXint x, FXint y)
 {
-	FXint dx = x - pivot_x_, dy = y - pivot_y_;
+	FXint dx = x - pivot_x_;//, dy = y - pivot_y_;
 	FXint xx = getX(), yy = getY();
 	FXint ww = (side_flag_ & SIDEFLAG_VERTICAL) ? x : getWidth();
 	FXint hh = (side_flag_ & SIDEFLAG_HORIZONTAL) ? y : getHeight();

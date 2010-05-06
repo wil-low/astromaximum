@@ -30,8 +30,8 @@ protected:
 		HS_RESIZE
 	};
 	virtual hotspot_t hotSpot (FXint x, FXint y, FXbool down, FXDefaultCursor& cursor);
-	virtual void dragResize (FXint x, FXint y) {}
-	virtual void dragMove (FXint x, FXint y) {}
+	virtual void dragResize (FXint /*x*/, FXint /*y*/) {}
+	virtual void dragMove (FXint /*x*/, FXint /*y*/) {}
 
 	hotspot_t mouse_flag_;                  // Mouse flag
 	FXbool is_locked_;

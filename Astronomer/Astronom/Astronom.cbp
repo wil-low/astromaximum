@@ -69,6 +69,8 @@
 		<Unit filename="TimeLoc.cpp" />
 		<Unit filename="TimeLoc.h" />
 		<Unit filename="constants.h" />
+		<Unit filename="db/DbCommand.cpp" />
+		<Unit filename="db/DbCommand.h" />
 		<Unit filename="forms/Chrono.cpp" />
 		<Unit filename="forms/Chrono.h" />
 		<Unit filename="forms/GlyphManager.cpp" />

@@ -24,8 +24,8 @@ FXIMPLEMENT(Astronom, FXApp, AstronomMessageMap, ARRAYNUMBER(AstronomMessageMap)
 
 Astronom::Astronom(const FXString& name, const FXString& vendor)
 : FXApp (name, vendor)
-, fMain(NULL)
 , fGlyphManager(NULL)
+, fMain(NULL)
 , tooltip_(NULL)
 {
 	setTranslator(new Localizer(this));
@@ -58,7 +58,7 @@ Astronom::~Astronom()
 
 long Astronom::onCmdInputData(FXObject*, FXSelector, void*)
 {
-	fInputData->show();
+	fInputData->handle(this, FXSEL(SEL_COMMAND, FXWindow::ID_SHOW), NULL);
 	fInputData->execute(PLACEMENT_SCREEN);
 	return 1;
 }

@@ -38,8 +38,8 @@ public:
 	void setId(int id, const FXString& text);
 	void setChartId(int id);
 	void setFont(FXFont* font);
-	virtual void setVisibleAngle(double ang) {};
-	virtual void setAngle(double ang) {};
+	virtual void setVisibleAngle(double /*ang*/) {};
+	virtual void setAngle(double /*ang*/) {};
 
     bool contains(FXint x, FXint y);
 	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);

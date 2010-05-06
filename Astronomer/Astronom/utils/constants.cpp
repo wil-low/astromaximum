@@ -1,3 +1,5 @@
+#include "constants.h"
+
 void normAngle(double &a)
 {
   while (a < 0)

@@ -86,7 +86,7 @@ long MainForm::onCmdLock(FXObject*, FXSelector, void* ptr)
 {
     FXWindow* child = canvasFrame->getFirst();
     while (child) {
-        FXTRACE((10, "onCmdLock-child %X\n", child));
+        FXTRACE((10, "onCmdLock-child %X\n", (int)child));
         child->handle(child, FXSEL(SEL_COMMAND, DraggableView::ID_LOCK), ptr);
         child = child->getNext();
     }
@@ -95,6 +95,7 @@ long MainForm::onCmdLock(FXObject*, FXSelector, void* ptr)
 
 long MainForm::onAddView(FXObject*, FXSelector, void*)
 {
+
 	static int counter = 0;
 	DraggableView* dv = NULL;
 //	dv = new TriangleView(canvasFrame, 100, 35, 100, 100, (right_angle_t)(counter % 4));

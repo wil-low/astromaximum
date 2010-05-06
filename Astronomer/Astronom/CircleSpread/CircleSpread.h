@@ -15,7 +15,7 @@ class ClusterItem
 {
 public:
 	ClusterItem (const SpreadValue& input);
-	void merge(ClusterItem* rhs, double delta);
+	void merge(ClusterItem* rhs);
 	void sparce(double delta, double circle_limit);
 	void print() const;
     double center_;

@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <fxdefs.h>
 
+bool less_input (const SpreadValue& v1, const SpreadValue& v2);
+double normalize(double val, double circle_limit);
+
 bool less_input (const SpreadValue& v1, const SpreadValue& v2)
 {
 	return v1.val_ < v2.val_;
@@ -25,7 +28,7 @@ ClusterItem::ClusterItem (const SpreadValue& input)
 	delta_list_.push_back(input.ptr_);
 }
 
-void ClusterItem::merge(ClusterItem* rhs, double delta)
+void ClusterItem::merge(ClusterItem* rhs)
 {
 	finish_orig_ = rhs->finish_orig_;
 	for (Iter it = rhs->delta_list_.begin(); it != rhs->delta_list_.end(); ++it) {
@@ -56,7 +59,7 @@ void ClusterItem::print() const
 {
 	FXTRACE((99, "start %.2f, finish %.2f, orig start %.2f, finish %.2f; ", start_, finish_, start_orig_, finish_orig_));
 	for (ConstIter it = delta_list_.begin(); it != delta_list_.end(); ++it) {
-		FXTRACE((99, "%d ", *it));
+		FXTRACE((99, "%d ", (int)(*it)));
 	}
 }
 
@@ -72,7 +75,7 @@ CircleSpread::CircleSpread(const std::vector<SpreadValue>& input)
 	FXTRACE((99, "Sorted input:\n"));
 	for (size_t i = 0; i < sorted.size(); ++i) {
 		append(sorted[i]);
-		FXTRACE((99, "  %d -> %.2f\n", sorted[i].ptr_, sorted[i].val_));
+		FXTRACE((99, "  %d -> %.2f\n", (int)sorted[i].ptr_, sorted[i].val_));
 	}
 	FXTRACE((99, "\n"));
 }
@@ -121,7 +124,7 @@ bool CircleSpread::spread(std::vector<SpreadValue>& output, double delta, double
 				break;
 			double cdelta = circular_delta(cur, tmp);
 			if (cdelta < delta_) {
-				cur->merge(cur->next(), cdelta);
+				cur->merge(cur->next());
 				cur->sparce(delta_, circle_limit_);
 				if (tmp == head_) {
 					head_ = tmp->next();
@@ -140,7 +143,6 @@ bool CircleSpread::spread(std::vector<SpreadValue>& output, double delta, double
 
 	ClusterItem* ptr = head_;
 	for (size_t i = 0; i < size_; ++i) {
-		ClusterItem* tmp = ptr;
 		ptr = ptr->next();
 		double start = ptr->start_;
 		for (ClusterItem::ConstIter it = ptr->delta_list_.begin(); it != ptr->delta_list_.end(); ++it) {
