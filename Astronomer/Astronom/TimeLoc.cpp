@@ -9,8 +9,8 @@ const char *FMT_DATE[] = {
 };
 
 const char FMT_TIME[] = "%02d:%02d:%02d";
-const char FMT_LAT[]  = "%02d %02d'%c";
-const char FMT_LON[]  = "%03d %02d'%c";
+const char FMT_LAT[]  = "%02d°%02d'%c";
+const char FMT_LON[]  = "%03d°%02d'%c";
 const char FMT_TZ[]   = "%c%02d:%02d";
 
 const char sep = ';';
@@ -178,7 +178,7 @@ void TimeLoc::set (timeloc_t idx, const FX::FXString& text, bool recalculate)
 		}
 		case TL_TZ:
 		{
-			int hour,min; 
+			int hour,min;
 			char c;
 			if (text.scan(FMT_TZ, &c, &hour, &min) == 3) {
 				res = (hour + min / 60.L) / 24.L;
@@ -196,12 +196,12 @@ void TimeLoc::set (timeloc_t idx, const FX::FXString& text, bool recalculate)
 
 void TimeLoc::serialize(FXString& output)
 {
-	output = 
-		name_ + sep + 
-		getStr(TL_DATE) + sep + 
-		getStr(TL_TIME) + sep + 
+	output =
+		name_ + sep +
+		getStr(TL_DATE) + sep +
+		getStr(TL_TIME) + sep +
 		getStr(TL_TZ) + sep +
-		location_ + sep + 
+		location_ + sep +
 		getStr(TL_LAT) + sep +
 		getStr(TL_LON) + sep;
 }

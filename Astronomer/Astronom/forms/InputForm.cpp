@@ -89,7 +89,7 @@ InputForm::~InputForm(void)
 void InputForm::create()
 {
 	FXDialogBox::create();
-	clipDragType_ = getApp()->registerDragType("text/plain");
+	clipDragType_ = getApp()->registerDragType("UTF8_STRING");
 }
 
 void InputForm::init()
@@ -187,6 +187,7 @@ long InputForm::onClipboardRequest(FXObject* o, FXSelector sel, void* ptr)
 	if (FXDialogBox::onClipboardRequest (o, sel, ptr))
 		return 1;
 	FXDragType dtype = ((FXEvent*)ptr)->target;
+	FXString name = getApp()->getDragTypeName(dtype);
 	// See if we can deal with this type ourselves
 	if (dtype == clipDragType_){
 		FXuchar *data;
@@ -199,6 +200,7 @@ long InputForm::onClipboardRequest(FXObject* o, FXSelector sel, void* ptr)
 		// Return 1 because it was handled here
 		return 1;
 	}
+	FXTRACE((10, "%s: unknown DragTypeName '%s'\n", __FUNCTION__, name.text()));
 	// Return 0 to signify we haven't dealt with it yet; a derived
 	// class from InputForm may yet give it another try ...
 	return 0;
