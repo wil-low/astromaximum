@@ -68,7 +68,8 @@
 		<Unit filename="Localizer.h" />
 		<Unit filename="TimeLoc.cpp" />
 		<Unit filename="TimeLoc.h" />
-		<Unit filename="constants.h" />
+		<Unit filename="db/AtlasDbCmd.cpp" />
+		<Unit filename="db/AtlasDbCmd.h" />
 		<Unit filename="db/DbCommand.cpp" />
 		<Unit filename="db/DbCommand.h" />
 		<Unit filename="forms/Chrono.cpp" />
@@ -92,7 +93,6 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="models/BaseModel.cpp" />
 		<Unit filename="models/BaseModel.h" />
-		<Unit filename="models/OcularDefs.h" />
 		<Unit filename="models/OcularModel.cpp" />
 		<Unit filename="models/OcularModel.h" />
 		<Unit filename="utils/OcularDefs.h" />

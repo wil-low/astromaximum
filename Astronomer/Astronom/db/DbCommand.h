@@ -9,6 +9,7 @@ struct sqlite3_stmt;
 class DbCommand
 {
 public:
+    DbCommand(sqlite3 *db);
     DbCommand(sqlite3 *db, const FXString& sql);
     virtual ~DbCommand();
 protected:
