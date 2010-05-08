@@ -2,7 +2,6 @@
 #include <fx.h>
 #include <map>
 
-class Ephemeris;
 class MainForm;
 class InputForm;
 class PersonsForm;
@@ -41,11 +40,12 @@ public:
 	long onCmdIncHour(FXObject*, FXSelector, void*);
 	long onCmdClose(FXObject*, FXSelector, void*);
 	long onQueryTip(FXObject*, FXSelector, void*);
+
+	long onCmdInputAccept(FXObject*, FXSelector, void*);
 private:
 	void clearFonts();
 	void loadFont(const FXString& face);
 
-	Ephemeris* ephemeris;
 	MainForm* fMain;
 	InputForm* fInputData;
 	PersonsForm* fPersons;

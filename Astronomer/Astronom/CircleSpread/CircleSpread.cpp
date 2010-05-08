@@ -110,6 +110,8 @@ void CircleSpread::append (const SpreadValue& input)
 
 bool CircleSpread::spread(std::vector<SpreadValue>& output, double delta, double circle_limit)
 {
+	if (head_ == NULL)
+		return false;
 	circle_limit_ = circle_limit;
 	delta_ = delta;
 	ClusterItem* cur = head_;

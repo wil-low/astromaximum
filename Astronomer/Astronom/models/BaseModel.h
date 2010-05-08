@@ -1,14 +1,16 @@
 #pragma once
 class DraggableView;
-class Ephemeris;
+#include "../TimeLoc.h"
 
 class BaseModel
 {
 public:
-	BaseModel(Ephemeris* ephemeris);
+	BaseModel();
 	virtual ~BaseModel();
 	virtual void setView(DraggableView*) = 0;
+	virtual void setData() {};
+	virtual void setData(const TimeLoc*) = 0;
 protected:
-	Ephemeris* ephemeris_;
 	DraggableView* view_;
+	TimeLoc timeloc_;
 };

@@ -31,6 +31,7 @@ OcularView::OcularView(FXComposite* p, FXint x, FXint y, FXint r)
 , zero_point_(ZERO_ARIES)
 , zero_angle_(180)
 , cur_label_(NULL)
+, is_resizing_(false)
 {
 	popup_ = new FXPopup(this);
     FXMenuCommand* cmd = new FXMenuCommand(popup_, "Press 10\"12'");
@@ -76,13 +77,14 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 		drawCircle(dc, dimensions_.ascArrowR * r);
 	}
 	if (dimensions_.zodiacOuterR != 0) {
-		dc.setForeground(colors_.mainLineColor);
-		ang = zero_angle_;
-		delta_ang = DEG_PER_SIGN;
-		dc.setForeground(colors_.fillColor);
-		for (int sign = 0; sign < 6; ++sign) {
-			fillArc(dc, dimensions_.zodiacOuterR * r, ang + delta_ang, delta_ang);
-			ang += delta_ang * 2;
+		if (!is_resizing_) {
+			ang = zero_angle_;
+			delta_ang = DEG_PER_SIGN;
+			dc.setForeground(colors_.fillColor);
+			for (int sign = 0; sign < 6; ++sign) {
+				fillArc(dc, dimensions_.zodiacOuterR * r, ang + delta_ang, delta_ang);
+				ang += delta_ang * 2;
+			}
 		}
 		dc.setForeground(colors_.contourColor);
 		drawCircle(dc, dimensions_.zodiacOuterR * r);
@@ -113,10 +115,10 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 	*/
 
 	drawCircle(dc, 5);
-
+	// cuspid line
 	dc.setForeground(colors_.arrowColor);
 	FXPoint pt[2];
-	pt[0] = getCenter();
+	pt[0] = getXYdeg(zero_angle_, dimensions_.zodiacInnerR * r);
 	pt[1] = getXYdeg(zero_angle_, radius_);
 	dc.drawLines(pt, 2);
 
@@ -178,6 +180,7 @@ long OcularView::onConfigure(FXObject* o, FXSelector sel, void* ptr)
     WheelView::onConfigure(o, sel, ptr);
     dimensions_.radius = radius_;
 	reorderLabels();
+	is_resizing_ = false;
 	return 0;
 }
 
@@ -424,4 +427,10 @@ void OcularView::drawPlanetLines(FXDC& dc)
 			dc.drawLines(pt, 2);
 		}
 	}
+}
+
+void OcularView::dragResize (FXint x, FXint y)
+{
+//	is_resizing_ = true;
+	WheelView::dragResize (x, y);
 }

@@ -4,9 +4,7 @@
 #include "../Chart.h"
 #include "../utils/constants.h"
 
-OcularModel::OcularModel(Ephemeris* ephemeris)
-: BaseModel(ephemeris)
-, day_(1)
+OcularModel::OcularModel()
 {
 }
 
@@ -48,19 +46,17 @@ void OcularModel::setView(DraggableView* view)
 	ocolors.aspectTickColor = FXRGB(0,0,0);
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_SET_OCULAR_COLOR), (void*)&ocolors);
 
-	TimeLoc time_loc;
-	time_loc.jday_ = ephemeris_->julday (2010, 4, day_, 12, 0, 0);
-	time_loc.latitude_ = 45;
-	time_loc.longitude_ = 34;
-	time_loc.elevation_ = 0;
+}
 
+void OcularModel::setData ()
+{
 	int bodies[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	Chart chart;
 	chart.id_ = 0;
-	chart.time_loc_ = time_loc;
+	chart.time_loc_ = timeloc_;
 	BodyProps props;
 	for (int i =  0; i < ARRAYNUMBER(bodies); ++i) {
-		ephemeris_->calc_body (props, bodies[i], 0, time_loc);
+		Ephemeris::calc_body (props, bodies[i], 0, timeloc_);
 		chart.bodies_[bodies[i]] = props;
 	}
 /*
@@ -101,8 +97,9 @@ void OcularModel::setView(DraggableView* view)
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_UPDATE_CHART), (void*)&chart);
 }
 
-void OcularModel::incHour()
+void OcularModel::setData (const TimeLoc* tl)
 {
-	++day_;
-	setView(view_);
+	timeloc_ = *tl;
+	setData();
 }
+

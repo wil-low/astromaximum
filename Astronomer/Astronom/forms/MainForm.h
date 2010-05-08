@@ -18,6 +18,7 @@ public:
 	// MainForm's constructor
 	MainForm(FXApp* a);
 	virtual void create();
+	void init();
 	virtual ~MainForm();
 
 

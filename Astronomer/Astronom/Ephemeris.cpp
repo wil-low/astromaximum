@@ -20,27 +20,59 @@
 
 #include <swephexp.h>
 #include <fxdefs.h>
+#include <time.h>
 
-Ephemeris::Ephemeris(char* path)
+namespace Ephemeris
+{
+
+void init(char* path)
 {
 	swe_set_ephe_path(path);
 }
 
-Ephemeris::~Ephemeris()
+void fini()
 {
 	swe_close();
 }
 
-double Ephemeris::julday (int y, int m, int d, int h, int min, int s, int gregflag)
+double now ()
 {
-	return swe_julday (y, m, d, h + min / 60 + s / 3600, gregflag);
+#ifndef WIN32
+	struct tm *t;
+	time_t ltime;
+	time(&ltime);
+	t=gmtime(&ltime);
+	return Ephemeris::julday (t->tm_year+1900, t->tm_mon+1, t->tm_mday, 
+		t->tm_hour, t->tm_min, t->tm_sec);
+#else
+	SYSTEMTIME t;
+	GetSystemTime(&t);
+	return Ephemeris::julday (t.wYear, t.wMonth, t.wDay, 
+		t.wHour, t.wMinute, t.wSecond);
+#endif
 }
 
-long Ephemeris::calc_body (BodyProps& props, int body, long flags, const TimeLoc& time_loc)
+double julday (int y, int m, int d, int h, int min, int s, int gregflag)
+{
+	return swe_julday (y, m, d, h + min / 60. + s / 3600., gregflag);
+}
+
+void revjul (double julday, int *y, int *m, int *d, int *h, int *min, int *s, int gregflag)
+{
+	double hour, minutes;
+	swe_revjul(julday, gregflag, y, m, d, &hour);
+	*h = hour;
+	minutes = (hour - *h) * 60;
+	*min = minutes;
+	*s = (minutes - *min) * 60;
+}
+
+long calc_body (BodyProps& props, int body, long flags, const TimeLoc& time_loc)
 {
 	char serr[256] = "";
-	long result = swe_calc_ut (time_loc.jday_, body, flags, props.prop, serr);
+	long result = swe_calc_ut (time_loc.get(TL_DATE), body, flags, props.prop, serr);
 	if (result < 0 || serr[0] != 0)
 		FXTRACE((10, "%s: %s\n", __FUNCTION__, serr));
 	return result;
+}
 }

@@ -5,11 +5,11 @@
 class OcularModel : BaseModel
 {
 public:
-	OcularModel(Ephemeris* ephemeris);
+	OcularModel();
 	virtual ~OcularModel();
-	void setView(DraggableView*);
-	void incHour();
+	virtual void setView(DraggableView*);
+	virtual void setData();
+	virtual void setData(const TimeLoc*);
 private:
 	OcularDimensions dimensions_;
-	int day_;
 };

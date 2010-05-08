@@ -79,6 +79,10 @@ void MainForm::create()
 	// Create the windows
 	FXMainWindow::create();
 	filemenu->create();
+}
+
+void MainForm::init()
+{
 	onAddView(0, 0, 0);
 }
 

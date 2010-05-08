@@ -37,6 +37,7 @@ public:
 	void fillCircle (FXDC& dc, int radius);
 protected:
 	OcularView(){}
+	virtual void dragResize (FXint x, FXint y);
 private:
 	typedef std::vector<AstroLabel*> AstroLabelVector;
 
@@ -55,4 +56,5 @@ private:
 	AstroLabelContainer labels_;
 	AstroLabel* cur_label_;
     FXPopup* popup_;
+	bool is_resizing_;
 };

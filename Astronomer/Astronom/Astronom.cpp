@@ -17,6 +17,8 @@ FXDEFMAP(Astronom) AstronomMessageMap[]={
 	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_GLYPH,     Astronom::onCmdGlyph),
 	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_CHRONO,    Astronom::onCmdToggleChrono),
 	FXMAPFUNC(SEL_COMMAND,           Astronom::ID_INC_HOUR,  Astronom::onCmdIncHour),
+
+	FXMAPFUNC(SEL_COMMAND,           InputForm::ID_INPUT_ACCEPT, Astronom::onCmdInputAccept),
 	FXMAPTYPE(SEL_CLOSE,             Astronom::onCmdClose),
 };
 
@@ -30,9 +32,9 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
 {
 	setTranslator(new Localizer(this));
 	char ephe_path[256] = "rerye";
-	ephemeris = new Ephemeris (ephe_path);
+	Ephemeris::init (ephe_path);
 	tooltip_ = new FXToolTip(this);
-	mOcular = new OcularModel(ephemeris);
+	mOcular = new OcularModel();
 	fGlyphManager = new GlyphManager(this);
 	fMain = new MainForm(this);
 	fInputData = new InputForm(fMain);
@@ -44,6 +46,8 @@ void Astronom::create()
 {
 	loadFont("Astronom");
 	FXApp::create();
+	fInputData->init();
+	fMain->init();
 	fMain->show();
 	fMain->maximize();
 //	popup_->show();
@@ -53,7 +57,7 @@ Astronom::~Astronom()
 {
 	delete mOcular;
 	clearFonts();
-	delete ephemeris;
+	Ephemeris::fini();
 }
 
 long Astronom::onCmdInputData(FXObject*, FXSelector, void*)
@@ -87,7 +91,7 @@ long Astronom::onCmdToggleChrono(FXObject*, FXSelector, void*)
 
 long Astronom::onCmdIncHour(FXObject*, FXSelector, void*)
 {
-	mOcular->incHour();
+//	mOcular->incHour();
 	return 1;
 }
 
@@ -111,6 +115,8 @@ long Astronom::onCmdClose(FXObject* o, FXSelector, void*)
 void Astronom::setOcular(DraggableView* dv)
 {
 	mOcular->setView(dv);
+	fInputData->onCmdAccept(0, 0, 0);
+	mOcular->setData();
 }
 
 FXFont* Astronom::getAstroFont (int size)
@@ -143,4 +149,10 @@ void Astronom::loadFont(const FXString& face)
 			astrofont_map_[FONT_SIZES[i]] = fnt;
 		}
 	}
+}
+
+long Astronom::onCmdInputAccept(FXObject*, FXSelector, void* ptr)
+{
+	mOcular->setData((const TimeLoc*) ptr);
+	return 1;
 }

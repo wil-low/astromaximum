@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(FOX_HOME)\include&quot;;&quot;$(SQLITE_HOME)\include&quot;;&quot;$(SWISS_INCDIR)&quot;;&quot;$(BOOST_HOME)&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;UNICODE;FOXDLL;USE_DLL"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;UNICODE;FOXDLL;USE_DLL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -120,7 +120,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="$(FOX_HOME)\include;$(SQLITE_HOME)\include;$(SWISS_INCDIR);&quot;$(BOOST_HOME)&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;FOXDLL;USE_DLL"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;FOXDLL;USE_DLL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -413,6 +413,26 @@
 			</File>
 			<File
 				RelativePath=".\utils\OcularDefs.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="db"
+			>
+			<File
+				RelativePath=".\db\AtlasDbCmd.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\db\AtlasDbCmd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\db\DbCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\db\DbCommand.h"
 				>
 			</File>
 		</Filter>
