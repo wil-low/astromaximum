@@ -55,7 +55,7 @@ private:
     FXList *lAtlasCountry_, *lAtlasState_, *lAtlasCity_;
     FXTextField *tfName_;
     FXComboBox* cbLoc_;
-    MaskedTextField *mtfDate_, *mtfTime_, *mtfLon_, *mtfLat_, *mtfTzDiff_;
+    FXTextField *mtfDate_, *mtfTime_, *mtfLon_, *mtfLat_, *mtfTzDiff_;
 	void saveData(bool recalculate);
 	void restoreData();
 	void makeTimeLoc ();

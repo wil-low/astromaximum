@@ -1,7 +1,7 @@
 #include "InputForm.h"
 #include "../Astronom.h"
 #include "../Ephemeris.h"
-#include "../widgets/MaskedTextField.h"
+//#include "../widgets/MaskedTextField.h"
 
 FXDEFMAP(InputForm) InputFormMessageMap[]={
 
@@ -36,23 +36,23 @@ InputForm::InputForm(FXWindow* wo)
 		tfName_ = new FXTextField(matrix, 30, NULL, ID_NAME);
 		{
 		FXHorizontalFrame* hframe=new FXHorizontalFrame(matrix,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-			mtfDate_ = new MaskedTextField(hframe, 10, NULL, ID_NAME, TEXTFIELD_NORMAL);
-			mtfDate_->setMask("^\\d{,4}/\\d{,2}/\\d{,2}$");
+			mtfDate_ = new FXTextField(hframe, 10, NULL, ID_NAME, TEXTFIELD_NORMAL);
+//			mtfDate_->setMask("^\\d{,4}/\\d{,2}/\\d{,2}$");
 			FXComboBox* cbEra = new FXComboBox(hframe, 1, NULL, ID_ERA, TEXTFIELD_NORMAL|COMBOBOX_STATIC);
 			cbEra->fillItems("AC\nBC");
 			cbEra->disable();
-            mtfTime_ = new MaskedTextField(hframe, 8, NULL, ID_TIME, TEXTFIELD_NORMAL);
-			mtfTime_->setMask("^\\d{,2}\\:\\d{,2}\\:\\d{,4}$");
+            mtfTime_ = new FXTextField(hframe, 8, NULL, ID_TIME, TEXTFIELD_NORMAL);
+//			mtfTime_->setMask("^\\d{,2}\\:\\d{,2}\\:\\d{,4}$");
 		}
 		cbLoc_ = new FXComboBox(matrix, 1, NULL, ID_LOCATION, TEXTFIELD_NORMAL|LAYOUT_FILL_X);
 		{
 		FXHorizontalFrame* hframe=new FXHorizontalFrame(matrix,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-			mtfLon_ = new MaskedTextField(hframe, 8, NULL, ID_LON, TEXTFIELD_NORMAL);
-			mtfLon_->setMask("^\\d{,3} \\d{,2}'[EW]$");
-			mtfLat_ = new MaskedTextField(hframe, 7, NULL, ID_LAT, TEXTFIELD_NORMAL);
-			mtfLat_->setMask("^\\d{,2} \\d{,2}'[NS]$");
-			mtfTzDiff_ = new MaskedTextField(hframe, 6, NULL, ID_TZDIFF, TEXTFIELD_NORMAL|LAYOUT_FILL_X);
-			mtfTzDiff_->setMask("^[\\+\\-]?\\d{,2}:\\d{,2}$");
+			mtfLon_ = new FXTextField(hframe, 8, NULL, ID_LON, TEXTFIELD_NORMAL);
+//			mtfLon_->setMask("^\\d{,3} \\d{,2}'[EW]$");
+			mtfLat_ = new FXTextField(hframe, 7, NULL, ID_LAT, TEXTFIELD_NORMAL);
+//			mtfLat_->setMask("^\\d{,2} \\d{,2}'[NS]$");
+			mtfTzDiff_ = new FXTextField(hframe, 6, NULL, ID_TZDIFF, TEXTFIELD_NORMAL|LAYOUT_FILL_X);
+//			mtfTzDiff_->setMask("^[\\+\\-]?\\d{,2}:\\d{,2}$");
 		}
 
 		{
@@ -125,6 +125,7 @@ long InputForm::onCmdAccept(FXObject* o, FXSelector sel, void* ptr)
 {
 	saveData(true);
 	TimeLoc tl(timeloc_);
+	FXTRACE((10, "%.2f %.2f\n", tl.get(TL_DATE), tl.get(TL_TIME)));
 	getApp()->handle (this, FXSEL(SEL_COMMAND, ID_INPUT_ACCEPT), &tl);
 	return FXDialogBox::onCmdAccept(o, sel, ptr);
 }
@@ -155,9 +156,8 @@ void InputForm::saveData (bool recalculate)
 void InputForm::restoreData ()
 {
     tfName_->setText(timeloc_.getName());
-	FXString datetime = timeloc_.getStr(TL_DATE);
-	mtfDate_->setText(datetime.section(' ', 0));
-    mtfTime_->setText(datetime.section(' ', 1));
+	mtfDate_->setText(timeloc_.getStr(TL_DATE));
+    mtfTime_->setText(timeloc_.getStr(TL_TIME));
 //    cbLoc_->setText(str_data[3]);
     mtfLat_->setText(timeloc_.getStr(TL_LAT));
     mtfLon_->setText(timeloc_.getStr(TL_LON));
@@ -172,7 +172,16 @@ long InputForm::onCmdCopy(FXObject* o, FXSelector sel, void* ptr)
 
 long InputForm::onCmdPaste(FXObject* o, FXSelector sel, void* ptr)
 {
-	return 1;
+    FXuchar* data;
+    FXuint size;
+    if (getDNDData (FROM_CLIPBOARD, clipDragType_, data, size)) {
+        clipboardText_.assign((FXchar*)data, (FXint)size);
+        FXFREE (&data);
+        timeloc_.deserialize (clipboardText_);
+        restoreData();
+        return 1;
+    }
+	return 0;
 }
 
 long InputForm::onClipboardGained(FXObject* o, FXSelector sel, void* ptr)

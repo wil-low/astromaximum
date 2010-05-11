@@ -36,6 +36,7 @@ public:
 	void deserialize(const FXString& input);
 
 	static FXString formatDate (int y, int m, int d);
+	static int scanDate (const FXString &str, int *y, int *m, int *d);
 private:
 	double data_[TL_LAST];
 	FXString str_[TL_LAST];

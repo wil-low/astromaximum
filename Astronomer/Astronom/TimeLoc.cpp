@@ -46,6 +46,21 @@ FXString TimeLoc::formatDate (int y, int m, int d)
 	return res;
 }
 
+int TimeLoc::scanDate (const FXString &str, int *y, int *m, int *d)
+{
+	const char* p_fmt = FMT_DATE[date_fmt_];
+	char sep;
+	switch (date_fmt_) {
+		case DF_YMD:
+			return str.scan(p_fmt, y, &sep, m, &sep, d);
+		case DF_DMY:
+			return str.scan(p_fmt, d, &sep, m, &sep, y);
+		case DF_MDY:
+			return str.scan(p_fmt, m, &sep, d, &sep, y);
+	}
+	return 0;
+}
+
 const FXString& TimeLoc::getName () const
 {
 	return name_;
@@ -125,10 +140,10 @@ void TimeLoc::setLocation (const FX::FXString& text)
 
 void TimeLoc::set (timeloc_t idx, double val)
 {
-	if (idx == TL_TIME) {
-		data_[idx] = val;
-		str_[idx].clear();
-		idx = TL_DATE;
+	if ((idx == TL_DATE) || (idx == TL_TIME)) {
+		data_[TL_DATE] = data_[TL_TIME] = val;
+		str_[TL_DATE] = str_[TL_TIME] = "";
+		return;
 	}
 	data_[idx] = val;
 	str_[idx].clear();
@@ -147,9 +162,14 @@ void TimeLoc::set (timeloc_t idx, const FX::FXString& text, bool recalculate)
 		{
 			// format is "2010/05/08 16:50:12"
 			int y = 0, m = 0, d = 0, h = 0, min = 0, s = 0;
-			if (text.scan (FMT_DATE[date_fmt_], &y, &m, &d, &h, &min, &s) >= 3) {// time optional?
-				data_[idx] = Ephemeris::julday (y, m, d, h, min, s);
-				str_[idx] = text;
+			FXString date = text.section(' ', 0);
+			FXString time = text.section(' ', 1);
+
+			if (scanDate (date, &y, &m, &d) == 5 &&
+                time.scan (FMT_TIME, &h, &min, &s) == 3) {
+                    data_[TL_DATE] = data_[TL_TIME] = Ephemeris::julday (y, m, d, h, min, s);
+                    str_[TL_DATE] = date;
+                    str_[TL_TIME] = time;
 			}
 		}
 		break;
@@ -164,7 +184,7 @@ void TimeLoc::set (timeloc_t idx, const FX::FXString& text, bool recalculate)
 				str_[idx] = text;
 			}
 		}
-
+		break;
 		case TL_LON:
 		{
 			char c; int d, m;
@@ -176,6 +196,7 @@ void TimeLoc::set (timeloc_t idx, const FX::FXString& text, bool recalculate)
 				str_[idx] = text;
 			}
 		}
+		break;
 		case TL_TZ:
 		{
 			int hour,min;
@@ -188,6 +209,7 @@ void TimeLoc::set (timeloc_t idx, const FX::FXString& text, bool recalculate)
 				str_[idx] = text;
 			}
 		}
+		break;
 	}
 	if (str_[idx].empty()) {
 		FXTRACE((10, "%s: Cannot set item %d to '%s'\n", __FUNCTION__, idx, text.text()));
