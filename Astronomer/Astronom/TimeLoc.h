@@ -34,6 +34,7 @@ public:
 
 	void serialize(FXString& output);
 	void deserialize(const FXString& input);
+	void asTitle(FXString& output);
 
 	static FXString formatDate (int y, int m, int d);
 	static int scanDate (const FXString &str, int *y, int *m, int *d);

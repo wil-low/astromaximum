@@ -239,3 +239,13 @@ void TimeLoc::deserialize(const FXString& input)
 	set(TL_LON, input.section(sep, 6), false);
 }
 
+void TimeLoc::asTitle(FXString& output)
+{
+    output = name_ + ": " +
+		getStr(TL_DATE) + " " +
+		getStr(TL_TIME) + " " +
+		getStr(TL_TZ) + ", " +
+		location_ + " " +
+		getStr(TL_LAT) + " " +
+		getStr(TL_LON);
+}

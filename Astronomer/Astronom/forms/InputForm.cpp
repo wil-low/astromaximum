@@ -127,6 +127,10 @@ long InputForm::onCmdAccept(FXObject* o, FXSelector sel, void* ptr)
 	TimeLoc tl(timeloc_);
 	FXTRACE((10, "%.2f %.2f\n", tl.get(TL_DATE), tl.get(TL_TIME)));
 	getApp()->handle (this, FXSEL(SEL_COMMAND, ID_INPUT_ACCEPT), &tl);
+	FXString title;
+	tl.asTitle(title);
+	title += " - " + getApp()->getAppName();
+	getOwner()->handle (this, FXSEL(SEL_COMMAND, ID_SETSTRINGVALUE), &title);
 	return FXDialogBox::onCmdAccept(o, sel, ptr);
 }
 
