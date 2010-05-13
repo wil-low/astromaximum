@@ -8,7 +8,7 @@ class Localizer : public FX::FXTranslator
 public:
     Localizer(FXApp* a);
     virtual ~Localizer() {};
-    void load_lang(const FXString& lang);
+    void load_lang(const FXString& lang_file);
     virtual const FXchar* tr(const FXchar* context,const FXchar* message,const FXchar* hint=NULL) const;
 private:
     Localizer(){}

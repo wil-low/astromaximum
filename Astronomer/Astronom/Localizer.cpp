@@ -7,10 +7,10 @@ Localizer::Localizer(FXApp* a)
 {
 }
 
-void Localizer::load_lang(const FXString& lang)
+void Localizer::load_lang(const FXString& lang_file)
 {
     settings_.clear();
-    settings_.parseFile(lang + ".lng", false);
+    settings_.parseFile(lang_file, false);
 }
 
 const FXchar* Localizer::tr(const FXchar* context,const FXchar* message,const FXchar* hint) const
