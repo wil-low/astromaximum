@@ -18,5 +18,4 @@ public:
 protected:
 	PersonsForm(){}
 private:
-//    FXList *lAtlasCountry_, *lAtlasState_, *lAtlasCity_;
 };
