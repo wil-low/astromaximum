@@ -20,9 +20,10 @@ enum date_fmt_t {
 class TimeLoc
 {
 public:
+	static void initRex(char date_sep);
 	TimeLoc();
 	virtual ~TimeLoc();
-	void set (timeloc_t idx, const FX::FXString& text, bool recalculate = true);
+	void set (timeloc_t idx, FX::FXString text, bool recalculate = true);
 	void set (timeloc_t idx, double val);
 	void setName (const FX::FXString& text);
 	void setLocation (const FX::FXString& text);
@@ -37,7 +38,10 @@ public:
 	void asTitle(FXString& output);
 
 	static FXString formatDate (int y, int m, int d);
-	static int scanDate (const FXString &str, int *y, int *m, int *d);
+	static int scan (timeloc_t idx, const FXString &str, int *out);
+
+	static FXString& toBackTick (FXString& str);
+	static FXString& fromBackTick (FXString& str);
 private:
 	double data_[TL_LAST];
 	FXString str_[TL_LAST];
@@ -46,6 +50,7 @@ private:
 
 	static date_fmt_t date_fmt_;
 	static char date_sep_;
+	static FXRex rex_[TL_LAST];
 };
 
 class BodyProps {

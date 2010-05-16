@@ -1,7 +1,11 @@
 #include "InputForm.h"
 #include "../Astronom.h"
 #include "../Ephemeris.h"
+#include "../utils/constants.h"
 //#include "../widgets/MaskedTextField.h"
+#include "FX88591Codec.h"
+#include "FXCP1252Codec.h"
+#include "FXUTF16Codec.h"
 
 FXDEFMAP(InputForm) InputFormMessageMap[]={
 
@@ -15,6 +19,7 @@ FXDEFMAP(InputForm) InputFormMessageMap[]={
 
 	FXMAPFUNC(SEL_COMMAND,           InputForm::ID_COPY,     InputForm::onCmdCopy),
 	FXMAPFUNC(SEL_COMMAND,           InputForm::ID_PASTE,    InputForm::onCmdPaste),
+	FXMAPFUNC(SEL_CLIPBOARD_LOST,    0,					     InputForm::onClipboardLost),
 	FXMAPFUNC(SEL_CLIPBOARD_GAINED,  0,					     InputForm::onClipboardGained),
 	FXMAPFUNC(SEL_CLIPBOARD_REQUEST, 0,					     InputForm::onClipboardRequest),
 };
@@ -47,11 +52,11 @@ InputForm::InputForm(FXWindow* wo)
 		cbLoc_ = new FXComboBox(matrix, 1, NULL, ID_LOCATION, TEXTFIELD_NORMAL|LAYOUT_FILL_X);
 		{
 		FXHorizontalFrame* hframe=new FXHorizontalFrame(matrix,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-			mtfLon_ = new FXTextField(hframe, 8, NULL, ID_LON, TEXTFIELD_NORMAL);
+			mtfLon_ = new FXTextField(hframe, 12, NULL, ID_LON, TEXTFIELD_NORMAL);
 //			mtfLon_->setMask("^\\d{,3} \\d{,2}'[EW]$");
-			mtfLat_ = new FXTextField(hframe, 7, NULL, ID_LAT, TEXTFIELD_NORMAL);
+			mtfLat_ = new FXTextField(hframe, 12, NULL, ID_LAT, TEXTFIELD_NORMAL);
 //			mtfLat_->setMask("^\\d{,2} \\d{,2}'[NS]$");
-			mtfTzDiff_ = new FXTextField(hframe, 6, NULL, ID_TZDIFF, TEXTFIELD_NORMAL|LAYOUT_FILL_X);
+			mtfTzDiff_ = new FXTextField(hframe, 12, NULL, ID_TZDIFF, TEXTFIELD_NORMAL|LAYOUT_FILL_X);
 //			mtfTzDiff_->setMask("^[\\+\\-]?\\d{,2}:\\d{,2}$");
 		}
 
@@ -89,17 +94,20 @@ InputForm::~InputForm(void)
 void InputForm::create()
 {
 	FXDialogBox::create();
-	clipDragType_ = getApp()->registerDragType("UTF8_STRING");
+
+	textType_ = getApp()->registerDragType(textTypeName);
+	utf8Type_ = getApp()->registerDragType(utf8TypeName);
+	utf16Type_ = getApp()->registerDragType(utf16TypeName);
 }
 
 void InputForm::init()
 {
-	timeloc_.setName("Noname");
+	timeloc_.setName(UNNAMED_DOC);
 	timeloc_.set(TL_DATE, Ephemeris::now ());
 	timeloc_.set(TL_LAT, 45);
 	timeloc_.set(TL_LON, 34);
 	timeloc_.set(TL_ELV, 0);
-	restoreData();
+	restoreData(timeloc_);
 
 	for (int i = 0; i < 20; ++i) {
         lAtlasCountry_->appendItem("country");
@@ -110,7 +118,7 @@ void InputForm::init()
 
 long InputForm::onCmdShow(FXObject* o, FXSelector sel, void* ptr)
 {
-	saveData(false);
+	saveData(true);
     FXDialogBox::onCmdShow(o, sel, ptr);
 	return 1;
 }
@@ -136,14 +144,14 @@ long InputForm::onCmdAccept(FXObject* o, FXSelector sel, void* ptr)
 
 long InputForm::onCmdCancel(FXObject* o, FXSelector sel, void* ptr)
 {
-	restoreData();
+	restoreData(timeloc_);
 	return FXDialogBox::onCmdCancel(o, sel, ptr);
 }
 
 long InputForm::onCmdNow(FXObject* o, FXSelector sel, void* ptr)
 {
 	timeloc_.set(TL_DATE, Ephemeris::now());
-	restoreData();
+	restoreData(timeloc_);
 	return 1;
 }
 
@@ -157,39 +165,80 @@ void InputForm::saveData (bool recalculate)
     timeloc_.set (TL_TZ, mtfTzDiff_->getText(), recalculate);
 }
 
-void InputForm::restoreData ()
+void InputForm::restoreData (TimeLoc& tl)
 {
-    tfName_->setText(timeloc_.getName());
-	mtfDate_->setText(timeloc_.getStr(TL_DATE));
-    mtfTime_->setText(timeloc_.getStr(TL_TIME));
+    tfName_->setText(tl.getName());
+	mtfDate_->setText(tl.getStr(TL_DATE));
+    mtfTime_->setText(tl.getStr(TL_TIME));
 //    cbLoc_->setText(str_data[3]);
-    mtfLat_->setText(timeloc_.getStr(TL_LAT));
-    mtfLon_->setText(timeloc_.getStr(TL_LON));
-    mtfTzDiff_->setText(timeloc_.getStr(TL_TZ));
+    mtfLat_->setText(tl.getStr(TL_LAT));
+    mtfLon_->setText(tl.getStr(TL_LON));
+    mtfTzDiff_->setText(tl.getStr(TL_TZ));
 }
 
 long InputForm::onCmdCopy(FXObject* o, FXSelector sel, void* ptr)
 {
-	acquireClipboard (&clipDragType_, 1);
+    FXDragType types[4];
+	types[0]=stringType;
+	types[1]=textType;
+	types[2]=utf8Type;
+	types[3]=utf16Type;
+    acquireClipboard(types,4);
 	return 1;
 }
 
 long InputForm::onCmdPaste(FXObject* o, FXSelector sel, void* ptr)
 {
-    FXuchar* data;
-    FXuint size;
-    if (getDNDData (FROM_CLIPBOARD, clipDragType_, data, size)) {
-        clipboardText_.assign((FXchar*)data, (FXint)size);
-        FXFREE (&data);
-        timeloc_.deserialize (clipboardText_);
-        restoreData();
-        return 1;
-    }
-	return 0;
+	FXString string;
+	do {
+		// First, try UTF-8
+		if(getDNDData(FROM_CLIPBOARD,utf8Type,string)){
+			FXTRACE((100,"Paste UTF8\n"));
+#ifdef WIN32
+			dosToUnix(string);
+#endif
+			break;
+		}
+
+		// Next, try UTF-16
+		if(getDNDData(FROM_CLIPBOARD,utf16Type,string)){
+			FXUTF16LECodec unicode;           // FIXME maybe other endianness for unix
+			FXTRACE((100,"Paste UTF16\n"));
+			string=unicode.mb2utf(string);
+#ifdef WIN32
+			dosToUnix(string);
+#endif
+			break;
+		}
+
+		// Next, try good old Latin-1
+		if(getDNDData(FROM_CLIPBOARD,stringType,string)){
+			FX88591Codec ascii;
+			FXTRACE((100,"Paste ASCII\n"));
+			string=ascii.mb2utf(string);
+#ifdef WIN32
+			dosToUnix(string);
+#endif
+			break;
+		}
+		getApp()->beep();
+		return 0;
+	} while (false);
+	TimeLoc tl;
+	tl.deserialize (string);
+	restoreData(tl);
+	return 1;
+}
+
+long InputForm::onClipboardLost(FXObject* o, FXSelector sel, void* ptr)
+{
+	FXTRACE((10, "%s for %s\n", __FUNCTION__, o->getClassName()));
+	return 1;
 }
 
 long InputForm::onClipboardGained(FXObject* o, FXSelector sel, void* ptr)
 {
+	FXTRACE((10, "%s for %s\n", __FUNCTION__, o->getClassName()));
 	timeloc_.serialize(clipboardText_);
 	return 1;
 }
@@ -199,22 +248,43 @@ long InputForm::onClipboardRequest(FXObject* o, FXSelector sel, void* ptr)
 	// See if base class knows how to deal with the requested clipboard type
 	if (FXDialogBox::onClipboardRequest (o, sel, ptr))
 		return 1;
-	FXDragType dtype = ((FXEvent*)ptr)->target;
-	FXString name = getApp()->getDragTypeName(dtype);
-	// See if we can deal with this type ourselves
-	if (dtype == clipDragType_){
-		FXuchar *data;
-		FXuint len = clipboardText_.length();
-		FXMALLOC(&data, FXuchar, len);
-		strncpy((char*)data, clipboardText_.text(), len);
-		// Give the array to the system!
-		setDNDData (FROM_CLIPBOARD, dtype, data, len);
 
-		// Return 1 because it was handled here
-		return 1;
+	FXDragType dtype = ((FXEvent*)ptr)->target;
+	// Requested data from clipboard
+	if(dtype == stringType || dtype == textType || dtype == utf8Type || dtype == utf16Type) {
+		FXString string = clipboardText_;
+
+		// Expand newlines to CRLF on Windows
+#ifdef WIN32
+		unixToDos(string);
+#endif
+
+		// Return clipped text as as UTF-8
+		if(dtype==utf8Type){
+			FXTRACE((100,"Request UTF8\n"));
+			setDNDData(FROM_CLIPBOARD,dtype,string);
+			return 1;
+		}
+
+		// Return clipped text translated to 8859-1
+		if(dtype==stringType || dtype==textType){
+			FX88591Codec ascii;
+			FXTRACE((100,"Request ASCII\n"));
+			setDNDData(FROM_CLIPBOARD,dtype,ascii.utf2mb(string));
+			return 1;
+		}
+
+		// Return text of the selection translated to UTF-16
+		if(dtype==utf16Type){
+			FXUTF16LECodec unicode;             // FIXME maybe other endianness for unix
+			FXTRACE((100,"Request UTF16\n"));
+			setDNDData(FROM_CLIPBOARD,dtype,unicode.utf2mb(string));
+			return 1;
+		}
 	}
-	FXTRACE((10, "%s: unknown DragTypeName '%s'\n", __FUNCTION__, name.text()));
-	// Return 0 to signify we haven't dealt with it yet; a derived
-	// class from InputForm may yet give it another try ...
+	else {
+		FXString name = getApp()->getDragTypeName(dtype);
+		FXTRACE((10, "%s: unknown DragTypeName '%s'\n", __FUNCTION__, name.text()));
+	}
 	return 0;
 }

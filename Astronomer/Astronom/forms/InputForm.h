@@ -46,6 +46,7 @@ public:
 
 	long onCmdCopy(FXObject* o, FXSelector sel, void* ptr);
 	long onCmdPaste(FXObject* o, FXSelector sel, void* ptr);
+	long onClipboardLost(FXObject* o, FXSelector sel, void* ptr);
 	long onClipboardGained(FXObject* o, FXSelector sel, void* ptr);
 	long onClipboardRequest(FXObject* o, FXSelector sel, void* ptr);
 
@@ -57,9 +58,11 @@ private:
     FXComboBox* cbLoc_;
     FXTextField *mtfDate_, *mtfTime_, *mtfLon_, *mtfLat_, *mtfTzDiff_;
 	void saveData(bool recalculate);
-	void restoreData();
+	void restoreData(TimeLoc& tl);
 	void makeTimeLoc ();
 	TimeLoc timeloc_;
 	FXString clipboardText_;
-	FXDragType clipDragType_;
+	FXDragType textType_;           // Ascii text request
+	FXDragType utf8Type_;           // UTF-8 text request
+	FXDragType utf16Type_;          // UTF-16 text request
 };

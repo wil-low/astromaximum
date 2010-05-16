@@ -8,20 +8,48 @@ const char *FMT_DATE[] = {
 	"%02d%c%02d%c%04d", // MDY
 };
 
+const FXString DEG_STR("°");
+const FXString BACKTICK_STR("`");
+
+const char* FMT_REX[] = {
+	"(\\d+)\\%c(\\d+)\\%c(\\d+)", // DATE
+	"(\\d+):(\\d+):(\\d+)", // TIME
+	"([+-])(\\d+):(\\d+):(\\d+)", // TZ
+	"(\\d+)`(\\d+)`(\\d+)", // LAT
+	"(\\d+)`(\\d+)`(\\d+)", // LON
+	"(\\d+)`(\\d+)`(\\d+)", // ELV
+};
+
 const char FMT_TIME[] = "%02d:%02d:%02d";
-const char FMT_LAT[]  = "%02d°%02d'%c";
-const char FMT_LON[]  = "%03d°%02d'%c";
-const char FMT_TZ[]   = "%c%02d:%02d";
+const char FMT_LAT[]  = "%03d`%02d'%02d''%c";
+const char FMT_LON[]  = "%02d`%02d'%02d''%c";
+const char FMT_TZ[]   = "%c%02d:%02d:%02d";
 
 const char sep = ';';
 
+FXRex TimeLoc::rex_[TL_LAST];
 date_fmt_t TimeLoc::date_fmt_ = DF_DMY;
-char TimeLoc::date_sep_ = '.';
+char TimeLoc::date_sep_;
 
 TimeLoc::TimeLoc()
 {
 	for (int i = TL_DATE; i < TL_LAST; ++i)
 		data_[i] = 0;
+}
+
+void TimeLoc::initRex(char date_sep)
+{
+	date_sep_ = date_sep;
+	char pattern[100];
+	sprintf (pattern, FMT_REX[TL_DATE], date_sep_, date_sep_);
+	FXRexError err = rex_[TL_DATE].parse(pattern, REX_CAPTURE);
+	if (err != REGERR_OK)
+		FXTRACE((10, "%s: rex TL_DATE %s\n", __FUNCTION__, FXRex::getError(err)));
+	for (int i = TL_TIME; i < TL_LAST; ++i) {
+		err = rex_[i].parse(FMT_REX[i], REX_CAPTURE);
+		if (err != REGERR_OK)
+			FXTRACE((10, "%s: date_rex %s\n", __FUNCTION__, FXRex::getError(err)));
+	}
 }
 
 TimeLoc::~TimeLoc()
@@ -46,19 +74,36 @@ FXString TimeLoc::formatDate (int y, int m, int d)
 	return res;
 }
 
-int TimeLoc::scanDate (const FXString &str, int *y, int *m, int *d)
+int TimeLoc::scan (timeloc_t idx, const FXString &str, int *out)
 {
-	const char* p_fmt = FMT_DATE[date_fmt_];
-	char sep;
-	switch (date_fmt_) {
-		case DF_YMD:
-			return str.scan(p_fmt, y, &sep, m, &sep, d);
-		case DF_DMY:
-			return str.scan(p_fmt, d, &sep, m, &sep, y);
-		case DF_MDY:
-			return str.scan(p_fmt, m, &sep, d, &sep, y);
+	FXString s(str);
+	toBackTick(s);
+	FXint beg[5], end[5];
+	int value[4];
+	if(rex_[idx].match(s, beg, end, REX_FORWARD, 5)) { 
+		value[0] = FXIntVal(str.mid(beg[1], end[1] - beg[1])); 
+		value[1] = FXIntVal(str.mid(beg[2], end[2] - beg[2])); 
+		value[2] = FXIntVal(str.mid(beg[3], end[3] - beg[3])); 
+		value[3] = FXIntVal(str.mid(beg[4], end[4] - beg[4])); 
+		if (idx == TL_DATE) {
+			switch (date_fmt_) {
+				case DF_YMD:
+					out[0] = value[0]; out[1] = value[1]; out[2] = value[2];
+					break;
+				case DF_DMY:
+					out[2] = value[0]; out[1] = value[1]; out[0] = value[2];
+					break;
+				case DF_MDY:
+					out[1] = value[0]; out[2] = value[1]; out[0] = value[2];
+					break;
+			}
+		}
+		else {
+			out[0] = value[0]; out[1] = value[1]; out[2] = value[2]; out[3] = value[3];
+		}
+		return 0;
 	}
-	return 0;
+	return -1;
 }
 
 const FXString& TimeLoc::getName () const
@@ -100,24 +145,29 @@ const FXString& TimeLoc::getStr (timeloc_t idx)
 			{
 				char c = val >= 0 ? 'N' : 'S';
 				int d = val;
-				int m = (val - d) * 60;
-				res.format (FMT_LAT, d, m, c);
+				double m = (val - d) * 60;
+				int s = (m - (int)m) * 60;
+				res.format (FMT_LAT, d, (int)m, s, c);
+				fromBackTick(res);
 			}
 				break;
 			case TL_LON:
 			{
 				char c = val >= 0 ? 'E' : 'W';
 				int d = val;
-				int m = (val - d) * 60;
-				res.format (FMT_LON, d, m, c);
+				double m = (val - d) * 60;
+				int s = (m - (int)m) * 60;
+				res.format (FMT_LON, d, (int)m, s, c);
+				fromBackTick(res);
 			}
 				break;
 			case TL_TZ:
 			{
 				char c = val >= 0 ? '+' : '-';
 				int d = val;
-				int m = (val - d) * 60;
-				res.format (FMT_TZ, c, d, m);
+				double m = (val - d) * 60;
+				int s = (m - (int)m) * 60;
+				res.format (FMT_TZ, c, d, (int)m, s);
 			}
 				break;
 			case TL_ELV:
@@ -149,13 +199,15 @@ void TimeLoc::set (timeloc_t idx, double val)
 	str_[idx].clear();
 }
 
-void TimeLoc::set (timeloc_t idx, const FX::FXString& text, bool recalculate)
+void TimeLoc::set (timeloc_t idx, FX::FXString text, bool recalculate)
 {
+	text.trim();
 	if (recalculate == false) {
 		str_[idx] = text;
 		return;
 	}
 	str_[idx].clear();
+	int out[5];
 	double res = 0;
 	switch (idx) {
 		case TL_DATE:
@@ -165,7 +217,7 @@ void TimeLoc::set (timeloc_t idx, const FX::FXString& text, bool recalculate)
 			FXString date = text.section(' ', 0);
 			FXString time = text.section(' ', 1);
 
-			if (scanDate (date, &y, &m, &d) == 5 &&
+			if (scan (TL_DATE, date, out) == 0 &&
                 time.scan (FMT_TIME, &h, &min, &s) == 3) {
                     data_[TL_DATE] = data_[TL_TIME] = Ephemeris::julday (y, m, d, h, min, s);
                     str_[TL_DATE] = date;
@@ -175,34 +227,38 @@ void TimeLoc::set (timeloc_t idx, const FX::FXString& text, bool recalculate)
 		break;
 		case TL_LAT:
 		{
-			char c; int d, m;
-			if (text.scan (FMT_LAT, &d, &m, &c) == 3) {
-				res = d + m / 60.L;
+			char c; int d, m, s;
+			TimeLoc::toBackTick(text);
+			if (text.scan (FMT_LAT, &d, &m, &s, &c) == 4) {
+				res = d + m / 60.L + s / 3600.L;
 				if (c == 'S')
 					res = -res;
 				data_[idx] = res;
 				str_[idx] = text;
+				TimeLoc::fromBackTick(str_[idx]);
 			}
 		}
 		break;
 		case TL_LON:
 		{
-			char c; int d, m;
-			if (text.scan (FMT_LON, &d, &m, &c) == 3) {
-				res = d + m / 60.L;
+			char c; int d, m, s;
+			TimeLoc::toBackTick(text);
+			if (text.scan (FMT_LON, &d, &m, &s, &c) == 4) {
+				res = d + m / 60.L + s / 3600.L;
 				if (c == 'W')
 					res = -res;
 				data_[idx] = res;
 				str_[idx] = text;
+				TimeLoc::fromBackTick(str_[idx]);
 			}
 		}
 		break;
 		case TL_TZ:
 		{
-			int hour,min;
+			int hour, min, sec;
 			char c;
-			if (text.scan(FMT_TZ, &c, &hour, &min) == 3) {
-				res = (hour + min / 60.L) / 24.L;
+			if (text.scan(FMT_TZ, &c, &hour, &min, &sec) == 4) {
+				res = (hour + min / 60.L + sec / 3600.L) / 24.L;
 				if (c == '-')
 				  res = -res;
 				data_[idx] = res;
@@ -241,11 +297,21 @@ void TimeLoc::deserialize(const FXString& input)
 
 void TimeLoc::asTitle(FXString& output)
 {
-    output = name_ + ": " +
+    output = name_ + " " +
 		getStr(TL_DATE) + " " +
 		getStr(TL_TIME) + " " +
 		getStr(TL_TZ) + ", " +
 		location_ + " " +
-		getStr(TL_LAT) + " " +
+		getStr(TL_LAT) + ", " +
 		getStr(TL_LON);
+}
+
+FXString& TimeLoc::toBackTick(FXString& str)
+{
+	return str.substitute(DEG_STR, BACKTICK_STR);
+}
+
+FXString& TimeLoc::fromBackTick(FXString& str)
+{
+	return str.substitute(BACKTICK_STR, DEG_STR);
 }

@@ -48,6 +48,7 @@ void Astronom::create()
 {
 	loadFont("Astronom");
 	FXApp::create();
+	TimeLoc::initRex('.');
 	fInputData->init();
 	fMain->init();
 	fMain->show();

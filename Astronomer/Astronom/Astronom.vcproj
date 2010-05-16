@@ -222,10 +222,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\common.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Ephemeris.h"
 				>
 			</File>
