@@ -80,11 +80,11 @@ int TimeLoc::scan (timeloc_t idx, const FXString &str, int *out)
 	toBackTick(s);
 	FXint beg[5], end[5];
 	int value[4];
-	if(rex_[idx].match(s, beg, end, REX_FORWARD, 5)) { 
-		value[0] = FXIntVal(str.mid(beg[1], end[1] - beg[1])); 
-		value[1] = FXIntVal(str.mid(beg[2], end[2] - beg[2])); 
-		value[2] = FXIntVal(str.mid(beg[3], end[3] - beg[3])); 
-		value[3] = FXIntVal(str.mid(beg[4], end[4] - beg[4])); 
+	if(rex_[idx].match(s, beg, end, REX_FORWARD, 5)) {
+		value[0] = FXIntVal(str.mid(beg[1], end[1] - beg[1]));
+		value[1] = FXIntVal(str.mid(beg[2], end[2] - beg[2]));
+		value[2] = FXIntVal(str.mid(beg[3], end[3] - beg[3]));
+		value[3] = FXIntVal(str.mid(beg[4], end[4] - beg[4]));
 		if (idx == TL_DATE) {
 			switch (date_fmt_) {
 				case DF_YMD:
@@ -213,13 +213,13 @@ void TimeLoc::set (timeloc_t idx, FX::FXString text, bool recalculate)
 		case TL_DATE:
 		{
 			// format is "2010/05/08 16:50:12"
-			int y = 0, m = 0, d = 0, h = 0, min = 0, s = 0;
+			int outtm[5];
 			FXString date = text.section(' ', 0);
 			FXString time = text.section(' ', 1);
 
 			if (scan (TL_DATE, date, out) == 0 &&
-                time.scan (FMT_TIME, &h, &min, &s) == 3) {
-                    data_[TL_DATE] = data_[TL_TIME] = Ephemeris::julday (y, m, d, h, min, s);
+                scan (TL_TIME, time, outtm) == 0) {
+                    data_[TL_DATE] = data_[TL_TIME] = Ephemeris::julday (out[0], out[1], out[2], outtm[0], outtm[1], outtm[2]);
                     str_[TL_DATE] = date;
                     str_[TL_TIME] = time;
 			}
@@ -227,11 +227,10 @@ void TimeLoc::set (timeloc_t idx, FX::FXString text, bool recalculate)
 		break;
 		case TL_LAT:
 		{
-			char c; int d, m, s;
 			TimeLoc::toBackTick(text);
-			if (text.scan (FMT_LAT, &d, &m, &s, &c) == 4) {
-				res = d + m / 60.L + s / 3600.L;
-				if (c == 'S')
+			if (scan (TL_LAT, text, out) == 0) {
+				res = out[0] + out[1] / 60.L + out[2] / 3600.L;
+				if (out[3] == 'S')
 					res = -res;
 				data_[idx] = res;
 				str_[idx] = text;
@@ -241,11 +240,10 @@ void TimeLoc::set (timeloc_t idx, FX::FXString text, bool recalculate)
 		break;
 		case TL_LON:
 		{
-			char c; int d, m, s;
 			TimeLoc::toBackTick(text);
-			if (text.scan (FMT_LON, &d, &m, &s, &c) == 4) {
-				res = d + m / 60.L + s / 3600.L;
-				if (c == 'W')
+			if (scan (TL_LON, text, out) == 0) {
+				res = out[0] + out[1] / 60.L + out[2] / 3600.L;
+				if (out[3] == 'W')
 					res = -res;
 				data_[idx] = res;
 				str_[idx] = text;
@@ -255,11 +253,9 @@ void TimeLoc::set (timeloc_t idx, FX::FXString text, bool recalculate)
 		break;
 		case TL_TZ:
 		{
-			int hour, min, sec;
-			char c;
-			if (text.scan(FMT_TZ, &c, &hour, &min, &sec) == 4) {
-				res = (hour + min / 60.L + sec / 3600.L) / 24.L;
-				if (c == '-')
+			if (scan(TL_TZ, text, out) == 4) {
+				res = (out[1] + out[2] / 60.L + out[3] / 3600.L) / 24.L;
+				if (out[0] == '-')
 				  res = -res;
 				data_[idx] = res;
 				str_[idx] = text;
