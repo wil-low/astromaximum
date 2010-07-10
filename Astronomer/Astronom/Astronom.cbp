@@ -11,8 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
-				<Option parameters="-tracelevel 90" />
+				<Option parameters="-tracelevel 99" />
 				<Compiler>
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
@@ -86,6 +85,8 @@
 		<Unit filename="labels/AstroLabel.h" />
 		<Unit filename="labels/AstroLabelContainer.cpp" />
 		<Unit filename="labels/AstroLabelContainer.h" />
+		<Unit filename="labels/HouseLabel.cpp" />
+		<Unit filename="labels/HouseLabel.h" />
 		<Unit filename="labels/PlanetLabel.cpp" />
 		<Unit filename="labels/PlanetLabel.h" />
 		<Unit filename="labels/ZodiacLabel.cpp" />
@@ -95,6 +96,8 @@
 		<Unit filename="models/BaseModel.h" />
 		<Unit filename="models/OcularModel.cpp" />
 		<Unit filename="models/OcularModel.h" />
+		<Unit filename="utils/BodyProps.h" />
+		<Unit filename="utils/HouseProps.h" />
 		<Unit filename="utils/OcularDefs.h" />
 		<Unit filename="utils/constants.cpp" />
 		<Unit filename="utils/constants.h" />

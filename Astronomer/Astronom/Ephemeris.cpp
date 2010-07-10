@@ -1,5 +1,7 @@
 #include "Ephemeris.h"
 #include "TimeLoc.h"
+#include "utils/BodyProps.h"
+#include "utils/HouseProps.h"
 
 #ifdef __linux
     #include <sweodef.h>
@@ -37,17 +39,17 @@ void fini()
 
 double now ()
 {
-#ifndef WIN32
+#ifdef __linux
 	struct tm *t;
 	time_t ltime;
 	time(&ltime);
 	t=gmtime(&ltime);
-	return Ephemeris::julday (t->tm_year+1900, t->tm_mon+1, t->tm_mday, 
+	return Ephemeris::julday (t->tm_year+1900, t->tm_mon+1, t->tm_mday,
 		t->tm_hour, t->tm_min, t->tm_sec);
 #else
 	SYSTEMTIME t;
 	GetSystemTime(&t);
-	return Ephemeris::julday (t.wYear, t.wMonth, t.wDay, 
+	return Ephemeris::julday (t.wYear, t.wMonth, t.wDay,
 		t.wHour, t.wMinute, t.wSecond);
 #endif
 }
@@ -73,6 +75,16 @@ long calc_body (BodyProps& props, int body, long flags, const TimeLoc& time_loc)
 	long result = swe_calc_ut (time_loc.get(TL_DATE), body, flags, props.prop, serr);
 	if (result < 0 || serr[0] != 0)
 		FXTRACE((10, "%s: %s\n", __FUNCTION__, serr));
+	return result;
+}
+
+long calc_house (HouseProps& props, int method, const TimeLoc& time_loc)
+{
+	long result = swe_houses (time_loc.get(TL_DATE), time_loc.get(TL_LAT), time_loc.get(TL_LON),
+        method, props.cusps, props.ascmc);
+    props.method = (HouseProps::house_method)method;
+	if (result < 0)
+		FXTRACE((10, "%s: %s\n", __FUNCTION__));
 	return result;
 }
 }

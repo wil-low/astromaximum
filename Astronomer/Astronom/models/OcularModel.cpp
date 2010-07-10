@@ -59,6 +59,10 @@ void OcularModel::setData ()
 		Ephemeris::calc_body (props, bodies[i], 0, timeloc_);
 		chart.bodies_[bodies[i]] = props;
 	}
+
+	Ephemeris::calc_house(houses_, 'G', timeloc_);
+	chart.houses_ = houses_;
+
 /*
 	chart.bodies_[0].prop[BodyProps::bp_Lon] = 352;
 	chart.bodies_[1].prop[BodyProps::bp_Lon] = 354.4;

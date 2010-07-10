@@ -27,6 +27,7 @@ public:
 		ID_INC_HOUR,
 		ID_INPUTDATA,
 		ID_PERSONS,
+		ID_HOUSE,
 		ID_LAST
 	};
 

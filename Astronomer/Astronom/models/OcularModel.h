@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseModel.h"
 #include "../utils/OcularDefs.h"
+#include "../utils/HouseProps.h"
 
 class OcularModel : BaseModel
 {
@@ -12,4 +13,5 @@ public:
 	virtual void setData(const TimeLoc*);
 private:
 	OcularDimensions dimensions_;
+	HouseProps houses_;
 };

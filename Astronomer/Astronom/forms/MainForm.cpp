@@ -34,6 +34,12 @@ MainForm::MainForm(FXApp *a)
 	new FXMenuCommand(filemenu, tr("Toggle C&hrono...\tF3\tToggle Chrono"), NULL, getApp(), Astronom::ID_CHRONO);
 
 	new FXMenuCommand(menubar, tr("&Persons..."), NULL, getApp(), Astronom::ID_PERSONS);
+
+	housemenu=new FXMenuPane(menubar);
+	new FXMenuTitle(menubar, tr("&Houses"), NULL, housemenu);
+	new FXMenuRadio(housemenu, tr("&Koch\tK"), NULL, getApp(), Astronom::ID_HOUSE);
+	new FXMenuRadio(housemenu, tr("&Gaqueline\tG"), NULL, getApp(), Astronom::ID_HOUSE);
+
 	if (getAccelTable()) {
 		getAccelTable()->addAccel (MKUINT(KEY_G,CONTROLMASK), getApp(), FXSEL(SEL_COMMAND, Astronom::ID_GLYPH));
 		getAccelTable()->addAccel (MKUINT(KEY_F3, 0), getApp(), FXSEL(SEL_COMMAND, Astronom::ID_CHRONO));
@@ -71,6 +77,7 @@ MainForm::MainForm(FXApp *a)
 MainForm::~MainForm()
 {
 	delete filemenu;
+	delete housemenu;
 }
 
 // Create and initialize
@@ -79,6 +86,7 @@ void MainForm::create()
 	// Create the windows
 	FXMainWindow::create();
 	filemenu->create();
+	housemenu->create();
 }
 
 void MainForm::init()

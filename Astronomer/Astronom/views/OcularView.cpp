@@ -2,6 +2,7 @@
 #include "../forms/GlyphManager.h"
 #include "../labels/PlanetLabel.h"
 #include "../labels/ZodiacLabel.h"
+#include "../labels/HouseLabel.h"
 #include "../Chart.h"
 #include "../utils/constants.h"
 #include "../CircleSpread/CircleSpread.h"
@@ -171,6 +172,7 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 */
 	drawAspects(dc);
 	drawPlanetLines (dc);
+	drawHouseLines (dc);
 	drawLabels (dc);
 	return 1;
 }
@@ -208,9 +210,11 @@ void OcularView::reorderLabels()
     double rad[AstroLabel::TYPE_LAST];
 	rad[AstroLabel::TYPE_ZODIAC] = (dimensions_.zodiac10dgrR + dimensions_.zodiac5dgrR) / 2 * radius_ / DENOMINATOR;
 	rad[AstroLabel::TYPE_PLANET] = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
+	rad[AstroLabel::TYPE_HOUSE] = (dimensions_.ascArrowR + dimensions_.zodiacOuterR) / 2 * radius_ / DENOMINATOR;
     FXPoint pt;
 
 	spreadLabels(0, AstroLabel::TYPE_PLANET, rad[AstroLabel::TYPE_PLANET]);
+	spreadLabels(0, AstroLabel::TYPE_HOUSE, rad[AstroLabel::TYPE_HOUSE]);
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		pt = getXYdeg(zero_angle_ + al->getVisibleAngle(), rad[al->getType()]);
 		al->position(pt.x, pt.y);
@@ -290,6 +294,22 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 			assert (result.second);
 		}
 	}
+	int cusp_count = chart->houses_.method == HouseProps::hp_Gaquelin ? 36 : 12;
+    for (int i = 1; i <=cusp_count; ++i) {
+		AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_START + i);
+		bool need_insert = !label;
+		if (!label)
+			label = new HouseLabel(this, -100, -100, 20, 20);
+		label->setAngle(chart->houses_.cusps[i]);
+		label_text.format("%d", i);
+		label->setId(HOUSE_ID_START + i, label_text);
+		label->setChartId(chart->id_);
+		if (need_insert) {
+			std::pair<AlcIter, bool> result = labels_.insert(label);
+			assert (result.second);
+		}
+    }
+
 	reorderLabels();
 	update();
 	return 1;
@@ -302,25 +322,28 @@ struct less_deg {
 	}
 };
 
-void OcularView::spreadLabels (int chart, int type, double r)
+void OcularView::spreadLabels (int chart, AstroLabel::label_type_t type, double r)
 {
 	FXTRACE((99, "%s\n", __FUNCTION__));
 	std::vector<SpreadValue> input;
 	double delta_width = 0;
 
 	alc_by_chart_type& idx = labels_.get<chart_type_tag>();
-	alc_by_chart_type::iterator it = idx.find(boost::make_tuple(chart, type));
-	while (it != idx.end()) {
+	std::pair<alc_by_chart_type::iterator, alc_by_chart_type::iterator> range =
+        idx.equal_range(boost::make_tuple(chart, type));
+	alc_by_chart_type::iterator it = range.first;
+	while (it != range.second) {
 		(*it)->setVisibleAngle((*it)->getAngle());
 		input.push_back(SpreadValue((*it)->getAngle(), *it));
 		delta_width = (*it)->getRect().w / 2;
+        FXTRACE((90, "%s\n", (*it)->toString().text()));
 		++it;
     }
 	double delta_ang = atan (delta_width / r) / DTOR * 2;
 	CircleSpread cspread(input);
 
 	std::vector<SpreadValue> output;
-	FXTRACE((99, "Delta_ang %.02f\n", delta_ang));
+	FXTRACE((90, "Delta_ang %.02f, input vector size %d\n", delta_ang, input.size()));
 	cspread.spread(output, delta_ang, 360);
 
     BOOST_FOREACH (SpreadValue& sv, output) {
@@ -424,6 +447,24 @@ void OcularView::drawPlanetLines(FXDC& dc)
 			double hyp = sqrt(dx * dx + dy * dy) - planet_r;
 			pt[1].x = pt[0].x + cos(ang0) * hyp;
 			pt[1].y = pt[0].y - sin(ang0) * hyp;
+			dc.drawLines(pt, 2);
+		}
+	}
+}
+
+void OcularView::drawHouseLines(FXDC& dc)
+{
+	double r = radius_ / DENOMINATOR;
+	double zouter = dimensions_.zodiacInnerR * r;
+	double zinner = dimensions_.zodiacOuterR * r;
+	dc.setForeground(colors_.planetTickColor);
+	dc.setLineWidth(1);
+	FXPoint pt[2];
+	BOOST_FOREACH (AstroLabel* al, labels_) {
+		if (al->getType() == AstroLabel::TYPE_HOUSE) {
+			double ang = al->getAngle() + zero_angle_;
+			pt[0] = getXYdeg(ang, zouter);
+			pt[1] = getXYdeg(ang, zinner);
 			dc.drawLines(pt, 2);
 		}
 	}

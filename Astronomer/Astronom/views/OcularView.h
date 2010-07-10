@@ -44,9 +44,11 @@ private:
     void drawLabels (FXDC& dc);
 	void drawAspects(FXDC& dc);
 	void drawPlanetLines(FXDC& dc);
+    void drawHouseLines(FXDC& dc);
+
 	void reorderLabels();
 
-	void spreadLabels (int chart, int type, double r);
+	void spreadLabels (int chart, AstroLabel::label_type_t type, double r);
 
 	int zero_point_;
 	double zero_angle_;

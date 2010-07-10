@@ -9,7 +9,7 @@ public:
 	virtual ~ZodiacLabel(void);
 	virtual long onClicked(FXObject*, FXSelector, void*);
 	virtual double getAngle() const;
-    virtual int getType() const;
+    virtual label_type_t getType() const;
 	double getVisibleAngle() const;
 //	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);
 	ZodiacLabel(){}

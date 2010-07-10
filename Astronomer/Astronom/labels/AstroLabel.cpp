@@ -108,7 +108,7 @@ double AstroLabel::getVisibleAngle() const
     return -1;
 }
 
-int AstroLabel::getType() const
+AstroLabel::label_type_t AstroLabel::getType() const
 {
     return TYPE_LAST;
 }
@@ -121,5 +121,12 @@ bool AstroLabel::contains(FXint x, FXint y)
 const FXRectangle& AstroLabel::getRect() const
 {
 	return rect_;
+}
+
+FXString AstroLabel::toString() const
+{
+    FXString s;
+    s.format ("AstroLabel type %d, id %d, angle %.2f", getType(), getId(), getAngle());
+	return s;
 }
 

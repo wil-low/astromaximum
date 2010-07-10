@@ -15,8 +15,8 @@ const char* FMT_REX[] = {
 	"(\\d+)\\%c(\\d+)\\%c(\\d+)", // DATE
 	"(\\d+):(\\d+):(\\d+)", // TIME
 	"([+-])(\\d+):(\\d+):(\\d+)", // TZ
-	"(\\d+)`(\\d+)`(\\d+)", // LAT
-	"(\\d+)`(\\d+)`(\\d+)", // LON
+	"(\\d+)`(\\d+)'(\\d+)''([NS])", // LAT
+	"(\\d+)`(\\d+)'(\\d+)''([EW])", // LON
 	"(\\d+)`(\\d+)`(\\d+)", // ELV
 };
 
@@ -253,7 +253,7 @@ void TimeLoc::set (timeloc_t idx, FX::FXString text, bool recalculate)
 		break;
 		case TL_TZ:
 		{
-			if (scan(TL_TZ, text, out) == 4) {
+			if (scan(TL_TZ, text, out) == 0) {
 				res = (out[1] + out[2] / 60.L + out[3] / 3600.L) / 24.L;
 				if (out[0] == '-')
 				  res = -res;

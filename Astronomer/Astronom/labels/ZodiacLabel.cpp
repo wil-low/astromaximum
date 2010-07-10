@@ -36,7 +36,7 @@ long ZodiacLabel::onClicked(FXObject*, FXSelector, void*)
 	return 1;
 }
 
-int ZodiacLabel::getType() const
+AstroLabel::label_type_t ZodiacLabel::getType() const
 {
     return TYPE_ZODIAC;
 }

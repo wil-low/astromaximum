@@ -33,6 +33,7 @@ private:
 	FXHorizontalFrame *contents;                // Content frame
 	FXVerticalFrame   *buttonFrame;             // Button frame
 	FXMenuPane* filemenu;
+	FXMenuPane* housemenu;
 	FXCheckButton* btnLock;
 protected:
 	MainForm(){}

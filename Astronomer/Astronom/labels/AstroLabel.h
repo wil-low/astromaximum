@@ -6,7 +6,7 @@ class AstroLabel : public FXObject
 {
 	FXDECLARE(AstroLabel)
 public:
-    enum {
+    enum label_type_t {
         TYPE_ZODIAC = 0,
         TYPE_PLANET,
         TYPE_HOUSE,
@@ -30,7 +30,7 @@ public:
 	};
 	virtual double getAngle() const;
 	virtual double getVisibleAngle() const;
-	virtual int getType() const;
+	virtual label_type_t getType() const;
 	const FXRectangle& getRect() const;
 	int getChartId() const;
 	int getId() const;
@@ -40,6 +40,8 @@ public:
 	void setFont(FXFont* font);
 	virtual void setVisibleAngle(double /*ang*/) {};
 	virtual void setAngle(double /*ang*/) {};
+
+	virtual FXString toString() const;
 
     bool contains(FXint x, FXint y);
 	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);

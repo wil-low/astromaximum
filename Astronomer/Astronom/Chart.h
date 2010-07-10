@@ -1,5 +1,7 @@
 #pragma once
 #include "TimeLoc.h"
+#include "utils/BodyProps.h"
+#include "utils/HouseProps.h"
 #include <map>
 #include <list>
 
@@ -11,6 +13,7 @@ public:
 	typedef std::map<int, BodyProps> BodyPropsMap;
 	BodyPropsMap bodies_;
 	TimeLoc time_loc_;
+	HouseProps houses_;
 	int id_;
 };
 

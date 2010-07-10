@@ -1,12 +1,12 @@
 #pragma once
 #include "AstroLabel.h"
 
-class PlanetLabel : public AstroLabel
+class HouseLabel : public AstroLabel
 {
-	FXDECLARE(PlanetLabel)
+	FXDECLARE(HouseLabel)
 public:
-	PlanetLabel(DraggableView* p, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
-	virtual ~PlanetLabel(void);
+	HouseLabel(DraggableView* p, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
+	virtual ~HouseLabel(void);
 	long onClicked(FXObject*, FXSelector, void*);
 	virtual double getAngle() const;
     virtual label_type_t getType() const;
@@ -14,7 +14,7 @@ public:
 
 	virtual void setAngle(double ang);
 	virtual void setVisibleAngle(double ang);
-	PlanetLabel(){}
+	HouseLabel(){}
 private:
     int planet_id_;
     double lon_;

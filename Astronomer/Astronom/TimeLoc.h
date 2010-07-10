@@ -52,16 +52,3 @@ private:
 	static char date_sep_;
 	static FXRex rex_[TL_LAST];
 };
-
-class BodyProps {
-public:
-	enum body_property {
-		bp_Lon = 0,
-		bp_Lat,
-		bp_Dist,
-		bp_LonSpeed,
-		bp_LatSpeed,
-		bp_DistSpeed
-	};
-	double prop[6];
-};
