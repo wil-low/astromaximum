@@ -115,12 +115,17 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 	}
 	*/
 
-	drawCircle(dc, 5);
-	// cuspid line
+	dc.setForeground(colors_.ocularColor);
+	drawCircle(dc, dimensions_.ascArrowR * 0.06 * r);
+
+	// Aries line
 	dc.setForeground(colors_.arrowColor);
 	FXPoint pt[2];
-	pt[0] = getXYdeg(zero_angle_, dimensions_.zodiacInnerR * r);
-	pt[1] = getXYdeg(zero_angle_, radius_);
+	double r_aries = dimensions_.zodiacOuterR * r + 1;
+	pt[1] = getXYdeg(zero_angle_, r_aries);
+	pt[0] = getXYdeg(ang - 1, r_aries * 1.02);
+	dc.drawLines(pt, 2);
+	pt[0] = getXYdeg(ang + 1, r_aries * 1.02);
 	dc.drawLines(pt, 2);
 
 	dc.setForeground(colors_.mainLineColor);
@@ -210,7 +215,7 @@ void OcularView::reorderLabels()
     double rad[AstroLabel::TYPE_LAST];
 	rad[AstroLabel::TYPE_ZODIAC] = (dimensions_.zodiac10dgrR + dimensions_.zodiac5dgrR) / 2 * radius_ / DENOMINATOR;
 	rad[AstroLabel::TYPE_PLANET] = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
-	rad[AstroLabel::TYPE_HOUSE] = (dimensions_.ascArrowR + dimensions_.zodiacOuterR) / 2 * radius_ / DENOMINATOR;
+	rad[AstroLabel::TYPE_HOUSE] = 10000000;
     FXPoint pt;
 
 	spreadLabels(0, AstroLabel::TYPE_PLANET, rad[AstroLabel::TYPE_PLANET]);
@@ -221,29 +226,29 @@ void OcularView::reorderLabels()
 	}
 }
 
-void OcularView::fillArc (FXDC& dc, int radius, int ang1, int ang2)
+void OcularView::fillArc (FXDC& dc, double radius, double ang1, double ang2)
 {
 	dc.fillArc(radius_ - radius, radius_ - radius, radius * 2, radius * 2, ang1 * 64, ang2 * 64);
 }
 
-void OcularView::fillCircle (FXDC& dc, int radius)
+void OcularView::fillCircle (FXDC& dc, double radius)
 {
 	dc.fillEllipse(radius_ - radius, radius_ - radius, radius * 2, radius * 2);
 }
 
-void OcularView::drawCircle (FXDC& dc, int radius)
+void OcularView::drawCircle (FXDC& dc, double radius)
 {
 	dc.drawEllipse(radius_ - radius, radius_ - radius, radius * 2, radius * 2);
 }
 
-void OcularView::drawCircle (FXDC& dc, int radius, int x, int y)
+void OcularView::drawCircle (FXDC& dc, double radius, double x, double y)
 {
 	dc.drawEllipse(x - radius, y - radius, radius * 2, radius * 2);
 }
 
 long OcularView::onCmdSetZero(FXObject*, FXSelector, void* ptr)
 {
-	zero_point_ = (int)ptr;
+	zero_point_ = (ZeroPoint)int(ptr);
 	return 1;
 }
 
@@ -294,12 +299,15 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 			assert (result.second);
 		}
 	}
-	int cusp_count = chart->houses_.method == HouseProps::hp_Gaquelin ? 36 : 12;
-    for (int i = 1; i <=cusp_count; ++i) {
+	int cusp_count = chart->houses_.getCuspCount();
+    for (int i = 1; i <= cusp_count; ++i) {
+		HouseLabel::HouseFlag hf = HouseLabel::flagOfHouse(i, cusp_count);
 		AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_START + i);
 		bool need_insert = !label;
 		if (!label)
-			label = new HouseLabel(this, -100, -100, 20, 20);
+			label = new HouseLabel(this, hf, -100, -100, 20, 20);
+		else 
+			label->setFlags((int)hf);
 		label->setAngle(chart->houses_.cusps[i]);
 		label_text.format("%d", i);
 		label->setId(HOUSE_ID_START + i, label_text);
@@ -309,7 +317,14 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 			assert (result.second);
 		}
     }
-
+	switch (zero_point_) {
+		case ZERO_ASC:
+			zero_angle_ = 180 - chart->houses_.cusps[1];
+			break;
+		case ZERO_ARIES:
+			zero_angle_ = 180;
+			break;
+	}
 	reorderLabels();
 	update();
 	return 1;
@@ -431,15 +446,21 @@ void OcularView::drawPlanetLines(FXDC& dc)
 	double r = radius_ / DENOMINATOR;
 	double zouter = dimensions_.zodiac5dgrR * r;
 	double zinner = dimensions_.innerPlanetLabelR * r;
+	double zdgr = (dimensions_.zodiacInnerR + dimensions_.zodiac5dgrR) / 2 * r;
 	dc.setForeground(colors_.planetTickColor);
 	dc.setLineWidth(1);
 	FXPoint pt[2];
+
+	FXString strDegree;
+	FXFont* dgrFont = glyph_manager_->getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR);
+	
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		if (al->getType() == AstroLabel::TYPE_PLANET) {
 			double ang = al->getAngle() + zero_angle_;
+			double angv = al->getVisibleAngle() + zero_angle_;
 			double planet_r = al->getRect().w / 2;
 			pt[0] = getXYdeg(ang, zouter);
-			pt[1] = getXYdeg(al->getVisibleAngle() + zero_angle_, zinner);
+			pt[1] = getXYdeg(angv, zinner);
 			double dx = pt[1].x - pt[0].x, dy = pt[0].y - pt[1].y;
 			double ang0 = atan(dy / dx);
 			if (dx < 0)
@@ -448,6 +469,14 @@ void OcularView::drawPlanetLines(FXDC& dc)
 			pt[1].x = pt[0].x + cos(ang0) * hyp;
 			pt[1].y = pt[0].y - sin(ang0) * hyp;
 			dc.drawLines(pt, 2);
+
+			strDegree.format("%02d%c", ((int)al->getAngle() % DEG_PER_SIGN) + 1, glyph_manager_->getDegreeSign());
+			pt[1] = getXYdeg(angv, zdgr);
+			FXint tw = dgrFont->getTextWidth(strDegree);
+			FXint th = dgrFont->getTextHeight(strDegree);
+			dc.setForeground(FXRGB(0, 0, 0));
+			dc.setFont(dgrFont);
+			dc.drawText(pt[1].x - tw / 2, pt[1].y + th / 2, strDegree);
 		}
 	}
 }
@@ -455,17 +484,79 @@ void OcularView::drawPlanetLines(FXDC& dc)
 void OcularView::drawHouseLines(FXDC& dc)
 {
 	double r = radius_ / DENOMINATOR;
-	double zouter = dimensions_.zodiacInnerR * r;
-	double zinner = dimensions_.zodiacOuterR * r;
-	dc.setForeground(colors_.planetTickColor);
+	double zinner = dimensions_.zodiacInnerR * r;
 	dc.setLineWidth(1);
+	dc.setBackground(getBackColor());
 	FXPoint pt[2];
+	
+	FXString strDegree;
+	FXFont* dgrFont = glyph_manager_->getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR);
+	
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		if (al->getType() == AstroLabel::TYPE_HOUSE) {
 			double ang = al->getAngle() + zero_angle_;
-			pt[0] = getXYdeg(ang, zouter);
-			pt[1] = getXYdeg(ang, zinner);
-			dc.drawLines(pt, 2);
+			HouseLabel::HouseFlag hf = (HouseLabel::HouseFlag)al->getFlags();
+			pt[0] = getXYdeg(ang, zinner);
+			if (hf == HouseLabel::hf_Undef) {
+				pt[1] = getXYdeg(ang, dimensions_.zodiac5dgrR * r);
+				dc.setForeground(colors_.planetTickColor);
+				dc.drawLines(pt, 2);
+			}
+			else {
+				dc.setForeground(colors_.arrowColor);
+				switch (hf) {
+					case HouseLabel::hf_Asc:
+					case HouseLabel::hf_MC: {
+						double r_ascmc = dimensions_.ascArrowR * r;
+						pt[1] = getXYdeg(ang, r_ascmc);
+						dc.drawLines(pt, 2);
+						pt[0] = getXYdeg(ang - 1, r_ascmc * 0.98);
+						dc.drawLines(pt, 2);
+						pt[0] = getXYdeg(ang + 1, r_ascmc * 0.98);
+						dc.drawLines(pt, 2);
+						dc.setForeground(FXRGB(0, 0, 0));
+						dc.setFont(dgrFont);
+						if (hf == HouseLabel::hf_Asc) {
+							pt[1] = getXYdeg(ang, r_ascmc * 0.98);
+							strDegree.format("%02d%c", 
+								(int)al->getAngle() % DEG_PER_SIGN + 1, 
+								glyph_manager_->getDegreeSign());
+							dc.drawText(pt[1].x, pt[1].y - 1, strDegree);
+							strDegree.format("%02d'", 
+								(int)(al->getAngle() - (int)al->getAngle()) * 60 + 1);
+							FXint th = dgrFont->getTextHeight(strDegree);
+							dc.drawText(pt[1].x, pt[1].y + th, strDegree);
+						}
+						else {
+							pt[1] = getXYdeg(ang, r_ascmc * 0.96);
+							strDegree.format("%02d%c%02d'", 
+								(int)al->getAngle() % DEG_PER_SIGN + 1, 
+								glyph_manager_->getDegreeSign(),
+								(int)(al->getAngle() - (int)al->getAngle()) * 60 + 1);
+							FXint tw = dgrFont->getTextWidth(strDegree);
+							FXint th = dgrFont->getTextHeight(strDegree);
+							dc.drawText(pt[1].x - tw / 2, pt[1].y + th / 2, strDegree);
+						}
+						}
+						break;
+					case HouseLabel::hf_Dsc: {
+						double r_dsc = dimensions_.ascArrowR * 0.93 * r;
+						double r_circle = dimensions_.ascArrowR * 0.015 * r;
+						pt[1] = getXYdeg(ang, r_dsc);
+						dc.drawLines(pt, 2);
+						pt[1] = getXYdeg(ang, r_dsc + r_circle);
+						dc.drawEllipse(pt[1].x - r_circle, pt[1].y - r_circle, 2 * r_circle, 2 * r_circle); }
+						break;
+					case HouseLabel::hf_IC: {
+						double r_ic = dimensions_.ascArrowR * 0.96 * r;
+						pt[1] = getXYdeg(ang, r_ic);
+						dc.drawLines(pt, 2);
+						pt[0] = getXYdeg(ang + 2, r_ic);
+						pt[1] = getXYdeg(ang - 2, r_ic);
+						dc.drawLines(pt, 2); }
+						break;
+				}
+			}
 		}
 	}
 }

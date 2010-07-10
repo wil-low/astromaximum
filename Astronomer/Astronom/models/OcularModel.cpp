@@ -15,7 +15,7 @@ OcularModel::~OcularModel()
 void OcularModel::setView(DraggableView* view)
 {
 	view_ = view;
-	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_SET_ZERO), (void*)ZERO_ARIES);
+	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_SET_ZERO), (void*)ZERO_ASC);
 
 	//TODO: move to config file
 	OcularDimensions odim;
@@ -30,6 +30,7 @@ void OcularModel::setView(DraggableView* view)
 	odim.aspectR = 236/654.0 * DENOMINATOR;
 	odim.planetFontSize = 500;
 	odim.zodiacFontSize = 350;
+	odim.degreeFontSize = 250;
 	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_SET_OCULAR_DIM), (void*)&odim);
 
 	OcularColors ocolors;
@@ -60,7 +61,7 @@ void OcularModel::setData ()
 		chart.bodies_[bodies[i]] = props;
 	}
 
-	Ephemeris::calc_house(houses_, 'G', timeloc_);
+	Ephemeris::calc_house(houses_, 'P', timeloc_);
 	chart.houses_ = houses_;
 
 /*

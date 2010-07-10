@@ -3,7 +3,7 @@
 #include <fx.h>
 
 // zero point of wheel
-enum {
+enum ZeroPoint {
 	ZERO_ASC = 0,
 	ZERO_ARIES = 1,
 };
@@ -22,6 +22,7 @@ struct OcularDimensions {
 	int aspectR;
 	int planetFontSize;
 	int zodiacFontSize;
+	int degreeFontSize;
 };
 
 struct OcularColors {

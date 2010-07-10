@@ -47,12 +47,17 @@ void GlyphManager::create()
 	tabFont->setFont(getFont(15));
 }
 
-FXchar GlyphManager::getSignLabel(int sign)
+FXchar GlyphManager::getSignLabel(int sign) const
 {
 	return sign + '@';
 }
 
-FXchar GlyphManager::getPlanetLabel(int planet)
+FXchar GlyphManager::getPlanetLabel(int planet) const
 {
 	return planet + '0' + 32;
+}
+
+FXchar GlyphManager::getDegreeSign() const
+{
+	return '9' + 2;
 }

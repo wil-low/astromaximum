@@ -348,6 +348,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\labels\HouseLabel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\labels\HouseLabel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\labels\PlanetLabel.cpp"
 				>
 			</File>
@@ -405,6 +413,10 @@
 			</File>
 			<File
 				RelativePath=".\utils\constants.h"
+				>
+			</File>
+			<File
+				RelativePath=".\utils\HouseProps.h"
 				>
 			</File>
 			<File

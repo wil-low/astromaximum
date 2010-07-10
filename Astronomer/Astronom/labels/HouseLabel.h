@@ -5,7 +5,14 @@ class HouseLabel : public AstroLabel
 {
 	FXDECLARE(HouseLabel)
 public:
-	HouseLabel(DraggableView* p, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
+	enum HouseFlag {
+		hf_Undef = 0,
+		hf_Asc,
+		hf_MC,
+		hf_Dsc,
+		hf_IC,
+	};
+	HouseLabel(DraggableView* p, HouseFlag flag, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
 	virtual ~HouseLabel(void);
 	long onClicked(FXObject*, FXSelector, void*);
 	virtual double getAngle() const;
@@ -15,6 +22,9 @@ public:
 	virtual void setAngle(double ang);
 	virtual void setVisibleAngle(double ang);
 	HouseLabel(){}
+
+	static HouseFlag flagOfHouse(int num, int cusp_count);
+
 private:
     int planet_id_;
     double lon_;

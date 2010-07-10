@@ -37,8 +37,8 @@ MainForm::MainForm(FXApp *a)
 
 	housemenu=new FXMenuPane(menubar);
 	new FXMenuTitle(menubar, tr("&Houses"), NULL, housemenu);
-	new FXMenuRadio(housemenu, tr("&Koch\tK"), NULL, getApp(), Astronom::ID_HOUSE);
-	new FXMenuRadio(housemenu, tr("&Gaqueline\tG"), NULL, getApp(), Astronom::ID_HOUSE);
+	new FXMenuRadio(housemenu, tr("&Koch\tK"), getApp(), Astronom::ID_HOUSE);
+	new FXMenuRadio(housemenu, tr("&Gaqueline\tG"), getApp(), Astronom::ID_HOUSE);
 
 	if (getAccelTable()) {
 		getAccelTable()->addAccel (MKUINT(KEY_G,CONTROLMASK), getApp(), FXSEL(SEL_COMMAND, Astronom::ID_GLYPH));

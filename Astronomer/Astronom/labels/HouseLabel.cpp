@@ -9,10 +9,11 @@ FXDEFMAP(HouseLabel) HouseLabelMessageMap[]={
 
 FXIMPLEMENT(HouseLabel, AstroLabel, HouseLabelMessageMap, ARRAYNUMBER(HouseLabelMessageMap))
 
-HouseLabel::HouseLabel(DraggableView* p, FXint x, FXint y, FXint w, FXint h)
+HouseLabel::HouseLabel(DraggableView* p, HouseFlag flag, FXint x, FXint y, FXint w, FXint h)
 : AstroLabel(p, x, y, w, h)
 , lon_(0)
 {
+	setFlags(flag);
 }
 
 HouseLabel::~HouseLabel(void)
@@ -49,3 +50,16 @@ void HouseLabel::setVisibleAngle(double ang)
     visibleLon_ = ang;
 }
 
+HouseLabel::HouseFlag HouseLabel::flagOfHouse(int num, int cusp_count)
+{
+	HouseFlag hf = hf_Undef;
+	if (num == (1 + 0 * cusp_count / 4))
+		hf = hf_Asc;
+	else if (num == (1 + 1 * cusp_count / 4))
+		hf = hf_IC;
+	else if (num == (1 + 2 * cusp_count / 4))
+		hf = hf_Dsc;
+	else if (num == (1 + 3 * cusp_count / 4))
+		hf = hf_MC;
+	return hf;
+}

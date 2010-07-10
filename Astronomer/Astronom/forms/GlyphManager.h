@@ -14,8 +14,9 @@ public:
 		ID_LAST
 	};
 
-	FXchar getSignLabel(int sign);
-	FXchar getPlanetLabel(int planet);
+	FXchar getSignLabel(int sign) const;
+	FXchar getPlanetLabel(int planet) const;
+	FXchar getDegreeSign() const;
 
 	FXFont* getFont(int size) const;
 	FXTable* tabFont;

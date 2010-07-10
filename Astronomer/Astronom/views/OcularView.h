@@ -26,15 +26,15 @@ public:
     long onMouseMove(FXObject*, FXSelector, void*);
     long onRightBtnPress(FXObject*, FXSelector, void*);
 
-	void setZeroPoint (int val) {zero_point_ = val;} // ZERO_*
+	void setZeroPoint (ZeroPoint val) {zero_point_ = val;} // ZERO_*
 
 	FXPoint getXYrad(double radian, double len);
 	FXPoint getXYdeg(double radian, double len);
 	FXPoint getCenter();
-	void drawCircle (FXDC& dc, int radius, int x, int y);
-	void drawCircle (FXDC& dc, int radius); // centered
-	void fillArc (FXDC& dc, int radius, int ang1, int ang2);
-	void fillCircle (FXDC& dc, int radius);
+	void drawCircle (FXDC& dc, double radius, double x, double y);
+	void drawCircle (FXDC& dc, double radius); // centered
+	void fillArc (FXDC& dc, double radius, double ang1, double ang2);
+	void fillCircle (FXDC& dc, double radius);
 protected:
 	OcularView(){}
 	virtual void dragResize (FXint x, FXint y);
@@ -50,7 +50,7 @@ private:
 
 	void spreadLabels (int chart, AstroLabel::label_type_t type, double r);
 
-	int zero_point_;
+	ZeroPoint zero_point_;
 	double zero_angle_;
 	OcularDimensions dimensions_;
 	OcularColors colors_;

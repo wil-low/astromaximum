@@ -34,10 +34,14 @@ public:
 	const FXRectangle& getRect() const;
 	int getChartId() const;
 	int getId() const;
+	int getFlags() const;
+	FXFont* getFont() const;
 
 	void setId(int id, const FXString& text);
 	void setChartId(int id);
 	void setFont(FXFont* font);
+	void setFlags(int flags);
+
 	virtual void setVisibleAngle(double /*ang*/) {};
 	virtual void setAngle(double /*ang*/) {};
 
@@ -53,4 +57,5 @@ protected:
     bool selected_;
 	int chart_id_;
 	int id_;
+	int flags_;
 };
