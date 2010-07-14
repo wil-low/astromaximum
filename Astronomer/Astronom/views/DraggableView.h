@@ -22,7 +22,7 @@ public:
 		ID_LOCK = FXCanvas::ID_LAST,
 		ID_LAST
 	};
-    static float distance(FXint x1, FXint y1, FXint x2, FXint y2);
+    static double distance(FXint x1, FXint y1, FXint x2, FXint y2);
 protected:
 	enum hotspot_t {
 		HS_NONE = 0,

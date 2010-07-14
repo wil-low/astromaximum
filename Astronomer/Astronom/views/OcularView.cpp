@@ -43,6 +43,10 @@ OcularView::OcularView(FXComposite* p, FXint x, FXint y, FXint r)
 
 OcularView::~OcularView(void)
 {
+    BOOST_FOREACH (AstroLabel* al, labels_) {
+        delete al;
+    }
+    labels_.clear();
 }
 
 void OcularView::create()
@@ -306,7 +310,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 		bool need_insert = !label;
 		if (!label)
 			label = new HouseLabel(this, hf, -100, -100, 20, 20);
-		else 
+		else
 			label->setFlags((int)hf);
 		label->setAngle(chart->houses_.cusps[i]);
 		label_text.format("%d", i);
@@ -447,15 +451,15 @@ void OcularView::drawPlanetLines(FXDC& dc)
 	double zouter = dimensions_.zodiac5dgrR * r;
 	double zinner = dimensions_.innerPlanetLabelR * r;
 	double zdgr = (dimensions_.zodiacInnerR + dimensions_.zodiac5dgrR) / 2 * r;
-	dc.setForeground(colors_.planetTickColor);
 	dc.setLineWidth(1);
 	FXPoint pt[2];
 
 	FXString strDegree;
 	FXFont* dgrFont = glyph_manager_->getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR);
-	
+
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		if (al->getType() == AstroLabel::TYPE_PLANET) {
+            dc.setForeground(colors_.planetTickColor);
 			double ang = al->getAngle() + zero_angle_;
 			double angv = al->getVisibleAngle() + zero_angle_;
 			double planet_r = al->getRect().w / 2;
@@ -488,10 +492,10 @@ void OcularView::drawHouseLines(FXDC& dc)
 	dc.setLineWidth(1);
 	dc.setBackground(getBackColor());
 	FXPoint pt[2];
-	
+
 	FXString strDegree;
 	FXFont* dgrFont = glyph_manager_->getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR);
-	
+
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		if (al->getType() == AstroLabel::TYPE_HOUSE) {
 			double ang = al->getAngle() + zero_angle_;
@@ -518,19 +522,19 @@ void OcularView::drawHouseLines(FXDC& dc)
 						dc.setFont(dgrFont);
 						if (hf == HouseLabel::hf_Asc) {
 							pt[1] = getXYdeg(ang, r_ascmc * 0.98);
-							strDegree.format("%02d%c", 
-								(int)al->getAngle() % DEG_PER_SIGN + 1, 
+							strDegree.format("%02d%c",
+								(int)al->getAngle() % DEG_PER_SIGN + 1,
 								glyph_manager_->getDegreeSign());
 							dc.drawText(pt[1].x, pt[1].y - 1, strDegree);
-							strDegree.format("%02d'", 
+							strDegree.format("%02d'",
 								(int)(al->getAngle() - (int)al->getAngle()) * 60 + 1);
 							FXint th = dgrFont->getTextHeight(strDegree);
 							dc.drawText(pt[1].x, pt[1].y + th, strDegree);
 						}
 						else {
 							pt[1] = getXYdeg(ang, r_ascmc * 0.96);
-							strDegree.format("%02d%c%02d'", 
-								(int)al->getAngle() % DEG_PER_SIGN + 1, 
+							strDegree.format("%02d%c%02d'",
+								(int)al->getAngle() % DEG_PER_SIGN + 1,
 								glyph_manager_->getDegreeSign(),
 								(int)(al->getAngle() - (int)al->getAngle()) * 60 + 1);
 							FXint tw = dgrFont->getTextWidth(strDegree);

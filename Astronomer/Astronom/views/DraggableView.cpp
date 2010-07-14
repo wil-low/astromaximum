@@ -99,11 +99,11 @@ DraggableView::hotspot_t DraggableView::hotSpot (FXint, FXint, FXbool, FXDefault
 	return HS_NONE;
 }
 
-float DraggableView::distance(FXint x1, FXint y1, FXint x2, FXint y2)
+double DraggableView::distance(FXint x1, FXint y1, FXint x2, FXint y2)
 {
 	FXint dx = x1 - x2;
 	FXint dy = y1 - y2;
-	return sqrt (float(dx * dx + dy * dy));
+	return sqrt (double(dx * dx + dy * dy));
 }
 
 long DraggableView::onCmdLock(FXObject*, FXSelector, void* ptr)

@@ -15,9 +15,13 @@
 				<Compiler>
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="`fox-config --cflags`" />
 				</Compiler>
+				<Linker>
+					<Add option="-pg" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/Astronom" prefix_auto="1" extension_auto="1" />
