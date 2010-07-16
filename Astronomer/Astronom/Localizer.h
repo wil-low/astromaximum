@@ -6,11 +6,10 @@ class Localizer : public FX::FXTranslator
 {
     FXDECLARE(Localizer)
 public:
-    Localizer(FXApp* a);
+    Localizer();
     virtual ~Localizer() {};
     void load_lang(const FXString& lang_file);
     virtual const FXchar* tr(const FXchar* context,const FXchar* message,const FXchar* hint=NULL) const;
 private:
-    Localizer(){}
     FXSettings settings_;
 };

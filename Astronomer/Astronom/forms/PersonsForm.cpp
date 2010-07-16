@@ -19,19 +19,22 @@ PersonsForm::PersonsForm(FXWindow* wo)
     item = new FXTabItem(tabbar, tr("<All>"));
     FXGroupBox* gb = new FXGroupBox(this, "", GROUPBOX_NORMAL|FRAME_RAISED|LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y);
     {
+	FXString s;
     FXHorizontalFrame* hframe=new FXHorizontalFrame(gb,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
         {
             FXVerticalFrame* vframe=new FXVerticalFrame(hframe,LAYOUT_SIDE_TOP|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
 
             for (int i = 0; i < 10; ++i) {
-                new FXButton(vframe, FXString().format("%c", 'A' + i), NULL, this, ID_LAST, BUTTON_TOOLBAR|LAYOUT_FILL_X);
+				s.format("%c", 'A' + i);
+                new FXButton(vframe, s, NULL, this, ID_LAST, BUTTON_TOOLBAR|LAYOUT_FILL_X);
             }
         }
         new FXList(hframe, NULL, 0, LIST_BROWSESELECT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
         {
             FXVerticalFrame* vframe=new FXVerticalFrame(hframe,LAYOUT_SIDE_TOP|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
             for (int i = 0; i < 10; ++i) {
-                new FXButton(vframe, FXString().format("%c", '0' + i));
+				s.format("%c", '0' + i);
+                new FXButton(vframe, s);
             }
         }
         {

@@ -2,8 +2,7 @@
 
 FXIMPLEMENT(Localizer, FXTranslator, 0, 0)
 
-Localizer::Localizer(FXApp* a)
-: FXTranslator(a)
+Localizer::Localizer()
 {
 }
 

@@ -37,7 +37,9 @@ long WheelView::onPaint(FXObject* o, FXSelector, void* ptr)
 	dc.drawEllipse(0, 0, getWidth() - 1, getHeight() - 1);
 //	dc.setFont(glyph_manager_->getFont());
 	dc.drawEllipse(radius_ - 5, radius_ - 5, 10, 10);
-	dc.drawText(30, 30, FXString().format("%c%c%c%c", 115, 117, 85, 80));
+	FXString s;
+	s.format("%c%c%c%c", 115, 117, 85, 80);
+	dc.drawText(30, 30, s);
 	return 1;
 }
 

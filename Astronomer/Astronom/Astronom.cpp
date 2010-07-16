@@ -30,7 +30,7 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
 , fMain(NULL)
 , tooltip_(NULL)
 {
-    Localizer *localizer = new Localizer(this);
+    Localizer *localizer = new Localizer();
     localizer->load_lang ("/home/willow/ahg/Astronomer/Astronom/settings/ru.lng");
 	setTranslator(localizer);
 	char ephe_path[256] = "rerye";

@@ -42,12 +42,12 @@ void TimeLoc::initRex(char date_sep)
 	date_sep_ = date_sep;
 	char pattern[100];
 	sprintf (pattern, FMT_REX[TL_DATE], date_sep_, date_sep_);
-	FXRexError err = rex_[TL_DATE].parse(pattern, REX_CAPTURE);
-	if (err != REGERR_OK)
+	FXRex::Error err = rex_[TL_DATE].parse(pattern, FXRex::Capture);
+	if (err != FXRex::ErrOK)
 		FXTRACE((10, "%s: rex TL_DATE %s\n", __FUNCTION__, FXRex::getError(err)));
 	for (int i = TL_TIME; i < TL_LAST; ++i) {
-		err = rex_[i].parse(FMT_REX[i], REX_CAPTURE);
-		if (err != REGERR_OK)
+		err = rex_[i].parse(FMT_REX[i], FXRex::Capture);
+		if (err != FXRex::ErrOK)
 			FXTRACE((10, "%s: date_rex %s\n", __FUNCTION__, FXRex::getError(err)));
 	}
 }
@@ -80,11 +80,11 @@ int TimeLoc::scan (timeloc_t idx, const FXString &str, int *out)
 	toBackTick(s);
 	FXint beg[5], end[5];
 	int value[4];
-	if(rex_[idx].match(s, beg, end, REX_FORWARD, 5)) {
-		value[0] = FXIntVal(str.mid(beg[1], end[1] - beg[1]));
-		value[1] = FXIntVal(str.mid(beg[2], end[2] - beg[2]));
-		value[2] = FXIntVal(str.mid(beg[3], end[3] - beg[3]));
-		value[3] = FXIntVal(str.mid(beg[4], end[4] - beg[4]));
+	if(rex_[idx].match(s, beg, end, FXRex::Forward, 5)) {
+		value[0] = str.mid(beg[1], end[1] - beg[1]).toInt();
+		value[1] = str.mid(beg[2], end[2] - beg[2]).toInt();
+		value[2] = str.mid(beg[3], end[3] - beg[3]).toInt();
+		value[3] = str.mid(beg[4], end[4] - beg[4]).toInt();
 		if (idx == TL_DATE) {
 			switch (date_fmt_) {
 				case DF_YMD:
