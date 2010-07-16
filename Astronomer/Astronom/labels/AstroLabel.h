@@ -1,5 +1,7 @@
 #pragma once
+#include "../utils/BodyProps.h"
 #include <fx.h>
+
 class DraggableView;
 
 class AstroLabel : public FXObject
@@ -32,23 +34,29 @@ public:
 	virtual double getVisibleAngle() const;
 	virtual label_type_t getType() const;
 	const FXRectangle& getRect() const;
+    const FXString& getText() const;
 	int getChartId() const;
 	int getId() const;
 	int getFlags() const;
+	unsigned int getIdentity() const;
 	FXFont* getFont() const;
+	double getProp(BodyProps::body_property p) const;
+	FXWindow* getParent() const;
 
 	void setId(int id, const FXString& text);
 	void setChartId(int id);
 	void setFont(FXFont* font);
 	void setFlags(int flags);
 
+	virtual void setProps(const BodyProps& props);
+
 	virtual void setVisibleAngle(double /*ang*/) {};
-	virtual void setAngle(double /*ang*/) {};
 
 	virtual FXString toString() const;
 
     bool contains(FXint x, FXint y);
 	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);
+
 	AstroLabel(){}
 protected:
     FXRectangle rect_;
@@ -58,4 +66,6 @@ protected:
 	int chart_id_;
 	int id_;
 	int flags_;
+	BodyProps props_;
+	FXWindow* parent_;
 };

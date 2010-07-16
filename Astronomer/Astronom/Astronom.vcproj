@@ -403,16 +403,44 @@
 				RelativePath=".\widgets\MaskedTextField.h"
 				>
 			</File>
+			<File
+				RelativePath=".\widgets\PlanetListItem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\widgets\PlanetListItem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\widgets\PlanetSelector.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\widgets\PlanetSelector.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="utils"
 			>
+			<File
+				RelativePath=".\utils\BodyProps.h"
+				>
+			</File>
 			<File
 				RelativePath=".\utils\constants.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\utils\constants.h"
+				>
+			</File>
+			<File
+				RelativePath=".\utils\DMS.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\utils\DMS.h"
 				>
 			</File>
 			<File

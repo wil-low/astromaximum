@@ -1,3 +1,5 @@
 [MainForm]
 &File = &Файл
 &Input data... = Ввод данных
+
+Abs.\tAbsolute = Abs.\tАбсолютное значение

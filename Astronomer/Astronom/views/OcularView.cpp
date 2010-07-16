@@ -189,8 +189,10 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 long OcularView::onConfigure(FXObject* o, FXSelector sel, void* ptr)
 {
     WheelView::onConfigure(o, sel, ptr);
-    dimensions_.radius = radius_;
-	reorderLabels();
+	if (dimensions_.radius != radius_) {
+		dimensions_.radius = radius_;
+		reorderLabels();
+	}
 	is_resizing_ = false;
 	return 0;
 }
@@ -283,6 +285,13 @@ long OcularView::onCmdSetColors(FXObject*, FXSelector, void* ptr)
 	return 1;
 }
 
+struct less_planet_list {
+	bool operator() (const AstroLabel* al1, const AstroLabel* al2) const
+	{
+		return al1->getIdentity() < al2->getIdentity();
+	}
+};
+
 long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 {
 //	ChartList* cl = (ChartList*)ptr;
@@ -294,7 +303,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 		bool need_insert = !label;
 		if (!label)
 			label = new PlanetLabel(this, -100, -100, 20, 20);
-		label->setAngle((*it).second.prop[BodyProps::bp_Lon]);
+		label->setProps((*it).second);
 		label_text.format("%c", glyph_manager_->getPlanetLabel((*it).first));
 		label->setId((*it).first, label_text);
 		label->setChartId(chart->id_);
@@ -304,6 +313,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 		}
 	}
 	int cusp_count = chart->houses_.getCuspCount();
+	BodyProps hprops;
     for (int i = 1; i <= cusp_count; ++i) {
 		HouseLabel::HouseFlag hf = HouseLabel::flagOfHouse(i, cusp_count);
 		AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_START + i);
@@ -312,7 +322,8 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 			label = new HouseLabel(this, hf, -100, -100, 20, 20);
 		else
 			label->setFlags((int)hf);
-		label->setAngle(chart->houses_.cusps[i]);
+		hprops.prop[BodyProps::bp_Lon] = chart->houses_.cusps[i];
+		label->setProps(hprops);
 		label_text.format("%d", i);
 		label->setId(HOUSE_ID_START + i, label_text);
 		label->setChartId(chart->id_);
@@ -331,6 +342,13 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 	}
 	reorderLabels();
 	update();
+
+	std::vector<AstroLabel*> planets;
+	planets.resize(labels_.size());
+	std::copy(labels_.begin(), labels_.end(), planets.begin());
+	std::sort(planets.begin(), planets.end(), less_planet_list());
+	getShell()->handle (0, FXSEL(SEL_COMMAND, astro::ID_FILL_PLANET_LIST), (void*)&planets);
+
 	return 1;
 }
 
@@ -358,6 +376,7 @@ void OcularView::spreadLabels (int chart, AstroLabel::label_type_t type, double 
         FXTRACE((90, "%s\n", (*it)->toString().text()));
 		++it;
     }
+	delta_width *= 1.2;
 	double delta_ang = atan (delta_width / r) / DTOR * 2;
 	CircleSpread cspread(input);
 

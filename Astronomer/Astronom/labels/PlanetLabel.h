@@ -12,11 +12,9 @@ public:
     virtual label_type_t getType() const;
 	virtual double getVisibleAngle() const;
 
-	virtual void setAngle(double ang);
 	virtual void setVisibleAngle(double ang);
 	PlanetLabel(){}
 private:
     int planet_id_;
-    double lon_;
     double visibleLon_;
 };

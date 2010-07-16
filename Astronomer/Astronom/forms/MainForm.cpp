@@ -1,11 +1,14 @@
 #include "MainForm.h"
 #include "../Astronom.h"
-#include "../labels/AstroLabel.h"
 #include "../views/RectangleView.h"
 #include "../views/TriangleView.h"
 #include "../views/WheelView.h"
 #include "../views/OcularView.h"
+#include "../forms/GlyphManager.h"
+#include "../widgets/PlanetSelector.h"
+#include "../utils/constants.h"
 
+#include <boost/foreach.hpp>
 #include <fxkeys.h>
 
 FXDEFMAP(MainForm) MainFormMessageMap[]={
@@ -14,6 +17,7 @@ FXDEFMAP(MainForm) MainFormMessageMap[]={
 //	FXMAPFUNC(SEL_COMMAND,           MainForm::ID_ADD,       MainForm::onAddView),
 	FXMAPFUNC(SEL_PAINT,             MainForm::ID_CANVAS,    MainForm::onPaint),
 	FXMAPFUNC(SEL_COMMAND,           MainForm::ID_LOCK,		 MainForm::onCmdLock),
+	FXMAPFUNC(SEL_COMMAND,           astro::ID_FILL_PLANET_LIST,		 MainForm::onCmdFillPlanetList),
 };
 
 FXIMPLEMENT(MainForm, FXMainWindow, MainFormMessageMap, ARRAYNUMBER(MainFormMessageMap))
@@ -23,9 +27,7 @@ MainForm::MainForm(FXApp *a)
 : FXMainWindow(a,"Astronom",NULL,NULL,DECOR_ALL,0,0,800,600)
 {
     setTarget(a);
-	FXVerticalFrame* vframe=new FXVerticalFrame(this,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-
-	FXMenuBar* menubar = new FXMenuBar(vframe, LAYOUT_TOP|LAYOUT_FILL_X);
+	FXMenuBar* menubar = new FXMenuBar(this, LAYOUT_TOP|LAYOUT_FILL_X);
 	// File menu
 	filemenu=new FXMenuPane(menubar);
 	new FXMenuTitle(menubar, tr("&File"), NULL, filemenu);
@@ -44,33 +46,21 @@ MainForm::MainForm(FXApp *a)
 		getAccelTable()->addAccel (MKUINT(KEY_G,CONTROLMASK), getApp(), FXSEL(SEL_COMMAND, Astronom::ID_GLYPH));
 		getAccelTable()->addAccel (MKUINT(KEY_F3, 0), getApp(), FXSEL(SEL_COMMAND, Astronom::ID_CHRONO));
 	}
-	contents=new FXHorizontalFrame(vframe,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
+
+	new FXStatusBar(this, LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X);
+	splitter = new FXSplitter(this,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y|SPLITTER_REVERSED|SPLITTER_TRACKING); 
+
+	contents=new FXHorizontalFrame(splitter,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
 
 	// LEFT pane to contain the canvas
 	canvasFrame=new FXVerticalFrame(contents, LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0, 0,0,0,0);
 	canvasFrame->setBackColor(FXRGB(255,255,255));
 
 	// RIGHT pane for the buttons
-	buttonFrame=new FXVerticalFrame(contents,FRAME_SUNKEN|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,10,10);
+	planetSelector = new PlanetSelector(splitter, ((Astronom*)getApp())->fGlyphManager);
 
-	// Label above the buttons
-	new FXLabel(buttonFrame,"Button Frame",NULL,JUSTIFY_CENTER_X|LAYOUT_FILL_X);
+//    btnLock = new FXCheckButton(buttonFrame,"&Lock", this, ID_LOCK,CHECKBUTTON_NORMAL,0,0,0,0,10,10,5,5);
 
-	// Horizontal divider line
-	new FXHorizontalSeparator(buttonFrame,SEPARATOR_RIDGE|LAYOUT_FILL_X);
-
-	// Button to clear
-	new FXButton(buttonFrame,"&Add\tAdd",NULL,this,ID_ADD,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
-
-	// Button to clear
-	new FXButton(buttonFrame,"+1h",NULL,getApp(),Astronom::ID_INC_HOUR,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
-
-	// Exit button
-	new FXButton(buttonFrame,"&Exit",NULL,getApp(),FXApp::ID_QUIT,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
-
-    btnLock = new FXCheckButton(buttonFrame,"&Lock", this, ID_LOCK,CHECKBUTTON_NORMAL,0,0,0,0,10,10,5,5);
-
-    new FXStatusBar(vframe, LAYOUT_FILL_X);
 //    btnLock->setCheck();
 }
 
@@ -107,31 +97,22 @@ long MainForm::onCmdLock(FXObject*, FXSelector, void* ptr)
 
 long MainForm::onAddView(FXObject*, FXSelector, void*)
 {
-
-	static int counter = 0;
-	DraggableView* dv = NULL;
-//	dv = new TriangleView(canvasFrame, 100, 35, 100, 100, (right_angle_t)(counter % 4));
-
-	switch (counter % 3) {
-		case 0:
-			dv = new OcularView(canvasFrame, 10, 10, 377);
-			dv->setGlyphManager(((Astronom*)getApp())->fGlyphManager);
-			((Astronom*)getApp())->setOcular(dv);
-			break;
-		case 1: {
-			dv = new WheelView(canvasFrame, 100, 35, 50);
-			AstroLabel* fr = new AstroLabel(dv, 100, 35, 100, 10);
-				}
-			break;
-//		case 1:
-		case 2:
-			dv = new RectangleView(canvasFrame, 100, 35, 100, 100);
-			break;
-	}
+	dv = new OcularView(canvasFrame, 10, 10, 377);
+	dv->setGlyphManager(((Astronom*)getApp())->fGlyphManager);
+	((Astronom*)getApp())->setOcular(dv);
+	dv->create();
+	dv->handle(dv, FXSEL(SEL_COMMAND, DraggableView::ID_LOCK), (void*)0);//btnLock->getCheck());
+	dv->raise();
+/*
+	dv = new RectangleView(canvasFrame, 100, 35, 100, 100);
+	dv->setGlyphManager(((Astronom*)getApp())->fGlyphManager);
 	dv->create();
 	dv->handle(dv, FXSEL(SEL_COMMAND, DraggableView::ID_LOCK), (void*)btnLock->getCheck());
-	dv->raise();
-
-	++counter;
+	dv->raise();*/
 	return 1;
+}
+
+long MainForm::onCmdFillPlanetList(FXObject* sender, FXSelector sel, void* ptr)
+{
+	return planetSelector->handle(sender, sel, ptr);
 }

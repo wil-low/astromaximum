@@ -75,6 +75,12 @@ long calc_body (BodyProps& props, int body, long flags, const TimeLoc& time_loc)
 	long result = swe_calc_ut (time_loc.get(TL_DATE), body, flags, props.prop, serr);
 	if (result < 0 || serr[0] != 0)
 		FXTRACE((10, "%s: %s\n", __FUNCTION__, serr));
+	double extra[6];
+	result = swe_calc_ut (time_loc.get(TL_DATE), body, flags|SEFLG_EQUATORIAL, extra, serr);
+	props.prop[BodyProps::bp_RectAsc] = extra[0];
+	props.prop[BodyProps::bp_Declination] = extra[1];
+	if (result < 0 || serr[0] != 0)
+		FXTRACE((10, "%s: %s\n", __FUNCTION__, serr));
 	return result;
 }
 

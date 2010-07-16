@@ -11,7 +11,6 @@ FXIMPLEMENT(PlanetLabel, AstroLabel, PlanetLabelMessageMap, ARRAYNUMBER(PlanetLa
 
 PlanetLabel::PlanetLabel(DraggableView* p, FXint x, FXint y, FXint w, FXint h)
 : AstroLabel(p, x, y, w, h)
-, lon_(0)
 {
 }
 
@@ -21,7 +20,7 @@ PlanetLabel::~PlanetLabel(void)
 
 double PlanetLabel::getAngle() const
 {
-	return lon_;
+	return props_.prop[BodyProps::bp_Lon];
 }
 
 long PlanetLabel::onClicked(FXObject*, FXSelector, void*)
@@ -39,13 +38,7 @@ double PlanetLabel::getVisibleAngle() const
 	return visibleLon_;
 }
 
-void PlanetLabel::setAngle(double ang)
-{
-	lon_ = ang;
-}
-
 void PlanetLabel::setVisibleAngle(double ang)
 {
     visibleLon_ = ang;
 }
-

@@ -31,7 +31,7 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
 , tooltip_(NULL)
 {
     Localizer *localizer = new Localizer();
-    localizer->load_lang ("/home/willow/ahg/Astronomer/Astronom/settings/ru.lng");
+    localizer->load_lang ("settings/ru.lng");
 	setTranslator(localizer);
 	char ephe_path[256] = "rerye";
 	Ephemeris::init (ephe_path);

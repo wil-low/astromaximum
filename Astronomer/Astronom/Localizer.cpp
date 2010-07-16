@@ -12,7 +12,7 @@ void Localizer::load_lang(const FXString& lang_file)
     settings_.parseFile(lang_file, false);
 }
 
-const FXchar* Localizer::tr(const FXchar* context,const FXchar* message,const FXchar* hint) const
+const FXchar* Localizer::tr(const FXchar* context,const FXchar* message,const FXchar* hint,FXint count) const
 {
     FXStringDict* dict = settings_.find(context);
     if (dict) {

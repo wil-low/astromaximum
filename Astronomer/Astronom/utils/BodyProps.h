@@ -8,8 +8,10 @@ public:
 		bp_Dist,
 		bp_LonSpeed,
 		bp_LatSpeed,
-		bp_DistSpeed
+		bp_DistSpeed,
+		bp_RectAsc,
+		bp_Declination,
+		bp_Last
 	};
-	double prop[6];
+	double prop[bp_Last];
 };
-

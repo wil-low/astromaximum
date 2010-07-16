@@ -33,7 +33,7 @@ long RectangleView::onPaint(FXObject* o, FXSelector, void* ptr)
 	dc.fillRectangle(ev->rect.x,ev->rect.y,ev->rect.w,ev->rect.h);
 	dc.setForeground(drawColor);
 	dc.drawRoundRectangle(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
-//	dc.setFont(glyph_manager_->getFont());
+	dc.setFont(glyph_manager_->getFont(5));
 	dc.drawText(10, 100, "sjafjamMIi,ozqtr");
 	return 1;
 }

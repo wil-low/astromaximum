@@ -39,12 +39,4 @@ struct OcularColors {
 	FXColor aspectTickColor;
 };
 
-namespace astro {
-enum {
-	ID_SET_ZERO = 1000,
-	ID_SET_OCULAR_DIM,
-	ID_SET_OCULAR_COLOR,
-	ID_UPDATE_CHART,
-};
-}
 #endif
