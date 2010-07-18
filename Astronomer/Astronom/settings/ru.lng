@@ -2,4 +2,6 @@
 &File = &Файл
 &Input data... = Ввод данных
 
-Abs.\tAbsolute = Abs.\tАбсолютное значение
+[PlanetSelector]
+Absolute = Абсолютное значение
+Latitude/Declination = Широта/Склонение

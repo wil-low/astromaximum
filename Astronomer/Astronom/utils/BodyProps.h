@@ -10,8 +10,10 @@ public:
 		bp_LatSpeed,
 		bp_DistSpeed,
 		bp_RectAsc,
+		bp_OblAsc,
 		bp_Declination,
 		bp_Last
 	};
+	BodyProps();
 	double prop[bp_Last];
 };

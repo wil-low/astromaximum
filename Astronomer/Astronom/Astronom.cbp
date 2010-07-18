@@ -51,9 +51,10 @@
 			<Add directory="../3d_party/sqlite-3.6.22/include" />
 			<Add directory="../3d_party/sweph/src" />
 			<Add directory="../3d_party/boost_1_42_0" />
+			<Add directory="/usr/local/include/fox-1.7" />
 		</Compiler>
 		<Linker>
-			<Add option="`fox-config --libs`" />
+			<Add option="-L/usr/local/lib -lFOX-1.7 -lX11 -lXext -lfreetype -lXft -lXcursor -lXrender -lXrandr -lXfixes -lGL -lGLU -ldl -lpthread -lrt -ljpeg -lpng -ltiff -lz -lGLU -lGL" />
 			<Add library="sqlite3" />
 			<Add library="swe" />
 			<Add directory="../3d_party/sqlite-3.6.22/lib" />
@@ -101,6 +102,8 @@
 		<Unit filename="models/OcularModel.cpp" />
 		<Unit filename="models/OcularModel.h" />
 		<Unit filename="utils/BodyProps.h" />
+		<Unit filename="utils/DMS.cpp" />
+		<Unit filename="utils/DMS.h" />
 		<Unit filename="utils/HouseProps.h" />
 		<Unit filename="utils/OcularDefs.h" />
 		<Unit filename="utils/constants.cpp" />
@@ -118,15 +121,17 @@
 		<Unit filename="views/WheelView.h" />
 		<Unit filename="widgets/MaskedTextField.cpp" />
 		<Unit filename="widgets/MaskedTextField.h" />
+		<Unit filename="widgets/PlanetListItem.cpp" />
+		<Unit filename="widgets/PlanetListItem.h" />
+		<Unit filename="widgets/PlanetSelector.cpp" />
+		<Unit filename="widgets/PlanetSelector.h" />
 		<Extensions>
 			<envvars />
 			<code_completion>
 				<search_path add="../3d_party/sqlite-3.6.22" />
+				<search_path add="/usr/local/include/fox-1.7" />
 			</code_completion>
 			<debugger />
-			<lib_finder disable_auto="1">
-				<lib name="FOX-1.6" />
-			</lib_finder>
 			<AutoVersioning>
 				<Scheme minor_max="10" build_max="0" rev_max="0" rev_rand_max="10" build_times_to_increment_minor="100" />
 				<Settings autoincrement="1" date_declarations="1" do_auto_increment="0" ask_to_increment="0" language="C++" svn="0" svn_directory="" header_path="version.h" />

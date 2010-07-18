@@ -1,5 +1,6 @@
 #pragma once
 #include <fx.h>
+#include "../utils/constants.h"
 
 class GlyphManager;
 class AstroLabel;
@@ -16,7 +17,8 @@ public:
 		ID_LAST
 	};
 	long onCmdFillPlanetList(FXObject* sender, FXSelector sel, void* ptr);
-	long onClickedPlanetList(FXObject*, FXSelector, void*);
+	long onListSelChanged(FXObject*, FXSelector, void*);
+	long onRBtnRelease(FXObject*,FXSelector,void*);
 	long onCmdGetDegMode(FXObject*, FXSelector, void*);
 	long onCmdSetDegMode(FXObject*, FXSelector, void*);
 
@@ -27,5 +29,6 @@ private:
 	GlyphManager* gm_;
 	FXTabBar* tabbar;
 	FXList* lstPlanets;
+	deg_mode deg_mode_;
 	void selectAstroLabel(AstroLabel* al);
 };

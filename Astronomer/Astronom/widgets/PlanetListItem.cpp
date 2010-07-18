@@ -8,6 +8,7 @@ FXIMPLEMENT(PlanetListItem, FXListItem, NULL, 0)
 
 PlanetListItem::PlanetListItem (AstroLabel* data)
 : FXListItem("0", NULL, data)
+, deg_mode_(dm_Absolute)
 {
 }
 
@@ -15,17 +16,42 @@ PlanetListItem::~PlanetListItem(void)
 {
 }
 
-void PlanetListItem::setDegMode(deg_mode dm)
+void PlanetListItem::setDegMode(const FXList* list, deg_mode dm)
 {
+    deg_mode_ = dm;
 	GlyphManager* gm = ((Astronom*)list->getApp())->fGlyphManager;
 	AstroLabel* al = (AstroLabel*)data;
 	text[0] = al->getText();
-	DMS dms(al->getProp(BodyProps::bp_Lon));
-	text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm->getDegreeSign(), dms.min, dms.sec);
+	text[1] = text[2] = "";
+	DMS dms;
+	switch (dm) {
+	    case dm_Absolute:
+            dms.calculate(al->getProp(BodyProps::bp_Lon));
+            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm->getDegreeSign(), dms.min, dms.sec);
+            break;
+        case dm_Longitude:
+            dms.calculate(al->getProp(BodyProps::bp_Lon));
+            text[1].format("%2d%c%02d\'%02d\"", dms.zod_deg, gm->getDegreeSign(), dms.min, dms.sec);
+            text[2].format("%c", gm->getSignLabel(dms.zodiac));
+            break;
+        case dm_RectAsc:
+            dms.calculate(al->getProp(BodyProps::bp_RectAsc));
+            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm->getDegreeSign(), dms.min, dms.sec);
+            break;
+        case dm_OblAsc:
+            dms.calculate(al->getProp(BodyProps::bp_OblAsc));
+            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm->getDegreeSign(), dms.min, dms.sec);
+            break;
+        case dm_LatDecl:
+            dms.calculate(al->getProp(BodyProps::bp_Lat));
+            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm->getDegreeSign(), dms.min, dms.sec);
+            break;
+	}
 }
 
 void PlanetListItem::draw(const FXList* list, FXDC& dc, FXint xx, FXint yy, FXint ww, FXint hh) const
 {
+    const int SIDE_MARGIN = 5;
 	GlyphManager* gm = ((Astronom*)list->getApp())->fGlyphManager;
 	FXFont *font=list->getFont();
 	FXint ih=0, th = font->getFontHeight();
@@ -43,9 +69,17 @@ void PlanetListItem::draw(const FXList* list, FXDC& dc, FXint xx, FXint yy, FXin
 		dc.setForeground(list->getSelTextColor());
 	else
 		dc.setForeground(list->getTextColor());
-	dc.drawText(xx,yy+(hh-th)/2+font->getFontAscent(), text[0]);
+	dc.drawText(xx + SIDE_MARGIN,yy+(hh-th)/2+font->getFontAscent(), text[0]);
 
-	dc.drawText(xx + 30,yy+(hh-th)/2+font->getFontAscent(), text[1]);
+	if (!text[1].empty()) {
+	    int ofs = font->getTextWidth(text[1]) + SIDE_MARGIN + 30;
+        dc.drawText(xx + ww - ofs,yy+(hh-th)/2+font->getFontAscent(), text[1]);
+	}
+
+	if (!text[2].empty()) {
+	    int ofs = font->getTextWidth(text[2]) + SIDE_MARGIN;
+        dc.drawText(xx + ww - ofs,yy+(hh-th)/2+font->getFontAscent(), text[2]);
+	}
 
   /*
 	char cc; AnsiString str;

@@ -1,6 +1,7 @@
 #include "DMS.h"
 #include "constants.h"
 #include <math.h>
+#include <stdlib.h>
 
 DMS::DMS()
 : deg(0), min(0), sec(0), zodiac(0), zod_deg(0)
