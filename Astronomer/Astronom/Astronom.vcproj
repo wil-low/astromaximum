@@ -396,6 +396,22 @@
 			Name="widgets"
 			>
 			<File
+				RelativePath=".\widgets\ExtraBodyListItem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\widgets\ExtraBodyListItem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\widgets\ExtraBodySelector.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\widgets\ExtraBodySelector.h"
+				>
+			</File>
+			<File
 				RelativePath=".\widgets\MaskedTextField.cpp"
 				>
 			</File>

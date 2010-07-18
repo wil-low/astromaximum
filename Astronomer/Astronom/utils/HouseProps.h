@@ -4,6 +4,7 @@ class HouseProps {
 public:
 	HouseProps();
     enum house_method {
+        hp_Undef = '?',
         hp_Placidus = 'P',
         hp_Koch = 'K',
         hp_Regiomontanus = 'R',

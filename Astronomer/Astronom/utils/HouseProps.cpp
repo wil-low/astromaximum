@@ -1,11 +1,14 @@
 #include "HouseProps.h"
 
 HouseProps::HouseProps()
-: method(hp_Placidus) 
+: method(hp_Undef) 
 {
 }
 
 int HouseProps::getCuspCount() const
 {
-	return (method == hp_Gaquelin ? 36 : 12);
+	if (method == hp_Undef)
+		return 0;
+	else
+		return (method == hp_Gaquelin ? 36 : 12);
 }

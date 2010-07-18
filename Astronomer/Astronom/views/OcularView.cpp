@@ -19,7 +19,9 @@ FXDEFMAP(OcularView) WheelViewMessageMap[]={
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_ZERO,     OcularView::onCmdSetZero),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_OCULAR_DIM,     OcularView::onCmdSetDimensions),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_OCULAR_COLOR,  OcularView::onCmdSetColors),
-	FXMAPFUNC(SEL_COMMAND,           astro::ID_UPDATE_CHART,  OcularView::onCmdUpdateChart),
+	FXMAPFUNC(SEL_COMMAND,           astro::ID_CHART_RESET,  OcularView::onChartReset),
+	FXMAPFUNC(SEL_COMMAND,           astro::ID_CHART_APPEND,  OcularView::onChartAppend),
+	FXMAPFUNC(SEL_COMMAND,           astro::ID_CHART_REMOVE,  OcularView::onChartRemove),
 };
 
 FXIMPLEMENT(OcularView, WheelView, WheelViewMessageMap, ARRAYNUMBER(WheelViewMessageMap))
@@ -225,7 +227,8 @@ void OcularView::reorderLabels()
     FXPoint pt;
 
 	spreadLabels(0, TYPE_PLANET, rad[TYPE_PLANET]);
-	spreadLabels(0, TYPE_HOUSE, rad[TYPE_HOUSE]);
+	spreadLabels(1, TYPE_PLANET, rad[TYPE_PLANET]);
+//	spreadLabels(0, TYPE_HOUSE, rad[TYPE_HOUSE]);
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		pt = getXYdeg(zero_angle_ + al->getVisibleAngle(), rad[al->getType()]);
 		al->position(pt.x, pt.y);
@@ -292,9 +295,8 @@ struct less_planet_list {
 	}
 };
 
-long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
+long OcularView::onChartReset(FXObject*, FXSelector, void* ptr)
 {
-//	ChartList* cl = (ChartList*)ptr;
 	Chart* chart = (Chart*)ptr;
 	FXString label_text;
 //	double radius = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
@@ -314,41 +316,43 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 	}
 
 	int cusp_count = chart->houses_.getCuspCount();
-	BodyProps hprops;
-	for (int i = 0; i < 2; ++i) {
-		house_flag_t hf = (i == 0) ? hf_Asc : hf_MC;
-		AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_ASC + i);
-		bool need_insert = !label;
-		if (!label)
-			label = new HouseLabel(this, hf, -100, -100, 20, 20);
-		else
-			label->setFlags((int)hf);
-		hprops.prop[BodyProps::bp_Lon] = chart->houses_.ascmc[i];
-		label->setProps(hprops);
-		label->setId(HOUSE_ID_ASC + i, GlyphManager::get_const_instance().getHouseLabel(i, hf));
-		label->setChartId(chart->id_);
-		if (need_insert) {
-			std::pair<AlcIter, bool> result = labels_.insert(label);
-			assert (result.second);
+	if (cusp_count > 0) {
+		BodyProps hprops;
+		for (int i = 0; i < 2; ++i) {
+			house_flag_t hf = (i == 0) ? hf_Asc : hf_MC;
+			AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_ASC + i);
+			bool need_insert = !label;
+			if (!label)
+				label = new HouseLabel(this, hf, -100, -100, 20, 20);
+			else
+				label->setFlags((int)hf);
+			hprops.prop[BodyProps::bp_Lon] = chart->houses_.ascmc[i];
+			label->setProps(hprops);
+			label->setId(HOUSE_ID_ASC + i, GlyphManager::get_const_instance().getHouseLabel(i, hf));
+			label->setChartId(chart->id_);
+			if (need_insert) {
+				std::pair<AlcIter, bool> result = labels_.insert(label);
+				assert (result.second);
+			}
+		}
+		for (int i = 1; i <= cusp_count; ++i) {
+			house_flag_t hf = HouseLabel::flagOfHouse(i, cusp_count);
+			AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_FIRST + i);
+			bool need_insert = !label;
+			if (!label)
+				label = new HouseLabel(this, hf, -100, -100, 20, 20);
+			else
+				label->setFlags((int)hf);
+			hprops.prop[BodyProps::bp_Lon] = chart->houses_.cusps[i];
+			label->setProps(hprops);
+			label->setId(HOUSE_ID_FIRST + i, GlyphManager::get_const_instance().getHouseLabel(HOUSE_ID_FIRST + i, hf));
+			label->setChartId(chart->id_);
+			if (need_insert) {
+				std::pair<AlcIter, bool> result = labels_.insert(label);
+				assert (result.second);
+			}
 		}
 	}
-    for (int i = 1; i <= cusp_count; ++i) {
-		house_flag_t hf = HouseLabel::flagOfHouse(i, cusp_count);
-		AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_FIRST + i);
-		bool need_insert = !label;
-		if (!label)
-			label = new HouseLabel(this, hf, -100, -100, 20, 20);
-		else
-			label->setFlags((int)hf);
-		hprops.prop[BodyProps::bp_Lon] = chart->houses_.cusps[i];
-		label->setProps(hprops);
-		label->setId(HOUSE_ID_FIRST + i, GlyphManager::get_const_instance().getHouseLabel(HOUSE_ID_FIRST + i, hf));
-		label->setChartId(chart->id_);
-		if (need_insert) {
-			std::pair<AlcIter, bool> result = labels_.insert(label);
-			assert (result.second);
-		}
-    }
 	switch (zero_point_) {
 		case ZERO_ASC:
 			zero_angle_ = 180 - chart->houses_.cusps[1];
@@ -366,6 +370,18 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 	std::sort(planets.begin(), planets.end(), less_planet_list());
 	getShell()->handle (0, FXSEL(SEL_COMMAND, astro::ID_FILL_PLANET_LIST), (void*)&planets);
 
+	return 1;
+}
+
+long OcularView::onChartAppend(FXObject*, FXSelector, void* ptr)
+{
+	Chart* chart = (Chart*)ptr;
+	return 1;
+}
+
+long OcularView::onChartRemove(FXObject*, FXSelector, void* ptr)
+{
+	Chart* chart = (Chart*)ptr;
 	return 1;
 }
 

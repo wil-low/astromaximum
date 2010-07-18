@@ -19,7 +19,9 @@ public:
 	long onCmdSetZero(FXObject*, FXSelector, void*);
 	long onCmdSetDimensions(FXObject*, FXSelector, void*);
 	long onCmdSetColors(FXObject*, FXSelector, void* ptr);
-	long onCmdUpdateChart(FXObject*, FXSelector, void* ptr);
+	long onChartReset(FXObject*, FXSelector, void* ptr);
+	long onChartAppend(FXObject*, FXSelector, void* ptr);
+	long onChartRemove(FXObject*, FXSelector, void* ptr);
 	long onConfigure(FXObject*, FXSelector, void*);
     long onQueryTip(FXObject*, FXSelector, void*);
     long onQueryHelp(FXObject*, FXSelector, void*);

@@ -3,6 +3,7 @@
 
 class DraggableView;
 class PlanetSelector;
+class ExtraBodySelector;
 
 class MainForm : public FXMainWindow {
 	// Macro for class hierarchy declarations
@@ -43,6 +44,7 @@ private:
 	FXSplitter* splitter;
 	DraggableView* dv;
 	PlanetSelector* planetSelector;
+	ExtraBodySelector* extraBodySelector;
 
 protected:
 	MainForm(){}

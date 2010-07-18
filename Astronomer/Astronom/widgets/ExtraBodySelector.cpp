@@ -1,4 +1,4 @@
-#include "PlanetSelector.h"
+#include "ExtraBodySelector.h"
 #include "../widgets/PlanetListItem.h"
 #include "../labels/AstroLabel.h"
 #include "../utils/constants.h"
@@ -6,26 +6,27 @@
 #include <vector>
 #include <boost/foreach.hpp>
 
-FXDEFMAP(PlanetSelector) PlanetSelectorMessageMap[]={
+FXDEFMAP(ExtraBodySelector) ExtraBodySelectorMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
-	FXMAPFUNC(SEL_COMMAND,           astro::ID_FILL_PLANET_LIST,		 PlanetSelector::onCmdFillPlanetList),
-	FXMAPFUNC(SEL_SELECTED,           PlanetSelector::ID_PLANETS,	 PlanetSelector::onListSelChanged),
-	FXMAPFUNC(SEL_COMMAND,           astro::ID_GET_DEG_MODE, PlanetSelector::onCmdGetDegMode),
-	FXMAPFUNC(SEL_COMMAND,          PlanetSelector::ID_DEGMODE, PlanetSelector::onCmdSetDegMode),
-//    FXMAPFUNC(SEL_RIGHTBUTTONPRESS,PlanetSelector::ID_PLANETS,PlanetSelector::onRBtnPress),
-    FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,PlanetSelector::ID_PLANETS,PlanetSelector::onRBtnRelease),
+	FXMAPFUNC(SEL_COMMAND,           astro::ID_FILL_PLANET_LIST,		 ExtraBodySelector::onCmdFillPlanetList),
+	FXMAPFUNC(SEL_SELECTED,           ExtraBodySelector::ID_PLANETS,	 ExtraBodySelector::onListSelChanged),
+	FXMAPFUNC(SEL_COMMAND,           astro::ID_GET_DEG_MODE, ExtraBodySelector::onCmdGetDegMode),
+	FXMAPFUNC(SEL_COMMAND,          ExtraBodySelector::ID_DEGMODE, ExtraBodySelector::onCmdSetDegMode),
+//    FXMAPFUNC(SEL_RIGHTBUTTONPRESS,ExtraBodySelector::ID_PLANETS,ExtraBodySelector::onRBtnPress),
+    FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,ExtraBodySelector::ID_PLANETS,ExtraBodySelector::onRBtnRelease),
 };
 
-FXIMPLEMENT(PlanetSelector, FXVerticalFrame, PlanetSelectorMessageMap, ARRAYNUMBER(PlanetSelectorMessageMap))
+FXIMPLEMENT(ExtraBodySelector, FXVerticalFrame, ExtraBodySelectorMessageMap, ARRAYNUMBER(ExtraBodySelectorMessageMap))
 
 const unsigned int PLANET_SELECTOR_COLOR = FXRGB(131, 160, 165);
 
-PlanetSelector::PlanetSelector (FXComposite* p)
+ExtraBodySelector::ExtraBodySelector (FXComposite* p)
 : FXVerticalFrame(p, FRAME_SUNKEN|LAYOUT_FILL|LAYOUT_TOP|LAYOUT_LEFT, 0,0,0,0,10,10,10,10)
 , deg_mode_(dm_Absolute)
 {
     setBackColor(PLANET_SELECTOR_COLOR);
+/*
     tabbar = new FXTabBar(this, this, ID_DEGMODE, TABBOOK_NORMAL);
 	tabbar->setBackColor(getBackColor());
     FXTabItem* item = new FXTabItem(tabbar, FXString("Abs.\t") + tr("Absolute"));
@@ -38,23 +39,25 @@ PlanetSelector::PlanetSelector (FXComposite* p)
 	item->setBackColor(getBackColor());
     item = new FXTabItem(tabbar, FXString("L/D\t") + tr("Latitude/Declination"));
 	item->setBackColor(getBackColor());
-
-	lstPlanets = new FXList (this, this, ID_PLANETS, LIST_BROWSESELECT|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0);
+*/
+	lstPlanets = new FXList (this, this, ID_PLANETS, LIST_BROWSESELECT|LAYOUT_FILL|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0);
 	lstPlanets->setNumVisible(12);
+	for (int i = 0; i < 12; ++i)
+		lstPlanets->appendItem("123");
 	lstPlanets->setBackColor(getBackColor());
 }
 
-PlanetSelector::~PlanetSelector(void)
+ExtraBodySelector::~ExtraBodySelector(void)
 {
 }
 
-void PlanetSelector::create()
+void ExtraBodySelector::create()
 {
 	FXVerticalFrame::create();
 	lstPlanets->setFont(GlyphManager::get_const_instance().getFont(12, FF_ASTRO));
 }
 
-long PlanetSelector::onCmdFillPlanetList(FXObject* sender, FXSelector sel, void* ptr)
+long ExtraBodySelector::onCmdFillPlanetList(FXObject* sender, FXSelector sel, void* ptr)
 {
 	std::vector<AstroLabel*> *planets = (std::vector<AstroLabel*>*)ptr;
 	lstPlanets->clearItems();
@@ -66,17 +69,18 @@ long PlanetSelector::onCmdFillPlanetList(FXObject* sender, FXSelector sel, void*
 	return 1;
 }
 
-long PlanetSelector::onListSelChanged(FXObject*, FXSelector, void* ptr)
+long ExtraBodySelector::onListSelChanged(FXObject*, FXSelector, void* ptr)
 {
 	int idx = int(ptr);
 	if (idx != -1) {
 		AstroLabel* al = (AstroLabel*)lstPlanets->getItemData(idx);
-		selectAstroLabel(al);
+		if (al)
+			selectAstroLabel(al);
 	}
 	return 1;
 }
 
-void PlanetSelector::selectAstroLabel(AstroLabel* al)
+void ExtraBodySelector::selectAstroLabel(AstroLabel* al)
 {
 	FXEvent evt;
 	evt.win_x = al->getRect().x;
@@ -84,14 +88,14 @@ void PlanetSelector::selectAstroLabel(AstroLabel* al)
     al->getParent()->handle(this, FXSEL(SEL_MOTION, 0), (void*)&evt);
 }
 
-long PlanetSelector::onCmdGetDegMode(FXObject*, FXSelector, void* ptr)
+long ExtraBodySelector::onCmdGetDegMode(FXObject*, FXSelector, void* ptr)
 {
 	int idx = tabbar->getCurrent();
 	ptr = (void*)idx;
 	return 1;
 }
 
-long PlanetSelector::onCmdSetDegMode(FXObject*, FXSelector, void* ptr)
+long ExtraBodySelector::onCmdSetDegMode(FXObject*, FXSelector, void* ptr)
 {
 	deg_mode_ = (deg_mode)int(ptr);
 	for (int i = 0; i < lstPlanets->getNumItems(); ++i) {
@@ -102,7 +106,7 @@ long PlanetSelector::onCmdSetDegMode(FXObject*, FXSelector, void* ptr)
 }
 
 // Right button released
-long PlanetSelector::onRBtnRelease(FXObject* o, FXSelector sel, void* ptr)
+long ExtraBodySelector::onRBtnRelease(FXObject* o, FXSelector sel, void* ptr)
 {
     FXEvent *event=(FXEvent*)ptr;
     ungrab();

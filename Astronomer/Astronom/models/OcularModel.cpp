@@ -51,7 +51,7 @@ void OcularModel::setView(DraggableView* view)
 
 void OcularModel::setData ()
 {
-	int bodies[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	int bodies[] = {0, 1};//, 2, 3, 4, 5, 6, 7, 8, 9};
 	Chart chart;
 	chart.id_ = 0;
 	chart.time_loc_ = timeloc_;
@@ -62,7 +62,7 @@ void OcularModel::setData ()
 	}
 
 	Ephemeris::calc_house(houses_, 'P', timeloc_);
-	chart.houses_ = houses_;
+//	chart.houses_ = houses_;
 
 /*
 	chart.bodies_[0].prop[BodyProps::bp_Lon] = 352;
@@ -99,7 +99,9 @@ void OcularModel::setData ()
 	chart.bodies_[2].prop[BodyProps::bp_Lon] = 320.4V;
 	chart.bodies_[4].prop[BodyProps::bp_Lon] = 20.4;
 */
-	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_UPDATE_CHART), (void*)&chart);
+	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_CHART_RESET), (void*)&chart);
+	chart.id_ = 1;
+	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_CHART_RESET), (void*)&chart);
 }
 
 void OcularModel::setData (const TimeLoc* tl)
@@ -108,3 +110,21 @@ void OcularModel::setData (const TimeLoc* tl)
 	setData();
 }
 
+void OcularModel::addBody(int chart_id, int body)
+{
+	Chart chart;
+	chart.id_ = chart_id;
+	BodyProps props;
+	Ephemeris::calc_body (props, body, 0, timeloc_);
+	chart.bodies_[body] = props;
+	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_CHART_APPEND), (void*)&chart);
+}
+
+void OcularModel::removeBody(int chart_id, int body)
+{
+	Chart chart;
+	chart.id_ = chart_id;
+	BodyProps props;
+	chart.bodies_[body] = props;
+	view_->handle (0, FXSEL(SEL_COMMAND, astro::ID_CHART_REMOVE), (void*)&chart);
+}

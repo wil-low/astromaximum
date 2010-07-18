@@ -9,6 +9,8 @@ public:
 	virtual ~BaseModel();
 	virtual void setView(DraggableView*) = 0;
 	virtual void setData() {};
+	virtual void addBody(int chart_id, int body) {};
+	virtual void removeBody(int chart_id, int body) {};
 	virtual void setData(const TimeLoc*) = 0;
 protected:
 	DraggableView* view_;
