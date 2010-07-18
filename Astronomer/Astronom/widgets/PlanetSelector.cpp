@@ -13,6 +13,7 @@ FXDEFMAP(PlanetSelector) PlanetSelectorMessageMap[]={
 	FXMAPFUNC(SEL_SELECTED,           PlanetSelector::ID_PLANETS,	 PlanetSelector::onListSelChanged),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_GET_DEG_MODE, PlanetSelector::onCmdGetDegMode),
 	FXMAPFUNC(SEL_COMMAND,          PlanetSelector::ID_DEGMODE, PlanetSelector::onCmdSetDegMode),
+//    FXMAPFUNC(SEL_RIGHTBUTTONPRESS,PlanetSelector::ID_PLANETS,PlanetSelector::onRBtnPress),
     FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,PlanetSelector::ID_PLANETS,PlanetSelector::onRBtnRelease),
 };
 
@@ -114,7 +115,8 @@ long PlanetSelector::onRBtnRelease(FXObject* o, FXSelector sel, void* ptr)
     FXMenuPane filemenu(this);
     new FXMenuCaption(&filemenu,"ShutterBug");
     new FXMenuSeparator(&filemenu);
-    new FXMenuCommand(&filemenu,tr("Snap..."),NULL,this,0);
+    FXMenuCommand* mcmd = new FXMenuCommand(&filemenu,tr("Snap..."),NULL,this,0);
+	mcmd->setFont(gm_->getFont(12));
     new FXMenuCommand(&filemenu,tr("Snap delayed..."),NULL,this,0);
     new FXMenuCommand(&filemenu,tr("Snap to clipboard..."),NULL,this,0);
     new FXMenuCommand(&filemenu,tr("Record movie..."),NULL,this,0);
