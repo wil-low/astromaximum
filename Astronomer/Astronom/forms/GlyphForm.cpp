@@ -1,19 +1,19 @@
 #include "GlyphForm.h"
 #include "../utils/GlyphManager.h"
-/*
+
 FXDEFMAP(GlyphForm) GlyphFormMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
-	FXMAPFUNC(SEL_COMMAND,           FXMainWindow::ID_CLOSE,   GlyphForm::onCmdClose),
+	FXMAPFUNC(SEL_DOUBLECLICKED, GlyphForm::ID_TABLE,   GlyphForm::onTableDblClicked),
 };
-*/
-FXIMPLEMENT(GlyphForm, FXMainWindow, 0, 0);//GlyphFormMessageMap, ARRAYNUMBER(GlyphFormMessageMap))
+
+FXIMPLEMENT(GlyphForm, FXMainWindow, GlyphFormMessageMap, ARRAYNUMBER(GlyphFormMessageMap))
 
 GlyphForm::GlyphForm(FXApp* a)
 : FXMainWindow(a,"Glyph Manager",NULL,NULL,DECOR_ALL,0,0,800,600)
 {
     setTarget(a);
-	tabFont = new FXTable(this, NULL, ID_TABLE, JUSTIFY_CENTER_X|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+	tabFont = new FXTable(this, this, ID_TABLE, JUSTIFY_CENTER_X|LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
 	tabFont->setEditable(false);
 	tabFont->setRowHeaderMode(LAYOUT_MIN_WIDTH);
@@ -40,4 +40,16 @@ void GlyphForm::create()
 {
 	FXMainWindow::create();
 	tabFont->setFont(GlyphManager::get_const_instance().getFont(15, FF_ASTRO));
+}
+
+long GlyphForm::onTableDblClicked(FXObject*, FXSelector, void* ptr)
+{
+	int row = tabFont->getSelStartRow(), col = tabFont->getSelStartColumn();
+	if (row != -1 && col != -1) {
+		int pos = row * tabFont->getNumColumns() + col;
+		FXString s;
+		s.format("%d ('%c')", pos, pos);
+		FXMessageBox::information(getApp(), MBOX_OK, "Astronom", s.text());
+	}
+	return 1;
 }

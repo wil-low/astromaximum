@@ -135,7 +135,7 @@ double AstroLabel::getVisibleAngle() const
     return -1;
 }
 
-AstroLabel::label_type_t AstroLabel::getType() const
+body_type_t AstroLabel::getType() const
 {
     return TYPE_LAST;
 }

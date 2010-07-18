@@ -15,7 +15,7 @@ FXDEFMAP(OcularView) WheelViewMessageMap[]={
 	FXMAPFUNC(SEL_MOTION,            0, OcularView::onMouseMove),
 	FXMAPFUNC(SEL_QUERY_HELP,        0, OcularView::onQueryHelp),
 	FXMAPFUNC(SEL_CONFIGURE,         0, OcularView::onConfigure),
-	FXMAPFUNC(SEL_RIGHTBUTTONPRESS,   0, OcularView::onRightBtnPress),
+	FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,   0, OcularView::onRBtnRelease),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_ZERO,     OcularView::onCmdSetZero),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_OCULAR_DIM,     OcularView::onCmdSetDimensions),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_OCULAR_COLOR,  OcularView::onCmdSetColors),
@@ -53,7 +53,7 @@ void OcularView::create()
 {
 	FXString label_text;
 	for (int i = 0; i < ZODIAC_SIGN_COUNT; ++i) {
-		label_text.format("%c", GlyphManager::get_const_instance().getSignLabel(i));
+		label_text.format("%c", GlyphManager::get_const_instance().getLabel(TYPE_ZODIAC, i));
 		ZodiacLabel* label = new ZodiacLabel(i, this, -100, -100, 20, 20);
 		label->setId(i, label_text);
 //		label->setFont(GlyphManager::get_const_instance().getFont(dimensions_.fontSize));
@@ -197,7 +197,7 @@ long OcularView::onConfigure(FXObject* o, FXSelector sel, void* ptr)
 	return 0;
 }
 
-long OcularView::onRightBtnPress(FXObject* o, FXSelector sel, void* ptr)
+long OcularView::onRBtnRelease(FXObject* o, FXSelector sel, void* ptr)
 {
 	return 1;
 }
@@ -210,7 +210,7 @@ void OcularView::reorderLabels()
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		int font_size;
 		switch (al->getType()) {
-			case AstroLabel::TYPE_PLANET:
+			case TYPE_PLANET:
 				font_size = planet_font_size;
 				break;
 			default:
@@ -218,14 +218,14 @@ void OcularView::reorderLabels()
 		}
 		al->setFont(GlyphManager::get_const_instance().getFont(font_size, FF_ASTRO));
 	}
-    double rad[AstroLabel::TYPE_LAST];
-	rad[AstroLabel::TYPE_ZODIAC] = (dimensions_.zodiac10dgrR + dimensions_.zodiac5dgrR) / 2 * radius_ / DENOMINATOR;
-	rad[AstroLabel::TYPE_PLANET] = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
-	rad[AstroLabel::TYPE_HOUSE] = 10000000;
+    double rad[TYPE_LAST];
+	rad[TYPE_ZODIAC] = (dimensions_.zodiac10dgrR + dimensions_.zodiac5dgrR) / 2 * radius_ / DENOMINATOR;
+	rad[TYPE_PLANET] = dimensions_.innerPlanetLabelR * radius_ / DENOMINATOR;
+	rad[TYPE_HOUSE] = 10000000;
     FXPoint pt;
 
-	spreadLabels(0, AstroLabel::TYPE_PLANET, rad[AstroLabel::TYPE_PLANET]);
-	spreadLabels(0, AstroLabel::TYPE_HOUSE, rad[AstroLabel::TYPE_HOUSE]);
+	spreadLabels(0, TYPE_PLANET, rad[TYPE_PLANET]);
+	spreadLabels(0, TYPE_HOUSE, rad[TYPE_HOUSE]);
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		pt = getXYdeg(zero_angle_ + al->getVisibleAngle(), rad[al->getType()]);
 		al->position(pt.x, pt.y);
@@ -304,7 +304,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 		if (!label)
 			label = new PlanetLabel(this, -100, -100, 20, 20);
 		label->setProps((*it).second);
-		label_text.format("%c", GlyphManager::get_const_instance().getPlanetLabel((*it).first));
+		label_text.format("%c", GlyphManager::get_const_instance().getLabel(TYPE_PLANET, (*it).first));
 		label->setId((*it).first, label_text);
 		label->setChartId(chart->id_);
 		if (need_insert) {
@@ -316,7 +316,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 	int cusp_count = chart->houses_.getCuspCount();
 	BodyProps hprops;
 	for (int i = 0; i < 2; ++i) {
-		HouseLabel::HouseFlag hf = (i == 0) ? HouseLabel::hf_Asc : HouseLabel::hf_MC;
+		house_flag_t hf = (i == 0) ? hf_Asc : hf_MC;
 		AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_ASC + i);
 		bool need_insert = !label;
 		if (!label)
@@ -325,8 +325,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 			label->setFlags((int)hf);
 		hprops.prop[BodyProps::bp_Lon] = chart->houses_.ascmc[i];
 		label->setProps(hprops);
-		label_text.format("%d", i);
-		label->setId(HOUSE_ID_ASC + i, label_text);
+		label->setId(HOUSE_ID_ASC + i, GlyphManager::get_const_instance().getHouseLabel(i, hf));
 		label->setChartId(chart->id_);
 		if (need_insert) {
 			std::pair<AlcIter, bool> result = labels_.insert(label);
@@ -334,7 +333,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 		}
 	}
     for (int i = 1; i <= cusp_count; ++i) {
-		HouseLabel::HouseFlag hf = HouseLabel::flagOfHouse(i, cusp_count);
+		house_flag_t hf = HouseLabel::flagOfHouse(i, cusp_count);
 		AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_FIRST + i);
 		bool need_insert = !label;
 		if (!label)
@@ -343,8 +342,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 			label->setFlags((int)hf);
 		hprops.prop[BodyProps::bp_Lon] = chart->houses_.cusps[i];
 		label->setProps(hprops);
-		label_text.format("%d", i);
-		label->setId(HOUSE_ID_FIRST + i, label_text);
+		label->setId(HOUSE_ID_FIRST + i, GlyphManager::get_const_instance().getHouseLabel(HOUSE_ID_FIRST + i, hf));
 		label->setChartId(chart->id_);
 		if (need_insert) {
 			std::pair<AlcIter, bool> result = labels_.insert(label);
@@ -378,7 +376,7 @@ struct less_deg {
 	}
 };
 
-void OcularView::spreadLabels (int chart, AstroLabel::label_type_t type, double r)
+void OcularView::spreadLabels (int chart, body_type_t type, double r)
 {
 	FXTRACE((99, "%s\n", __FUNCTION__));
 	std::vector<SpreadValue> input;
@@ -474,7 +472,7 @@ void OcularView::drawAspects(FXDC& dc)
 	dc.setLineWidth(2);
 	FXPoint pt[2];
 	BOOST_FOREACH (AstroLabel* al, labels_) {
-		if (al->getType() == AstroLabel::TYPE_PLANET) {
+		if (al->getType() == TYPE_PLANET) {
 			double ang = al->getAngle() + zero_angle_;
 			pt[0] = getXYdeg(ang, zouter);
 			pt[1] = getXYdeg(ang, zinner);
@@ -496,7 +494,7 @@ void OcularView::drawPlanetLines(FXDC& dc)
 	FXFont* dgrFont = GlyphManager::get_const_instance().getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR, FF_ASTRO);
 
 	BOOST_FOREACH (AstroLabel* al, labels_) {
-		if (al->getType() == AstroLabel::TYPE_PLANET) {
+		if (al->getType() == TYPE_PLANET) {
             dc.setForeground(colors_.planetTickColor);
 			double ang = al->getAngle() + zero_angle_;
 			double angv = al->getVisibleAngle() + zero_angle_;
@@ -535,11 +533,11 @@ void OcularView::drawHouseLines(FXDC& dc)
 	FXFont* dgrFont = GlyphManager::get_const_instance().getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR, FF_ASTRO);
 
 	BOOST_FOREACH (AstroLabel* al, labels_) {
-		if (al->getType() == AstroLabel::TYPE_HOUSE) {
+		if (al->getType() == TYPE_HOUSE) {
 			double ang = al->getAngle() + zero_angle_;
-			HouseLabel::HouseFlag hf = (HouseLabel::HouseFlag)al->getFlags();
+			house_flag_t hf = (house_flag_t)al->getFlags();
 			pt[0] = getXYdeg(ang, zinner);
-			if (hf == HouseLabel::hf_Undef) {
+			if (hf == hf_Undef) {
 				pt[1] = getXYdeg(ang, dimensions_.zodiac5dgrR * r);
 				dc.setForeground(colors_.planetTickColor);
 				dc.drawLines(pt, 2);
@@ -547,8 +545,8 @@ void OcularView::drawHouseLines(FXDC& dc)
 			else {
 				dc.setForeground(colors_.arrowColor);
 				switch (hf) {
-					case HouseLabel::hf_Asc:
-					case HouseLabel::hf_MC: {
+					case hf_Asc:
+					case hf_MC: {
 						double r_ascmc = dimensions_.ascArrowR * r;
 						pt[1] = getXYdeg(ang, r_ascmc);
 						dc.drawLines(pt, 2);
@@ -558,7 +556,7 @@ void OcularView::drawHouseLines(FXDC& dc)
 						dc.drawLines(pt, 2);
 						dc.setForeground(FXRGB(0, 0, 0));
 						dc.setFont(dgrFont);
-						if (hf == HouseLabel::hf_Asc) {
+						if (hf == hf_Asc) {
 							pt[1] = getXYdeg(ang, r_ascmc * 0.98);
 							strDegree.format("%02d%c",
 								(int)al->getAngle() % DEG_PER_SIGN + 1,
@@ -581,7 +579,7 @@ void OcularView::drawHouseLines(FXDC& dc)
 						}
 						}
 						break;
-					case HouseLabel::hf_Dsc: {
+					case hf_Dsc: {
 						double r_dsc = dimensions_.ascArrowR * 0.93 * r;
 						double r_circle = dimensions_.ascArrowR * 0.015 * r;
 						pt[1] = getXYdeg(ang, r_dsc);
@@ -589,7 +587,7 @@ void OcularView::drawHouseLines(FXDC& dc)
 						pt[1] = getXYdeg(ang, r_dsc + r_circle);
 						dc.drawEllipse(pt[1].x - r_circle, pt[1].y - r_circle, 2 * r_circle, 2 * r_circle); }
 						break;
-					case HouseLabel::hf_IC: {
+					case hf_IC: {
 						double r_ic = dimensions_.ascArrowR * 0.96 * r;
 						pt[1] = getXYdeg(ang, r_ic);
 						dc.drawLines(pt, 2);

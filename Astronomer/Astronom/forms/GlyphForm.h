@@ -16,7 +16,10 @@ public:
 		ID_LAST
 	};
 
-	FXTable* tabFont;
+	long onTableDblClicked(FXObject*, FXSelector, void*);
+
 protected:
 	GlyphForm(){}
+private:
+	FXTable* tabFont;
 };

@@ -40,7 +40,7 @@ PlanetSelector::PlanetSelector (FXComposite* p)
 	item->setBackColor(getBackColor());
 
 	lstPlanets = new FXList (this, this, ID_PLANETS, LIST_BROWSESELECT|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0);
-	lstPlanets->setNumVisible(10);
+	lstPlanets->setNumVisible(12);
 	lstPlanets->setBackColor(getBackColor());
 }
 

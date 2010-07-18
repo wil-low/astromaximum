@@ -9,7 +9,7 @@ public:
 	virtual ~PlanetLabel(void);
 	long onClicked(FXObject*, FXSelector, void*);
 	virtual double getAngle() const;
-    virtual label_type_t getType() const;
+    virtual body_type_t getType() const;
 	virtual double getVisibleAngle() const;
 
 	virtual void setVisibleAngle(double ang);

@@ -28,7 +28,7 @@ long PlanetLabel::onClicked(FXObject*, FXSelector, void*)
 	return 1;
 }
 
-AstroLabel::label_type_t PlanetLabel::getType() const
+body_type_t PlanetLabel::getType() const
 {
     return TYPE_PLANET;
 }

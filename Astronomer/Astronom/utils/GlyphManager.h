@@ -10,9 +10,10 @@ public:
 	void init(FXApp* a);
 	void fini();
 	
-	FXchar getSignLabel(int sign) const;
-	FXchar getPlanetLabel(int planet) const;
+	FXchar getLabel(body_type_t type, int id) const;
+	FXchar getName(body_type_t type, int id) const;
 	FXchar getDegreeSign(font_face_t face) const;
+	FXString getHouseLabel(int id, house_flag_t hf) const;
 
 	FXFont* getFont(int size, font_face_t face) const;
 private:

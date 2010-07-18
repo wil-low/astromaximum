@@ -1,4 +1,5 @@
 #pragma once
+#include "../utils/constants.h"
 #include "../utils/BodyProps.h"
 #include <fx.h>
 
@@ -8,14 +9,6 @@ class AstroLabel : public FXObject
 {
 	FXDECLARE(AstroLabel)
 public:
-    enum label_type_t {
-        TYPE_ZODIAC = 0,
-        TYPE_PLANET,
-        TYPE_HOUSE,
-        TYPE_ASPECT,
-        TYPE_LAST,
-    };
-
 	AstroLabel(DraggableView* p, FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
 	virtual ~AstroLabel(void);
 
@@ -32,7 +25,7 @@ public:
 	};
 	virtual double getAngle() const;
 	virtual double getVisibleAngle() const;
-	virtual label_type_t getType() const;
+	virtual body_type_t getType() const;
 	const FXRectangle& getRect() const;
     const FXString& getText() const;
 	int getChartId() const;

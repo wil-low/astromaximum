@@ -20,10 +20,29 @@ enum deg_mode {
 	dm_LatDecl,
 };
 
+enum body_type_t {
+    TYPE_ZODIAC = 0,
+    TYPE_PLANET,
+    TYPE_HOUSE,
+    TYPE_ASPECT,
+    TYPE_LAST,
+};
 
 enum font_face_t {
 	FF_ASTRO = 0,
 	FF_ARIAL,
+};
+
+enum house_flag_t {
+	hf_Undef = 0,
+	hf_Asc,
+	hf_MC,
+	hf_Dsc,
+	hf_IC,
+};
+
+static const char* HOUSE_NAMES[] = {
+	"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"
 };
 
 namespace astro {

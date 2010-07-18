@@ -32,7 +32,7 @@ typedef boost::multi_index_container<
 			composite_key<
 				AstroLabel*,
 				const_mem_fun<AstroLabel, int, &AstroLabel::getChartId>,
-				const_mem_fun<AstroLabel, AstroLabel::label_type_t, &AstroLabel::getType>
+				const_mem_fun<AstroLabel, body_type_t, &AstroLabel::getType>
 			>
 		>
 	>

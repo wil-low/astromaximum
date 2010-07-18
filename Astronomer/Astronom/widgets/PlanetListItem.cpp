@@ -32,7 +32,7 @@ void PlanetListItem::setDegMode(const FXList* list, deg_mode dm)
         case dm_Longitude:
             dms.calculate(al->getProp(BodyProps::bp_Lon));
             text[1].format("%2d%c%02d\'%02d\"", dms.zod_deg, gm.getDegreeSign(FF_ARIAL), dms.min, dms.sec);
-            text[2].format("%c", gm.getSignLabel(dms.zodiac));
+            text[2].format("%c", gm.getLabel(TYPE_ZODIAC, dms.zodiac));
             break;
         case dm_RectAsc:
             dms.calculate(al->getProp(BodyProps::bp_RectAsc));
@@ -52,36 +52,42 @@ void PlanetListItem::setDegMode(const FXList* list, deg_mode dm)
 void PlanetListItem::draw(const FXList* list, FXDC& dc, FXint xx, FXint yy, FXint ww, FXint hh) const
 {
     const int SIDE_MARGIN = 5;
-	FXFont *font=list->getFont();
+	FXFont *font = list->getFont();
 	FXint ih=0, th = font->getFontHeight();
+	FXFont* afont = GlyphManager::get_const_instance().getFont(12, FF_ARIAL);
+	FXint ath = afont->getFontHeight();
+
 	if(isSelected())
 		dc.setForeground(list->getSelBackColor());
 	else
 		dc.setForeground(list->getBackColor());     // FIXME maybe paint background in onPaint?
-	dc.fillRectangle(xx,yy,ww,hh);
-	if(hasFocus()){
-		dc.drawFocusRectangle(xx+1,yy+1,ww-2,hh-2);
+	dc.fillRectangle(xx, yy, ww, hh);
+	if (hasFocus()){
+		dc.drawFocusRectangle(xx + 1, yy + 1, ww - 2, hh - 2);
 	}
-	if(!isEnabled())
+	if (!isEnabled())
 		dc.setForeground(makeShadowColor(list->getBackColor()));
-	else if(isSelected())
+	else if (isSelected())
 		dc.setForeground(list->getSelTextColor());
 	else
 		dc.setForeground(list->getTextColor());
-	dc.drawText(xx + SIDE_MARGIN,yy+(hh-th)/2+font->getFontAscent(), text[0]);
+
+	AstroLabel* al = (AstroLabel*)data;
+	if (al->getType() == TYPE_HOUSE && al->getFlags() == hf_Undef)
+		dc.setFont(afont);
+	dc.drawText(xx + SIDE_MARGIN, yy + (hh - th) / 2 + dc.getFont()->getFontAscent(), text[0]);
+	dc.setFont(font);
 
 	if (!text[1].empty()) {
-		FXFont* afont = GlyphManager::get_const_instance().getFont(12, FF_ARIAL);
-		FXint th = afont->getFontHeight();
 	    int ofs = afont->getTextWidth(text[1]) + SIDE_MARGIN + 30;
 		dc.setFont(afont);
-        dc.drawText(xx + ww - ofs,yy+(hh-th)/2+afont->getFontAscent(), text[1]);
+        dc.drawText(xx + ww - ofs, yy + (hh - th) / 2 + dc.getFont()->getFontAscent(), text[1]);
 		dc.setFont(font);
 	}
 
 	if (!text[2].empty()) {
 	    int ofs = font->getTextWidth(text[2]) + SIDE_MARGIN;
-        dc.drawText(xx + ww - ofs,yy+(hh-th)/2+font->getFontAscent(), text[2]);
+        dc.drawText(xx + ww - ofs, yy + (hh - th) / 2 + dc.getFont()->getFontAscent(), text[2]);
 	}
 
   /*

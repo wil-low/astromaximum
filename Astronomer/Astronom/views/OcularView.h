@@ -24,7 +24,7 @@ public:
     long onQueryTip(FXObject*, FXSelector, void*);
     long onQueryHelp(FXObject*, FXSelector, void*);
     long onMouseMove(FXObject*, FXSelector, void*);
-    long onRightBtnPress(FXObject*, FXSelector, void*);
+    long onRBtnRelease(FXObject*, FXSelector, void*);
 
 	void setZeroPoint (ZeroPoint val) {zero_point_ = val;} // ZERO_*
 
@@ -48,7 +48,7 @@ private:
 
 	void reorderLabels();
 
-	void spreadLabels (int chart, AstroLabel::label_type_t type, double r);
+	void spreadLabels (int chart, body_type_t type, double r);
 	void addHouse (int chart_id, int id, int cusp_count);
 
 	ZeroPoint zero_point_;
