@@ -1,15 +1,15 @@
-#include "GlyphManager.h"
-#include "../Astronom.h"
+#include "GlyphForm.h"
+#include "../utils/GlyphManager.h"
 /*
-FXDEFMAP(GlyphManager) GlyphManagerMessageMap[]={
+FXDEFMAP(GlyphForm) GlyphFormMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
-	FXMAPFUNC(SEL_COMMAND,           FXMainWindow::ID_CLOSE,   GlyphManager::onCmdClose),
+	FXMAPFUNC(SEL_COMMAND,           FXMainWindow::ID_CLOSE,   GlyphForm::onCmdClose),
 };
 */
-FXIMPLEMENT(GlyphManager, FXMainWindow, 0, 0);//GlyphManagerMessageMap, ARRAYNUMBER(GlyphManagerMessageMap))
+FXIMPLEMENT(GlyphForm, FXMainWindow, 0, 0);//GlyphFormMessageMap, ARRAYNUMBER(GlyphFormMessageMap))
 
-GlyphManager::GlyphManager(FXApp* a)
+GlyphForm::GlyphForm(FXApp* a)
 : FXMainWindow(a,"Glyph Manager",NULL,NULL,DECOR_ALL,0,0,800,600)
 {
     setTarget(a);
@@ -31,33 +31,13 @@ GlyphManager::GlyphManager(FXApp* a)
 	}
 }
 
-GlyphManager::~GlyphManager(void)
+GlyphForm::~GlyphForm(void)
 {
-}
-
-FXFont* GlyphManager::getFont(int size) const
-{
-	return dynamic_cast<Astronom*>(getApp())->getAstroFont(size);
 }
 
 // Create and initialize
-void GlyphManager::create()
+void GlyphForm::create()
 {
 	FXMainWindow::create();
-	tabFont->setFont(getFont(15));
-}
-
-FXchar GlyphManager::getSignLabel(int sign) const
-{
-	return sign + '@';
-}
-
-FXchar GlyphManager::getPlanetLabel(int planet) const
-{
-	return planet + '0' + 32;
-}
-
-FXchar GlyphManager::getDegreeSign() const
-{
-	return '9' + 2;
+	tabFont->setFont(GlyphManager::get_const_instance().getFont(15, FF_ASTRO));
 }

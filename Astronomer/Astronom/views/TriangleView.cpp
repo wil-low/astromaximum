@@ -1,5 +1,5 @@
 #include "TriangleView.h"
-#include "../forms/GlyphManager.h"
+#include "../utils/GlyphManager.h"
 
 
 FXDEFMAP(TriangleView) TriangleViewMessageMap[]={
@@ -34,7 +34,7 @@ long TriangleView::onPaint(FXObject* o, FXSelector, void* ptr)
 	dc.fillRectangle(ev->rect.x,ev->rect.y,ev->rect.w,ev->rect.h);
 	dc.setForeground(drawColor);
 	dc.drawLines(vertex_, 4);
-//	dc.setFont(glyph_manager_->getFont());
+//	dc.setFont(GlyphManager::get_const_instance().getFont());
 	dc.drawText(10, 100, "s");
 	return 1;
 }

@@ -2,14 +2,13 @@
 #include <fx.h>
 #include "../utils/constants.h"
 
-class GlyphManager;
 class AstroLabel;
 
 class PlanetSelector : public FXVerticalFrame
 {
 	FXDECLARE(PlanetSelector)
 public:
-	PlanetSelector(FXComposite* p, GlyphManager* gm);
+	PlanetSelector(FXComposite* p);
 	~PlanetSelector();
 	enum{
 		ID_PLANETS = FXVerticalFrame::ID_LAST,
@@ -26,7 +25,6 @@ public:
 protected:
 	PlanetSelector(){}
 private:
-	GlyphManager* gm_;
 	FXTabBar* tabbar;
 	FXList* lstPlanets;
 	deg_mode deg_mode_;

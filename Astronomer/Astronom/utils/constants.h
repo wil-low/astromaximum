@@ -1,5 +1,4 @@
 #pragma once
-
 const int ZODIAC_SIGN_COUNT = 12;
 const int DEG_PER_SIGN = 30;
 const double DENOMINATOR = 10000.0;
@@ -7,7 +6,11 @@ const double DENOMINATOR = 10000.0;
 const char UNNAMED_DOC[] = "<Celestial>";
 void normAngle(double &a);
 
-const int HOUSE_ID_START = 100000;
+enum {
+	HOUSE_ID_ASC = 99998,
+	HOUSE_ID_MC = 99998,
+	HOUSE_ID_FIRST = 100000,
+};
 
 enum deg_mode {
 	dm_Absolute = 0,
@@ -15,6 +18,12 @@ enum deg_mode {
 	dm_RectAsc,
 	dm_OblAsc,
 	dm_LatDecl,
+};
+
+
+enum font_face_t {
+	FF_ASTRO = 0,
+	FF_ARIAL,
 };
 
 namespace astro {

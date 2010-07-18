@@ -1,8 +1,8 @@
 #include "PlanetSelector.h"
-#include "../forms/GlyphManager.h"
 #include "../widgets/PlanetListItem.h"
 #include "../labels/AstroLabel.h"
 #include "../utils/constants.h"
+#include "../utils/GlyphManager.h"
 #include <vector>
 #include <boost/foreach.hpp>
 
@@ -19,12 +19,13 @@ FXDEFMAP(PlanetSelector) PlanetSelectorMessageMap[]={
 
 FXIMPLEMENT(PlanetSelector, FXVerticalFrame, PlanetSelectorMessageMap, ARRAYNUMBER(PlanetSelectorMessageMap))
 
-PlanetSelector::PlanetSelector (FXComposite* p, GlyphManager* gm)
+const unsigned int PLANET_SELECTOR_COLOR = FXRGB(131, 160, 165);
+
+PlanetSelector::PlanetSelector (FXComposite* p)
 : FXVerticalFrame(p, FRAME_SUNKEN|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT, 0,0,0,0,10,10,10,10)
-, gm_(gm)
 , deg_mode_(dm_Absolute)
 {
-    setBackColor(FXRGB(0, 255, 0));
+    setBackColor(PLANET_SELECTOR_COLOR);
     tabbar = new FXTabBar(this, this, ID_DEGMODE, TABBOOK_NORMAL);
 	tabbar->setBackColor(getBackColor());
     FXTabItem* item = new FXTabItem(tabbar, FXString("Abs.\t") + tr("Absolute"));
@@ -50,7 +51,7 @@ PlanetSelector::~PlanetSelector(void)
 void PlanetSelector::create()
 {
 	FXVerticalFrame::create();
-	lstPlanets->setFont(gm_->getFont(12));
+	lstPlanets->setFont(GlyphManager::get_const_instance().getFont(12, FF_ASTRO));
 }
 
 long PlanetSelector::onCmdFillPlanetList(FXObject* sender, FXSelector sel, void* ptr)
@@ -116,7 +117,7 @@ long PlanetSelector::onRBtnRelease(FXObject* o, FXSelector sel, void* ptr)
     new FXMenuCaption(&filemenu,"ShutterBug");
     new FXMenuSeparator(&filemenu);
     FXMenuCommand* mcmd = new FXMenuCommand(&filemenu,tr("Snap..."),NULL,this,0);
-	mcmd->setFont(gm_->getFont(12));
+	mcmd->setFont(GlyphManager::get_const_instance().getFont(12, FF_ASTRO));
     new FXMenuCommand(&filemenu,tr("Snap delayed..."),NULL,this,0);
     new FXMenuCommand(&filemenu,tr("Snap to clipboard..."),NULL,this,0);
     new FXMenuCommand(&filemenu,tr("Record movie..."),NULL,this,0);

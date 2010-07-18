@@ -1,4 +1,5 @@
 #include "HouseLabel.h"
+#include "../utils/constants.h"
 
 FXDEFMAP(HouseLabel) HouseLabelMessageMap[]={
 
@@ -47,6 +48,9 @@ void HouseLabel::setVisibleAngle(double ang)
 HouseLabel::HouseFlag HouseLabel::flagOfHouse(int num, int cusp_count)
 {
 	HouseFlag hf = hf_Undef;
+	if (num < HOUSE_ID_FIRST)
+		return hf;
+	num -= HOUSE_ID_FIRST;
 	if (num == (1 + 0 * cusp_count / 4))
 		hf = hf_Asc;
 	else if (num == (1 + 1 * cusp_count / 4))

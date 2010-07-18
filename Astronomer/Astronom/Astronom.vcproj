@@ -252,11 +252,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\forms\GlyphManager.cpp"
+				RelativePath=".\forms\GlyphForm.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\forms\GlyphManager.h"
+				RelativePath=".\forms\GlyphForm.h"
 				>
 			</File>
 			<File
@@ -445,6 +445,18 @@
 			</File>
 			<File
 				RelativePath=".\utils\DMS.h"
+				>
+			</File>
+			<File
+				RelativePath=".\utils\GlyphManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\utils\GlyphManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\utils\HouseProps.cpp"
 				>
 			</File>
 			<File

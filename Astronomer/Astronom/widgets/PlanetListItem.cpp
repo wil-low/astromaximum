@@ -2,7 +2,7 @@
 #include "../utils/DMS.h"
 #include "../labels/AstroLabel.h"
 #include "../Astronom.h"
-#include "../forms/GlyphManager.h"
+#include "../utils/GlyphManager.h"
 
 FXIMPLEMENT(PlanetListItem, FXListItem, NULL, 0)
 
@@ -19,7 +19,7 @@ PlanetListItem::~PlanetListItem(void)
 void PlanetListItem::setDegMode(const FXList* list, deg_mode dm)
 {
     deg_mode_ = dm;
-	GlyphManager* gm = ((Astronom*)list->getApp())->fGlyphManager;
+	const GlyphManager& gm = GlyphManager::get_const_instance();
 	AstroLabel* al = (AstroLabel*)data;
 	text[0] = al->getText();
 	text[1] = text[2] = "";
@@ -27,24 +27,24 @@ void PlanetListItem::setDegMode(const FXList* list, deg_mode dm)
 	switch (dm) {
 	    case dm_Absolute:
             dms.calculate(al->getProp(BodyProps::bp_Lon));
-            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm->getDegreeSign(), dms.min, dms.sec);
+            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm.getDegreeSign(FF_ARIAL), dms.min, dms.sec);
             break;
         case dm_Longitude:
             dms.calculate(al->getProp(BodyProps::bp_Lon));
-            text[1].format("%2d%c%02d\'%02d\"", dms.zod_deg, gm->getDegreeSign(), dms.min, dms.sec);
-            text[2].format("%c", gm->getSignLabel(dms.zodiac));
+            text[1].format("%2d%c%02d\'%02d\"", dms.zod_deg, gm.getDegreeSign(FF_ARIAL), dms.min, dms.sec);
+            text[2].format("%c", gm.getSignLabel(dms.zodiac));
             break;
         case dm_RectAsc:
             dms.calculate(al->getProp(BodyProps::bp_RectAsc));
-            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm->getDegreeSign(), dms.min, dms.sec);
+            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm.getDegreeSign(FF_ARIAL), dms.min, dms.sec);
             break;
         case dm_OblAsc:
             dms.calculate(al->getProp(BodyProps::bp_OblAsc));
-            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm->getDegreeSign(), dms.min, dms.sec);
+            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm.getDegreeSign(FF_ARIAL), dms.min, dms.sec);
             break;
         case dm_LatDecl:
             dms.calculate(al->getProp(BodyProps::bp_Lat));
-            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm->getDegreeSign(), dms.min, dms.sec);
+            text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm.getDegreeSign(FF_ARIAL), dms.min, dms.sec);
             break;
 	}
 }
@@ -52,7 +52,6 @@ void PlanetListItem::setDegMode(const FXList* list, deg_mode dm)
 void PlanetListItem::draw(const FXList* list, FXDC& dc, FXint xx, FXint yy, FXint ww, FXint hh) const
 {
     const int SIDE_MARGIN = 5;
-	GlyphManager* gm = ((Astronom*)list->getApp())->fGlyphManager;
 	FXFont *font=list->getFont();
 	FXint ih=0, th = font->getFontHeight();
 	if(isSelected())
@@ -72,8 +71,12 @@ void PlanetListItem::draw(const FXList* list, FXDC& dc, FXint xx, FXint yy, FXin
 	dc.drawText(xx + SIDE_MARGIN,yy+(hh-th)/2+font->getFontAscent(), text[0]);
 
 	if (!text[1].empty()) {
-	    int ofs = font->getTextWidth(text[1]) + SIDE_MARGIN + 30;
-        dc.drawText(xx + ww - ofs,yy+(hh-th)/2+font->getFontAscent(), text[1]);
+		FXFont* afont = GlyphManager::get_const_instance().getFont(12, FF_ARIAL);
+		FXint th = afont->getFontHeight();
+	    int ofs = afont->getTextWidth(text[1]) + SIDE_MARGIN + 30;
+		dc.setFont(afont);
+        dc.drawText(xx + ww - ofs,yy+(hh-th)/2+afont->getFontAscent(), text[1]);
+		dc.setFont(font);
 	}
 
 	if (!text[2].empty()) {

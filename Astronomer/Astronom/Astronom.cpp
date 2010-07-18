@@ -5,8 +5,9 @@
 #include "forms/InputForm.h"
 #include "forms/PersonsForm.h"
 #include "forms/Chrono.h"
-#include "forms/GlyphManager.h"
+#include "forms/GlyphForm.h"
 #include "models/OcularModel.h"
+#include "utils/GlyphManager.h"
 
 FXDEFMAP(Astronom) AstronomMessageMap[]={
 
@@ -26,8 +27,8 @@ FXIMPLEMENT(Astronom, FXApp, AstronomMessageMap, ARRAYNUMBER(AstronomMessageMap)
 
 Astronom::Astronom(const FXString& name, const FXString& vendor)
 : FXApp (name, vendor)
-, fGlyphManager(NULL)
 , fMain(NULL)
+, fGlyph(NULL)
 , tooltip_(NULL)
 {
     Localizer *localizer = new Localizer();
@@ -37,7 +38,7 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
 	Ephemeris::init (ephe_path);
 	tooltip_ = new FXToolTip(this);
 	mOcular = new OcularModel();
-	fGlyphManager = new GlyphManager(this);
+	fGlyph = new GlyphForm(this);
 	fMain = new MainForm(this);
 	fInputData = new InputForm(fMain);
 	fPersons = new PersonsForm(fMain);
@@ -46,7 +47,7 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
 
 void Astronom::create()
 {
-	loadFont("Astronom");
+	GlyphManager::get_mutable_instance().init(this);
 	FXApp::create();
 	TimeLoc::initRex('.');
 	fInputData->init();
@@ -59,8 +60,8 @@ void Astronom::create()
 Astronom::~Astronom()
 {
 	delete mOcular;
-	clearFonts();
 	Ephemeris::fini();
+	GlyphManager::get_mutable_instance().fini();
 }
 
 long Astronom::onCmdInputData(FXObject*, FXSelector, void*)
@@ -79,7 +80,7 @@ long Astronom::onCmdPersons(FXObject*, FXSelector, void*)
 
 long Astronom::onCmdGlyph(FXObject*, FXSelector, void*)
 {
-	fGlyphManager->show(PLACEMENT_SCREEN);//handle(this, FXSEL(SEL_COMMAND, FXWindow::ID_SHOW), NULL);
+	fGlyph->show(PLACEMENT_SCREEN);//handle(this, FXSEL(SEL_COMMAND, FXWindow::ID_SHOW), NULL);
 	return 1;
 }
 
@@ -120,38 +121,6 @@ void Astronom::setOcular(DraggableView* dv)
 	mOcular->setView(dv);
 	fInputData->onCmdAccept(0, 0, 0);
 	mOcular->setData();
-}
-
-FXFont* Astronom::getAstroFont (int size)
-{
-	FXFont* fnt = NULL;
-	std::map<int, FXFont*>::iterator it = astrofont_map_.lower_bound(size);
-	if (it != astrofont_map_.end())
-		fnt = it->second;
-	else
-		fnt = astrofont_map_.rbegin()->second;
-	return fnt;
-}
-
-void Astronom::clearFonts()
-{
-	for (std::map<int, FXFont*>::iterator it = astrofont_map_.begin(); it != astrofont_map_.end(); ++it)
-		delete (*it).second;
-	astrofont_map_.clear();
-}
-
-void Astronom::loadFont(const FXString& face)
-{
-	const int FONT_SIZES[] = {8, 9, 10, 11, 12, 13, 14, 16, 18, 22, 30, 36, 40, 48, 56, 60};
-	clearFonts();
-	for (int i = 0; i < ARRAYNUMBER(FONT_SIZES); ++i) {
-		FXFont* fnt = new FXFont(this, face,
-			FONT_SIZES[i], FXFont::Normal, FXFont::Straight, FONTENCODING_UNICODE);
-		if (fnt != NULL) {
-			fnt->create();
-			astrofont_map_[FONT_SIZES[i]] = fnt;
-		}
-	}
 }
 
 long Astronom::onCmdInputAccept(FXObject*, FXSelector, void* ptr)

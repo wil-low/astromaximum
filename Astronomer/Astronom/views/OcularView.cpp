@@ -1,10 +1,10 @@
 #include "OcularView.h"
-#include "../forms/GlyphManager.h"
 #include "../labels/PlanetLabel.h"
 #include "../labels/ZodiacLabel.h"
 #include "../labels/HouseLabel.h"
 #include "../Chart.h"
 #include "../utils/constants.h"
+#include "../utils/GlyphManager.h"
 #include "../CircleSpread/CircleSpread.h"
 #include <boost/foreach.hpp>
 //#include <algorithm>
@@ -53,10 +53,10 @@ void OcularView::create()
 {
 	FXString label_text;
 	for (int i = 0; i < ZODIAC_SIGN_COUNT; ++i) {
-		label_text.format("%c", glyph_manager_->getSignLabel(i));
+		label_text.format("%c", GlyphManager::get_const_instance().getSignLabel(i));
 		ZodiacLabel* label = new ZodiacLabel(i, this, -100, -100, 20, 20);
 		label->setId(i, label_text);
-//		label->setFont(glyph_manager_->getFont(dimensions_.fontSize));
+//		label->setFont(GlyphManager::get_const_instance().getFont(dimensions_.fontSize));
 		labels_.insert(label);
 	}
     WheelView::create();
@@ -72,7 +72,7 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 	dc.fillRectangle(ev->rect.x,ev->rect.y,ev->rect.w,ev->rect.h);
 	dc.setForeground(drawColor);
 //	dc.drawEllipse(0, 0, getWidth() - 1, getHeight() - 1);
-//	dc.setFont(glyph_manager_->getFont());
+//	dc.setFont(GlyphManager::get_const_instance().getFont());
 
 	double r = radius_ / DENOMINATOR;
 	double ang = zero_angle_;
@@ -216,7 +216,7 @@ void OcularView::reorderLabels()
 			default:
 				font_size = zodiac_font_size;
 		}
-		al->setFont(glyph_manager_->getFont(font_size));
+		al->setFont(GlyphManager::get_const_instance().getFont(font_size, FF_ASTRO));
 	}
     double rad[AstroLabel::TYPE_LAST];
 	rad[AstroLabel::TYPE_ZODIAC] = (dimensions_.zodiac10dgrR + dimensions_.zodiac5dgrR) / 2 * radius_ / DENOMINATOR;
@@ -304,7 +304,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 		if (!label)
 			label = new PlanetLabel(this, -100, -100, 20, 20);
 		label->setProps((*it).second);
-		label_text.format("%c", glyph_manager_->getPlanetLabel((*it).first));
+		label_text.format("%c", GlyphManager::get_const_instance().getPlanetLabel((*it).first));
 		label->setId((*it).first, label_text);
 		label->setChartId(chart->id_);
 		if (need_insert) {
@@ -312,11 +312,30 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 			assert (result.second);
 		}
 	}
+
 	int cusp_count = chart->houses_.getCuspCount();
 	BodyProps hprops;
+	for (int i = 0; i < 2; ++i) {
+		HouseLabel::HouseFlag hf = (i == 0) ? HouseLabel::hf_Asc : HouseLabel::hf_MC;
+		AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_ASC + i);
+		bool need_insert = !label;
+		if (!label)
+			label = new HouseLabel(this, hf, -100, -100, 20, 20);
+		else
+			label->setFlags((int)hf);
+		hprops.prop[BodyProps::bp_Lon] = chart->houses_.ascmc[i];
+		label->setProps(hprops);
+		label_text.format("%d", i);
+		label->setId(HOUSE_ID_ASC + i, label_text);
+		label->setChartId(chart->id_);
+		if (need_insert) {
+			std::pair<AlcIter, bool> result = labels_.insert(label);
+			assert (result.second);
+		}
+	}
     for (int i = 1; i <= cusp_count; ++i) {
 		HouseLabel::HouseFlag hf = HouseLabel::flagOfHouse(i, cusp_count);
-		AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_START + i);
+		AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_FIRST + i);
 		bool need_insert = !label;
 		if (!label)
 			label = new HouseLabel(this, hf, -100, -100, 20, 20);
@@ -325,7 +344,7 @@ long OcularView::onCmdUpdateChart(FXObject*, FXSelector, void* ptr)
 		hprops.prop[BodyProps::bp_Lon] = chart->houses_.cusps[i];
 		label->setProps(hprops);
 		label_text.format("%d", i);
-		label->setId(HOUSE_ID_START + i, label_text);
+		label->setId(HOUSE_ID_FIRST + i, label_text);
 		label->setChartId(chart->id_);
 		if (need_insert) {
 			std::pair<AlcIter, bool> result = labels_.insert(label);
@@ -474,7 +493,7 @@ void OcularView::drawPlanetLines(FXDC& dc)
 	FXPoint pt[2];
 
 	FXString strDegree;
-	FXFont* dgrFont = glyph_manager_->getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR);
+	FXFont* dgrFont = GlyphManager::get_const_instance().getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR, FF_ASTRO);
 
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		if (al->getType() == AstroLabel::TYPE_PLANET) {
@@ -493,7 +512,7 @@ void OcularView::drawPlanetLines(FXDC& dc)
 			pt[1].y = pt[0].y - sin(ang0) * hyp;
 			dc.drawLines(pt, 2);
 
-			strDegree.format("%02d%c", ((int)al->getAngle() % DEG_PER_SIGN) + 1, glyph_manager_->getDegreeSign());
+			strDegree.format("%02d%c", ((int)al->getAngle() % DEG_PER_SIGN) + 1, GlyphManager::get_const_instance().getDegreeSign(FF_ASTRO));
 			pt[1] = getXYdeg(angv, zdgr);
 			FXint tw = dgrFont->getTextWidth(strDegree);
 			FXint th = dgrFont->getTextHeight(strDegree);
@@ -513,7 +532,7 @@ void OcularView::drawHouseLines(FXDC& dc)
 	FXPoint pt[2];
 
 	FXString strDegree;
-	FXFont* dgrFont = glyph_manager_->getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR);
+	FXFont* dgrFont = GlyphManager::get_const_instance().getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR, FF_ASTRO);
 
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		if (al->getType() == AstroLabel::TYPE_HOUSE) {
@@ -543,7 +562,7 @@ void OcularView::drawHouseLines(FXDC& dc)
 							pt[1] = getXYdeg(ang, r_ascmc * 0.98);
 							strDegree.format("%02d%c",
 								(int)al->getAngle() % DEG_PER_SIGN + 1,
-								glyph_manager_->getDegreeSign());
+								GlyphManager::get_const_instance().getDegreeSign(FF_ASTRO));
 							dc.drawText(pt[1].x, pt[1].y - 1, strDegree);
 							strDegree.format("%02d'",
 								(int)(al->getAngle() - (int)al->getAngle()) * 60 + 1);
@@ -554,7 +573,7 @@ void OcularView::drawHouseLines(FXDC& dc)
 							pt[1] = getXYdeg(ang, r_ascmc * 0.96);
 							strDegree.format("%02d%c%02d'",
 								(int)al->getAngle() % DEG_PER_SIGN + 1,
-								glyph_manager_->getDegreeSign(),
+								GlyphManager::get_const_instance().getDegreeSign(FF_ASTRO),
 								(int)(al->getAngle() - (int)al->getAngle()) * 60 + 1);
 							FXint tw = dgrFont->getTextWidth(strDegree);
 							FXint th = dgrFont->getTextHeight(strDegree);

@@ -49,6 +49,7 @@ private:
 	void reorderLabels();
 
 	void spreadLabels (int chart, AstroLabel::label_type_t type, double r);
+	void addHouse (int chart_id, int id, int cusp_count);
 
 	ZeroPoint zero_point_;
 	double zero_angle_;

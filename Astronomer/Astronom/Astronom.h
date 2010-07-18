@@ -1,12 +1,12 @@
 #pragma once
 #include <fx.h>
-#include <map>
+#include "utils/constants.h"
 
 class MainForm;
 class InputForm;
 class PersonsForm;
 class Chrono;
-class GlyphManager;
+class GlyphForm;
 class OcularModel;
 class DraggableView;
 
@@ -19,7 +19,6 @@ public:
 	virtual void create();
 
 	void setOcular(DraggableView* dv);
-	FXFont* getAstroFont (int size);
 
 	enum{
 		ID_GLYPH=FXApp::ID_LAST,
@@ -31,7 +30,6 @@ public:
 		ID_LAST
 	};
 
-	GlyphManager* fGlyphManager;
 	FXImage* offscreen;
 
 	long onCmdInputData(FXObject*, FXSelector, void*);
@@ -44,16 +42,13 @@ public:
 
 	long onCmdInputAccept(FXObject*, FXSelector, void*);
 private:
-	void clearFonts();
-	void loadFont(const FXString& face);
-
 	MainForm* fMain;
 	InputForm* fInputData;
 	PersonsForm* fPersons;
 	Chrono* fChrono;
 	OcularModel* mOcular;
 	FXToolTip* tooltip_;
-	std::map<int, FXFont*> astrofont_map_;
+	GlyphForm* fGlyph;
 protected:
 	Astronom(){}
 };

@@ -1,5 +1,5 @@
 #include "WheelView.h"
-#include "../forms/GlyphManager.h"
+#include "../utils/GlyphManager.h"
 
 FXDEFMAP(WheelView) WheelViewMessageMap[]={
 
@@ -35,7 +35,7 @@ long WheelView::onPaint(FXObject* o, FXSelector, void* ptr)
 	dc.fillRectangle(ev->rect.x,ev->rect.y,ev->rect.w,ev->rect.h);
 	dc.setForeground(drawColor);
 	dc.drawEllipse(0, 0, getWidth() - 1, getHeight() - 1);
-//	dc.setFont(glyph_manager_->getFont());
+//	dc.setFont(GlyphManager::get_const_instance().getFont());
 	dc.drawEllipse(radius_ - 5, radius_ - 5, 10, 10);
 	FXString s;
 	s.format("%c%c%c%c", 115, 117, 85, 80);

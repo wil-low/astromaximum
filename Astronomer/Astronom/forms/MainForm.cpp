@@ -4,9 +4,9 @@
 #include "../views/TriangleView.h"
 #include "../views/WheelView.h"
 #include "../views/OcularView.h"
-#include "../forms/GlyphManager.h"
 #include "../widgets/PlanetSelector.h"
 #include "../utils/constants.h"
+#include "../utils/GlyphManager.h"
 
 #include <boost/foreach.hpp>
 #include <fxkeys.h>
@@ -57,7 +57,7 @@ MainForm::MainForm(FXApp *a)
 	canvasFrame->setBackColor(FXRGB(255,255,255));
 
 	// RIGHT pane for the buttons
-	planetSelector = new PlanetSelector(splitter, ((Astronom*)getApp())->fGlyphManager);
+	planetSelector = new PlanetSelector(splitter);
 
 //    btnLock = new FXCheckButton(buttonFrame,"&Lock", this, ID_LOCK,CHECKBUTTON_NORMAL,0,0,0,0,10,10,5,5);
 
@@ -98,7 +98,6 @@ long MainForm::onCmdLock(FXObject*, FXSelector, void* ptr)
 long MainForm::onAddView(FXObject*, FXSelector, void*)
 {
 	dv = new OcularView(canvasFrame, 10, 10, 377);
-	dv->setGlyphManager(((Astronom*)getApp())->fGlyphManager);
 	((Astronom*)getApp())->setOcular(dv);
 	dv->create();
 	dv->handle(dv, FXSEL(SEL_COMMAND, DraggableView::ID_LOCK), (void*)0);//btnLock->getCheck());
