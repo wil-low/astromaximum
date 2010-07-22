@@ -34,8 +34,6 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
     Localizer *localizer = new Localizer();
     localizer->load_lang ("settings/ru.lng");
 	setTranslator(localizer);
-	char ephe_path[256] = "/home/willow/prj/ephem";
-	Ephemeris::init (ephe_path);
 	tooltip_ = new FXToolTip(this);
 	mOcular = new OcularModel();
 	fGlyph = new GlyphForm(this);
@@ -49,6 +47,19 @@ void Astronom::create()
 {
 	GlyphManager::get_mutable_instance().init(this);
 	FXApp::create();
+	char ephe_path[256];
+	const char* path = reg().readStringEntry("Astro", "ephemeris_path", "");
+	if (path[0] == '\0') {
+		FXDirDialog swiss_dir(this, "Path to Swiss Ephemeris");
+		if (swiss_dir.execute()) {
+			strcpy(ephe_path, swiss_dir.getDirectory().text());
+			reg().writeStringEntry("Astro", "ephemeris_path", ephe_path);
+		}
+	}
+	else {
+		strcpy(ephe_path, path);
+	}
+	Ephemeris::init (ephe_path);
 	TimeLoc::initRex('.');
 	fInputData->init();
 	fMain->init();
