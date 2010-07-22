@@ -50,6 +50,9 @@ public:
     bool contains(FXint x, FXint y);
 	virtual void position(FXint x, FXint y, FXint w = -1, FXint h = -1);
 
+    void setVisible(bool visible);
+    bool isVisible() const;
+
 	AstroLabel(){}
 protected:
     FXRectangle rect_;
@@ -61,4 +64,5 @@ protected:
 	int flags_;
 	BodyProps props_;
 	FXWindow* parent_;
+	bool visible_;
 };

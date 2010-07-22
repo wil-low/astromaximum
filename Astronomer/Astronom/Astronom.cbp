@@ -13,7 +13,6 @@
 				<Option compiler="gcc" />
 				<Option parameters="-tracelevel 99" />
 				<Compiler>
-					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-pg" />
 					<Add option="-g" />
@@ -78,8 +77,8 @@
 		<Unit filename="db/DbCommand.h" />
 		<Unit filename="forms/Chrono.cpp" />
 		<Unit filename="forms/Chrono.h" />
-		<Unit filename="forms/GlyphManager.cpp" />
-		<Unit filename="forms/GlyphManager.h" />
+		<Unit filename="forms/GlyphForm.cpp" />
+		<Unit filename="forms/GlyphForm.h" />
 		<Unit filename="forms/InputForm.cpp" />
 		<Unit filename="forms/InputForm.h" />
 		<Unit filename="forms/MainForm.cpp" />
@@ -101,9 +100,13 @@
 		<Unit filename="models/BaseModel.h" />
 		<Unit filename="models/OcularModel.cpp" />
 		<Unit filename="models/OcularModel.h" />
+		<Unit filename="utils/BodyProps.cpp" />
 		<Unit filename="utils/BodyProps.h" />
 		<Unit filename="utils/DMS.cpp" />
 		<Unit filename="utils/DMS.h" />
+		<Unit filename="utils/GlyphManager.cpp" />
+		<Unit filename="utils/GlyphManager.h" />
+		<Unit filename="utils/HouseProps.cpp" />
 		<Unit filename="utils/HouseProps.h" />
 		<Unit filename="utils/OcularDefs.h" />
 		<Unit filename="utils/constants.cpp" />

@@ -1,5 +1,8 @@
 #include "GlyphManager.h"
 
+const FXString DEG_STR("Â°");
+const FXString BACKTICK_STR("`");
+
 void GlyphManager::init(FXApp* a)
 {
 	app_ = a;
@@ -73,7 +76,7 @@ FXchar GlyphManager::getDegreeSign(font_face_t face) const
 	if (face == FF_ASTRO)
 		return '9' + 2;
 	else
-		return '°';
+		return '`';
 }
 
 FXString GlyphManager::getHouseLabel(int id, house_flag_t hf) const
@@ -81,6 +84,16 @@ FXString GlyphManager::getHouseLabel(int id, house_flag_t hf) const
 	if (hf == hf_Undef)
 		return FXString(HOUSE_NAMES[id - HOUSE_ID_FIRST - 1]);
 	FXString s;
-	s.format("%c", GlyphManager::get_const_instance().getLabel(TYPE_HOUSE, (int)hf));
+	s.format("%c", getLabel(TYPE_HOUSE, (int)hf));
 	return s;
+}
+
+FXString& GlyphManager::toBackTick(FXString& str)
+{
+	return str.substitute(DEG_STR, BACKTICK_STR);
+}
+
+FXString& GlyphManager::fromBackTick(FXString& str)
+{
+	return str.substitute(BACKTICK_STR, DEG_STR);
 }

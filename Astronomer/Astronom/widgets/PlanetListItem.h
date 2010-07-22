@@ -7,7 +7,7 @@ class PlanetListItem : public FXListItem
 {
 	FXDECLARE(PlanetListItem)
 public:
-	PlanetListItem(AstroLabel* data);
+	PlanetListItem(AstroLabel* data, bool is_extra);
 	~PlanetListItem();
 	virtual void draw(const FXList* list,FXDC& dc,FXint x,FXint y,FXint w,FXint h) const;
 	void setDegMode(const FXList* list, deg_mode dm);
@@ -16,4 +16,5 @@ protected:
 private:
     deg_mode deg_mode_;
 	FXString text[3];
+	bool is_extra_;
 };

@@ -15,6 +15,8 @@ FXDEFMAP(OcularView) WheelViewMessageMap[]={
 	FXMAPFUNC(SEL_MOTION,            0, OcularView::onMouseMove),
 	FXMAPFUNC(SEL_QUERY_HELP,        0, OcularView::onQueryHelp),
 	FXMAPFUNC(SEL_CONFIGURE,         0, OcularView::onConfigure),
+	FXMAPFUNC(SEL_COMMAND,           astro::ID_SELECT_LABEL, OcularView::onCmdSelectLabel),
+	FXMAPFUNC(SEL_COMMAND,           astro::ID_REORDER_LABELS, OcularView::onCmdReorderLabels),
 	FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,   0, OcularView::onRBtnRelease),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_ZERO,     OcularView::onCmdSetZero),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_SET_OCULAR_DIM,     OcularView::onCmdSetDimensions),
@@ -196,7 +198,14 @@ long OcularView::onConfigure(FXObject* o, FXSelector sel, void* ptr)
 		reorderLabels();
 	}
 	is_resizing_ = false;
-	return 0;
+	return 1;
+}
+
+long OcularView::onCmdReorderLabels(FXObject* o, FXSelector sel, void* ptr)
+{
+	reorderLabels();
+	update();
+	return 1;
 }
 
 long OcularView::onRBtnRelease(FXObject* o, FXSelector sel, void* ptr)
@@ -227,7 +236,7 @@ void OcularView::reorderLabels()
     FXPoint pt;
 
 	spreadLabels(0, TYPE_PLANET, rad[TYPE_PLANET]);
-	spreadLabels(1, TYPE_PLANET, rad[TYPE_PLANET]);
+//	spreadLabels(1, TYPE_PLANET, rad[TYPE_PLANET]);
 //	spreadLabels(0, TYPE_HOUSE, rad[TYPE_HOUSE]);
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		pt = getXYdeg(zero_angle_ + al->getVisibleAngle(), rad[al->getType()]);
@@ -403,10 +412,12 @@ void OcularView::spreadLabels (int chart, body_type_t type, double r)
         idx.equal_range(boost::make_tuple(chart, type));
 	alc_by_chart_type::iterator it = range.first;
 	while (it != range.second) {
-		(*it)->setVisibleAngle((*it)->getAngle());
-		input.push_back(SpreadValue((*it)->getAngle(), *it));
-		delta_width = (*it)->getRect().w / 2;
-        FXTRACE((90, "%s\n", (*it)->toString().text()));
+	    if ((*it)->isVisible()) {
+            (*it)->setVisibleAngle((*it)->getAngle());
+            input.push_back(SpreadValue((*it)->getAngle(), *it));
+            delta_width = (*it)->getRect().w / 2;
+            FXTRACE((90, "%s\n", (*it)->toString().text()));
+	    }
 		++it;
     }
 	delta_width *= 1.2;
@@ -436,14 +447,21 @@ long OcularView::onMouseMove(FXObject* o, FXSelector sel, void* ptr)
     if (DraggableView::onMouseMove(o, sel, ptr))
         return 1;
     FXEvent *ev=(FXEvent*)ptr;
-    AstroLabel* old_cur = cur_label_;
-    cur_label_ = NULL;
+    AstroLabel* cur_al = NULL;
     BOOST_FOREACH (AstroLabel* al, labels_) {
         if (al->contains(ev->win_x, ev->win_y)) {
-            cur_label_ = al;
+            cur_al = al;
             break;
         }
     }
+    handle(this, FXSEL(SEL_COMMAND, astro::ID_SELECT_LABEL), (void*)cur_al);
+    return 1;
+}
+
+long OcularView::onCmdSelectLabel(FXObject* sender, FXSelector, void* ptr)
+{
+    AstroLabel* old_cur = cur_label_;
+    cur_label_ = (AstroLabel*)ptr;
     if (cur_label_ != old_cur) {
        	FXDCWindow dc(this);
        	dc.setBackground(getBackColor());
@@ -457,7 +475,6 @@ long OcularView::onMouseMove(FXObject* o, FXSelector sel, void* ptr)
             cur_label_->handle(this, FXSEL(SEL_COMMAND, AstroLabel::ID_SELECT), (void*)1);
             cur_label_->handle(this, FXSEL(SEL_PAINT, AstroLabel::ID_FOCUS), &dc);
         }
-//        getApp()->handle (this, FXSEL(SEL_QUERY_TIP, 0), 0);
     }
     return 1;
 }
@@ -510,7 +527,7 @@ void OcularView::drawPlanetLines(FXDC& dc)
 	FXFont* dgrFont = GlyphManager::get_const_instance().getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR, FF_ASTRO);
 
 	BOOST_FOREACH (AstroLabel* al, labels_) {
-		if (al->getType() == TYPE_PLANET) {
+		if (al->getType() == TYPE_PLANET && al->isVisible()) {
             dc.setForeground(colors_.planetTickColor);
 			double ang = al->getAngle() + zero_angle_;
 			double angv = al->getVisibleAngle() + zero_angle_;

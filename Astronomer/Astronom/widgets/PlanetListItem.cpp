@@ -6,9 +6,10 @@
 
 FXIMPLEMENT(PlanetListItem, FXListItem, NULL, 0)
 
-PlanetListItem::PlanetListItem (AstroLabel* data)
+PlanetListItem::PlanetListItem (AstroLabel* data, bool is_extra)
 : FXListItem("0", NULL, data)
 , deg_mode_(dm_Absolute)
+, is_extra_(is_extra)
 {
 }
 
@@ -47,6 +48,7 @@ void PlanetListItem::setDegMode(const FXList* list, deg_mode dm)
             text[1].format("%3d%c%02d\'%02d\"", dms.deg, gm.getDegreeSign(FF_ARIAL), dms.min, dms.sec);
             break;
 	}
+	GlyphManager::fromBackTick(text[1]);
 }
 
 void PlanetListItem::draw(const FXList* list, FXDC& dc, FXint xx, FXint yy, FXint ww, FXint hh) const
@@ -56,6 +58,7 @@ void PlanetListItem::draw(const FXList* list, FXDC& dc, FXint xx, FXint yy, FXin
 	FXint ih=0, th = font->getFontHeight();
 	FXFont* afont = GlyphManager::get_const_instance().getFont(12, FF_ARIAL);
 	FXint ath = afont->getFontHeight();
+	AstroLabel* al = (AstroLabel*)data;
 
 	if(isSelected())
 		dc.setForeground(list->getSelBackColor());
@@ -65,14 +68,13 @@ void PlanetListItem::draw(const FXList* list, FXDC& dc, FXint xx, FXint yy, FXin
 	if (hasFocus()){
 		dc.drawFocusRectangle(xx + 1, yy + 1, ww - 2, hh - 2);
 	}
-	if (!isEnabled())
+	if (!al->isVisible())
 		dc.setForeground(makeShadowColor(list->getBackColor()));
 	else if (isSelected())
 		dc.setForeground(list->getSelTextColor());
 	else
 		dc.setForeground(list->getTextColor());
 
-	AstroLabel* al = (AstroLabel*)data;
 	if (al->getType() == TYPE_HOUSE && al->getFlags() == hf_Undef)
 		dc.setFont(afont);
 	dc.drawText(xx + SIDE_MARGIN, yy + (hh - th) / 2 + dc.getFont()->getFontAscent(), text[0]);

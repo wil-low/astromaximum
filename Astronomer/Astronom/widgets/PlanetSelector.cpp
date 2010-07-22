@@ -10,11 +10,13 @@ FXDEFMAP(PlanetSelector) PlanetSelectorMessageMap[]={
 
 	//________Message_Type_____________________ID____________Message_Handler_______
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_FILL_PLANET_LIST,		 PlanetSelector::onCmdFillPlanetList),
-	FXMAPFUNC(SEL_SELECTED,           PlanetSelector::ID_PLANETS,	 PlanetSelector::onListSelChanged),
 	FXMAPFUNC(SEL_COMMAND,           astro::ID_GET_DEG_MODE, PlanetSelector::onCmdGetDegMode),
 	FXMAPFUNC(SEL_COMMAND,          PlanetSelector::ID_DEGMODE, PlanetSelector::onCmdSetDegMode),
 //    FXMAPFUNC(SEL_RIGHTBUTTONPRESS,PlanetSelector::ID_PLANETS,PlanetSelector::onRBtnPress),
-    FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,PlanetSelector::ID_PLANETS,PlanetSelector::onRBtnRelease),
+    FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,PlanetSelector::ID_PLANETS,PlanetSelector::onListRBtnRelease),
+    FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,PlanetSelector::ID_EXTRA,PlanetSelector::onListRBtnRelease),
+	FXMAPFUNC(SEL_SELECTED,           PlanetSelector::ID_PLANETS,	 PlanetSelector::onListSelChanged),
+	FXMAPFUNC(SEL_SELECTED,           PlanetSelector::ID_EXTRA,	 PlanetSelector::onListSelChanged),
 };
 
 FXIMPLEMENT(PlanetSelector, FXVerticalFrame, PlanetSelectorMessageMap, ARRAYNUMBER(PlanetSelectorMessageMap))
@@ -39,9 +41,21 @@ PlanetSelector::PlanetSelector (FXComposite* p)
     item = new FXTabItem(tabbar, FXString("L/D\t") + tr("Latitude/Declination"));
 	item->setBackColor(getBackColor());
 
-	lstPlanets = new FXList (this, this, ID_PLANETS, LIST_BROWSESELECT|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0);
+    FXVerticalFrame* frame = new FXVerticalFrame(this, FRAME_LINE|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT, 0,0,0,0,2,2,2,2);
+    frame->setBackColor(getBackColor());
+	lstPlanets = new FXList (frame, this, ID_PLANETS, LIST_BROWSESELECT|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0);
 	lstPlanets->setNumVisible(12);
 	lstPlanets->setBackColor(getBackColor());
+	lstPlanets->horizontalScrollBar()->setBackColor(getBackColor());
+	lstPlanets->verticalScrollBar()->setBackColor(getBackColor());
+
+    frame = new FXVerticalFrame(this, FRAME_LINE|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT, 0,0,0,0,2,2,2,2);
+    frame->setBackColor(getBackColor());
+	lstExtra = new FXList (frame, this, ID_EXTRA, LIST_BROWSESELECT|LAYOUT_FILL|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0);
+	lstExtra->setNumVisible(12);
+	lstExtra->setBackColor(getBackColor());
+	lstExtra->horizontalScrollBar()->setBackColor(getBackColor());
+	lstExtra->verticalScrollBar()->setBackColor(getBackColor());
 }
 
 PlanetSelector::~PlanetSelector(void)
@@ -51,26 +65,37 @@ PlanetSelector::~PlanetSelector(void)
 void PlanetSelector::create()
 {
 	FXVerticalFrame::create();
+
+	int deg_mode = getApp()->reg().readIntEntry("PlanetSelector", "degree_mode", 0);
+	tabbar->setCurrent(deg_mode, true);
+
 	lstPlanets->setFont(GlyphManager::get_const_instance().getFont(12, FF_ASTRO));
+	lstExtra->setFont(GlyphManager::get_const_instance().getFont(12, FF_ASTRO));
 }
 
 long PlanetSelector::onCmdFillPlanetList(FXObject* sender, FXSelector sel, void* ptr)
 {
 	std::vector<AstroLabel*> *planets = (std::vector<AstroLabel*>*)ptr;
 	lstPlanets->clearItems();
+	lstExtra->clearItems();
 	BOOST_FOREACH(AstroLabel* al, *planets) {
-		PlanetListItem *pli = new PlanetListItem(al);
+	    if (al->getType() == TYPE_ZODIAC)
+            continue;
+	    bool is_extra = (al->getType() == TYPE_PLANET && al->getId() > LAST_PLANET_ID);
+		PlanetListItem *pli = new PlanetListItem(al, is_extra);
 		pli->setDegMode(lstPlanets, deg_mode_);
-		lstPlanets->appendItem(pli);
+		al->setVisible(!is_extra);
+		(is_extra ? lstExtra : lstPlanets)->appendItem(pli);
 	}
 	return 1;
 }
 
-long PlanetSelector::onListSelChanged(FXObject*, FXSelector, void* ptr)
+long PlanetSelector::onListSelChanged(FXObject* o, FXSelector, void* ptr)
 {
-	int idx = int(ptr);
+    FXList* list = dynamic_cast<FXList*>(o);
+    int idx = int(ptr);
 	if (idx != -1) {
-		AstroLabel* al = (AstroLabel*)lstPlanets->getItemData(idx);
+		AstroLabel* al = (AstroLabel*)list->getItemData(idx);
 		selectAstroLabel(al);
 	}
 	return 1;
@@ -78,10 +103,7 @@ long PlanetSelector::onListSelChanged(FXObject*, FXSelector, void* ptr)
 
 void PlanetSelector::selectAstroLabel(AstroLabel* al)
 {
-	FXEvent evt;
-	evt.win_x = al->getRect().x;
-	evt.win_y = al->getRect().y;
-    al->getParent()->handle(this, FXSEL(SEL_MOTION, 0), (void*)&evt);
+    al->getParent()->handle(this, FXSEL(SEL_COMMAND, astro::ID_SELECT_LABEL), (void*)al);
 }
 
 long PlanetSelector::onCmdGetDegMode(FXObject*, FXSelector, void* ptr)
@@ -94,22 +116,36 @@ long PlanetSelector::onCmdGetDegMode(FXObject*, FXSelector, void* ptr)
 long PlanetSelector::onCmdSetDegMode(FXObject*, FXSelector, void* ptr)
 {
 	deg_mode_ = (deg_mode)int(ptr);
-	for (int i = 0; i < lstPlanets->getNumItems(); ++i) {
-	    dynamic_cast<PlanetListItem*>(lstPlanets->getItem(i))->setDegMode(lstPlanets, deg_mode_);
-	}
-	lstPlanets->update();
+	getApp()->reg().writeIntEntry("PlanetSelector", "degree_mode", deg_mode_);
+	getApp()->reg().write();
+	setDegMode(lstPlanets);
+	setDegMode(lstExtra);
 	return 1;
 }
 
+void PlanetSelector::setDegMode(FXList* list)
+{
+	for (int i = 0; i < list->getNumItems(); ++i) {
+	    dynamic_cast<PlanetListItem*>(list->getItem(i))->setDegMode(list, deg_mode_);
+	}
+	list->update();
+}
 // Right button released
-long PlanetSelector::onRBtnRelease(FXObject* o, FXSelector sel, void* ptr)
+long PlanetSelector::onListRBtnRelease(FXObject* o, FXSelector sel, void* ptr)
 {
     FXEvent *event=(FXEvent*)ptr;
+    FXList* list = dynamic_cast<FXList*>(o);
     ungrab();
-    int idx = lstPlanets->getItemAt (event->win_x, event->win_y);
+    int idx = list->getItemAt (event->win_x, event->win_y);
     if (idx == -1)
         return 0;
-    lstPlanets->setCurrentItem (idx, true);
+
+    list->setCurrentItem (idx, true);
+    AstroLabel* al = (AstroLabel*)(list->getItem(idx)->getData());
+    al->setVisible(!al->isVisible());
+    list->update();
+    al->getParent()->handle(this, FXSEL(SEL_COMMAND, astro::ID_REORDER_LABELS), NULL);
+    return 1;
 //    obj->handle(this, FXSEL(SEL_LEFTBUTTONRELEASE, 0), ptr);
 //    flags&=~FLAG_PRESSED;
 //    if(event->moved) return 1;

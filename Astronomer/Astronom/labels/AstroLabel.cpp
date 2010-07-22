@@ -21,6 +21,7 @@ AstroLabel::AstroLabel(DraggableView* p, FXint x, FXint y, FXint w, FXint h)
 , id_(-1)
 , flags_(0)
 , parent_(p)
+, visible_(true)
 {
 }
 
@@ -87,6 +88,8 @@ long AstroLabel::onClicked(FXObject*, FXSelector, void*)
 
 long AstroLabel::onDrawOnParent(FXObject* o, FXSelector sel, void* ptr)
 {
+    if (!visible_)
+        return 1;
     FXDC* dc = (FXDC*)ptr;
     dc->setFont(font_);
     dc->setClipRectangle (rect_.x, rect_.y, rect_.w, rect_.h);
@@ -101,6 +104,8 @@ long AstroLabel::onDrawOnParent(FXObject* o, FXSelector sel, void* ptr)
 
 long AstroLabel::onDrawFocus(FXObject*, FXSelector, void* ptr)
 {
+    if (!visible_)
+        return 1;
     FXDC* dc = (FXDC*)ptr;
     dc->setClipRectangle (rect_.x, rect_.y, rect_.w, rect_.h);
     dc->setForeground(selected_ ? FXRGB(255, 0, 0) : dc->getBackground());
@@ -160,6 +165,16 @@ FXString AstroLabel::toString() const
 unsigned int AstroLabel::getIdentity() const
 {
 	return (getChartId() << 24) + (getType() << 16) + (getId());
+}
+
+void AstroLabel::setVisible(bool visible)
+{
+	visible_ = visible;
+}
+
+bool AstroLabel::isVisible() const
+{
+	return visible_;
 }
 
 void AstroLabel::setProps(const BodyProps& props)

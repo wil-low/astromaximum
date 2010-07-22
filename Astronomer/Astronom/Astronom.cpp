@@ -34,7 +34,7 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
     Localizer *localizer = new Localizer();
     localizer->load_lang ("settings/ru.lng");
 	setTranslator(localizer);
-	char ephe_path[256] = "rerye";
+	char ephe_path[256] = "/home/willow/prj/ephem";
 	Ephemeris::init (ephe_path);
 	tooltip_ = new FXToolTip(this);
 	mOcular = new OcularModel();

@@ -17,6 +17,7 @@
         void swe_close(void);
         int swe_houses(double, double, double, int, double*, double*);
         int swe_day_of_week(double);
+        char* swe_get_planet_name(int, char*);
     }
 #endif
 
@@ -90,7 +91,13 @@ long calc_house (HouseProps& props, int method, const TimeLoc& time_loc)
         method, props.cusps, props.ascmc);
     props.method = (HouseProps::house_method)method;
 	if (result < 0)
-		FXTRACE((10, "%s: %s\n", __FUNCTION__));
+		FXTRACE((10, "%s: error\n", __FUNCTION__));
 	return result;
+}
+
+FXString planet_name (int id)
+{
+    char namebuf[20];
+	return FXString(swe_get_planet_name (id, namebuf));
 }
 }

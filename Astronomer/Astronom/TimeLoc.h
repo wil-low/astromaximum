@@ -40,8 +40,6 @@ public:
 	static FXString formatDate (int y, int m, int d);
 	static int scan (timeloc_t idx, const FXString &str, int *out);
 
-	static FXString& toBackTick (FXString& str);
-	static FXString& fromBackTick (FXString& str);
 private:
 	double data_[TL_LAST];
 	FXString str_[TL_LAST];

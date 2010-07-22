@@ -5,7 +5,6 @@
 #include "../views/WheelView.h"
 #include "../views/OcularView.h"
 #include "../widgets/PlanetSelector.h"
-#include "../widgets/ExtraBodySelector.h"
 #include "../utils/constants.h"
 #include "../utils/GlyphManager.h"
 
@@ -49,7 +48,7 @@ MainForm::MainForm(FXApp *a)
 	}
 
 	new FXStatusBar(this, LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X);
-	splitter = new FXSplitter(this,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y|SPLITTER_REVERSED|SPLITTER_TRACKING); 
+	splitter = new FXSplitter(this,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y|SPLITTER_REVERSED|SPLITTER_TRACKING);
 
 	contents=new FXHorizontalFrame(splitter,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
 
@@ -60,7 +59,7 @@ MainForm::MainForm(FXApp *a)
 	// RIGHT pane for the buttons
 	FXVerticalFrame* rightFrame=new FXVerticalFrame(splitter, LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0, 0,0,0,0);
 	planetSelector = new PlanetSelector(rightFrame);
-	extraBodySelector = new ExtraBodySelector(rightFrame);
+//	extraBodySelector = new ExtraBodySelector(rightFrame);
 
 //    btnLock = new FXCheckButton(buttonFrame,"&Lock", this, ID_LOCK,CHECKBUTTON_NORMAL,0,0,0,0,10,10,5,5);
 

@@ -12,12 +12,13 @@ public:
 	~PlanetSelector();
 	enum{
 		ID_PLANETS = FXVerticalFrame::ID_LAST,
+		ID_EXTRA,
 		ID_DEGMODE,
 		ID_LAST
 	};
 	long onCmdFillPlanetList(FXObject* sender, FXSelector sel, void* ptr);
 	long onListSelChanged(FXObject*, FXSelector, void*);
-	long onRBtnRelease(FXObject*,FXSelector,void*);
+	long onListRBtnRelease(FXObject*,FXSelector,void*);
 	long onCmdGetDegMode(FXObject*, FXSelector, void*);
 	long onCmdSetDegMode(FXObject*, FXSelector, void*);
 
@@ -27,6 +28,8 @@ protected:
 private:
 	FXTabBar* tabbar;
 	FXList* lstPlanets;
+	FXList* lstExtra;
 	deg_mode deg_mode_;
 	void selectAstroLabel(AstroLabel* al);
+	void setDegMode(FXList* list);
 };

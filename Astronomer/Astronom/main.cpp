@@ -10,6 +10,7 @@ int main(int argc,char *argv[])
 	Astronom application("Astronom","S&W Axis");
 
 	// Start app
+	application.reg().setAsciiMode(true);
 	application.init(argc,argv);
 	application.create();
 

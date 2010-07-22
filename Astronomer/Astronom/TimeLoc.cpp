@@ -1,5 +1,6 @@
 #include "TimeLoc.h"
 #include "Ephemeris.h"
+#include "utils/GlyphManager.h"
 #include <fx.h>
 
 const char *FMT_DATE[] = {
@@ -7,9 +8,6 @@ const char *FMT_DATE[] = {
 	"%02d%c%02d%c%04d", // DMY
 	"%02d%c%02d%c%04d", // MDY
 };
-
-const FXString DEG_STR("°");
-const FXString BACKTICK_STR("`");
 
 const char* FMT_REX[] = {
 	"(\\d+)\\%c(\\d+)\\%c(\\d+)", // DATE
@@ -77,7 +75,7 @@ FXString TimeLoc::formatDate (int y, int m, int d)
 int TimeLoc::scan (timeloc_t idx, const FXString &str, int *out)
 {
 	FXString s(str);
-	toBackTick(s);
+	GlyphManager::toBackTick(s);
 	FXint beg[5], end[5];
 	int value[4];
 	if(rex_[idx].match(s, beg, end, FXRex::Forward, 5)) {
@@ -148,7 +146,7 @@ const FXString& TimeLoc::getStr (timeloc_t idx)
 				double m = (val - d) * 60;
 				int s = (m - (int)m) * 60;
 				res.format (FMT_LAT, d, (int)m, s, c);
-				fromBackTick(res);
+				GlyphManager::fromBackTick(res);
 			}
 				break;
 			case TL_LON:
@@ -158,7 +156,7 @@ const FXString& TimeLoc::getStr (timeloc_t idx)
 				double m = (val - d) * 60;
 				int s = (m - (int)m) * 60;
 				res.format (FMT_LON, d, (int)m, s, c);
-				fromBackTick(res);
+				GlyphManager::fromBackTick(res);
 			}
 				break;
 			case TL_TZ:
@@ -227,27 +225,27 @@ void TimeLoc::set (timeloc_t idx, FX::FXString text, bool recalculate)
 		break;
 		case TL_LAT:
 		{
-			TimeLoc::toBackTick(text);
+			GlyphManager::toBackTick(text);
 			if (scan (TL_LAT, text, out) == 0) {
 				res = out[0] + out[1] / 60.L + out[2] / 3600.L;
 				if (out[3] == 'S')
 					res = -res;
 				data_[idx] = res;
 				str_[idx] = text;
-				TimeLoc::fromBackTick(str_[idx]);
+				GlyphManager::fromBackTick(str_[idx]);
 			}
 		}
 		break;
 		case TL_LON:
 		{
-			TimeLoc::toBackTick(text);
+			GlyphManager::toBackTick(text);
 			if (scan (TL_LON, text, out) == 0) {
 				res = out[0] + out[1] / 60.L + out[2] / 3600.L;
 				if (out[3] == 'W')
 					res = -res;
 				data_[idx] = res;
 				str_[idx] = text;
-				TimeLoc::fromBackTick(str_[idx]);
+				GlyphManager::fromBackTick(str_[idx]);
 			}
 		}
 		break;
@@ -302,12 +300,3 @@ void TimeLoc::asTitle(FXString& output)
 		getStr(TL_LON);
 }
 
-FXString& TimeLoc::toBackTick(FXString& str)
-{
-	return str.substitute(DEG_STR, BACKTICK_STR);
-}
-
-FXString& TimeLoc::fromBackTick(FXString& str)
-{
-	return str.substitute(BACKTICK_STR, DEG_STR);
-}

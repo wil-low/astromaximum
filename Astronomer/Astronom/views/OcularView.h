@@ -27,6 +27,8 @@ public:
     long onQueryHelp(FXObject*, FXSelector, void*);
     long onMouseMove(FXObject*, FXSelector, void*);
     long onRBtnRelease(FXObject*, FXSelector, void*);
+    long onCmdReorderLabels(FXObject*, FXSelector, void*);
+    long onCmdSelectLabel(FXObject*, FXSelector, void*);
 
 	void setZeroPoint (ZeroPoint val) {zero_point_ = val;} // ZERO_*
 
