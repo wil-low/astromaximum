@@ -18,6 +18,7 @@ struct OcularDimensions {
 	int zodiac30dgrR;
 	int innerPlanetLabelR;
 	int innerPlanetR;
+	int zodiacInner2R;
 	int zodiacInnerR;
 	int aspectR;
 	int planetFontSize;

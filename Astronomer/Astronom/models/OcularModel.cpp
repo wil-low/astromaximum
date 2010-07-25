@@ -3,8 +3,10 @@
 #include "../views/DraggableView.h"
 #include "../Chart.h"
 #include "../utils/constants.h"
+#include "fx.h"
 
-OcularModel::OcularModel()
+OcularModel::OcularModel(FXApp* app)
+: app_(app)
 {
 }
 
@@ -26,6 +28,7 @@ void OcularModel::setView(DraggableView* view)
 	odim.innerPlanetLabelR = 406.0/654.0 * DENOMINATOR;
 	odim.zodiac30dgrR = 0/654.0 * DENOMINATOR;
 	odim.innerPlanetR = 430/654.0 * DENOMINATOR;
+	odim.zodiacInner2R = 255.0/654.0 * DENOMINATOR;
 	odim.zodiacInnerR = 244.0/654.0 * DENOMINATOR;
 	odim.aspectR = 236/654.0 * DENOMINATOR;
 	odim.planetFontSize = 500;
@@ -51,6 +54,7 @@ void OcularModel::setView(DraggableView* view)
 
 void OcularModel::setData ()
 {
+	app_->reg().
 	int bodies[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18};
 	Chart chart;
 	chart.id_ = 0;

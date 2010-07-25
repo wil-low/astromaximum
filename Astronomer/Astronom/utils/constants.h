@@ -4,6 +4,8 @@ const int DEG_PER_SIGN = 30;
 const int LAST_PLANET_ID = 9;
 const double DENOMINATOR = 10000.0;
 
+const double STABLESPEED=6./60/60;
+
 const char UNNAMED_DOC[] = "<Celestial>";
 void normAngle(double &a);
 
@@ -34,12 +36,13 @@ enum font_face_t {
 	FF_ARIAL,
 };
 
-enum house_flag_t {
-	hf_Undef = 0,
-	hf_Asc,
-	hf_MC,
-	hf_Dsc,
-	hf_IC,
+enum astro_flag_t {
+	af_Undef = 0,
+	af_Asc = 1,
+	af_MC = 2,
+	af_Dsc = 3,
+	af_IC = 4,
+	af_Retrograde = 8,
 };
 
 static const char* HOUSE_NAMES[] = {

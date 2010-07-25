@@ -1,4 +1,5 @@
 #include "PlanetLabel.h"
+#include "../utils/GlyphManager.h"
 
 FXDEFMAP(PlanetLabel) PlanetLabelMessageMap[]={
 
@@ -41,4 +42,11 @@ double PlanetLabel::getVisibleAngle() const
 void PlanetLabel::setVisibleAngle(double ang)
 {
     visibleLon_ = ang;
+}
+
+void PlanetLabel::setProps(const BodyProps& props)
+{
+	props_ = props;
+	if (props_.prop[BodyProps::bp_LonSpeed] < -STABLESPEED)
+		flags_ |= af_Retrograde;
 }

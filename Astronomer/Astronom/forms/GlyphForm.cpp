@@ -39,7 +39,7 @@ GlyphForm::~GlyphForm(void)
 void GlyphForm::create()
 {
 	FXMainWindow::create();
-	tabFont->setFont(GlyphManager::get_const_instance().getFont(15, FF_ARIAL));
+	tabFont->setFont(GlyphManager::get_const_instance().getFont(15, FF_ASTRO));
 }
 
 long GlyphForm::onTableDblClicked(FXObject*, FXSelector, void* ptr)

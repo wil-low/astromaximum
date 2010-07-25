@@ -112,7 +112,22 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 		dc.setForeground(colors_.mainLineColor);
 		drawCircle(dc, dimensions_.zodiac30dgrR * r);
 	}
+	if (dimensions_.zodiacInner2R != 0) {
+		if (!is_resizing_) {
+			ang = zero_angle_;
+			delta_ang = DEG_PER_SIGN;
+			dc.setForeground(colors_.fillColor);
+			for (int sign = 0; sign < 6; ++sign) {
+				fillArc(dc, dimensions_.zodiacInner2R * r, ang + delta_ang, delta_ang);
+				ang += delta_ang * 2;
+			}
+		}
+		dc.setForeground(colors_.mainLineColor);
+		drawCircle(dc, dimensions_.zodiacInner2R * r);
+	}
 	if (dimensions_.zodiacInnerR != 0) {
+	    dc.setForeground(getBackColor());
+		fillCircle(dc, dimensions_.zodiacInnerR * r);
 		dc.setForeground(colors_.mainLineColor);
 		drawCircle(dc, dimensions_.zodiacInnerR * r);
 	}
@@ -141,10 +156,17 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 	delta_ang = 5 * DTOR;
 	double zinner = dimensions_.zodiac5dgrR * r - 1;
 	double zouter;
+	double zinner1 = dimensions_.zodiacInnerR * r - 1;
+	double zinner2 = dimensions_.zodiacInner2R * r - 1;
+	FXPoint pti[2];
 	for (int tick = 0; tick < 360 / 5; ++tick) {
 		pt[0] = getXYrad(ang, zinner);
 		if (tick % 6 == 0) { // solid line - sign
-			dc.setLineWidth(2);
+			dc.setLineWidth(1);
+			pti[0] = getXYrad(ang, zinner1);
+			pti[1] = getXYrad(ang, zinner2);
+			dc.drawLines(pti, 2);
+ 			dc.setLineWidth(2);
 			pt[1] = getXYrad(ang, zinner + TICK_10_SIZE);
 		}
 		else {
@@ -328,7 +350,7 @@ long OcularView::onChartReset(FXObject*, FXSelector, void* ptr)
 	if (cusp_count > 0) {
 		BodyProps hprops;
 		for (int i = 0; i < 2; ++i) {
-			house_flag_t hf = (i == 0) ? hf_Asc : hf_MC;
+			astro_flag_t hf = (i == 0) ? af_Asc : af_MC;
 			AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_ASC + i);
 			bool need_insert = !label;
 			if (!label)
@@ -345,7 +367,7 @@ long OcularView::onChartReset(FXObject*, FXSelector, void* ptr)
 			}
 		}
 		for (int i = 1; i <= cusp_count; ++i) {
-			house_flag_t hf = HouseLabel::flagOfHouse(i, cusp_count);
+			astro_flag_t hf = HouseLabel::flagOfHouse(i, cusp_count);
 			AstroLabel* label = labels_.find_by_chart_id(chart->id_, HOUSE_ID_FIRST + i);
 			bool need_insert = !label;
 			if (!label)
@@ -519,12 +541,12 @@ void OcularView::drawPlanetLines(FXDC& dc)
 	double r = radius_ / DENOMINATOR;
 	double zouter = dimensions_.zodiac5dgrR * r;
 	double zinner = dimensions_.innerPlanetLabelR * r;
-	double zdgr = (dimensions_.zodiacInnerR + dimensions_.zodiac5dgrR) / 2 * r;
+	double rzinner = dimensions_.planetFontSize * r;
 	dc.setLineWidth(1);
 	FXPoint pt[2];
 
 	FXString strDegree;
-	FXFont* dgrFont = GlyphManager::get_const_instance().getFont(dimensions_.degreeFontSize * radius_ / DENOMINATOR, FF_ASTRO);
+	FXFont* dgrFont = GlyphManager::get_const_instance().getFont(dimensions_.degreeFontSize * r, FF_ASTRO);
 
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		if (al->getType() == TYPE_PLANET && al->isVisible()) {
@@ -543,13 +565,20 @@ void OcularView::drawPlanetLines(FXDC& dc)
 			pt[1].y = pt[0].y - sin(ang0) * hyp;
 			dc.drawLines(pt, 2);
 
-			strDegree.format("%02d%c", ((int)al->getAngle() % DEG_PER_SIGN) + 1, GlyphManager::get_const_instance().getDegreeSign(FF_ASTRO));
-			pt[1] = getXYdeg(angv, zdgr);
-			FXint tw = dgrFont->getTextWidth(strDegree);
-			FXint th = dgrFont->getTextHeight(strDegree);
 			dc.setForeground(FXRGB(0, 0, 0));
 			dc.setFont(dgrFont);
+			strDegree.format("%02d%c", ((int)al->getAngle() % DEG_PER_SIGN) + 1, GlyphManager::get_const_instance().getDegreeSign(FF_ASTRO));
+			FXint tw = dgrFont->getTextWidth(strDegree);
+			FXint th = dgrFont->getTextHeight(strDegree);
+			pt[1] = getXYdeg(angv, zinner - al->getRect().h);
 			dc.drawText(pt[1].x - tw / 2, pt[1].y + th / 2, strDegree);
+			if (al->getFlags() & af_Retrograde) {
+				strDegree = ">";
+				tw = dgrFont->getTextWidth(strDegree);
+				th = dgrFont->getTextHeight(strDegree);
+				pt[1] = getXYdeg(angv, zinner - 2 * al->getRect().h);
+				dc.drawText(pt[1].x - tw / 2, pt[1].y + th / 2, strDegree); // retrograde
+			}
 		}
 	}
 }
@@ -557,7 +586,7 @@ void OcularView::drawPlanetLines(FXDC& dc)
 void OcularView::drawHouseLines(FXDC& dc)
 {
 	double r = radius_ / DENOMINATOR;
-	double zinner = dimensions_.zodiacInnerR * r;
+	double zinner = dimensions_.zodiacInner2R * r;
 	dc.setLineWidth(1);
 	dc.setBackground(getBackColor());
 	FXPoint pt[2];
@@ -568,18 +597,18 @@ void OcularView::drawHouseLines(FXDC& dc)
 	BOOST_FOREACH (AstroLabel* al, labels_) {
 		if (al->getType() == TYPE_HOUSE) {
 			double ang = al->getAngle() + zero_angle_;
-			house_flag_t hf = (house_flag_t)al->getFlags();
+			astro_flag_t af = (astro_flag_t)al->getFlags();
 			pt[0] = getXYdeg(ang, zinner);
-			if (hf == hf_Undef) {
+			if (af == af_Undef) {
 				pt[1] = getXYdeg(ang, dimensions_.zodiac5dgrR * r);
 				dc.setForeground(colors_.planetTickColor);
 				dc.drawLines(pt, 2);
 			}
 			else {
 				dc.setForeground(colors_.arrowColor);
-				switch (hf) {
-					case hf_Asc:
-					case hf_MC: {
+				switch (af) {
+					case af_Asc:
+					case af_MC: {
 						double r_ascmc = dimensions_.ascArrowR * r;
 						pt[1] = getXYdeg(ang, r_ascmc);
 						dc.drawLines(pt, 2);
@@ -589,7 +618,7 @@ void OcularView::drawHouseLines(FXDC& dc)
 						dc.drawLines(pt, 2);
 						dc.setForeground(FXRGB(0, 0, 0));
 						dc.setFont(dgrFont);
-						if (hf == hf_Asc) {
+						if (af == af_Asc) {
 							pt[1] = getXYdeg(ang, r_ascmc * 0.98);
 							strDegree.format("%02d%c",
 								(int)al->getAngle() % DEG_PER_SIGN + 1,
@@ -612,7 +641,7 @@ void OcularView::drawHouseLines(FXDC& dc)
 						}
 						}
 						break;
-					case hf_Dsc: {
+					case af_Dsc: {
 						double r_dsc = dimensions_.ascArrowR * 0.93 * r;
 						double r_circle = dimensions_.ascArrowR * 0.015 * r;
 						pt[1] = getXYdeg(ang, r_dsc);
@@ -620,7 +649,7 @@ void OcularView::drawHouseLines(FXDC& dc)
 						pt[1] = getXYdeg(ang, r_dsc + r_circle);
 						dc.drawEllipse(pt[1].x - r_circle, pt[1].y - r_circle, 2 * r_circle, 2 * r_circle); }
 						break;
-					case hf_IC: {
+					case af_IC: {
 						double r_ic = dimensions_.ascArrowR * 0.96 * r;
 						pt[1] = getXYdeg(ang, r_ic);
 						dc.drawLines(pt, 2);

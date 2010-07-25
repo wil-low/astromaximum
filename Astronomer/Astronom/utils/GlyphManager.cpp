@@ -6,21 +6,24 @@ const FXString BACKTICK_STR("`");
 void GlyphManager::init(FXApp* a)
 {
 	app_ = a;
-	loadFont(astrofont_map_, "Astronom");
-	loadFont(arialfont_map_, "Arial");
+	reg_ = new FXSettings;
+	reg_->parseFile("settings/global.txt", false);
+	loadFont(astrofont_, "font:Astronom");
+	loadFont(arialfont_, "font:Arial");
 }
 
 void GlyphManager::fini()
 {
-	clearFonts(astrofont_map_);
-	clearFonts(arialfont_map_);
+	clearFonts(astrofont_);
+	clearFonts(arialfont_);
+	delete reg_;
 }
 
 FXFont* GlyphManager::getFont(int size, font_face_t face) const
 {
 	FXFont* fnt = NULL;
-	const font_map& map = (face == FF_ASTRO) ? astrofont_map_ : arialfont_map_;
-	font_map::const_iterator it = map.lower_bound(size);
+	const size_font_map& map = ((face == FF_ASTRO) ? astrofont_ : arialfont_).fonts_;
+	size_font_map::const_iterator it = map.lower_bound(size);
 	if (it != map.end())
 		fnt = it->second;
 	else
@@ -28,43 +31,51 @@ FXFont* GlyphManager::getFont(int size, font_face_t face) const
 	return fnt;
 }
 
-void GlyphManager::clearFonts(font_map& map)
+void GlyphManager::clearFonts(font_glyph_t& font)
 {
-	for (font_map::iterator it = map.begin(); it != map.end(); ++it)
+	for (size_font_map::iterator it = font.fonts_.begin(); it != font.fonts_.end(); ++it)
 		delete (*it).second;
-	map.clear();
+	font.fonts_.clear();
+	font.planets_.clear();
+	font.zodiac_signs_.clear();
 }
 
-void GlyphManager::loadFont(font_map& map, const FXString& face)
+void GlyphManager::loadFont(font_glyph_t& font, const FXString& face)
 {
 	const int FONT_SIZES[] = {8, 9, 10, 11, 12, 13, 14, 16, 18, 22, 30, 36, 40, 48, 56, 60};
-	clearFonts(map);
+	clearFonts(font);
 	for (int i = 0; i < ARRAYNUMBER(FONT_SIZES); ++i) {
 		FXFont* fnt = new FXFont(app_, face,
 			FONT_SIZES[i], FXFont::Normal, FXFont::Straight, FONTENCODING_UNICODE);
 		if (fnt != NULL) {
 			fnt->create();
-			map[FONT_SIZES[i]] = fnt;
+			font.fonts_[FONT_SIZES[i]] = fnt;
 		}
 	}
+	font.glyphs_ = reg_->find(face);
+	const char DELIMITER = ' ';
+	s = reg_->readStringEntry(face, "zodiac", "");
+	space_count = s.contains(DELIMITER);
+	for (int i = 0; i <= space_count; ++i)
+		font.zodiac_signs_.push_back(s.section(DELIMITER, i).toInt());
 }
 
 FXchar GlyphManager::getLabel(body_type_t type, int id) const
 {
 	switch (type) {
 		case TYPE_ZODIAC:
-			return id + '@';
+			return astrofont_.zodiac_signs_[id];
 		case TYPE_PLANET:
-			return id + '0' + 32;
+			return astrofont_.planets_[id];
 		case TYPE_HOUSE:
-			switch ((house_flag_t)id) {
-				case hf_Asc:
+			switch ((astro_flag_t)id) {
+				case af_Asc:
 					return 'L';
-				case hf_IC:
+				case af_IC:
 					return 'O';
-				case hf_Dsc:
+				case af_Dsc:
 					return 'M';
-				case hf_MC:
+				case af_MC:
 					return 'N';
 			}
 	}
@@ -79,12 +90,12 @@ FXchar GlyphManager::getDegreeSign(font_face_t face) const
 		return '`';
 }
 
-FXString GlyphManager::getHouseLabel(int id, house_flag_t hf) const
+FXString GlyphManager::getHouseLabel(int id, astro_flag_t af) const
 {
-	if (hf == hf_Undef)
+	if (af == af_Undef)
 		return FXString(HOUSE_NAMES[id - HOUSE_ID_FIRST - 1]);
 	FXString s;
-	s.format("%c", getLabel(TYPE_HOUSE, (int)hf));
+	s.format("%c", getLabel(TYPE_HOUSE, (int)af));
 	return s;
 }
 

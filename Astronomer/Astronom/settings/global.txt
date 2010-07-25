@@ -1,0 +1,60 @@
+﻿[ephemeris:mapping]
+sun = 0
+moon = 1
+mercury = 2
+venus = 3
+mars = 4
+jupiter = 5
+saturn = 6
+uranus = 7
+neptun = 8
+pluto = 9
+ceres = 17
+pallas = 18
+juno = 19
+vesta = 20
+
+[ocular]
+bodies = sun moon mercury venus mars jupiter saturn uranus neptun pluto north_node ceres pallas juno vesta
+
+[font:Astronom]
+zodiac = 64 65 66 67 68 69 70 71 72 73 74 75
+retrograde = 62
+degree = 59
+asc = 76
+dsc = 77
+mc = 78
+ic = 79
+sun = 80
+moon = 81
+mercury = 82
+venus = 83
+mars = 84
+jupiter = 85
+saturn = 86
+uranus = 87
+neptun = 88
+pluto = 89
+earth = 91
+asp0 = 96
+asp60 = 97
+asp90 = 98
+asp120 = 99
+asp180 = 100
+asp30 = 101
+asp45 = 102
+asp135 = 103
+asp150 = 104
+pars_fortunae = 112
+north_node = 94
+south_node = 95
+solar_eclipse = 92
+lunar_eclipse = 93
+
+ceres = 132
+pallas = 133
+juno = 134
+vesta = 135
+
+chiron = 136
+proserpina = 137

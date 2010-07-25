@@ -75,7 +75,7 @@ void PlanetListItem::draw(const FXList* list, FXDC& dc, FXint xx, FXint yy, FXin
 	else
 		dc.setForeground(list->getTextColor());
 
-	if (al->getType() == TYPE_HOUSE && al->getFlags() == hf_Undef)
+	if (al->getType() == TYPE_HOUSE && al->getFlags() == af_Undef)
 		dc.setFont(afont);
 	dc.drawText(xx + SIDE_MARGIN, yy + (hh - th) / 2 + dc.getFont()->getFontAscent(), text[0]);
 	dc.setFont(font);

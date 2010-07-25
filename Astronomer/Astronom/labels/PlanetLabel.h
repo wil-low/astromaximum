@@ -13,6 +13,7 @@ public:
 	virtual double getVisibleAngle() const;
 
 	virtual void setVisibleAngle(double ang);
+	virtual void setProps(const BodyProps& props);
 	PlanetLabel(){}
 private:
     int planet_id_;
