@@ -8,8 +8,17 @@ void GlyphManager::init(FXApp* a)
 	app_ = a;
 	reg_ = new FXSettings;
 	reg_->parseFile("settings/global.txt", false);
-	loadFont(astrofont_, "font:Astronom");
-	loadFont(arialfont_, "font:Arial");
+	loadFont(astrofont_, "Astronom");
+	loadFont(arialfont_, "Arial");
+	FXStringDict* dict = reg_->find("ephemeris:mapping");
+	for (int i = 0; i < dict->size(); ++i) {
+		if (!dict->empty(i)) {
+			int id = FXString(dict->data(i)).toInt();
+			FXString name = dict->key(i);
+			planet2id_[name] = id;
+			id2planet_[id] = name;
+		}
+	}
 }
 
 void GlyphManager::fini()
@@ -52,10 +61,11 @@ void GlyphManager::loadFont(font_glyph_t& font, const FXString& face)
 			font.fonts_[FONT_SIZES[i]] = fnt;
 		}
 	}
-	font.glyphs_ = reg_->find(face);
+	FXString section = "font:" + face;
+	font.glyphs_ = reg_->find(section);
 	const char DELIMITER = ' ';
-	s = reg_->readStringEntry(face, "zodiac", "");
-	space_count = s.contains(DELIMITER);
+	FXString s = reg_->readStringEntry(section, "zodiac", "");
+	FXint space_count = s.contains(DELIMITER);
 	for (int i = 0; i <= space_count; ++i)
 		font.zodiac_signs_.push_back(s.section(DELIMITER, i).toInt());
 }
@@ -65,8 +75,12 @@ FXchar GlyphManager::getLabel(body_type_t type, int id) const
 	switch (type) {
 		case TYPE_ZODIAC:
 			return astrofont_.zodiac_signs_[id];
-		case TYPE_PLANET:
-			return astrofont_.planets_[id];
+		case TYPE_PLANET: {
+			std::map<int, FXString>::const_iterator it = id2planet_.find(id);
+			if (it != id2planet_.end()) {
+				FXString key = astrofont_.glyphs_->find((*it).second.text());
+				return key.toInt();
+			} }
 		case TYPE_HOUSE:
 			switch ((astro_flag_t)id) {
 				case af_Asc:

@@ -2,11 +2,11 @@
 #include "BaseModel.h"
 #include "../utils/OcularDefs.h"
 #include "../utils/HouseProps.h"
-class FXApp;
+class FX::FXApp;
 class OcularModel : BaseModel
 {
 public:
-	OcularModel(FXApp* app);
+	OcularModel(FX::FXApp* app);
 	virtual ~OcularModel();
 	virtual void setView(DraggableView*);
 	virtual void setData();
