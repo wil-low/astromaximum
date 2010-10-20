@@ -16,7 +16,7 @@ $sett=array(
 	'mail_site_mobi'=>'http://mobi.astromaximum.com',
 	'noreply'=>'noreply@astromaximum.com',
 	
-	'mail_event'=>'office@astromaximum.com',
+	'mail_event'=>'astromaximum@gmail.com',
 	'mail_bill'=>'bix@astromaximum.com',
 
 	'def_cities'=>array(
