@@ -36,8 +36,10 @@ function alert2($str){
 
 if($chac!=-1 and $chac!=1){
 	$y_now=$current_year;
+	if($chac==0)
+		$y_now += 2;
 	$out='';
-	for($i=$current_year-1; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
+	for($i=$y_now-1; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
 		$out.="<option value=\"$i\"";
 		if($i==$current_year) $out.=" selected=\"selected\"";
 		$out.=">$i</option>\n";
@@ -54,7 +56,7 @@ if($chac!=-1 and $chac!=1){
 		$is_allow_dl=($tries[0]!=0);
 		if(isset($_POST["yagree"])){ // past year request
 			$year=(int)$_POST["yagree"];
-			if($year>=$current_year){
+			if($chac!=0 && $year>=$current_year){
 				return;
 			}
 			$is_allow_dl=($tries[2]!=0);

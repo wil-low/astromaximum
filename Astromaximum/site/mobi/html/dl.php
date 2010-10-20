@@ -79,7 +79,7 @@ $is_allow_dl=($tries[1]!=0);
 $defyear=$current_year;
 if(isset($_POST['y_sel'])){
 	$defyear=$_POST['y_sel'];
-	if($defyear>$current_year){
+	if($chac!=0 && $defyear>$current_year){
 		$defyear=$current_year;
 	}
 }
@@ -149,9 +149,11 @@ function generate(){
 	onchange="document.forms.namedItem('main').submit()">
 <?php
 $y_now=$current_year;
+if($chac==0)
+	$y_now=$current_year + 1;
 for($i=$y_now; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
 	$yy=$i;
-    if($chac==1 and $yy!=$defyear) continue;
+    if(($chac==1 || $chac==-1) and $yy!=$defyear) continue;
 	echo "<option value=\"$yy\"";
 	if($yy==$defyear) echo " selected=\"selected\"";
 	echo ">$yy</option>\n";
