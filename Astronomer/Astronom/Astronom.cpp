@@ -35,7 +35,7 @@ Astronom::Astronom(const FXString& name, const FXString& vendor)
     localizer->load_lang ("settings/ru.lng");
 	setTranslator(localizer);
 	tooltip_ = new FXToolTip(this);
-	mOcular = new OcularModel();
+	mOcular = new OcularModel(this);
 	fGlyph = new GlyphForm(this);
 	fMain = new MainForm(this);
 	fInputData = new InputForm(fMain);

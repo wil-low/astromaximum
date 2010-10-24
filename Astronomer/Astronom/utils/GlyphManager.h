@@ -24,9 +24,11 @@ private:
 	struct font_glyph_t {
 		size_font_map fonts_;
 		FXStringDict* glyphs_;
-		std::vector<int> planets_;
+		std::map<int, int> planets_;
 		std::vector<int> zodiac_signs_;
 	};
+	std::map<FXString, int> planet2id_;
+	std::map<int, FXString> id2planet_;
 	void clearFonts(font_glyph_t& font);
 	void loadFont(font_glyph_t& font, const FXString& face);
 	font_glyph_t astrofont_;

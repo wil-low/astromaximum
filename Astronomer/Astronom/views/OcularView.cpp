@@ -187,6 +187,7 @@ long OcularView::onPaint(FXObject* o, FXSelector, void* ptr)
 		dc.drawLines(pt, 2);
 		ang += delta_ang;
 	}
+return 1;
 /*
 		else if (tick % 2 == 0) { // 10 degrees
 			pt[0] = getXYrad(ang, zinner);
