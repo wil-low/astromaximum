@@ -150,6 +150,7 @@ if (document.images){
 <?php
 print_menu('home', 'MNU_HOME', 1);
 print_menu('man0', 'MNU_MAN', 1);
+echo "<a href=\"/forum/index.php\">{$i18['MNU_FORUM']}</a> | ";
 echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . "start\">wiki</a> | ";
 echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . 
 	"screen\" target=\"_blank\">{$i18['MNU_SCRSHOTS']}</a> | ";

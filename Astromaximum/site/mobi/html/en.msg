@@ -87,6 +87,7 @@ CAPTCHA_PROMPT=Enter charachers seen on the image:
 CAPTCHA_WRONG=Invalid charachers entered
 MNU_HOME=home
 MNU_MAN=manual
+MNU=forum
 MNU_SCRSHOTS=screenshots
 MNU_BUY=purchase
 MNU_CITYLIST=cities GMT

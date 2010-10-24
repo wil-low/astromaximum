@@ -87,6 +87,7 @@ CAPTCHA_PROMPT=Введите символы, указанные на рисун
 CAPTCHA_WRONG=Неверно введены символы
 MNU_HOME=главная
 MNU_MAN=инструкция
+MNU_FORUM=форум
 MNU_SCRSHOTS=скриншоты
 MNU_BUY=купить
 MNU_CITYLIST=города GMT
