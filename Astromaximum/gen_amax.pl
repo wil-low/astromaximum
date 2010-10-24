@@ -350,7 +350,7 @@ sub inject_amdata{
 
 sub inject_icon{ # prefix, subdir
     mkdir "$const::DIR_TEMP/$_[1]";
-	my $icon_num = $ye % 2;
+	my $icon_num = $ye % 4;
 	my $prefix=shift;
     my $fn = "<$path/$const::DIR_IMG/$prefix$icon_num.png";
 	open(INF, $fn) or mydie("Cannot open $fn");
