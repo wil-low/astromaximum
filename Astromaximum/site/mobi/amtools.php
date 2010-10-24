@@ -206,8 +206,8 @@ function detect_mobile(){
 	$unsupported_url = $GLOBALS['amax']['mail_site_mobi'] . '/?lang=en&p=unsupported&d=';
 	include_once('mobile_device_detect/mobile_device_detect.php');
 	mobile_device_detect(
-		true, # iPhone,
-		$unsupported_url.'Android',
+		$unsupported_url.'iPhone',
+		true, #Android,
 		true, # OperaMini
 		$unsupported_url.'Blackberry',
 		$unsupported_url.'PalmOS',
