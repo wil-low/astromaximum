@@ -439,7 +439,9 @@ class Interpreter extends Canvas implements CommandListener {
 
     void prepareText() {
         lineCount = topLine = 0;
+        Astromaximum.errCode = 6711;
         VMARGIN = Summary.imgService.getHeight() + 6;
+        Astromaximum.errCode = 6712;
     }
 
     private void newLine() {

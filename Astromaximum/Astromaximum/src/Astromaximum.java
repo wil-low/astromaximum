@@ -608,11 +608,13 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Show alert inside Interpreter
      */
     public void alert(String str) {
+        Astromaximum.errCode = 671;
         interpreter.prepareText();
         Astromaximum.errCode = 67;
         interpreter.txt = str;
         Astromaximum.errCode = 68;
         disp.setCurrent(interpreter);
+        Astromaximum.errCode = 681;
     }
 
     /**
