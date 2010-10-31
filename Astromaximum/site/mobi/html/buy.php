@@ -16,12 +16,14 @@ $msg=$i18['REGFORM_REQF'];
 $email=$email2=$nick=$paymode=$model='';
 
 if($chac==-1 or $chac == 1 or $chac == 3){ // unpaid
-	echo '<h4>'.$META_TITLE.'</h4><ul>';
-    foreach($GLOBALS['amax']['paymodes'] as $key){
-        $key2=sprintf('%02d', $key);
-        echo '<li><a href="p_'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a><br/><br/></li>\n";
-    }
-	echo '</ul>';
+	if ($GLOBALS['amax']['buy_enabled']) {
+		echo '<h4>'.$META_TITLE.'</h4><ul>';
+		foreach($GLOBALS['amax']['paymodes'] as $key){
+			$key2=sprintf('%02d', $key);
+			echo '<li><a href="p_'.$key2.'">'.$i18['PAYMENT_'.$key2]."</a><br/><br/></li>\n";
+		}
+		echo '</ul>';
+	}
     return;
 }
 

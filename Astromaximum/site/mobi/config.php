@@ -42,6 +42,7 @@ $sett=array(
 	'DB_USER'=>'user',
 	'DB_USER_PWD'=>'user',
     
+	'buy_enabled'=>0,
     'paymodes'=>array(7/*, 6, 4*/),
 
 	'paypal_url'=>'https://www.paypal.com',

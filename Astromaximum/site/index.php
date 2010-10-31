@@ -154,13 +154,18 @@ echo "<a href=\"/forum/index.php\">{$i18['MNU_FORUM']}</a> | ";
 echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . "start\">wiki</a> | ";
 echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . 
 	"screen\" target=\"_blank\">{$i18['MNU_SCRSHOTS']}</a> | ";
-print_menu($buy_page, 'MNU_BUY', 1);
+if ($GLOBALS['amax']['buy_enabled']) {
+	print_menu($buy_page, 'MNU_BUY', 1);
+	$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['year']);
+}
+else {
+	$btn2=sprintf($i18['CITY_BUTTON'], $GLOBALS['amax']['year']);
+}
 print_menu('citylist', 'MNU_CITYLIST', 1);
 print_menu('dl', 'MNU_DLCIT', 1);
 print_menu('contacts', 'MNU_CONTACTS', 0);
 //echo "<br/>";print_r($_REQUEST);
 $btn1=sprintf($i18['DEMO'], $GLOBALS['amax']['year'] - 1); $btn1_link="/$lang/demo";
-$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['year']);
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>| 
@@ -178,9 +183,11 @@ if($user_ok){
 	if(strcmp($main, 'dl') && strcmp($main, 'dl2')){
 		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
 	}
-	$try_count = get_try_count(0);
-	if ($try_count[0] != 0)
-		$btn2=$i18['TRIAL'];
+	if ($GLOBALS['amax']['buy_enabled']) {
+		$try_count = get_try_count(0);
+		if ($try_count[0] != 0)
+			$btn2=$i18['TRIAL'];
+	}
 }
 /*
 if($chac==1 || $chac==3){
@@ -208,7 +215,11 @@ FRM;
 </div>
 <?php 
 echo show_big_button('demo', $btn1, $btn1_link, $btn1_link, false);
-echo show_big_button('buy', $btn2, '/^(buy|p_\d\d)$/is', "/$lang/$buy_page", true);
+if ($GLOBALS['amax']['buy_enabled'])
+	echo show_big_button('buy', $btn2, '/^(buy|p_\d\d)$/is', "/$lang/$buy_page", true);
+else {
+	echo show_big_button('buy', $btn2, '', "/$lang/dl", false);
+}
 ?>
 <div id="leftColumn">
 <?php	echo $session_prompt ?>
