@@ -165,7 +165,8 @@ print_menu('citylist', 'MNU_CITYLIST', 1);
 print_menu('dl', 'MNU_DLCIT', 1);
 print_menu('contacts', 'MNU_CONTACTS', 0);
 //echo "<br/>";print_r($_REQUEST);
-$btn1=sprintf($i18['DEMO'], $GLOBALS['amax']['year'] - 1); $btn1_link="/$lang/demo";
+$btn1=sprintf($i18['DEMO'], $GLOBALS['amax']['year'] - 1); $btn1_link='demo';
+$btn2=sprintf($i18['CITY_BUTTON'], $GLOBALS['amax']['year']);
 if($chac==0){
 	echo <<<ADMIN_TB
 	<p>|
@@ -177,24 +178,13 @@ if($chac==0){
 ADMIN_TB;
 }
 if($user_ok){
-	if(strcmp($main, 'demo')){
-		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
-	}
-	if(strcmp($main, 'dl') && strcmp($main, 'dl2')){
-		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
-	}
-	if ($GLOBALS['amax']['buy_enabled']) {
-		$try_count = get_try_count(0);
-		if ($try_count[0] != 0)
-			$btn2=$i18['TRIAL'];
-	}
+        $try_count = get_try_count(0);
+        if ($try_count[0] != 0) {
+                $btn1=sprintf($i18['DEMO'], $GLOBALS['amax']['year']);
+                $btn1_link='buy';
+        }
 }
-/*
-if($chac==1 || $chac==3){
-	$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['price'])."<br/> + {$GLOBALS['amax']['city_count']} ".
-	$i18['_CITIES'];
-}
-*/
+
 if($chac!=-1){
 	$session_prompt=<<<SP1
 <p>{$i18['WELCOME']}, <b>{$_SESSION['username']}</b> ! </p>
@@ -214,12 +204,8 @@ FRM;
 ?>
 </div>
 <?php
-echo show_big_button('demo', $btn1, $btn1_link, $btn1_link, false);
-if ($GLOBALS['amax']['buy_enabled'])
-	echo show_big_button('buy', $btn2, '/^(buy|p_\d\d)$/is', "/$lang/$buy_page", true);
-else {
-	echo show_big_button('buy', $btn2, '', "/$lang/dl", false);
-}
+echo show_big_button('demo', $btn1, $btn1_link, "/$lang/$btn1_link", false);
+echo show_big_button('buy', $btn2, 'dl', "/$lang/dl", false);
 ?>
 <div id="leftColumn">
 <?php	echo $session_prompt ?>
