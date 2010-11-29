@@ -92,9 +92,8 @@ if(preg_match("/^(demo)$/is", $main)) {
     </div>
     <div id="ftr"><p>
 <?php
-	if (!preg_match('/^m_(unsupported|home)$/', $main)) {
-		echo ($chac!=-1) ? $_SESSION['username'] : 'guest';
-		echo " <a href=\"dl/logout.php\">logout</a>";
+	if (!preg_match('/^m_(unsupported)$/', $main) and $chac!=-1) {
+		echo $_SESSION['username']." <a href=\"dl/logout.php\">logout</a>";
 	}
 ?>
     </p></div>

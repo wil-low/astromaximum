@@ -57,7 +57,8 @@ H_STATE=State
 H_CITY=City
 READY_CITIES=City installer created: <i>%s</i> (%d) 
 BACK=Back
-SEL_DCITY=Cities
+SEL_DCITY=Download cities
+SEL_DCALENDAR=Download calendar
 SEL_AH=Astrohelp
 SEL_ABOUT=About calendar
 SEL_DEMO=Demo
@@ -160,3 +161,5 @@ PRODINFO_PRICE=Price
 TIT_PAYMENT_SEL=Select payment system
 
 MOBI_YEAR_H=Select year
+MOBI_LANG_H=Select Astromaximum %s language
+MOBI_CLIENT_LOGIN_H=Download calendar %s and cities

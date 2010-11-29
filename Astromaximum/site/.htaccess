@@ -6,6 +6,9 @@ RewriteCond %{ENV:REDIRECT_MYFLAG} ^$
 RewriteCond %{HTTP_HOST} ^mobi\.astromaximum\.com$
 RewriteRule ^(.+) %{HTTP_HOST}$1 [E=MYFLAG:1]
 RewriteRule ^mobi\.astromaximum\.com(.*) /mobi%{REQUEST_URI} [L]
+RewriteCond %{HTTP_HOST} ^forum\.astromaximum\.com$
+RewriteRule ^(.+) %{HTTP_HOST}$1 [E=MYFLAG:1]
+RewriteRule ^forum\.astromaximum\.com(.*) /forum%{REQUEST_URI} [L]
 RewriteCond %{HTTP_HOST} ^astromaximum\.com$
 RewriteRule ^ipn/([A-Za-z]+)$ /ipn.php?sys=$1 [L]
 RewriteRule ^(ru|en|de)?/info/([0-9a-f]+)$ /shot.php?h=$2 [L]

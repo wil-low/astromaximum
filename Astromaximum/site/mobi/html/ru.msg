@@ -57,7 +57,8 @@ H_STATE=Регион
 H_CITY=Город
 READY_CITIES=Создан файл города <i>%s</i> (%d) 
 BACK=Назад
-SEL_DCITY=Города
+SEL_DCITY=Скачать города
+SEL_DCALENDAR=Скачать календарь
 SEL_AH=Астросправка
 SEL_ABOUT=О календаре
 SEL_DEMO=Демо
@@ -157,3 +158,5 @@ PRODINFO_PRICE=Цена
 
 TIT_PAYMENT_SEL=Выбор системы оплаты
 MOBI_YEAR_H=Выберите год
+MOBI_LANG_H=Выберите язык для Astromaximum %s
+MOBI_CLIENT_LOGIN_H=Загрузить календарь %s и города
