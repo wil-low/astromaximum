@@ -1,97 +1,106 @@
 #  Astromaximum item coordinates table
 
+#    0: PAGE_SUMMARY
+#    1: PAGE_SUMMARY1
+#    2: PAGE_SUMMARY2
+#    3: PAGE_SUMMARY3
+#    4: PAGE_SUMMARY4
+#    d: PAGE_DECUMB
+#    h: PAGE_HELP
+#    m: PAGE_MONTH
+#    p: PAGE_PANEL
+#    w: PAGE_WEEK
+
 #   l, t, w, h   page    ho,ve    event type               l, r, u, d
 
-{   1, 0,12, 9,   512,    1, 1,   EV_BACK             ,   -1, 1,-1, 1  }   # BACK ARROW
-{   1, 0,12, 9,   255,    1, 1,   EV_PANEL            ,   -1, 1,-1, 1  }   # 0 PANEL
-{  18, 0,75, 9,   248,    3, 1,   EV_TOP_DAY          ,   21,21,-1, 1  }   # 0 EV_TOP_DAY
-{  28, 0,40, 9,     6,    3, 1,   EV_TOP_MONTH        ,   25,25,27,27  }   # 0 EV_TOP_MONTH
-{   1,10,99,89,     2,    1, 1,   EV_WEEK_GRID        ,   24,24,24,24  }   # 0 WEEK_GRID
-{   1,18,99,82,     4,    1, 1,   EV_MONTH_GRID       ,   23,23,23,23  }   # 0 MONTH_GRID
-{   1,95,99, 5,     0,   12, 1,   EV_ZODIAC_SIGN      ,   -1, 1,-1, 1  }   # zodiac sign
-{   1,12,70,10,    16,    1, 1,   EV_VOC              ,   -1, 6,-1, 1  }   # 1 voc
-{   1,22,70,10,    16,    1, 1,   EV_VIA_COMBUSTA     ,   -1, 5,-1, 1  }   # 2 via combusta
-{  13,34, 8, 8,    16,    1, 0,   EV_ECLIPSE          ,   -1, 2,-1, 1  }   # 7 ECLIPSE
-{   1,44,21, 6,    16,    1, 1,   EV_SUN_DAY          ,   -1, 1,-1, 4  }   # 3 SUN_DAY
-{  22,34,21,16,    16,    1, 1,   EV_SUN_DEGREE_LARGE ,   -1, 1,-3, 5  }   # 3 SUN_DEGREE_LARGE
-{  43,34,28,16,    16,    1, 1,   EV_SUN_RISE         ,   -1, 1,-4, 5  }   # 3 SUN_RISE
-{  71,12,29,38,    16,    1, 1,   EV_MOON_PHASE       ,   -1, 1,-7, 5  }   # 25 MOON_PHASE
-{  13,51, 8, 8,    16,    1, 1,   EV_ECLIPSE          ,   -1, 2,-4, 1  }   # 7 ECLIPSE
-{   1,60,21, 6,    16,    0, 1,   EV_MOON_DAY         ,   39,41,-1,64  }   # 4 MOON_DAY
-{  22,51,21,16,    16,    1, 1,   EV_MOON_SIGN_LARGE  ,   -1, 1,-5,63  }   # 3 EV_MOON_SIGN_LARGE
-{  43,51,28,16,    16,    1, 1,   EV_MOON_RISE        ,   -1, 1,-5,82  }   # 4 MOON_RISE
-{  71,51,29, 9,    16,    0, 1,   EV_TITHI            ,   39,41,-5,81  }   # 5 TITHI
-{   1,67,99,15,    16,    0, 1,   EV_MOON_MOVE        ,   39,41,26,26  }   # 6 (41) moon aspects
-{   1,82,50, 8,    16,    0, 1,   EV_SEL_DEGREES      ,   39,41,59, 2  }   # 7 selected degrees
-{  51,82,49, 8,    16,    0, 1,   EV_RETROGRADE       ,   39,41,78, 1  }   # 8 retrograde
-{   1,12,99,10,    32,    0, 1,   EV_ASP_EXACT        ,   39,41,-1, 1  }   # 9 (40) aspects to non-moon planets
-{   1,23,99,12,    32,   12, 1,   EV_DAY_HOURS        ,   39,41,-1, 1  }   # 10 DAY_HOURS
-{   1,37,99,12,    32,   12, 1,   EV_NIGHT_HOURS      ,   39,41,-1, 1  }   # 11 NIGHT_HOURS
-{  13,52,23, 8,    32,    0, 1,   EV_DEG_2ND          ,   39,42,-1, 1  }   # 12 EV_DEG_2ND
-{   5,61,40,28,    32,    4, 0,   EV_RISE             ,   -1, 2,39,43  }   # 12 RISE
-{  60,52,23, 8,    32,    0, 1,   EV_DEG_2ND          ,   38,42,-3, 1  }   # 12 EV_DEG_2ND
-{  54,61,40,28,    32,    4, 0,   EV_RISE             ,   -2, 1,39,41  }   # 12 RISE
-{  13,11,28, 9,    64,    0, 1,   EV_DEG_2ND          ,   39,42,-1, 1  }   # 12 EV_DEG_2ND
-{   5,20,43,28,    64,    4, 0,   EV_RISE             ,   -1, 2,39,43  }   # 12 RISE
-{  62,11,28, 9,    64,    0, 1,   EV_DEG_2ND          ,   38,42,-3, 1  }   # 12 EV_DEG_2ND
-{  54,20,43,28,    64,    4, 0,   EV_RISE             ,   -2, 1,39,43  }   # 12 RISE
-{  13,51,28, 9,    64,    0, 1,   EV_DEG_2ND          ,   39,42,-3, 1  }   # 12 EV_DEG_2ND
-{   5,60,43,28,    64,    4, 0,   EV_RISE             ,   -1, 2,39,43  }   # 12 RISE
-{  62,51,28, 9,    64,    0, 1,   EV_DEG_2ND          ,   38,42,-3, 1  }   # 12 EV_DEG_2ND
-{  54,60,43,28,    64,    4, 0,   EV_RISE             ,   -2, 1,39,41  }   # 12 RISE
-{  34,11,28, 9,   128,    0, 1,   EV_DEG_2ND          ,   39,41,-1, 1  }   # 12 EV_DEG_2ND
-{  28,20,43,28,   128,    4, 0,   EV_RISE             ,   -1, 1,39,41  }   # 12 RISE
-{  14,51,20, 9,   128,    0, 1,   EV_DEG_2ND          ,   39,43,-1, 1  }   # 12 EV_DEG_2ND
-{  14,60,20, 9,   128,    0, 1,   EV_DEG_2ND          ,   39,43,-1, 1  }   # 12 EV_DEG_2ND
-{  14,69,20, 9,   128,    0, 1,   EV_DEG_2ND          ,   39,43,-1, 4  }   # 12 EV_DEG_2ND
-{  66,51,20, 9,   128,    0, 1,   EV_DEG_2ND          ,   37,41,-4, 1  }   # 12 EV_DEG_2ND
-{  66,60,20, 9,   128,    0, 1,   EV_DEG_2ND          ,   37,41,-1, 1  }   # 12 EV_DEG_2ND
-{  66,69,20, 9,   128,    0, 1,   EV_DEG_2ND          ,   37,41,-1, 1  }   # 12 EV_DEG_2ND
-{   5,10,30,27,     8,    1, 0,   EV_TOPIC_BUTTON     ,    2, 1,-1, 3  }   # 12 EV_TOPIC_BUTTON
-{  35,10,30,27,     8,    1, 1,   EV_TOPIC_BUTTON     ,   -1, 1,-2, 3  }   # 12 EV_TOPIC_BUTTON
-{  65,10,30,27,     8,    1, 2,   EV_TOPIC_BUTTON     ,   -1,-2,-3, 3  }   # 12 EV_TOPIC_BUTTON
-{   5,37,30,27,     8,    1, 3,   EV_TOPIC_BUTTON     ,    2, 1,-3, 3  }   # 12 EV_TOPIC_BUTTON
-{  35,37,30,27,     8,    1, 4,   EV_TOPIC_BUTTON     ,   -1, 1,-3, 3  }   # 12 EV_TOPIC_BUTTON
-{  65,37,30,27,     8,    1, 5,   EV_TOPIC_BUTTON     ,   -1,-2,-3, 3  }   # 12 EV_TOPIC_BUTTON
-{   5,64,30,27,     8,    1, 6,   EV_TOPIC_BUTTON     ,    2, 1,-3, 3  }   # 12 EV_TOPIC_BUTTON
-{  35,64,30,27,     8,    1, 7,   EV_TOPIC_BUTTON     ,   -1, 1,-3, 2  }   # 12 EV_TOPIC_BUTTON
-{  65,64,30,27,     8,    1, 8,   EV_TOPIC_BUTTON     ,   -1,-2,-3, 1  }   # 12 EV_TOPIC_BUTTON
-{  12, 1,10, 7,     1,    1, 2,   EV_MOON_PHASE       ,   -1, 1,-2, 2  }   # 25 MOON_PHASE
-{  23, 1,66, 6,     1,    0, 1,   EV_DECUMB_BEGIN     ,   39,41,-2, 2  }   # DECUMB_BEGIN
-{   1, 9,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23, 9,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 1  }   # DECUMBITURE
-{   1,16,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,16,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,22,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,22,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,28,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,28,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,34,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,34,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,40,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,40,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,46,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,46,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,52,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,52,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,58,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,58,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,64,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,64,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,70,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,70,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,76,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,76,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1,82,21, 6,     1,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
-{  23,82,76, 6,     1,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
-{   1, 9,99, 8,   512,    7, 1,   EV_HELP             ,   39,41,-1, 1  }   # help - planets 1
-{   1,17,99, 8,   512,    6, 2,   EV_HELP             ,   39,41,-1, 1  }   # help - planets 1
-{   1,27,99, 8,   512,    6, 3,   EV_HELP             ,   39,41,-1, 1  }   # help - zodiac 1
-{   1,35,99, 8,   512,    6, 4,   EV_HELP             ,   39,41,-1, 1  }   # help - zodiac 2
-{   1,45,99, 8,   512,    5, 5,   EV_HELP             ,   39,41,-1, 1  }   # help - hotkeys, Asc
-{   1,55,99,12,   512,    6, 6,   EV_HELP             ,   39,41,-1, 1  }   # help - phases
-{   1,69,99, 8,   512,    8, 7,   EV_HELP             ,   39,41,-1, 1  }   # help - aspects
-{   1,79,99, 8,   512,    5, 8,   EV_HELP             ,   39,41,-1, 1  }   # help - tithi
-{   1,88,99,11,   512,    8, 9,   EV_HELP             ,   39,41,-1, 1  }   # help - topics
-{   1, 9,99,89,  1024,   10, 0,   EV_ASCAPHETICS      ,   -1, 1,39,41  }   # AscAphetics
-{   1,91,98, 9,   249,    2, 1,   EV_STATUS           ,   22,22,-1, 1  }   # 15 (39) status line
+{   1, 0,12, 9,            h,    1, 1,   EV_BACK             ,   -1, 1,-1, 1  }   # BACK ARROW
+{   1, 0,12, 9,     dwmp0123,    1, 1,   EV_PANEL            ,   -1, 1,-1, 1  }   # 0 PANEL
+{  18, 0,75, 9,        p0123,    3, 1,   EV_TOP_DAY          ,   21,21,-1, 1  }   # 0 EV_TOP_DAY
+{  28, 0,40, 9,           wm,    3, 1,   EV_TOP_MONTH        ,   25,25,27,27  }   # 0 EV_TOP_MONTH
+{   1,10,99,89,            w,    1, 1,   EV_WEEK_GRID        ,   24,24,24,24  }   # 0 WEEK_GRID
+{   1,18,99,82,            m,    1, 1,   EV_MONTH_GRID       ,   23,23,23,23  }   # 0 MONTH_GRID
+{   1,12,70,10,            0,    1, 1,   EV_VOC              ,   -1, 6,-1, 1  }   # 1 voc
+{   1,22,70,10,            0,    1, 1,   EV_VIA_COMBUSTA     ,   -1, 5,-1, 1  }   # 2 via combusta
+{  13,34, 8, 8,            0,    1, 0,   EV_ECLIPSE          ,   -1, 2,-1, 1  }   # 7 ECLIPSE
+{   1,44,21, 6,            0,    1, 1,   EV_SUN_DAY          ,   -1, 1,-1, 4  }   # 3 SUN_DAY
+{  22,34,21,16,            0,    1, 1,   EV_SUN_DEGREE_LARGE ,   -1, 1,-3, 5  }   # 3 SUN_DEGREE_LARGE
+{  43,34,28,16,            0,    1, 1,   EV_SUN_RISE         ,   -1, 1,-4, 5  }   # 3 SUN_RISE
+{  71,12,29,38,            0,    1, 1,   EV_MOON_PHASE       ,   -1, 1,-7, 5  }   # 25 MOON_PHASE
+{  13,51, 8, 8,            0,    1, 1,   EV_ECLIPSE          ,   -1, 2,-4, 1  }   # 7 ECLIPSE
+{   1,60,21, 6,            0,    0, 1,   EV_MOON_DAY         ,   39,41,-1,64  }   # 4 MOON_DAY
+{  22,51,21,16,            0,    1, 1,   EV_MOON_SIGN_LARGE  ,   -1, 1,-5,63  }   # 3 EV_MOON_SIGN_LARGE
+{  43,51,28,16,            0,    1, 1,   EV_MOON_RISE        ,   -1, 1,-5,82  }   # 4 MOON_RISE
+{  71,51,29, 9,            0,    0, 1,   EV_TITHI            ,   39,41,-5,81  }   # 5 TITHI
+{   1,67,99,15,            0,    0, 1,   EV_MOON_MOVE        ,   39,41,26,26  }   # 6 (41) moon aspects
+{   1,82,50, 8,            0,    0, 1,   EV_SEL_DEGREES      ,   39,41,59, 2  }   # 7 selected degrees
+{  51,82,49, 8,            0,    0, 1,   EV_RETROGRADE       ,   39,41,78, 1  }   # 8 retrograde
+{   1,12,99,10,            1,    0, 1,   EV_ASP_EXACT        ,   39,41,-1, 1  }   # 9 (40) aspects to non-moon planets
+{   1,23,99,12,            1,   12, 1,   EV_DAY_HOURS        ,   39,41,-1, 1  }   # 10 DAY_HOURS
+{   1,37,99,12,            1,   12, 1,   EV_NIGHT_HOURS      ,   39,41,-1, 1  }   # 11 NIGHT_HOURS
+{  13,52,23, 8,            1,    0, 1,   EV_DEG_2ND          ,   39,42,-1, 1  }   # 12 EV_DEG_2ND
+{   5,61,40,28,            1,    4, 0,   EV_RISE             ,   -1, 2,39,43  }   # 12 RISE
+{  60,52,23, 8,            1,    0, 1,   EV_DEG_2ND          ,   38,42,-3, 1  }   # 12 EV_DEG_2ND
+{  54,61,40,28,            1,    4, 0,   EV_RISE             ,   -2, 1,39,41  }   # 12 RISE
+{  13,11,28, 9,            2,    0, 1,   EV_DEG_2ND          ,   39,42,-1, 1  }   # 12 EV_DEG_2ND
+{   5,20,43,28,            2,    4, 0,   EV_RISE             ,   -1, 2,39,43  }   # 12 RISE
+{  62,11,28, 9,            2,    0, 1,   EV_DEG_2ND          ,   38,42,-3, 1  }   # 12 EV_DEG_2ND
+{  54,20,43,28,            2,    4, 0,   EV_RISE             ,   -2, 1,39,43  }   # 12 RISE
+{  13,51,28, 9,            2,    0, 1,   EV_DEG_2ND          ,   39,42,-3, 1  }   # 12 EV_DEG_2ND
+{   5,60,43,28,            2,    4, 0,   EV_RISE             ,   -1, 2,39,43  }   # 12 RISE
+{  62,51,28, 9,            2,    0, 1,   EV_DEG_2ND          ,   38,42,-3, 1  }   # 12 EV_DEG_2ND
+{  54,60,43,28,            2,    4, 0,   EV_RISE             ,   -2, 1,39,41  }   # 12 RISE
+{  34,11,28, 9,            3,    0, 1,   EV_DEG_2ND          ,   39,41,-1, 1  }   # 12 EV_DEG_2ND
+{  28,20,43,28,            3,    4, 0,   EV_RISE             ,   -1, 1,39,41  }   # 12 RISE
+{  14,51,20, 9,            3,    0, 1,   EV_DEG_2ND          ,   39,43,-1, 1  }   # 12 EV_DEG_2ND
+{  14,60,20, 9,            3,    0, 1,   EV_DEG_2ND          ,   39,43,-1, 1  }   # 12 EV_DEG_2ND
+{  14,69,20, 9,            3,    0, 1,   EV_DEG_2ND          ,   39,43,-1, 4  }   # 12 EV_DEG_2ND
+{  66,51,20, 9,            3,    0, 1,   EV_DEG_2ND          ,   37,41,-4, 1  }   # 12 EV_DEG_2ND
+{  66,60,20, 9,            3,    0, 1,   EV_DEG_2ND          ,   37,41,-1, 1  }   # 12 EV_DEG_2ND
+{  66,69,20, 9,            3,    0, 1,   EV_DEG_2ND          ,   37,41,-1, 1  }   # 12 EV_DEG_2ND
+{   5,10,30,27,            p,    1, 0,   EV_TOPIC_BUTTON     ,    2, 1,-1, 3  }   # 12 EV_TOPIC_BUTTON
+{  35,10,30,27,            p,    1, 1,   EV_TOPIC_BUTTON     ,   -1, 1,-2, 3  }   # 12 EV_TOPIC_BUTTON
+{  65,10,30,27,            p,    1, 2,   EV_TOPIC_BUTTON     ,   -1,-2,-3, 3  }   # 12 EV_TOPIC_BUTTON
+{   5,37,30,27,            p,    1, 3,   EV_TOPIC_BUTTON     ,    2, 1,-3, 3  }   # 12 EV_TOPIC_BUTTON
+{  35,37,30,27,            p,    1, 4,   EV_TOPIC_BUTTON     ,   -1, 1,-3, 3  }   # 12 EV_TOPIC_BUTTON
+{  65,37,30,27,            p,    1, 5,   EV_TOPIC_BUTTON     ,   -1,-2,-3, 3  }   # 12 EV_TOPIC_BUTTON
+{   5,64,30,27,            p,    1, 6,   EV_TOPIC_BUTTON     ,    2, 1,-3, 3  }   # 12 EV_TOPIC_BUTTON
+{  35,64,30,27,            p,    1, 7,   EV_TOPIC_BUTTON     ,   -1, 1,-3, 2  }   # 12 EV_TOPIC_BUTTON
+{  65,64,30,27,            p,    1, 8,   EV_TOPIC_BUTTON     ,   -1,-2,-3, 1  }   # 12 EV_TOPIC_BUTTON
+{  12, 1,10, 7,            d,    1, 2,   EV_MOON_PHASE       ,   -1, 1,-2, 2  }   # 25 MOON_PHASE
+{  23, 1,66, 6,            d,    0, 1,   EV_DECUMB_BEGIN     ,   39,41,-2, 2  }   # DECUMB_BEGIN
+{   1, 9,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23, 9,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 1  }   # DECUMBITURE
+{   1,16,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,16,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,22,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,22,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,28,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,28,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,34,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,34,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,40,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,40,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,46,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,46,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,52,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,52,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,58,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,58,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,64,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,64,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,70,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,70,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,76,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,76,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1,82,21, 6,            d,    1, 1,   EV_DECUMBITURE      ,   -1, 1,-2, 2  }   # DECUMBITURE
+{  23,82,76, 6,            d,    0, 1,   EV_DECUMB_ASPECT    ,   39,41,-2, 2  }   # DECUMBITURE
+{   1, 9,99, 8,            h,    7, 1,   EV_HELP             ,   39,41,-1, 1  }   # help - planets 1
+{   1,17,99, 8,            h,    6, 2,   EV_HELP             ,   39,41,-1, 1  }   # help - planets 1
+{   1,27,99, 8,            h,    6, 3,   EV_HELP             ,   39,41,-1, 1  }   # help - zodiac 1
+{   1,35,99, 8,            h,    6, 4,   EV_HELP             ,   39,41,-1, 1  }   # help - zodiac 2
+{   1,45,99, 8,            h,    5, 5,   EV_HELP             ,   39,41,-1, 1  }   # help - hotkeys, Asc
+{   1,55,99,12,            h,    6, 6,   EV_HELP             ,   39,41,-1, 1  }   # help - phases
+{   1,69,99, 8,            h,    8, 7,   EV_HELP             ,   39,41,-1, 1  }   # help - aspects
+{   1,79,99, 8,            h,    5, 8,   EV_HELP             ,   39,41,-1, 1  }   # help - tithi
+{   1,88,99,11,            h,    8, 9,   EV_HELP             ,   39,41,-1, 1  }   # help - topics
+{   1,91,98, 9,       dp0123,    2, 1,   EV_STATUS           ,   22,22,-1, 1  }   # 15 (39) status line
