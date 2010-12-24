@@ -69,13 +69,17 @@ class Summary extends Canvas implements CommandListener {
     private static final byte[] decumbAspects = {45, 15, 30, 30, 15, 45, 45, 15, 30, 30, 15, 45};
     static final byte[] decumbKeys = {0, 1, 2, 3, 2, 1, 3, 1, 2, 3, 2, 1, 4};
 
-    static final int PAGE_DECUMB = 0;
-    static final int PAGE_WEEK = 1;
-    static final int PAGE_MONTH = 2;
-    static final int PAGE_PANEL = 3;
-    static final int PAGE_SUMMARY = 4;
-    static final int PAGE_HELP = 9;
-    private static int PAGE_LAST;
+    static final int PAGE_DECUMB = 0; // size letter d
+    static final int PAGE_WEEK = 1; // size letter w
+    static final int PAGE_MONTH = 2; // size letter m
+    static final int PAGE_PANEL = 3; // size letter p
+    static final int PAGE_SUMMARY = 4; // size letter 0
+    static final int PAGE_SUMMARY1 = 5; // size letter 1
+    static final int PAGE_SUMMARY2 = 6; // size letter 2
+    static final int PAGE_SUMMARY3 = 7; // size letter 3
+    static final int PAGE_SUMMARY4 = 8; // size letter 4
+    static final int PAGE_HELP = 9; // size letter h
+    private static int PAGE_SUMMARY_LAST;
 
     static int IMG_HEIGHT;
     static int IMG_WIDTH;
@@ -328,7 +332,7 @@ class Summary extends Canvas implements CommandListener {
                         if (pageNum == PAGE_HELP) {
                             pn = PAGE_SUMMARY;
                         } else {
-                            if (pn > PAGE_LAST) {
+                            if (pn > PAGE_SUMMARY_LAST) {
                                 pn = PAGE_WEEK;
                             }
                         }
@@ -353,7 +357,7 @@ class Summary extends Canvas implements CommandListener {
                             pn = PAGE_SUMMARY;
                         } else {
                             if (pn < PAGE_WEEK) {
-                                pn = PAGE_LAST;
+                                pn = PAGE_SUMMARY_LAST;
                             }
                         }
                         setCurPage(pn);
@@ -1187,7 +1191,7 @@ class Summary extends Canvas implements CommandListener {
 //#if logger
       Astromaximum.instance.logger("end SetCurPage");
 //#endif
-        if (pageNum >= PAGE_SUMMARY && pageNum <= PAGE_LAST) {
+        if (pageNum >= PAGE_SUMMARY && pageNum <= PAGE_SUMMARY_LAST) {
             recalcPeriods();
         }
         repaint();
@@ -1363,7 +1367,7 @@ class Summary extends Canvas implements CommandListener {
 //#ifdef UseBuffer
 //#       offScreenBuffer = Image.createImage(w,h);
 //#endif
-            PAGE_LAST = PAGE_SUMMARY + 1;
+            PAGE_SUMMARY_LAST = PAGE_SUMMARY + 1;
             if (h < 230) {
                 moonPhaseH = 28;
             }
@@ -1394,10 +1398,10 @@ class Summary extends Canvas implements CommandListener {
                 moonPhaseH = 50;
             }
             if (size != 2) {
-                PAGE_LAST += 2;
+                PAGE_SUMMARY_LAST += 2;
             }
             if (size == 4) {
-                ++PAGE_LAST;
+                ++PAGE_SUMMARY_LAST;
             }
             String ext = "/res/sz" + Integer.toString(IMG_HEIGHT) + ".dat";
             Astromaximum.log("imgService " + ext);
