@@ -101,6 +101,10 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Flag indicating that # key is pressed
      */
     static boolean poundPressed = false;
+    /**
+     * Flag indicating that * key is pressed
+     */
+    static boolean starPressed = false;
     static private final Hashtable locHash = new Hashtable();
     /**
      * Midlet instance reference
@@ -110,6 +114,14 @@ public class Astromaximum extends MIDlet implements CommandListener {
      * Milliseconds in day - constant
      */
     static final long MSECINDAY = 86400 * 1000;
+    /**
+     * Milliseconds in one tattva - constant
+     */
+    static final long MSECINTATTVA = 24 * 60 * 1000;
+    /**
+     * tattvas in day - constant
+     */
+    static final int TATTVAS_IN_DAY = 5 * 12;
     /**
      * Month names (localized)
      */

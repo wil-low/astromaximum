@@ -268,6 +268,30 @@ class Summary extends Canvas implements CommandListener {
             }
             return;
         }
+        if (Astromaximum.starPressed) { // process alted keys
+            Astromaximum.starPressed = false;
+            switch (keyCode) {
+                case Canvas.KEY_STAR: // ** does nothing
+                    repaint();
+                    break;
+                case Canvas.KEY_NUM1:
+                    si.altAction(1);
+                    break;
+                case Canvas.KEY_NUM2:
+                    si.altAction(2);
+                    break;
+                case Canvas.KEY_NUM3:
+                    si.altAction(3);
+                    break;
+                case Canvas.KEY_NUM4:
+                    si.altAction(4);
+                    break;
+                case Canvas.KEY_NUM5:
+                    si.altAction(5);
+                    break;
+            }
+            return;
+        }
         switch (ga) {
             case Canvas.FIRE:
                 selectSummItem(si, false);
@@ -289,6 +313,10 @@ class Summary extends Canvas implements CommandListener {
                     case Canvas.KEY_POUND: // # is like Shift
                         // waiting for next digit key
                         Astromaximum.poundPressed = !Astromaximum.poundPressed;
+                        repaint();
+                        break;
+                    case Canvas.KEY_STAR: // * is like Alt
+                        Astromaximum.starPressed = !Astromaximum.starPressed;
                         repaint();
                         break;
 // duplicates for game actions :(                    
@@ -321,9 +349,6 @@ class Summary extends Canvas implements CommandListener {
                             }
                         }
                         repaint();
-                        break;
-                    case Canvas.KEY_STAR: // * shows Help page
-                        showHelp();
                         break;
                     case Canvas.KEY_NUM9: // 9 goto next page
                         if (pageNum == PAGE_DECUMB) {
@@ -685,6 +710,7 @@ class Summary extends Canvas implements CommandListener {
                 } else {
                     ev.date1 = ev.date0;
                     ev.degree = 1;
+                    //ev.dump();
                 }
             }
 //      System.out.println("Astrorise");
@@ -752,6 +778,17 @@ class Summary extends Canvas implements CommandListener {
                 break;
             }
         }
+        //****** tattvas use ASTRORISE of Sun
+        si = getItem(Event.EV_RISE, Event.SE_SUN);
+        selen = si.events.length;
+        for (int i = 0; i < selen; i++) {
+            ev = si.events[i];
+            if (ev.degree == 1) { // asc
+                getItem(Event.EV_TATTVAS).setEvents(0, ev);
+                break;
+            }
+        }
+
 //#if logger
       Astromaximum.instance.logger("before setTime");
 //#endif

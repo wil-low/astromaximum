@@ -20,7 +20,7 @@
 {  13, 0,70, 7,           wm,    3, 1,   EV_TOP_MONTH        ,   25,25,27,27  }   # 3 EV_TOP_MONTH
 {   1,14,99,84,            w,    1, 1,   EV_WEEK_GRID        ,   24,24,24,24  }   # 4 WEEK_GRID
 {   1,18,99,80,            m,    1, 1,   EV_MONTH_GRID       ,   23,23,23,23  }   # 5 MONTH_GRID
-{   1,10,99,80,            t,    1, 1,   EV_TATTVA_GRID      ,   23,23,23,23  }   # 5 TATTVA_GRID
+{   1,10,99,80,            t,    1, 1,   EV_TATTVAS          ,   91,93,-1, 1  }   # 5 TATTVAS
 {   1, 7,49, 8,            0,    1, 1,   EV_VOC              ,   -1, 1,-1, 2  }   # 1 voc
 {  52, 7,48, 8,            0,    1, 1,   EV_VIA_COMBUSTA     ,   -1, 1,-2, 4  }   # 2 via combusta
 {  13,16, 8, 6,            0,    1, 0,   EV_ECLIPSE          ,    4, 2,-2, 1  }   # 7 ECLIPSE

@@ -832,6 +832,60 @@ final class SummItem extends TimerTask implements RecordFilter {
                     }
                 }
                 break;
+            case Event.EV_TATTVAS:
+                int rowh = Font.getDefaultFont().getHeight();
+                int colw = Font.getDefaultFont().stringWidth("00:00 0  ");
+                int w = width - 4;
+                int h = height - 4;
+                int col_count = w / colw;
+                int row_count = h / rowh;
+                int total_rows = Astromaximum.TATTVAS_IN_DAY / col_count;
+                if (Astromaximum.TATTVAS_IN_DAY % col_count != 0)
+                    ++total_rows;
+                int xstart = left + 2 + (w - colw * col_count) / 2;
+                int ystart = top + 2 + (h - rowh * row_count) / 2;
+                int rows_delta = total_rows - row_count;
+                if ((tag < 0) || (rows_delta <= 0))
+                    tag = 0;
+                if ((rows_delta > 0) && (tag > rows_delta))
+                    tag = (byte)rows_delta;
+//                System.out.println(tag);
+                int counter = tag * col_count;
+                long date = events[0].date0 + (counter * Astromaximum.MSECINTATTVA);
+                int tattva = counter % 5;
+                for (int row = 0; row < row_count; ++row) {
+                    for (int col = 0; col < col_count ; ++col) {
+                        if (counter >= Astromaximum.TATTVAS_IN_DAY)
+                            break;
+                        x = xstart + col * colw;
+                        y = ystart + row * rowh;
+                        osg.setColor(0);
+                        if (nowSelection == counter) {
+                            osg.setColor(Astromaximum.RED_COLOR);
+                        }
+                        if (isCus && cusSelection == counter) {
+                            osg.setColor(Astromaximum.CUST_COLOR);
+                        }
+                        osg.drawString(Event.long2String(date, 2, false), x, y,
+                                Graphics.TOP | Graphics.LEFT);
+                        osg.setColor(Astromaximum.RUBY_COLOR);
+                        osg.drawString(Integer.toString(tattva + 1), x + colw * 2 / 3, y,
+                                Graphics.TOP | Graphics.LEFT);
+                        date += Astromaximum.MSECINTATTVA;
+                        if (tattva == 4)
+                            tattva = 0;
+                        else
+                            ++tattva;
+                        ++counter;
+                    }
+                }
+                if ((rows_delta > 0) && (owner.getSelectedItem() == this)) {
+                    int scrollbarh = h * row_count / total_rows;
+                    int scrollbary = top + 2 + h * tag / total_rows;
+                    osg.setColor(Astromaximum.SELECTION_COLOR);
+                    osg.fillRect(w, scrollbary, 3, scrollbarh);
+                }
+                break;
         }
     }
 
@@ -1002,6 +1056,9 @@ final class SummItem extends TimerTask implements RecordFilter {
 
     long[] getParams(int idx) {
         int tp = type;
+        if (tp == Event.EV_TATTVAS) {
+            return new long[]{Event.EV_TATTVAS, -1, idx, 0, 0};
+        }
         if (tp == Event.EV_HELP) {
             return new long[]{Event.EV_HELP0 + tag / 6, -1, tag * 10 + selIndex, 0, 0};
         }
@@ -1195,6 +1252,22 @@ final class SummItem extends TimerTask implements RecordFilter {
 //    if(!isCustom /*&& !Summary.isCurrentDay*/) {
 //      return;
 //    }
+        if (type == Event.EV_TATTVAS) {
+            long date = events[0].date0;
+            for (int i = 0; i < Astromaximum.TATTVAS_IN_DAY; ++i) {
+                if ((time >= date) && (time < date + Astromaximum.MSECINTATTVA)) {
+                    if (isCustom) {
+                        cusSelection = i;
+                    } else {
+                        nowSelection = i;
+                    }
+                    break;
+                }
+                date += Astromaximum.MSECINTATTVA;
+            }
+            return;
+        }
+
         for (int i = 0; i < events.length; i++) {
             boolean flg = false;
             Event ev = events[i];
@@ -1202,7 +1275,8 @@ final class SummItem extends TimerTask implements RecordFilter {
                 if (type == Event.EV_RISE) {
                     long delta = time - ev.date0;
                     flg = (delta > DEGREE_DELTA_MSEC1) && (delta < DEGREE_DELTA_MSEC2);
-                } else {
+                }
+                else {
                     if (!(type == Event.EV_MOON_MOVE && ev.degree != 200)) {
                         flg = contains(events[i], time);
                     }
@@ -1299,6 +1373,11 @@ final class SummItem extends TimerTask implements RecordFilter {
         if (delta > 70 && delta < 90) { // to last
             delta -= 80;
             where = 1;
+        }
+        if (delta >= 91 && delta <= 93) { // EV_TATTVA horizontal scrolling
+            delta -= 92;
+            tag += delta;
+            return 0;
         }
         if (delta > 20) {
             return delta;
@@ -1835,6 +1914,16 @@ final class SummItem extends TimerTask implements RecordFilter {
     }catch(Exception ex){
         Astromaximum.log(ex.getMessage() + ": " + Integer.toString(Astromaximum.errCode));
     }
+    }
+
+    void altAction (int key) {
+        if (type == Event.EV_TATTVAS) {
+            selIndex = key;
+            if (Astromaximum.interpreter.findText(this, true)) {
+                Display.getDisplay(Astromaximum.instance).setCurrent(Astromaximum.interpreter);
+            }
+            selIndex = 0;
+        }
     }
 }
 

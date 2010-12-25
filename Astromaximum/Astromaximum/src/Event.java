@@ -78,7 +78,7 @@ final class Event {
     static final int EV_ASCAPHETICS = 49;
     static final int EV_MSG = 50;
     static final int EV_BACK = 51;
-    static final int EV_TATTVA_GRID = 52;
+    static final int EV_TATTVAS = 52;
     static final int EV_LAST = 53;  // last - do not use
 
     // Any changes above must be synched with %eventType in tools.pm
