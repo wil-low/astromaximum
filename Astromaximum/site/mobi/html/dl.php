@@ -21,13 +21,13 @@ if(isset($_GET['ajax'])){
     if(!$ajax){
         $stat="SELECT countries.id, countries.name FROM countries ORDER BY countries.name";
     }
-    
+
     if($ajax==1){
         array_push($arr, '[0,"'.$i18['ALL_STATES'].'"]');
         $stat=sprintf("SELECT DISTINCT states.id, states.name FROM states,".
             "countries WHERE country_id=%s ORDER BY states.name",quote_smart($cid));
     }
-    
+
     if($ajax==2){
         $andst='';
         if($stateid){
@@ -41,7 +41,7 @@ if(isset($_GET['ajax'])){
             " ORDER BY cities.name",
             quote_smart($cid), $andst, quote_smart($defyear));
 //        die($stat);
-	}    
+	}
     $out='{"content":[';
 	$sth=mysql_query($stat); $ii=0;
 	while($row=mysql_fetch_row($sth)){
@@ -110,7 +110,7 @@ if(strlen($act)){
 				}
 			}
 			else{
-				echo sprintf($i18['ERROR_CITYGEN'], "$row[1], $row[2]", $defyear);			
+				echo sprintf($i18['ERROR_CITYGEN'], "$row[1], $row[2]", $defyear);
 			}
 			echo "<br/><br/><a href=\"dl\">{$i18['BACK']}</a>";
 		}
@@ -122,7 +122,7 @@ if(strlen($act)){
 }
 ?>
 <script type="text/javascript">
-<!--   
+<!--
 function generate(){
 	lst=findObj("chkcit");
 	ind=lst.selectedIndex;
@@ -145,7 +145,7 @@ function generate(){
 <form method="post" action="dl" name="main">
 <table class="colorlist">
 <tr><th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
-<select name="y_sel" style="height:auto; width:auto;" 
+<select name="y_sel" style="height:auto; width:auto;"
 	onchange="document.forms.namedItem('main').submit()">
 <?php
 $y_now=$current_year;
@@ -164,25 +164,25 @@ for($i=$y_now; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
 <th colspan="2">
 <span style="white-space: nowrap; font-size:11px">
 <?php
-	if($tries[1]!=-1){ 
+	if($tries[1]!=-1){
 		echo sprintf($i18['LOAD_LEFT'], $DLIM[1]-$tries[1], $DLIM[1]);
-	} 
+	}
 ?>
 </span>
 </th>
 </tr>
 <tr>
-<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
+<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
 <?php
 	echo $i18['H_COUNTRY'];
 ?>
 </th>
-<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>. 
-<?php 
+<th><b><?php echo "{$i18['STEP']} ".$step++ ?></b>.
+<?php
 	echo $i18['H_STATE'];
 	$gen_prop=" onclick=\"generate()\"";
 	$btnlbl=$i18['GET_DATA'];
-	
+
 	if(!$tries[1]){ // limit exceeded
 		echo "\n<input type=\"hidden\" id=\"rmore\" name=\"rmore\"/>";
 		$gen_prop=" style=\"background:url('/i/btn_on.png'); font-weight:bold;\" ".
@@ -194,7 +194,7 @@ for($i=$y_now; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
 <th>
 <span class="bums">
 <input id="genbtn" type="button" value="<?php echo "$btnlbl\"$gen_prop"?>/>
-</span> 
+</span>
 </th>
 </tr>
 <tr>
@@ -218,7 +218,7 @@ for($i=$y_now; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
 </tr>
 </table>
 </form>
-<p><?php echo sprintf($i18['DL_BEFORE_INSTALL'], anchor( ($chac==1) ? 'demo':'buy' ))?></p>
+<p><?php echo sprintf($i18['DL_BEFORE_INSTALL'], anchor( ($chac==0 || $chac==2) ? 'buy':'demo' ))?></p>
 </div>
 <?php
 function get_selected_cities($param)

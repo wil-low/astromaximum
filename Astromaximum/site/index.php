@@ -1,4 +1,4 @@
-<?php 
+<?php
 $EXEC=1;
 
 $META_KEYWORDS=''; $META_DESCR=''; $META_TITLE='';
@@ -8,10 +8,10 @@ function output_callback($buffer)
 	global $META_TITLE, $META_KEYWORDS, $META_DESCR,
         $META_CUSTOMSCR, $META_CUSTOMFUNC,$META_HEAD_ADD;
 	// fill meta tags
-	if($META_TITLE){ 
+	if($META_TITLE){
 		$META_TITLE.=" - ";
 	}
-	$META_TITLE.="ASTROMAXIMUM"; 
+	$META_TITLE.="ASTROMAXIMUM";
 	$buffer=str_replace("[[title]]", $META_TITLE, $buffer);
 	$buffer=str_replace("[[keywords]]", $META_KEYWORDS, $buffer);
 	$buffer=str_replace("[[description]]", $META_DESCR, $buffer);
@@ -104,14 +104,14 @@ if (document.images){
     image_url[0] = "/i/globe.jpg";
     image_url[1] = "/i/fon.jpg";
     image_url[2] = "/i/button.jpg";
-    
+
     var i = 0;
-    for(i=0; i<=2; i++) 
+    for(i=0; i<=2; i++)
         preload_image_object.src = image_url[i];
 }
 //-->
-</script>     
-  
+</script>
+
 [[onload_script]]
 [[head_add]]
 </head>
@@ -152,7 +152,7 @@ print_menu('home', 'MNU_HOME', 1);
 print_menu('man0', 'MNU_MAN', 1);
 echo "<a href=\"/forum/index.php\">{$i18['MNU_FORUM']}</a> | ";
 echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . "start\">wiki</a> | ";
-echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") . 
+echo "<a href=\"/wiki/doku.php/" . (strcmp ($lang, 'ru') ? "$lang/" : "") .
 	"screen\" target=\"_blank\">{$i18['MNU_SCRSHOTS']}</a> | ";
 if ($GLOBALS['amax']['buy_enabled']) {
 	print_menu($buy_page, 'MNU_BUY', 1);
@@ -165,61 +165,47 @@ print_menu('citylist', 'MNU_CITYLIST', 1);
 print_menu('dl', 'MNU_DLCIT', 1);
 print_menu('contacts', 'MNU_CONTACTS', 0);
 //echo "<br/>";print_r($_REQUEST);
-$btn1=sprintf($i18['DEMO'], $GLOBALS['amax']['year'] - 1); $btn1_link="/$lang/demo";
+$btn1=sprintf($i18['DEMO'], $GLOBALS['amax']['year'] - 1); $btn1_link='demo';
+$btn2=sprintf($i18['CITY_BUTTON'], $GLOBALS['amax']['year']);
 if($chac==0){
 	echo <<<ADMIN_TB
-	<p>| 
-	<a href="/$lang/env">окружение</a> |  
-	<a href="/$lang/db_stats">статистика</a> |  
+	<p>|
+	<a href="/$lang/env">окружение</a> |
+	<a href="/$lang/db_stats">статистика</a> |
 	<a href="/$lang/upload">загрузка городов</a> |
 	<a href="/$lang/usermgr">пользователи</a> |
 	</p>
 ADMIN_TB;
 }
 if($user_ok){
-	if(strcmp($main, 'demo')){
-		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
-	}
-	if(strcmp($main, 'dl') && strcmp($main, 'dl2')){
-		$btn1=$i18['CITY_BUTTON']; $btn1_link="dl";
-	}
-	if ($GLOBALS['amax']['buy_enabled']) {
-		$try_count = get_try_count(0);
-		if ($try_count[0] != 0)
-			$btn2=$i18['TRIAL'];
-	}
+        $try_count = get_try_count(0);
+        if ($try_count[0] != 0) {
+                $btn1=sprintf($i18['DEMO'], $GLOBALS['amax']['year']);
+                $btn1_link='buy';
+        }
 }
-/*
-if($chac==1 || $chac==3){
-	$btn2=sprintf($i18['ORDER'], $GLOBALS['amax']['price'])."<br/> + {$GLOBALS['amax']['city_count']} ".
-	$i18['_CITIES'];
-}
-*/
+
 if($chac!=-1){
 	$session_prompt=<<<SP1
 <p>{$i18['WELCOME']}, <b>{$_SESSION['username']}</b> ! </p>
-<p><a href="/mobi/dl/logout.php"><strong>{$i18['LOGOUT']}</strong></a></p> 
+<p><a href="/mobi/dl/logout.php"><strong>{$i18['LOGOUT']}</strong></a></p>
 SP1;
 }
-else{ 
+else{
 	$session_prompt=<<<FRM
-<form id="flog" action="/$lang/login/to=$main" method="post"> 
+<form id="flog" action="/$lang/login/to=$main" method="post">
 <input id="ilog" name="login"/> e-mail <br /><br />
 <input id="ipwd" name="pass" type="password"/> password <br /><br />
-<input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> | 
+<input type="submit" class="loginbutton" onclick="return checklogin()" value="{$i18['LOG_IN']}" /> |
 <a class="loginbutton" href="/$lang/pwdrestore">{$i18['LOST_PWD']}</a>
-</form> 
+</form>
 FRM;
-} 
-?> 
-</div>
-<?php 
-echo show_big_button('demo', $btn1, $btn1_link, $btn1_link, false);
-if ($GLOBALS['amax']['buy_enabled'])
-	echo show_big_button('buy', $btn2, '/^(buy|p_\d\d)$/is', "/$lang/$buy_page", true);
-else {
-	echo show_big_button('buy', $btn2, '', "/$lang/dl", false);
 }
+?>
+</div>
+<?php
+echo show_big_button('demo', $btn1, $btn1_link, "/$lang/$btn1_link", false);
+echo show_big_button('buy', $btn2, 'dl', "/$lang/dl", false);
 ?>
 <div id="leftColumn">
 <?php	echo $session_prompt ?>
@@ -242,7 +228,6 @@ else{
 <p><b>+ {$GLOBALS['amax']['city_count']} {$i18['PRODINFO_CITY']}</b></p>
 <p>{$i18['PRODINFO_VERSION']} {$GLOBALS['amax']['version']}<br/>
 {$i18['PRODINFO_DATE']} {$GLOBALS['amax']['release_date']}</p>
-<p><b>{$i18['PRODINFO_PRICE']} \${$GLOBALS['amax']['price']}</b></p>
 </div>
 <!--img class="main_scr" src="/i/p990i_2_bis2.jpg"/-->
 <img class="main_scr" src="/i/diamond_1.jpg"/>
@@ -274,7 +259,7 @@ PROD_INFO;
 		else{
 			echo "<h3>{$i18['PAGE_NOT_FOUND']}</h3>\n";
 		}
-	} 
+	}
 ?>
 
 </div><!-- end content div -->
@@ -337,7 +322,7 @@ function prepare_topic($matches, $main){
         }
         else{
             $fn0=$matches[1].$matches[3].'_0.php';
-            
+
         }
         if(file_exists($fn0)){
             include($fn0);
