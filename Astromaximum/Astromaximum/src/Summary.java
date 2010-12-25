@@ -72,13 +72,14 @@ class Summary extends Canvas implements CommandListener {
     static final int PAGE_DECUMB = 0; // size letter d
     static final int PAGE_WEEK = 1; // size letter w
     static final int PAGE_MONTH = 2; // size letter m
-    static final int PAGE_PANEL = 3; // size letter p
+    static final int PAGE_TATTVA = 3; // size letter t
     static final int PAGE_SUMMARY = 4; // size letter 0
     static final int PAGE_SUMMARY1 = 5; // size letter 1
     static final int PAGE_SUMMARY2 = 6; // size letter 2
     static final int PAGE_SUMMARY3 = 7; // size letter 3
     static final int PAGE_SUMMARY4 = 8; // size letter 4
     static final int PAGE_HELP = 9; // size letter h
+    static final int PAGE_PANEL = 10; // size letter p
     private static int PAGE_SUMMARY_LAST;
 
     static int IMG_HEIGHT;
