@@ -9,16 +9,18 @@
 #    h: PAGE_HELP
 #    m: PAGE_MONTH
 #    p: PAGE_PANEL
+#    t: PAGE_TATTVA
 #    w: PAGE_WEEK
 
 #   l, t, w, h   page    ho,ve    event type               l, r, u, d
 
 {   1, 0,12, 9,            h,    1, 1,   EV_BACK             ,   -1, 1,-1, 1  }   # BACK ARROW
-{   1, 0,12, 9,     dwmp0123,    1, 1,   EV_PANEL            ,   -1, 1,-1, 1  }   # 0 PANEL
-{  18, 0,75, 9,        p0123,    3, 1,   EV_TOP_DAY          ,   21,21,-1, 1  }   # 0 EV_TOP_DAY
+{   1, 0,12, 9,     dwmt0123,    1, 1,   EV_PANEL            ,   -1, 1,-1, 1  }   # 0 PANEL
+{  18, 0,75, 9,        t0123,    3, 1,   EV_TOP_DAY          ,   21,21,-1, 1  }   # 0 EV_TOP_DAY
 {  28, 0,40, 9,           wm,    3, 1,   EV_TOP_MONTH        ,   25,25,27,27  }   # 0 EV_TOP_MONTH
 {   1,10,99,89,            w,    1, 1,   EV_WEEK_GRID        ,   24,24,24,24  }   # 0 WEEK_GRID
 {   1,18,99,82,            m,    1, 1,   EV_MONTH_GRID       ,   23,23,23,23  }   # 0 MONTH_GRID
+{   1,10,99,82,            t,    1, 1,   EV_TATTVAS          ,   91,93,-1, 1  }   # 5 TATTVAS
 {   1,12,70,10,            0,    1, 1,   EV_VOC              ,   -1, 6,-1, 1  }   # 1 voc
 {   1,22,70,10,            0,    1, 1,   EV_VIA_COMBUSTA     ,   -1, 5,-1, 1  }   # 2 via combusta
 {  13,34, 8, 8,            0,    1, 0,   EV_ECLIPSE          ,   -1, 2,-1, 1  }   # 7 ECLIPSE
@@ -103,4 +105,4 @@
 {   1,69,99, 8,            h,    8, 7,   EV_HELP             ,   39,41,-1, 1  }   # help - aspects
 {   1,79,99, 8,            h,    5, 8,   EV_HELP             ,   39,41,-1, 1  }   # help - tithi
 {   1,88,99,11,            h,    8, 9,   EV_HELP             ,   39,41,-1, 1  }   # help - topics
-{   1,91,98, 9,       dp0123,    2, 1,   EV_STATUS           ,   22,22,-1, 1  }   # 15 (39) status line
+{   1,91,98, 9,      dtp0123,    2, 1,   EV_STATUS           ,   22,22,-1, 1  }   # 15 (39) status line
