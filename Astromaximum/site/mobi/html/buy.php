@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(!isset($EXEC)) die("Access restricted");
 /*
 if($chac==-1 or $chac==1){
@@ -6,7 +6,7 @@ if($chac==-1 or $chac==1){
 	return;
 }
 */
-$META_TITLE=$i18['TIT_PAYMENT_SEL'];
+$META_TITLE=$i18['TIT_CALENDAR_DOWNLOAD'];
 
 $current_year=$GLOBALS['amax']['year'];
 $uri=htmlentities($_SERVER['REQUEST_URI']);
@@ -47,9 +47,9 @@ if($chac!=-1 and $chac!=1){
 		$out.=">$i</option>\n";
 	}
 	$year=$current_year;
-	
+
 	$tries=get_try_count(0);
-	
+
 	if ($tries[0] == 0)
 		show_payment_instructions(0);
 	else {
@@ -67,7 +67,7 @@ if($chac!=-1 and $chac!=1){
 		echo "<h4>".sprintf($i18['DLOAD4YEAR'], $year)."</h4>";
 		if(isset($_POST["agree"])){
 			if($is_allow_dl){
-				$sc=get_default_cities($GLOBALS['amax']['def_cities'][$lang]); 
+				$sc=get_default_cities($GLOBALS['amax']['def_cities'][$lang]);
 				echo tries_remained($tries[$dl_key]-1, $DLIM[$dl_key]);
 				$str=midlet_create("tb", $year, $lang, $sc, "mobi/dl", 2);
 				if(strlen($str)){
@@ -78,7 +78,7 @@ if($chac!=-1 and $chac!=1){
 			else{
 				echo sprintf($i18['NO_CALENDAR_DL'], '<a href="#">');
 			}
-			echo "<p><a href=\"$uri\">{$i18['BACK']}</a></p>";        
+			echo "<p><a href=\"$uri\">{$i18['BACK']}</a></p>";
 			return;
 		}
 		echo "<form action=\"$uri\" method=\"post\">\n";
@@ -156,7 +156,7 @@ return;
 <form id="regform" action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post">
 <p><input type="text" name="fullname"> Полное имя*</p>
 <p><input type="text" name="email"> Email* </p>
-<input type="submit" name="reg_submit" value="Зарегистрироваться">  
+<input type="submit" name="reg_submit" value="Зарегистрироваться">
 </form>
 -->
 <?php

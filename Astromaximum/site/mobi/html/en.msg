@@ -55,7 +55,7 @@ CITY_LIMIT=You may not download cities any more.
 H_COUNTRY=Country
 H_STATE=State
 H_CITY=City
-READY_CITIES=City installer created: <i>%s</i> (%d) 
+READY_CITIES=City installer created: <i>%s</i> (%d)
 BACK=Back
 SEL_DCITY=Download cities
 SEL_DCALENDAR=Download calendar
@@ -158,6 +158,7 @@ PRODINFO_VERSION=Version
 PRODINFO_DATE=Release date
 PRODINFO_PRICE=Price
 
+TIT_CALENDAR_DOWNLOAD=Download calendar
 TIT_PAYMENT_SEL=Select payment system
 
 MOBI_YEAR_H=Select year
