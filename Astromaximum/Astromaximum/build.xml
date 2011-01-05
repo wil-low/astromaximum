@@ -5,7 +5,7 @@
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
-    <property name="year" value="2010"/>
+    <property name="year" value="2011"/>
     <property name="lang" value="ru"/>
     <property name="soot.dir" value="${basedir}/../3d_party/soot"/>
     <property name="microemu.dir" value="../microemulator-2.0.3"/>
