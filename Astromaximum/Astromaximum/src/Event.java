@@ -217,7 +217,9 @@ final class Event {
             System.out.print(" " + (goodbad == 2 ? "good" : "bad"));
         }
         System.out.print("  planets " + Astromaximum.PLANETS[planet0] + ", " +
-                Integer.toString(planet1) + "\n");
+                Integer.toString(planet1) + 
+                " (" + Long.toString(date0) +
+                ", " + Long.toString(date1) + ")\n");
     }
 //#enddebug
     /**

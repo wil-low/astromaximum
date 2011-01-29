@@ -444,14 +444,15 @@ class Summary extends Canvas implements CommandListener {
         return Options.currentTime() - tick;
     }
 
-    void recalcPeriods() {
-        period0 = date.getTime();
+    void recalcPeriods(Date startDate, int dayCount) {
+        period0 = startDate.getTime();
         period0 -= Event.localOffset(period0);
-//    System.out.println(period0);
-//    System.out.println(new Date(period0).toString());
-        period1 = period0 + Astromaximum.MSECINDAY - 1;
-        period0 = period0 / 1000 * 1000;
-        period1 = period1 / 1000 * 1000;
+        period1 = period0 + dayCount * Astromaximum.MSECINDAY - 1;
+        /*
+        System.out.println("periods: " + Event.long2String(period0, 0, false) + " - " + Event.long2String(period1, 0, true) +
+                " (" + Long.toString(period0) +
+                ", " + Long.toString(period1) + ")\n");
+         */
     }
 
     /**
@@ -464,7 +465,7 @@ class Summary extends Canvas implements CommandListener {
         final long tick = Options.currentTime();
         rowCount = 1;
         date.setTime(date0);//new Date(date.getTime());
-        recalcPeriods();
+        recalcPeriods(date, 1);
         SummItem si = getItem(Event.EV_ECLIPSE, 1);
         si.tag = 1;
         SummItem si0 = getItem(Event.EV_ECLIPSE, 0);
@@ -585,7 +586,7 @@ class Summary extends Canvas implements CommandListener {
         SummItem.moonMoveVec.removeAllElements();
 
         Astromaximum.dataFile.getAspectsOnPeriod(SummItem.moonMoveVec, Event.SE_MOON,
-                period0 - Astromaximum.MSECINDAY * 2, period1 + Astromaximum.MSECINDAY * 3);
+                period0 - Astromaximum.MSECINDAY * 2, period1 + Astromaximum.MSECINDAY * 2);
 
         //****** ASPECTS
         Astromaximum.dataFile.getAspectsOnPeriod(asp, -1,
@@ -598,7 +599,7 @@ class Summary extends Canvas implements CommandListener {
 
         asp.removeAllElements();
         Astromaximum.dataFile.getEventsOnPeriod(asp, Event.EV_SIGN_ENTER, Event.SE_MOON,
-                true, period0 - Astromaximum.MSECINDAY * 2, period1 + Astromaximum.MSECINDAY * 2, 0);
+                true, period0 - Astromaximum.MSECINDAY * 2, period1 + Astromaximum.MSECINDAY * 4, 0);
         for (Enumeration e = asp.elements(); e.hasMoreElements();) {
             ev = (Event) e.nextElement();
             ev.planet1 = Event.SE_MOON;
@@ -1038,9 +1039,6 @@ class Summary extends Canvas implements CommandListener {
     }
 
     void setCustomTime(int h, int m) {
-        period0 = date.getTime();
-        period0 -= Event.localOffset(period0);
-        period1 = period0 + Astromaximum.MSECINDAY - 1;
         Astromaximum.calendar.setTime(new Date((period0 + period1) / 2));
         Astromaximum.calendar.set(Calendar.HOUR_OF_DAY, h);
         Astromaximum.calendar.set(Calendar.MINUTE, m);
@@ -1230,7 +1228,7 @@ class Summary extends Canvas implements CommandListener {
       Astromaximum.instance.logger("end SetCurPage");
 //#endif
         if (pageNum >= PAGE_SUMMARY && pageNum <= PAGE_SUMMARY_LAST) {
-            recalcPeriods();
+            recalcPeriods(date, 1);
         }
         repaint();
     }
@@ -1342,14 +1340,8 @@ class Summary extends Canvas implements CommandListener {
         SummItem.places = new byte[cells];
         getItem(Event.EV_TOP_MONTH).setEvents(1, new Event(selDate.getTime(), -1));
         getItem(Event.EV_TOP_MONTH).initString();
-        period0 = firstGridDate.getTime();
-//        if (period0 < Astromaximum.dataFile.startJD) {
-//            period0 = Astromaximum.dataFile.startJD;
-//        }
-//    System.out.println("gatherMonth");
-        period1 = period0 + cells * Astromaximum.MSECINDAY;
-        period0 -= Event.localOffset(period0);
-        period1 -= Event.localOffset(period1);
+        recalcPeriods(firstGridDate, cells);
+
 //        if (period1 > Astromaximum.dataFile.finalJD) {
 //            period1 = Astromaximum.dataFile.finalJD;
 //        }

@@ -66,12 +66,13 @@ final class DataFile {
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
             customData = null;
 
             int count = is.readUnsignedShort(); // customData length
             startJD = cal.getTime().getTime();
             dayCount = is.readShort();
-            finalJD = startJD + dayCount * Astromaximum.MSECINDAY;
+            finalJD = startJD + dayCount * Astromaximum.MSECINDAY - 1;
             if (count > 0) {
                 customData = new byte[count];
                 is.read(customData);
@@ -401,7 +402,7 @@ final class DataFile {
 //#if "imeiCheck" @ protection
                     mydate1 = ((long) is.readInt() * 1000) + hj;
 //#else
-//#                     mydate1 = ((long) is.readInt() * 1000);
+//#                     mydate1 = ((long) is.readInt() * 1000) - 1;
 //#endif
                 } else {
                     mydate1 = mydate0;
@@ -420,7 +421,7 @@ final class DataFile {
                     }
                 }
                 if (fnext_date2 != 0) {
-                    last.date1 = mydate0;
+                    last.date1 = mydate0 - 1;
                     mydate1 = finalJD;
                 }
                 if (last.isInPeriod(dayStart, dayEnd, false)) {
