@@ -1,0 +1,12 @@
+!!type EV_TATTVAS
+!!params 1
+!!planet -1
+%1%1. Akasha
+
+%2%2. Vayu
+
+%3%3. Tejas
+
+%4%4. Prithivi
+
+%5%5. Apas

@@ -1189,6 +1189,9 @@ final class SummItem extends TimerTask implements RecordFilter {
         if (type == Event.EV_BACK) {
             return Astromaximum.getstr(94); // back
         }
+        if (type == Event.EV_TATTVAS) {
+            return Astromaximum.getstr(180); // hotkey help
+        }
         if (type == Event.EV_TOP_DAY) {
 //#ifdef freetest
 //# 	        if (Options.isRealtimeOff)

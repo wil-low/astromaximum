@@ -186,6 +186,8 @@
 %170% proportional
 %171% monospace
 
+%180% Text: * <tattva number>
+
 %255% En
 
 //%161% bad
