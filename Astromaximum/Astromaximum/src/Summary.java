@@ -585,7 +585,7 @@ class Summary extends Canvas implements CommandListener {
         SummItem.moonMoveVec.removeAllElements();
 
         Astromaximum.dataFile.getAspectsOnPeriod(SummItem.moonMoveVec, Event.SE_MOON,
-                period0 - Astromaximum.MSECINDAY * 2, period1 + Astromaximum.MSECINDAY * 2);
+                period0 - Astromaximum.MSECINDAY * 2, period1 + Astromaximum.MSECINDAY * 3);
 
         //****** ASPECTS
         Astromaximum.dataFile.getAspectsOnPeriod(asp, -1,
