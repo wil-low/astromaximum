@@ -44,7 +44,7 @@ long Event::packDate(double date) {
     now.tm_mon = m - 1;
     now.tm_mday = d;
     now.tm_hour = (int) hour;
-    now.tm_min = (int) ((hour - now.tm_hour)*60);
+    now.tm_min = (int) ((hour - now.tm_hour) * 60 + 0.5);
     now.tm_sec = 0;
     now.tm_isdst = 0;
 #ifdef ANSITZ
