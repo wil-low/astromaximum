@@ -495,7 +495,8 @@ class Summary extends Canvas implements CommandListener {
         //****** VOC
         getItem(Event.EV_VOC).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
                 Event.EV_VOC, Event.SE_MOON, false, period0, period1));
-//    Astromaximum.evDump(getItem(Event.EV_VOC).events);
+        //System.out.println("VOC:");
+        //Astromaximum.evDump(getItem(Event.EV_VOC).events);
 
         //****** VIA COMBUSTA
         getItem(Event.EV_VIA_COMBUSTA).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
@@ -608,7 +609,6 @@ class Summary extends Canvas implements CommandListener {
         mergeEvents(SummItem.moonMoveVec, asp, true);
         asp.removeAllElements();
         mergeEvents(asp, SummItem.moonMoveVec, false);
-
         int id1 = -1;
         int id2 = -1;
         int counter = 0;
@@ -637,7 +637,7 @@ class Summary extends Canvas implements CommandListener {
             long dd = (evprev.planet0 == evprev.planet1) ? evprev.date0 : evprev.date1;
             ev = new Event(dd, -1);
             ev.degree = 200;
-            ev.date1 = Astromaximum.evAt(asp, idx).date0;
+            ev.date1 = Astromaximum.evAt(asp, idx).date0 - 1;
             ev.planet0 = evprev.planet1;
             ev.planet1 = Astromaximum.evAt(asp, idx).planet1;
 //      ev.dump();
@@ -1752,14 +1752,12 @@ class Summary extends Canvas implements CommandListener {
     private Event[] calcPlanetHours(Event starte, Event ende, int startHour) {
         Event[] ar = new Event[24];
         final long dHour = (starte.date1 - starte.date0) / 12;
-//    ee.dump();
         final long nHour = (ende.date0 - starte.date1) / 12;
-//    System.out.println(nHour);
         long st = starte.date0;
         for (int i = 0; i < 24; i++) {
             Event ev = new Event(st, hourSeq[startHour % 7]);
             st += i < 12 ? dHour : nHour;
-            ev.date1 = st;
+            ev.date1 = st - 60000; // exclude last minute
 //      if(i==6 || i==18){
 //        ev.date1+=60*1000; // +1 min for MC, IC
 //      }
