@@ -716,6 +716,22 @@ public class Astromaximum extends MIDlet implements CommandListener {
         }
     }
 
+    void showCityInfo() {
+        try {
+        String msg = getstr(164) + "| " + options.getCurrentCity(false);
+//        msg += "||--" + getstr(156) + "--";
+        Astromaximum.errCode = 65;
+        msg += "||Web:|http://" + MainURL + "|" + getstr(165) + "|http://" + URL;
+        msg += "||\u00a9 2007, S&W Axis|" + getstr(153);
+        Astromaximum.errCode = 66;
+        alert(msg);
+        }
+        catch (Exception e) {
+            log (e.getMessage() + ": " + Integer.toString(errCode));
+            logBox.showLog(summary);
+        }
+    }
+
 //#if "timeBomb" @ protection
     /**
      * Secret routine to check time bomb range

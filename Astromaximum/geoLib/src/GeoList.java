@@ -278,6 +278,28 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         return res;
     }
 
+    int[] getCoordinates() {
+        int[] coords = {0, 0}; // latitude, longitude
+        try {
+            DataInputStream stream = new DataInputStream(new ByteArrayInputStream(customData));
+            coords[0] = stream.readInt();
+/*
+            locStream.reset();
+            locStream.skip(4);
+            int off = 0;
+            for (int i = 0; i < index; i++) {
+                off += locStream.readShort();
+                System.out.println(off);
+            }
+            final int len = locStream.readShort();
+            locStream.skip(2 * (total - index - 1) + off);
+            res = new byte[len + 1];
+            locStream.read(res);*/
+        } catch (IOException ex) {
+//      ex.printStackTrace();
+        }
+        return coords;
+    }
     void shutdown() {
         try {
             rs.closeRecordStore();

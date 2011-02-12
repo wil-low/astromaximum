@@ -1092,15 +1092,18 @@ class Summary extends Canvas implements CommandListener {
             case 5: // back to CustomTime
                 Astromaximum.customTime.init(pageNum);
                 break;
-            case 6: // Website
+            case 6: // About
                 Astromaximum.instance.showAbout();
                 break;
-            case 7: // Quit
+            case 100: // Quit
                 Astromaximum.quit();
                 break;
             case 8: // decumb -> today
                 Interpreter.topic = Interpreter.T_NONE;
                 recreateCommands();
+            case 9: // About
+                Astromaximum.instance.showCityInfo();
+                break;
             case 1: // Today
                 setToday();
                 break;
@@ -1940,8 +1943,9 @@ class Summary extends Canvas implements CommandListener {
                 cmds[2] = new Command(Astromaximum.getstr(92), Command.SCREEN, 2);//Options
                 cmds[3] = new Command(Astromaximum.getstr(93), Command.SCREEN, 3);//Topic
                 cmds[4] = new Command(Astromaximum.getstr(160), Command.SCREEN, 4);//No topic
-                cmds[5] = new Command(Astromaximum.getstr(152), Command.SCREEN, 6);//Website
-                cmds[6] = new Command(Astromaximum.getstr(157), Command.SCREEN, 7);//Quit
+                cmds[5] = new Command(Astromaximum.getstr(152), Command.SCREEN, 6);//About
+                cmds[5] = new Command(Astromaximum.getstr(181), Command.SCREEN, 9);//GMT & DST
+                cmds[6] = new Command(Astromaximum.getstr(157), Command.SCREEN, 100);//Quit
                 cmdCount = 7;
 //#ifdef freetest
 //#  				cmds[7] = new Command("Extra", Command.SCREEN, 50);//Screenshots

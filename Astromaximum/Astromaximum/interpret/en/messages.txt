@@ -187,6 +187,7 @@
 %171% monospace
 
 %180% Text: * <tattva number>
+%181% GMT & DST
 
 %255% En
 
