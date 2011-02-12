@@ -40,4 +40,15 @@ Choose an evil of the lesser kind, do not miss the best benefit, estimate equiva
 <li> decumbiture - ASTROMAXIMUM predicts the course of the disease</li>
 <li> time of solar and lunar eclipses.</li>
 </ul> 
-<p>* time range is given; each event is accompanied by a detailed astrological comment</p>
+<p>* time range is given; each event is accompanied by detailed astrological comment</p>
+<p><b>AFFILIATE PARTNERSHIP:</b><br/>
+Get paid monthly for any sales of the calendar generated through your site -
+register as affiliate at <b><a href="http://www.shareit.com/affiliateintro.html" target="_blank">share&#x2011;it!</a></b> global e-commerce platform.</p>
+<p>Additional options for affiliates:
+<ul>
+<li>free download of <b>ASTROMAXIMUM</b> calendar and cities for the current year</li>
+<li>add a city into the database (if it is missing in the <a href="dl" target="_blank">city list</a>)</li>
+<li>generate <a href="/wiki/doku.php/widget" target="_blank">AstroInformer</a> for a desired city</li>
+<li>site access as a registered user</li>
+</ul>
+</p>
