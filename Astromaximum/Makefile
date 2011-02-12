@@ -1,7 +1,7 @@
 DEST=site/mobi/dl
 SOURCE=$(DEST)/source
 
-.PHONY: all gen_amax config rebuild template interp mutter relgui test sunrise encode85 swe
+.PHONY: all gen_amax config rebuild template interp mutter test sunrise encode85 swe
 
 all:	gen_amax config template interp mutter sunrise encode85 relgui
 

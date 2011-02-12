@@ -7,6 +7,7 @@
 #include <fltk/file_chooser.h>
 #include <fltk/ask.h>
 #include <time.h>
+#include <string.h>
 #include <algorithm>
 using namespace std;
 #ifdef _WIN32
