@@ -188,6 +188,11 @@
 
 %180% Text: * <tattva number>
 %181% GMT & DST
+%182% Lat.
+%183% Lon.
+%184% Alt.
+// altitude - meters
+%185% m
 
 %255% En
 

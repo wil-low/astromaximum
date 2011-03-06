@@ -73,7 +73,11 @@ Header fields:
             int LB      DST start date (local time), mins
             int LB      DST end date (local time), mins
 <endif>
-            byte[]    	customData (for future expansions)
+                    	customData (for future expansions):
+            int LB      city id inside coords.sdb
+            short LB    latitude = degree * 100
+            short LB    longitude = degree * 100
+            short LB    altitude, meters
 	
 *** data/*.ini ***
 

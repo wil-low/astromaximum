@@ -41,7 +41,7 @@ class Options extends GeoList implements CommandListener {
     static byte optTimeGap = 2;
     final private int[] FONT_SIZE = {Font.SIZE_SMALL, Font.SIZE_MEDIUM, Font.SIZE_LARGE};
     final private int[] FONT_FACE = {Font.FACE_PROPORTIONAL, Font.FACE_MONOSPACE};
-
+    static String[] coords = {"", "", ""};
     Options() {
         super(Astromaximum.instance, Choice.EXCLUSIVE, Astromaximum.dataFile.getAmaxStream(1));
         String[] sTimeGap = {"-2", "-1", "0", "1", "2"};
@@ -374,6 +374,11 @@ class Options extends GeoList implements CommandListener {
         }
                 Astromaximum.errCode = 54;
         Astromaximum.dataFile.geoposData = super.initDB(false);
+        int[] coordinates = extractCoordinates();
+        coords[0] = latitudeToString(coordinates[0]);
+        coords[1] = longitudeToString(coordinates[1]);
+        coords[2] = altitudeToString(coordinates[0]);
+
         if (Astromaximum.dataFile.geoposData[0] == 255) {
             Astromaximum.errCode = 540 + Astromaximum.dataFile.geoposData[1];
             throw new NullPointerException();
@@ -538,6 +543,29 @@ class Options extends GeoList implements CommandListener {
 
     int getFontSize() {
         return getFontSize(optFontSize);
+    }
+
+    private String latitudeToString(int lat) {
+        if (lat == Integer.MAX_VALUE)
+            return "???";
+        int absLat = lat > 0 ? lat : -lat;
+        int minutes = (absLat % 100) / 100 * 60;
+        return Integer.toString(absLat / 100) + "\u00b0" + Integer.toString(minutes) + "' " +
+                (lat > 0 ? "N" : "S");
+    }
+
+    private String longitudeToString(int lon) {
+        if (lon == Integer.MAX_VALUE)
+            return "???";
+        int absLon = lon > 0 ? lon : -lon;
+        int minutes = (absLon % 100) / 100 * 60;
+        return Integer.toString(absLon / 100) + "\u00b0" + Integer.toString(minutes) + "' " +
+                (lon > 0 ? "E" : "W");
+    }
+
+    private String altitudeToString(int alt) {
+        return alt == Integer.MAX_VALUE ? "???" : Integer.toString(alt) + " " +
+                Astromaximum.getstr(185);
     }
 }
 

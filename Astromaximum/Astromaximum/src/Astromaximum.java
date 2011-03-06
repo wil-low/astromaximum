@@ -718,13 +718,13 @@ public class Astromaximum extends MIDlet implements CommandListener {
 
     void showCityInfo() {
         try {
-        String msg = getstr(164) + "| " + options.getCurrentCity(false);
-//        msg += "||--" + getstr(156) + "--";
-        Astromaximum.errCode = 65;
-        msg += "||Web:|http://" + MainURL + "|" + getstr(165) + "|http://" + URL;
-        msg += "||\u00a9 2007, S&W Axis|" + getstr(153);
-        Astromaximum.errCode = 66;
-        alert(msg);
+            StringBuffer msg = new StringBuffer();
+            msg.append(getstr(164)).append("|").append(options.getCurrentCity(false)).append("|");
+            for (int i = 0; i < 3; ++i) {
+               if (i > 0) msg.append(" ");
+               msg.append(getstr(i + 182)).append(" ").append(options.coords[i]);
+            }
+            alert(msg.toString());
         }
         catch (Exception e) {
             log (e.getMessage() + ": " + Integer.toString(errCode));

@@ -1,3 +1,4 @@
+
 #!/usr/bin/perl
 use strict;
 use POSIX;
@@ -10,7 +11,7 @@ my $TZ_VER=2;
 
 my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
-my($tzonly, $clean, $fnfix)=(0,0,0);
+my($tzonly, $clean, $fnfix, $mod)=(0,0,0,0);
 
 $0=~/(.+[\/\\])/is;
 our $mypath=$1;
@@ -50,6 +51,12 @@ if($ARGV[0] eq 'clean'){
 if($ARGV[0] eq 'fnfix'){
 	$fnfix=1;
 	shift(@ARGV);
+}
+if($ARGV[0] eq 'mod'){
+	$mod=1;
+	shift(@ARGV);
+	my $module = $ARGV[1];
+	require $mypath.$module;
 }
 if($#ARGV!=0 and scalar(@ARGV)<2){
 	die <<EOF;
@@ -329,7 +336,6 @@ sub process_ini{
 #				die join("\n", @params);
 				$countries[0]=~s/(Russia \- )GMT\s*(\+\d+)/$1.$MSK{$2}/e;
 				$invoke="echo \"$countries[0]\" >> \"$path$city_inf.txt\"";
-	#			print "$invoke\n";
 				system($invoke);
 				print '.';
 			}
