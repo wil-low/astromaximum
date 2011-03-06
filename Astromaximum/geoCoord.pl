@@ -217,10 +217,10 @@ sub process_ini{
 	}
 	if(! -f "$path$city_inf.txt"){
 		my $error=0;
-		unlink "$path$city_inf.txt";
 		open(InF, "<$mypath"."data/$city_inf.ini") or die "No file $path"."data/$city_inf\.ini";
 		@cities=<InF>;
 		close(InF);
+		open(CITY_INF, ">$path$city_inf.txt") or die "No file $path$path$city_inf.txt";
 		my $cid=1;
 		$country='';
 		my $state=0;
@@ -244,10 +244,7 @@ sub process_ini{
 			  die "No continent in $citbak";
 			}
 			if($cit=~s/^\-//is){
-				$invoke="echo \"$cit\" >> \"$path$city_inf.txt\"";
-				print "$invoke\n";
-				#	die;
-				system($invoke);
+				print (CITY_INF "$cit\n");
 				next;
 			}
 			if($cit=~s/\@\s*//is){
@@ -316,7 +313,7 @@ sub process_ini{
 			else{	
 				$state=~/(.+),/is;
 				$state=$1;
-				$sql="select eng, longit, latit, \'$state\','$contin' from cities where eng = \'$cit\' and country_id=$cid limit 1";
+				$sql="select eng, longit, latit, \'$state\','$contin', id from cities where eng = \'$cit\' and country_id=$cid limit 1";
 			}
 			open (TMP, ">$path".'tmp.sh');
 			print(TMP "echo \"$sql;\" \| $db > \"$tmp\"");
@@ -335,8 +332,7 @@ sub process_ini{
 				$error++ if !get_tz($params[3],$params[0],0,0);
 #				die join("\n", @params);
 				$countries[0]=~s/(Russia \- )GMT\s*(\+\d+)/$1.$MSK{$2}/e;
-				$invoke="echo \"$countries[0]\" >> \"$path$city_inf.txt\"";
-				system($invoke);
+				print (CITY_INF "$countries[0]\n");
 				print '.';
 			}
 			else{
@@ -346,12 +342,13 @@ sub process_ini{
 			}
 
 		}
-	  unlink $tmp;
-	  if($error){
-		unlink "$path$city_inf.txt";
-		die "Please correct $error errors.\n";
-	  }
-	  else{
+		close (CITY_INF);
+		unlink $tmp;
+		if($error){
+			unlink "$path$city_inf.txt";
+			die "Please correct $error errors.\n";
+		}
+		else{
 			print "\nReady. Check coords in $path$city_inf.txt.\nMay I continue calculations (y/n)? ";
 		}
 		my $ans=<STDIN>;
@@ -399,12 +396,21 @@ sub process_ini{
 				}
 				$city=~s/[\n\r]//isg;
 				writeUTF($city);
-				my $header=pack('SCCnSa*a*a*',$year, $month, $day, length($city_info), $day_count, $outbuf, $dstbuf, $city_info);
+				warn join('`', @params);
+				$city_info=pack('Nnnn' 
+					, $params[6] #id
+					, $params[1] * 100 #lon
+					, $params[2] * 100 #lat
+					, $params[5] #alt
+				);
+				my $header=pack('SCCnSa*a*a*',
+					$year, $month, $day, length($city_info), $day_count, $outbuf, $dstbuf, $city_info);
+	{
+		use bytes; warn length($header) .'=='.unpack('H*', $header);
+					warn length($city_info) .'='.unpack('H*', $city_info);
+	}					
 				if(!$tzonly){
-					my $alt=0;
-					if($params[5]=~/^\d+$/is){
-						$alt=$params[5];
-					};
+					my $alt=$params[5];
 					my @bins=glob($geomask);
 					foreach (@bins){
 						unlink($_);
@@ -451,9 +457,9 @@ sub process_ini{
 			$cmd=ensure_slash(sprintf('cd %s ; zip -q %s *.txt *.dat ; cd ../../../../', $newdir, $city_inf));
 		}
 		print "$cmd\n";
-		system($cmd);
-		mkdir(ensure_slash("$arcdir/$year"));
-		rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!." $newdir/$city_inf.zip";
+		#system($cmd);
+		#mkdir(ensure_slash("$arcdir/$year"));
+		#rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!." $newdir/$city_inf.zip";
 		print "Written $arcdir/$year/$city_inf.zip\n";
 		print "\nHeaders replaced: $hrepl.\n" if $tzonly;
 }
@@ -474,6 +480,7 @@ sub calc_dst{
 		my $end_dst=decode_time($year, $fld[2],0);
 		print "$start_dst,$end_dst\n";
 		$buf=pack('NN',$start_dst,$end_dst);
+		warn unpack("H*",$buf);
 	}
 	else{
 		$ofs+=(1<<15);
@@ -489,12 +496,17 @@ sub ctime2number{
 
 sub tz_check{
 	my($fname, $header, $comment)=@_;
-	my $hlen=length($header);
 	open(InF1, "<$fname") or die "$! $fname";
 	binmode(InF1);
 	my @data=<InF1>;
 	close(InF1);
 	my $body=join('', @data);
+	$body =~/^.{4}(..)..(..)/s;
+	my ($cust_data_len, $city_name_len, $tz_offset) = 
+		(unpack('n', $1), unpack('n', $2), unpack('n', $3));
+	my $hlen = 10 + $cust_data_len + $city_name_len;
+	$hlen += 8 unless ($tz_offset & 0x8000) > 0;
+	warn "hlen = $hlen, header len =".length($header)."\n";
 	$body=~/^(.{$hlen})/s;
 	my $oldhdr=$1;
 	if($oldhdr ne $header){

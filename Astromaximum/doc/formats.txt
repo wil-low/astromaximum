@@ -75,8 +75,8 @@ Header fields:
 <endif>
                     	customData (for future expansions):
             int LB      city id inside coords.sdb
-            short LB    latitude = degree * 100
             short LB    longitude = degree * 100
+            short LB    latitude = degree * 100
             short LB    altitude, meters
 	
 *** data/*.ini ***
