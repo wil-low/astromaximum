@@ -26,6 +26,7 @@
 import java.io.*;
 //import java.util.Date;
 //import java.util.TimeZone;
+import java.util.Calendar;
 import java.util.Date;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
@@ -298,6 +299,26 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    static String to2String(long value) {
+        String str = Long.toString(value);
+        if (str.length() == 1) {
+            str = "0" + str;
+        }
+        return str;
+    }
+
+    static String tzOffset2String() {
+        String result = "GMT ";
+        long absOffsetInMins = Math.abs(tzOffset) / 60000;
+        result += tzOffset > 0 ? "+" : "-";
+        result += absOffsetInMins / 60;
+        absOffsetInMins %= 60;
+        if (absOffsetInMins > 0) {
+            result += ":" + to2String(absOffsetInMins);
+        }
+        return result;
     }
 }
 

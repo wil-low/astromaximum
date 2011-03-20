@@ -194,6 +194,10 @@
 // altitude - meters
 %185% m
 
+%186% Standard time zone
+%187% DST start
+%188% DST end
+
 %255% En
 
 //%161% bad

@@ -1,4 +1,5 @@
 ancients:Data0002 m.Olympos
+ancients:Data0003 Lhasa
 UA:Data0000 Kiev
 RU:Data0000 Moscow
 WE:Data0000 London

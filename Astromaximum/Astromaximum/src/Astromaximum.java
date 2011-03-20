@@ -720,9 +720,15 @@ public class Astromaximum extends MIDlet implements CommandListener {
         try {
             StringBuffer msg = new StringBuffer();
             msg.append(getstr(164)).append("|").append(options.getCurrentCity(false)).append("|");
+/*
             for (int i = 0; i < 3; ++i) {
                if (i > 0) msg.append(" ");
-               msg.append(getstr(i + 182)).append(" ").append(options.coords[i]);
+               msg.append(getstr(i + 182)).append(" ").append(Options.coords[i]);
+            }*/
+            msg.append("|").append(getstr(186)).append(":|").append(Options.tzOffset2String());
+            if (Options.dstExists) {
+                msg.append("|").append(getstr(187)).append(":|").append(dstDate2String(Options.dstStart));
+                msg.append("|").append(getstr(188)).append(":|").append(dstDate2String(Options.dstEnd + MSECINDAY / 24));
             }
             alert(msg.toString());
         }
@@ -778,6 +784,33 @@ public class Astromaximum extends MIDlet implements CommandListener {
     }
   }
 //#endif
+
+    static String dstDate2String(long date) {
+        date += GeoList.tzOffset;
+        calendar.setTime(new Date(date));
+        final StringBuffer s = new StringBuffer();
+        if (!Astromaximum.locale.equals("Ru")) {
+            s.append(Event.to2String(Astromaximum.calendar.get(Calendar.MONTH) + 1)).
+                    append("/").
+                    append(Event.to2String(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH)));
+        } else {
+            s.append(Event.to2String(Astromaximum.calendar.get(Calendar.DAY_OF_MONTH))).
+                    append(".").
+                    append(Event.to2String(Astromaximum.calendar.get(Calendar.MONTH) + 1));
+        }
+        s.append(" ");
+        int hh = 0, mm = 0;
+        try {
+            hh = calendar.get(Calendar.HOUR_OF_DAY);
+            mm = calendar.get(Calendar.MINUTE);
+        }
+        catch (Exception e) {
+            System.out.println("Ex: long2String(" + Long.toString(date));
+        }
+        s.append(Event.to2String(hh)).
+                append(":").append(Event.to2String(mm));
+        return s.toString();
+    }
 }
 // # vi:et:ts=4:sw=4
 
