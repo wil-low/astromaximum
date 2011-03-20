@@ -1042,6 +1042,8 @@ class Summary extends Canvas implements CommandListener {
         Astromaximum.calendar.setTime(new Date((period0 + period1) / 2));
         Astromaximum.calendar.set(Calendar.HOUR_OF_DAY, h);
         Astromaximum.calendar.set(Calendar.MINUTE, m);
+        Astromaximum.calendar.set(Calendar.SECOND, 0);
+        Astromaximum.calendar.set(Calendar.MILLISECOND, 0);
         cusTime = Astromaximum.calendar.getTime().getTime();
         cusTime -= Event.localOffset(cusTime);
         recalcAllSelections();
@@ -1761,6 +1763,8 @@ class Summary extends Canvas implements CommandListener {
             Event ev = new Event(st, hourSeq[startHour % 7]);
             st += i < 12 ? dHour : nHour;
             ev.date1 = st - 60000; // exclude last minute
+            ev.date0 -= ev.date0 % 60000;
+            ev.date1 -= ev.date1 % 60000;
 //      if(i==6 || i==18){
 //        ev.date1+=60*1000; // +1 min for MC, IC
 //      }
