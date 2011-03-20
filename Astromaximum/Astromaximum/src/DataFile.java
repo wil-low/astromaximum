@@ -421,7 +421,7 @@ final class DataFile {
                     }
                 }
                 if (fnext_date2 != 0) {
-                    last.date1 = mydate0 - 1;
+                    last.setDate1(mydate0 - Event.ROUNDING_MSEC);
                     mydate1 = finalJD;
                 }
                 if (last.isInPeriod(dayStart, dayEnd, false)) {
@@ -436,8 +436,8 @@ final class DataFile {
                 last.planet0 = myplanet0;
                 last.planet1 = myplanet1;
                 last.degree = (short) mydgr;
-                last.date0 = mydate0;
-                last.date1 = mydate1;
+                last.setDate0(mydate0);
+                last.setDate1(mydate1);
             }
             if (last.isInPeriod(dayStart, dayEnd, false)) {
                 events[eventsCount++] = new Event(last);

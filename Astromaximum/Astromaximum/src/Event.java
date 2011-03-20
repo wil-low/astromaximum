@@ -80,6 +80,7 @@ final class Event {
     static final int EV_BACK = 51;
     static final int EV_TATTVAS = 52;
     static final int EV_LAST = 53;  // last - do not use
+    static final long ROUNDING_MSEC = 60 * 1000;
 
     // Any changes above must be synched with %eventType in tools.pm
     // and EventType in mutter2/events.h !!!
@@ -88,7 +89,8 @@ final class Event {
     static int hj;
 //#endif
     byte planet0, planet1 = -1;
-    long date0, date1;
+    private long date0;
+    private long date1;
     short degree = 127;
 //#if microemu
 //#     static final String locations[] = {
@@ -107,7 +109,8 @@ final class Event {
      */
     Event(long dat, int planet) {
         planet0 = (byte) planet;
-        date0 = date1 = dat;
+        setDate0(dat);
+        setDate1(dat);
     }
 
     /**
@@ -311,6 +314,37 @@ final class Event {
             }
         }
         return ofs;
+    }
+
+    /**
+     * @return the date0
+     */
+    long getDate0() {
+        return date0;
+    }
+
+    /**
+     * @param date0 the date0 to set
+     */
+    void setDate0(long date0) {
+        this.date0 = date0 - date0 % Event.ROUNDING_MSEC;
+    }
+    /**
+     * @return the date1
+     */
+
+    /**
+     * @return the date1
+     */
+    long getDate1() {
+        return date1;
+    }
+
+    /**
+     * @param date1 the date1 to set
+     */
+    void setDate1(long date1) {
+        this.date1 = date1 - date1 % Event.ROUNDING_MSEC;
     }
 }
 

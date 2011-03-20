@@ -414,7 +414,7 @@ class Summary extends Canvas implements CommandListener {
 //        final Event ev=Astromaximum.evAt(mIngress,i);
 //        ev.dump();
 //        if(ev.planet0==Event.SE_MOON && ev.isDateBetween(0, p0, p1)){
-                if (ev.planet0 == Event.SE_MOON && ev.date1 >= p1) {
+                if (ev.planet0 == Event.SE_MOON && ev.getDate1() >= p1) {
                     SummItem si = new SummItem(Event.EV_MOON_SIGN_LARGE);
                     si.events = new Event[1];
                     si.setEvents(0, ev);
@@ -508,15 +508,15 @@ class Summary extends Canvas implements CommandListener {
         //****** SUN & MOON RISES & SETS
         for (int i = Event.SE_SUN; i <= Event.SE_MOON; i++) {
             Event eop = Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE, i, true, period0, period1);
-            if (eop == null || eop.date0 < period0) {
+            if (eop == null || eop.getDate0() < period0) {
                 eop = new Event(0, i);
             }
             getItem(Event.EV_SUN_RISE + i).setEvents(0, eop);
             eop = Astromaximum.dataFile.getEventOnPeriod(Event.EV_SET, i, false, period0, period1);
-            if (eop == null || eop.date0 < period0) {
+            if (eop == null || eop.getDate0() < period0) {
                 eop = new Event(0, i);
             }
-            getItem(Event.EV_SUN_RISE + i).events[0].date1 = eop.date0;
+            getItem(Event.EV_SUN_RISE + i).events[0].setDate1(eop.getDate0());
         }
 //#if logger
       Astromaximum.instance.logger(" SO,MO riseset");
@@ -539,10 +539,10 @@ class Summary extends Canvas implements CommandListener {
 //#endif
 
 //    Astromaximum.evDump(vNavroz);
-        long navroz = aNavroz[1].date0;
-        final long sunrise = getItem(Event.EV_SUN_RISE).events[0].date0;
+        long navroz = aNavroz[1].getDate0();
+        final long sunrise = getItem(Event.EV_SUN_RISE).events[0].getDate0();
         if (sunrise < navroz) {
-            navroz = aNavroz[0].date0;
+            navroz = aNavroz[0].getDate0();
         }
         pltDaySun = (int) ((sunrise - navroz) * 1000 / Astromaximum.MSECINDAY + 500) / 1000;
         if (pltDaySun < 360) {
@@ -614,7 +614,7 @@ class Summary extends Canvas implements CommandListener {
         int counter = 0;
         for (Enumeration e = asp.elements(); e.hasMoreElements();) {
             ev = (Event) e.nextElement();
-            final long dat = ev.date0;
+            final long dat = ev.getDate0();
             if (dat < period0) {
                 id1 = counter;
             }
@@ -634,10 +634,10 @@ class Summary extends Canvas implements CommandListener {
         int idx = 1;
         for (int i = 0; i < sz; i++) {
             Event evprev = Astromaximum.evAt(asp, idx - 1);
-            long dd = (evprev.planet0 == evprev.planet1) ? evprev.date0 : evprev.date1;
+            long dd = (evprev.planet0 == evprev.planet1) ? evprev.getDate0() : evprev.getDate1();
             ev = new Event(dd, -1);
             ev.degree = 200;
-            ev.date1 = Astromaximum.evAt(asp, idx).date0 - 1;
+            ev.setDate1(Astromaximum.evAt(asp, idx).getDate0() - Event.ROUNDING_MSEC);
             ev.planet0 = evprev.planet1;
             ev.planet1 = Astromaximum.evAt(asp, idx).planet1;
 //      ev.dump();
@@ -709,7 +709,7 @@ class Summary extends Canvas implements CommandListener {
 //          ev.dump();
                     --j;
                 } else {
-                    ev.date1 = ev.date0;
+                    ev.setDate1(ev.getDate0());
                     ev.degree = 1;
                     //ev.dump();
                 }
@@ -726,7 +726,7 @@ class Summary extends Canvas implements CommandListener {
             sz = tmp2.size();
             for (int j = 0; j < sz - 1; j++) {
                 ev = Astromaximum.evAt(tmp2, j);
-                final Event enew = new Event((Astromaximum.evAt(tmp2, j + 1).date0 + ev.date0) / 2, i);
+                final Event enew = new Event((Astromaximum.evAt(tmp2, j + 1).getDate0() + ev.getDate0()) / 2, i);
                 enew.degree = (short) (ev.getDegree() == 1 ? 2 : 4);
                 tmp2.addElement(enew);
             }
@@ -769,7 +769,7 @@ class Summary extends Canvas implements CommandListener {
         int selen = si.events.length;
         for (int i = 0; i < selen; i++) {
             if (si.events[i].getDegree() == 2) {
-                long tm = si.events[i].date0;
+                long tm = si.events[i].getDate0();
                 noonTime = tm;
                 tm += Event.localOffset(tm);
                 if (cusTime == 0) {
@@ -1358,7 +1358,7 @@ class Summary extends Canvas implements CommandListener {
         }
         for (Enumeration e = mRetro.elements(); e.hasMoreElements();) {
             final Event ev = (Event) e.nextElement();
-            ev.degree = (short) ((ev.date0 <= period0 && ev.date1 >= period1) ? 1 : 0);
+            ev.degree = (short) ((ev.getDate0() <= period0 && ev.getDate1() >= period1) ? 1 : 0);
         }
         mIngress.removeAllElements();
         for (int i = Event.SE_SUN; i <= Event.SE_PLUTO; i++) {
@@ -1548,9 +1548,9 @@ class Summary extends Canvas implements CommandListener {
             final Event ev = (Event) e.nextElement();
             if (isSort) {
                 int idx = 0;
-                final long dat = ev.date0;
+                final long dat = ev.getDate0();
                 final int sz = dest.size();
-                while (idx < sz && dat > Astromaximum.evAt(dest, idx).date0) {
+                while (idx < sz && dat > Astromaximum.evAt(dest, idx).getDate0()) {
                     ++idx;
                 }
                 dest.insertElementAt(ev, idx);
@@ -1566,9 +1566,9 @@ class Summary extends Canvas implements CommandListener {
             final Event ev = DataFile.events[i];
             if (isSort) {
                 int idx = 0;
-                final long dat = ev.date0;
+                final long dat = ev.getDate0();
                 final int sz = dest.size();
-                while (idx < sz && dat > Astromaximum.evAt(dest, idx).date0) {
+                while (idx < sz && dat > Astromaximum.evAt(dest, idx).getDate0()) {
                     ++idx;
                 }
                 dest.insertElementAt(ev, idx);
@@ -1613,7 +1613,7 @@ class Summary extends Canvas implements CommandListener {
         period1 = period0 + Astromaximum.MSECINDAY - 1;
         for (int i = moonPhaseCount - 1; i >= 0; i--) {
             Event ph = aMoonPhase[i];
-            if (ph.date0 <= startDate) {
+            if (ph.getDate0() <= startDate) {
                 getItem(Event.EV_MOON_PHASE, 1).events[0] = ph;
                 break;
             }
@@ -1623,7 +1623,7 @@ class Summary extends Canvas implements CommandListener {
             ddegree += 12;
         }
         ddegree *= 30;
-        int dgr = (int) ((startDate - e0.date0) * ddegree / (e1.date0 - e0.date0) +
+        int dgr = (int) ((startDate - e0.getDate0()) * ddegree / (e1.getDate0() - e0.getDate0()) +
                 e0.getDegree() * 30);
 //    System.out.println(dgr);
         long[] decumb = new long[13];
@@ -1644,8 +1644,8 @@ class Summary extends Canvas implements CommandListener {
                         ddegree += 12;
                     }
                     ddegree *= 30;
-                    decumb[i + 1] = (dgr % 360 - e0.getDegree() * 30) * (e1.date0 - e0.date0) /
-                            ddegree + e0.date0;
+                    decumb[i + 1] = (dgr % 360 - e0.getDegree() * 30) * (e1.getDate0() - e0.getDate0()) /
+                            ddegree + e0.getDate0();
 //          System.out.println(Event.long2String(decumb[i+1],false,false));
                     break;
                 }
@@ -1683,8 +1683,7 @@ class Summary extends Canvas implements CommandListener {
                 long pp0 = period0 - Astromaximum.MSECINDAY, pp1 = period1 - Astromaximum.MSECINDAY;
                 ev = Astromaximum.dataFile.getEventOnPeriod(Event.EV_RISE, Event.SE_SUN, true,
                         pp0, pp1);
-                ev.date1 = Astromaximum.dataFile.getEventOnPeriod(Event.EV_SET, Event.SE_SUN, false,
-                        pp0, pp1).date0;
+                ev.setDate1(Astromaximum.dataFile.getEventOnPeriod(Event.EV_SET, Event.SE_SUN, false, pp0, pp1).getDate0());
 //        ev.dump();
                 int weekDay = getItem(Event.EV_TOP_DAY).events[1].planet0 + 5;
                 Event[] aev = calcPlanetHours(ev, getItem(Event.EV_SUN_RISE).events[0], weekStartHour[weekDay % 7]);
@@ -1728,10 +1727,23 @@ class Summary extends Canvas implements CommandListener {
 */
 
     void recalcAllSelections() {
+//        System.out.println("Recalc all selections");
         long cur = Options.currentTime();
         long cus = isShowCustom ? cusTime : 0;
         for (int i = 0; i < items.length; i++) {
             SummItem si = items[i];
+/*
+            if (si.events != null) {
+                for (int j = 0; j < si.events.length; j++) {
+                    Event ev = si.events[j];
+                    if (ev != null) {
+                        if ((ev.getDate0() % Event.ROUNDING_MSEC) > 0 || (ev.getDate1() % Event.ROUNDING_MSEC) > 0 ) {
+                            System.out.println("ROUNDING %" + Event.ROUNDING_MSEC + ": " + si.type);
+                        }
+                    }
+                }
+            }
+*/
             if (si != null && si.isOnPage()) {
                 si.initString();
                 si.recalcSelection(cus, true);
@@ -1756,15 +1768,13 @@ class Summary extends Canvas implements CommandListener {
 
     private Event[] calcPlanetHours(Event starte, Event ende, int startHour) {
         Event[] ar = new Event[24];
-        final long dHour = (starte.date1 - starte.date0) / 12;
-        final long nHour = (ende.date0 - starte.date1) / 12;
-        long st = starte.date0;
+        final long dHour = (starte.getDate1() - starte.getDate0()) / 12;
+        final long nHour = (ende.getDate0() - starte.getDate1()) / 12;
+        long st = starte.getDate0();
         for (int i = 0; i < 24; i++) {
             Event ev = new Event(st, hourSeq[startHour % 7]);
             st += i < 12 ? dHour : nHour;
-            ev.date1 = st - 60000; // exclude last minute
-            ev.date0 -= ev.date0 % 60000;
-            ev.date1 -= ev.date1 % 60000;
+            ev.setDate1(st - Event.ROUNDING_MSEC); // exclude last minute
 //      if(i==6 || i==18){
 //        ev.date1+=60*1000; // +1 min for MC, IC
 //      }
@@ -2005,7 +2015,7 @@ class Summary extends Canvas implements CommandListener {
     void calcPhase(long date) {
         for (int i = moonPhaseCount - 1; i >= 0; i--) {
             Event ph = aMoonPhase[i];
-            if (ph.date0 < date) {
+            if (ph.getDate0() < date) {
                 getItem(Event.EV_MOON_PHASE, 0).events[0] = ph;
                 break;
             }

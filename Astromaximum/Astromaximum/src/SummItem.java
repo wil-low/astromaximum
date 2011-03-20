@@ -155,14 +155,14 @@ final class SummItem extends TimerTask implements RecordFilter {
         switch (type) {
             case Event.EV_TOP_MONTH:
                 final Calendar cal = Astromaximum.calendar;
-                cal.setTime(new Date(events[1].date0));
+                cal.setTime(new Date(events[1].getDate0()));
                 selIndex = 1;
                 sb.append(Astromaximum.months[cal.get(Calendar.MONTH)]).append("'").
                         append(Integer.toString(cal.get(Calendar.YEAR)).substring(2, 4));
                 break;
             case Event.EV_TOP_DAY:
                 selIndex = 1;
-                sb.append(Astromaximum.localizedDateString(new Date(events[1].date0)));
+                sb.append(Astromaximum.localizedDateString(new Date(events[1].getDate0())));
                 break;
             case Event.EV_VOC:
             case Event.EV_VIA_COMBUSTA:
@@ -540,7 +540,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                     if (type == Event.EV_NIGHT_HOURS) {
                         plt += 13;
                     }
-                    if (events[i].date1 >= Summary.period1) {
+                    if (events[i].getDate1() >= Summary.period1) {
                         int xx = getX(i, XLEFT) + 2;
                         osg.fillRect(xx, top + 2, getX(i, XRIGHT) - xx - 2, height - 3);
                     }
@@ -811,9 +811,9 @@ final class SummItem extends TimerTask implements RecordFilter {
                     int si0 = ev.degree & 0xf, si1 = (ev.degree & 0xf0) >> 4;
                     drawImg(osg, Summary.imgZodiac, si0, x - 3, y, Graphics.TOP | Graphics.RIGHT);
                     drawImg(osg, Summary.imgZodiac, si1, x + 3, y, Graphics.TOP | Graphics.LEFT);
-                    osg.drawString(Event.long2String(ev.date0, 1, false), x - 3 - Summary.IMG_WIDTH * 2, y,
+                    osg.drawString(Event.long2String(ev.getDate0(), 1, false), x - 3 - Summary.IMG_WIDTH * 2, y,
                             Graphics.TOP | Graphics.RIGHT);
-                    osg.drawString(Event.long2String(ev.date1, 1, true), x + 3 + Summary.IMG_WIDTH * 2, y,
+                    osg.drawString(Event.long2String(ev.getDate1(), 1, true), x + 3 + Summary.IMG_WIDTH * 2, y,
                             Graphics.TOP | Graphics.LEFT);
                     y += 2 + Summary.IMG_WIDTH;
                     boolean peregr = (ev.planet0 & 0x80) != 0;
@@ -851,7 +851,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                     tag = (byte)rows_delta;
 //                System.out.println(tag);
                 int counter = tag * col_count;
-                long date = events[0].date0 + (counter * Astromaximum.MSECINTATTVA);
+                long date = events[0].getDate0() + (counter * Astromaximum.MSECINTATTVA);
                 int tattva = counter % 5;
                 for (int row = 0; row < row_count; ++row) {
                     for (int col = 0; col < col_count ; ++col) {
@@ -890,7 +890,7 @@ final class SummItem extends TimerTask implements RecordFilter {
     }
 
     private void drawSignString(Graphics osg, Event ev, long now, boolean isCus, int x) {
-        if (ev.date0 >= Summary.period0) {
+        if (ev.getDate0() >= Summary.period0) {
             if (Summary.isCurrentDay && contains(ev, now)) {
                 osg.setColor(Astromaximum.RUBY_COLOR);
             }
@@ -980,8 +980,8 @@ final class SummItem extends TimerTask implements RecordFilter {
         int now0 = 0;
         String s1 = Astromaximum.getstr(84) + " ";//rise
         String s2 = Astromaximum.getstr(85) + " ";//set
-        long d1 = events[0].date0;
-        long d2 = events[0].date1;
+        long d1 = events[0].getDate0();
+        long d2 = events[0].getDate1();
 
         if (d1 > d2) { // set before rise
             final String tmp = s1;
@@ -1094,8 +1094,8 @@ final class SummItem extends TimerTask implements RecordFilter {
         }
         int plt = evi.planet0;
         final int dgr = evi.getDegree();
-        final long d0 = evi.date0;
-        final long d1 = evi.date1;
+        final long d0 = evi.getDate0();
+        final long d1 = evi.getDate1();
         switch (t) {
             case Event.EV_SUN_DAY:
                 return new long[]{Event.EV_NAVROZ, plt, dgr, d0, 0};
@@ -1147,7 +1147,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                     for (Enumeration e = moonMoveVec.elements(); e.hasMoreElements();) {
                         final Event ev = (Event) e.nextElement();
                         if (ev.planet1 <= Event.SE_SATURN) {
-                            final long dat = ev.date0;
+                            final long dat = ev.getDate0();
                             if (dat <= d0) {
                                 id1 = counter;
                             }
@@ -1164,7 +1164,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                     if (plt2 == Event.SE_MOON) {
                         plt = 255;
                     }
-                    return new long[]{t, 1, plt, plt2, e0.planet1, e0.date0, e1.date0};
+                    return new long[]{t, 1, plt, plt2, e0.planet1, e0.getDate0(), e1.getDate0()};
                 } else {
                     final int plt2 = evi.planet1;
                     if (plt2 == Event.SE_MOON) {
@@ -1212,7 +1212,7 @@ final class SummItem extends TimerTask implements RecordFilter {
             switch (type) {
                 case Event.EV_MOON_MOVE:
                     final int sind = selIndex;
-                    if ((sel.date0 == sel.date1) || (sel.planet0 == sel.planet1)) {
+                    if ((sel.getDate0() == sel.getDate1()) || (sel.planet0 == sel.planet1)) {
                         s = sel.getDateString(0, (sind != 0 && sind != events.length - 1) ? 1 : 0);
                     } else {
                         s = sel.getDateString(0, hrOnly) + tire + sel.getDateString(1, hrOnly);
@@ -1223,7 +1223,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                     break;
                 default:
                     hrOnly = 0;
-                    if (sel.date0 == sel.date1) {
+                    if (sel.getDate0() == sel.getDate1()) {
                         s = sel.getDateString(0, hrOnly);
                     } else {
                         s = sel.getDateString(0, hrOnly) + tire +
@@ -1256,7 +1256,7 @@ final class SummItem extends TimerTask implements RecordFilter {
 //      return;
 //    }
         if (type == Event.EV_TATTVAS) {
-            long date = events[0].date0;
+            long date = events[0].getDate0();
             for (int i = 0; i < Astromaximum.TATTVAS_IN_DAY; ++i) {
                 if ((time >= date) && (time < date + Astromaximum.MSECINTATTVA)) {
                     if (isCustom) {
@@ -1276,7 +1276,7 @@ final class SummItem extends TimerTask implements RecordFilter {
             Event ev = events[i];
             if (ev != null) {
                 if (type == Event.EV_RISE) {
-                    long delta = time - ev.date0;
+                    long delta = time - ev.getDate0();
                     flg = (delta > DEGREE_DELTA_MSEC1) && (delta < DEGREE_DELTA_MSEC2);
                 }
                 else {
@@ -1327,7 +1327,7 @@ final class SummItem extends TimerTask implements RecordFilter {
             Astromaximum.log("wrong tithi");
         }
         tithi = Astromaximum.extractImg(deg2, "/res/ph" + Integer.toString(Summary.moonPhaseH) + ".dat");
-        Astromaximum.summary.calcPhase(getSelEvent().date1);
+        Astromaximum.summary.calcPhase(getSelEvent().getDate1());
     }
 
     void setSelection() {
@@ -1400,9 +1400,7 @@ final class SummItem extends TimerTask implements RecordFilter {
     }
 
     static boolean contains(Event ev, long date) {
-//    date/=60000;
-//    return ev != null && date >= (ev.date0/60000) && date < (ev.date1/60000);
-        return ev != null && date >= ev.date0 && date <= ev.date1;
+        return ev != null && date >= ev.getDate0() && date <= ev.getDate1();
     }
 
     private static void drawSelDegree(Graphics osg, Event event, int x, int y, int anchor) {
@@ -1636,7 +1634,7 @@ final class SummItem extends TimerTask implements RecordFilter {
         zeroPlaces();
         for (Enumeration e = owner.mIngress.elements(); e.hasMoreElements();) {
             ev = (Event) e.nextElement();
-            final long date = ev.date0;//-Event.localOffset(ev.date0);
+            final long date = ev.getDate0();//-Event.localOffset(ev.date0);
 
             if (date <= Astromaximum.dataFile.startJD || date >= Astromaximum.dataFile.finalJD) {
                 continue;
@@ -1664,7 +1662,7 @@ final class SummItem extends TimerTask implements RecordFilter {
 //            continue;
             if (ev.getDegree() == 0) {
                 for (int i = 0; i < 2; i++) {
-                    final long date = (i > 0) ? ev.date1 : ev.date0;
+                    final long date = (i > 0) ? ev.getDate1() : ev.getDate0();
                     if (ev.isDateBetween(i, fgd, fgd2)) {
                         final int day = (int) ((date - fgd) / Astromaximum.MSECINDAY);
                         places[day]++;
@@ -1703,7 +1701,7 @@ final class SummItem extends TimerTask implements RecordFilter {
         int acnt = Summary.aAspects.length;
         for (int i = 0; i < acnt; i++) {
             ev = Summary.aAspects[i];
-            long date = ev.date0;
+            long date = ev.getDate0();
             if (ev.isDateBetween(0, fgd, fgd2)) {
                 final int day = (int) ((date - fgd) / Astromaximum.MSECINDAY);
                 places[day] += (Summary.size == 2 ? 3 : 3);
@@ -1827,11 +1825,11 @@ final class SummItem extends TimerTask implements RecordFilter {
 
         for (Enumeration e = owner.mIngress.elements(); e.hasMoreElements();) {
             ev = (Event) e.nextElement();
-            if (ev.date0 <= Astromaximum.dataFile.startJD) {
+            if (ev.getDate0() <= Astromaximum.dataFile.startJD) {
                 continue;
             }
             if (ev.isDateBetween(0, fgd, fgd2)) {
-                final int day = (int) ((ev.date0 - fgd) / Astromaximum.MSECINDAY);
+                final int day = (int) ((ev.getDate0() - fgd) / Astromaximum.MSECINDAY);
                 int x = day % owner.colCount * colWidth + 1;
                 y = day / owner.colCount * rowHeight + top + 1;
                 places[day]++;
@@ -1848,7 +1846,7 @@ final class SummItem extends TimerTask implements RecordFilter {
             int x;
             if (ev.getDegree() == 0) {
                 for (int i = 0; i < 2; i++) {
-                    final long date = (i > 0) ? ev.date1 : ev.date0;
+                    final long date = (i > 0) ? ev.getDate1() : ev.getDate0();
                     if (ev.isDateBetween(i, fgd, fgd2)) {
                         final int day = (int) ((date - fgd) / Astromaximum.MSECINDAY);
                         final int pos = places[day]++;
