@@ -186,6 +186,7 @@
 %170% proportional
 %171% monospace
 
+%179% Tattvas
 %180% Text: * <tattva number>
 %181% GMT & DST
 %182% Lat.

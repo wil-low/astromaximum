@@ -313,7 +313,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                 w1 = width - 2;
                 h1 = height / rowCount - 2;
             }
-            if ((page & 6) > 0) {
+            if (type == Event.EV_TOP_MONTH || type == Event.EV_MONTH_GRID || type == Event.EV_WEEK_GRID) {
                 osg.fillRect(l1, t1, w1, h1);
             } else {
                 osg.drawRect(l1, t1, w1, h1);

@@ -70,9 +70,9 @@ class Summary extends Canvas implements CommandListener {
     static final byte[] decumbKeys = {0, 1, 2, 3, 2, 1, 3, 1, 2, 3, 2, 1, 4};
 
     static final int PAGE_DECUMB = 0; // size letter d
-    static final int PAGE_WEEK = 1; // size letter w
-    static final int PAGE_MONTH = 2; // size letter m
-    static final int PAGE_TATTVA = 3; // size letter t
+    static final int PAGE_TATTVA = 1; // size letter t
+    static final int PAGE_WEEK = 2; // size letter w
+    static final int PAGE_MONTH = 3; // size letter m
     static final int PAGE_SUMMARY = 4; // size letter 0
     static final int PAGE_SUMMARY1 = 5; // size letter 1
     static final int PAGE_SUMMARY2 = 6; // size letter 2
@@ -96,6 +96,21 @@ class Summary extends Canvas implements CommandListener {
     static Event[] aAspects;
     final Command[] cmds = new Command[10];
     static Image imgPanelSmall;
+
+    static final int CMD_HELP = 0;
+    static final int CMD_TODAY = 1;
+    static final int CMD_OPTIONS = 2;
+    static final int CMD_TOPIC = 3;
+    static final int CMD_NO_TOPIC = 4;
+    static final int CMD_DECUMB_DATE = 5;
+    static final int CMD_ABOUT = 6;
+    static final int CMD_GMT_DST = 7;
+    static final int CMD_TATTVA = 8;
+    static final int CMD_DECUMB_TODAY = 9;
+    static final int CMD_EXTRA = 50;
+    static final int CMD_EXTRA_MENU = 50;
+    static final int CMD_QUIT = 100;
+
     /**
      * Summary
      */
@@ -1073,16 +1088,16 @@ class Summary extends Canvas implements CommandListener {
             isShowCustom = false;
         }
         switch (c.getPriority()) {
-            case 0: // Help
+            case CMD_HELP: // Help
                 showHelp();
                 break;
-            case 2: // Options
+            case CMD_OPTIONS: // Options
                 Astromaximum.disp.setCurrent(Astromaximum.options);
                 break;
-            case 3: // Topic
+            case CMD_TOPIC: // Topic
                 setCurPage(Summary.PAGE_PANEL);
                 break;
-            case 4: // No topic
+            case CMD_NO_TOPIC: // No topic
                 Interpreter.topic = Interpreter.T_NONE;
                 repaint();
                 break;
@@ -1092,22 +1107,25 @@ class Summary extends Canvas implements CommandListener {
 //#         setCurPage(Summary.PAGE_ELECTIO);
 //#         break;
 //#endif
-            case 5: // back to CustomTime
+            case CMD_DECUMB_DATE: // back to CustomTime
                 Astromaximum.customTime.init(pageNum);
                 break;
-            case 6: // About
+            case CMD_ABOUT: // About
                 Astromaximum.instance.showAbout();
                 break;
-            case 100: // Quit
-                Astromaximum.quit();
-                break;
-            case 8: // decumb -> today
-                Interpreter.topic = Interpreter.T_NONE;
-                recreateCommands();
-            case 9: // About
+            case CMD_GMT_DST: // GMT & DST
                 Astromaximum.instance.showCityInfo();
                 break;
-            case 1: // Today
+            case CMD_TATTVA: // Tattvas
+                setCurPage(Summary.PAGE_TATTVA);
+                break;
+            case CMD_QUIT: // Quit
+                Astromaximum.quit();
+                break;
+            case CMD_DECUMB_TODAY: // decumb -> today
+                Interpreter.topic = Interpreter.T_NONE;
+                recreateCommands();
+            case CMD_TODAY: // Today
                 setToday();
                 break;
             /*      case 1:
@@ -1124,17 +1142,17 @@ class Summary extends Canvas implements CommandListener {
             repaint();
              */
 //#ifdef freetest
-//# 			case 50: // extra menu
+//# 			case CMD_EXTRA: // extra menu
 //#                 List lst = new List("Extra menu", List.IMPLICIT);
 //#                 lst.append("Screenshots", null);
 //#                 lst.append("Print hashes", null);
 //#                 lst.append("BM year", null);
 //# 				lst.addCommand(new Command(Astromaximum.getstr(94), Command.BACK, 1));
-//# 				lst.setSelectCommand(new Command("Open", Command.ITEM, 51));
+//# 				lst.setSelectCommand(new Command("Open", Command.ITEM, CMD_EXTRA_MENU));
 //#                 lst.setCommandListener(this);
 //#                 Astromaximum.disp.setCurrent(lst);
 //# 				break;
-//# 			case 51: // extra menu handler
+//# 			case CMD_EXTRA_MENU: // extra menu handler
 //#                 lst = (List)d;
 //#                 switch(lst.getSelectedIndex()) {
 //#                     case 0:
@@ -1948,27 +1966,25 @@ class Summary extends Canvas implements CommandListener {
         }
         switch (Interpreter.topic){
             case Interpreter.T_DECUMB:
-                cmds[0] = new Command(Astromaximum.getstr(149), Command.SCREEN, 5);//Set date decumb
-                cmds[1] = new Command(Astromaximum.getstr(91), Command.SCREEN, 8);//Today from decumb
+                cmds[0] = new Command(Astromaximum.getstr(149), Command.SCREEN, CMD_DECUMB_DATE);//Set date decumb
+                cmds[1] = new Command(Astromaximum.getstr(91), Command.SCREEN, CMD_DECUMB_TODAY);//Today from decumb
                 cmdCount = 2;
                 break;
             default:
-                cmds[0] = new Command(Astromaximum.getstr(90), Command.SCREEN, 0);//Help
-                cmds[1] = new Command(Astromaximum.getstr(91), Command.SCREEN, 1);//Today
-                cmds[2] = new Command(Astromaximum.getstr(92), Command.SCREEN, 2);//Options
-                cmds[3] = new Command(Astromaximum.getstr(93), Command.SCREEN, 3);//Topic
-                cmds[4] = new Command(Astromaximum.getstr(160), Command.SCREEN, 4);//No topic
-                cmds[5] = new Command(Astromaximum.getstr(152), Command.SCREEN, 6);//About
-                cmds[5] = new Command(Astromaximum.getstr(181), Command.SCREEN, 9);//GMT & DST
-                cmds[6] = new Command(Astromaximum.getstr(157), Command.SCREEN, 100);//Quit
-                cmdCount = 7;
+                cmds[0] = new Command(Astromaximum.getstr(90), Command.SCREEN, CMD_HELP);//Help
+                cmds[1] = new Command(Astromaximum.getstr(91), Command.SCREEN, CMD_TODAY);//Today
+                cmds[2] = new Command(Astromaximum.getstr(92), Command.SCREEN, CMD_OPTIONS);//Options
+                cmds[3] = new Command(Astromaximum.getstr(93), Command.SCREEN, CMD_TOPIC);//Topic
+                cmds[4] = new Command(Astromaximum.getstr(160), Command.SCREEN, CMD_NO_TOPIC);//No topic
+                cmds[5] = new Command(Astromaximum.getstr(152), Command.SCREEN, CMD_ABOUT);//About
+                cmds[6] = new Command(Astromaximum.getstr(181), Command.SCREEN, CMD_GMT_DST);//GMT & DST
+                cmds[7] = new Command(Astromaximum.getstr(179), Command.SCREEN, CMD_TATTVA);//Tattva
+                cmds[8] = new Command(Astromaximum.getstr(157), Command.SCREEN, CMD_QUIT);//Quit
+                cmdCount = 9;
 //#ifdef freetest
-//#  				cmds[7] = new Command("Extra", Command.SCREEN, 50);//Screenshots
+//#  				cmds[7] = new Command("Extra", Command.SCREEN, CMD_EXTRA);//Screenshots
 //#  				++cmdCount;
 //#endif
-        //#ifdef ELECTIO
-//#       cmds[7]=new Command(Astromaximum.getstr("Aphetics"),Command.SCREEN,7);
-        //#endif
         }
         for (int i = 0; i < cmdCount; i++)
             addCommand(cmds[i]);
