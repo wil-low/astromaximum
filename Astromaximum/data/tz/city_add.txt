@@ -123,3 +123,15 @@ Termez
 
 @ Wales, Cardiff_GBR
 Cardigan
+
+@ Turkey, Ankara
+Bodrum
+Fethiye
+Kemer
+Kuşadası
+Marmaris
+Palandöken
+Sarıkamış
+Side
+Çeşme
+Uludağ
