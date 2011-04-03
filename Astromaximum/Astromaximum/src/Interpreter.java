@@ -281,17 +281,33 @@ class Interpreter extends Canvas implements CommandListener {
                     break;
             }
             String ss = "";
-            if (params[params.length - 2] != 0) {
-                ss = Event.long2String(params[params.length - 2], 0, false);
+            if (params[0] == Event.EV_VOC) {
+                if (params[params.length - 4] != 0) {
+                    ss = Event.long2String(params[params.length - 4], 0, false) + " - ";
+                }
+                if (params[params.length - 3] != 0) {
+                    ss += Event.long2String(params[params.length - 3], 0, false);
+                }
+                if (params[params.length - 2] != 0) {
+                    ss += "|" + Event.long2String(params[params.length - 2], 0, false) + " - ";
+                }
+                if (params[params.length - 1] != 0) {
+                    ss += Event.long2String(params[params.length - 1], 0, false);
+                }
             }
-            if (params[0] == Event.EV_TITHI) {
-                ss += " - (" + Event.long2String(params[params.length - 3], 0, false) + ")";
-            }
-            if (params[params.length - 1] != 0) { // 2nd date
-                ss += " - ";
-                //      if(Astromaximum.sizer.getSize()==0)
-                //        ss+="\n";
-                ss += Event.long2String(params[params.length - 1], 0, true);
+            else {
+                if (params[params.length - 2] != 0) {
+                    ss = Event.long2String(params[params.length - 2], 0, false);
+                }
+                if (params[0] == Event.EV_TITHI) {
+                    ss += " - (" + Event.long2String(params[params.length - 3], 0, false) + ")";
+                }
+                if (params[params.length - 1] != 0) { // 2nd date
+                    ss += " - ";
+                    //      if(Astromaximum.sizer.getSize()==0)
+                    //        ss+="\n";
+                    ss += Event.long2String(params[params.length - 1], 0, true);
+                }
             }
             if (topic != 10 && isTopicTitle) {
                 res.append(" <").append(Astromaximum.getstr(50 + topic)) //fb

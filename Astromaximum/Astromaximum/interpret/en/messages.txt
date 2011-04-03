@@ -198,6 +198,8 @@
 %187% DST start
 %188% DST end
 
+%189% +voc
+
 %255% En
 
 //%161% bad

@@ -165,8 +165,12 @@ final class SummItem extends TimerTask implements RecordFilter {
                 sb.append(Astromaximum.localizedDateString(new Date(events[1].getDate0())));
                 break;
             case Event.EV_VOC:
+                if (events.length > 1) {
+                    sb.append (Astromaximum.getstr(189)); // +voc
+                    break;
+                }
             case Event.EV_VIA_COMBUSTA:
-                if (events[0] != null) {
+                if (events.length > 0 && events[0] != null) {
                     sb.append(events[0].getDateString(0, 1)).append("-").append(events[0].getDateString(1, 1));
                 }
                 break;
@@ -1056,6 +1060,20 @@ final class SummItem extends TimerTask implements RecordFilter {
 
     long[] getParams(int idx) {
         int tp = type;
+        if (tp == Event.EV_VOC) {
+            long d00 = 0, d01 = 0, d10 = 0, d11 = 0;
+            Event evi = events[0];
+            if (evi != null) {
+                d00 = evi.getDate0();
+                d01 = evi.getDate1();
+                if (events.length > 1 && events[1] != null) {
+                    evi = events[1];
+                    d10 = evi.getDate0();
+                    d11 = evi.getDate1();
+                }
+                return new long[]{Event.EV_VOC, Event.SE_MOON, idx, d00, d01, d10, d11};
+            }
+        }
         if (tp == Event.EV_TATTVAS) {
             return new long[]{Event.EV_TATTVAS, -1, idx, 0, 0};
         }
@@ -1180,6 +1198,9 @@ final class SummItem extends TimerTask implements RecordFilter {
     }
 
     private String getStatus() {
+        if (type == Event.EV_VOC && events.length > 1) {
+            return Astromaximum.getstr(189); // +voc
+        }
         if (type == Event.EV_TOPIC_BUTTON) {
             return Astromaximum.getstr(50 + tag); // fb
         }

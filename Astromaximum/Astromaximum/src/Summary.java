@@ -493,10 +493,11 @@ class Summary extends Canvas implements CommandListener {
         getItem(Event.EV_TOP_DAY).setEvents(1, new Event(date.getTime(), weekDay));
 
         //****** VOC
-        getItem(Event.EV_VOC).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
-                Event.EV_VOC, Event.SE_MOON, false, period0, period1));
-        //System.out.println("VOC:");
-        //Astromaximum.evDump(getItem(Event.EV_VOC).events);
+        final Vector vocs = new Vector();
+        Astromaximum.dataFile.getEventsOnPeriod(vocs, Event.EV_VOC, Event.SE_MOON, false,
+                period0, period1, 0);
+        getItem(Event.EV_VOC).setEvents(vocs);
+        //Astromaximum.evDump(vocs);
 
         //****** VIA COMBUSTA
         getItem(Event.EV_VIA_COMBUSTA).setEvents(0, Astromaximum.dataFile.getEventOnPeriod(
