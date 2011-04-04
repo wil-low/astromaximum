@@ -150,7 +150,7 @@ BILL_NUM=Номер счета
 BILL_EMAIL=E-mail
 BILL_USERNAME=Имя пользователя
 
-PRODINFO_CITY=городов
+PRODINFO_CITY=город
 PRODINFO_VERSION=Версия
 PRODINFO_DATE=Дата выпуска
 PRODINFO_PRICE=Цена
