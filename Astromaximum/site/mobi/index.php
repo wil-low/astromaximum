@@ -74,7 +74,6 @@ if(preg_match("/^(demo)$/is", $main)) {
         [[head]]
     </head>
     <body[[onload]]>
-        <div id="hdr" class="nav"><p>[[nav]]</p></div>
         <div id="cont">[[subtitle]]
 <?php
         if($custom_content) {
@@ -89,6 +88,7 @@ if(preg_match("/^(demo)$/is", $main)) {
             }
         }
         ?>
+        <div id="hdr" class="nav"><p>[[nav]]</p></div>
     </div>
     <div id="ftr"><p>
 <?php

@@ -35,7 +35,7 @@ if(isset($_GET['p'])){
 	$main=$_GET['p'];
 }
 
-detect_mobile();
+//detect_mobile();
 
 ob_start("output_callback");
 
