@@ -1,10 +1,10 @@
 #!/bin/sh
-
+set -x
 # parameters: year
-#if [ "$1" == "" ]; then
-#	echo "Please specify year"
-#	exit 1
-#fi
+if [ "$1" == "" ]; then
+	echo "Usage: sh compress_year.sh <year>"
+	exit 1
+fi
 year=$1
 cd data/archive/$year
 find . -name '*.txt' -o -name '*.dat' > $year.lst
