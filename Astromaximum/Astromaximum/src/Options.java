@@ -226,7 +226,8 @@ class Options extends GeoList implements CommandListener {
         if (!newCity.equals(curCity)) {
             try {
                 curCity = newCity;
-                rs.setRecord(1, curCity.getBytes(), 0, curCity.length());
+                byte[] curCityChars = curCity.getBytes();
+                rs.setRecord(1, curCityChars, 0, curCityChars.length);
     //          rs.closeRecordStore();
                 initDB(false);
                 System.out.println("LoadCity " + curCity + "!");
@@ -489,8 +490,7 @@ class Options extends GeoList implements CommandListener {
                 Astromaximum.errCode = 57;
                 ex.printStackTrace();
             }
-//          System.out.print(rid);
-//          System.out.println(extractCityName(cn));
+//            System.out.println("added " + rid + " " +extractCityName(cn));
         }
         byte[] geo = extractLocation(0);
                 Astromaximum.errCode = 58;

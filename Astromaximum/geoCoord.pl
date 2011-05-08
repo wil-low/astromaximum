@@ -457,9 +457,9 @@ sub process_ini{
 			$cmd=ensure_slash(sprintf('cd %s ; zip -q %s *.txt *.dat ; cd ../../../../', $newdir, $city_inf));
 		}
 		print "$cmd\n";
-		#system($cmd);
-		#mkdir(ensure_slash("$arcdir/$year"));
-		#rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!." $newdir/$city_inf.zip";
+		system($cmd);
+		mkdir(ensure_slash("$arcdir/$year"));
+		rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!." $newdir/$city_inf.zip";
 		print "Written $arcdir/$year/$city_inf.zip\n";
 		print "\nHeaders replaced: $hrepl.\n" if $tzonly;
 }

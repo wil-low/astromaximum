@@ -135,3 +135,25 @@ Sarıkamış
 Side
 Çeşme
 Uludağ
+
+@ Azores, Ponta Delgada_PRT
+Santa Cruz das Flores
+Angra do Heroismo
+Lajes do Pico
+Vila do Porto
+Santa Cruz da Graciosa
+
+@ Canary Islands, Las Palmas_ESP
+Santa Cruz de la Palma
+Valverde
+San Sebastian de la Gomera
+Puerto del Rosario
+Arrecife
+
+@ Cape Verde, Praia_CPV
+Ribeira Grande
+Ribeira Brava
+Santa Maria
+Sal Rei
+São Filipe
+Porto Inglês

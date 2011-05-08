@@ -3,8 +3,21 @@ if(!isset($EXEC)) die("Access restricted");
 reject2index();
 include_once('mobi/amtools.php');
 lang_load("source");
+
+echo '<p>';
+$sth=mysql_query("SELECT count(1) FROM countries");
+while($row=mysql_fetch_row($sth)){
+	echo "Countries: $row[0], ";
+}
+mysql_free_result($sth);
+
+$sth=mysql_query("SELECT count(1) FROM cities");
+while($row=mysql_fetch_row($sth)){
+	echo "Cities: $row[0]";
+}
+mysql_free_result($sth);
+echo '</p>';
 ?>
-<p></p>
 <table class="compressed">
 <tr><th>Country</th><th>Cities</th>
 <?php

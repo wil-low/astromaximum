@@ -117,8 +117,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         errCode = 2;
         RecordEnumeration rece = rs.enumerateRecords(this, null, false);
 //#mdebug info
-//#         System.out.println(curCity);
-//#         System.out.println(rece.numRecords());
+//#         System.out.println("enumerate " + curCity + ": " + rece.numRecords());
 //#enddebug
         byte[] nextR;
         errCode = 3;

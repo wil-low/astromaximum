@@ -25,10 +25,10 @@ $sett=array(
 		'de'=>array('m.Olympos', 'Berlin', 'Vienna'),
 	),
 
-	'city_count'=>725, //update PRODINFO_CITY in ru.msg
+	'city_count'=>761, //update PRODINFO_CITY in ru.msg
 	'price'=>'58.99',
-	'version'=>'1.1.8 r634',
-	'release_date'=>'2011/02/07',
+	'version'=>'1.1.8 r652',
+	'release_date'=>'2011/04/04',
 	
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder
 	'min_demo_year'=>2000,
