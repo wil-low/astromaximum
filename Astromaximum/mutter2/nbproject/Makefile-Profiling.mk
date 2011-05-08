@@ -10,27 +10,33 @@
 # Environment
 MKDIR=mkdir
 CP=cp
+GREP=grep
+NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
 CC=gcc
 CCC=g++
 CXX=g++
 FC=
+AS=as
 
 # Macros
-PLATFORM=GNU-Linux-x86
+CND_PLATFORM=GNU-Linux-x86
+CND_CONF=Profiling
+CND_DISTDIR=dist
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Profiling/${PLATFORM}
+OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/evclass.o \
-	${OBJECTDIR}/datafile.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/datafile.o
+
 
 # C Compiler Flags
 CFLAGS=
@@ -42,15 +48,23 @@ CXXFLAGS=-pg
 # Fortran Compiler Flags
 FFLAGS=
 
+# Assembler Flags
+ASFLAGS=
+
 # Link Libraries and Options
 LDLIBSOPTIONS=-L../swe -lswe
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	${MAKE}  -f nbproject/Makefile-Profiling.mk mutter2prof
+	"${MAKE}"  -f nbproject/Makefile-Profiling.mk mutter2prof
 
 mutter2prof: ${OBJECTFILES}
 	${LINK.cc} -pg -o mutter2prof ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+${OBJECTDIR}/main.o: main.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -DANSITZ -I../swe -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/evclass.o: evclass.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -62,16 +76,11 @@ ${OBJECTDIR}/datafile.o: datafile.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -DANSITZ -I../swe -MMD -MP -MF $@.d -o ${OBJECTDIR}/datafile.o datafile.cpp
 
-${OBJECTDIR}/main.o: main.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -g -DANSITZ -I../swe -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
-
 # Subprojects
 .build-subprojects:
 
 # Clean Targets
-.clean-conf:
+.clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r build/Profiling
 	${RM} mutter2prof
 

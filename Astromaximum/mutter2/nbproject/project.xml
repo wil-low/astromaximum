@@ -10,6 +10,12 @@
             <header-extensions>h</header-extensions>
             <sourceEncoding>windows-1252</sourceEncoding>
             <make-dep-projects/>
+            <sourceRootList/>
+            <confList>
+                <confElem>Debug</confElem>
+                <confElem>Release</confElem>
+                <confElem>Profiling</confElem>
+            </confList>
         </data>
     </configuration>
 </project>
