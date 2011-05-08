@@ -6,3 +6,4 @@ WE:Data0000 London
 US:Data0000 New York
 CE:Data0002 Berlin
 CE:Data0010 Vienna
+WE:Data0117 Porto Ingles
