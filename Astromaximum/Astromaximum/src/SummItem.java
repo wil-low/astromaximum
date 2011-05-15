@@ -189,7 +189,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                     sb.append(si.getStatus());
                 }
                 if (sb.length() == 0) {
-                    sb.append(Event.long2String(owner.noonTime, 1, false));
+                    sb.append(Astromaximum.options.getCurrentCity(false));
                     tag = 1;
                 } else {
                     tag = 0;

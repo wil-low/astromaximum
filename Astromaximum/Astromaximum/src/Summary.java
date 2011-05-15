@@ -57,7 +57,6 @@ class Summary extends Canvas implements CommandListener {
     };
     SummItem[] items = null;
     long cusTime = 0;
-    long noonTime = 0;
     //  private boolean firstRun=true;
     static boolean isCurrentDay;
     static boolean isShowCustom = false;
@@ -786,7 +785,6 @@ class Summary extends Canvas implements CommandListener {
         for (int i = 0; i < selen; i++) {
             if (si.events[i].getDegree() == 2) {
                 long tm = si.events[i].getDate0();
-                noonTime = tm;
                 tm += Event.localOffset(tm);
                 if (cusTime == 0) {
                     Astromaximum.customTime.timeField.setDate(new Date(
