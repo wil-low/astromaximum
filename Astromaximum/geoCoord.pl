@@ -1,4 +1,3 @@
-
 #!/usr/bin/perl
 use strict;
 use POSIX;
@@ -403,7 +402,7 @@ sub process_ini{
 					, $params[2] * 100 #lat
 					, $params[5] #alt
 				);
-				my $header=pack('SCCnSa*a*a*',
+				my $header=pack('nCCnna*a*a*',
 					$year, $month, $day, length($city_info), $day_count, $outbuf, $dstbuf, $city_info);
 	{
 		use bytes; warn length($header) .'=='.unpack('H*', $header);
@@ -676,7 +675,7 @@ sub data_check
 	open(FILE, "<$_[0]");
 	binmode(FILE);
 	read(FILE, $data_year,4);
-	$data_year=unpack('S',$data_year);
+	$data_year=unpack('n',$data_year);
 	seek(FILE,8,0);
 	read(FILE, $dc_len,2);
 	$dc_len=unpack('n',$dc_len);
