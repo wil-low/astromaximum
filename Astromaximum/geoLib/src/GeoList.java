@@ -125,10 +125,10 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         errCode = 4;
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(nextR));
         errCode = 5;
-        dis.skip(4);
+        dis.skip(4); // YYmd
         customData = null;
         int count = dis.readUnsignedShort();
-        dis.skip(2);
+        dis.skip(2); // day count
         dis.readUTF();
         isSouthern = false;
         tzOffset = dis.readUnsignedShort();
@@ -148,16 +148,16 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
                 dstEnd = d_1;
                 isSouthern = true;
             }
-        if (count > 0) {
-           customData = new byte[count];
-           dis.read(customData);
-        }
 //#mdebug info
 //#             System.out.println(dstStart);
 //#             System.out.println(new Date(dstStart).toString());
 //#             System.out.println(dstEnd);
 //#             System.out.println(new Date(dstEnd).toString());
 //#enddebug
+        }
+        if (count > 0) {
+           customData = new byte[count];
+           dis.read(customData);
         }
 //        System.out.print("customData=");
 //        System.out.println(customData);
