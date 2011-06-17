@@ -68,15 +68,16 @@
 	if ($page_count * $ITEMS_PER_PAGE < $total)
 		++$page_count;
 	$offset = pageNormalize ($offset, $page_count);
-	$page_of_total = "Page 1 of 1";
 	if ($page_count > 1) {
-		$prev_page = pageNormalize ($offset - 1, $page_count);
-		$next_page = pageNormalize ($offset + 1, $page_count);
-		$page_of_total = make_anchor($level, $parm, "&lt;&lt;", $defyear, $prev_page, $entity);
-		$page_of_total .= "Page " . ($offset + 1) . " of $page_count ";
-		$page_of_total .= make_anchor($level, $parm, "&gt;&gt;", $defyear, $next_page, $entity);
+		$page_of_total = "";
+		for ($i=0; $i<$page_count; ++$i) {
+			if ($i == $offset)
+				$page_of_total .= '<b>' . ($offset + 1) . '</b> ';
+			else
+				$page_of_total .= make_anchor($level, $parm, $i+1, $defyear, $i, $entity) . ' ';
+		}
+		echo "<p>$page_of_total</p>\n";
 	}
-	echo "<p>$page_of_total</p>\n";
 	echo "<p>";
 	for($i=0; $i<$cnt; $i++){
 		$newparam=$parm;
