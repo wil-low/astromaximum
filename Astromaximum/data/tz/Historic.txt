@@ -777,7 +777,8 @@ Belarus, Minsk
 3	-	29Sep1991@3
 2	-	29Mar1992@0
 2+1	-	27Sep1992@1
-2	Russia	max
+2	Russia	27Mar2011@2
+3	-	max
 
 Rule Belgium
 1918	09Mar@0	FirstSatOct@24
@@ -3387,7 +3388,8 @@ Russia  +2, Kaliningrad
 2	Poland	1946
 3	Russia	31Mar1991@2
 2+1	-	31Mar1991@3
-2	Russia	max
+2	Russia	27Mar2011@2
+3	-	max
 
 # Another hiccup mended by zic in 1991
 Russia  +3, Moscow
@@ -3399,7 +3401,8 @@ Russia  +3, Moscow
 3	Russia	31Mar1991@2
 2+1	-	31Mar1991@3
 2	Russia	19Jan1992@2
-3	Russia	max
+3	Russia	27Mar2011@2
+4	-	max
 
 # Another hiccup mended by zic in 1989
 Russia  +3, Volgograd
@@ -3409,8 +3412,9 @@ Russia  +3, Volgograd
 4	Russia	26Mar1989@2
 3+1	-	26Mar1989@3
 3	Russia	31Mar1991@2
-4	-	31Mar1991@2
-3	Russia	max
+4	-	29Mar1992@2
+3	Russia	27Mar2011@2
+4	-	max
 
 # Another hiccup mended by zic in 1989
 # Another hiccup mended by zic in 1991
@@ -3424,7 +3428,9 @@ Russia  +4, Samara
 2+1	-	31Mar1991@3
 2	Russia	29Sep1991@3
 3	-	20Oct1991@3
-4	Russia	max
+4	Russia	28Mar2010@2
+3	Russia	27Mar2011@2
+4	-	max
 
 # Another hiccup mended by zic in 1991
 Russia  +5, Ekaterinburg
@@ -3433,7 +3439,8 @@ Russia  +5, Ekaterinburg
 5	Russia	31Mar1991@2
 4+1	-	31Mar1991@3
 4	Russia	19Jan1992@2
-5	Russia	max
+5	Russia	27Mar2011@2
+6	-	max
 
 # Another hiccup mended by zic in 1991
 Russia  +6, Novosibirsk
@@ -3443,7 +3450,8 @@ Russia  +6, Novosibirsk
 6+1	-	31Mar1991@3
 6	Russia	19Jan1992@2
 7	Russia	23May1993@0
-6	Russia	max
+6	Russia	27Mar2011@2
+7	-	max
 
 # Another hiccup mended by zic in 1991
 # !! Omsk is new timezone with different rules!!
@@ -3453,7 +3461,8 @@ Russia  +6, Omsk
 6	Russia	31Mar1991@2
 5+1	-	31Mar1991@3
 5	Russia	19Jan1992@2
-6	Russia	max
+6	Russia	27Mar2011@2
+7	-	max
 
 # Another hiccup mended by zic in 1991
 Russia  +7, Krasnoyarsk
@@ -3462,7 +3471,8 @@ Russia  +7, Krasnoyarsk
 7	Russia	31Mar1991@2
 6+1	-	31Mar1991@3
 6	Russia	19Jan1992@2
-7	Russia	max
+7	Russia	27Mar2011@2
+8	-	max
 
 # Another hiccup mended by zic in 1991
 Russia  +8, Irkutsk
@@ -3471,7 +3481,8 @@ Russia  +8, Irkutsk
 8	Russia	31Mar1991@2
 7+1	-	31Mar1991@3
 7	Russia	19Jan1992@2
-8	Russia	max
+8	Russia	27Mar2011@2
+9	-	max
 
 # Another hiccup mended by zic in 1991
 Russia  +9, Yakutsk
@@ -3480,7 +3491,8 @@ Russia  +9, Yakutsk
 9	Russia	31Mar1991@2
 8+1	-	31Mar1991@3
 8	Russia	19Jan1992@2
-9	Russia	max
+9	Russia	27Mar2011@2
+10	-	max
 
 # Another hiccup mended by zic in 1991
 Russia +10, Vladivostok
@@ -3489,7 +3501,8 @@ Russia +10, Vladivostok
 10	Russia	31Mar1991@2
 9+1	-	31Mar1991@3
 9	Russia	19Jan1992@2
-10	Russia	max
+10	Russia	27Mar2011@2
+11	-	max
 
 # Another hiccup mended by zic in 1991
 # Another hiccup mended by zic in 1997
@@ -3501,7 +3514,8 @@ Russia +10, Yuzhno-Sakhalinsk
 10	Russia	19Jan1992@2
 11	Russia	30Mar1997@2
 10+1	-	30Mar1997@3
-10	Russia	max
+10	Russia	27Mar2011@2
+11	-	max
 
 # Another hiccup mended by zic in 1991
 Russia +11, Magadan
@@ -3510,7 +3524,8 @@ Russia +11, Magadan
 11	Russia	31Mar1991@2
 10+1	-	31Mar1991@3
 10	Russia	19Jan1992@2
-11	Russia	max
+11	Russia	27Mar2011@2
+12	-	max
 
 # Another hiccup mended by zic in 1982 April
 # Another hiccup mended by zic in 1991
@@ -3522,7 +3537,9 @@ Russia +12, Anadyr
 12	Russia	31Mar1991@2
 11+1	-	31Mar1991@3
 11	Russia	19Jan1992@2
-12	Russia	max
+12	Russia	28Mar2010@2
+11	Russia	27Mar2011@2
+12	-	max
 
 # Another hiccup mended by zic in 1991
 Russia +12, Petropavlovsk-Kamchatsky
@@ -3531,7 +3548,9 @@ Russia +12, Petropavlovsk-Kamchatsky
 12	Russia	31Mar1991@2
 11+1	-	31Mar1991@3
 11	Russia	19Jan1992@2
-12	Russia	max
+12	Russia	28Mar2010@2
+11	Russia	27Mar2011@2
+12	-	max
 
 Rwanda, Kigali
 2:00:16	-	01Jun1935@0
@@ -4352,7 +4371,8 @@ Ukraine, Kiev
 3	-	01Jul1990@2
 2	-	1992
 2	E-Eur	1995
-2	EU	max
+2	EU	LastSunMar@1(UTC)
+3	-	max
 
 Ukraine, Simferopol
 2:16:24	-	1880
@@ -4368,7 +4388,8 @@ Ukraine, Simferopol
 3+1	-	27Oct1996@4
 3	Russia	1997
 3	-	30Mar1997@4
-2	EU	max
+2	EU	LastSunMar@1(UTC)
+3	-	max
 
 Ukraine, Uzhgorod
 1:29:12	-	01Oct1890@0
@@ -4381,7 +4402,8 @@ Ukraine, Uzhgorod
 1	-	31Mar1991@3
 2	-	1992
 2	E-Eur	1995
-2	EU	max
+2	EU	LastSunMar@1(UTC)
+3	-	max
 
 Ukraine, Zaporozje
 2:20:40	-	1880
@@ -4391,7 +4413,8 @@ Ukraine, Zaporozje
 1	C-Eur	25Oct1943@0
 3	Russia	31Mar1991@2
 2	E-Eur	1995
-2	EU	max
+2	EU	LastSunMar@1(UTC)
+3	-	max
 
 United Arab Emirates, Abu Dhabi
 3:41:12	-	1920
