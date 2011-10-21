@@ -190,7 +190,9 @@ int DataFile::AscendingTest() {
             long cur = 0;
             for (uint i = 0; i < work.size(); i++) {
                 if (work[i]->date[0] < cur) {
-                    printf("\n%s\n", "*****Ascension order is broken!*****");
+                    work[i - 1]->dump();
+                    work[i]->dump();
+                    printf("\n*****Ascension order is broken! ***** %u < %u \n", work[i]->date[0], cur);
                     err++;
                     break;
                 }
@@ -873,6 +875,7 @@ void DataFile::choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & 
             printf("%s", fname);
             writeSubData(work, EV_ASP_EXACT, EF_CUMUL_DATE_W | EF_PLANET1 | EF_PLANET2 | EF_DEGREE | EF_SHORT_DEGREE, -1, fname);
             release(work);
+            sortVAE(work2);
             sprintf(fname, "aspects01.bin");
             writeSubData(work2, EV_ASP_EXACT, EF_CUMUL_DATE_W | EF_PLANET2 | EF_DEGREE | EF_SHORT_DEGREE, SE_MOON, fname);
             release(work2);
