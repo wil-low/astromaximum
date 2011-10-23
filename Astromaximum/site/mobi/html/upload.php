@@ -153,7 +153,7 @@ function process_country($dir){
 			$tr='';
 			$locdata='';
 			$yr=fread($FF0,2);
-			$yr=current(unpack("S",$yr));
+			$yr=current(unpack("n",$yr));
 			if($yr){
 				fseek($FF0,8,0);
 				$len=0;
