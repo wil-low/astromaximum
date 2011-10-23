@@ -17,19 +17,20 @@ RANLIB=ranlib
 CC=gcc
 CCC=g++
 CXX=g++
-FC=
+FC=gfortran
 AS=as
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
 CND_CONF=Debug
 CND_DISTDIR=dist
+CND_BUILDDIR=build
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
+OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
@@ -56,7 +57,7 @@ LDLIBSOPTIONS=-L../swe -lswe
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-Debug.mk mutter2
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk mutter2
 
 mutter2: ${OBJECTFILES}
 	${LINK.cc} -o mutter2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
@@ -81,7 +82,7 @@ ${OBJECTDIR}/datafile.o: datafile.cpp
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
-	${RM} -r build/Debug
+	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
 	${RM} mutter2
 
 # Subprojects

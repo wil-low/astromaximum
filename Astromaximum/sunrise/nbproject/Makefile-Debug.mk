@@ -10,25 +10,32 @@
 # Environment
 MKDIR=mkdir
 CP=cp
+GREP=grep
+NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
 CC=gcc
 CCC=g++
 CXX=g++
-FC=
+FC=gfortran
+AS=as
 
 # Macros
-PLATFORM=GNU-Linux-x86
+CND_PLATFORM=GNU-Linux-x86
+CND_CONF=Debug
+CND_DISTDIR=dist
+CND_BUILDDIR=build
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Debug/${PLATFORM}
+OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/main.o
+
 
 # C Compiler Flags
 CFLAGS=
@@ -40,12 +47,15 @@ CXXFLAGS=
 # Fortran Compiler Flags
 FFLAGS=
 
+# Assembler Flags
+ASFLAGS=
+
 # Link Libraries and Options
 LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	${MAKE}  -f nbproject/Makefile-Debug.mk sunrise
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk sunrise
 
 sunrise: ${OBJECTFILES}
 	${LINK.c} -o sunrise ${OBJECTFILES} ${LDLIBSOPTIONS} 
@@ -59,8 +69,8 @@ ${OBJECTDIR}/main.o: main.c
 .build-subprojects:
 
 # Clean Targets
-.clean-conf:
-	${RM} -r build/Debug
+.clean-conf: ${CLEAN_SUBPROJECTS}
+	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
 	${RM} sunrise
 
 # Subprojects
