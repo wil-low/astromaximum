@@ -94,13 +94,17 @@ Header fields:
 	0x0008	byte		month
 	0x000a	byte		day  ^ start of period
 	0x000b	short LB	days in period
-	0x000d	int LB		city ID is coords.sqb
+	0x000d	int LB		city ID - undecided?
     0x000f  short LB    longitude = degree * 100
     0x0011  short LB    latitude = degree * 100
     0x0013  short LB    altitude, meters
 	0x0015	byte		timezone transition count
 	0x0016	short LB	city name length
 	0x0018	UTF-8		city name (variable length)
+	0x????	short LB	state name length
+	0x????	UTF-8		state name (variable length)
+	0x????	short LB	country name length
+	0x????	UTF-8		country name (variable length)
 			  ...			see **TZ transition record**
 		
               ...			see **Event record**
@@ -114,9 +118,10 @@ Used in:
 	Datafile.java - retrieving events
 
 Header fields:
-	int LB      DST start date (local time), mins
-	int LB      DST end date (local time), mins
+	int LB      start date (UTC time), mins
 	short LB	timezone offset. Real TZofs=(tz-16*60)*60000 msec.
+	short LB	timezone name length
+	UTF-8		timezone name
 
 
 *** data/*.ini ***
