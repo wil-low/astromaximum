@@ -10,6 +10,10 @@ my $TIMEZONE_DIR = '/usr/share/zoneinfo';
 
 my $TZ_VER=2;
 
+my $LOCFILE_VERSION=2;
+
+my $LOCFILE_SIGNATURE = 'S&WA';
+
 my %mon=qw(Jan 0 Feb 1 Mar 2 Apr 3 May 4 Jun 5 Jul 6 Aug 7 Sep 8 Oct 9 Nov 10 Dec 11);
 my %wd=qw(Sun 0 Mon 1 Tue 2 Wed 3 Thu 4 Fri 5 Sat 6);
 my($tzonly, $clean)=(0,0);
@@ -81,13 +85,14 @@ my $tz_ofs=0;
 	$ENV{TZ} = 'GMT';
 	POSIX::tzset();
 	my ($std, $dst) = POSIX::tzname();
-	print "($std, $dst)";
+	print "($std, $dst), tz_ofs $tz_ofs ";
 	# 954032400 > Sun Mar 26 01:00:00 2000 = name: EEST gmt_ofs_sec: 10800 is_dst: 1
-	die POSIX::mktime(0, 0, 1, 26, 2, 2000 - 1900, 0, 0, -1);
-	my $tz=dump_zone('Europe/Kiev');
+	print POSIX::mktime(0, 0, 1, 26, 2, 2000 - 1900, 0, 0, -1) . "\n";
+	#my $tz=dump_zone('Europe/Kiev');
+	
 	#my $tz=get_tz_array(1943, 'America/New_York');
 	#print Data::Dumper->Dump([$tz], [qw($tz)]);
-	exit;
+	#exit;
 }
 #=cut
 ######
@@ -107,17 +112,6 @@ $sqlite3.='sqlite3';
 our $outbuf;
 our $fname;
 
-if($ARGV[0] eq 'all'){
-	print "Making all...\n";
-	my @ini=glob($mypath."data/*.ini");
-	foreach $city_inf(@ini){
-		$city_inf=~/.+[\/\\](.+?)\.ini/is;
-		$city_inf=$1;
-		print "---- $city_inf ----";
-		process_ini();
-	}
-	exit(0);
-}
 if($ARGV[0] eq 'common'){
 	print "Making common...\n";
 	my $invoke=$mypath."mutter2/mutter2 $year";# electio";
@@ -131,145 +125,114 @@ else{
 		process_ini($city_inf);
 	}
 }
+	read_locations ("$mypath/hdr.dat");
 
 sub process_ini{
 	my ($city_inf) = @_;
 	print "---- $city_inf ----\n";
-	if($clean){
-		unlink "$path$city_inf.txt";
+	my $error=0;
+	open(InF, "<$mypath/data/$city_inf.ini") or die "No file $mypath/data/$city_inf.ini";
+	$/="\n";
+	my @clist=<InF>;
+	die "Input error=".scalar(@clist)." in $mypath/data/$city_inf.ini" if scalar(@clist)<2;
+	close(InF);
+	our $city;
+	my $newdir=ensure_slash(sprintf('%sdata/archive/%d',$mypath,$year));
+	mkdir $newdir;
+	$newdir=ensure_slash("$newdir/$city_inf");
+	my $arcdir=$mypath.'data';
+	if(!-d $newdir){
+		mkdir $newdir or die "$newdir: $!";
 	}
-	if(! -f "$path$city_inf.txt"){
-		my $error=0;
-		open(InF, "<$mypath"."data/$city_inf.ini") or die "No file $path"."data/$city_inf\.ini";
-		my @cities=<InF>;
-		close(InF);
-		open(CITY_INF, ">$path$city_inf.txt") or die "No file $path$path$city_inf.txt";
-		# write cities info + tz info
-		foreach my $city(@cities) {
-			my $tz_array = get_tz_array ($year, $city);
-			my $tz_str = serialize_tz_array($tz_array);
-			print (CITY_INF $city . $tz_str);
-		}
-		
-		close (CITY_INF);
-		if($error){
-			unlink "$path$city_inf.txt";
-			die "Please correct $error errors.\n";
-		}
-		else{
-			print "\nReady. Check coords in $path$city_inf.txt.\nMay I continue calculations (y/n)? ";
-		}
-		my $ans=<STDIN>;
-#		print ">$ans<";
-		chomp($ans);
-		die "Calculation cancelled.\n" unless $ans eq 'y';
-	}
-	#####################################
-		open(InF, "<$path$city_inf.txt") or die "No file";
-		$/="\n";
-		my @clist=<InF>;
-		die "Input error=".scalar(@clist)." in $path$city_inf.txt" if scalar(@clist)<2;
-#		print join("**", @clist);
-		close(InF);
-	#	die "@cities";
-		my $i=0;
-		our $city;
-	#	undef $/ ;
-		my $newdir=ensure_slash(sprintf('%sdata/archive/%d',$mypath,$year));
-		mkdir $newdir;
-		$newdir=ensure_slash("$newdir/$city_inf");
-		my $arcdir=$mypath.'data';
-		if(!-d $newdir){
-			mkdir $newdir or die "$newdir: $!";
-		}
-		my $geomask=sprintf('%sdata/archive/%d/geo0-*.bin',$mypath, $year);
-		foreach my $cit(@clist){
-			$outbuf='';
-			chomp($cit);
+	my $geomask=sprintf('%sdata/archive/%d/geo0-*.bin',$mypath, $year);
+	foreach my $cit(@clist){
+		$outbuf='';
+		chomp($cit);
 #print "\n>>>> $cit <<<<<\n";
-			$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
-			next if $cit=~/\A\s*\Z/is;
-			next if $cit=~/\#/is;
-			next if $cit!~/\d/is;
-			my @params=split(/\|/is, $cit);
-			$fname=$newdir.sprintf('/Data%04d.dat',$i);
-			$city=$params[0];
-			$city=~s/.+!//is;
-			if(! -f $fname or $tzonly){
-				print "\n******** $city ********\n";
-				my $tz=get_tz($params[3],$city,0,0);
-				my $dstbuf=calc_dst($tz);
-				if($params[3]=~/USA \- (.+)/is){
-					$city.=", $1";
-				}
-				$city=~s/[\n\r]//isg;
-				writeUTF($city);
-				warn join('`', @params);
-				$city_info=pack('Nnnn' 
-					, $params[6] #id
-					, $params[1] * 100 #lon
-					, $params[2] * 100 #lat
-					, $params[5] #alt
-				);
-				my $header=pack('nCCnna*a*a*',
-					$year, $month, $day, length($city_info), $day_count, $outbuf, $dstbuf, $city_info);
-	{
-		use bytes; warn length($header) .'=='.unpack('H*', $header);
-					warn length($city_info) .'='.unpack('H*', $city_info);
-	}					
-				if(!$tzonly){
-					my $alt=$params[5];
-					my @bins=glob($geomask);
-					foreach (@bins){
-						unlink($_);
-					}
-					my $invoke=ensure_slash($mypath."mutter2/mutter2 $year geo0- $params[1] $params[2] $alt");# electio";
-#$invoke=ensure_slash("echo 1");# electio";
-					print "$invoke\n";
-					my $res=system($invoke);
-					die "Cancelled, result=$res" if $res;
-					
-					open(OutF, ">$fname") or die "$! $fname";
-					binmode(OutF);
-					print OutF $header;
-					close(OutF);
+		$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
+		next if $cit=~/\A\s*\Z/is;
+		next if $cit=~/\#/is;
+		my ($id, $city, $state, $country, $latitude, $longitude, $altitude, $timezone) = split(/;/is, $cit);
+		$fname=$newdir.sprintf('/Data%04s.dat',$id);
+		if(! -f $fname or $tzonly){
+			print "\n******** $city, $state, $country: $timezone ********\n";
+			$altitude = 0 if !$altitude;
+			# take range -1 / +2 year
+			my $start_time = POSIX::mktime(0, 0, 0, $day, $month - 1, $year - 1 - 1900, 0, 0, -1);
+			my $finish_time = POSIX::mktime(0, 0, 0, $day, $month - 1, $year + 2 - 1900, 0, 0, -1);
 
-					@bins=glob($geomask);
-					die "No files to pack: $geomask" if $#bins<0;
-					my $counter=0;
-					print join(@bins,"\n");
-					foreach my $ff(@bins){
-						tools::writeData($ff, $fname, 0);
-					}	
+			my $tz_range = get_tz_array_in_range ($timezone, $start_time, $finish_time);
+			#die Dumper(@$tz_range);
+			my $headerhash = {
+				id => $id,
+				city => $city,
+				state => $state,
+				country => $country,
+				latitude => $latitude,
+				longitude => $longitude,
+				altitude => $altitude,
+				timezone => $timezone,
+				year => $year,
+				month => $month,
+				day => $day,
+				day_count => $day_count,
+				customdata => '',
+				tz_range => $tz_range,
+			};
+			my $header = make_header($headerhash);
+
+			if(!$tzonly){
+				my @bins=glob($geomask);
+				foreach (@bins){
+					unlink($_);
 				}
-				else{
-					$hrepl+=tz_check($fname, $header, "$year-$city");
+				my $invoke=ensure_slash($mypath."mutter2/mutter2 $year geo0- $longitude $latitude $altitude");
+				print "$invoke\n";
+				my $res=system($invoke);
+				die "Cancelled, result=$res" if $res;
+				
+				open(OutF, ">$fname") or die "$! $fname";
+				binmode(OutF);
+				print OutF $header;
+				close(OutF);
+
+				@bins=glob($geomask);
+				die "No files to pack: $geomask" if $#bins<0;
+				my $counter=0;
+				print join(@bins,"\n");
+				foreach my $ff(@bins){
+					tools::writeData($ff, $fname, 0);
 				}
+				print "$city, $state, $country: $timezone > $fname\n\n";
 			}
 			else{
-				data_check($fname, $year, $city);
+				$hrepl+=tz_check($fname, $header, "$year-$city");
 			}
 
-			$i++;
-		}
-		unlink "$arcdir/$year/$city_inf.zip";
-		open(InF, ">$newdir/$city_inf.txt");
-		print(InF join("\n", @clist));
-		close(InF);
-		unlink("$newdir/$city_inf.zip");
-		my $cmd;
-		if($winda){
-			$cmd=ensure_slash(sprintf('cd %s & ../../../zip  %s *.txt *.dat & cd ../../../../', $newdir, $city_inf));
 		}
 		else{
-			$cmd=ensure_slash(sprintf('cd %s ; zip -q %s *.txt *.dat ; cd ../../../../', $newdir, $city_inf));
+			data_check($fname, $year, $city);
 		}
-		print "$cmd\n";
-		system($cmd);
-		mkdir(ensure_slash("$arcdir/$year"));
-		rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!." $newdir/$city_inf.zip";
-		print "Written $arcdir/$year/$city_inf.zip\n";
-		print "\nHeaders replaced: $hrepl.\n" if $tzonly;
+
+	}
+	unlink "$arcdir/$year/$city_inf.zip";
+	open(InF, ">$newdir/$city_inf.txt");
+	print(InF join("\n", @clist));
+	close(InF);
+	unlink("$newdir/$city_inf.zip");
+	my $cmd;
+	if($winda){
+		$cmd=ensure_slash(sprintf('cd %s & ../../../zip  %s *.txt *.dat & cd ../../../../', $newdir, $city_inf));
+	}
+	else{
+		$cmd=ensure_slash(sprintf('cd %s ; zip -q %s *.txt *.dat ; cd ../../../../', $newdir, $city_inf));
+	}
+	print "$cmd\n";
+	system($cmd);
+	mkdir(ensure_slash("$arcdir/$year"));
+	rename(ensure_slash("$newdir/$city_inf.zip"), ensure_slash("$arcdir/$year/$city_inf.zip")) or die $!." $newdir/$city_inf.zip";
+	print "Written $arcdir/$year/$city_inf.zip\n";
+	print "\nHeaders replaced: $hrepl.\n" if $tzonly;
 }
 
 sub calc_dst{
@@ -447,8 +410,20 @@ sub writeUTF
 	$outbuf.=pack('na*', $len, $param);
 }
 
+sub makeUTF
+{
+	my $param=shift;
+	$param = '' if !defined ($param);
+	my $len=0;
+	{
+		use bytes; $len=length($param);
+	}
+	return pack('na*', $len, $param);
+}
+
 sub data_check
 {
+	return 1;
 	#in: fname, year, cityname
 	my ($data_year, $dc_len, $data_city, $body);
 #	print " data_check(".join(',', @_).")\n";
@@ -589,6 +564,34 @@ sub readInt { # handle
 	return $integer;
 }
 
+sub readUTF { # handle
+	my $len;
+	my $bytes_read = read ($_[0], $len, 2);
+   	if ($bytes_read != 2) {
+		die "Read $bytes_read: $!";
+	}
+	$len = unpack ('n', $len);
+	my $str;
+	$bytes_read = read ($_[0], $str, $len);
+   	if ($bytes_read != $len) {
+		die "Read $bytes_read: $!";
+	}
+	return $str;
+}
+
+sub readShort { # handle
+	my $short;
+	my $bytes_read = read ($_[0], $short, 2);
+   	if ($bytes_read != 2) {
+		die "Read $bytes_read: $!";
+	}
+	$short = unpack ('n', $short);
+	if ($short >= pow(2, 15)) {
+		$short -= pow (2, 16);
+	}
+	return $short;
+}
+
 sub readByte { # handle
 	my $byte;
 	my $bytes_read = read ($_[0], $byte, 1);
@@ -628,4 +631,128 @@ sub tz_dump { # $tz, $time, $tz_type
 		' name: ' . $tz_type->{name} . 
 		' gmt_ofs_sec: ' . $tz_type->{gmt_ofs_sec} . 
 		' is_dst: ' . $tz_type->{is_dst} . "\n";
+}
+
+sub make_header { # header hashref
+	my $hdr = shift;
+	my $str = "S&WA"; # signature
+	$str .= pack ('c', $LOCFILE_VERSION);
+	$str .= pack ('n', $hdr->{year});
+	$str .= pack ('c', $hdr->{month});
+	$str .= pack ('c', $hdr->{day});
+	$str .= pack ('n', $hdr->{day_count});
+	$str .= pack ('H*', $hdr->{id});
+	$str .= pack ('n', int($hdr->{latitude} * 100));
+	$str .= pack ('n', int($hdr->{longitude} * 100));
+	$str .= pack ('n', int($hdr->{altitude}));
+	$str .= makeUTF ($hdr->{city});
+	$str .= makeUTF ($hdr->{state});
+	$str .= makeUTF ($hdr->{country});
+	$str .= makeUTF ($hdr->{timezone});
+	$str .= makeUTF ($hdr->{customdata});
+	
+	my $tz_range = $hdr->{tz_range};
+	$str .= pack ('c', scalar(@$tz_range));
+	foreach my $transition (@$tz_range) {
+		print_transition ($transition);
+		$str .= pack ('N', $transition->{start_date});
+		$str .= pack ('n', $transition->{gmt_ofs_min});
+		$str .= makeUTF ($transition->{name});
+	}
+	return $str;
+}
+
+sub read_locations { # filename; out: ($hdr, $data)
+	my $filename = shift;
+	my ($Inf, $hdr, $data, $signature);
+	open ($Inf, "<$filename") or die "$!: $filename";
+	read ($Inf, $signature, 4);
+	die "Invalid signature of $filename" if $signature ne $LOCFILE_SIGNATURE;
+	my $locfile_version = readByte($Inf);
+	if ($locfile_version eq 2) {
+		$hdr->{year} = readShort($Inf);
+		$hdr->{month} = readByte($Inf);
+		$hdr->{day} = readByte($Inf);
+		$hdr->{day_count} = readShort($Inf);
+		$hdr->{id} = readShort($Inf);
+		$hdr->{latitude} = readShort($Inf) / 100.;
+		$hdr->{longitude} = readShort($Inf) / 100.;
+		$hdr->{altitude} = readShort($Inf);
+		$hdr->{city} = readUTF($Inf);
+		$hdr->{state} = readUTF($Inf);
+		$hdr->{country} = readUTF($Inf);
+		$hdr->{timezone} = readUTF($Inf);
+		$hdr->{customdata} = readUTF($Inf);
+
+		my $transition_count = readByte($Inf);
+		my @tz_range;
+		for (my $i = 0; $i < $transition_count; ++$i) {
+			my $transition;
+			$transition->{start_date} = readInt($Inf);
+			$transition->{gmt_of_min} = readShort($Inf);
+			$transition->{name} = readUTF($Inf);
+			push (@tz_range, $transition);
+		}
+		$hdr->{tz_range} = \@tz_range;
+	}
+	else {
+		die "Unknown version $locfile_version of $filename";
+	}
+	read ($Inf, $data, 100000000);
+	#die Dumper($hdr);
+	close ($Inf);
+	return ($hdr, $data);
+}
+
+sub get_tz_array_in_range {
+	my ($tz_name, $start_time, $finish_time) = @_;
+	my @tz_array;
+	print "$start_time, $finish_time\n";
+	print gmtime ($start_time) . " - " . gmtime ($finish_time) . "\n";
+	my $is_adding = 0;
+	my $tz = get_zoneinfo ($tz_name);
+	my $transTimes = $tz->{transTimes};
+	my $transTypes = $tz->{transTypes};
+	my $i = 0;
+	foreach my $transTime (@$transTimes) {
+		if ($is_adding) {
+			if ($transTimes->[$i] > $finish_time) {
+				$is_adding = 0;
+				last;
+			}
+		}
+		else {
+			if ($transTimes->[$i] > $start_time) {
+				$is_adding = 1;
+				add_transition (\@tz_array, $tz, $i - 1);
+			}
+		}
+		if ($is_adding) {
+			add_transition (\@tz_array, $tz, $i);
+		}
+		++$i;
+	}
+	return \@tz_array;
+}
+
+sub add_transition { # \@tz_array, $tz, $i
+	my ($tz_array, $tz, $i) = @_;
+	my $transTypes = $tz->{transTypes};
+	my $transTimes = $tz->{transTimes};
+	my $tz_type = $tz->{tz}->[$transTypes->[$i]];
+	my $transition = {
+		start_date => $tz->{transTimes}->[$i],
+		name => $tz_type->{name}, 
+		gmt_ofs_min => $tz_type->{gmt_ofs_sec} / 60,
+		is_dst => $tz_type->{is_dst},
+	};
+	push (@$tz_array, $transition);
+}
+
+sub print_transition { #transition hashref
+	my $transition = shift;
+	print "\t" . gmtime ($transition->{start_date}) .
+		" name: " .  $transition->{name} .
+		" gmt_ofs_min: " .  $transition->{gmt_ofs_min} .
+		" is_dst: " .  $transition->{is_dst} . "\n";
 }

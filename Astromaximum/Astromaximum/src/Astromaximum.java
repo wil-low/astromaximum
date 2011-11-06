@@ -726,10 +726,12 @@ public class Astromaximum extends MIDlet implements CommandListener {
                msg.append(getstr(i + 182)).append(" ").append(Options.coords[i]);
             }*/
             msg.append("|").append(getstr(186)).append(":|").append(Options.tzOffset2String());
+/*            
             if (Options.dstExists) {
                 msg.append("|").append(getstr(187)).append(":|").append(dstDate2String(Options.dstStart));
                 msg.append("|").append(getstr(188)).append(":|").append(dstDate2String(Options.dstEnd + MSECINDAY / 24));
             }
+             */
             alert(msg.toString());
         }
         catch (Exception e) {
@@ -784,7 +786,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     }
   }
 //#endif
-
+/*
     static String dstDate2String(long date) {
         date += GeoList.tzOffset;
         calendar.setTime(new Date(date));
@@ -811,6 +813,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
                 append(":").append(Event.to2String(mm));
         return s.toString();
     }
+*/
 }
 // # vi:et:ts=4:sw=4
 

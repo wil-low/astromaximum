@@ -89,22 +89,26 @@ Used in:
 	
 Header fields:
 	0x0000	byte[4]		"S&WA" - constant signature
-	0x0005	byte		version (2)
-	0x0006	short LB	year
-	0x0008	byte		month
-	0x000a	byte		day  ^ start of period
-	0x000b	short LB	days in period
-	0x000d	int LB		city ID - undecided?
+	0x0004	byte		version (2)
+	0x0005	short LB	year
+	0x0007	byte		month
+	0x0008	byte		day  ^ start of period
+	0x0009	short LB	days in period
+	0x000b	short LB	city ID - undecided?
+    0x000d  short LB    latitude = degree * 100
     0x000f  short LB    longitude = degree * 100
-    0x0011  short LB    latitude = degree * 100
-    0x0013  short LB    altitude, meters
-	0x0015	byte		timezone transition count
-	0x0016	short LB	city name length
-	0x0018	UTF-8		city name (variable length)
+    0x0011  short LB    altitude, meters
+	0x0013	short LB	city name length
+	0x001a	UTF-8		city name (variable length)
 	0x????	short LB	state name length
 	0x????	UTF-8		state name (variable length)
 	0x????	short LB	country name length
 	0x????	UTF-8		country name (variable length)
+	0x????	short LB	timezone name length
+	0x????	UTF-8		timezone name (variable length)
+    0x0015	short LB	customData length
+    0x????	byte[]		customData (variable length)
+	0x0017	byte		timezone transition count
 			  ...			see **TZ transition record**
 		
               ...			see **Event record**
