@@ -1,9 +1,13 @@
-ancients:Data0002 m.Olympos
-ancients:Data0003 Lhasa
-UA:Data0000 Kiev
-RU:Data0000 Moscow
-WE:Data0000 London
-US:Data0000 New York
-CE:Data0002 Berlin
-CE:Data0010 Vienna
-WE:Data0117 Porto Ingles
+world:Data0000 Kiev
+world:Data0001 New York
+world:Data0002 Sydney
+
+#ancients:Data0002 m.Olympos
+#ancients:Data0003 Lhasa
+#UA:Data0000 Kiev
+#RU:Data0000 Moscow
+#WE:Data0000 London
+#US:Data0000 New York
+#CE:Data0002 Berlin
+#CE:Data0010 Vienna
+#WE:Data0117 Porto Ingles

@@ -404,6 +404,7 @@ sub inject_locations{
 		my @fn;
 		open(IN, "<$_[1]") or mydie("error $!: $_[1]\n");
 		while(my $ln=<IN>){
+			$ln =~ s/#.+//;
 			if($ln=~/(\w+):(Data\d+)\s+(.+)/is){
 				my $fn="$path/data/archive/$_[0]/$1/$2.dat";
 				if(!$locname){
