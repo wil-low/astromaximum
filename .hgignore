@@ -1,0 +1,14 @@
+syntax: glob
+Astromaximum/Astromaximum/arrays/*.dat
+Astromaximum/Astromaximum/build
+Astromaximum/Astromaximum/dist
+Astromaximum/Astromaximum/deploy
+Astromaximum/GeoAM/build
+Astromaximum/GeoAM/dist
+Astromaximum/geoLib/build
+Astromaximum/geoLib/dist
+Astromaximum/data/archive
+Astromaximum/data/ephdata/*.dat
+Astromaximum/data/*/*.zip
+Astromaximum/data/*.tbz
+Astromaximum/data/commons
