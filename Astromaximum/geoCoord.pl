@@ -125,7 +125,6 @@ else{
 		process_ini($city_inf);
 	}
 }
-	read_locations ("$mypath/hdr.dat");
 
 sub process_ini{
 	my ($city_inf) = @_;
