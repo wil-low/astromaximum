@@ -3,6 +3,8 @@ use strict;
 use POSIX;
 use warnings;
 use Data::Dumper;
+use File::Path;
+require './genconst.pm';
 
 my %unknown_country = (
 	'Jerusalem' => 'Israel',
@@ -42,36 +44,75 @@ sub process_ini { # filename
 	
 	$ini =~ /data\/(.+?)\.ini/;
 	my $region = $1;
-	mkdir "./data/wikipages/$region";
+	File::Path::make_path ("./data/wikipages/$region");
 	
 	open (INF, "<$ini") or die "$!: $ini";
 	open (OUTF, ">$ini.world");
+	print (OUTF "## city, state, country, latitude, longitude, altitude, timezone\n");
+	my ($cur_country, $cur_state, $zone) = ('', '');
 	while (my $line = <INF>) {
 		print ("\t$line");
+		$line =~ s/[\r\n]//sg;
 		next if $line =~ /^[#&]/;
 		next if $line =~ /^\s*$/;
-		if ($line =~ /^@/) {
-			print (OUTF "# $line");
+		if ($line =~ /^@\s(.+?), (.+)/) {
+			($cur_country, $zone) = ($1, $2);
+			if (! -f "$const::TIMEZONE_DIR/$zone") {
+				die "Unknown timezone '$const::TIMEZONE_DIR/$zone'\n";
+			}
+			if ($cur_country =~ s/\s\-\s(.+)//s) {
+				$cur_state = $1;
+			}
+			else {
+				$cur_state = '';
+			}
+			print (OUTF "\n# $line\n");
 			next;
 		}
 		$line =~ s/|.+//;
-		chomp ($line);
-		my ($city, $country, $latitude, $longitude, $altitude) = city_query ($line, $region);
-		print (OUTF "$city;;$country;$latitude;$longitude;$altitude;TIMEZONE;\n");
+		
+		my $is_check_disambiguation = $line !~ s/^\-//;
+
+		if ($cur_country eq 'USA') {
+			if ($line !~ /!$/) {
+				$line .= ", $cur_state";
+			}
+		}
+		elsif ($cur_country eq 'Canada') {
+			if ($line !~ /!$/) {
+				$line .= ", $cur_state";
+			}
+			warn ">$line<";
+		}
+		else {
+			if ($line !~ /[?!]/) {
+				$line .= ", $cur_country";
+			}
+		}
+		my ($city, $state, $country, $latitude, $longitude, $altitude, $zone) = 
+			city_query ($line, $region, $cur_country, $cur_state, $zone, $is_check_disambiguation);
+		print (OUTF "$city;$state;$country;$latitude;$longitude;$altitude;$zone;\n");
 	}
 	close (OUTF);
 	print ("--- $ini.world written ---\n");
 }
 
-sub city_query { # city, region
-	my ($city, $region, $country, $latitude, $longitude, $altitude) = (shift, shift, '', '', '', '');
-	$city =~ s/[\r\n]//sg;
-	my $real_name = $city;
+sub city_query { # city, region, cur_country, cur_state, zone, is_check_disambiguation
+	my ($city, $region, $cur_country, $cur_state, $zone, $is_check_disambiguation) = @_;
+	my ($country, $latitude, $longitude, $altitude) = ('', '', '', '');
+#	warn "($city, $region, $cur_country, $cur_state, $is_check_disambiguation)";
+	my $real_name = '';
 	if ($city =~ s/(.+?)\!//s) {
 		$real_name = $1;
 	}
+	if (!$city) { # ends with !
+		$city = $real_name;
+	}
+	$city =~ s/\?$//;
 	my $wikifile = "./data/wikipages/$region/$city.html";
 	my $content = '';
+	my $url = "http://en.wikipedia.org/wiki/$city";
+	print "$url\n";
 	if (-f $wikifile) {
 		open (WIKIFILE, "<$wikifile") or die "$!: $wikifile";
 		my @data = <WIKIFILE>;
@@ -80,8 +121,6 @@ sub city_query { # city, region
 	}
 	else {
 		# Create a request
-		my $url = "http://en.wikipedia.org/wiki/$city";
-		print "$url\n";
 		my $req = HTTP::Request->new(GET => $url);
 		# Pass request to the user agent and get a response back
 		my $res = $ua->request($req);
@@ -100,11 +139,15 @@ sub city_query { # city, region
 	$content =~ s/&#160;/ /sg;
 	if ($content =~ /class="firstHeading">([^<]+)<\/h1>/s) {
 		$city = $1;
+		if ($real_name eq '') {
+			$real_name = $city;
+		}
 	}
 	else {
 		dump_contents($content);
 		die "Cannot detect city: $city";
 	}
+=head	
 	if (defined ($unknown_country{$city})) {
 		$country = $unknown_country{$city};
 	}
@@ -118,10 +161,11 @@ sub city_query { # city, region
 		}
 		else {
 			dump_contents($content);
+			system ("opera '$wikifile'");
 			die "Cannot detect country: $city";
 		}
 	}
-	warn "DISAMBIGUATION: $city" if $content =~ /disambiguation/;
+=cut
 	if ($content =~ />Elevation<.+?>([-,\d]+)(\&#160;|\s)+m/s) {
 		$altitude = $1;
 		$altitude =~ s/[,\s]//sg;
@@ -162,7 +206,13 @@ sub city_query { # city, region
 		unlink ($wikifile);
 		warn "Cannot detect coords1: $city";
 	}
-	return ($real_name, $country, $latitude, $longitude, $altitude);
+	my $is_redirected = $content =~ /Redirected from/s;
+	
+	if ($is_check_disambiguation and $content =~ /disambiguation/) {
+		system ("opera \"$wikifile\"");
+		die "DISAMBIGUATION: $city" . ($is_redirected ? ' (redirected)' : '') . "\n";
+	}
+	return ($real_name, $cur_state, $cur_country, $latitude, $longitude, $altitude, $zone);
 }
 
 sub dump_contents {

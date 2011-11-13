@@ -6,8 +6,6 @@ use Data::Dumper;
 
 our $winda=$^O=~/Win/is;
 
-my $TIMEZONE_DIR = '/usr/share/zoneinfo';
-
 my $TZ_VER=2;
 
 my $LOCFILE_VERSION=2;
@@ -58,6 +56,7 @@ EOF
 }
 
 require $mypath.'tools.pm';
+require $mypath.'genconst.pm';
 
 my $day_count=tools::day_count($year);
 mkdir $mypath."data/archive";
@@ -130,10 +129,11 @@ sub process_ini{
 	my ($city_inf) = @_;
 	print "---- $city_inf ----\n";
 	my $error=0;
-	open(InF, "<$mypath/data/$city_inf.ini") or die "No file $mypath/data/$city_inf.ini";
+	my $input_file = "$mypath/data/$city_inf.ini.world";
+	open(InF, "<$input_file") or die "No file $input_file";
 	$/="\n";
 	my @clist=<InF>;
-	die "Input error=".scalar(@clist)." in $mypath/data/$city_inf.ini" if scalar(@clist)<2;
+	die "Input error=".scalar(@clist)." in $input_file" if scalar(@clist)<2;
 	close(InF);
 	our $city;
 	my $newdir=ensure_slash(sprintf('%sdata/archive/%d',$mypath,$year));
@@ -151,7 +151,8 @@ sub process_ini{
 		$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
 		next if $cit=~/\A\s*\Z/is;
 		next if $cit=~/\#/is;
-		my ($id, $city, $state, $country, $latitude, $longitude, $altitude, $timezone) = split(/;/is, $cit);
+		my ($city, $state, $country, $latitude, $longitude, $altitude, $timezone) = split(/;/is, $cit);
+		my $id = "ABCD"; #TODO
 		$fname=$newdir.sprintf('/Data%04s.dat',$id);
 		if(! -f $fname or $tzonly){
 			print "\n******** $city, $state, $country: $timezone ********\n";
@@ -474,7 +475,7 @@ sub get_tz_array { # $year, $timezone
 sub get_zoneinfo { # $tz_name
 	my $tz_name = shift();
 	if (!exists ($zoneinfo{$tz_name})) {
-		$zoneinfo{$tz_name} = parse_tz ("$TIMEZONE_DIR/$tz_name");
+		$zoneinfo{$tz_name} = parse_tz ("$const::TIMEZONE_DIR/$tz_name");
 	}
 	return $zoneinfo{$tz_name};
 }
