@@ -45,7 +45,9 @@ sub process_ini { # filename
 	$ini =~ /data\/(.+?)\.ini/;
 	my $region = $1;
 	File::Path::make_path ("./data/wikipages/$region");
-	
+
+	open (ERRFILE, ">err.log") or die "$!: err.log";
+		
 	open (INF, "<$ini") or die "$!: $ini";
 	open (OUTF, ">$ini.world");
 	print (OUTF "## city, state, country, latitude, longitude, altitude, timezone\n");
@@ -89,11 +91,16 @@ sub process_ini { # filename
 				$line .= ", $cur_country";
 			}
 		}
-		my ($city, $state, $country, $latitude, $longitude, $altitude, $zone) = 
+		my ($city, $state, $country, $latitude, $longitude, $altitude, $zone, $wikifile) = 
 			city_query ($line, $region, $cur_country, $cur_state, $zone, $is_check_disambiguation);
+		if ($wikifile) {
+			#system ("opera \"$wikifile\"");
+			print (ERRFILE "$line -- $city, $country\n");
+		}
 		print (OUTF "$city;$state;$country;$latitude;$longitude;$altitude;$zone;\n");
 	}
 	close (OUTF);
+	close (ERRFILE);
 	print ("--- $ini.world written ---\n");
 }
 
@@ -174,8 +181,8 @@ sub city_query { # city, region, cur_country, cur_state, zone, is_check_disambig
 		dump_contents($content);
 		warn "Cannot detect elevation: $city";
 	}
-	if ($content =~ /<span class="latitude">(.+?)(\w)<\/span> <span class="longitude">(.+?)(\w)<\/span>/s) {
-		my ($lat, $latl, $lon, $lonl) = ($1, $2, $3, $4);
+	if ($content =~ /(<span class="latitude">(.+?)(\w)<\/span> <span class="longitude">(.+?)(\w)<\/span>)/s) {
+		my ($lat, $latl, $lon, $lonl) = ($2, $3, $4, $5);
 		if ($lat =~ /([\d\.]+)°([\d\.]+)′(?:([\d\.]+)″)?/) {
 			my ($latd, $latm, $lats) = ($1, $2, $3);
 			$lats = 0 if !defined ($lats);
@@ -186,7 +193,7 @@ sub city_query { # city, region, cur_country, cur_state, zone, is_check_disambig
 		else {
 			dump_contents($content);
 			unlink ($wikifile);
-			die "Cannot detect latitude: $city: '$lat'";
+			die "Cannot detect latitude: $city: '$lat', '$latl'";
 		}
 		if ($lon =~ /([\d\.]+)°([\d\.]+)′(?:([\d\.]+)″)?/) {
 			my ($lond, $lonm, $lons) = ($1, $2, $3);
@@ -198,21 +205,22 @@ sub city_query { # city, region, cur_country, cur_state, zone, is_check_disambig
 		else {
 			dump_contents($content);
 			unlink ($wikifile);
-			die "Cannot detect longitude: $city: '$lon'";
+			die "Cannot detect longitude: $city: '$lon', '$lonl'";
 		}
 	}
 	else {
 		dump_contents($content);
 		unlink ($wikifile);
-		warn "Cannot detect coords1: $city";
+		die "Cannot detect coords1: $city";
 	}
 	my $is_redirected = $content =~ /Redirected from/s;
 	
 	if ($is_check_disambiguation and $content =~ /disambiguation/) {
-		system ("opera \"$wikifile\"");
-		die "DISAMBIGUATION: $city" . ($is_redirected ? ' (redirected)' : '') . "\n";
 	}
-	return ($real_name, $cur_state, $cur_country, $latitude, $longitude, $altitude, $zone);
+	else {
+		$wikifile = '';
+	}
+	return ($real_name, $cur_state, $cur_country, $latitude, $longitude, $altitude, $zone, $wikifile);
 }
 
 sub dump_contents {
