@@ -5,13 +5,13 @@ Pretoria;;South Africa;-25.74;28.19;1271;Africa/Johannesburg;
 Durban;;South Africa;-29.87;31.05;;Africa/Johannesburg;
 Cape Town;;South Africa;-33.92;18.42;;Africa/Johannesburg;
 Bloemfontein;;South Africa;-29.09;26.22;1395;Africa/Johannesburg;
-East London, Eastern Cape;;South Africa;-32.97;27.87;;Africa/Johannesburg;
+East London;;South Africa;-32.97;27.87;;Africa/Johannesburg;
 
 # @ Mozambique, Africa/Maputo
 Maputo;;Mozambique;-25.96;32.58;;Africa/Maputo;
-Beira, Mozambique;;Mozambique;-19.82;34.85;;Africa/Maputo;
+Beira;;Mozambique;-19.82;34.85;;Africa/Maputo;
 Nampula;;Mozambique;-15.11;39.27;;Africa/Maputo;
-Tete, Mozambique;;Mozambique;-16.16;33.6;;Africa/Maputo;
+Tete;;Mozambique;-16.16;33.6;;Africa/Maputo;
 
 # @ Zimbabwe, Africa/Harare
 Harare;;Zimbabwe;-17.85;31.03;1490;Africa/Harare;

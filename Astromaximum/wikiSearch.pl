@@ -98,6 +98,8 @@ sub process_ini { # filename
 			#system ("opera \"$wikifile\"");
 			print (ERRFILE "$line -- $city, $country\n");
 		}
+		$city =~ s/, .+//; # strip country or state name
+		$city =~ s/ +\(.+//; # strip garbage
 		print (OUTF "$city;$state;$country;$latitude;$longitude;$altitude;$zone;\n");
 	}
 	close (OUTF);

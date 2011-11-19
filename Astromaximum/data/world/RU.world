@@ -2,7 +2,7 @@
 
 # @ Russia - GMT +4, Europe/Moscow
 Moscow;GMT +4;Russia;55.75;37.62;;Europe/Moscow;
-Armavir, Russia;GMT +4;Russia;45;41.12;;Europe/Moscow;
+Armavir;GMT +4;Russia;45;41.12;;Europe/Moscow;
 Astrakhan;GMT +4;Russia;46.32;48.04;;Europe/Moscow;
 Belgorod;GMT +4;Russia;50.6;36.6;;Europe/Moscow;
 Bryansk;GMT +4;Russia;53.25;34.37;;Europe/Moscow;
@@ -43,7 +43,7 @@ Ufa;GMT +6;Russia;54.75;55.97;;Asia/Yekaterinburg;
 Yekaterinburg;GMT +6;Russia;56.83;60.58;;Asia/Yekaterinburg;
 
 # @ Russia - GMT +10, Asia/Yakutsk
-Chita, Zabaykalsky Krai;GMT +10;Russia;52.05;113.47;;Asia/Yakutsk;
+Chita;GMT +10;Russia;52.05;113.47;;Asia/Yakutsk;
 
 # @ Russia - GMT +9, Asia/Irkutsk
 Irkutsk;GMT +9;Russia;52.31;104.3;;Asia/Irkutsk;
@@ -61,7 +61,7 @@ Novosibirsk;GMT +7;Russia;55.02;82.93;;Asia/Novosibirsk;
 Omsk;GMT +7;Russia;54.98;73.37;;Asia/Omsk;
 
 # @ Russia - GMT +5, Europe/Samara
-Samara, Russia;GMT +5;Russia;53.23;50.17;;Europe/Samara;
+Samara;GMT +5;Russia;53.23;50.17;;Europe/Samara;
 
 # @ Russia - GMT +4, Europe/Volgograd
 Saratov;GMT +4;Russia;51.53;46.02;;Europe/Volgograd;
