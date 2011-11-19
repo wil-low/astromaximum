@@ -47,6 +47,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     static private long[] transitionTimes;
     static private long[] transitionOffsets;
     static private String[] transitionNames;
+    static int coords[] = {0, 0, 0};
 
     GeoList(MIDlet midlet, int type, InputStream loc) {
         super("");
@@ -128,10 +129,10 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         byte version = dis.readByte();
         if (version == 2) {
             dis.skip(6); // ymd, day count
-            dis.readUnsignedShort(); // city id
-            dis.readShort(); // latitude
-            dis.readShort(); // longitude
-            dis.readShort(); // altitude
+            dis.readInt(); // city id
+            coords[0] = dis.readShort(); // latitude
+            coords[1] = dis.readShort(); // longitude
+            coords[2] = dis.readShort(); // altitude
             customData = null;
             dis.readUTF(); // city
             dis.readUTF(); // state
@@ -226,7 +227,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         String name;
         try {
             DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(b));
-            inputStream.skip(0x13);
+            inputStream.skip(0x15);
             name = inputStream.readUTF();
             inputStream.close();
         } catch (Exception ex) {
@@ -274,20 +275,6 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         return res;
     }
 
-    int[] extractCoordinates() {
-        // latitude (1/100 degree), longitude (1/100 degree), altitude (meters)
-        int[] coords = {Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE};
-        try {
-            DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(customData));
-            coords[0] = inputStream.readShort();
-            coords[1] = inputStream.readShort();
-            coords[2] = inputStream.readShort();
-            inputStream.close();
-        } catch (Exception ex) {
-        }
-        return coords;
-    }
-    
     void shutdown() {
         try {
             rs.closeRecordStore();
