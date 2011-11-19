@@ -1,33 +1,33 @@
 ## city, state, country, latitude, longitude, altitude, timezone
 
 # @ Latvia, Europe/Riga
-Riga;;Latvia;56.95;24.11;;Europe/Riga;
-Liepāja;;Latvia;56.51;21.01;;Europe/Riga;
-Daugavpils;;Latvia;55.88;26.53;;Europe/Riga;
+Riga;;Latvia;56.95;24.11;;Europe/Riga;00a51a97;
+Liepāja;;Latvia;56.51;21.01;;Europe/Riga;8d80eab8;
+Daugavpils;;Latvia;55.88;26.53;;Europe/Riga;6684ac69;
 
 # @ Estonia, Europe/Tallinn
-Tallinn;;Estonia;59.44;24.75;;Europe/Tallinn;
-Tartu;;Estonia;58.38;26.72;79;Europe/Tallinn;
-Narva;;Estonia;59.38;28.2;;Europe/Tallinn;
+Tallinn;;Estonia;59.44;24.75;;Europe/Tallinn;9deb3ce0;
+Tartu;;Estonia;58.38;26.72;79;Europe/Tallinn;8b21699b;
+Narva;;Estonia;59.38;28.2;;Europe/Tallinn;fd34cc88;
 
 # @ Lithuania, Europe/Vilnius
-Vilnius;;Lithuania;54.68;25.28;;Europe/Vilnius;
-Klaipėda;;Lithuania;55.7;21.13;;Europe/Vilnius;
-Panevezys;;Lithuania;55.73;24.35;;Europe/Vilnius;
-Shauliai;;Lithuania;55.93;23.32;;Europe/Vilnius;
-Druskininkai;;Lithuania;54.02;23.97;;Europe/Vilnius;
+Vilnius;;Lithuania;54.68;25.28;;Europe/Vilnius;56ea35c4;
+Klaipėda;;Lithuania;55.7;21.13;;Europe/Vilnius;2c06fbf9;
+Panevezys;;Lithuania;55.73;24.35;;Europe/Vilnius;a8932007;
+Shauliai;;Lithuania;55.93;23.32;;Europe/Vilnius;beaa9f2f;
+Druskininkai;;Lithuania;54.02;23.97;;Europe/Vilnius;62d5f88b;
 
 # @ Belarus, Europe/Minsk
-Minsk;;Belarus;53.9;27.57;;Europe/Minsk;
-Gomel;;Belarus;52.45;30.98;;Europe/Minsk;
-Mogilev;;Belarus;53.9;30.33;;Europe/Minsk;
-Vitebsk;;Belarus;55.18;30.17;;Europe/Minsk;
-Grodno;;Belarus;53.67;23.83;;Europe/Minsk;
-Brest;;Belarus;52.13;23.67;;Europe/Minsk;
+Minsk;;Belarus;53.9;27.57;;Europe/Minsk;4949a7ef;
+Gomel;;Belarus;52.45;30.98;;Europe/Minsk;914c2377;
+Mogilev;;Belarus;53.9;30.33;;Europe/Minsk;b8c9d579;
+Vitebsk;;Belarus;55.18;30.17;;Europe/Minsk;02c1c033;
+Grodno;;Belarus;53.67;23.83;;Europe/Minsk;0a28308a;
+Brest;;Belarus;52.13;23.67;;Europe/Minsk;828e9f29;
 
 # @ Moldova, Europe/Chisinau
-Chişinău;;Moldova;47;28.92;85;Europe/Chisinau;
-Bendery;;Moldova;46.83;29.48;;Europe/Chisinau;
-Bălți;;Moldova;47.77;27.92;59;Europe/Chisinau;
-Tiraspol;;Moldova;46.85;29.63;;Europe/Chisinau;
-Cahul;;Moldova;45.92;28.18;119;Europe/Chisinau;
+Chişinău;;Moldova;47;28.92;85;Europe/Chisinau;6f7f58f0;
+Bendery;;Moldova;46.83;29.48;;Europe/Chisinau;989064cf;
+Bălți;;Moldova;47.77;27.92;59;Europe/Chisinau;ef99d92e;
+Tiraspol;;Moldova;46.85;29.63;;Europe/Chisinau;5ea4eaff;
+Cahul;;Moldova;45.92;28.18;119;Europe/Chisinau;dcb147c6;

@@ -1,21 +1,21 @@
 ## city, state, country, latitude, longitude, altitude, timezone
 
 # @ South Africa, Africa/Johannesburg
-Pretoria;;South Africa;-25.74;28.19;1271;Africa/Johannesburg;
-Durban;;South Africa;-29.87;31.05;;Africa/Johannesburg;
-Cape Town;;South Africa;-33.92;18.42;;Africa/Johannesburg;
-Bloemfontein;;South Africa;-29.09;26.22;1395;Africa/Johannesburg;
-East London;;South Africa;-32.97;27.87;;Africa/Johannesburg;
+Pretoria;;South Africa;-25.74;28.19;1271;Africa/Johannesburg;a395378e;
+Durban;;South Africa;-29.87;31.05;;Africa/Johannesburg;01a4c461;
+Cape Town;;South Africa;-33.92;18.42;;Africa/Johannesburg;b45ae81c;
+Bloemfontein;;South Africa;-29.09;26.22;1395;Africa/Johannesburg;8e9b42a1;
+East London;;South Africa;-32.97;27.87;;Africa/Johannesburg;cabc7d80;
 
 # @ Mozambique, Africa/Maputo
-Maputo;;Mozambique;-25.96;32.58;;Africa/Maputo;
-Beira;;Mozambique;-19.82;34.85;;Africa/Maputo;
-Nampula;;Mozambique;-15.11;39.27;;Africa/Maputo;
-Tete;;Mozambique;-16.16;33.6;;Africa/Maputo;
+Maputo;;Mozambique;-25.96;32.58;;Africa/Maputo;603608d3;
+Beira;;Mozambique;-19.82;34.85;;Africa/Maputo;3579f7fd;
+Nampula;;Mozambique;-15.11;39.27;;Africa/Maputo;e76947be;
+Tete;;Mozambique;-16.16;33.6;;Africa/Maputo;f07284ad;
 
 # @ Zimbabwe, Africa/Harare
-Harare;;Zimbabwe;-17.85;31.03;1490;Africa/Harare;
+Harare;;Zimbabwe;-17.85;31.03;1490;Africa/Harare;f87326cf;
 
 # @ Tanzania, Africa/Dar_es_Salaam
-Dodoma;;Tanzania;-6.16;35.74;1120;Africa/Dar_es_Salaam;
-Dar es Salaam;;Tanzania;-6.79;39.28;;Africa/Dar_es_Salaam;
+Dodoma;;Tanzania;-6.16;35.74;1120;Africa/Dar_es_Salaam;557123ed;
+Dar es Salaam;;Tanzania;-6.79;39.28;;Africa/Dar_es_Salaam;5b415d55;

@@ -1,20 +1,20 @@
 ## city, state, country, latitude, longitude, altitude, timezone
 
 # @ Georgia, Asia/Tbilisi
-Tbilisi;;Georgia;41.72;44.78;;Asia/Tbilisi;
-Batumi;;Georgia;41.65;41.65;0;Asia/Tbilisi;
-Kutaisi;;Georgia;42.25;42.7;;Asia/Tbilisi;
-Rustavi;;Georgia;41.53;45;;Asia/Tbilisi;
-Sukhumi;;Georgia;43;41.02;5-140;Asia/Tbilisi;
+Tbilisi;;Georgia;41.72;44.78;;Asia/Tbilisi;531c1810;
+Batumi;;Georgia;41.65;41.65;0;Asia/Tbilisi;0a659bce;
+Kutaisi;;Georgia;42.25;42.7;;Asia/Tbilisi;d2dc0f84;
+Rustavi;;Georgia;41.53;45;;Asia/Tbilisi;6c3a8e17;
+Sukhumi;;Georgia;43;41.02;5-140;Asia/Tbilisi;b8ba7d80;
 
 # @ Armenia, Asia/Yerevan
-Yerevan;;Armenia;40.18;44.52;;Asia/Yerevan;
-Gyumri;;Armenia;40.79;43.85;;Asia/Yerevan;
-Qajaran;;Armenia;39.15;46.16;1950;Asia/Yerevan;
+Yerevan;;Armenia;40.18;44.52;;Asia/Yerevan;0c22ae7b;
+Gyumri;;Armenia;40.79;43.85;;Asia/Yerevan;da277f1f;
+Qajaran;;Armenia;39.15;46.16;1950;Asia/Yerevan;71d33864;
 
 # @ Azerbaijan, Asia/Baku
-Stepanakert;;Azerbaijan;39.82;46.75;813;Asia/Baku;
-Ganja;;Azerbaijan;40.68;46.36;;Asia/Baku;
-Cəlilabad;;Azerbaijan;39.21;48.5;31;Asia/Baku;
-Zardab;;Azerbaijan;40.22;47.71;;Asia/Baku;
-Baku;;Azerbaijan;40.4;49.88;-28;Asia/Baku;
+Stepanakert;;Azerbaijan;39.82;46.75;813;Asia/Baku;6468ebfd;
+Ganja;;Azerbaijan;40.68;46.36;;Asia/Baku;fdd90c76;
+Cəlilabad;;Azerbaijan;39.21;48.5;31;Asia/Baku;ca5d2ccc;
+Zardab;;Azerbaijan;40.22;47.71;;Asia/Baku;9f576a00;
+Baku;;Azerbaijan;40.4;49.88;-28;Asia/Baku;b45f709b;

@@ -1,33 +1,33 @@
 ## city, state, country, latitude, longitude, altitude, timezone
 
 # @ Uzbekistan, Asia/Samarkand
-Samarkand;;Uzbekistan;39.65;66.96;702;Asia/Samarkand;
+Samarkand;;Uzbekistan;39.65;66.96;702;Asia/Samarkand;c90fe815;
 
 # @ Uzbekistan, Asia/Tashkent
-Tashkent;;Uzbekistan;41.27;69.22;;Asia/Tashkent;
-Nukus;;Uzbekistan;42.47;59.6;;Asia/Tashkent;
-Navoiy;;Uzbekistan;40.08;65.38;382;Asia/Tashkent;
-Bukhara;;Uzbekistan;39.77;64.43;;Asia/Tashkent;
-Fergana;;Uzbekistan;40.39;71.79;;Asia/Tashkent;
-Termez;;Uzbekistan;37.22;67.28;;Asia/Tashkent;
+Tashkent;;Uzbekistan;41.27;69.22;;Asia/Tashkent;5cccaf35;
+Nukus;;Uzbekistan;42.47;59.6;;Asia/Tashkent;3f2a23a7;
+Navoiy;;Uzbekistan;40.08;65.38;382;Asia/Tashkent;b47bd478;
+Bukhara;;Uzbekistan;39.77;64.43;;Asia/Tashkent;fdf7bbeb;
+Fergana;;Uzbekistan;40.39;71.79;;Asia/Tashkent;3dea935a;
+Termez;;Uzbekistan;37.22;67.28;;Asia/Tashkent;2adb7b7b;
 
 # @ Turkmenistan, Asia/Ashgabat
-Ashgabat;;Turkmenistan;37.93;58.37;;Asia/Ashgabat;
-Daşoguz;;Turkmenistan;41.83;59.97;88;Asia/Ashgabat;
-Türkmenabat;;Turkmenistan;39.08;63.57;;Asia/Ashgabat;
-Balkanabat;;Turkmenistan;39.52;54.37;17;Asia/Ashgabat;
-Mary;;Turkmenistan;37.6;61.83;;Asia/Ashgabat;
-Serhetabat;;Turkmenistan;35.28;62.34;;Asia/Ashgabat;
+Ashgabat;;Turkmenistan;37.93;58.37;;Asia/Ashgabat;47a12acf;
+Daşoguz;;Turkmenistan;41.83;59.97;88;Asia/Ashgabat;ed7dc07a;
+Türkmenabat;;Turkmenistan;39.08;63.57;;Asia/Ashgabat;82db0ffa;
+Balkanabat;;Turkmenistan;39.52;54.37;17;Asia/Ashgabat;e266bb3f;
+Mary;;Turkmenistan;37.6;61.83;;Asia/Ashgabat;8ddbb505;
+Serhetabat;;Turkmenistan;35.28;62.34;;Asia/Ashgabat;ad2d7950;
 
 # @ Kyrgyzstan, Asia/Bishkek
-Bishkek;;Kyrgyzstan;42.87;74.61;800;Asia/Bishkek;
-Osh;;Kyrgyzstan;40.53;72.8;;Asia/Bishkek;
-Karakol;;Kyrgyzstan;42.48;78.4;;Asia/Bishkek;
-Talas;;Kyrgyzstan;42.52;72.23;;Asia/Bishkek;
-Naryn;;Kyrgyzstan;41.43;76;2044;Asia/Bishkek;
+Bishkek;;Kyrgyzstan;42.87;74.61;800;Asia/Bishkek;14546d2d;
+Osh;;Kyrgyzstan;40.53;72.8;;Asia/Bishkek;6dde48ee;
+Karakol;;Kyrgyzstan;42.48;78.4;;Asia/Bishkek;8bb952e2;
+Talas;;Kyrgyzstan;42.52;72.23;;Asia/Bishkek;7260acaf;
+Naryn;;Kyrgyzstan;41.43;76;2044;Asia/Bishkek;e37ea5de;
 
 # @ Tajikistan, Asia/Dushanbe
-Dushanbe;;Tajikistan;38.54;68.78;706;Asia/Dushanbe;
-Qurghonteppa;;Tajikistan;37.84;68.78;;Asia/Dushanbe;
-Khorugh;;Tajikistan;37.49;71.56;2200;Asia/Dushanbe;
-Murghab;;Tajikistan;38.17;73.97;;Asia/Dushanbe;
+Dushanbe;;Tajikistan;38.54;68.78;706;Asia/Dushanbe;97d1f8c6;
+Qurghonteppa;;Tajikistan;37.84;68.78;;Asia/Dushanbe;fddfb69a;
+Khorugh;;Tajikistan;37.49;71.56;2200;Asia/Dushanbe;5e41ebaa;
+Murghab;;Tajikistan;38.17;73.97;;Asia/Dushanbe;c62e720f;

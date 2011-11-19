@@ -1,25 +1,25 @@
 ## city, state, country, latitude, longitude, altitude, timezone
 
 # @ Canada - Nova Scotia, America/Halifax
-Halifax;Nova Scotia;Canada;44.67;-63.6;;America/Halifax;
+Halifax;Nova Scotia;Canada;44.67;-63.6;;America/Halifax;84187529;
 
 # @ Canada - Ontario, America/Toronto
-Ottawa;Ontario;Canada;45.42;-75.68;70;America/Toronto;
-Toronto;Ontario;Canada;43.72;-79.33;76;America/Toronto;
+Ottawa;Ontario;Canada;45.42;-75.68;70;America/Toronto;07a55844;
+Toronto;Ontario;Canada;43.72;-79.33;76;America/Toronto;76ee3cb7;
 
 # @ Canada - Manitoba, America/Winnipeg
-Winnipeg;Manitoba;Canada;49.9;-97.13;238;America/Winnipeg;
+Winnipeg;Manitoba;Canada;49.9;-97.13;238;America/Winnipeg;ad0a8af1;
 
 # @ Canada - Brit. Columbia, America/Vancouver
-Vancouver;Brit. Columbia;Canada;49.25;-123.09;2;America/Vancouver;
+Vancouver;Brit. Columbia;Canada;49.25;-123.09;2;America/Vancouver;8c22dfd4;
 
 # @ Canada - Quebec, America/Montreal
-Quebec City;Quebec;Canada;46.82;-71.21;;America/Montreal;
-Montreal;Quebec;Canada;45.5;-73.66;;America/Montreal;
+Quebec City;Quebec;Canada;46.82;-71.21;;America/Montreal;eaa127a6;
+Montreal;Quebec;Canada;45.5;-73.66;;America/Montreal;efe0344e;
 
 # @ Canada - Alberta, America/Edmonton
-Calgary;Alberta;Canada;51.04;-114.05;1048;America/Edmonton;
-Edmonton;Alberta;Canada;53.57;-113.51;668;America/Edmonton;
+Calgary;Alberta;Canada;51.04;-114.05;1048;America/Edmonton;97f7ba93;
+Edmonton;Alberta;Canada;53.57;-113.51;668;America/Edmonton;43a5db68;
 
 # @ Canada - Saskatchewan, America/Regina
-Regina;Saskatchewan;Canada;50.45;-104.6;577;America/Regina;
+Regina;Saskatchewan;Canada;50.45;-104.6;577;America/Regina;2b1e271a;
