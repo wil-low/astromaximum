@@ -20,15 +20,15 @@ $sett=array(
 	'mail_bill'=>'bix@astromaximum.com',
 
 	'def_cities'=>array(
-		'ru'=>array('m.Olympos', 'Kiev', 'Moscow'),
-		'en'=>array('m.Olympos', 'London', 'New York'),
-		'de'=>array('m.Olympos', 'Berlin', 'Vienna'),
+		'ru'=>array('Kiev', 'Moscow', 'London', 'New York', 'Berlin', 'Vienna'),
+		'en'=>array('Kiev', 'Moscow', 'London', 'New York', 'Berlin', 'Vienna'),
+		'de'=>array('Kiev', 'Moscow', 'London', 'New York', 'Berlin', 'Vienna'),
 	),
 
 	'city_count'=>761, //update PRODINFO_CITY in ru.msg
 	'price'=>'58.99',
-	'version'=>'1.1.8 r652',
-	'release_date'=>'2011/04/04',
+	'version'=>'1.1.8 r690',
+	'release_date'=>'2011/11/19',
 	
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder
 	'min_demo_year'=>2000,
