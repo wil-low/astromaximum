@@ -27,6 +27,8 @@ use LWP::UserAgent;
 my $ua = LWP::UserAgent->new;
 $ua->agent("Opera");
 
+File::Path::make_path ("./data/world");
+
 if ($ARGV[0]) {
 	my $ini = "./data/$ARGV[0].ini";
 	process_ini ($ini);
@@ -35,7 +37,6 @@ else {
 	my @inifiles = glob ('./data/*.ini');
 	foreach my $ini (@inifiles) {
 		process_ini ($ini);
-		last;
 	}
 }
 
@@ -47,9 +48,9 @@ sub process_ini { # filename
 	File::Path::make_path ("./data/wikipages/$region");
 
 	open (ERRFILE, ">err.log") or die "$!: err.log";
-		
+	my $outfile = "data/world/$region.world";
 	open (INF, "<$ini") or die "$!: $ini";
-	open (OUTF, ">$ini.world");
+	open (OUTF, ">$outfile");
 	print (OUTF "## city, state, country, latitude, longitude, altitude, timezone\n");
 	my ($cur_country, $cur_state, $zone) = ('', '');
 	while (my $line = <INF>) {
@@ -101,7 +102,7 @@ sub process_ini { # filename
 	}
 	close (OUTF);
 	close (ERRFILE);
-	print ("--- $ini.world written ---\n");
+	print ("--- $outfile written ---\n");
 }
 
 sub city_query { # city, region, cur_country, cur_state, zone, is_check_disambiguation

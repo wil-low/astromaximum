@@ -1,0 +1,63 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Poland, Europe/Warsaw
+Warsaw;;Poland;52.23;21.01;;Europe/Warsaw;
+Bydgoszcz;;Poland;53.12;18;60;Europe/Warsaw;
+Przemyśl;;Poland;49.78;22.77;;Europe/Warsaw;
+Zielona Góra;;Poland;51.93;15.5;71;Europe/Warsaw;
+Jelenia Góra;;Poland;50.9;15.73;350;Europe/Warsaw;
+Częstochowa;;Poland;50.8;19.12;;Europe/Warsaw;
+Lublin;;Poland;51.25;22.57;;Europe/Warsaw;
+Szczecin;;Poland;53.42;14.58;;Europe/Warsaw;
+Katowice;;Poland;50.25;19;;Europe/Warsaw;
+Łódź;;Poland;51.78;19.47;162-278;Europe/Warsaw;
+Olsztyn;;Poland;53.78;20.5;;Europe/Warsaw;
+Kielce;;Poland;50.88;20.62;;Europe/Warsaw;
+Białystok;;Poland;53.12;23.15;;Europe/Warsaw;
+Poznań;;Poland;52.4;16.92;;Europe/Warsaw;
+Gdańsk;;Poland;54.37;18.63;;Europe/Warsaw;
+Wrocław;;Poland;51.11;17.04;105-155;Europe/Warsaw;
+Kraków;;Poland;50.06;19.94;219;Europe/Warsaw;
+
+# @ Czech Republic, Europe/Prague
+Prague;;Czech Republic;50.08;14.42;;Europe/Prague;
+Brno;;Czech Republic;49.2;16.62;237;Europe/Prague;
+Karlovy Vary;;Czech Republic;50.23;12.87;447;Europe/Prague;
+Ostrava;;Czech Republic;49.84;18.29;;Europe/Prague;
+Liberec;;Czech Republic;50.72;15.07;374;Europe/Prague;
+České Budějovice;;Czech Republic;48.97;14.47;;Europe/Prague;
+
+# @ Slovakia, Europe/Bratislava
+Bratislava;;Slovakia;48.14;17.11;134;Europe/Bratislava;
+Košice;;Slovakia;48.72;21.25;206;Europe/Bratislava;
+Žilina;;Slovakia;49.22;18.74;;Europe/Bratislava;
+Prešov;;Slovakia;49;21.24;250;Europe/Bratislava;
+
+# @ Hungary, Europe/Budapest
+Budapest;;Hungary;47.47;19.05;;Europe/Budapest;
+Eger;;Hungary;47.9;20.37;;Europe/Budapest;
+Szombathely;;Hungary;47.24;16.62;;Europe/Budapest;
+Tatabánya;;Hungary;47.59;18.39;;Europe/Budapest;
+Pécs;;Hungary;46.07;18.23;;Europe/Budapest;
+Debrecen;;Hungary;47.53;21.64;;Europe/Budapest;
+Szeged;;Hungary;46.26;20.15;;Europe/Budapest;
+Kecskemét;;Hungary;46.9;19.69;;Europe/Budapest;
+
+# @ Romania, Europe/Bucharest
+Bucharest;;Romania;44.43;26.1;;Europe/Bucharest;
+Constanța;;Romania;44.17;28.64;25;Europe/Bucharest;
+Brăila;;Romania;45.27;27.96;;Europe/Bucharest;
+Brașov;;Romania;45.67;25.62;600;Europe/Bucharest;
+Alexandria, Romania;;Romania;43.97;25.33;;Europe/Bucharest;
+Arad;;Romania;46.17;21.32;;Europe/Bucharest;
+Craiova;;Romania;44.33;23.82;;Europe/Bucharest;
+Satu Mare;;Romania;47.79;22.89;;Europe/Bucharest;
+Ploiești;;Romania;44.94;26.03;;Europe/Bucharest;
+
+# @ Bulgaria, Europe/Sofia
+Sofia;;Bulgaria;42.7;23.33;550;Europe/Sofia;
+Varna;;Bulgaria;43.22;27.92;80;Europe/Sofia;
+Plovdiv;;Bulgaria;42.15;24.75;164;Europe/Sofia;
+Burgas;;Bulgaria;42.5;27.47;30;Europe/Sofia;
+Pleven;;Bulgaria;43.42;24.62;116;Europe/Sofia;
+Vidin;;Bulgaria;43.98;22.87;34;Europe/Sofia;

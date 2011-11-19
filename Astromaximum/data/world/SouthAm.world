@@ -1,0 +1,10 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Bolivia, America/La_Paz
+La Paz;;Bolivia;-16.49;-68.14;3640;America/La_Paz;
+
+# @ Chile, America/Santiago
+Santiago;;Chile;-33.44;-70.66;520;America/Santiago;
+
+# @ Peru, America/Lima
+Lima;;Peru;-12.03;-77.02;;America/Lima;

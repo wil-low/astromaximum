@@ -1,0 +1,28 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ United Arab Emirates, Asia/Dubai
+Dubai;;United Arab Emirates;25.25;55.3;;Asia/Dubai;
+
+# @ Saudi Arabia, Asia/Riyadh
+Riyadh;;Saudi Arabia;24.71;46.72;;Asia/Riyadh;
+Jeddah;;Saudi Arabia;21.54;39.17;12;Asia/Riyadh;
+Medina;;Saudi Arabia;24.47;39.6;608;Asia/Riyadh;
+
+# @ Yemen, Asia/Aden
+Sana'a;;Yemen;15.35;44.21;;Asia/Aden;
+Aden;;Yemen;12.8;45.03;;Asia/Aden;
+
+# @ Ethiopia, Africa/Addis_Ababa
+Addis Ababa;;Ethiopia;9.03;38.74;2355;Africa/Addis_Ababa;
+
+# @ Syria, Asia/Damascus
+Damascus;;Syria;33.51;36.29;680;Asia/Damascus;
+
+# @ Iraq, Asia/Baghdad
+Baghdad;;Iraq;33.33;44.43;34;Asia/Baghdad;
+
+# @ Iran, Asia/Tehran
+Tehran;;Iran;35.7;51.42;1200;Asia/Tehran;
+
+# @ Kuwait, Asia/Kuwait
+Kuwait City;;Kuwait;29.37;47.98;;Asia/Kuwait;

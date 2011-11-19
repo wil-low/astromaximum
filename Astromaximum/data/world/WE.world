@@ -1,0 +1,159 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ England, Europe/London
+London;;England;51.51;-0.12;24;Europe/London;
+
+# @ Scotland, Europe/London
+Edinburgh;;Scotland;55.95;-3.15;;Europe/London;
+
+# @ Ireland, Europe/Dublin
+Dublin;;Ireland;53.35;-6.25;;Europe/Dublin;
+
+# @ France, Europe/Paris
+Paris;;France;48.86;2.35;;Europe/Paris;
+Bordeaux;;France;44.84;-0.57;;Europe/Paris;
+Lyon;;France;45.76;4.84;;Europe/Paris;
+Marseille;;France;43.3;5.37;;Europe/Paris;
+
+# @ Spain, Europe/Madrid
+Barcelona;;Spain;41.38;2.18;12;Europe/Madrid;
+Madrid;;Spain;40.38;-3.71;667;Europe/Madrid;
+
+# @ Portugal, Europe/Lisbon
+Lisbon;;Portugal;38.71;-9.13;;Europe/Lisbon;
+
+# @ Gibraltar, Europe/Gibraltar
+Gibraltar;;Gibraltar;36.13;-5.34;;Europe/Gibraltar;
+
+# @ Luxembourg, Europe/Luxembourg
+Luxembourg (city);;Luxembourg;49.61;6.13;;Europe/Luxembourg;
+
+# @ England, Europe/London
+Halifax, West Yorkshire;;England;53.73;-1.85;;Europe/London;
+
+# @ France, Europe/Paris
+Bayonne;;France;43.49;-1.47;;Europe/Paris;
+Besançon;;France;47.24;6.02;;Europe/Paris;
+Brest, France;;France;48.39;-4.48;;Europe/Paris;
+Caen;;France;49.18;-0.36;;Europe/Paris;
+Grenoble;;France;45.2;5.72;;Europe/Paris;
+La Rochelle;;France;46.16;-1.14;;Europe/Paris;
+Le Havre;;France;49.49;0.1;;Europe/Paris;
+Le Mans;;France;48.01;0.2;;Europe/Paris;
+Lille;;France;50.64;3.06;;Europe/Paris;
+Limoges;;France;45.84;1.26;;Europe/Paris;
+Metz;;France;49.12;6.18;;Europe/Paris;
+Montpellier;;France;43.61;3.88;;Europe/Paris;
+Mulhouse;;France;47.75;7.34;;Europe/Paris;
+Nancy, France;;France;48.69;6.18;;Europe/Paris;
+Nice;;France;43.7;7.27;;Europe/Paris;
+Perpignan;;France;42.7;2.9;;Europe/Paris;
+Reims;;France;49.26;4.03;;Europe/Paris;
+Rouen;;France;49.44;1.1;;Europe/Paris;
+Saint-Étienne;;France;45.43;4.39;;Europe/Paris;
+Toulon;;France;43.13;5.92;;Europe/Paris;
+Toulouse;;France;43.6;1.44;;Europe/Paris;
+
+# @ England, Europe/London
+Birmingham;;England;52.48;-1.88;;Europe/London;
+Brighton;;England;50.84;-0.12;;Europe/London;
+Bristol;;England;51.45;-2.57;;Europe/London;
+Cambridge;;England;52.21;0.12;;Europe/London;
+Carlisle, Cumbria;;England;54.89;-2.93;;Europe/London;
+Canterbury;;England;51.28;1.09;;Europe/London;
+Liverpool;;England;53.4;-2.97;;Europe/London;
+Manchester;;England;53.47;-2.22;;Europe/London;
+Norwich;;England;52.63;1.3;;Europe/London;
+Nottingham;;England;52.95;-1.12;;Europe/London;
+Oxford;;England;51.75;-1.25;;Europe/London;
+Poole;;England;50.72;-1.97;;Europe/London;
+Plymouth;;England;50.37;-4.13;;Europe/London;
+City of Sunderland;;England;54.91;-1.38;;Europe/London;
+Sheffield;;England;53.38;-1.46;;Europe/London;
+York;;England;53.96;-1.07;;Europe/London;
+
+# @ Wales, Europe/London
+Bangor, Gwynedd;;Wales;53.23;-4.12;;Europe/London;
+Cardiff;;Wales;51.48;-3.17;;Europe/London;
+Cardigan, Ceredigion;;Wales;52.08;-4.65;;Europe/London;
+Swansea;;Wales;51.62;-3.94;;Europe/London;
+
+# @ Scotland, Europe/London
+Aberdeen;;Scotland;57.15;-2.1;;Europe/London;
+Dundee;;Scotland;56.46;-2.96;;Europe/London;
+Glasgow;;Scotland;55.86;-4.25;;Europe/London;
+Poolewe;;Scotland;57.77;-5.59;;Europe/London;
+
+# @ Northern Ireland, Europe/London
+Belfast;;Northern Ireland;54.6;-5.92;;Europe/London;
+Derry;;Northern Ireland;55;-7.3;;Europe/London;
+Lisburn;;Northern Ireland;54.51;-6.02;;Europe/London;
+
+# @ Ireland, Europe/Dublin
+Cork;;Ireland;51.9;-8.46;;Europe/Dublin;
+Limerick;;Ireland;52.67;-8.61;10;Europe/Dublin;
+Waterford;;Ireland;52.26;-7.12;;Europe/Dublin;
+
+# @ Spain, Europe/Madrid
+Albacete;;Spain;39;-1.85;;Europe/Madrid;
+Alicante;;Spain;38.35;-0.47;3;Europe/Madrid;
+Almería;;Spain;36.83;-2.44;23;Europe/Madrid;
+Badajoz;;Spain;38.88;-6.96;185;Europe/Madrid;
+Bilbao;;Spain;43.26;-2.91;19;Europe/Madrid;
+Burgos;;Spain;42.35;-3.69;856;Europe/Madrid;
+Cadiz;;Spain;36.53;-6.27;11;Europe/Madrid;
+Cartagena, Spain;;Spain;37.6;-0.97;10;Europe/Madrid;
+Córdoba, Andalusia;;Spain;37.88;-4.76;120;Europe/Madrid;
+Granada;;Spain;37.18;-3.59;738;Europe/Madrid;
+A Coruña;;Spain;43.37;-8.39;;Europe/Madrid;
+Málaga;;Spain;36.72;-4.41;11;Europe/Madrid;
+Murcia;;Spain;37.99;-1.12;43;Europe/Madrid;
+Oviedo;;Spain;43.36;-5.84;232;Europe/Madrid;
+Pamplona;;Spain;42.82;-1.63;446;Europe/Madrid;
+Palma, Majorca;;Spain;39.57;2.65;13;Europe/Madrid;
+Salamanca;;Spain;40.97;-5.66;802;Europe/Madrid;
+Santander, Cantabria;;Spain;43.46;-3.8;15;Europe/Madrid;
+Seville;;Spain;37.38;-5.98;7;Europe/Madrid;
+Valencia, Spain;;Spain;39.47;-0.37;15;Europe/Madrid;
+Valladolid;;Spain;41.63;-4.71;698;Europe/Madrid;
+Vigo;;Spain;42.23;-8.7;0;Europe/Madrid;
+Zaragoza;;Spain;41.65;-0.87;199;Europe/Madrid;
+
+# @ Canary Islands, Atlantic/Canary
+Las Palmas de Gran Canaria;;Canary Islands;28.15;-15.41;8;Atlantic/Canary;
+Santa Cruz de Tenerife;;Canary Islands;28.47;-16.24;4;Atlantic/Canary;
+
+# @ Portugal, Europe/Lisbon
+Aveiro, Portugal;;Portugal;40.63;-8.64;;Europe/Lisbon;
+Castelo Branco, Portugal;;Portugal;39.82;-7.49;;Europe/Lisbon;
+Coimbra;;Portugal;40.21;-8.42;43;Europe/Lisbon;
+Porto;;Portugal;41.16;-8.61;;Europe/Lisbon;
+
+# @ Azores, Atlantic/Azores
+Ponta Delgada (Azores);;Azores;37.82;-25.74;;Atlantic/Azores;
+
+# @ Madeira, Atlantic/Madeira
+Funchal;;Madeira;32.65;-16.91;;Atlantic/Madeira;
+
+# @ Azores, Atlantic/Azores
+Santa Cruz das Flores (Azores);;Azores;39.46;-31.12;;Atlantic/Azores;
+Angra do Heroísmo;;Azores;38.49;-27.21;;Atlantic/Azores;
+Lajes do Pico (Azores);;Azores;38.4;-28.22;;Atlantic/Azores;
+Vila do Porto (Azores);;Azores;36.97;-25.09;;Atlantic/Azores;
+Santa Cruz da Graciosa (Azores);;Azores;39.05;-28;;Atlantic/Azores;
+
+# @ Canary Islands, Atlantic/Canary
+Santa Cruz de La Palma;;Canary Islands;28.68;-17.76;4;Atlantic/Canary;
+Valverde;;Canary Islands;27.8;-17.91;571;Atlantic/Canary;
+San Sebastián de La Gomera;;Canary Islands;28.1;-17.09;;Atlantic/Canary;
+Puerto del Rosario;;Canary Islands;28.5;-13.86;;Atlantic/Canary;
+Arrecife;;Canary Islands;28.96;-13.54;;Atlantic/Canary;
+
+# @ Cape Verde, Atlantic/Cape_Verde
+Ribeira Grande, Cape Verde;;Cape Verde;17.18;-25.05;;Atlantic/Cape_Verde;
+Mindelo;;Cape Verde;16.9;-24.97;60;Atlantic/Cape_Verde;
+Ribeira Brava, Cape Verde;;Cape Verde;16.63;-24.29;;Atlantic/Cape_Verde;
+Santa Maria, Cape Verde;;Cape Verde;16.6;-22.89;;Atlantic/Cape_Verde;
+Sal Rei;;Cape Verde;16.18;-22.91;;Atlantic/Cape_Verde;
+São Filipe, Cape Verde (municipality);;Cape Verde;14.92;-23.51;;Atlantic/Cape_Verde;
+Vila do Maio;;Cape Verde;15.14;-23.2;;Atlantic/Cape_Verde;

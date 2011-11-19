@@ -1,0 +1,393 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ USA - New York, America/New_York
+New York;New York;USA;40.72;-73.99;;America/New_York;
+
+# @ USA - Pennsylvania, America/New_York
+Philadelphia;Pennsylvania;USA;39.95;-75.16;;America/New_York;
+
+# @ USA - District of Columbia, America/New_York
+Washington, D.C.;District of Columbia;USA;38.9;-77.03;;America/New_York;
+
+# @ USA - Massachusetts, America/New_York
+Boston;Massachusetts;USA;42.36;-71.05;;America/New_York;
+
+# @ USA - Louisiana, America/Chicago
+New Orleans;Louisiana;USA;29.96;-90.06;;America/Chicago;
+
+# @ USA - California, America/Los_Angeles
+Los Angeles;California;USA;34.05;-118.24;;America/Los_Angeles;
+San Francisco;California;USA;37.78;-122.41;;America/Los_Angeles;
+
+# @ USA - Washington, America/Los_Angeles
+Seattle;Washington;USA;47.61;-122.32;;America/Los_Angeles;
+
+# @ USA - Texas, America/Chicago
+Houston;Texas;USA;29.76;-95.37;;America/Chicago;
+
+# @ USA - Colorado, America/Denver
+Denver;Colorado;USA;39.74;-104.97;;America/Denver;
+
+# @ USA - Illinois, America/Chicago
+Chicago;Illinois;USA;41.88;-87.62;;America/Chicago;
+
+# @ USA - Georgia, America/New_York
+Atlanta;Georgia;USA;33.76;-84.38;;America/New_York;
+
+# @ USA - Maine, America/New_York
+Portland, Maine;Maine;USA;43.67;-70.26;;America/New_York;
+
+# @ USA - New Hampshire, America/New_York
+Concord, New Hampshire;New Hampshire;USA;43.21;-71.53;;America/New_York;
+
+# @ USA - Vermont, America/New_York
+Montpelier, Vermont;Vermont;USA;44.25;-72.56;;America/New_York;
+
+# @ USA - Rhode Island, America/New_York
+Providence, Rhode Island;Rhode Island;USA;41.82;-71.41;606;America/New_York;
+
+# @ USA - Connecticut, America/New_York
+Hartford, Connecticut;Connecticut;USA;41.76;-72.66;;America/New_York;
+
+# @ USA - New York, America/New_York
+Albany, New York;New York;USA;42.65;-73.75;;America/New_York;
+Binghamton, New York;New York;USA;42.1;-75.9;;America/New_York;
+Buffalo, New York;New York;USA;42.9;-78.84;;America/New_York;
+Niagara Falls, New York;New York;USA;43.09;-79.01;;America/New_York;
+Syracuse, New York;New York;USA;43.05;-76.13;;America/New_York;
+
+# @ USA - Pennsylvania, America/New_York
+Erie, Pennsylvania;Pennsylvania;USA;42.13;-80.08;;America/New_York;
+Harrisburg, Pennsylvania;Pennsylvania;USA;40.27;-76.87;;America/New_York;
+Pittsburgh;Pennsylvania;USA;40.44;-79.99;;America/New_York;
+Scranton, Pennsylvania;Pennsylvania;USA;41.41;-75.66;;America/New_York;
+
+# @ USA - New Jersey, America/New_York
+Atlantic City, New Jersey;New Jersey;USA;39.38;-74.44;;America/New_York;
+
+# @ USA - Delaware, America/New_York
+Dover, Delaware;Delaware;USA;39.16;-75.52;;America/New_York;
+
+# @ USA - Maryland, America/New_York
+Baltimore;Maryland;USA;39.28;-76.61;;America/New_York;
+
+# @ USA - West Virginia, America/New_York
+Charleston, West Virginia;West Virginia;USA;38.35;-81.62;2003;America/New_York;
+Huntington, West Virginia;West Virginia;USA;38.42;-82.41;;America/New_York;
+
+# @ USA - Virginia, America/New_York
+Danville, Virginia;Virginia;USA;36.59;-79.39;;America/New_York;
+Charlottesville, Virginia;Virginia;USA;38.03;-78.47;;America/New_York;
+Richmond, Virginia;Virginia;USA;37.54;-77.42;;America/New_York;
+Roanoke, Virginia;Virginia;USA;37.27;-79.93;;America/New_York;
+
+# @ USA - North Carolina, America/New_York
+Asheville, North Carolina;North Carolina;USA;35.58;-82.55;;America/New_York;
+Charlotte, North Carolina;North Carolina;USA;35.23;-80.83;;America/New_York;
+Greensboro, North Carolina;North Carolina;USA;36.08;-79.81;;America/New_York;
+Raleigh, North Carolina;North Carolina;USA;35.82;-78.63;;America/New_York;
+Rocky Mount, North Carolina;North Carolina;USA;35.94;-77.78;1970;America/New_York;
+Wilmington, North Carolina;North Carolina;USA;34.22;-77.9;;America/New_York;
+Winston-Salem, North Carolina;North Carolina;USA;36.1;-80.25;;America/New_York;
+
+# @ USA - South Carolina, America/New_York
+Columbia, South Carolina;South Carolina;USA;34;-81.03;;America/New_York;
+Charleston, South Carolina;South Carolina;USA;32.78;-79.92;;America/New_York;
+Florence, South Carolina;South Carolina;USA;34.18;-79.76;;America/New_York;
+Greenville, South Carolina;South Carolina;USA;34.84;-82.38;;America/New_York;
+Hemingway, South Carolina;South Carolina;USA;33.75;-79.44;;America/New_York;
+
+# @ USA - Georgia, America/New_York
+Albany, Georgia;Georgia;USA;31.58;-84.16;2007;America/New_York;
+Athens, Georgia;Georgia;USA;33.95;-83.37;;America/New_York;
+Augusta, Georgia;Georgia;USA;33.47;-81.97;;America/New_York;
+Columbus, Georgia;Georgia;USA;32.49;-84.93;;America/New_York;
+Waycross, Georgia;Georgia;USA;31.21;-82.34;;America/New_York;
+Macon, Georgia;Georgia;USA;32.83;-83.64;;America/New_York;
+Savannah, Georgia;Georgia;USA;32.08;-81.08;;America/New_York;
+
+# @ USA - Florida, America/New_York
+Jacksonville, Florida;Florida;USA;30.32;-81.65;;America/New_York;
+Miami;Florida;USA;25.79;-80.21;;America/New_York;
+Orlando, Florida;Florida;USA;28.53;-81.37;;America/New_York;
+Tallahassee, Florida;Florida;USA;30.45;-84.26;;America/New_York;
+Tampa, Florida;Florida;USA;27.95;-82.45;4;America/New_York;
+West Palm Beach, Florida;Florida;USA;26.71;-80.05;;America/New_York;
+
+# @ USA - Alabama, America/Chicago
+Birmingham, Alabama;Alabama;USA;33.65;-86.8;;America/Chicago;
+Dothan, Alabama;Alabama;USA;31.23;-85.4;;America/Chicago;
+Huntsville, Alabama;Alabama;USA;34.71;-86.58;;America/Chicago;
+Mobile, Alabama;Alabama;USA;30.69;-88.03;;America/Chicago;
+Montgomery, Alabama;Alabama;USA;32.36;-86.27;;America/Chicago;
+Tuscaloosa, Alabama;Alabama;USA;33.21;-87.52;;America/Chicago;
+
+# @ USA - Tennessee, America/New_York
+Chattanooga, Tennessee;Tennessee;USA;35.05;-85.26;;America/New_York;
+Knoxville, Tennessee;Tennessee;USA;35.97;-83.93;;America/New_York;
+
+# @ USA - Tennessee, America/Chicago
+Memphis, Tennessee;Tennessee;USA;35.12;-89.96;;America/Chicago;
+
+# @ USA - Kentucky, America/New_York
+Louisville, Kentucky;Kentucky;USA;38.25;-85.76;;America/New_York;
+
+# @ USA - Kentucky, America/Chicago
+Bowling Green, Kentucky;Kentucky;USA;36.98;-86.43;;America/Chicago;
+Owensboro, Kentucky;Kentucky;USA;37.76;-87.11;;America/Chicago;
+
+# @ USA - Ohio, America/New_York
+Canton, Ohio;Ohio;USA;40.81;-81.37;;America/New_York;
+Cincinnati;Ohio;USA;39.13;-84.49;;America/New_York;
+Cleveland;Ohio;USA;41.48;-81.66;;America/New_York;
+Columbus, Ohio;Ohio;USA;39.98;-82.97;;America/New_York;
+Springfield, Ohio;Ohio;USA;39.93;-83.79;;America/New_York;
+Toledo, Ohio;Ohio;USA;41.67;-83.57;;America/New_York;
+
+# @ USA - Michigan, America/Detroit
+Detroit;Michigan;USA;42.33;-83.04;;America/Detroit;
+Escanaba, Michigan;Michigan;USA;45.75;-87.05;;America/Detroit;
+Lansing, Michigan;Michigan;USA;42.73;-84.54;;America/Detroit;
+Kalamazoo, Michigan;Michigan;USA;42.29;-85.58;;America/Detroit;
+Marquette, Michigan;Michigan;USA;46.55;-87.4;;America/Detroit;
+Saginaw, Michigan;Michigan;USA;43.42;-83.94;;America/Detroit;
+Traverse City, Michigan;Michigan;USA;44.77;-85.61;;America/Detroit;
+
+# @ USA - Michigan, America/Menominee
+Ironwood, Michigan;Michigan;USA;46.46;-90.15;;America/Menominee;
+
+# @ USA - Indiana, America/Indiana/Indianapolis
+Fort Wayne, Indiana;Indiana;USA;41.08;-85.13;;America/Indiana/Indianapolis;
+Indianapolis;Indiana;USA;39.77;-86.15;2007;America/Indiana/Indianapolis;
+Terre Haute, Indiana;Indiana;USA;39.47;-87.38;;America/Indiana/Indianapolis;
+
+# @ USA - Illinois, America/Chicago
+Peoria, Illinois;Illinois;USA;40.72;-89.6;;America/Chicago;
+Rockford, Illinois;Illinois;USA;42.27;-89.06;;America/Chicago;
+Springfield, Illinois;Illinois;USA;39.78;-89.64;;America/Chicago;
+
+# @ USA - Wisconsin, America/Chicago
+Eau Claire, Wisconsin;Wisconsin;USA;44.82;-91.49;;America/Chicago;
+Green Bay, Wisconsin;Wisconsin;USA;44.51;-88.01;;America/Chicago;
+La Crosse, Wisconsin;Wisconsin;USA;43.81;-91.22;;America/Chicago;
+Madison, Wisconsin;Wisconsin;USA;43.07;-89.39;;America/Chicago;
+Milwaukee;Wisconsin;USA;43.05;-87.95;;America/Chicago;
+Oshkosh, Wisconsin;Wisconsin;USA;44.02;-88.54;;America/Chicago;
+Wausau, Wisconsin;Wisconsin;USA;44.95;-89.62;;America/Chicago;
+
+# @ USA - Minnesota, America/Chicago
+Duluth, Minnesota;Minnesota;USA;46.79;-92.09;;America/Chicago;
+Mankato, Minnesota;Minnesota;USA;44.17;-93.99;;America/Chicago;
+Minneapolis;Minnesota;USA;44.98;-93.26;;America/Chicago;
+Moorhead, Minnesota;Minnesota;USA;46.87;-96.76;;America/Chicago;
+Rochester, Minnesota;Minnesota;USA;44.02;-92.45;;America/Chicago;
+St. Cloud, Minnesota;Minnesota;USA;45.55;-94.16;9;America/Chicago;
+
+# @ USA - Iowa, America/Chicago
+Cedar Rapids, Iowa;Iowa;USA;41.98;-91.66;;America/Chicago;
+Council Bluffs, Iowa;Iowa;USA;41.25;-95.85;;America/Chicago;
+Des Moines, Iowa;Iowa;USA;41.59;-93.61;;America/Chicago;
+Dubuque, Iowa;Iowa;USA;42.5;-90.68;;America/Chicago;
+Waterloo, Iowa;Iowa;USA;42.49;-92.34;;America/Chicago;
+
+# @ USA - Missouri, America/Chicago
+Jefferson City, Missouri;Missouri;USA;38.58;-92.16;;America/Chicago;
+Kansas City, Missouri;Missouri;USA;39.11;-94.58;;America/Chicago;
+Springfield, Missouri;Missouri;USA;37.19;-93.28;;America/Chicago;
+St. Louis, Missouri;Missouri;USA;38.63;-90.19;;America/Chicago;
+
+# @ USA - Arkansas, America/Chicago
+El Dorado, Arkansas;Arkansas;USA;33.21;-92.65;;America/Chicago;
+Fort Smith, Arkansas;Arkansas;USA;35.37;-94.39;;America/Chicago;
+Jonesboro, Arkansas;Arkansas;USA;35.83;-90.68;;America/Chicago;
+Little Rock, Arkansas;Arkansas;USA;34.74;-92.32;;America/Chicago;
+
+# @ USA - Louisiana, America/Chicago
+Alexandria, Louisiana;Louisiana;USA;31.29;-92.45;;America/Chicago;
+Baton Rouge, Louisiana;Louisiana;USA;30.46;-91.13;;America/Chicago;
+Lake Charles, Louisiana;Louisiana;USA;30.21;-93.2;;America/Chicago;
+Monroe, Louisiana;Louisiana;USA;32.51;-92.09;;America/Chicago;
+Shreveport, Louisiana;Louisiana;USA;32.47;-93.91;;America/Chicago;
+
+# @ USA - Texas, America/Chicago
+Amarillo, Texas;Texas;USA;35.2;-101.84;;America/Chicago;
+Austin, Texas;Texas;USA;30.25;-97.74;;America/Chicago;
+Beaumont, Texas;Texas;USA;30.08;-94.12;;America/Chicago;
+Corpus Christi, Texas;Texas;USA;27.74;-97.39;;America/Chicago;
+Dallas;Texas;USA;32.78;-96.79;;America/Chicago;
+Laredo, Texas;Texas;USA;27.52;-99.48;0;America/Chicago;
+Lubbock, Texas;Texas;USA;33.57;-101.88;;America/Chicago;
+Midland, Texas;Texas;USA;32.01;-102.09;;America/Chicago;
+San Angelo, Texas;Texas;USA;31.45;-100.44;;America/Chicago;
+San Antonio;Texas;USA;29.42;-98.49;;America/Chicago;
+Waco, Texas;Texas;USA;31.55;-97.15;;America/Chicago;
+Wichita Falls, Texas;Texas;USA;33.9;-98.51;;America/Chicago;
+
+# @ USA - Texas, America/Denver
+El Paso, Texas;Texas;USA;31.79;-106.41;;America/Denver;
+
+# @ USA - Oklahoma, America/Chicago
+Enid, Oklahoma;Oklahoma;USA;36.4;-97.87;;America/Chicago;
+Lawton, Oklahoma;Oklahoma;USA;34.6;-98.39;;America/Chicago;
+Oklahoma City;Oklahoma;USA;35.48;-97.53;;America/Chicago;
+Tulsa, Oklahoma;Oklahoma;USA;36.13;-95.93;;America/Chicago;
+
+# @ USA - Kansas, America/Chicago
+Colby, Kansas;Kansas;USA;39.39;-101.04;;America/Chicago;
+Dodge City, Kansas;Kansas;USA;37.76;-100.01;;America/Chicago;
+Hays, Kansas;Kansas;USA;38.88;-99.31;;America/Chicago;
+Kansas City, Kansas;Kansas;USA;39.11;-94.67;;America/Chicago;
+Topeka, Kansas;Kansas;USA;39.06;-95.68;;America/Chicago;
+Wichita, Kansas;Kansas;USA;37.69;-97.33;;America/Chicago;
+
+# @ USA - Nebraska, America/Chicago
+Grand Island, Nebraska;Nebraska;USA;40.92;-98.35;;America/Chicago;
+Lincoln, Nebraska;Nebraska;USA;40.81;-96.67;;America/Chicago;
+Norfolk, Nebraska;Nebraska;USA;42.03;-97.42;;America/Chicago;
+North Platte, Nebraska;Nebraska;USA;41.14;-100.76;;America/Chicago;
+Omaha, Nebraska;Nebraska;USA;41.25;-95.99;;America/Chicago;
+
+# @ USA - Nebraska, America/Denver
+Scottsbluff, Nebraska;Nebraska;USA;41.87;-103.65;;America/Denver;
+
+# @ USA - South Dakota, America/Chicago
+Aberdeen, South Dakota;South Dakota;USA;45.46;-98.48;;America/Chicago;
+Pierre, South Dakota;South Dakota;USA;44.37;-100.33;;America/Chicago;
+Sioux Falls, South Dakota;South Dakota;USA;43.54;-96.72;;America/Chicago;
+Watertown, South Dakota;South Dakota;USA;44.9;-97.11;;America/Chicago;
+
+# @ USA - South Dakota, America/Denver
+Rapid City, South Dakota;South Dakota;USA;44.08;-103.22;;America/Denver;
+
+# @ USA - South Dakota, America/Chicago
+Rosebud, South Dakota;South Dakota;USA;43.24;-100.84;;America/Chicago;
+
+# @ USA - North Dakota, America/Chicago
+Bismarck, North Dakota;North Dakota;USA;46.81;-100.77;20;America/Chicago;
+Fargo, North Dakota;North Dakota;USA;46.88;-96.78;;America/Chicago;
+Grand Forks, North Dakota;North Dakota;USA;47.93;-97.02;;America/Chicago;
+Minot, North Dakota;North Dakota;USA;48.23;-101.28;;America/Chicago;
+Williston, North Dakota;North Dakota;USA;48.16;-103.62;;America/Chicago;
+
+# @ USA - North Dakota, America/Denver
+Dickinson, North Dakota;North Dakota;USA;46.88;-102.78;;America/Denver;
+
+# @ USA - Montana, America/Denver
+Billings, Montana;Montana;USA;45.79;-108.53;;America/Denver;
+Butte, Montana;Montana;USA;46;-112.51;;America/Denver;
+Great Falls, Montana;Montana;USA;47.5;-111.28;;America/Denver;
+Helena, Montana;Montana;USA;46.6;-112.02;;America/Denver;
+Kalispell, Montana;Montana;USA;48.2;-114.31;;America/Denver;
+Miles City, Montana;Montana;USA;46.41;-105.83;;America/Denver;
+Missoula, Montana;Montana;USA;46.86;-114;;America/Denver;
+
+# @ USA - Wyoming, America/Denver
+Casper, Wyoming;Wyoming;USA;42.83;-106.32;;America/Denver;
+Cheyenne, Wyoming;Wyoming;USA;41.15;-104.79;;America/Denver;
+Rock Springs, Wyoming;Wyoming;USA;41.59;-109.21;;America/Denver;
+Sheridan, Wyoming;Wyoming;USA;44.8;-106.95;;America/Denver;
+
+# @ USA - Colorado, America/Denver
+Aurora, Colorado;Colorado;USA;39.7;-104.8;;America/Denver;
+Boulder, Colorado;Colorado;USA;40.02;-105.28;;America/Denver;
+Colorado Springs, Colorado;Colorado;USA;38.86;-104.78;;America/Denver;
+Craig, Colorado;Colorado;USA;40.52;-107.54;;America/Denver;
+Fort Collins, Colorado;Colorado;USA;40.56;-105.07;;America/Denver;
+Grand Junction, Colorado;Colorado;USA;39.07;-108.56;;America/Denver;
+Pueblo, Colorado;Colorado;USA;38.27;-104.61;;America/Denver;
+
+# @ USA - New Mexico, America/Denver
+Albuquerque, New Mexico;New Mexico;USA;35.11;-106.6;2;America/Denver;
+Carlsbad, New Mexico;New Mexico;USA;32.41;-104.23;;America/Denver;
+Clayton, New Mexico;New Mexico;USA;36.45;-103.17;;America/Denver;
+Gallup, New Mexico;New Mexico;USA;35.52;-108.72;;America/Denver;
+Hobbs, New Mexico;New Mexico;USA;32.71;-103.13;;America/Denver;
+Las Cruces, New Mexico;New Mexico;USA;32.32;-106.76;;America/Denver;
+Roswell, New Mexico;New Mexico;USA;33.39;-104.52;;America/Denver;
+Santa Fe, New Mexico;New Mexico;USA;35.67;-105.95;;America/Denver;
+Silver City, New Mexico;New Mexico;USA;32.78;-108.26;;America/Denver;
+
+# @ USA - Arizona, America/Phoenix
+Flagstaff, Arizona;Arizona;USA;35.2;-111.62;;America/Phoenix;
+Mesa, Arizona;Arizona;USA;33.42;-111.82;;America/Phoenix;
+Phoenix, Arizona;Arizona;USA;33.45;-112.06;;America/Phoenix;
+Tucson, Arizona;Arizona;USA;32.22;-110.92;;America/Phoenix;
+Yuma, Arizona;Arizona;USA;32.69;-114.61;;America/Phoenix;
+
+# @ USA - Arizona, America/Denver
+Window Rock, Arizona;Arizona;USA;35.67;-109.05;;America/Denver;
+
+# @ USA - Utah, America/Denver
+Cedar City, Utah;Utah;USA;37.68;-113.06;;America/Denver;
+Delta, Utah;Utah;USA;39.35;-112.56;;America/Denver;
+Moab, Utah;Utah;USA;38.57;-109.54;;America/Denver;
+Provo, Utah;Utah;USA;40.24;-111.65;;America/Denver;
+Roosevelt, Utah;Utah;USA;40.3;-109.98;;America/Denver;
+Salt Lake City;Utah;USA;40.75;-111.87;;America/Denver;
+
+# @ USA - Idaho, America/Los_Angeles
+Arco, Idaho;Idaho;USA;43.63;-113.29;;America/Los_Angeles;
+Boise, Idaho;Idaho;USA;43.61;-116.19;;America/Los_Angeles;
+Idaho Falls, Idaho;Idaho;USA;43.49;-112.02;;America/Los_Angeles;
+McCall, Idaho;Idaho;USA;44.91;-116.09;;America/Los_Angeles;
+Montpelier, Idaho;Idaho;USA;42.32;-111.29;;America/Los_Angeles;
+Pocatello, Idaho;Idaho;USA;42.88;-112.44;;America/Los_Angeles;
+Sandpoint, Idaho;Idaho;USA;48.27;-116.56;;America/Los_Angeles;
+Twin Falls, Idaho;Idaho;USA;42.58;-114.47;;America/Los_Angeles;
+
+# @ USA - Washington, America/Los_Angeles
+Bellingham, Washington;Washington;USA;48.75;-122.47;;America/Los_Angeles;
+Olympia, Washington;Washington;USA;47.04;-122.88;;America/Los_Angeles;
+Seattle;Washington;USA;47.61;-122.32;;America/Los_Angeles;
+Spokane, Washington;Washington;USA;47.66;-117.42;;America/Los_Angeles;
+Tacoma, Washington;Washington;USA;47.24;-122.45;;America/Los_Angeles;
+Vancouver, Washington;Washington;USA;45.63;-122.59;;America/Los_Angeles;
+Yakima, Washington;Washington;USA;46.6;-120.5;;America/Los_Angeles;
+
+# @ USA - Oregon, America/Los_Angeles
+Corvallis, Oregon;Oregon;USA;44.57;-123.27;;America/Los_Angeles;
+Eugene, Oregon;Oregon;USA;44.05;-123.08;;America/Los_Angeles;
+Medford, Oregon;Oregon;USA;42.33;-122.85;;America/Los_Angeles;
+Pendleton, Oregon;Oregon;USA;45.67;-118.79;;America/Los_Angeles;
+Portland, Oregon;Oregon;USA;45.52;-122.67;;America/Los_Angeles;
+Salem, Oregon;Oregon;USA;44.93;-123.02;;America/Los_Angeles;
+
+# @ USA - Nevada, America/Los_Angeles
+Carson City, Nevada;Nevada;USA;39.16;-119.74;;America/Los_Angeles;
+Elko, Nevada;Nevada;USA;40.83;-115.76;;America/Los_Angeles;
+Ely, Nevada;Nevada;USA;39.25;-114.87;;America/Los_Angeles;
+Las Vegas, Nevada;Nevada;USA;36.17;-115.13;;America/Los_Angeles;
+Paradise, Nevada;Nevada;USA;36.08;-115.11;;America/Los_Angeles;
+Reno, Nevada;Nevada;USA;39.53;-119.81;;America/Los_Angeles;
+Sparks, Nevada;Nevada;USA;39.55;-119.73;;America/Los_Angeles;
+Sunrise Manor, Nevada;Nevada;USA;36.18;-115.05;;America/Los_Angeles;
+
+# @ USA - Nevada, America/Denver
+Jackpot, Nevada;Nevada;USA;41.98;-114.66;;America/Denver;
+
+# @ USA - California, America/Los_Angeles
+Bakersfield, California;California;USA;35.37;-119.01;;America/Los_Angeles;
+Berkeley, California;California;USA;37.87;-122.26;;America/Los_Angeles;
+Fresno, California;California;USA;36.75;-119.76;;America/Los_Angeles;
+Hollywood;California;USA;34.1;-118.32;;America/Los_Angeles;
+Monterey Park, California;California;USA;34.05;-118.13;;America/Los_Angeles;
+Oxnard, California;California;USA;34.19;-119.17;;America/Los_Angeles;
+Redding, California;California;USA;40.58;-122.36;;America/Los_Angeles;
+Sacramento, California;California;USA;38.56;-121.46;;America/Los_Angeles;
+San Bernardino, California;California;USA;34.13;-117.28;;America/Los_Angeles;
+San Diego;California;USA;32.72;-117.15;;America/Los_Angeles;
+San Jose, California;California;USA;37.34;-121.88;;America/Los_Angeles;
+Santa Ana, California;California;USA;33.74;-117.87;;America/Los_Angeles;
+Santa Barbara, California;California;USA;34.43;-119.7;;America/Los_Angeles;
+Santa Cruz, California;California;USA;36.97;-122.02;;America/Los_Angeles;
+Santa Maria, California;California;USA;34.95;-120.42;;America/Los_Angeles;
+Stockton, California;California;USA;37.98;-121.29;;America/Los_Angeles;
+
+# @ USA - Alaska, America/Yakutat
+Yakutat City and Borough, Alaska;Alaska;USA;59.75;-140.69;;America/Yakutat;
+
+# @ USA - Alaska, America/Adak
+Unalaska, Alaska;Alaska;USA;53.89;-166.52;;America/Adak;
+
+# @ USA - Hawaii, Pacific/Honolulu
+Honolulu;Hawaii;USA;21.31;-157.82;;Pacific/Honolulu;

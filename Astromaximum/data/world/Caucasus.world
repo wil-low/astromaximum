@@ -1,0 +1,20 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Georgia, Asia/Tbilisi
+Tbilisi;;Georgia;41.72;44.78;;Asia/Tbilisi;
+Batumi;;Georgia;41.65;41.65;0;Asia/Tbilisi;
+Kutaisi;;Georgia;42.25;42.7;;Asia/Tbilisi;
+Rustavi;;Georgia;41.53;45;;Asia/Tbilisi;
+Sukhumi;;Georgia;43;41.02;5-140;Asia/Tbilisi;
+
+# @ Armenia, Asia/Yerevan
+Yerevan;;Armenia;40.18;44.52;;Asia/Yerevan;
+Gyumri;;Armenia;40.79;43.85;;Asia/Yerevan;
+Qajaran;;Armenia;39.15;46.16;1950;Asia/Yerevan;
+
+# @ Azerbaijan, Asia/Baku
+Stepanakert;;Azerbaijan;39.82;46.75;813;Asia/Baku;
+Ganja, Azerbaijan;;Azerbaijan;40.68;46.36;;Asia/Baku;
+Cəlilabad;;Azerbaijan;39.21;48.5;31;Asia/Baku;
+Zardab;;Azerbaijan;40.22;47.71;;Asia/Baku;
+Baku;;Azerbaijan;40.4;49.88;-28;Asia/Baku;

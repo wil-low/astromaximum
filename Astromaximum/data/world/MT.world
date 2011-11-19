@@ -1,0 +1,44 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Cyprus, Europe/Nicosia
+Nicosia;;Cyprus;35.17;33.37;220;Europe/Nicosia;
+
+# @ Greece, Europe/Athens
+Athens;;Greece;37.97;23.72;;Europe/Athens;
+Heraklion;;Greece;35.33;25.13;;Europe/Athens;
+
+# @ Turkey, Europe/Istanbul
+Istanbul;;Turkey;41.02;28.97;;Europe/Istanbul;
+Antalya;;Turkey;36.9;30.68;30;Europe/Istanbul;
+Ankara;;Turkey;39.87;32.87;938;Europe/Istanbul;
+Fethiye;;Turkey;36.65;29.12;;Europe/Istanbul;
+Kemer;;Turkey;36.6;30.55;4;Europe/Istanbul;
+Bodrum;;Turkey;37.03;27.43;;Europe/Istanbul;
+Izmir;;Turkey;38.42;27.13;2;Europe/Istanbul;
+Kuşadası;;Turkey;37.86;27.26;11;Europe/Istanbul;
+Marmaris;;Turkey;36.85;28.27;;Europe/Istanbul;
+Erzurum;;Turkey;39.9;41.27;1900;Europe/Istanbul;
+Sarıkamış;;Turkey;40.34;42.57;;Europe/Istanbul;
+Side;;Turkey;36.77;31.39;;Europe/Istanbul;
+Çeşme;;Turkey;38.32;26.3;0-5;Europe/Istanbul;
+Uludağ;;Turkey;40.07;29.22;2543;Europe/Istanbul;
+
+# @ Tunisia, Africa/Tunis
+Tunis;;Tunisia;36.8;10.18;;Africa/Tunis;
+
+# @ Egypt, Africa/Cairo
+Alexandria;;Egypt;31.2;29.92;;Africa/Cairo;
+Cairo;;Egypt;30.06;31.23;23;Africa/Cairo;
+
+# @ Israel, Asia/Jerusalem
+Jerusalem;;Israel;31.78;35.22;754;Asia/Jerusalem;
+Tel Aviv;;Israel;32.07;34.78;5;Asia/Jerusalem;
+
+# @ Malta, Europe/Malta
+Valletta;;Malta;35.9;14.51;;Europe/Malta;
+
+# @ Spain, Europe/Madrid
+Palma, Majorca;;Spain;39.57;2.65;13;Europe/Madrid;
+
+# @ Morocco, Africa/Casablanca
+Casablanca;;Morocco;33.53;-7.57;;Africa/Casablanca;

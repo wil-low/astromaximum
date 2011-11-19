@@ -1,0 +1,90 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Netherlands, Europe/Amsterdam
+Amsterdam;;Netherlands;52.37;4.89;2;Europe/Amsterdam;
+
+# @ Belgium, Europe/Brussels
+Brussels;;Belgium;50.85;4.35;13;Europe/Brussels;
+
+# @ Germany, Europe/Berlin
+Berlin;;Germany;52.5;13.4;34-115;Europe/Berlin;
+Hamburg;;Germany;53.57;10;;Europe/Berlin;
+Munich;;Germany;48.13;11.57;519;Europe/Berlin;
+
+# @ Switzerland, Europe/Zurich
+Bern;;Switzerland;46.95;7.45;542;Europe/Zurich;
+
+# @ Italy, Europe/Rome
+Milan;;Italy;45.46;9.19;120;Europe/Rome;
+Rome;;Italy;41.9;12.5;20;Europe/Rome;
+
+# @ Denmark, Europe/Copenhagen
+Copenhagen;;Denmark;55.68;12.57;;Europe/Copenhagen;
+
+# @ Sweden, Europe/Stockholm
+Stockholm;;Sweden;59.35;18.07;;Europe/Stockholm;
+
+# @ Austria, Europe/Vienna
+Vienna;;Austria;48.21;16.37;;Europe/Vienna;
+Innsbruck;;Austria;47.27;11.38;574;Europe/Vienna;
+
+# @ Italy, Europe/Rome
+Ancona;;Italy;43.62;13.52;16;Europe/Rome;
+Bologna;;Italy;44.51;11.35;54;Europe/Rome;
+Bolzano;;Italy;46.5;11.35;262;Europe/Rome;
+Cagliari;;Italy;39.25;9.06;4;Europe/Rome;
+Catania;;Italy;37.5;15.09;7;Europe/Rome;
+Florence;;Italy;43.78;11.25;50;Europe/Rome;
+Foggia;;Italy;41.46;15.55;76;Europe/Rome;
+Genoa;;Italy;44.41;8.93;20;Europe/Rome;
+Livorno;;Italy;43.55;10.32;3;Europe/Rome;
+Messina;;Italy;38.18;15.55;3;Europe/Rome;
+Naples;;Italy;40.85;14.26;17;Europe/Rome;
+Palermo;;Italy;38.12;13.37;14;Europe/Rome;
+Parma;;Italy;44.8;10.33;55;Europe/Rome;
+Pisa;;Italy;43.72;10.4;4;Europe/Rome;
+Perugia;;Italy;43.11;12.39;493;Europe/Rome;
+Pescara;;Italy;42.46;14.21;0;Europe/Rome;
+Reggio Calabria;;Italy;38.11;15.66;;Europe/Rome;
+Sassari;;Italy;40.73;8.57;225;Europe/Rome;
+Siracuse;;Italy;37.08;15.28;17;Europe/Rome;
+Taranto;;Italy;40.47;17.23;15;Europe/Rome;
+Turin;;Italy;45.07;7.7;239;Europe/Rome;
+Trieste;;Italy;45.63;13.8;2;Europe/Rome;
+Venice;;Italy;45.44;12.34;0;Europe/Rome;
+Verona;;Italy;45.43;10.98;59;Europe/Rome;
+
+# @ Austria, Europe/Vienna
+Bregenz;;Austria;47.51;9.75;427;Europe/Vienna;
+Graz;;Austria;47.07;15.44;353;Europe/Vienna;
+Klagenfurt;;Austria;46.62;14.3;446;Europe/Vienna;
+Linz;;Austria;48.3;14.29;266;Europe/Vienna;
+Salzburg;;Austria;47.8;13.03;424;Europe/Vienna;
+Villach;;Austria;46.61;13.85;501;Europe/Vienna;
+
+# @ Germany, Europe/Berlin
+Bonn;;Germany;50.73;7.1;60;Europe/Berlin;
+Bremen;;Germany;53.08;8.81;12;Europe/Berlin;
+Dortmund;;Germany;51.52;7.47;152;Europe/Berlin;
+Dresden;;Germany;51.03;13.73;113;Europe/Berlin;
+Düsseldorf;;Germany;51.23;6.78;38;Europe/Berlin;
+Erfurt;;Germany;50.98;11.03;200;Europe/Berlin;
+Essen;;Germany;51.45;7.01;116;Europe/Berlin;
+Frankfurt am Main;;Germany;50.11;8.69;112;Europe/Berlin;
+Gera;;Germany;50.88;12.08;205;Europe/Berlin;
+Göttingen;;Germany;51.53;9.94;150;Europe/Berlin;
+Hanover;;Germany;52.37;9.72;55;Europe/Berlin;
+Karlsruhe;;Germany;49.02;8.4;115;Europe/Berlin;
+Kiel;;Germany;54.33;10.14;5;Europe/Berlin;
+Cologne;;Germany;50.95;6.97;37;Europe/Berlin;
+Leipzig;;Germany;51.33;12.38;;Europe/Berlin;
+Magdeburg;;Germany;52.13;11.62;43;Europe/Berlin;
+Mannheim;;Germany;49.49;8.47;97;Europe/Berlin;
+Münster;;Germany;51.97;7.63;60;Europe/Berlin;
+Nuremberg;;Germany;49.45;11.08;302;Europe/Berlin;
+Regensburg;;Germany;49.02;12.08;;Europe/Berlin;
+Rostock;;Germany;54.08;12.13;13;Europe/Berlin;
+Saarbrücken;;Germany;49.23;7;;Europe/Berlin;
+Schwerin;;Germany;53.63;11.42;38;Europe/Berlin;
+Stuttgart;;Germany;48.78;9.18;245;Europe/Berlin;
+Wolfsburg;;Germany;52.42;10.79;63;Europe/Berlin;

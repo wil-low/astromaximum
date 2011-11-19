@@ -1,0 +1,76 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Mexico, America/Tijuana
+Tijuana;;Mexico;32.53;-117.02;20;America/Tijuana;
+
+# @ Mexico, America/Chihuahua
+Ciudad Juárez;;Mexico;31.74;-106.48;1137;America/Chihuahua;
+
+# @ Mexico, America/Mazatlan
+Culiacán;;Mexico;24.8;-107.38;;America/Mazatlan;
+
+# @ Mexico, America/Mexico_City
+Mexico City;;Mexico;19.43;-99.12;2420;America/Mexico_City;
+Guadalajara, Jalisco;;Mexico;20.67;-103.34;1566;America/Mexico_City;
+Nuevo Laredo;;Mexico;27.49;-99.5;;America/Mexico_City;
+Tampico, Tamaulipas;;Mexico;22.26;-97.86;10;America/Mexico_City;
+Acapulco;;Mexico;16.86;-99.87;30;America/Mexico_City;
+
+# @ Mexico, America/Merida
+Mérida, Yucatán;;Mexico;20.97;-89.61;10;America/Merida;
+
+# @ Mexico, America/Mexico_City
+Villahermosa;;Mexico;17.99;-92.92;10;America/Mexico_City;
+
+# @ Mexico, America/Monterrey
+Monterrey;;Mexico;25.67;-100.29;537;America/Monterrey;
+
+# @ Mexico, America/Hermosillo
+Ciudad Obregón;;Mexico;27.49;-109.93;40;America/Hermosillo;
+
+# @ Cuba, America/Havana
+Havana;;Cuba;23.13;-82.37;59;America/Havana;
+Guantánamo;;Cuba;20.14;-75.2;55;America/Havana;
+Santa Clara, Cuba;;Cuba;22.41;-79.94;125;America/Havana;
+
+# @ Bahamas, America/Nassau
+Nassau, Bahamas;;Bahamas;25.07;-77.32;;America/Nassau;
+
+# @ Jamaica, America/Jamaica
+Kingston, Jamaica;;Jamaica;17.98;-76.79;9;America/Jamaica;
+
+# @ Haiti, America/Port-au-Prince
+Port-au-Prince;;Haiti;18.53;-72.32;;America/Port-au-Prince;
+
+# @ Dominican Republic, America/Santo_Domingo
+Santo Domingo;;Dominican Republic;18.5;-69.97;14;America/Santo_Domingo;
+
+# @ USA - Puerto Rico, America/Puerto_Rico
+San Juan, Puerto Rico;Puerto Rico;USA;18.45;-66.06;;America/Puerto_Rico;
+
+# @ Martinique, America/Martinique
+Fort-de-France;;Martinique;14.6;-61.07;;America/Martinique;
+
+# @ Grenada, America/Grenada
+St. George's, Grenada;;Grenada;12.05;-61.74;;America/Grenada;
+
+# @ Barbados, America/Barbados
+Bridgetown;;Barbados;13.11;-59.6;;America/Barbados;
+
+# @ Guatemala, America/Guatemala
+Guatemala City;;Guatemala;14.61;-90.53;1500;America/Guatemala;
+
+# @ El Salvador, America/El_Salvador
+San Salvador;;El Salvador;13.69;-89.18;658;America/El_Salvador;
+
+# @ Honduras, America/Tegucigalpa
+Tegucigalpa;;Honduras;14.1;-87.21;990;America/Tegucigalpa;
+
+# @ Nicaragua, America/Managua
+Managua;;Nicaragua;12.14;-86.24;;America/Managua;
+
+# @ Costa Rica, America/Costa_Rica
+San José, Costa Rica;;Costa Rica;9.93;-84.07;1170;America/Costa_Rica;
+
+# @ Panama, America/Panama
+Panama City;;Panama;8.98;-79.51;2;America/Panama;

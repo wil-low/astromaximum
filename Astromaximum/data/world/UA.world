@@ -1,0 +1,43 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Ukraine, Europe/Kiev
+Kiev;;Ukraine;50.45;30.52;179;Europe/Kiev;
+Cherkasy;;Ukraine;49.44;32.06;110;Europe/Kiev;
+Chernihiv;;Ukraine;51.5;31.3;;Europe/Kiev;
+Chernivtsi;;Ukraine;48.3;25.93;248;Europe/Kiev;
+Dnipropetrovsk;;Ukraine;48.45;34.98;155;Europe/Kiev;
+Donetsk;;Ukraine;48;37.81;169;Europe/Kiev;
+Izmail;;Ukraine;45.35;28.84;;Europe/Kiev;
+Ivano-Frankivsk;;Ukraine;48.92;24.72;244;Europe/Kiev;
+Kharkiv;;Ukraine;49.92;36.32;152;Europe/Kiev;
+Kherson;;Ukraine;46.63;32.58;;Europe/Kiev;
+Khmelnytskyi;;Ukraine;49.42;27;;Europe/Kiev;
+Kirovohrad;;Ukraine;48.5;32.27;124;Europe/Kiev;
+Kryvyi Rih;;Ukraine;47.92;33.25;;Europe/Kiev;
+Kovel;;Ukraine;51.22;24.72;;Europe/Kiev;
+Luhansk;;Ukraine;48.57;39.3;105;Europe/Kiev;
+Lutsk;;Ukraine;50.75;25.34;174;Europe/Kiev;
+Lviv;;Ukraine;49.85;24.02;296;Europe/Kiev;
+Mykolaiv;;Ukraine;46.97;32;;Europe/Kiev;
+Odessa;;Ukraine;46.47;30.73;40;Europe/Kiev;
+Poltava;;Ukraine;49.59;34.55;;Europe/Kiev;
+Rivne;;Ukraine;50.62;26.25;;Europe/Kiev;
+Sumy;;Ukraine;50.92;34.75;;Europe/Kiev;
+Ternopil;;Ukraine;49.57;25.6;;Europe/Kiev;
+Uman;;Ukraine;48.75;30.22;166;Europe/Kiev;
+Vinnytsia;;Ukraine;49.23;28.48;;Europe/Kiev;
+Zhytomyr;;Ukraine;50.25;28.67;221;Europe/Kiev;
+Yaremche;;Ukraine;48.46;24.56;;Europe/Kiev;
+
+# @ Ukraine, Europe/Simferopol
+Kerch;;Ukraine;45.34;36.47;10;Europe/Simferopol;
+Simferopol;;Ukraine;44.95;34.1;350;Europe/Simferopol;
+Yalta;;Ukraine;44.5;34.16;40;Europe/Simferopol;
+
+# @ Ukraine, Europe/Uzhgorod
+Uzhhorod;;Ukraine;48.62;22.3;169;Europe/Uzhgorod;
+
+# @ Ukraine, Europe/Zaporozhye
+Berdyansk;;Ukraine;46.75;36.78;;Europe/Zaporozhye;
+Melitopol;;Ukraine;46.83;35.37;;Europe/Zaporozhye;
+Zaporizhia;;Ukraine;47.83;35.17;;Europe/Zaporozhye;
