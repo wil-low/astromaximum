@@ -132,22 +132,18 @@ function process_country($dir){
 			$cc=preg_replace('/\"\s*$/is','',$cc);
 			$cc=preg_replace('/\#.+/is','',$cc);
 			list($name, $country, $yr, $txtchk, $status, $state, $is_error)=array('','',0,'','','', true);
-			$rec=explode('|', $cc);
+			
+			$rec=explode(';', $cc);
 			if(count($rec)<5){
 				continue;
 			}
+
 			$name=$rec[0];
-			$continent=$rec[4];
-			$continent=preg_replace('/[\n\r]/is','',$continent);
-			$name=preg_replace("/.+?\!/is",'',$name,1);
-			$country=$rec[3];
-			$country=preg_replace('/.+?\$/is','',$country,1);
-			$state='';
-			if(preg_match('/ - (.+)/is',$country,$matches)){
-				$state=$matches[1];
-				$country=preg_replace("/ - (.+)/is",'',$country,1);
-			}
-			$curfn=sprintf("$dir/Data%04d.dat",$i++);
+			$continent='';
+			$state=$rec[1];
+			$country=$rec[2];
+			$curfn=sprintf("$dir/%s.dat",$rec[7]);
+
 			if(!file_exists($curfn)) continue;
 			$FF0=fopen($curfn,"rb");
 			$tr='';
