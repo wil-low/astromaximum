@@ -129,7 +129,7 @@ sub process_ini{
 	my ($city_inf) = @_;
 	print "---- $city_inf ----\n";
 	my $error=0;
-	my $input_file = "$mypath/data/$city_inf.ini.world";
+	my $input_file = "$mypath/data/world/$city_inf.world";
 	open(InF, "<$input_file") or die "No file $input_file";
 	$/="\n";
 	my @clist=<InF>;
@@ -151,9 +151,8 @@ sub process_ini{
 		$cit=~s/\A\s*\"(.+)\"\s*\Z/$1/is;
 		next if $cit=~/\A\s*\Z/is;
 		next if $cit=~/\#/is;
-		my ($city, $state, $country, $latitude, $longitude, $altitude, $timezone) = split(/;/is, $cit);
-		my $id = "ABCD"; #TODO
-		$fname=$newdir.sprintf('/Data%04s.dat',$id);
+		my ($city, $state, $country, $latitude, $longitude, $altitude, $timezone, $id) = split(/;/is, $cit);
+		$fname=$newdir.sprintf('/%04s.dat',$id);
 		if(! -f $fname or $tzonly){
 			print "\n******** $city, $state, $country: $timezone ********\n";
 			$altitude = 0 if !$altitude;

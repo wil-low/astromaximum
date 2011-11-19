@@ -94,11 +94,11 @@ Header fields:
 	0x0007	byte		month
 	0x0008	byte		day  ^ start of period
 	0x0009	short LB	days in period
-	0x000b	short LB	city ID - undecided?
-    0x000d  short LB    latitude = degree * 100
-    0x000f  short LB    longitude = degree * 100
-    0x0011  short LB    altitude, meters
-	0x0013	short LB	city name length
+	0x000b	int LB	city ID - undecided?
+	0x000f  short LB    latitude = degree * 100
+	0x0011  short LB    longitude = degree * 100
+	0x0013  short LB    altitude, meters
+	0x0015	short LB	city name length
 	0x001a	UTF-8		city name (variable length)
 	0x????	short LB	state name length
 	0x????	UTF-8		state name (variable length)

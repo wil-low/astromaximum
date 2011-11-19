@@ -5,6 +5,7 @@ use warnings;
 use Data::Dumper;
 use File::Path;
 require './genconst.pm';
+require './Crc32.pm';
 
 my %unknown_country = (
 	'Jerusalem' => 'Israel',
@@ -21,6 +22,9 @@ my %unknown_country = (
 	'Gibraltar' => 'Gibraltar',
 	'Luxembourg' => 'Luxembourg',
 );
+
+my %id_hash;
+my %city_hash;
 
 # Create a user agent object
 use LWP::UserAgent;
@@ -100,7 +104,28 @@ sub process_ini { # filename
 		}
 		$city =~ s/, .+//; # strip country or state name
 		$city =~ s/ +\(.+//; # strip garbage
-		print (OUTF "$city;$state;$country;$latitude;$longitude;$altitude;$zone;\n");
+		my $coords = "$latitude|$longitude";
+		my $crc32 = new Digest::Crc32();
+		my $crc32hex = sprintf ("%08x", $crc32->strcrc32($coords));
+		
+		my $city1_str = "$city;$state;$country;$region";
+		if (exists ($id_hash{$crc32hex})) {
+			die "Duplicate id $crc32hex for cities '$city1_str', '$id_hash{$crc32hex}'";
+		}
+		else {
+			$id_hash{$crc32hex} = $city1_str;
+		}
+		
+		my $city_compare = "$city;$state;$country";
+		my $city2_str = "$city;$region";
+		if (exists ($id_hash{$city_compare})) {
+			die "Duplicate cities '$city2_str', '$id_hash{$city_compare}'";
+		}
+		else {
+			$id_hash{$city_compare} = $city2_str;
+		}
+
+		print (OUTF "$city;$state;$country;$latitude;$longitude;$altitude;$zone;$crc32hex;\n");
 	}
 	close (OUTF);
 	close (ERRFILE);

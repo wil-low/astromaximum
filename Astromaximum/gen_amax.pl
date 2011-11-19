@@ -396,7 +396,7 @@ sub dbconnect{
 }
 
 sub inject_locations{
-	my($locname, $locnum);
+	my($locname, $locnum) = ('', 0);
 	if($islocal){
 		if(!$_[0]){
 			mydie("Usage: inject_locations.pl <year> <city list> <dest file>\n");
@@ -405,7 +405,7 @@ sub inject_locations{
 		open(IN, "<$_[1]") or mydie("error $!: $_[1]\n");
 		while(my $ln=<IN>){
 			$ln =~ s/#.+//;
-			if($ln=~/(\w+):(Data\d+)\s+(.+)/is){
+			if($ln=~/(\w+):\s*(\w{8})\s+(.+)/is){
 				my $fn="$path/data/archive/$_[0]/$1/$2.dat";
 				if(!$locname){
 					$locname=$3;
@@ -416,6 +416,7 @@ sub inject_locations{
 			}
 		}
 		close(IN);
+		mydie ("No locations found in $_[1]") if $locnum == 0;
 		my $i=scalar(@fn);
 		tools::join_datafiles($_[0], $i, $_[2], \@fn);
 	}
