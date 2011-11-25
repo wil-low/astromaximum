@@ -1,0 +1,390 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ USA - New York, America/New_York
+New York;New York;USA;40.72;-73.99;;America/New_York;9a8bbb46;
+
+# @ USA - Pennsylvania, America/New_York
+Philadelphia;Pennsylvania;USA;39.95;-75.16;;America/New_York;2a547682;
+
+# @ USA - District of Columbia, America/New_York
+Washington;District of Columbia;USA;38.9;-77.03;;America/New_York;cdd87b6c;
+
+# @ USA - Massachusetts, America/New_York
+Boston;Massachusetts;USA;42.36;-71.05;;America/New_York;693c6298;
+
+# @ USA - Louisiana, America/Chicago
+New Orleans;Louisiana;USA;29.96;-90.06;;America/Chicago;ae8b421c;
+
+# @ USA - California, America/Los_Angeles
+Los Angeles;California;USA;34.05;-118.24;;America/Los_Angeles;b72debb1;
+San Francisco;California;USA;37.78;-122.41;;America/Los_Angeles;dd0d0cd2;
+
+# @ USA - Texas, America/Chicago
+Houston;Texas;USA;29.76;-95.37;;America/Chicago;0dbd0ae9;
+
+# @ USA - Colorado, America/Denver
+Denver;Colorado;USA;39.74;-104.97;;America/Denver;d16efb1c;
+
+# @ USA - Illinois, America/Chicago
+Chicago;Illinois;USA;41.88;-87.62;;America/Chicago;0804725e;
+
+# @ USA - Georgia, America/New_York
+Atlanta;Georgia;USA;33.76;-84.38;;America/New_York;61d44d46;
+
+# @ USA - Maine, America/New_York
+Portland;Maine;USA;43.67;-70.26;;America/New_York;3d0cacd4;
+
+# @ USA - New Hampshire, America/New_York
+Concord;New Hampshire;USA;43.21;-71.53;;America/New_York;2118f172;
+
+# @ USA - Vermont, America/New_York
+Montpelier;Vermont;USA;44.25;-72.56;;America/New_York;eeb6b16a;
+
+# @ USA - Rhode Island, America/New_York
+Providence;Rhode Island;USA;41.82;-71.41;606;America/New_York;95c095a3;
+
+# @ USA - Connecticut, America/New_York
+Hartford;Connecticut;USA;41.76;-72.66;;America/New_York;70d40c47;
+
+# @ USA - New York, America/New_York
+Albany;New York;USA;42.65;-73.75;;America/New_York;486c7e78;
+Binghamton;New York;USA;42.1;-75.9;;America/New_York;3e523caa;
+Buffalo;New York;USA;42.9;-78.84;;America/New_York;fd1ff1db;
+Niagara Falls;New York;USA;43.09;-79.01;;America/New_York;8ac67fc7;
+Syracuse;New York;USA;43.05;-76.13;;America/New_York;721f2ab3;
+
+# @ USA - Pennsylvania, America/New_York
+Erie;Pennsylvania;USA;42.13;-80.08;;America/New_York;4b77c873;
+Harrisburg;Pennsylvania;USA;40.27;-76.87;;America/New_York;51811c19;
+Pittsburgh;Pennsylvania;USA;40.44;-79.99;;America/New_York;0ad46e60;
+Scranton;Pennsylvania;USA;41.41;-75.66;;America/New_York;de4b0122;
+
+# @ USA - New Jersey, America/New_York
+Atlantic City;New Jersey;USA;39.38;-74.44;;America/New_York;0fba1bc1;
+
+# @ USA - Delaware, America/New_York
+Dover;Delaware;USA;39.16;-75.52;;America/New_York;7c02d264;
+
+# @ USA - Maryland, America/New_York
+Baltimore;Maryland;USA;39.28;-76.61;;America/New_York;f0945104;
+
+# @ USA - West Virginia, America/New_York
+Charleston;West Virginia;USA;38.35;-81.62;2003;America/New_York;3bea7184;
+Huntington;West Virginia;USA;38.42;-82.41;;America/New_York;ecc48982;
+
+# @ USA - Virginia, America/New_York
+Danville;Virginia;USA;36.59;-79.39;;America/New_York;e068a4b4;
+Charlottesville;Virginia;USA;38.03;-78.47;;America/New_York;790c0a90;
+Richmond;Virginia;USA;37.54;-77.42;;America/New_York;82af56d9;
+Roanoke;Virginia;USA;37.27;-79.93;;America/New_York;4a37051b;
+
+# @ USA - North Carolina, America/New_York
+Asheville;North Carolina;USA;35.58;-82.55;;America/New_York;bf9d3956;
+Charlotte;North Carolina;USA;35.23;-80.83;;America/New_York;70525b3a;
+Greensboro;North Carolina;USA;36.08;-79.81;;America/New_York;8b7ab09c;
+Raleigh;North Carolina;USA;35.82;-78.63;;America/New_York;f0b1438a;
+Rocky Mount;North Carolina;USA;35.94;-77.78;1970;America/New_York;f70fa6d1;
+Wilmington;North Carolina;USA;34.22;-77.9;;America/New_York;545b93df;
+Winston-Salem;North Carolina;USA;36.1;-80.25;;America/New_York;c42638b5;
+
+# @ USA - South Carolina, America/New_York
+Columbia;South Carolina;USA;34;-81.03;;America/New_York;eb4b4905;
+Charleston;South Carolina;USA;32.78;-79.92;;America/New_York;dfd0ce2c;
+Florence;South Carolina;USA;34.18;-79.76;;America/New_York;dd919472;
+Greenville;South Carolina;USA;34.84;-82.38;;America/New_York;f018cfb5;
+Hemingway;South Carolina;USA;33.75;-79.44;;America/New_York;d996df45;
+
+# @ USA - Georgia, America/New_York
+Albany;Georgia;USA;31.58;-84.16;2007;America/New_York;d74a81b6;
+Athens;Georgia;USA;33.95;-83.37;;America/New_York;2af1b41f;
+Augusta;Georgia;USA;33.47;-81.97;;America/New_York;c97d7434;
+Columbus;Georgia;USA;32.49;-84.93;;America/New_York;2dca8ded;
+Waycross;Georgia;USA;31.21;-82.34;;America/New_York;5537ab26;
+Macon;Georgia;USA;32.83;-83.64;;America/New_York;de15d3e4;
+Savannah;Georgia;USA;32.08;-81.08;;America/New_York;cd424e8c;
+
+# @ USA - Florida, America/New_York
+Jacksonville;Florida;USA;30.32;-81.65;;America/New_York;15880c7b;
+Miami;Florida;USA;25.79;-80.21;;America/New_York;2441c774;
+Orlando;Florida;USA;28.53;-81.37;;America/New_York;18274d2c;
+Tallahassee;Florida;USA;30.45;-84.26;;America/New_York;b1970c27;
+Tampa;Florida;USA;27.95;-82.45;4;America/New_York;187e1b7c;
+West Palm Beach;Florida;USA;26.71;-80.05;;America/New_York;5b1d1c5b;
+
+# @ USA - Alabama, America/Chicago
+Birmingham;Alabama;USA;33.65;-86.8;;America/Chicago;d9ccf225;
+Dothan;Alabama;USA;31.23;-85.4;;America/Chicago;3153ebaa;
+Huntsville;Alabama;USA;34.71;-86.58;;America/Chicago;be793ed1;
+Mobile;Alabama;USA;30.69;-88.03;;America/Chicago;c044185b;
+Montgomery;Alabama;USA;32.36;-86.27;;America/Chicago;de1b27d1;
+Tuscaloosa;Alabama;USA;33.21;-87.52;;America/Chicago;85bce066;
+
+# @ USA - Tennessee, America/New_York
+Chattanooga;Tennessee;USA;35.05;-85.26;;America/New_York;2590960c;
+Knoxville;Tennessee;USA;35.97;-83.93;;America/New_York;7de355b2;
+
+# @ USA - Tennessee, America/Chicago
+Memphis;Tennessee;USA;35.12;-89.96;;America/Chicago;910ced25;
+
+# @ USA - Kentucky, America/New_York
+Louisville;Kentucky;USA;38.25;-85.76;;America/New_York;bd8507c8;
+
+# @ USA - Kentucky, America/Chicago
+Bowling Green;Kentucky;USA;36.98;-86.43;;America/Chicago;bf51af60;
+Owensboro;Kentucky;USA;37.76;-87.11;;America/Chicago;88524b0c;
+
+# @ USA - Ohio, America/New_York
+Canton;Ohio;USA;40.81;-81.37;;America/New_York;feb3e9a3;
+Cincinnati;Ohio;USA;39.13;-84.49;;America/New_York;80c7c47d;
+Cleveland;Ohio;USA;41.48;-81.66;;America/New_York;cc361a8f;
+Columbus;Ohio;USA;39.98;-82.97;;America/New_York;110876a5;
+Springfield;Ohio;USA;39.93;-83.79;;America/New_York;8de50d1f;
+Toledo;Ohio;USA;41.67;-83.57;;America/New_York;cdc38b7b;
+
+# @ USA - Michigan, America/Detroit
+Detroit;Michigan;USA;42.33;-83.04;;America/Detroit;7e820330;
+Escanaba;Michigan;USA;45.75;-87.05;;America/Detroit;345fe9f9;
+Lansing;Michigan;USA;42.73;-84.54;;America/Detroit;c3ce9ec0;
+Kalamazoo;Michigan;USA;42.29;-85.58;;America/Detroit;a993ec09;
+Marquette;Michigan;USA;46.55;-87.4;;America/Detroit;90250d1d;
+Saginaw;Michigan;USA;43.42;-83.94;;America/Detroit;c6050aee;
+Traverse City;Michigan;USA;44.77;-85.61;;America/Detroit;4cca9a50;
+
+# @ USA - Michigan, America/Menominee
+Ironwood;Michigan;USA;46.46;-90.15;;America/Menominee;a3139496;
+
+# @ USA - Indiana, America/Indiana/Indianapolis
+Fort Wayne;Indiana;USA;41.08;-85.13;;America/Indiana/Indianapolis;2193be9c;
+Indianapolis;Indiana;USA;39.77;-86.15;2007;America/Indiana/Indianapolis;a95fc3e8;
+Terre Haute;Indiana;USA;39.47;-87.38;;America/Indiana/Indianapolis;64e98677;
+
+# @ USA - Illinois, America/Chicago
+Peoria;Illinois;USA;40.72;-89.6;;America/Chicago;fe29088f;
+Rockford;Illinois;USA;42.27;-89.06;;America/Chicago;6c0098c1;
+Springfield;Illinois;USA;39.78;-89.64;;America/Chicago;105a6743;
+
+# @ USA - Wisconsin, America/Chicago
+Eau Claire;Wisconsin;USA;44.82;-91.49;;America/Chicago;557c0fb2;
+Green Bay;Wisconsin;USA;44.51;-88.01;;America/Chicago;0063c40a;
+La Crosse;Wisconsin;USA;43.81;-91.22;;America/Chicago;334063dc;
+Madison;Wisconsin;USA;43.07;-89.39;;America/Chicago;38ea21d5;
+Milwaukee;Wisconsin;USA;43.05;-87.95;;America/Chicago;6949f53a;
+Oshkosh;Wisconsin;USA;44.02;-88.54;;America/Chicago;c966866c;
+Wausau;Wisconsin;USA;44.95;-89.62;;America/Chicago;15f2a8bd;
+
+# @ USA - Minnesota, America/Chicago
+Duluth;Minnesota;USA;46.79;-92.09;;America/Chicago;f91a0f1e;
+Mankato;Minnesota;USA;44.17;-93.99;;America/Chicago;ae98014b;
+Minneapolis;Minnesota;USA;44.98;-93.26;;America/Chicago;bf2b75a5;
+Moorhead;Minnesota;USA;46.87;-96.76;;America/Chicago;63b5cefc;
+Rochester;Minnesota;USA;44.02;-92.45;;America/Chicago;f5a74e6f;
+St. Cloud;Minnesota;USA;45.55;-94.16;9;America/Chicago;b56e27da;
+
+# @ USA - Iowa, America/Chicago
+Cedar Rapids;Iowa;USA;41.98;-91.66;;America/Chicago;0019d468;
+Council Bluffs;Iowa;USA;41.25;-95.85;;America/Chicago;91a1b407;
+Des Moines;Iowa;USA;41.59;-93.61;;America/Chicago;1eea7aca;
+Dubuque;Iowa;USA;42.5;-90.68;;America/Chicago;470113bf;
+Waterloo;Iowa;USA;42.49;-92.34;;America/Chicago;25d26f27;
+
+# @ USA - Missouri, America/Chicago
+Jefferson City;Missouri;USA;38.58;-92.16;;America/Chicago;b40cc95f;
+Kansas City;Missouri;USA;39.11;-94.58;;America/Chicago;919eeb67;
+Springfield;Missouri;USA;37.19;-93.28;;America/Chicago;c29b75aa;
+St. Louis;Missouri;USA;38.63;-90.19;;America/Chicago;ea5d3cd6;
+
+# @ USA - Arkansas, America/Chicago
+El Dorado;Arkansas;USA;33.21;-92.65;;America/Chicago;3a4bff84;
+Fort Smith;Arkansas;USA;35.37;-94.39;;America/Chicago;5240cfb1;
+Jonesboro;Arkansas;USA;35.83;-90.68;;America/Chicago;d14d0c12;
+Little Rock;Arkansas;USA;34.74;-92.32;;America/Chicago;f214c0ca;
+
+# @ USA - Louisiana, America/Chicago
+Alexandria;Louisiana;USA;31.29;-92.45;;America/Chicago;83f43f72;
+Baton Rouge;Louisiana;USA;30.46;-91.13;;America/Chicago;6ee1750a;
+Lake Charles;Louisiana;USA;30.21;-93.2;;America/Chicago;1c5c2f5f;
+Monroe;Louisiana;USA;32.51;-92.09;;America/Chicago;c048a620;
+Shreveport;Louisiana;USA;32.47;-93.91;;America/Chicago;76f9effa;
+
+# @ USA - Texas, America/Chicago
+Amarillo;Texas;USA;35.2;-101.84;;America/Chicago;67f1129f;
+Austin;Texas;USA;30.25;-97.74;;America/Chicago;7e21669a;
+Beaumont;Texas;USA;30.08;-94.12;;America/Chicago;665ef690;
+Corpus Christi;Texas;USA;27.74;-97.39;;America/Chicago;505fc31e;
+Dallas;Texas;USA;32.78;-96.79;;America/Chicago;31d2941d;
+Laredo;Texas;USA;27.52;-99.48;0;America/Chicago;605f337d;
+Lubbock;Texas;USA;33.57;-101.88;;America/Chicago;b85b2367;
+Midland;Texas;USA;32.01;-102.09;;America/Chicago;1ba6c8b6;
+San Angelo;Texas;USA;31.45;-100.44;;America/Chicago;88eb9a02;
+San Antonio;Texas;USA;29.42;-98.49;;America/Chicago;eae95bcb;
+Waco;Texas;USA;31.55;-97.15;;America/Chicago;fa934383;
+Wichita Falls;Texas;USA;33.9;-98.51;;America/Chicago;4112bbc5;
+
+# @ USA - Texas, America/Denver
+El Paso;Texas;USA;31.79;-106.41;;America/Denver;d0e97946;
+
+# @ USA - Oklahoma, America/Chicago
+Enid;Oklahoma;USA;36.4;-97.87;;America/Chicago;3890ae7e;
+Lawton;Oklahoma;USA;34.6;-98.39;;America/Chicago;226f9da4;
+Oklahoma City;Oklahoma;USA;35.48;-97.53;;America/Chicago;4b3b51a2;
+Tulsa;Oklahoma;USA;36.13;-95.93;;America/Chicago;c398e93d;
+
+# @ USA - Kansas, America/Chicago
+Colby;Kansas;USA;39.39;-101.04;;America/Chicago;56dfa6f0;
+Dodge City;Kansas;USA;37.76;-100.01;;America/Chicago;a16a89af;
+Hays;Kansas;USA;38.88;-99.31;;America/Chicago;3e105e28;
+Kansas City;Kansas;USA;39.11;-94.67;;America/Chicago;2a0ca535;
+Topeka;Kansas;USA;39.06;-95.68;;America/Chicago;1fb1c29b;
+Wichita;Kansas;USA;37.69;-97.33;;America/Chicago;a75167fd;
+
+# @ USA - Nebraska, America/Chicago
+Grand Island;Nebraska;USA;40.92;-98.35;;America/Chicago;c921fd15;
+Lincoln;Nebraska;USA;40.81;-96.67;;America/Chicago;23730cef;
+Norfolk;Nebraska;USA;42.03;-97.42;;America/Chicago;7802e123;
+North Platte;Nebraska;USA;41.14;-100.76;;America/Chicago;c1e971b2;
+Omaha;Nebraska;USA;41.25;-95.99;;America/Chicago;810cc96d;
+
+# @ USA - Nebraska, America/Denver
+Scottsbluff;Nebraska;USA;41.87;-103.65;;America/Denver;96d6a9a8;
+
+# @ USA - South Dakota, America/Chicago
+Aberdeen;South Dakota;USA;45.46;-98.48;;America/Chicago;fc835280;
+Pierre;South Dakota;USA;44.37;-100.33;;America/Chicago;7034dbd1;
+Sioux Falls;South Dakota;USA;43.54;-96.72;;America/Chicago;6a4f4613;
+Watertown;South Dakota;USA;44.9;-97.11;;America/Chicago;b6fa606d;
+
+# @ USA - South Dakota, America/Denver
+Rapid City;South Dakota;USA;44.08;-103.22;;America/Denver;3813013a;
+
+# @ USA - South Dakota, America/Chicago
+Rosebud;South Dakota;USA;43.24;-100.84;;America/Chicago;af7329cd;
+
+# @ USA - North Dakota, America/Chicago
+Bismarck;North Dakota;USA;46.81;-100.77;20;America/Chicago;74f4c62e;
+Fargo;North Dakota;USA;46.88;-96.78;;America/Chicago;5d2df157;
+Grand Forks;North Dakota;USA;47.93;-97.02;;America/Chicago;c19a3e3e;
+Minot;North Dakota;USA;48.23;-101.28;;America/Chicago;f16523ce;
+Williston;North Dakota;USA;48.16;-103.62;;America/Chicago;7e753913;
+
+# @ USA - North Dakota, America/Denver
+Dickinson;North Dakota;USA;46.88;-102.78;;America/Denver;e2e1a56f;
+
+# @ USA - Montana, America/Denver
+Billings;Montana;USA;45.79;-108.53;;America/Denver;b956633f;
+Butte;Montana;USA;46;-112.51;;America/Denver;4255f39d;
+Great Falls;Montana;USA;47.5;-111.28;;America/Denver;e15da209;
+Helena;Montana;USA;46.6;-112.02;;America/Denver;d908657e;
+Kalispell;Montana;USA;48.2;-114.31;;America/Denver;41dd42d1;
+Miles City;Montana;USA;46.41;-105.83;;America/Denver;d9e30e44;
+Missoula;Montana;USA;46.86;-114;;America/Denver;d6d08a00;
+
+# @ USA - Wyoming, America/Denver
+Casper;Wyoming;USA;42.83;-106.32;;America/Denver;6869bb80;
+Cheyenne;Wyoming;USA;41.15;-104.79;;America/Denver;c94fef37;
+Rock Springs;Wyoming;USA;41.59;-109.21;;America/Denver;a75618f3;
+Sheridan;Wyoming;USA;44.8;-106.95;;America/Denver;b4029720;
+
+# @ USA - Colorado, America/Denver
+Aurora;Colorado;USA;39.7;-104.8;;America/Denver;77250f88;
+Boulder;Colorado;USA;40.02;-105.28;;America/Denver;6b850619;
+Colorado Springs;Colorado;USA;38.86;-104.78;;America/Denver;9b0af467;
+Craig;Colorado;USA;40.52;-107.54;;America/Denver;6152df3a;
+Fort Collins;Colorado;USA;40.56;-105.07;;America/Denver;72c9e342;
+Grand Junction;Colorado;USA;39.07;-108.56;;America/Denver;9b5b1c82;
+Pueblo;Colorado;USA;38.27;-104.61;;America/Denver;fb94f908;
+
+# @ USA - New Mexico, America/Denver
+Albuquerque;New Mexico;USA;35.11;-106.6;2;America/Denver;782db163;
+Carlsbad;New Mexico;USA;32.41;-104.23;;America/Denver;e5c5bc8c;
+Clayton;New Mexico;USA;36.45;-103.17;;America/Denver;0ab8799c;
+Gallup;New Mexico;USA;35.52;-108.72;;America/Denver;07b47993;
+Hobbs;New Mexico;USA;32.71;-103.13;;America/Denver;b8086cf5;
+Las Cruces;New Mexico;USA;32.32;-106.76;;America/Denver;99805371;
+Roswell;New Mexico;USA;33.39;-104.52;;America/Denver;1f22efd3;
+Santa Fe;New Mexico;USA;35.67;-105.95;;America/Denver;5499e72f;
+Silver City;New Mexico;USA;32.78;-108.26;;America/Denver;98edfae3;
+
+# @ USA - Arizona, America/Phoenix
+Flagstaff;Arizona;USA;35.2;-111.62;;America/Phoenix;2d71b394;
+Mesa;Arizona;USA;33.42;-111.82;;America/Phoenix;c0bbcdb8;
+Phoenix;Arizona;USA;33.45;-112.06;;America/Phoenix;79db418e;
+Tucson;Arizona;USA;32.22;-110.92;;America/Phoenix;f7a7a7b4;
+Yuma;Arizona;USA;32.69;-114.61;;America/Phoenix;edea4331;
+
+# @ USA - Arizona, America/Denver
+Window Rock;Arizona;USA;35.67;-109.05;;America/Denver;cf8de3de;
+
+# @ USA - Utah, America/Denver
+Cedar City;Utah;USA;37.68;-113.06;;America/Denver;37db2afe;
+Delta;Utah;USA;39.35;-112.56;;America/Denver;0c4746d3;
+Moab;Utah;USA;38.57;-109.54;;America/Denver;b0659de0;
+Provo;Utah;USA;40.24;-111.65;;America/Denver;b4b5a8f0;
+Roosevelt;Utah;USA;40.3;-109.98;;America/Denver;a05c1694;
+Salt Lake City;Utah;USA;40.75;-111.87;;America/Denver;356a3b55;
+
+# @ USA - Idaho, America/Los_Angeles
+Arco;Idaho;USA;43.63;-113.29;;America/Los_Angeles;6972f617;
+Boise;Idaho;USA;43.61;-116.19;;America/Los_Angeles;5b777d60;
+Idaho Falls;Idaho;USA;43.49;-112.02;;America/Los_Angeles;e5f170db;
+McCall;Idaho;USA;44.91;-116.09;;America/Los_Angeles;c7fffe23;
+Montpelier;Idaho;USA;42.32;-111.29;;America/Los_Angeles;a98cadf4;
+Pocatello;Idaho;USA;42.88;-112.44;;America/Los_Angeles;fe1ca848;
+Sandpoint;Idaho;USA;48.27;-116.56;;America/Los_Angeles;a4c7d80b;
+Twin Falls;Idaho;USA;42.58;-114.47;;America/Los_Angeles;b7802d9e;
+
+# @ USA - Washington, America/Los_Angeles
+Bellingham;Washington;USA;48.75;-122.47;;America/Los_Angeles;cac6d799;
+Olympia;Washington;USA;47.04;-122.88;;America/Los_Angeles;71ff154f;
+Seattle;Washington;USA;47.61;-122.32;;America/Los_Angeles;35571092;
+Spokane;Washington;USA;47.66;-117.42;;America/Los_Angeles;6e09617e;
+Tacoma;Washington;USA;47.24;-122.45;;America/Los_Angeles;a70ef6c3;
+Vancouver;Washington;USA;45.63;-122.59;;America/Los_Angeles;3612d885;
+Yakima;Washington;USA;46.6;-120.5;;America/Los_Angeles;b00e5df2;
+
+# @ USA - Oregon, America/Los_Angeles
+Corvallis;Oregon;USA;44.57;-123.27;;America/Los_Angeles;0b29a240;
+Eugene;Oregon;USA;44.05;-123.08;;America/Los_Angeles;617f3e91;
+Medford;Oregon;USA;42.33;-122.85;;America/Los_Angeles;18bbc828;
+Pendleton;Oregon;USA;45.67;-118.79;;America/Los_Angeles;71d571bf;
+Portland;Oregon;USA;45.52;-122.67;;America/Los_Angeles;06cb0901;
+Salem;Oregon;USA;44.93;-123.02;;America/Los_Angeles;0ea585cf;
+
+# @ USA - Nevada, America/Los_Angeles
+Carson City;Nevada;USA;39.16;-119.74;;America/Los_Angeles;3a062e84;
+Elko;Nevada;USA;40.83;-115.76;;America/Los_Angeles;c886a25c;
+Ely;Nevada;USA;39.25;-114.87;;America/Los_Angeles;04473cea;
+Las Vegas;Nevada;USA;36.17;-115.13;;America/Los_Angeles;dd01282b;
+Paradise;Nevada;USA;36.08;-115.11;;America/Los_Angeles;0374ede8;
+Reno;Nevada;USA;39.53;-119.81;;America/Los_Angeles;8e8823f1;
+Sparks;Nevada;USA;39.55;-119.73;;America/Los_Angeles;94042798;
+Sunrise Manor;Nevada;USA;36.18;-115.05;;America/Los_Angeles;f2c0738e;
+
+# @ USA - Nevada, America/Denver
+Jackpot;Nevada;USA;41.98;-114.66;;America/Denver;9f134df4;
+
+# @ USA - California, America/Los_Angeles
+Bakersfield;California;USA;35.37;-119.01;;America/Los_Angeles;13a9c533;
+Berkeley;California;USA;37.87;-122.26;;America/Los_Angeles;3b81aaab;
+Fresno;California;USA;36.75;-119.76;;America/Los_Angeles;920f9c5b;
+Hollywood;California;USA;34.1;-118.32;;America/Los_Angeles;d50deb5e;
+Monterey Park;California;USA;34.05;-118.13;;America/Los_Angeles;02642dd1;
+Oxnard;California;USA;34.19;-119.17;;America/Los_Angeles;b4431687;
+Redding;California;USA;40.58;-122.36;;America/Los_Angeles;0136305c;
+Sacramento;California;USA;38.56;-121.46;;America/Los_Angeles;ef7fa241;
+San Bernardino;California;USA;34.13;-117.28;;America/Los_Angeles;7a20a578;
+San Diego;California;USA;32.72;-117.15;;America/Los_Angeles;dae44be2;
+San Jose;California;USA;37.34;-121.88;;America/Los_Angeles;f50e07fa;
+Santa Ana;California;USA;33.74;-117.87;;America/Los_Angeles;0d97a462;
+Santa Barbara;California;USA;34.43;-119.7;;America/Los_Angeles;75f63c5f;
+Santa Cruz;California;USA;36.97;-122.02;;America/Los_Angeles;7abd2b61;
+Santa Maria;California;USA;34.95;-120.42;;America/Los_Angeles;761590f7;
+Stockton;California;USA;37.98;-121.29;;America/Los_Angeles;89f0bc3b;
+
+# @ USA - Alaska, America/Yakutat
+Yakutat City and Borough;Alaska;USA;59.75;-140.69;;America/Yakutat;7c3230dd;
+
+# @ USA - Alaska, America/Adak
+Unalaska;Alaska;USA;53.89;-166.52;;America/Adak;626ef6d2;
+
+# @ USA - Hawaii, Pacific/Honolulu
+Honolulu;Hawaii;USA;21.31;-157.82;;Pacific/Honolulu;faac5402;

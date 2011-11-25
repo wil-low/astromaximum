@@ -299,21 +299,8 @@ final class Event {
         return s.toString();//s;
     }
 
-    static long localOffset(long date0) { // date0 is in UTC always ?
-        long ofs = GeoList.tzOffset;//-GeoList.localOffset;
-        if (Options.dstExists) {
-            /*
-            System.out.println(date0);
-            System.out.println(GeoList.dstStart);
-            System.out.println(GeoList.dstEnd);
-            System.out.println(GeoList.isSouthern);
-             */
-            int inn = dateBetween(date0, GeoList.dstStart, GeoList.dstEnd);
-            if ((inn == 0) ^ GeoList.isSouthern) {
-                ofs += Astromaximum.MSECINDAY / 24;
-            }
-        }
-        return ofs;
+    static long localOffset(long date0) { // date0 is in UTC always
+        return GeoList.getTZoffset(date0);
     }
 
     /**

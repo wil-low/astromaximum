@@ -1,0 +1,31 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Kazakhstan, Asia/Aqtobe
+Aktobe;;Kazakhstan;50.28;57.17;;Asia/Aqtobe;78f0c18d;
+
+# @ Kazakhstan, Asia/Oral
+Oral;;Kazakhstan;51.23;51.37;;Asia/Oral;8268c317;
+
+# @ Kazakhstan, Asia/Aqtau
+Atyrau;;Kazakhstan;47.12;51.88;;Asia/Aqtau;154ba49d;
+Aktau;;Kazakhstan;43.65;51.15;;Asia/Aqtau;7cb1f484;
+
+# @ Kazakhstan, Asia/Aqtobe
+
+# @ Kazakhstan, Asia/Almaty
+Astana;;Kazakhstan;51.17;71.43;347;Asia/Almaty;ca44e159;
+Kostanay;;Kazakhstan;53.12;63.38;;Asia/Almaty;d373b0b7;
+
+# @ Kazakhstan, Asia/Qyzylorda
+Kyzylorda;;Kazakhstan;44.85;65.52;;Asia/Qyzylorda;b92d40ef;
+
+# @ Kazakhstan, Asia/Almaty
+Shymkent;;Kazakhstan;42.32;69.6;506;Asia/Almaty;b8f52374;
+Jezkazgan;;Kazakhstan;47.78;67.7;;Asia/Almaty;da2f7cd2;
+Karaganda;;Kazakhstan;49.83;73.17;;Asia/Almaty;230eb982;
+Kokshetau;;Kazakhstan;53.28;69.38;;Asia/Almaty;9631087e;
+Pavlodar;;Kazakhstan;52.3;76.95;123;Asia/Almaty;c8a52ad7;
+Semey;;Kazakhstan;50.43;80.27;;Asia/Almaty;f2f2333b;
+Oskemen;;Kazakhstan;49.98;82.62;;Asia/Almaty;e8647f1a;
+Taldykorgan;;Kazakhstan;45.02;78.37;600;Asia/Almaty;a997ac8e;
+Almaty;;Kazakhstan;43.28;76.9;;Asia/Almaty;8b3d222c;

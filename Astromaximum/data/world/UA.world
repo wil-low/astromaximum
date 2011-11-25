@@ -1,0 +1,43 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Ukraine, Europe/Kiev
+Kiev;;Ukraine;50.45;30.52;179;Europe/Kiev;d9d95558;
+Cherkasy;;Ukraine;49.44;32.06;110;Europe/Kiev;92265231;
+Chernihiv;;Ukraine;51.5;31.3;;Europe/Kiev;4f3fab13;
+Chernivtsi;;Ukraine;48.3;25.93;248;Europe/Kiev;817f4edc;
+Dnipropetrovsk;;Ukraine;48.45;34.98;155;Europe/Kiev;c882fb29;
+Donetsk;;Ukraine;48;37.81;169;Europe/Kiev;7c267104;
+Izmail;;Ukraine;45.35;28.84;;Europe/Kiev;50a292e2;
+Ivano-Frankivsk;;Ukraine;48.92;24.72;244;Europe/Kiev;d5163d56;
+Kharkiv;;Ukraine;49.92;36.32;152;Europe/Kiev;c9d17257;
+Kherson;;Ukraine;46.63;32.58;;Europe/Kiev;7e60e90d;
+Khmelnytskyi;;Ukraine;49.42;27;;Europe/Kiev;625d480f;
+Kirovohrad;;Ukraine;48.5;32.27;124;Europe/Kiev;a681773d;
+Kryvyi Rih;;Ukraine;47.92;33.25;;Europe/Kiev;67b91634;
+Kovel;;Ukraine;51.22;24.72;;Europe/Kiev;b5e7d50a;
+Luhansk;;Ukraine;48.57;39.3;105;Europe/Kiev;597209de;
+Lutsk;;Ukraine;50.75;25.34;174;Europe/Kiev;e2d1898a;
+Lviv;;Ukraine;49.85;24.02;296;Europe/Kiev;7c98febf;
+Mykolaiv;;Ukraine;46.97;32;;Europe/Kiev;322ac9ab;
+Odessa;;Ukraine;46.47;30.73;40;Europe/Kiev;c7e7b9e2;
+Poltava;;Ukraine;49.59;34.55;;Europe/Kiev;fe4ec94c;
+Rivne;;Ukraine;50.62;26.25;;Europe/Kiev;977519a3;
+Sumy;;Ukraine;50.92;34.75;;Europe/Kiev;a44b1e71;
+Ternopil;;Ukraine;49.57;25.6;;Europe/Kiev;8fc57713;
+Uman;;Ukraine;48.75;30.22;166;Europe/Kiev;ca4e5b48;
+Vinnytsia;;Ukraine;49.23;28.48;;Europe/Kiev;40e744ef;
+Zhytomyr;;Ukraine;50.25;28.67;221;Europe/Kiev;bc25facc;
+Yaremche;;Ukraine;48.46;24.56;;Europe/Kiev;8f07aa0f;
+
+# @ Ukraine, Europe/Simferopol
+Kerch;;Ukraine;45.34;36.47;10;Europe/Simferopol;1ed6d963;
+Simferopol;;Ukraine;44.95;34.1;350;Europe/Simferopol;d3f8c3ca;
+Yalta;;Ukraine;44.5;34.16;40;Europe/Simferopol;39f4b8a0;
+
+# @ Ukraine, Europe/Uzhgorod
+Uzhhorod;;Ukraine;48.62;22.3;169;Europe/Uzhgorod;8cbe0a74;
+
+# @ Ukraine, Europe/Zaporozhye
+Berdyansk;;Ukraine;46.75;36.78;;Europe/Zaporozhye;6c4e297c;
+Melitopol;;Ukraine;46.83;35.37;;Europe/Zaporozhye;30d87991;
+Zaporizhia;;Ukraine;47.83;35.17;;Europe/Zaporozhye;ed2c702d;

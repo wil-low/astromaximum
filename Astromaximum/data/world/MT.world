@@ -1,0 +1,44 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Cyprus, Europe/Nicosia
+Nicosia;;Cyprus;35.17;33.37;220;Europe/Nicosia;3cbfb7f5;
+
+# @ Greece, Europe/Athens
+Athens;;Greece;37.97;23.72;;Europe/Athens;c2c96446;
+Heraklion;;Greece;35.33;25.13;;Europe/Athens;a785446c;
+
+# @ Turkey, Europe/Istanbul
+Istanbul;;Turkey;41.02;28.97;;Europe/Istanbul;92736b0e;
+Antalya;;Turkey;36.9;30.68;30;Europe/Istanbul;15e5cdbc;
+Ankara;;Turkey;39.87;32.87;938;Europe/Istanbul;6284f2fe;
+Fethiye;;Turkey;36.65;29.12;;Europe/Istanbul;5a534b1f;
+Kemer;;Turkey;36.6;30.55;4;Europe/Istanbul;b631922b;
+Bodrum;;Turkey;37.03;27.43;;Europe/Istanbul;fa81af7c;
+Izmir;;Turkey;38.42;27.13;2;Europe/Istanbul;54c005fa;
+Kuşadası;;Turkey;37.86;27.26;11;Europe/Istanbul;5d6cc867;
+Marmaris;;Turkey;36.85;28.27;;Europe/Istanbul;ac229904;
+Erzurum;;Turkey;39.9;41.27;1900;Europe/Istanbul;3413618d;
+Sarıkamış;;Turkey;40.34;42.57;;Europe/Istanbul;dca66821;
+Side;;Turkey;36.77;31.39;;Europe/Istanbul;5c56e0fd;
+Çeşme;;Turkey;38.32;26.3;0-5;Europe/Istanbul;3b539676;
+Uludağ;;Turkey;40.07;29.22;2543;Europe/Istanbul;04ab65b6;
+
+# @ Tunisia, Africa/Tunis
+Tunis;;Tunisia;36.8;10.18;;Africa/Tunis;861303af;
+
+# @ Egypt, Africa/Cairo
+Alexandria;;Egypt;31.2;29.92;;Africa/Cairo;54a66764;
+Cairo;;Egypt;30.06;31.23;23;Africa/Cairo;04344a48;
+
+# @ Israel, Asia/Jerusalem
+Jerusalem;;Israel;31.78;35.22;754;Asia/Jerusalem;4969f4f3;
+Tel Aviv;;Israel;32.07;34.78;5;Asia/Jerusalem;7bcd4c3e;
+
+# @ Malta, Europe/Malta
+Valletta;;Malta;35.9;14.51;;Europe/Malta;8b3bde29;
+
+# @ Spain, Europe/Madrid
+Palma;;Spain;39.57;2.65;13;Europe/Madrid;6678e918;
+
+# @ Morocco, Africa/Casablanca
+Casablanca;;Morocco;33.53;-7.57;;Africa/Casablanca;474cf469;
