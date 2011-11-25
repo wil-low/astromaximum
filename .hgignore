@@ -7,8 +7,11 @@ Astromaximum/GeoAM/build
 Astromaximum/GeoAM/dist
 Astromaximum/geoLib/build
 Astromaximum/geoLib/dist
+Astromaximum/mutter2/build
+Astromaximum/relgui
 Astromaximum/data/archive
 Astromaximum/data/ephdata/*.dat
 Astromaximum/data/*/*.zip
 Astromaximum/data/*.tbz
 Astromaximum/data/commons
+Astromaximum/data/wikipages
