@@ -63,7 +63,6 @@ mkdir $mypath."data/archive";
 mkdir $mypath."data/archive/$year";
 mkdir $mypath."data/ephdata";
 our $path=$mypath."data/archive/";
-our $city_inf;
 our $hrepl=0;
 my $country='';
 my $tz;
@@ -119,8 +118,16 @@ if($ARGV[0] eq 'common'){
 	die "Cancelled, result=$res" if $res;
 	exit(0);
 }
+elsif ($ARGV[0] eq 'all') {
+	my @inifiles = glob ('./data/world/*.world');
+	foreach my $ini (@inifiles) {
+		if ($ini =~ /world\/(.+)\.world$/) {
+			process_ini ($1);
+		}
+	}
+}
 else{
-	foreach $city_inf(@ARGV){
+	foreach my $city_inf(@ARGV){
 		process_ini($city_inf);
 	}
 }
