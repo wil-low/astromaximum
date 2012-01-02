@@ -386,7 +386,7 @@ sub dbconnect{
 		$DB_PORT='3306';
 
 		$DB_SUPERUSER='gbua_x_astroc8a';
-		$DB_SUPERUSER_PWD='f3cf9cc0';
+		$DB_SUPERUSER_PWD='cc4c0c4b';
 		$DB_USER='user';
 		$DB_USER_PWD='user';
 	}
