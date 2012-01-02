@@ -51,7 +51,7 @@ if ($is_online) {
 	$GLOBALS['amax']['DB_PORT']='3306';
 	
 	$GLOBALS['amax']['DB_SUPERUSER']='gbua_x_astroc8a';
-	$GLOBALS['amax']['DB_SUPERUSER_PWD']='f3cf9cc0';
+	$GLOBALS['amax']['DB_SUPERUSER_PWD']='cc4c0c4b';
 	$GLOBALS['amax']['DB_USER']='user';
 	$GLOBALS['amax']['DB_USER_PWD']='user';
 }
