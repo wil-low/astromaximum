@@ -1,0 +1,79 @@
+body,ul {
+	margin:0;
+}
+.hdr {
+	text-align:center;
+}
+
+ul {
+	list-style-type:none;
+	list-style-position:outside;
+	list-style-image:none;
+	float:left;
+	display:block;
+	padding:2px;
+}
+
+.tab li {
+	font-size:.8em;
+	display:block;
+	margin:0;
+	float: left;
+	position: relative;
+	background:#fff;
+	font-family:sans-serif;
+}
+
+.tab li b {
+	color:red;
+	font-weight:normal;
+}
+
+.tab li div {
+	line-height:90px;
+}
+
+.tab li a {
+	text-decoration:none;
+	background-repeat: no-repeat;
+	background-position: 50% 0%;
+	display:block;
+	padding-top:32px;
+	width:64px;
+	height:36px;
+	text-align:center;
+	white-space:nowrap;
+}
+
+.tab a.vc {
+	background-image:url(/i/vc.png);
+}
+
+.tab a.voc {
+	background-image:url(/i/voc.png);
+}
+
+.tab a.sun_day {
+	background-image:url(/i/sun_day.png);
+}
+
+.tab a.sun_dgr {
+	background-image:url(/i/sun_dgr.png);
+}
+
+.tab a.sun_riseset {
+	background-image:url(/i/sun_riseset.png);
+}
+
+.tab a.moon_day {
+	background-image:url(/i/moon_day.png);
+}
+
+.tab a.moon_sign {
+	background-image:url(/i/moon_sign.png);
+}
+
+.tab a.moon_riseset {
+	background-image:url(/i/moon_riseset.png);
+}
+
