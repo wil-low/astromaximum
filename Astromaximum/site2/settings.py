@@ -60,6 +60,8 @@ MEDIA_ROOT = ''
 MEDIA_URL = ''
 
 IMAGE_ROOT = '/home/willow/amax/site2/i'
+COMMON_DATAFILE_ROOT = '/home/willow/prj/amax-hg/Astromaximum/'
+LOCATION_DATAFILE_ROOT = '/home/willow/prj/amax-hg/Astromaximum/data/archive-tzdata/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -128,7 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'summary',
-    'utils',
+    'amax',
 )
 
 # A sample logging configuration. The only tangible logging

@@ -57,7 +57,7 @@ class Event(models.Model):
     EV_LAST = 53   # last - do not use
     
     year = models.IntegerField(default=-1)
-    city_id = models.IntegerField(null=True)
+    city_id = models.TextField(null=True)
     
     event_type = models.IntegerField(default=EV_LAST)
     datetime0 = models.DateTimeField()
@@ -66,20 +66,30 @@ class Event(models.Model):
     planet1 = models.IntegerField(default=-1)
     degree = models.IntegerField(default=127)
 
-    def __init__(self):
-        self.date0 = self.date1 = 0
- 
-    def save(self, *args, **kwargs):
-        self.datetime0 = self.date0
-        self.datetime1 = self.date1
-        super(Event, self).save(*args, **kwargs)
-
     @staticmethod
     def date_to_string(date):
         "converts datetime to YYYY-MM-DD string"
         return "%04d-%02d-%02d" % (date.year, date.month, date.day)
 
-    def __str__(self):
+    def __unicode__(self):
         "simple stub"
-        return "Event %s: %s-%s %s,%s %s" % (self.type, self.date0, self.date1, self.planet0, self.planet1, self.degree)
+        return "Event y %s, city %s type %s: %s %s %s,%s %s" % (
+            self.year, self.city_id, self.event_type,
+            self.datetime0, self.datetime1, 
+            self.planet0, self.planet1, self.degree)
+    
+    class Meta:
+        ordering = ['datetime0']
         
+class Location(models.Model):
+    city_hash = models.TextField()
+    name = models.TextField()
+    state = models.TextField(null=True)
+    country = models.TextField()
+    timezone =  models.TextField()
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    altitude = models.FloatField()
+    
+    def __unicode__(self):
+        return self.city_hash
