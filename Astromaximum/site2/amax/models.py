@@ -1,6 +1,20 @@
 from django.db import models
 
 class Event(models.Model):
+    SE_SUN = 0
+    SE_MOON = 1
+    SE_MERCURY = 2
+    SE_VENUS = 3
+    SE_MARS = 4
+    SE_JUPITER = 5
+    SE_SATURN = 6
+    SE_URANUS = 7
+    SE_NEPTUNE = 8
+    SE_PLUTO = 9
+    SE_TRUE_NODE = 10
+    SE_MEAN_APOG = 11
+    SE_WHITE_MOON = 12
+    
     EV_VOC = 0  # void of course
     EV_SIGN_ENTER = 1  # enter into sign
     EV_ASP_EXACT = 2  # exact aspect
@@ -73,6 +87,12 @@ class Event(models.Model):
 
     def __unicode__(self):
         "simple stub"
+        """
+        return "%s, %s %s %s,%s %s" % (
+            self.event_type,
+            self.datetime0, self.datetime1, 
+            self.planet0, self.planet1, self.degree)
+        """
         return "Event y %s, city %s type %s: %s %s %s,%s %s" % (
             self.year, self.city_id, self.event_type,
             self.datetime0, self.datetime1, 

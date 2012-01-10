@@ -207,6 +207,14 @@ def main():
     #df = DataFile('/home/willow/amax/data/archive-tzdata/2012/ancients/09fcc911.dat', 0)
     #df.read_sub_data(df.print_event)
 
+def get_event_on_period(period0, period1, event_type, planet):
+    return Event.objects.filter(datetime0__gte=period0, datetime0__lt=period1,
+        event_type__exact=event_type, planet0__exact=planet).order_by('datetime0')
+    
+def get_event_on_period_q(period0, period1, q):
+    return Event.objects.filter(datetime0__gte=period0, datetime0__lt=period1). \
+        filter(q).order_by('datetime0')
+
 if __name__ == '__main__':
     main()
 

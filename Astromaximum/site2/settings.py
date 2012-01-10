@@ -129,8 +129,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'summary',
     'amax',
+    'desktop',
+    'm',
+    'mobi',
 )
 
 # A sample logging configuration. The only tangible logging
