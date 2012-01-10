@@ -61,7 +61,7 @@
 	    <arg value="${gen.conf}"/>
 	    <arg value="${year}"/>
 	    <arg value="${lang}"/>
-	    <arg value="loclist_default.txt"/>
+	    <arg value="${loc.list}"/>
 	    <arg value="${basedir}/${dist.dir}/${dist.jar}"/>
 	</exec>
     </target>

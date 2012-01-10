@@ -27,7 +27,7 @@ import javax.microedition.lcdui.Image;
  * @noinspection CastToConcreteClass
  */
 final class DataFile {
-    public static final Event[] events = new Event[50];
+    public static final Event[] events = new Event[100];
 
     private static final int EF_DATE = 0x1; // contains 2nd date - 4b
     private static final int EF_PLANET1 = 0x2; // contains 1nd planet - 1b

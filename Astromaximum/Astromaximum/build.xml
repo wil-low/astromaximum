@@ -112,6 +112,7 @@
     <target name="post-jar" description="Copy into common dir">
         <antcall target="copy.template" inheritall="true" inheritrefs="true">
             <param name="gen.conf" value="${config.active}"/>
+	    <param name="loc.list" value="loclist_default.txt"/>
         </antcall>
     </target>
 
