@@ -1,6 +1,4 @@
-world:Data0000 Kiev
-world:Data0001 New York
-world:Data0002 Sydney
+UA:d9d95558 Kiev
 
 #ancients:Data0002 m.Olympos
 #ancients:Data0003 Lhasa
