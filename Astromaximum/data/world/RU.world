@@ -1,0 +1,73 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Russia - GMT +4, Europe/Moscow
+Moscow;GMT +4;Russia;55.75;37.62;;Europe/Moscow;0785f285;
+Armavir;GMT +4;Russia;45;41.12;;Europe/Moscow;c27179fb;
+Astrakhan;GMT +4;Russia;46.32;48.04;;Europe/Moscow;39ab68c7;
+Belgorod;GMT +4;Russia;50.6;36.6;;Europe/Moscow;70243b29;
+Bryansk;GMT +4;Russia;53.25;34.37;;Europe/Moscow;5dd32382;
+Cherepovets;GMT +4;Russia;59.2;37.9;;Europe/Moscow;658715b2;
+Yaroslavl;GMT +4;Russia;57.62;39.85;;Europe/Moscow;ea45d3b6;
+Kaluga;GMT +4;Russia;54.55;36.28;;Europe/Moscow;9667d5b9;
+Kazan;GMT +4;Russia;55.78;49.17;;Europe/Moscow;0b865a2e;
+Krasnodar;GMT +4;Russia;45.03;38.97;;Europe/Moscow;008fe970;
+Kursk;GMT +4;Russia;51.72;36.18;;Europe/Moscow;dce174cd;
+Nizhny Novgorod;GMT +4;Russia;56.33;44;;Europe/Moscow;9d707531;
+Oryol;GMT +4;Russia;52.97;36.07;;Europe/Moscow;f9c0de8b;
+Pskov Oblast;GMT +4;Russia;57.32;29.25;;Europe/Moscow;652a1ce8;
+Rostov-on-Don;GMT +4;Russia;47.23;39.7;;Europe/Moscow;df907e8e;
+Saransk;GMT +4;Russia;54.18;45.18;;Europe/Moscow;f8429abe;
+Smolensk;GMT +4;Russia;54.78;32.05;;Europe/Moscow;76703a6c;
+Sochi;GMT +4;Russia;43.59;39.72;;Europe/Moscow;b7547679;
+Saint Petersburg;GMT +4;Russia;59.95;30.32;;Europe/Moscow;e893ccc5;
+Tambov;GMT +4;Russia;52.72;41.43;;Europe/Moscow;f28406aa;
+Tver;GMT +4;Russia;56.86;35.92;;Europe/Moscow;29eb95f3;
+Vladimir;GMT +4;Russia;56.15;40.42;;Europe/Moscow;371cc62a;
+Voronezh;GMT +4;Russia;51.67;39.21;;Europe/Moscow;48e1a0c5;
+Elista;GMT +4;Russia;46.32;44.27;;Europe/Moscow;d842e447;
+Kislovodsk;GMT +4;Russia;43.92;42.72;;Europe/Moscow;87dd6cdd;
+Lipetsk;GMT +4;Russia;52.62;39.6;;Europe/Moscow;32d197df;
+Makhachkala;GMT +4;Russia;42.97;47.5;;Europe/Moscow;75d659b2;
+Novorossiysk;GMT +4;Russia;44.72;37.77;;Europe/Moscow;851fbd3b;
+Penza;GMT +4;Russia;53.2;45.02;;Europe/Moscow;631acef4;
+Tuapse;GMT +4;Russia;44.1;39.08;;Europe/Moscow;c1725828;
+Vladikavkaz;GMT +4;Russia;43.02;44.65;;Europe/Moscow;3a868cc8;
+
+# @ Russia - GMT +6, Asia/Yekaterinburg
+Chelyabinsk;GMT +6;Russia;55.15;61.38;;Asia/Yekaterinburg;b1c336f5;
+Orenburg;GMT +6;Russia;51.78;55.1;;Asia/Yekaterinburg;bea5b0d3;
+Perm;GMT +6;Russia;58;56.32;;Asia/Yekaterinburg;fd8d6b2e;
+Tobolsk;GMT +6;Russia;58.2;68.26;;Asia/Yekaterinburg;5cbe7d0f;
+Tyumen;GMT +6;Russia;57.15;65.53;;Asia/Yekaterinburg;fbdc0f91;
+Ufa;GMT +6;Russia;54.75;55.97;;Asia/Yekaterinburg;3afc4cd0;
+Yekaterinburg;GMT +6;Russia;56.83;60.58;;Asia/Yekaterinburg;c88d6304;
+
+# @ Russia - GMT +10, Asia/Yakutsk
+Chita;GMT +10;Russia;52.05;113.47;;Asia/Yakutsk;9ea44e32;
+
+# @ Russia - GMT +9, Asia/Irkutsk
+Irkutsk;GMT +9;Russia;52.31;104.3;;Asia/Irkutsk;96e626a5;
+
+# @ Russia - GMT +3, Europe/Kaliningrad
+Kaliningrad;GMT +3;Russia;54.72;20.52;;Europe/Kaliningrad;a67ae5ff;
+
+# @ Russia - GMT +8, Asia/Krasnoyarsk
+Krasnoyarsk;GMT +8;Russia;56.02;93.07;;Asia/Krasnoyarsk;c032a2ee;
+
+# @ Russia - GMT +7, Asia/Novosibirsk
+Novosibirsk;GMT +7;Russia;55.02;82.93;;Asia/Novosibirsk;78762868;
+
+# @ Russia - GMT +7, Asia/Omsk
+Omsk;GMT +7;Russia;54.98;73.37;;Asia/Omsk;ebe5db14;
+
+# @ Russia - GMT +5, Europe/Samara
+Samara;GMT +5;Russia;53.23;50.17;;Europe/Samara;0c1716cd;
+
+# @ Russia - GMT +4, Europe/Volgograd
+Saratov;GMT +4;Russia;51.53;46.02;;Europe/Volgograd;735d7c4b;
+Volgograd;GMT +4;Russia;48.7;44.52;;Europe/Volgograd;997e8790;
+
+# @ Russia - GMT +11, Asia/Vladivostok
+Birobidzhan;GMT +11;Russia;48.78;132.93;;Asia/Vladivostok;6875ac90;
+Khabarovsk;GMT +11;Russia;48.48;135.07;;Asia/Vladivostok;1a80d7bc;
+Vladivostok;GMT +11;Russia;43.13;131.9;;Asia/Vladivostok;99bb0014;

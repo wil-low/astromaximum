@@ -1,0 +1,63 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Poland, Europe/Warsaw
+Warsaw;;Poland;52.23;21.01;;Europe/Warsaw;193152f2;
+Bydgoszcz;;Poland;53.12;18;60;Europe/Warsaw;79f5d6fd;
+Przemyśl;;Poland;49.78;22.77;;Europe/Warsaw;de2fb047;
+Zielona Góra;;Poland;51.93;15.5;71;Europe/Warsaw;0c526803;
+Jelenia Góra;;Poland;50.9;15.73;350;Europe/Warsaw;a8368fea;
+Częstochowa;;Poland;50.8;19.12;;Europe/Warsaw;65caacf6;
+Lublin;;Poland;51.25;22.57;;Europe/Warsaw;17772255;
+Szczecin;;Poland;53.42;14.58;;Europe/Warsaw;e23efdfc;
+Katowice;;Poland;50.25;19;;Europe/Warsaw;e56dbe9f;
+Łódź;;Poland;51.78;19.47;162-278;Europe/Warsaw;b7fa8161;
+Olsztyn;;Poland;53.78;20.5;;Europe/Warsaw;0c22a61e;
+Kielce;;Poland;50.88;20.62;;Europe/Warsaw;f9ec5ba4;
+Białystok;;Poland;53.12;23.15;;Europe/Warsaw;6a740848;
+Poznań;;Poland;52.4;16.92;;Europe/Warsaw;1c26745a;
+Gdańsk;;Poland;54.37;18.63;;Europe/Warsaw;ae36f5c8;
+Wrocław;;Poland;51.11;17.04;105-155;Europe/Warsaw;f9b72eb8;
+Kraków;;Poland;50.06;19.94;219;Europe/Warsaw;2e65b7ec;
+
+# @ Czech Republic, Europe/Prague
+Prague;;Czech Republic;50.08;14.42;;Europe/Prague;d0fdcf14;
+Brno;;Czech Republic;49.2;16.62;237;Europe/Prague;95f9a84c;
+Karlovy Vary;;Czech Republic;50.23;12.87;447;Europe/Prague;696b78cc;
+Ostrava;;Czech Republic;49.84;18.29;;Europe/Prague;727d8b69;
+Liberec;;Czech Republic;50.72;15.07;374;Europe/Prague;d2f2cfad;
+České Budějovice;;Czech Republic;48.97;14.47;;Europe/Prague;9bc9cf6d;
+
+# @ Slovakia, Europe/Bratislava
+Bratislava;;Slovakia;48.14;17.11;134;Europe/Bratislava;ff6530db;
+Košice;;Slovakia;48.72;21.25;206;Europe/Bratislava;1451beb0;
+Žilina;;Slovakia;49.22;18.74;;Europe/Bratislava;83ab2a63;
+Prešov;;Slovakia;49;21.24;250;Europe/Bratislava;48df10d9;
+
+# @ Hungary, Europe/Budapest
+Budapest;;Hungary;47.47;19.05;;Europe/Budapest;89cffdc4;
+Eger;;Hungary;47.9;20.37;;Europe/Budapest;30ea02e2;
+Szombathely;;Hungary;47.24;16.62;;Europe/Budapest;ee15ccad;
+Tatabánya;;Hungary;47.59;18.39;;Europe/Budapest;8f7dfe8a;
+Pécs;;Hungary;46.07;18.23;;Europe/Budapest;81ae38d2;
+Debrecen;;Hungary;47.53;21.64;;Europe/Budapest;12631c66;
+Szeged;;Hungary;46.26;20.15;;Europe/Budapest;25a690d2;
+Kecskemét;;Hungary;46.9;19.69;;Europe/Budapest;87f6fab9;
+
+# @ Romania, Europe/Bucharest
+Bucharest;;Romania;44.43;26.1;;Europe/Bucharest;df4ef21c;
+Constanța;;Romania;44.17;28.64;25;Europe/Bucharest;f459c206;
+Brăila;;Romania;45.27;27.96;;Europe/Bucharest;a4e1c36e;
+Brașov;;Romania;45.67;25.62;600;Europe/Bucharest;0a57ddc9;
+Alexandria;;Romania;43.97;25.33;;Europe/Bucharest;d4197bf1;
+Arad;;Romania;46.17;21.32;;Europe/Bucharest;19b00cc1;
+Craiova;;Romania;44.33;23.82;;Europe/Bucharest;e2d2eed2;
+Satu Mare;;Romania;47.79;22.89;;Europe/Bucharest;06b1ba88;
+Ploiești;;Romania;44.94;26.03;;Europe/Bucharest;3eb58638;
+
+# @ Bulgaria, Europe/Sofia
+Sofia;;Bulgaria;42.7;23.33;550;Europe/Sofia;3f9a5707;
+Varna;;Bulgaria;43.22;27.92;80;Europe/Sofia;fcaa5897;
+Plovdiv;;Bulgaria;42.15;24.75;164;Europe/Sofia;4a121d07;
+Burgas;;Bulgaria;42.5;27.47;30;Europe/Sofia;6f4b83a7;
+Pleven;;Bulgaria;43.42;24.62;116;Europe/Sofia;afe8e231;
+Vidin;;Bulgaria;43.98;22.87;34;Europe/Sofia;5b1f2e73;

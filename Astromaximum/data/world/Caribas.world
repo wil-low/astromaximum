@@ -1,0 +1,76 @@
+## city, state, country, latitude, longitude, altitude, timezone
+
+# @ Mexico, America/Tijuana
+Tijuana;;Mexico;32.53;-117.02;20;America/Tijuana;4e152b7e;
+
+# @ Mexico, America/Chihuahua
+Ciudad Juárez;;Mexico;31.74;-106.48;1137;America/Chihuahua;587a26b5;
+
+# @ Mexico, America/Mazatlan
+Culiacán;;Mexico;24.8;-107.38;;America/Mazatlan;67ddc192;
+
+# @ Mexico, America/Mexico_City
+Mexico City;;Mexico;19.43;-99.12;2420;America/Mexico_City;03c4c30d;
+Guadalajara;;Mexico;20.67;-103.34;1566;America/Mexico_City;b92fce7a;
+Nuevo Laredo;;Mexico;27.49;-99.5;;America/Mexico_City;597dbc73;
+Tampico;;Mexico;22.26;-97.86;10;America/Mexico_City;5af1e934;
+Acapulco;;Mexico;16.86;-99.87;30;America/Mexico_City;9f40857d;
+
+# @ Mexico, America/Merida
+Mérida;;Mexico;20.97;-89.61;10;America/Merida;913a2818;
+
+# @ Mexico, America/Mexico_City
+Villahermosa;;Mexico;17.99;-92.92;10;America/Mexico_City;2ee51e9d;
+
+# @ Mexico, America/Monterrey
+Monterrey;;Mexico;25.67;-100.29;537;America/Monterrey;54935b78;
+
+# @ Mexico, America/Hermosillo
+Ciudad Obregón;;Mexico;27.49;-109.93;40;America/Hermosillo;0ab6b117;
+
+# @ Cuba, America/Havana
+Havana;;Cuba;23.13;-82.37;59;America/Havana;745f348a;
+Guantánamo;;Cuba;20.14;-75.2;55;America/Havana;e537d35a;
+Santa Clara;;Cuba;22.41;-79.94;125;America/Havana;8bd40098;
+
+# @ Bahamas, America/Nassau
+Nassau;;Bahamas;25.07;-77.32;;America/Nassau;ca3f771c;
+
+# @ Jamaica, America/Jamaica
+Kingston;;Jamaica;17.98;-76.79;9;America/Jamaica;db4cc333;
+
+# @ Haiti, America/Port-au-Prince
+Port-au-Prince;;Haiti;18.53;-72.32;;America/Port-au-Prince;8f36536c;
+
+# @ Dominican Republic, America/Santo_Domingo
+Santo Domingo;;Dominican Republic;18.5;-69.97;14;America/Santo_Domingo;c90bf631;
+
+# @ USA - Puerto Rico, America/Puerto_Rico
+San Juan;Puerto Rico;USA;18.45;-66.06;;America/Puerto_Rico;c0606795;
+
+# @ Martinique, America/Martinique
+Fort-de-France;;Martinique;14.6;-61.07;;America/Martinique;49ce82fa;
+
+# @ Grenada, America/Grenada
+St. George's;;Grenada;12.05;-61.74;;America/Grenada;43bba14f;
+
+# @ Barbados, America/Barbados
+Bridgetown;;Barbados;13.11;-59.6;;America/Barbados;61a4d409;
+
+# @ Guatemala, America/Guatemala
+Guatemala City;;Guatemala;14.61;-90.53;1500;America/Guatemala;cae01be9;
+
+# @ El Salvador, America/El_Salvador
+San Salvador;;El Salvador;13.69;-89.18;658;America/El_Salvador;83e86f69;
+
+# @ Honduras, America/Tegucigalpa
+Tegucigalpa;;Honduras;14.1;-87.21;990;America/Tegucigalpa;0205ade9;
+
+# @ Nicaragua, America/Managua
+Managua;;Nicaragua;12.14;-86.24;;America/Managua;c7fac70f;
+
+# @ Costa Rica, America/Costa_Rica
+San José;;Costa Rica;9.93;-84.07;1170;America/Costa_Rica;cb2e1d11;
+
+# @ Panama, America/Panama
+Panama City;;Panama;8.98;-79.51;2;America/Panama;b3e4c0fb;

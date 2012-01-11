@@ -1,6 +1,6 @@
 This file describes special data formats used in the project.
 
-*** common.dat ***
+*** common.dat version 1 ***
 
 Purpose - contains **Event record** bundle (location-independent)
 Created by:
@@ -48,7 +48,7 @@ Header fields:
 	0x0004	short LB	<location data length array>
 	...					see **Loc record**
 
-*** Loc record ***
+*** Loc record v1 ***
 
 Purpose - contains **Event record** bundle for a certain city.
 Created by:
@@ -79,6 +79,55 @@ Header fields:
             short LB    latitude = degree * 100
             short LB    altitude, meters
 	
+*** Loc record v2+ ***
+
+Purpose - contains **Event record** bundle for a certain city.
+Created by:
+	geoCoord.pl (event calculation)
+Used in:
+	Datafile.java - retrieving events
+	
+Header fields:
+	0x0000	byte[4]		"S&WA" - constant signature
+	0x0004	byte		version (2)
+	0x0005	short LB	year
+	0x0007	byte		month
+	0x0008	byte		day  ^ start of period
+	0x0009	short LB	days in period
+	0x000b	int LB	city ID - undecided?
+	0x000f  short LB    latitude = degree * 100
+	0x0011  short LB    longitude = degree * 100
+	0x0013  short LB    altitude, meters
+	0x0015	short LB	city name length
+	0x001a	UTF-8		city name (variable length)
+	0x????	short LB	state name length
+	0x????	UTF-8		state name (variable length)
+	0x????	short LB	country name length
+	0x????	UTF-8		country name (variable length)
+	0x????	short LB	timezone name length
+	0x????	UTF-8		timezone name (variable length)
+    0x0015	short LB	customData length
+    0x????	byte[]		customData (variable length)
+	0x0017	byte		timezone transition count
+			  ...			see **TZ transition record**
+		
+              ...			see **Event record**
+
+
+*** TZ transition record ***
+Purpose - holds start and end period of timezone offset
+Created by:
+	mutter2/mutter (event calculation)
+Used in:
+	Datafile.java - retrieving events
+
+Header fields:
+	int LB      start date (UTC time), mins
+	short LB	timezone offset. Real TZofs=(tz-16*60)*60000 msec.
+	short LB	timezone name length
+	UTF-8		timezone name
+
+
 *** data/*.ini ***
 
 Purpose - contains location sets to be calculated and loaded into DB.
