@@ -19,6 +19,12 @@ def summary(request, year, month, day):
          & (Q(event_type__exact=Event.EV_RISE) | Q(event_type__exact=Event.EV_SET)) 
     event_list['rise_set'] = amax.datafile.get_event_on_period_q(current_date, next_date, q)
     
+    event_list['sun_degree'] = amax.datafile.get_event_on_period(current_date, next_date, Event.EV_DEGREE_PASS, Event.SE_SUN)
+    event_list['moon_sign'] = amax.datafile.get_event_on_period(current_date, next_date, Event.EV_SIGN_ENTER, Event.SE_MOON)
+
+    event_list['sun_day'] = amax.datafile.get_event_on_period(current_date, next_date, Event.EV_RISE, Event.SE_SUN)
+    event_list['moon_day'] = amax.datafile.get_event_on_period(current_date, next_date, Event.EV_RISE, Event.SE_MOON)
+
     params = {
               'current_date': current_date.strftime("%Y-%m-%d"),
               'prev_date': prev_date.strftime("%Y-%m-%d"),
