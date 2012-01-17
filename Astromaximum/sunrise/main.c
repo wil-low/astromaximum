@@ -76,6 +76,12 @@ int readByte(FILE* fn){
     return res;
 }
 
+const char* readUTF(FILE* fn, char* dest){
+    int len = readShort(fn);
+    fread(dest, len, 1, fn);
+    return dest;
+}
+
 struct Event_ {
     long date0, date1;
 };
@@ -119,6 +125,12 @@ int printLocalTime(time_t date, int isSunrise){
     return dst;
 }
 
+void printEvent(struct Event_* event)
+{
+    printf("Event type %d %d\n", event->date0, event->date1);
+    
+}
+
 int main(int argc, char** argv) { // data filename
     if(argc==1){
         printf("Usage: sunrise <filename> [YYYY-MM-DD HH:MM]\n");
@@ -141,37 +153,46 @@ int main(int argc, char** argv) { // data filename
             }
         }
     }
-    int df_year = readShort(fn);
-    fseek(fn, 2, SEEK_CUR);
-    short cd_len=readShort(fn); // customData length
-    fseek(fn, 2, SEEK_CUR);
-    short len=readShort(fn); // cityName length
-    fseek(fn, len, SEEK_CUR);
-    tzOffset=readShort(fn);
-    dstExists = (tzOffset & (1 << 15))==0;
-    tzOffset &= (1 << 15) - 1;
-    tzOffset -= 16 * 60;
-    tzOffset *= 60;
-    long d_1, d_2;
-    if (dstExists) {
-        d_1 = readInt(fn) * 60 - tzOffset;
-        d_2 = readInt(fn) * 60 - tzOffset - 3600;
-        if(d_1<d_2){ // N hemisphere
-            dstStart=d_1; dstEnd=d_2;
-        }
-        else{
-            dstStart=d_2; dstEnd=d_1; isSouthern=1;
+    int list_events = 0;
+    int evtype_needed = 3; // EV_RISE
+    int planet_needed = 0; // SE_SUN
+    
+    int df_year = 0;
+    char buffer[255];
+    fseek(fn, 4, SEEK_CUR); // signature
+    char version = readByte(fn);
+    if (version == 2) {
+        df_year = readShort(fn);
+        fseek(fn, 4, SEEK_CUR); // month, day, days in period
+        int city_id = readInt(fn); // city id
+        fseek(fn, 2 * 3, SEEK_CUR); // coords
+        readUTF(fn, buffer); // city
+        readUTF(fn, buffer); // state
+        readUTF(fn, buffer); // country
+        readUTF(fn, buffer); // timezone
+        readUTF(fn, buffer); // custom data
+        int transitionCount = readByte(fn);
+        /*
+        transitionTimes = new long[transitionCount];
+        transitionOffsets = new long[transitionCount];
+        transitionNames = new String[transitionCount];
+         */
+        int i = 0;
+        for (; i < transitionCount; ++i) {
+            fseek(fn, 4 + 2, SEEK_CUR); // start_date, gmt_ofs_min
+            readUTF(fn, buffer); // name
         }
     }
-    fseek(fn, cd_len, SEEK_CUR);
+    else {
+        printf("Unknown version %d\n", version);
+    }    
     struct Event_ last, result;
     result.date0=result.date1=0;
-    int evtype=3; // EV_RISE
     int PERIOD = 24 * 60; int skipOff, flag;
     while (1) {
         fseek(fn, 1, SEEK_CUR);
         int rub = readUnsignedByte(fn);
-        while (evtype != rub) {
+        while (evtype_needed != rub) {
             skipOff = readShort(fn) - 3;
             if (skipOff < 0) {
                     printf ("%s: skipOff < 0 at %s, ln %d\n", argv[1], __FILE__, __LINE__);
@@ -183,7 +204,7 @@ int main(int argc, char** argv) { // data filename
         }
         skipOff = readShort(fn);
         flag = readShort(fn);
-        if (!readUnsignedByte(fn)) {
+        if (readUnsignedByte(fn) == planet_needed) {
             break;
         } 
         else {
@@ -221,9 +242,8 @@ int main(int argc, char** argv) { // data filename
     now=dayStart;
     dayStart-=(tm_.tm_hour*3600 + tm_.tm_min*60 + tm_.tm_sec);
     dayEnd=dayStart+PERIOD*60;
-    int planet=0; // SE_SUN
 
-    char myplanet0 = planet, myplanet1 = -1;
+    char myplanet0 = planet_needed, myplanet1 = -1;
     int mydgr = 127;
     long mydate0, mydate1;
 /*
@@ -293,10 +313,14 @@ int main(int argc, char** argv) { // data filename
             last.date1 = mydate0;
         }
 //        printf("%d (%d, %d)\n", i, last.date0, last.date1);
-        if (isInPeriod(&last, dayStart, dayEnd)) {
+        if (list_events) {
             res_count++;
-                result=last;
-                break;
+            printEvent(&last);
+        }
+        else if (isInPeriod(&last, dayStart, dayEnd)) {
+            res_count++;
+            result=last;
+            break;
         } 
 /*        else{
             if(res_count){
@@ -309,8 +333,12 @@ int main(int argc, char** argv) { // data filename
         last.date1 = mydate1;
         if(feof(fn)) break;
     }
-    if (isInPeriod(&last, dayStart, dayEnd)) {
-            result=last;
+    if (list_events) {
+        res_count++;
+        printEvent(&last);
+    }
+    else if (isInPeriod(&last, dayStart, dayEnd)) {
+        result=last;
     }
     fclose(fn);
     if(!result.date0){
