@@ -126,8 +126,10 @@ int main(int argc, char** argv) { // data filename
         return 0;
     }
     FILE *fn=fopen(argv[1], "rb");
-    if(!fn)
+    if(!fn) {
+        printf("Cannot open file: %s\n", argv[1]);
         return -1;
+    }
     unsigned int my_year=0, my_month=0, my_day=0, my_hour=0, my_min=0;
     if(argc>=3){
         if(sscanf(argv[2], "%04d-%02d-%02d", &my_year, &my_month, &my_day) != 3){
@@ -139,8 +141,7 @@ int main(int argc, char** argv) { // data filename
             }
         }
     }
-    int df_year=0;
-    fread(&df_year, 2, 1, fn);
+    int df_year = readShort(fn);
     fseek(fn, 2, SEEK_CUR);
     short cd_len=readShort(fn); // customData length
     fseek(fn, 2, SEEK_CUR);
