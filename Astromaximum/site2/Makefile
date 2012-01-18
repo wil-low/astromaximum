@@ -1,7 +1,7 @@
 all: deploy
 
 deploy_prod:
-	bash scripts/make_archive.sh '/nfs/http6/amdj/site2/'
+	bash scripts/make_archive.sh '/home/amdj/site2/'
 
 deploy_dev:
 	bash scripts/make_archive.sh '/home/willow/amax/site_amdj/'

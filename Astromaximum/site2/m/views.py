@@ -37,4 +37,4 @@ def summary(request, year, month, day):
               'event_list': event_list,
               }
     c = RequestContext(request, params)
-    return render_to_response('summary.html', context_instance=c)
+    return render_to_response('m/summary.html', context_instance=c)
