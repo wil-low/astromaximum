@@ -12,6 +12,6 @@ i/a0.png:
 	bash scripts/svg2png.sh
 
 clean:
-	
+	rm -f i/*.png
 
 .PHONY: deploy_prod deploy_dev art all
