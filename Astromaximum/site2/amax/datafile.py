@@ -24,6 +24,10 @@ class DataFile:
         self.city_id = 0
 
     def read_byte(self, fd):
+        val, = struct.unpack('b', fd.read(1))
+        return val
+    
+    def read_ubyte(self, fd):
         val, = struct.unpack('B', fd.read(1))
         return val
     
@@ -72,7 +76,7 @@ class DataFile:
             version = self.read_byte(fd)
             if version == 2:
                 self.read_YMD(fd)
-                self.city_id = '%08x' % self.read_int(fd)  # city id
+                self.city_id = '%08x' % self.read_uint(fd)  # city id
                 # latitude, longitude, altitude
                 self.coords = [self.read_short(fd), self.read_short(fd), self.read_short(fd)]
                 print self.startJD, self.finalJD, self.dayCount
@@ -100,6 +104,7 @@ class DataFile:
        
     def read_events(self, fd, event_func):
         last = Event()
+        last.date0 = last.date1 = 0
      
         fnext_date2 = 0
         period = 24 * 60
@@ -133,6 +138,7 @@ class DataFile:
                 cumul = 0
                 date = 0
                 print last.event_type, flag, planet, count
+                print 'flags:', fcumul_date_b, fcumul_date_w, fdate, fplanet1, fplanet2, fdegree, fshort_degree, fnext_date2
                 for i in range(count):
                     if fcumul_date_b:
                         if i:
@@ -164,7 +170,7 @@ class DataFile:
                         
                     if fdegree:
                         if fshort_degree:
-                            mydgr = self.read_byte(fd)
+                            mydgr = self.read_ubyte(fd)
                         else:
                             mydgr = self.read_short(fd)
                             
@@ -172,40 +178,42 @@ class DataFile:
                         last.date1 = mydate0
                         mydate1 = self.finalJD
                         
-                    last.planet0 = myplanet0
-                    last.planet1 = myplanet1
-                    last.degree = mydgr
-                    last.date0 = mydate0
-                    last.date1 = mydate1
-                    
+                    #if event_count < 30 and last.event_type == 3 and last.planet0 == 0:
                     new_event = Event()
                     new_event.year = self.year
                     new_event.city_id = self.city_id
                     new_event.event_type = last.event_type
                     new_event.datetime0 = datetime.utcfromtimestamp(last.date0)
                     new_event.datetime1 = datetime.utcfromtimestamp(last.date1)
+                    new_event.date0 = last.date0
+                    new_event.date1 = last.date1
                     new_event.planet0 = last.planet0
                     new_event.planet1 = last.planet1
                     new_event.degree = last.degree
-                    #print new_event.__unicode__()
-                    #print last.date0, last.date1, new_event.datetime0, new_event.datetime1
-                    #return
                     event_func(new_event)
-                    
                     event_count += 1
+
+                    last.date0 = mydate0
+                    last.date1 = mydate1
+                    last.planet0 = myplanet0
+                    last.planet1 = myplanet1
+                    last.degree = mydgr
+                    
         except (struct.error):
             print 'EOF reached'
         return event_count
 
     def process_event(self, event):
-        #print event.__unicode__()
         event.save()
 
+    def print_event(self, event):
+        print event.__unicode__()
+
 def main():
-    df = DataFile('/home/willow/prj/amax-hg/Astromaximum/2012.comm', 1)
-    df.read_sub_data(df.process_event)
-    #df = DataFile('/home/willow/amax/data/archive-tzdata/2012/ancients/09fcc911.dat', 0)
-    #df.read_sub_data(df.print_event)
+    #df = DataFile('/home/willow/prj/amax-hg/Astromaximum/2012.comm', 1)
+    #df.read_sub_data(df.process_event)
+    df = DataFile('/home/willow/amax/data/archive-tzdata/2012/UA/d9d95558.dat', 0)
+    df.read_sub_data(df.print_event)
 
 def get_event_on_period(period0, period1, event_type, planet):
     return Event.objects.filter(datetime0__gte=period0, datetime0__lt=period1,

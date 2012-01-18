@@ -74,6 +74,11 @@ class Event(models.Model):
     city_id = models.TextField(null=True)
     
     event_type = models.IntegerField(default=EV_LAST)
+    
+    # these fields can be removed later
+    date0 = models.IntegerField()
+    date1 = models.IntegerField()
+    
     datetime0 = models.DateTimeField()
     datetime1 = models.DateTimeField()
     planet0 = models.IntegerField(default=-1)
@@ -85,19 +90,23 @@ class Event(models.Model):
         "converts datetime to YYYY-MM-DD string"
         return "%04d-%02d-%02d" % (date.year, date.month, date.day)
 
+#    def __init__(self, *args, **kwargs): 
+#        super(Event, self).__init__(*args, **kwargs)
+#        self.dates = Event.date_to_string(self.datetime0) + '/' + Event.date_to_string(self.datetime1)
+
     def __unicode__(self):
-        "simple stub"
-        """
-        return "%s, %s %s %s,%s %s" % (
-            self.event_type,
-            self.datetime0, self.datetime1, 
-            self.planet0, self.planet1, self.degree)
-        """
-        return "Event y %s, city %s type %s: %s %s %s,%s %s" % (
+        return u"Event y %s, city %s type %s %s,%s %s: (%s %s)" % (
             self.year, self.city_id, self.event_type,
-            self.datetime0, self.datetime1, 
-            self.planet0, self.planet1, self.degree)
+            self.planet0, self.planet1, self.degree,
+            #self.date0, self.date1,
+            self.datetime0, self.datetime1)
     
+    def time0(self):
+        return "%s" % self.datetime0.strftime('%H:%M')
+    
+    def time1(self):
+        return "%s" % self.datetime1.strftime('%H:%M')
+
     class Meta:
         ordering = ['datetime0']
         
