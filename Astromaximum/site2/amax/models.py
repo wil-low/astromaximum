@@ -70,6 +70,8 @@ class Event(models.Model):
     EV_TATTVAS = 52
     EV_LAST = 53   # last - do not use
     
+    CONSTELL = ["Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqu", "Psc"]
+    
     year = models.IntegerField(default=-1)
     city_id = models.TextField(null=True)
     
@@ -95,10 +97,10 @@ class Event(models.Model):
 #        self.dates = Event.date_to_string(self.datetime0) + '/' + Event.date_to_string(self.datetime1)
 
     def __unicode__(self):
-        return u"Event y %s, city %s type %s %s,%s %s: (%s %s)" % (
+        return u"Event y %s, city %s type %s %s,%s %s: (%s %s) (%s %s)" % (
             self.year, self.city_id, self.event_type,
             self.planet0, self.planet1, self.degree,
-            #self.date0, self.date1,
+            self.date0, self.date1,
             self.datetime0, self.datetime1)
     
     def time0(self):
@@ -106,6 +108,24 @@ class Event(models.Model):
     
     def time1(self):
         return "%s" % self.datetime1.strftime('%H:%M')
+    
+    def get_degree(self):
+        return self.degree & 0x3ff
+
+    def get_degree_type(self):
+        return (self.degree >> 14) & 0x3
+
+    def degree_number(self):
+        return str(self.get_degree() % 30 + 1)
+
+    def degree_zodiac(self):
+        return Event.CONSTELL[self.get_degree() / 30]
+
+    def phase_url(self):
+        return "/i/phases/ph50-%02d.png" % self.get_degree()
+
+    def zodiac_url(self):
+        return "/i/z%d.png" % self.get_degree()
 
     class Meta:
         ordering = ['datetime0']

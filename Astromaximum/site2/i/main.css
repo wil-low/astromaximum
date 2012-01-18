@@ -69,11 +69,10 @@ ul {
 	background-image:url(/i/moon_day.png);
 }
 
-.tab a.moon_sign {
-	background-image:url(/i/moon_sign.png);
-}
-
 .tab a.moon_riseset {
 	background-image:url(/i/moon_riseset.png);
 }
 
+.event_list {
+    font-size: 60%;
+}

@@ -21,13 +21,12 @@
 		<li>{% include "includes/vc.html" %}</li>
 		<li>{% include "includes/vocs.html" %}</li>
 		<li><a href="sun_day" class="sun_day">Day 14</a></li>
-		<li><a href="sun_dgr" class="sun_dgr">9&deg; Cap</a></li>
+		<li>{% include "includes/sun_dgr.html" %}</li>
 		<li><a href="sun_riseset" class="sun_riseset"><b>07:54<br/>17:10</b></a></li>
-		<li><a href="moon_day" class="moon_day">Day 13</a></li>
-		<li><a href="moon_sign" class="moon_sign">Gem<br/></a></li>
+		<li>{% include "includes/moon_day.html" %}</li>
+		<li>{% include "includes/moon_sign.html" %}</li>
 		<li><a href="moon_riseset" class="moon_riseset">14:45<br/>05:18</a></li>
-		<li><a href="moon_phase" class="moon_phase">Waxing<br/>gibbous</a></li>
-		<li><a href="tithi" class="tithi">Tithi<br/>13</a></li>
+		<li>{% include "includes/tithi.html" %}</li>
 		<li><a href="moon_move" class="moon_move"><img src="/i/z2.png" alt="Gem"/><img src="/i/p6.png" alt="Sa"/><img src="/i/a1.png" alt="120"/></a></li>
 		<li>
 			<a href="#" class="degree"><img src="/i/mo_p.png" alt="Mo+"/></a>
@@ -35,22 +34,25 @@
 			</li>
 	</ul>
 	<p>&nbsp;</p>
-
-	<h1>Events for today:</h1>
-    <h2>Rise, set</h2>
-    <p>{{ event_list.rise_set }}</p>
-    <h2>Vocs</h2>
-    <p>{{ event_list.vocs }}</p>
-    <h2>VC</h2>
-    <p>{{ event_list.vc }}</p>
-    <h2>Sun degree</h2>
-    <p>{{ event_list.sun_degree }}</p>
-    <h2>Moon sign</h2>
-    <p>{{ event_list.moon_sign }}</p>
-    <h2>Sun day</h2>
-    <p>{{ event_list.sun_day }}</p>
-    <h2>Moon day</h2>
-    <p>{{ event_list.moon_day }}</p>
+    <div class="event_list">
+    	<h1>Events for today:</h1>
+        <h2>Rise, set</h2>
+        <p>{{ event_list.rise_set }}</p>
+        <h2>Vocs</h2>
+        <p>{{ event_list.vocs }}</p>
+        <h2>VC</h2>
+        <p>{{ event_list.vc }}</p>
+        <h2>Sun degree</h2>
+        <p>{{ event_list.sun_degree }}</p>
+        <h2>Moon sign</h2>
+        <p>{{ event_list.moon_sign }}</p>
+        <h2>Sun day</h2>
+        <p>{{ event_list.sun_day }}</p>
+        <h2>Moon day</h2>
+        <p>{{ event_list.moon_day }}</p>
+        <h2>Tithi</h2>
+        <p>{{ event_list.tithi }}</p>
+    </div>
 </body>
 </html>
 
