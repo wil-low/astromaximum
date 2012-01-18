@@ -3,6 +3,8 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+PROJECT_ROOT = '/home/willow/amax/site2/'
+
 ADMINS = (
     # ('willow', 'aivushkin@gmail.com'),
 )
@@ -23,7 +25,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/willow/amax/site2/amax_dj.sdb',
+        'NAME': PROJECT_ROOT + 'amax_dj.sdb',
     }
 }
 
@@ -59,9 +61,9 @@ MEDIA_ROOT = ''
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = ''
 
-IMAGE_ROOT = '/home/willow/amax/site2/i'
-COMMON_DATAFILE_ROOT = '/home/willow/prj/amax-hg/Astromaximum/'
-LOCATION_DATAFILE_ROOT = '/home/willow/prj/amax-hg/Astromaximum/data/archive-tzdata/'
+IMAGE_ROOT = PROJECT_ROOT + 'i/'
+COMMON_DATAFILE_ROOT = PROJECT_ROOT + 'data/commons/'
+LOCATION_DATAFILE_ROOT = PROJECT_ROOT + 'data/locations/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -114,7 +116,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
-    "/home/willow/amax/site2/!deploy/templates",
+    PROJECT_ROOT + 'templates/',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
