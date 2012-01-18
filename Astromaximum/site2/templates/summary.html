@@ -16,9 +16,9 @@
 	    {{ current_date }}
 	    <a href="../{{ next_date }}/summary">&gt;&gt;</a>
 	    - <a href="location">Kiev</a></div>
-<!--	    
+	    
 	<ul class="tab">
-		<li><a href="vc" class="vc"><b>00:00<br/>03:12</b></a></li>
+		<li>{% include "includes/vc.html" %}</li>
 		<li><a href="voc" class="voc"></a></li>
 		<li><a href="sun_day" class="sun_day">Day 14</a></li>
 		<li><a href="sun_dgr" class="sun_dgr">9&deg; Cap</a></li>
@@ -35,7 +35,7 @@
 			</li>
 	</ul>
 	<p>&nbsp;</p>
--->
+
 	<h1>Events for today:</h1>
     <h2>Rise, set</h2>
     <p>{{ event_list.rise_set }}</p>
