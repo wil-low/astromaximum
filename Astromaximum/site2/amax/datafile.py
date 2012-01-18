@@ -209,19 +209,31 @@ class DataFile:
     def print_event(self, event):
         print event.__unicode__()
 
+class EventSelector():
+    def __init__(self, year, period0, period1):
+        self.set_year(year)
+        self.set_period(period0, period1)
+
+    def set_year(self, year):
+        self.year = year
+
+    def set_period(self, period0, period1):
+        self.period0 = period0
+        self.period1 = period1
+
+    def get_event_on_period(self, event_type, planet):
+        return Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1,
+            event_type__exact=event_type, planet0__exact=planet).order_by('datetime0')
+        
+    def get_event_on_period_q(self, q):
+        return Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1). \
+            filter(q).order_by('datetime0')
+
 def main():
     #df = DataFile('/home/willow/prj/amax-hg/Astromaximum/2012.comm', 1)
     #df.read_sub_data(df.process_event)
     df = DataFile('/home/willow/amax/data/archive-tzdata/2012/UA/d9d95558.dat', 0)
     df.read_sub_data(df.print_event)
-
-def get_event_on_period(period0, period1, event_type, planet):
-    return Event.objects.filter(datetime0__gte=period0, datetime0__lt=period1,
-        event_type__exact=event_type, planet0__exact=planet).order_by('datetime0')
-    
-def get_event_on_period_q(period0, period1, q):
-    return Event.objects.filter(datetime0__gte=period0, datetime0__lt=period1). \
-        filter(q).order_by('datetime0')
 
 if __name__ == '__main__':
     main()

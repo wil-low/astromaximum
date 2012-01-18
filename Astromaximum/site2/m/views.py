@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.db.models import Q
 from amax.models import Event
 import datetime
-from amax.datafile import get_event_on_period, get_event_on_period_q
+from amax.datafile import EventSelector
 
 def summary(request, year, month, day):
     "prints home page"
@@ -11,25 +11,31 @@ def summary(request, year, month, day):
     prev_date = (current_date + datetime.timedelta(days=-1))
     next_date = (current_date + datetime.timedelta(days=1))
 
+    es = EventSelector(year, current_date, next_date)
     event_list = {}
-    event_list['vocs'] = get_event_on_period(current_date, next_date, Event.EV_VOC, Event.SE_MOON)
-    event_list['vc'] = get_event_on_period(current_date, next_date, Event.EV_VIA_COMBUSTA, Event.SE_MOON)
+    event_list['vocs'] = es.get_event_on_period(Event.EV_VOC, Event.SE_MOON)
+    event_list['vc'] = es.get_event_on_period(Event.EV_VIA_COMBUSTA, Event.SE_MOON)
     
-    q = (Q(planet0__exact=Event.SE_SUN) | Q(planet0__exact=Event.SE_MOON)) \
-         & (Q(event_type__exact=Event.EV_RISE) | Q(event_type__exact=Event.EV_SET)) 
-    event_list['rise_set'] = get_event_on_period_q(current_date, next_date, q)
+    q_sun = Q(planet0__exact=Event.SE_SUN)
+    q_moon = Q(planet0__exact=Event.SE_MOON)
+    q_rise = Q(event_type__exact=Event.EV_RISE)
+    q_set = Q(event_type__exact=Event.EV_SET)
+
+    event_list['sun_rise'] = es.get_event_on_period_q(q_sun & q_rise)
+    event_list['sun_set'] = es.get_event_on_period_q(q_sun & q_set)
+    event_list['moon_rise'] = es.get_event_on_period_q(q_moon & q_rise)
+    event_list['moon_set'] = es.get_event_on_period_q(q_moon & q_set)
     
-    event_list['sun_degree'] = get_event_on_period(current_date, next_date, Event.EV_DEGREE_PASS, Event.SE_SUN)
-    event_list['moon_sign'] = get_event_on_period(current_date, next_date, Event.EV_SIGN_ENTER, Event.SE_MOON)
+    event_list['sun_degree'] = es.get_event_on_period(Event.EV_DEGREE_PASS, Event.SE_SUN)
+    event_list['moon_sign'] = es.get_event_on_period(Event.EV_SIGN_ENTER, Event.SE_MOON)
 
-    event_list['sun_day'] = get_event_on_period(current_date, next_date, Event.EV_RISE, Event.SE_SUN)
-    event_list['moon_day'] = get_event_on_period(current_date, next_date, Event.EV_RISE, Event.SE_MOON)
+    event_list['sun_day'] = es.get_event_on_period(Event.EV_RISE, Event.SE_SUN)
+    event_list['moon_day'] = es.get_event_on_period(Event.EV_RISE, Event.SE_MOON)
 
-    event_list['tithi'] = get_event_on_period(current_date, next_date, Event.EV_TITHI, Event.SE_MOON)
+    event_list['tithi'] = es.get_event_on_period(Event.EV_TITHI, Event.SE_MOON)
 
-    date_begin = (current_date + datetime.timedelta(days=0))
-    date_end = (current_date + datetime.timedelta(days=365))
-
+    event_list['moon_move'] = es.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON)
+    
     params = {
               'current_date': current_date.strftime("%Y-%m-%d"),
               'prev_date': prev_date.strftime("%Y-%m-%d"),

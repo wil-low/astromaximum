@@ -22,12 +22,12 @@
 		<li>{% include "m/includes/vocs.html" %}</li>
 		<li><a href="sun_day" class="sun_day">Day 14</a></li>
 		<li>{% include "m/includes/sun_dgr.html" %}</li>
-		<li><a href="sun_riseset" class="sun_riseset"><b>07:54<br/>17:10</b></a></li>
+		<li>{% include "m/includes/sun_riseset.html" %}</li>
 		<li>{% include "m/includes/moon_day.html" %}</li>
 		<li>{% include "m/includes/moon_sign.html" %}</li>
-		<li><a href="moon_riseset" class="moon_riseset">14:45<br/>05:18</a></li>
+		<li>{% include "m/includes/moon_riseset.html" %}</li>
 		<li>{% include "m/includes/tithi.html" %}</li>
-		<li><a href="moon_move" class="moon_move"><img src="/i/z2.png" alt="Gem"/><img src="/i/p6.png" alt="Sa"/><img src="/i/a1.png" alt="120"/></a></li>
+		<li><a href="moon_move" class="moon_move"><img src="/i/z2.png" alt="Gem"/><img src="/i/p6.png" alt="Sa"/><img src="/i/a1.png" alt="120&deg;"/></a></li>
 		<li>
 			<a href="#" class="degree"><img src="/i/mo_p.png" alt="Mo+"/></a>
 			<a href="#" class="degree"><img src="/i/me_m.png" alt="Mo+"/></a>
@@ -36,8 +36,12 @@
 	<p>&nbsp;</p>
     <div class="event_list">
     	<h1>Events for today:</h1>
-        <h2>Rise, set</h2>
-        <p>{{ event_list.rise_set }}</p>
+        <h2>Sun riseset</h2>
+        <p>{{ event_list.sun_rise }}</p>
+        <p>{{ event_list.sun_set }}</p>
+        <h2>Moon riseset</h2>
+        <p>{{ event_list.moon_rise }}</p>
+        <p>{{ event_list.moon_set }}</p>
         <h2>Vocs</h2>
         <p>{{ event_list.vocs }}</p>
         <h2>VC</h2>
@@ -52,6 +56,8 @@
         <p>{{ event_list.moon_day }}</p>
         <h2>Tithi</h2>
         <p>{{ event_list.tithi }}</p>
+        <h2>Moon move</h2>
+        <p>{{ event_list.moon_move }}</p>
     </div>
 </body>
 </html>
