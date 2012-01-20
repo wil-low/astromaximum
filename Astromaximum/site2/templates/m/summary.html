@@ -20,7 +20,7 @@
 	<ul class="tab">
 		<li>{% include "m/includes/vc.html" %}</li>
 		<li>{% include "m/includes/vocs.html" %}</li>
-		<li><a href="sun_day" class="sun_day">Day 14</a></li>
+		<li>{% include "m/includes/sun_day.html" %}</li>
 		<li>{% include "m/includes/sun_dgr.html" %}</li>
 		<li>{% include "m/includes/sun_riseset.html" %}</li>
 		<li>{% include "m/includes/moon_day.html" %}</li>
@@ -58,8 +58,8 @@
         <p>{{ event_list.tithi }}</p>
         <h2>Moon move</h2>
         <p>{{ event_list.moon_move }}</p>
-        <h2>Navroz</h2>
-        <p>{{ event_list.navroz }}</p>
+        <h2>pltDaySun</h2>
+        <p>{{ event_list.pltDaySun }}</p>
     </div>
 </body>
 </html>

@@ -70,6 +70,8 @@ class Event(models.Model):
     EV_TATTVAS = 52
     EV_LAST = 53   # last - do not use
     
+    SECINDAY = 24 * 60 * 60
+    
     CONSTELL = ["Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqu", "Psc"]
     
     year = models.IntegerField(default=-1)

@@ -36,8 +36,21 @@ def summary(request, year, month, day):
 
     event_list['moon_move'] = es.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON)
     
+    # sun day with Navroz
     es.set_period(es.zeroJD(), es.finalJD())
-    event_list['navroz'] = es.get_event_on_period(Event.EV_NAVROZ, Event.SE_SUN)
+    navroz_events = es.get_event_on_period(Event.EV_NAVROZ, Event.SE_SUN)
+    navroz = navroz_events[1].date0
+    sunrise = event_list['sun_rise'][0].date0
+    if sunrise < navroz:
+        navroz = navroz_events[0].date0
+    pltDaySun = int((sunrise - navroz) / Event.SECINDAY + 0.5)
+    if pltDaySun < 360:
+        pltDaySun = pltDaySun % 30 + 1
+    else:
+        pltDaySun = -(pltDaySun - 359)
+    sun_day_event = event_list['sun_rise'][0]
+    sun_day_event.degree = pltDaySun
+    event_list['sun_day'] = [sun_day_event,]
 
     params = {
               'current_date': current_date.strftime("%Y-%m-%d"),
