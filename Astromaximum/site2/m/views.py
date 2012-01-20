@@ -34,8 +34,6 @@ def summary(request, year, month, day):
 
     event_list['tithi'] = es.get_event_on_period(Event.EV_TITHI, Event.SE_MOON)
 
-    event_list['moon_move'] = es.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON)
-    
     # sun day with Navroz
     es.set_period(es.zeroJD(), es.finalJD())
     navroz_events = es.get_event_on_period(Event.EV_NAVROZ, Event.SE_SUN)
@@ -51,6 +49,13 @@ def summary(request, year, month, day):
     sun_day_event = event_list['sun_rise'][0]
     sun_day_event.degree = pltDaySun
     event_list['sun_day'] = [sun_day_event,]
+
+    #aspects
+    es.set_period(current_date, next_date)
+    event_list['aspects'] = es.get_aspects_on_period(False)
+
+    #es.set_period(prev_date, next_date)
+    event_list['moon_move'] = es.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON)
 
     params = {
               'current_date': current_date.strftime("%Y-%m-%d"),

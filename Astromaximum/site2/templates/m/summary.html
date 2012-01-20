@@ -27,7 +27,8 @@
 		<li>{% include "m/includes/moon_sign.html" %}</li>
 		<li>{% include "m/includes/moon_riseset.html" %}</li>
 		<li>{% include "m/includes/tithi.html" %}</li>
-		<li><a href="moon_move" class="moon_move"><img src="/i/z2.png" alt="Gem"/><img src="/i/p6.png" alt="Sa"/><img src="/i/a1.png" alt="120&deg;"/></a></li>
+		<li>{% include "m/includes/moon_move.html" %}</li>
+        <li>{% include "m/includes/aspects.html" %}</li>
 		<li>
 			<a href="#" class="degree"><img src="/i/mo_p.png" alt="Mo+"/></a>
 			<a href="#" class="degree"><img src="/i/me_m.png" alt="Mo+"/></a>
@@ -58,8 +59,8 @@
         <p>{{ event_list.tithi }}</p>
         <h2>Moon move</h2>
         <p>{{ event_list.moon_move }}</p>
-        <h2>pltDaySun</h2>
-        <p>{{ event_list.pltDaySun }}</p>
+        <h2>Aspects</h2>
+        <p>{{ event_list.aspects }}</p>
     </div>
 </body>
 </html>

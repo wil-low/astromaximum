@@ -1,0 +1,3 @@
+{% for ev in event_list.moon_move %} 
+<a href="moon_move" class="moon_move"><img src="{{ ev.planet0_url }}"/><img src="{{ ev.aspect_url }}" alt="{{ ev.degree }}&deg;"/><img src="{{ ev.planet1_url }}"/></a><br/> 
+{% endfor %}

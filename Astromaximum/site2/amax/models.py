@@ -74,6 +74,8 @@ class Event(models.Model):
     
     CONSTELL = ["Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqu", "Psc"]
     
+    ASPECT = {0: 0, 180: 1, 120: 2, 90: 3, 60: 4, 5: 45}
+    
     year = models.IntegerField(default=-1)
     city_id = models.TextField(null=True)
     
@@ -136,6 +138,15 @@ class Event(models.Model):
     def zodiac_url(self):
         return "/i/z%d.png" % self.get_degree()
     
+    def planet0_url(self):
+        return "/i/p%d.png" % self.planet0
+
+    def planet1_url(self):
+        return "/i/p%d.png" % self.planet1
+
+    def aspect_url(self):
+        return "/i/a%d.png" % Event.ASPECT[self.degree]
+
     @staticmethod
     def date_between(date0, start, end):
         if date0 < start:

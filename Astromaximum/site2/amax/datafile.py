@@ -1,4 +1,5 @@
 import struct
+from django.db.models import Q
 from calendar import timegm
 from pprint import pprint
 from models import Event
@@ -241,6 +242,16 @@ class EventSelector():
 
     def finalJD(self):
         return datetime(self.year + 1, 1, 1)
+
+    def get_aspects_on_period(self, is_moon):
+        q = Q(planet0__exact=Event.SE_MOON) | Q(planet1__exact=Event.SE_MOON)
+        if not is_moon:
+            q = ~q
+            
+        return Event.objects.filter(year__exact=self.year,
+                                    datetime0__gte=self.period0, datetime0__lt=self.period1,
+                                    event_type__exact=Event.EV_ASP_EXACT). \
+            filter(q).order_by('datetime0')
         
 def main():
     # import amax.datafile; amax.datafile.main()
