@@ -178,30 +178,37 @@ class DataFile:
                         last.date1 = mydate0
                         mydate1 = self.finalJD
                         
-                    #if event_count < 30 and last.event_type == 3 and last.planet0 == 0:
-                    new_event = Event()
-                    new_event.year = self.year
-                    new_event.city_id = self.city_id
-                    new_event.event_type = last.event_type
-                    new_event.datetime0 = datetime.utcfromtimestamp(last.date0)
-                    new_event.datetime1 = datetime.utcfromtimestamp(last.date1)
-                    new_event.date0 = last.date0
-                    new_event.date1 = last.date1
-                    new_event.planet0 = last.planet0
-                    new_event.planet1 = last.planet1
-                    new_event.degree = last.degree
+                    new_event = self.clone_event(last)
                     event_func(new_event)
                     event_count += 1
-
+                    
                     last.date0 = mydate0
                     last.date1 = mydate1
                     last.planet0 = myplanet0
                     last.planet1 = myplanet1
                     last.degree = mydgr
-                    
+
+                new_event = self.clone_event(last)
+                event_func(new_event)
+                event_count += 1
+
         except (struct.error):
             print 'EOF reached'
         return event_count
+
+    def clone_event(self, event):
+        new_event = Event()
+        new_event.year = self.year
+        new_event.city_id = self.city_id
+        new_event.event_type = event.event_type
+        new_event.datetime0 = datetime.utcfromtimestamp(event.date0)
+        new_event.datetime1 = datetime.utcfromtimestamp(event.date1)
+        new_event.date0 = event.date0
+        new_event.date1 = event.date1
+        new_event.planet0 = event.planet0
+        new_event.planet1 = event.planet1
+        new_event.degree = event.degree
+        return new_event
 
     def process_event(self, event):
         event.save()
@@ -236,6 +243,8 @@ class EventSelector():
         return datetime(self.year + 1, 1, 1)
         
 def main():
+    # import amax.datafile; amax.datafile.main()
+
     #df = DataFile('/home/willow/prj/amax-hg/Astromaximum/2012.comm', 1)
     #df.read_sub_data(df.process_event)
     df = DataFile('/home/willow/amax/data/archive-tzdata/2012/UA/d9d95558.dat', 0)
