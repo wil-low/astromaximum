@@ -5,6 +5,10 @@ from amax.models import Event
 import datetime
 from amax.datafile import EventSelector
 
+def today_summary(request):
+    today = datetime.datetime.now()
+    return summary(request, today.year, today.month, today.day)
+
 def summary(request, year, month, day):
     "prints home page"
     current_date = datetime.datetime(int(year), int(month), int(day))
