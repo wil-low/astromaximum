@@ -51,12 +51,18 @@ def summary(request, year, month, day):
     event_list['sun_day'] = [sun_day_event,]
 
     #aspects
-    es.set_period(current_date, next_date)
+    es.set_period(prev_date, next_date)
     event_list['aspects'] = es.get_aspects_on_period(False)
 
-    #es.set_period(prev_date, next_date)
-    event_list['moon_move'] = es.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON)
+    es.set_period((current_date + datetime.timedelta(days=-2)), (next_date + datetime.timedelta(days=+2)))
+    event_list['moon_move'] = list(es.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON))
 
+    es.set_period((current_date + datetime.timedelta(days=-2)), (next_date + datetime.timedelta(days=+4)))
+    event_list['moon_sign_enter'] = list(es.get_event_on_period(Event.EV_SIGN_ENTER, Event.SE_MOON))
+
+    event_list['moon_move'].extend(event_list['moon_sign_enter'])
+    event_list['moon_move'].sort(key=lambda event: event.date0)
+    
     params = {
               'current_date': current_date.strftime("%Y-%m-%d"),
               'prev_date': prev_date.strftime("%Y-%m-%d"),

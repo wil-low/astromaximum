@@ -27,7 +27,9 @@
 		<li>{% include "m/includes/moon_sign.html" %}</li>
 		<li>{% include "m/includes/moon_riseset.html" %}</li>
 		<li>{% include "m/includes/tithi.html" %}</li>
+		{% comment %}
 		<li>{% include "m/includes/moon_move.html" %}</li>
+        {% endcomment %}
         <li>{% include "m/includes/aspects.html" %}</li>
 		<li>
 			<a href="#" class="degree"><img src="/i/mo_p.png" alt="Mo+"/></a>
@@ -58,9 +60,13 @@
         <h2>Tithi</h2>
         <p>{{ event_list.tithi }}</p>
         <h2>Moon move</h2>
-        <p>{{ event_list.moon_move }}</p>
+        {% for ev in event_list.moon_move %} 
+            <p>{{ ev }}</p>
+        {% endfor %}
         <h2>Aspects</h2>
         <p>{{ event_list.aspects }}</p>
+        <h2>Moon sign enter</h2>
+        <p>{{ event_list.moon_sign_enter }}</p>
     </div>
 </body>
 </html>
