@@ -97,11 +97,18 @@ class Event(models.Model):
 #        self.dates = Event.date_to_string(self.datetime0) + '/' + Event.date_to_string(self.datetime1)
 
     def __unicode__(self):
-        return u"Event y %s, city %s type %s %s,%s %s: (%s %s)" % (
-            self.year, self.city_id, self.event_type,
-            self.planet0, self.planet1, self.degree,
-            #self.date0, self.date1,
-            self.datetime0, self.datetime1)
+        print_raw_date = True
+        if print_raw_date:
+            return u"Event y %s, city %s type %s %s,%s %s: (%s %s)(%s %s)" % (
+                self.year, self.city_id, self.event_type,
+                self.planet0, self.planet1, self.degree,
+                self.date0, self.date1,
+                self.datetime0, self.datetime1)
+        else:
+            return u"Event y %s, city %s type %s %s,%s %s: (%s %s)" % (
+                self.year, self.city_id, self.event_type,
+                self.planet0, self.planet1, self.degree,
+                self.datetime0, self.datetime1)
     
     def time0(self):
         return "%s" % self.datetime0.strftime('%H:%M')

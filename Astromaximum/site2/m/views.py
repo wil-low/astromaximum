@@ -11,7 +11,7 @@ def summary(request, year, month, day):
     prev_date = (current_date + datetime.timedelta(days=-1))
     next_date = (current_date + datetime.timedelta(days=1))
 
-    es = EventSelector(year, current_date, next_date)
+    es = EventSelector(int(year), current_date, next_date)
     event_list = {}
     event_list['vocs'] = es.get_event_on_period(Event.EV_VOC, Event.SE_MOON)
     event_list['vc'] = es.get_event_on_period(Event.EV_VIA_COMBUSTA, Event.SE_MOON)
@@ -36,6 +36,9 @@ def summary(request, year, month, day):
 
     event_list['moon_move'] = es.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON)
     
+    es.set_period(es.zeroJD(), es.finalJD())
+    event_list['navroz'] = es.get_event_on_period(Event.EV_NAVROZ, Event.SE_SUN)
+
     params = {
               'current_date': current_date.strftime("%Y-%m-%d"),
               'prev_date': prev_date.strftime("%Y-%m-%d"),

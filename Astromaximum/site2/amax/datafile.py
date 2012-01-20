@@ -229,6 +229,12 @@ class EventSelector():
         return Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1). \
             filter(q).order_by('datetime0')
 
+    def zeroJD(self):
+        return datetime(1900, 1, 1)
+
+    def finalJD(self):
+        return datetime(self.year + 1, 1, 1)
+        
 def main():
     #df = DataFile('/home/willow/prj/amax-hg/Astromaximum/2012.comm', 1)
     #df.read_sub_data(df.process_event)
