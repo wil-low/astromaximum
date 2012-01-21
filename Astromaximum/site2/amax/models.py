@@ -74,8 +74,21 @@ class Event(models.Model):
     
     CONSTELL = ["Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqu", "Psc"]
     
+    PLANET = ["SO", "MO", "ME", "VE", "MA", "JU", "SA", "UR", "NE", "PL", "KN", "BM", "WM"]
+
     ASPECT = {0: 0, 180: 1, 120: 2, 90: 3, 60: 4, 5: 45}
     
+    EVENT_TYPE = ['EV_VOC', 'EV_SIGN_ENTER', 'EV_ASP_EXACT', 'EV_RISE', 'EV_DEGREE_PASS',
+        'EV_VIA_COMBUSTA', 'EV_RETROGRADE', 'EV_ECLIPSE', 'EV_TITHI', 'EV_NAKSHATRA', 'EV_SET',
+        'EV_DECL_EXACT', 'EV_NAVROZ', 'EV_TOP_DAY', 'EV_PLANET_HOUR', 'EV_STATUS', 'EV_SUN_RISE',
+        'EV_MOON_RISE', 'EV_MOON_MOVE', 'EV_SEL_DEGREES', 'EV_DAY_HOURS', 'EV_NIGHT_HOURS',
+        'EV_SUN_DAY', 'EV_MOON_DAY', 'EV_TOP_MONTH', 'EV_MOON_PHASE', 'EV_ZODIAC_SIGN',
+        'EV_PANEL', 'EV_TOPIC_BUTTON', 'EV_DEG_2ND', 'EV_WEEK_GRID', 'EV_MONTH_GRID',
+        'EV_DECUMBITURE', 'EV_DECUMB_ASPECT', 'EV_DECUMB_BEGIN', 'EV_SUN_DEGREE_LARGE',
+        'EV_MOON_SIGN_LARGE', 'EV_HELP', 'EV_ASP_EXACT_MOON', 'EV_DEGPASS0', 'EV_DEGPASS1',
+        'EV_DEGPASS2', 'EV_DEGPASS3', 'EV_HELP0', 'EV_HELP1', 'EV_ASTRORISE', 'EV_ASTROSET',
+        'EV_APHETICS', 'EV_FAST', 'EV_ASCAPHETICS', 'EV_MSG', 'EV_BACK', 'EV_TATTVAS', 'EV_LAST']
+
     year = models.IntegerField(default=-1)
     city_id = models.TextField(null=True)
     
@@ -102,17 +115,22 @@ class Event(models.Model):
 
     def __unicode__(self):
         print_raw_date = True
+        planet0_str = planet1_str = ''
+        if self.planet0 >= 0:
+            planet0_str = Event.PLANET[self.planet0]
+        if self.planet1 >= 0:
+            planet1_str = Event.PLANET[self.planet1]
         if print_raw_date:
-            return u"Event y %s, city %s type %s %s,%s %s: (%s %s)(%s %s)" % (
-                self.year, self.city_id, self.event_type,
-                self.planet0, self.planet1, self.degree,
+            return u"%s %s - %s %s : (%s %s)(%s %s) y%s %s" % (
+                Event.EVENT_TYPE[self.event_type],
+                planet0_str, planet1_str, self.degree,
                 self.date0, self.date1,
-                self.datetime0, self.datetime1)
+                self.datetime0, self.datetime1, self.year, self.city_id)
         else:
-            return u"Event y %s, city %s type %s %s,%s %s: (%s %s)" % (
-                self.year, self.city_id, self.event_type,
-                self.planet0, self.planet1, self.degree,
-                self.datetime0, self.datetime1)
+            return u"%s %s - %s %s : (%s %s) y%s %s" % (
+                Event.EVENT_TYPE[self.event_type],
+                planet0_str, planet1_str, self.degree,
+                self.datetime0, self.datetime1, self.year, self.city_id)
     
     def time0(self):
         return "%s" % self.datetime0.strftime('%H:%M')

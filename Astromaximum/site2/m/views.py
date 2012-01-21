@@ -62,9 +62,9 @@ def summary(request, year, month, day):
     event_list['moon_move'] = list(es.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON))
 
     es.set_period((current_date + datetime.timedelta(days=-2)), (next_date + datetime.timedelta(days=+4)))
-    event_list['moon_sign_enter'] = list(es.get_event_on_period(Event.EV_SIGN_ENTER, Event.SE_MOON))
+    moon_sign_enter_events = list(es.get_event_on_period(Event.EV_SIGN_ENTER, Event.SE_MOON))
 
-    event_list['moon_move'].extend(event_list['moon_sign_enter'])
+    event_list['moon_move'].extend(moon_sign_enter_events)
     event_list['moon_move'].sort(key=lambda event: event.date0)
     
     params = {
