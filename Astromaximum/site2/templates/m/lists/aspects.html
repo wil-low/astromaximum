@@ -1,0 +1,11 @@
+{% extends "m/base_list.html" %}
+
+{% block title %}Aspects{% endblock %}
+
+{% block content %}
+<ul>
+    {% for ev in event_list %} 
+        <li><a href="text/{{ ev.id }}" class="aspects">{{ ev.list_aspect_str|safe }}</a></li>
+    {% endfor %}
+</ul> 
+{% endblock %}

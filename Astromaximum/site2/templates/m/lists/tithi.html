@@ -1,0 +1,11 @@
+{% extends "m/base_list.html" %}
+
+{% block title %}Tithi{% endblock %}
+
+{% block content %}
+<ul>
+    {% for ev in event_list %} 
+        <li><a href="text/{{ ev.id }}" class="tithi">{{ ev.datetime0 }} - {{ ev.datetime1 }} {{ ev.get_degree }}</a></li>
+    {% endfor %}
+</ul> 
+{% endblock %}

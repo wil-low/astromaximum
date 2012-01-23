@@ -48,3 +48,55 @@ def summary(request, year, month, day):
               }
     c = RequestContext(request, params)
     return render_to_response('m/summary.html', context_instance=c)
+
+def aspect_list(request, year, month, day):
+    current_date = datetime.datetime(int(year), int(month), int(day))
+    prev_date = (current_date + datetime.timedelta(days=-1))
+    next_date = (current_date + datetime.timedelta(days=1))
+    
+    es = EventSelector(int(year), prev_date, next_date)
+    event_list = es.get_aspects()
+    params = {
+              'current_date': current_date.strftime("%Y-%m-%d"),
+              'event_list': event_list,
+              }
+    c = RequestContext(request, params)
+    return render_to_response('m/lists/aspects.html', context_instance=c)
+
+def tithi_list(request, year, month, day):
+    current_date = datetime.datetime(int(year), int(month), int(day))
+    #prev_date = (current_date + datetime.timedelta(days=-1))
+    next_date = (current_date + datetime.timedelta(days=1))
+    
+    es = EventSelector(int(year), current_date, next_date)
+    event_list = es.get_tithi()
+    params = {
+              'current_date': current_date.strftime("%Y-%m-%d"),
+              'event_list': event_list,
+              }
+    c = RequestContext(request, params)
+    return render_to_response('m/lists/tithi.html', context_instance=c)
+
+def moon_move_list(request, year, month, day):
+    current_date = datetime.datetime(int(year), int(month), int(day))
+    prev_date = (current_date + datetime.timedelta(days=-1))
+    next_date = (current_date + datetime.timedelta(days=1))
+    
+    es = EventSelector(int(year), prev_date, next_date)
+    event_list = es.get_moon_move()
+    params = {
+              'current_date': current_date.strftime("%Y-%m-%d"),
+              'event_list': event_list,
+              }
+    c = RequestContext(request, params)
+    return render_to_response('m/lists/moon_move.html', context_instance=c)
+
+def event_text(request, year, month, day, event_id):
+    ev = EventSelector.get_event(event_id)
+    if ev:
+        event_text = EventSelector.get_event_text(ev)
+    params = {
+              'event_text': event_text,
+              }
+    c = RequestContext(request, params)
+    return render_to_response('m/text.html', context_instance=c)

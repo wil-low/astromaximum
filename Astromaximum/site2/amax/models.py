@@ -174,6 +174,9 @@ class Event(models.Model):
     def aspect_str(self):
         return "%s<sub>%d&deg;</sub>%s" % (Event.PLANET[self.planet0], self.degree, Event.PLANET[self.planet1])
 
+    def list_aspect_str(self):
+        return "%s %s %d&deg; %s" % (self.datetime0, Event.PLANET[self.planet0], self.degree, Event.PLANET[self.planet1])
+
     @staticmethod
     def date_between(date0, start, end):
         if date0 < start:

@@ -103,16 +103,11 @@ class EventSelector():
 
     def get_tithi(self):
         return self.get_event_on_period(Event.EV_TITHI, Event.SE_MOON)
+    
+    @staticmethod
+    def get_event(event_id):
+        return Event.objects.filter(id__exact=int(event_id))
 
-#    def get_vc(self):
-#        return self.
-#
-#    def get_vc(self):
-#        return self.
-#
-#    def get_vc(self):
-#        return self.
-#
-#    def get_vc(self):
-#        return self.
-
+    @staticmethod
+    def get_event_text(event):
+        return str(event)
