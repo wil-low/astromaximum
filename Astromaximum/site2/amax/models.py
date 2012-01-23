@@ -74,7 +74,7 @@ class Event(models.Model):
     
     CONSTELL = ["Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqu", "Psc"]
     
-    PLANET = ["SO", "MO", "ME", "VE", "MA", "JU", "SA", "UR", "NE", "PL", "KN", "BM", "WM"]
+    PLANET = ["So", "Mo", "Me", "Ve", "Ma", "Ju", "Sa", "Ur", "Ne", "Pl", "Kn", "BM", "WM"]
 
     ASPECT = {0: 0, 180: 1, 120: 2, 90: 3, 60: 4, 5: 45}
     
@@ -145,7 +145,7 @@ class Event(models.Model):
         return (self.degree >> 14) & 0x3
 
     def degree_number(self):
-        return str(self.get_degree() % 30 + 1)
+        return self.get_degree() % 30 + 1
 
     def degree_zodiac(self):
         return Event.CONSTELL[self.get_degree() / 30]
@@ -164,6 +164,15 @@ class Event(models.Model):
 
     def aspect_url(self):
         return "/i/a%d.png" % Event.ASPECT[self.degree]
+    
+    def planet_in_degree_str(self):
+        return "%s %02d&deg;%s" % (Event.PLANET[self.planet0], self.degree_number(), self.degree_zodiac())
+
+    def planet_in_sign_str(self):
+        return "%s %s" % (Event.PLANET[self.planet0], Event.CONSTELL[self.get_degree()])
+
+    def aspect_str(self):
+        return "%s %d&deg; %s" % (Event.PLANET[self.planet0], self.degree, Event.PLANET[self.planet1])
 
     @staticmethod
     def date_between(date0, start, end):

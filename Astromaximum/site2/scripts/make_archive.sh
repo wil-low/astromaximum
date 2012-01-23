@@ -14,7 +14,7 @@ cd $TMPDIR
 mkdir -p data/{commons,locations}
 chmod +x public/django.fcgi
 
-perl -lape "s%PROJECT_ROOT = .+%PROJECT_ROOT = '$PROJECT_ROOT'%" settings.py > settings.tmp
+perl -lape "s%^PROJECT_ROOT = .+%PROJECT_ROOT = '$PROJECT_ROOT'%; s%^DEBUG = .+%DEBUG = False%;" settings.py > settings.tmp
 mv settings.tmp settings.py
 
 TARGETFILE=../deploy/amdj_${DATE}.tgz

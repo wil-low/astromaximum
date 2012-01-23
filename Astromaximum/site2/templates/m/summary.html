@@ -15,15 +15,13 @@
 	    <a href="../{{ prev_date }}/summary">&lt;&lt;</a>
 	    {{ current_date }}
 	    <a href="../{{ next_date }}/summary">&gt;&gt;</a>
-	    - <a href="location">Kiev</a></div>
+    </div>
 	    
 	<ul class="tab">
 		<li>{% include "m/includes/vc.html" %}</li>
 		<li>{% include "m/includes/vocs.html" %}</li>
-		<li>{% include "m/includes/sun_day.html" %}</li>
 		<li>{% include "m/includes/sun_dgr.html" %}</li>
 		<li>{% include "m/includes/sun_riseset.html" %}</li>
-		<li>{% include "m/includes/moon_day.html" %}</li>
 		<li>{% include "m/includes/moon_sign.html" %}</li>
 		<li>{% include "m/includes/moon_riseset.html" %}</li>
 		<li>{% include "m/includes/tithi.html" %}</li>
@@ -31,32 +29,25 @@
 		<li>{% include "m/includes/moon_move.html" %}</li>
         {% endcomment %}
         <li>{% include "m/includes/aspects.html" %}</li>
-		<li>
-			<a href="#" class="degree"><img src="/i/mo_p.png" alt="Mo+"/></a>
-			<a href="#" class="degree"><img src="/i/me_m.png" alt="Mo+"/></a>
-			</li>
 	</ul>
 	<p>&nbsp;</p>
+	{% if settings.DEBUG %}
     <div class="event_list">
     	<h1>Events for today:</h1>
+        <h2>Vocs</h2>
+        <p>{{ event_list.vocs }}</p>
+        <h2>VC</h2>
+        <p>{{ event_list.vc }}</p>
         <h2>Sun riseset</h2>
         <p>{{ event_list.sun_rise }}</p>
         <p>{{ event_list.sun_set }}</p>
         <h2>Moon riseset</h2>
         <p>{{ event_list.moon_rise }}</p>
         <p>{{ event_list.moon_set }}</p>
-        <h2>Vocs</h2>
-        <p>{{ event_list.vocs }}</p>
-        <h2>VC</h2>
-        <p>{{ event_list.vc }}</p>
         <h2>Sun degree</h2>
         <p>{{ event_list.sun_degree }}</p>
         <h2>Moon sign</h2>
         <p>{{ event_list.moon_sign }}</p>
-        <h2>Sun day</h2>
-        <p>{{ event_list.sun_day }}</p>
-        <h2>Moon day</h2>
-        <p>{{ event_list.moon_day }}</p>
         <h2>Tithi</h2>
         <p>{{ event_list.tithi }}</p>
         <h2>Moon move</h2>
@@ -67,6 +58,10 @@
         <p>{{ event_list.aspects }}</p>
         <h2>Moon sign enter</h2>
         <p>{{ event_list.moon_sign_enter }}</p>
+    </div>
+    {% endif %}
+    <div class="ftr">
+        Current location: Kiev. <a href="../settings">Change settings</a>
     </div>
 </body>
 </html>
