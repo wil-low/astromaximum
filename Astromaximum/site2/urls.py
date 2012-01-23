@@ -5,10 +5,10 @@ admin.autodiscover()
 
 urlpatterns = []
 
-if settings.DEBUG:
-    urlpatterns += patterns('',
-        (r'^i/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.IMAGE_ROOT}),
-    )
+#if settings.DEBUG:
+urlpatterns += patterns('',
+    (r'^i/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.IMAGE_ROOT}),
+)
 
 urlpatterns += patterns('',
     url(r'^m/', include('amax.urls')),

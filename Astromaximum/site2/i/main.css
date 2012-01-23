@@ -3,6 +3,7 @@ body,ul {
 }
 .hdr,.ftr {
 	text-align:center;
+	height:2em;
 }
 
 ul {
@@ -17,7 +18,7 @@ ul {
 .tab li {
 	font-size:.8em;
 	display:block;
-	margin:10px;
+	margin:0.1em;
 	float: left;
 	position: relative;
 	background:#fff;
@@ -34,13 +35,14 @@ ul {
 }
 
 .tab li a {
+    border: 1px solid red;
 	text-decoration:none;
 	background-repeat: no-repeat;
 	background-position: 50% 0%;
 	display:block;
-	/*padding-top:32px;
-	width:64px;
-	height:36px;*/
+	/*padding-top:32px;*/
+	width:5em;
+	height:4em;
 	text-align:center;
 	white-space:nowrap;
 }

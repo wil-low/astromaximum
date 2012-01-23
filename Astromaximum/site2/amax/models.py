@@ -166,13 +166,13 @@ class Event(models.Model):
         return "/i/a%d.png" % Event.ASPECT[self.degree]
     
     def planet_in_degree_str(self):
-        return "%s %02d&deg;%s" % (Event.PLANET[self.planet0], self.degree_number(), self.degree_zodiac())
+        return "%s<br/>%02d&deg;%s" % (Event.PLANET[self.planet0], self.degree_number(), self.degree_zodiac())
 
     def planet_in_sign_str(self):
-        return "%s %s" % (Event.PLANET[self.planet0], Event.CONSTELL[self.get_degree()])
+        return "%s<br/>%s" % (Event.PLANET[self.planet0], Event.CONSTELL[self.get_degree()])
 
     def aspect_str(self):
-        return "%s %d&deg; %s" % (Event.PLANET[self.planet0], self.degree, Event.PLANET[self.planet1])
+        return "%s<sub>%d&deg;</sub>%s" % (Event.PLANET[self.planet0], self.degree, Event.PLANET[self.planet1])
 
     @staticmethod
     def date_between(date0, start, end):

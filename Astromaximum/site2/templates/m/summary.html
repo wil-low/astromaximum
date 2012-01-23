@@ -28,9 +28,9 @@
 		{% comment %}
 		<li>{% include "m/includes/moon_move.html" %}</li>
         {% endcomment %}
-        <li>{% include "m/includes/aspects.html" %}</li>
+        <li><a href="aspects">Aspects</a></li>
 	</ul>
-	<p>&nbsp;</p>
+	<div style="clear:both;"></div>
 	{% if settings.DEBUG %}
     <div class="event_list">
     	<h1>Events for today:</h1>
@@ -61,7 +61,7 @@
     </div>
     {% endif %}
     <div class="ftr">
-        Current location: Kiev. <a href="../settings">Change settings</a>
+        Kiev <a href="../settings">Settings</a>
     </div>
 </body>
 </html>
