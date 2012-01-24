@@ -74,7 +74,7 @@ class Event(models.Model):
     
     CONSTELL = ["Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqu", "Psc"]
     
-    PLANET = ["So", "Mo", "Me", "Ve", "Ma", "Ju", "Sa", "Ur", "Ne", "Pl", "Kn", "BM", "WM"]
+    PLANET = ["SO", "MO", "ME", "VE", "MA", "JU", "SA", "UR", "NE", "PL"]
 
     ASPECT = {0: 0, 180: 1, 120: 2, 90: 3, 60: 4, 5: 45}
     
@@ -177,6 +177,9 @@ class Event(models.Model):
     def list_aspect_str(self):
         return "%s %s %d&deg; %s" % (self.datetime0, Event.PLANET[self.planet0], self.degree, Event.PLANET[self.planet1])
 
+    def riseset_str(self):
+        return "%s<br/>%s<br/>%s" % (Event.PLANET[self.planet0], self.time0(), self.time1())
+        
     @staticmethod
     def date_between(date0, start, end):
         if date0 < start:
