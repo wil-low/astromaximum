@@ -70,6 +70,11 @@ class Event(models.Model):
     EV_TATTVAS = 52
     EV_LAST = 53   # last - do not use
     
+    STATE_UNDEFINED = 0
+    STATE_GONE = 1
+    STATE_COMING = 2
+    STATE_ACTIVE = 3
+    
     SECINDAY = 24 * 60 * 60
     
     CONSTELL = ["Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqu", "Psc"]
@@ -109,9 +114,9 @@ class Event(models.Model):
         "converts datetime to YYYY-MM-DD string"
         return "%04d-%02d-%02d" % (date.year, date.month, date.day)
 
-#    def __init__(self, *args, **kwargs): 
-#        super(Event, self).__init__(*args, **kwargs)
-#        self.dates = Event.date_to_string(self.datetime0) + '/' + Event.date_to_string(self.datetime1)
+    def __init__(self, *args, **kwargs): 
+        super(Event, self).__init__(*args, **kwargs)
+        self.state = Event.STATE_UNDEFINED
 
     def __unicode__(self):
         print_raw_date = True
@@ -121,11 +126,11 @@ class Event(models.Model):
         if self.planet1 >= 0:
             planet1_str = Event.PLANET[self.planet1]
         if print_raw_date:
-            return u"%s %s - %s %s : (%s %s)(%s %s) y%s %s" % (
+            return u"%s %s - %s %s : (%s %s)(%s %s) y%s %s state %d" % (
                 Event.EVENT_TYPE[self.event_type],
                 planet0_str, planet1_str, self.degree,
                 self.date0, self.date1,
-                self.datetime0, self.datetime1, self.year, self.city_id)
+                self.datetime0, self.datetime1, self.year, self.city_id, self.state)
         else:
             return u"%s %s - %s %s : (%s %s) y%s %s" % (
                 Event.EVENT_TYPE[self.event_type],
