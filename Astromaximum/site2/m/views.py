@@ -4,92 +4,75 @@ from django.conf import settings
 import datetime
 from eventselector import EventSelector
 
-def today_summary(request):
-    today = datetime.datetime.now()
-    return summary(request, today.year, today.month, today.day)
+def call_view_today(request):
+    now = datetime.datetime.now()
+    return call_view(request, now.year, now.month, now.day, now)
 
-def summary(request, year, month, day):
-    "prints home page"
-    current_date = datetime.datetime(int(year), int(month), int(day))
-    prev_date = (current_date + datetime.timedelta(days=-1))
-    next_date = (current_date + datetime.timedelta(days=1))
+def call_view(request, year, month, day, view_class):
+    v = view_class(year, month, day, datetime.datetime.now())
+    v.gather_events()
+    return v.render(request)
 
-    event_list = {}
+class BaseView():
+    def __init__(self, year, month, day, now):
+        self.year = year
+        self.month = month
+        self.day = day
+        self.now = now
+        self.current_date = datetime.datetime(int(year), int(month), int(day))
+        self.prev_date = (self.current_date + datetime.timedelta(days=-1))
+        self.next_date = (self.current_date + datetime.timedelta(days=1))
+        self.event_list = {}
+        self.es = EventSelector(self.current_date.year, self.current_date, self.next_date)
 
-    es = EventSelector(int(year), current_date, next_date)
-    event_list['vocs'] = es.get_vocs()
-    event_list['vc'] = es.get_vc()
+    def gather_events(self):
+        pass
     
-    event_list['sun_rise'] = es.get_sun_rise()
-    event_list['sun_set'] = es.get_sun_set()
-    event_list['moon_rise'] = es.get_moon_rise()
-    event_list['moon_set'] = es.get_moon_set()
-    
-    event_list['sun_degree'] = es.get_sun_degree()
-    event_list['moon_sign'] = es.get_moon_sign()
+    def render(self, request):
+        params = {
+                  'current_date': self.current_date.strftime("%Y-%m-%d"),
+                  'prev_date': self.prev_date.strftime("%Y-%m-%d"),
+                  'next_date': self.next_date.strftime("%Y-%m-%d"),
+                  'now': self.now,
+                  'event_list': self.event_list,
+                  'settings': settings,
+                  }
+        c = RequestContext(request, params)
+        return render_to_response(self.template_name, context_instance = c)
 
-    event_list['tithi'] = es.get_tithi()
+class SummaryView(BaseView):
+    def gather_events(self):
+        self.template_name = 'm/summary.html'
+        self.event_list['vocs'] = self.es.get_vocs()
+        self.event_list['vc'] = self.es.get_vc()
+        self.event_list['sun_rise'] = self.es.get_sun_rise()
+        self.event_list['sun_set'] = self.es.get_sun_set()
+        self.event_list['moon_rise'] = self.es.get_moon_rise()
+        self.event_list['moon_set'] = self.es.get_moon_set()
+        self.event_list['sun_degree'] = self.es.get_sun_degree()
+        self.event_list['moon_sign'] = self.es.get_moon_sign()
+        self.event_list['tithi'] = self.es.get_tithi()
+    #    event_list['sun_day'] = 
+    #    event_list['moon_day'] = 
+        #aspects
+        self.es.set_period(self.prev_date, self.next_date)
+        self.event_list['aspects'] = self.es.get_aspects()
+        self.event_list['moon_move'] = self.es.get_moon_move()
 
-#    event_list['sun_day'] = 
-#    event_list['moon_day'] = 
-    
-    #aspects
-    es.set_period(prev_date, next_date)
-    event_list['aspects'] = es.get_aspects()
+class AspectView(BaseView):
+    def gather_events(self):
+        self.template_name = 'm/lists/aspects.html'
+        self.event_list = self.es.get_aspects()
 
-    event_list['moon_move'] = es.get_moon_move()
-    
-    params = {
-              'current_date': current_date.strftime("%Y-%m-%d"),
-              'prev_date': prev_date.strftime("%Y-%m-%d"),
-              'next_date': next_date.strftime("%Y-%m-%d"),
-              'event_list': event_list,
-              'settings': settings,
-              }
-    c = RequestContext(request, params)
-    return render_to_response('m/summary.html', context_instance=c)
+class TithiView(BaseView):
+    def gather_events(self):
+        self.template_name = 'm/lists/tithi.html'
+        self.event_list = self.es.get_tithi()
 
-def aspect_list(request, year, month, day):
-    current_date = datetime.datetime(int(year), int(month), int(day))
-    prev_date = (current_date + datetime.timedelta(days=-1))
-    next_date = (current_date + datetime.timedelta(days=1))
-    
-    es = EventSelector(int(year), prev_date, next_date)
-    event_list = es.get_aspects()
-    params = {
-              'current_date': current_date.strftime("%Y-%m-%d"),
-              'event_list': event_list,
-              }
-    c = RequestContext(request, params)
-    return render_to_response('m/lists/aspects.html', context_instance=c)
-
-def tithi_list(request, year, month, day):
-    current_date = datetime.datetime(int(year), int(month), int(day))
-    #prev_date = (current_date + datetime.timedelta(days=-1))
-    next_date = (current_date + datetime.timedelta(days=1))
-    
-    es = EventSelector(int(year), current_date, next_date)
-    event_list = es.get_tithi()
-    params = {
-              'current_date': current_date.strftime("%Y-%m-%d"),
-              'event_list': event_list,
-              }
-    c = RequestContext(request, params)
-    return render_to_response('m/lists/tithi.html', context_instance=c)
-
-def moon_move_list(request, year, month, day):
-    current_date = datetime.datetime(int(year), int(month), int(day))
-    prev_date = (current_date + datetime.timedelta(days=-1))
-    next_date = (current_date + datetime.timedelta(days=1))
-    
-    es = EventSelector(int(year), prev_date, next_date)
-    event_list = es.get_moon_move()
-    params = {
-              'current_date': current_date.strftime("%Y-%m-%d"),
-              'event_list': event_list,
-              }
-    c = RequestContext(request, params)
-    return render_to_response('m/lists/moon_move.html', context_instance=c)
+class MoonMoveView(BaseView):
+    def gather_events(self):
+        self.template_name = 'm/lists/moon_move.html'
+        self.event_list = self.es.get_moon_move()
 
 def event_text(request, year, month, day, event_id):
     ev = EventSelector.get_event(event_id)
