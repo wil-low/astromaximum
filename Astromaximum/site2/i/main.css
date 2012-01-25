@@ -1,16 +1,16 @@
 body,ul {
 	margin:0;
 }
+
 .hdr,.ftr {
 	text-align:center;
 	height:2em;
 }
 
 .tab {
-	list-style-type:none;
+    list-style-type:none;
 	list-style-position:outside;
 	list-style-image:none;
-	float:left;
 	display:block;
 	padding:2px;
 }
