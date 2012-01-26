@@ -14,7 +14,7 @@
     {% load summary_extras %}
 	<div class="hdr">
 	    <a href="../{{ prev_date }}/summary">&lt;&lt;</a>
-	    {{ current_date|date:"d M Y" }}
+	    {{ date_range.0|date:"d M Y" }}
 	    <a href="../{{ next_date }}/summary">&gt;&gt;</a> ({{ now|date:"d M Y, H:i" }})
     </div>
 	    
@@ -25,7 +25,7 @@
 		<li><a href="rise_set">Rise/Set</a></li>
 		<li>{{ event_list.moon_sign|moon_sign }}</li>
 		<li>{{ event_list.tithi|tithi }}</li>
-		<li><a href="moon_move#today">Moon<br/>move</a></li>
+		<li><a href="moon_move#start">Moon<br/>move</a></li>
         <li><a href="aspects">Aspects</a></li>
 	</ul>
 	<div class="clear"/>

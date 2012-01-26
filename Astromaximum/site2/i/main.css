@@ -57,3 +57,7 @@ body,ul {
 .event_list {
     font-size: 50%;
 }
+
+.list a {
+    text-decoration:none;
+}

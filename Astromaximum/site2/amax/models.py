@@ -186,10 +186,10 @@ class Event(models.Model):
         return "%s<br/>%s<br/>%s" % (Event.PLANET[self.planet0], self.time0(), self.time1())
         
     @staticmethod
-    def date_between(date0, start, end):
-        if date0 < start:
+    def date_between(date, start, end):
+        if date < start:
             return -1
-        if date0 >= end:
+        if date >= end:
             return 1
         return 0
 

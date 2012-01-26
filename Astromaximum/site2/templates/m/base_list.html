@@ -11,11 +11,12 @@
 <meta name="MobileOptimized" content="width" />
 </head>
 <body>
-	<div class="hdr">
-	    <a href="summary">Back</a>
-	    {{ current_date|date:"d M Y" }}
+    <div class="hdr">
+        <a href="../{{ prev_date }}/summary">&lt;&lt;</a>
+        {{ date_range.0|date:"d M Y" }}
+        <a href="../{{ next_date }}/summary">&gt;&gt;</a> ({{ now|date:"d M Y, H:i" }})
     </div>
-    <div class="content">
+    <div class="list">
 	   {% block content %}
 	   {% endblock %}
 	</div>

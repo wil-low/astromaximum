@@ -31,7 +31,7 @@ class BaseView():
     
     def render(self, request):
         params = {
-                  'current_date': self.current_date,
+                  'date_range': (self.current_date, self.next_date),
                   'prev_date': self.prev_date.strftime('%Y-%m-%d'),
                   'next_date': self.next_date.strftime('%Y-%m-%d'),
                   'now': self.now,
