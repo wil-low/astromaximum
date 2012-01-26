@@ -12,14 +12,16 @@
 </head>
 <body>
     <div class="hdr">
-        <a href="../{{ prev_date }}/summary">&lt;&lt;</a>
+        {% block hdr %}
+        <a href="summary">Summary</a>
+        <a href="../{{ prev_date }}/{{ page_name }}">&lt;&lt;</a>
         {{ date_range.0|date:"d M Y" }}
-        <a href="../{{ next_date }}/summary">&gt;&gt;</a> ({{ now|date:"d M Y, H:i" }})
+        <a href="../{{ next_date }}/{{ page_name }}">&gt;&gt;</a>
+        (<a href="../{{ now|date:'Y-m-d'' }}">{{ now|date:'d M Y, H:i' }}</a>)
+        {% endblock %}
     </div>
-    <div class="list">
-	   {% block content %}
-	   {% endblock %}
-	</div>
+    {% block content %}
+	{% endblock %}
     <div class="ftr">
         Kiev <a href="../settings">Settings</a>
     </div>

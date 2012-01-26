@@ -37,6 +37,7 @@ class BaseView():
                   'now': self.now,
                   'event_list': self.event_list,
                   'settings': settings,
+                  'page_name': request.path_info.split('/')[-1]
                   }
         c = RequestContext(request, params)
         return render_to_response(self.template_name, context_instance = c)

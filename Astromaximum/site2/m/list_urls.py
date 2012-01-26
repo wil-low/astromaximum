@@ -5,6 +5,7 @@ def view_url(regexp, view_class):
     return url(regexp, call_view, {'view_class': view_class})
 
 urlpatterns = patterns('',
+    view_url(r'^$', SummaryView),
     view_url(r'summary$', SummaryView),
     view_url(r'aspects$', AspectView),
     view_url(r'tithi$', TithiView),

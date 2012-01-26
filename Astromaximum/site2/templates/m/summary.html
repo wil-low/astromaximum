@@ -1,23 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Summary - Astromaximum</title>
-<link href="/i/main.css" rel="stylesheet" type="text/css"/>
-<meta name="format-detection" content="telephone=no" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="apple-touch-fullscreen" content="yes" />
-<meta name="HandheldFriendly" content="true" />
-<meta name="MobileOptimized" content="width" />
-</head>
-<body>
-    {% load summary_extras %}
-	<div class="hdr">
-	    <a href="../{{ prev_date }}/summary">&lt;&lt;</a>
-	    {{ date_range.0|date:"d M Y" }}
-	    <a href="../{{ next_date }}/summary">&gt;&gt;</a> ({{ now|date:"d M Y, H:i" }})
-    </div>
-	    
+{% extends "m/base.html" %}
+{% load summary_extras %}
+
+{% block content %}	    
 	<ul class="tab">
 		<li>{{ event_list.vc|vc }}</li>
 		<li>{{ event_list.vocs|voc }}</li>
@@ -42,19 +26,14 @@
         <p>{{ event_list.moon_sign }}</p>
         <h2>Tithi</h2>
         <p>{{ event_list.tithi }}</p>
-        <h2>Moon move</h2>
-        {% for ev in event_list.moon_move %} 
-            <p>{{ ev }}</p>
-        {% endfor %}
         <h2>Aspects</h2>
         {% for ev in event_list.aspects %} 
             <p>{{ ev }}</p>
         {% endfor %}
+        <h2>Moon move</h2>
+        {% for ev in event_list.moon_move %} 
+            <p>{{ ev }}</p>
+        {% endfor %}
     </div>
     {% endif %}
-    <div class="ftr">
-        Kiev <a href="../settings">Settings</a>
-    </div>
-</body>
-</html>
-
+{% endblock %}
