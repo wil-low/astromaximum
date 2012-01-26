@@ -13,7 +13,7 @@
 <body>
 	<div class="hdr">
 	    <a href="summary">Back</a>
-	    {{ current_date }}
+	    {{ current_date|date:"d M Y" }}
     </div>
     <div class="content">
 	   {% block content %}

@@ -11,24 +11,24 @@
 <meta name="MobileOptimized" content="width" />
 </head>
 <body>
+    {% load summary_extras %}
 	<div class="hdr">
 	    <a href="../{{ prev_date }}/summary">&lt;&lt;</a>
-	    {{ current_date }}
-	    <a href="../{{ next_date }}/summary">&gt;&gt;</a> {{ now }}
+	    {{ current_date|date:"d M Y" }}
+	    <a href="../{{ next_date }}/summary">&gt;&gt;</a> ({{ now|date:"d M Y, H:i" }})
     </div>
 	    
 	<ul class="tab">
-		<li>{% include "m/includes/vc.html" %}</li>
-		<li>{% include "m/includes/vocs.html" %}</li>
-		<li>{% include "m/includes/sun_dgr.html" %}</li>
-		<li>{% include "m/includes/sun_riseset.html" %}</li>
-		<li>{% include "m/includes/moon_sign.html" %}</li>
-		<li>{% include "m/includes/moon_riseset.html" %}</li>
-		<li>{% include "m/includes/tithi.html" %}</li>
-		<li><a href="moon_move">Moon<br/>move</a></li>
+		<li>{{ event_list.vc|vc }}</li>
+		<li>{{ event_list.vocs|voc }}</li>
+		<li>{{ event_list.sun_degree|sun_degree }}</li>
+		<li><a href="rise_set">Rise/Set</a></li>
+		<li>{{ event_list.moon_sign|moon_sign }}</li>
+		<li>{{ event_list.tithi|tithi }}</li>
+		<li><a href="moon_move#today">Moon<br/>move</a></li>
         <li><a href="aspects">Aspects</a></li>
 	</ul>
-	<div style="clear:both;"></div>
+	<div class="clear"/>
 	{% if settings.DEBUG %}
     <div class="event_list">
     	<h1>Events for today:</h1>
@@ -36,12 +36,6 @@
         <p>{{ event_list.vocs }}</p>
         <h2>VC</h2>
         <p>{{ event_list.vc }}</p>
-        <h2>Sun riseset</h2>
-        <p>{{ event_list.sun_rise }}</p>
-        <p>{{ event_list.sun_set }}</p>
-        <h2>Moon riseset</h2>
-        <p>{{ event_list.moon_rise }}</p>
-        <p>{{ event_list.moon_set }}</p>
         <h2>Sun degree</h2>
         <p>{{ event_list.sun_degree }}</p>
         <h2>Moon sign</h2>
@@ -53,9 +47,9 @@
             <p>{{ ev }}</p>
         {% endfor %}
         <h2>Aspects</h2>
-        <p>{{ event_list.aspects }}</p>
-        <h2>Moon sign enter</h2>
-        <p>{{ event_list.moon_sign_enter }}</p>
+        {% for ev in event_list.aspects %} 
+            <p>{{ ev }}</p>
+        {% endfor %}
     </div>
     {% endif %}
     <div class="ftr">
