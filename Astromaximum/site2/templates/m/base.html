@@ -17,7 +17,7 @@
         <a href="../{{ prev_date }}/{{ page_name }}">&lt;&lt;</a>
         {{ date_range.0|date:"d M Y" }}
         <a href="../{{ next_date }}/{{ page_name }}">&gt;&gt;</a>
-        (<a href="../{{ now|date:'Y-m-d'' }}">{{ now|date:'d M Y, H:i' }}</a>)
+        (<a href="../{{ now|date:'Y-m-d' }}/{{ page_name }}">{{ now|date:'d M Y, H:i' }}</a>)
         {% endblock %}
     </div>
     {% block content %}
