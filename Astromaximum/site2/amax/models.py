@@ -11,9 +11,6 @@ class Event(models.Model):
     SE_URANUS = 7
     SE_NEPTUNE = 8
     SE_PLUTO = 9
-    SE_TRUE_NODE = 10
-    SE_MEAN_APOG = 11
-    SE_WHITE_MOON = 12
     
     EV_VOC = 0  # void of course
     EV_SIGN_ENTER = 1  # enter into sign
@@ -120,10 +117,11 @@ class Event(models.Model):
 
     def __unicode__(self):
         print_raw_date = True
-        planet0_str = planet1_str = ''
-        if self.planet0 >= 0:
+        planet0_str = str(self.planet0)
+        planet1_str = str(self.planet1)
+        if Event.SE_SUN <= self.planet0 <= Event.SE_PLUTO:
             planet0_str = Event.PLANET[self.planet0]
-        if self.planet1 >= 0:
+        if Event.SE_SUN <= self.planet1 <= Event.SE_PLUTO:
             planet1_str = Event.PLANET[self.planet1]
         if print_raw_date:
             return u"%s %s - %s %s : (%s %s)(%s %s) y%s %s state %d" % (
@@ -219,3 +217,16 @@ class Location(models.Model):
     
     def __unicode__(self):
         return self.city_hash
+
+
+class Text(models.Model):
+    language = models.TextField()
+    event_type = models.IntegerField()
+    param0 = models.IntegerField(null=True)
+    param1 = models.IntegerField(null=True)
+    param2 = models.IntegerField(null=True)
+    message = models.TextField()
+
+    def __unicode__(self):
+        return u'%s %s (%s, %s, %s)' % (Event.EVENT_TYPE[self.event_type], self.language,
+            self.param0, self.param1, self.param2)
