@@ -5,8 +5,8 @@ from amax.models import Event
 class EventSelector():
     q_sun = Q(planet0__exact=Event.SE_SUN)
     q_moon = Q(planet0__exact=Event.SE_MOON)
-    q_rise = Q(event_type__exact=Event.EV_RISE)
-    q_set = Q(event_type__exact=Event.EV_SET)
+    q_astrorise = Q(event_type__exact=Event.EV_ASTRORISE)
+    q_astroset = Q(event_type__exact=Event.EV_ASTROSET)
 
     def __init__(self, year, period0, period1, now):
         self.set_year(year)
@@ -52,10 +52,14 @@ class EventSelector():
 
     def get_rise_set(self, planet):
         q_planet = Q(planet0__exact=planet)
-        ev_rise = self.get_event_on_period_q(q_planet & EventSelector.q_rise)[0]
-        ev_set = self.get_event_on_period_q(q_planet & EventSelector.q_set)[0]
-        ev_rise.datetime1 = ev_set.datetime0
-        return [ev_rise,]
+        rise_list = self.get_event_on_period_q(q_planet & EventSelector.q_astrorise)
+        if rise_list:
+            set_list = self.get_event_on_period_q(q_planet & EventSelector.q_astroset)
+            if set_list:
+                ev_rise = rise_list[0]
+                ev_rise.datetime1 = set_list[0].datetime0
+                return ev_rise
+        return None
     
     def get_sun_degree(self):
         return self.get_event_on_period(Event.EV_DEGREE_PASS, Event.SE_SUN)

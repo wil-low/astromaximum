@@ -1,0 +1,11 @@
+{% extends "m/base.html" %}
+{% load list_extras %}
+{% block title %}Rise/Set{% endblock %}
+
+{% block content %}
+<ul>
+    {% for ev in event_list %}
+        <li>{{ ev|rise_set }}</li>
+    {% endfor %}
+</ul> 
+{% endblock %}

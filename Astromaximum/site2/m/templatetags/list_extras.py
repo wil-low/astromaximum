@@ -59,3 +59,11 @@ def moon_move_list(events, date_range):
     output += "</li>\n</ul>"
     return mark_safe(output)
 
+@register.filter
+def rise_set(event):
+    result = ''
+    if event:
+        s = '%d %s' % (event.degree, event.datetime0.strftime('%H:%M %d %b'))
+        s = decorate(event, s)
+        result = '<a href="text/%s" class="aspects">%s</a>' % (event.id, s)
+    return mark_safe(result)

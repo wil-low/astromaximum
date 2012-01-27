@@ -24,7 +24,6 @@ class BaseView():
         self.current_date = datetime.datetime(int(year), int(month), int(day))
         self.prev_date = (self.current_date + datetime.timedelta(days=-1))
         self.next_date = (self.current_date + datetime.timedelta(days=1))
-        self.event_list = {}
         self.es = EventSelector(self.current_date.year, self.current_date, self.next_date, now)
 
     def gather_events(self):
@@ -60,6 +59,7 @@ class SummaryView(BaseView):
         return None
 
     def gather_events(self):
+        self.event_list = {}
         self.template_name = 'm/summary.html'
         self.event_list['vocs'] = self.select_single_event(self.es.get_vocs())
 
@@ -89,6 +89,17 @@ class MoonMoveView(BaseView):
     def gather_events(self):
         self.template_name = 'm/lists/moon_move.html'
         self.event_list = self.es.get_moon_move()
+
+
+class RiseSetView(BaseView):
+    def gather_events(self):
+        self.event_list = []
+        self.template_name = 'm/lists/rise_set.html'
+        self.es.set_period(self.prev_date, self.next_date)
+        for planet in range(Event.SE_SUN, Event.SE_PLUTO + 1):
+            ev = self.es.get_rise_set(planet)
+            if ev:
+                self.event_list.append(ev)
 
 @login_required
 def event_text(request, year, month, day, event_id):
