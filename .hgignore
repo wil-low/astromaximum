@@ -9,7 +9,11 @@ Astromaximum/geoLib/build
 Astromaximum/geoLib/dist
 Astromaximum/mutter2/build
 Astromaximum/relgui
+Astromaximum/relgui_fx
+Astromaximum/scythian_plt
 Astromaximum/data/archive
+Astromaximum/data/archive-default
+Astromaximum/data/archive-tzdata
 Astromaximum/data/ephdata/*.dat
 Astromaximum/data/*/*.zip
 Astromaximum/data/*.tbz
