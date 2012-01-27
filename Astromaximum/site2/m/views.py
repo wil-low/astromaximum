@@ -1,9 +1,10 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 import datetime
 from eventselector import EventSelector
-from amax.models import Event
+from amax.models import Event, Text
 
 def call_view_today(request):
     now = datetime.datetime.now()
@@ -89,12 +90,34 @@ class MoonMoveView(BaseView):
         self.template_name = 'm/lists/moon_move.html'
         self.event_list = self.es.get_moon_move()
 
+@login_required
 def event_text(request, year, month, day, event_id):
-    ev = EventSelector.get_event(event_id)
+    ev = EventSelector.get_event(event_id)[0]
+    caption = text = ''
+    text_list = []
     if ev:
-        event_text = EventSelector.get_event_text(ev)
-    params = {
-              'event_text': event_text,
-              }
+        caption = ev
+        if ev.event_type == Event.EV_TITHI:
+            text_list = Text.objects.filter(event_type__exact=ev.event_type, param0__exact=ev.degree).\
+                values_list('message', flat=True)
+        elif ev.event_type == Event.EV_ASP_EXACT:
+            aspect_goodness = Event.ASPECT[ev.degree][1]
+            if ev.planet0 == Event.SE_MOON:
+                text_list = Text.objects.filter(event_type__exact=Event.EV_ASP_EXACT_MOON, 
+                    param0__exact=ev.planet1, param1__exact=aspect_goodness).\
+                    values_list('message', flat=True)
+            else:
+                text_list = Text.objects.filter(event_type__exact=ev.event_type, 
+                    param0__exact=ev.planet0, param1__exact=ev.planet1, param2__exact=aspect_goodness).\
+                    values_list('message', flat=True)
+        elif ev.event_type == Event.EV_SIGN_ENTER:
+            text_list = Text.objects.filter(event_type__exact=ev.event_type, 
+                param0__exact=ev.degree).values_list('message', flat=True)
+        if text_list:
+            text = text_list[0]
+        params = {
+                  'caption': caption,
+                  'text': text,
+                  }
     c = RequestContext(request, params)
     return render_to_response('m/text.html', context_instance=c)

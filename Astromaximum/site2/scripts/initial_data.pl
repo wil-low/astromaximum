@@ -22,6 +22,8 @@ foreach my $infile (@interpret_files) {
 		echo("Event $evt not defined in $infile! Skipped\n");
 		next;
 	}
+	$buf[2]=~/\!\!planet\s*(.+)/i;
+	my $planet=$1;
 	foreach my $line (@buf) {
 		$line =~ s/\/\/.+//is;
 		next if $line !~ /%[\d\s\,\-]+%/;
@@ -49,6 +51,7 @@ foreach my $infile (@interpret_files) {
 			"pk": $primary_key,
 			"model": "amax.text",
 			"fields": {
+				"planet": $planet,
 				"event_type": $event_type,
 				"language": "$lang",
 				"param0": $param[0],

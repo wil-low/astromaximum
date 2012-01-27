@@ -8,7 +8,7 @@ deploy_dev:
 
 text:
 	mkdir -p amax/fixtures/
-	perl scripts/text_initial_data.pl > amax/fixtures/initial_data.json
+	perl scripts/initial_data.pl > amax/fixtures/initial_data.json
 
 art: i/a0.png
 

@@ -78,7 +78,8 @@ class Event(models.Model):
     
     PLANET = ["SO", "MO", "ME", "VE", "MA", "JU", "SA", "UR", "NE", "PL"]
 
-    ASPECT = {0: 0, 180: 1, 120: 2, 90: 3, 60: 4, 5: 45}
+    # angle: (ordinal number, aspect goodness(0 - conjunction, 1 - bad, 2 - good))
+    ASPECT = {0: (0, 0), 180: (1, 1), 120: (2, 2), 90: (3, 1), 60: (4, 2), 45: (5, 2)}
     
     EVENT_TYPE = ['EV_VOC', 'EV_SIGN_ENTER', 'EV_ASP_EXACT', 'EV_RISE', 'EV_DEGREE_PASS',
         'EV_VIA_COMBUSTA', 'EV_RETROGRADE', 'EV_ECLIPSE', 'EV_TITHI', 'EV_NAKSHATRA', 'EV_SET',
@@ -124,13 +125,13 @@ class Event(models.Model):
         if Event.SE_SUN <= self.planet1 <= Event.SE_PLUTO:
             planet1_str = Event.PLANET[self.planet1]
         if print_raw_date:
-            return u"%s %s - %s %s : (%s %s)(%s %s) y%s %s state %d" % (
+            return u"%s %s/%s %s : (%s %s)(%s %s) y%s %s state %d" % (
                 Event.EVENT_TYPE[self.event_type],
                 planet0_str, planet1_str, self.degree,
                 self.date0, self.date1,
                 self.datetime0, self.datetime1, self.year, self.city_id, self.state)
         else:
-            return u"%s %s - %s %s : (%s %s) y%s %s" % (
+            return u"%s %s/%s %s : (%s %s) y%s %s" % (
                 Event.EVENT_TYPE[self.event_type],
                 planet0_str, planet1_str, self.degree,
                 self.datetime0, self.datetime1, self.year, self.city_id)
@@ -222,11 +223,12 @@ class Location(models.Model):
 class Text(models.Model):
     language = models.TextField()
     event_type = models.IntegerField()
+    planet = models.IntegerField()
     param0 = models.IntegerField(null=True)
     param1 = models.IntegerField(null=True)
     param2 = models.IntegerField(null=True)
     message = models.TextField()
 
     def __unicode__(self):
-        return u'%s %s (%s, %s, %s)' % (Event.EVENT_TYPE[self.event_type], self.language,
-            self.param0, self.param1, self.param2)
+        return u'%s %s %s (%s, %s, %s)' % (Event.EVENT_TYPE[self.event_type], self.language,
+            self.planet, self.param0, self.param1, self.param2)
