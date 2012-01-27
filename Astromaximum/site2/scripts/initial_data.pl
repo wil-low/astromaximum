@@ -22,7 +22,7 @@ foreach my $infile (@interpret_files) {
 		echo("Event $evt not defined in $infile! Skipped\n");
 		next;
 	}
-	$buf[2]=~/\!\!planet\s*(.+)/i;
+	$buf[2]=~/\!\!planet\s*(.+?)[\n\r]+/i;
 	my $planet=$1;
 	foreach my $line (@buf) {
 		$line =~ s/\/\/.+//is;
