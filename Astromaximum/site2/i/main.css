@@ -28,8 +28,6 @@ body,ul {
 	position: relative;
 	background: #F0F0F0;
 	font-family:sans-serif;
-    width:5em;
-    height:4em;
     text-align:center;
 }
 
@@ -48,6 +46,8 @@ body,ul {
 	background-position: 50% 0%;
 	display:block;
 	white-space:nowrap;
+    width:5em;
+    height:4em;
 }
 
 .tab li a.green {
