@@ -93,7 +93,7 @@ class Event(models.Model):
         'EV_APHETICS', 'EV_FAST', 'EV_ASCAPHETICS', 'EV_MSG', 'EV_BACK', 'EV_TATTVAS', 'EV_LAST']
 
     year = models.IntegerField(default=-1)
-    city_id = models.TextField(null=True)
+    city_id = models.CharField(max_length=15, null=True)
     
     event_type = models.IntegerField(default=EV_LAST)
     
@@ -207,17 +207,16 @@ class Event(models.Model):
         ordering = ['datetime0']
         
 class Location(models.Model):
-    city_hash = models.TextField()
-    name = models.TextField()
-    state = models.TextField(null=True)
-    country = models.TextField()
-    timezone =  models.TextField()
+    name = models.CharField(max_length=100)
+    state = models.CharField(max_length=100, null=True)
+    country = models.CharField(max_length=100)
+    timezone =  models.CharField(max_length=100)
     latitude = models.FloatField()
     longitude = models.FloatField()
     altitude = models.FloatField()
     
     def __unicode__(self):
-        return self.city_hash
+        return '%s, %s, %s' % (self.name, self.state, self.country) 
 
 
 class Text(models.Model):

@@ -12,6 +12,9 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    
+    url(r'^data/', include('data.urls')),
+
     url(r'^m/', include('m.urls')),
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

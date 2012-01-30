@@ -1,7 +1,7 @@
 import struct
 from calendar import timegm
 from pprint import pprint
-from models import Event
+from models import Event, Location
 from datetime import datetime
 
 class DataFile:
@@ -22,38 +22,45 @@ class DataFile:
         self.coords = []
         self.year = 0
         self.city_id = 0
+        self.fd = open(self.filename, 'rb')
+        self.read_header()
 
-    def read_byte(self, fd):
-        val, = struct.unpack('b', fd.read(1))
+    def read(self, count):
+        return self.fd.read(count)
+
+    def read_byte(self):
+        val, = struct.unpack('b', self.fd.read(1))
         return val
     
-    def read_ubyte(self, fd):
-        val, = struct.unpack('B', fd.read(1))
+    def read_ubyte(self):
+        val, = struct.unpack('B', self.fd.read(1))
         return val
     
-    def read_short(self, fd):
-        val, = struct.unpack('>h', fd.read(2))
+    def read_short(self):
+        val, = struct.unpack('>h', self.fd.read(2))
         return val
 
-    def read_int(self, fd):
-        val, = struct.unpack('>i', fd.read(4))
+    def read_int(self):
+        val, = struct.unpack('>i', self.fd.read(4))
         return val
 
-    def read_uint(self, fd):
-        val, = struct.unpack('>I', fd.read(4))
+    def read_uint(self):
+        val, = struct.unpack('>I', self.fd.read(4))
         return val
 
-    def read_UTF(self, fd):
-        str_length = self.read_short(fd)
-        return fd.read(str_length)
+    def read_UTF(self):
+        str_length = self.read_short()
+        return self.read(str_length)
 
-    def read_YMD(self, fd):
-        self.year = self.read_short(fd)
-        month = self.read_byte(fd)
-        day = self.read_byte(fd)
+    def read_YMD(self):
+        self.year = self.read_short()
+        month = self.read_byte()
+        day = self.read_byte()
         
         self.startJD = timegm((self.year, month, day, 0, 0, 0))
-        self.dayCount = self.read_short(fd)
+        if self.is_common:
+            self.read(2)
+        self.dayCount = self.read_short()
         self.finalJD = self.startJD + DataFile.SECINDAY * self.dayCount
 
         print 'Range', self.startJD, self.finalJD
@@ -62,47 +69,45 @@ class DataFile:
         finalDate = datetime.utcfromtimestamp(self.finalJD)
         print 'Range2', startDate, finalDate
  
-    def read_sub_data(self, event_func):
-        "parse datafile header and call event_func with Event"
-        
-        fd = file(self.filename, 'rb')
-        
+    def read_header(self):
         if self.is_common:
-            self.read_YMD(fd)
+            self.read_YMD()
             self.city_id = None
-            fd.read(2)  # custom data length
         else:
-            print fd.read(4)  # signature
-            version = self.read_byte(fd)
+            print self.read(4)  # signature
+            version = self.read_byte()
             if version == 2:
-                self.read_YMD(fd)
-                self.city_id = '%08x' % self.read_uint(fd)  # city id
+                self.read_YMD()
+                location = Location()
+                location.id = self.read_uint()
+                self.city_id = '%08x' % location.id  # city id
                 # latitude, longitude, altitude
-                self.coords = [self.read_short(fd), self.read_short(fd), self.read_short(fd)]
-                print self.startJD, self.finalJD, self.dayCount
-                print self.read_UTF(fd)  # city
-                self.read_UTF(fd)  # state
-                self.read_UTF(fd)  # country
-                self.read_UTF(fd)  # timezone
-                self.read_UTF(fd)  # custom data
-                transitionCount = self.read_byte(fd)
+                location.latitude = self.read_short() / 100.
+                location.longitude = self.read_short() / 100.
+                location.altitude = self.read_short()
+                location.name = self.read_UTF()  # city
+                location.state = self.read_UTF()  # state
+                location.country = self.read_UTF()  # country
+                location.timezone = self.read_UTF()  # timezone
+                location.save()
+                self.read_UTF()  # custom data
+                transitionCount = self.read_byte()
                 self.transitionTimes = []
                 self.transitionOffsets = []
                 self.transitionNames = []
                 for i in range(transitionCount):
-                    self.transitionTimes.append(self.read_int(fd))  # start_date
-                    self.transitionOffsets.append(self.read_short(fd) * 60)  # gmt_ofs_min
-                    self.transitionNames.append(self.read_UTF(fd))  # name
+                    self.transitionTimes.append(self.read_int())  # start_date
+                    self.transitionOffsets.append(self.read_short() * 60)  # gmt_ofs_min
+                    self.transitionNames.append(self.read_UTF())  # name
                     print self.transitionTimes[i], ", ", self.transitionTimes[i], " > ", self.transitionOffsets[i], " ", self.transitionNames[i]
             else:
                 print "Unknown version ", version
-            
-        pprint(vars(self))
-        event_count = self.read_events(fd, event_func)
-        fd.close()
-        return event_count
+        
+    def read_sub_data(self, event_func):
+        "call event_func with Event"
+        return self.read_events(event_func)
        
-    def read_events(self, fd, event_func):
+    def read_events(self, event_func):
         last = Event()
         last.date0 = last.date1 = 0
      
@@ -112,15 +117,16 @@ class DataFile:
         flag = 0
         try:
             while True:
-                self.read_byte(fd)
-                last.event_type = self.read_byte(fd)
-                self.read_short(fd)
-                flag = self.read_short(fd)
-                planet = self.read_byte(fd)
+                self.read_byte()
+                last.event_type = self.read_byte()
+                assert(Event.EV_VOC <= last.event_type <= Event.EV_LAST)
+                self.read_short()
+                flag = self.read_short()
+                planet = self.read_byte()
                 period = 24 * 60
                 if last.event_type == Event.EV_ASCAPHETICS:
                     period = 2 * 60
-                count = self.read_short(fd)
+                count = self.read_short()
                 fcumul_date_b = flag & DataFile.EF_CUMUL_DATE_B
                 fcumul_date_w = flag & DataFile.EF_CUMUL_DATE_W
                 fdate = flag & DataFile.EF_DATE
@@ -137,42 +143,42 @@ class DataFile:
                 mydate1 = 0
                 cumul = 0
                 date = 0
-                print last.event_type, flag, planet, count
+                print 'ev_type', last.event_type, flag, planet, count
                 print 'flags:', fcumul_date_b, fcumul_date_w, fdate, fplanet1, fplanet2, fdegree, fshort_degree, fnext_date2
                 for i in range(count):
                     if fcumul_date_b:
                         if i:
-                            cumul = self.read_byte(fd)
+                            cumul = self.read_byte()
                             date += (cumul + period) * 60
                         else:
-                            date = self.read_int(fd)
+                            date = self.read_int()
                     elif fcumul_date_w:
                         if i:
-                            cumul = self.read_short(fd)
+                            cumul = self.read_short()
                             date += (cumul + period) * 60
                         else:
-                            date = self.read_int(fd)
+                            date = self.read_int()
                     else:
-                        date = self.read_int(fd)
+                        date = self.read_int()
 
                     mydate0 = date
                     
                     if fdate:
-                        mydate1 = self.read_int(fd)
+                        mydate1 = self.read_int()
                     else:
                         mydate1 = mydate0
                         
                     if fplanet1:
-                        myplanet0 = self.read_byte(fd)
+                        myplanet0 = self.read_byte()
                         
                     if fplanet2:
-                        myplanet1 = self.read_byte(fd)
+                        myplanet1 = self.read_byte()
                         
                     if fdegree:
                         if fshort_degree:
-                            mydgr = self.read_ubyte(fd)
+                            mydgr = self.read_ubyte()
                         else:
-                            mydgr = self.read_short(fd)
+                            mydgr = self.read_short()
                             
                     if fnext_date2:
                         last.date1 = mydate0
@@ -195,7 +201,10 @@ class DataFile:
         except (struct.error):
             print 'EOF reached'
         return event_count
-
+    
+    def close(self):
+        self.fd.close()
+    
     def clone_event(self, event):
         new_event = Event()
         new_event.year = self.year
@@ -220,10 +229,11 @@ class DataFile:
 def main():
     # import amax.datafile; amax.datafile.main()
 
-    #df = DataFile('/home/willow/prj/amax-hg/Astromaximum/2012.comm', 1)
-    #df.read_sub_data(df.process_event)
-    df = DataFile('/home/willow/amax/data/archive-tzdata/2012/UA/d9d95558.dat', 0)
-    df.read_sub_data(df.print_event)
+    df = DataFile('/home/willow/prj/amax-hg/Astromaximum/site2/data/commons/2012.comm', 1)
+    df.read_sub_data(df.process_event)
+    df.close()
+    #df = DataFile('/home/willow/amax/data/archive-tzdata/2012/UA/d9d95558.dat', 0)
+    #df.read_sub_data(df.print_event)
 
 if __name__ == '__main__':
     main()
