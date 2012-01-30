@@ -7,7 +7,7 @@ body,ul {
     padding:1em 0em;
 }
 
-.tab a, .ftr a {
+.hdr a, .ftr a {
     text-decoration:none;
     padding:1em 0.5em;
     border: 1px solid #abe5ff;

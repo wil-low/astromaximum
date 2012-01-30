@@ -3,8 +3,10 @@
 {% block title %}Summary{% endblock %}
 {% block content %}	    
 	<ul class="tab">
-		<li>{{ event_list.vc|vc }}</li>
-		<li>{{ event_list.vocs|voc }}</li>
+        {% if event_list.vocs %}
+            {% for ev in event_list.vocs %}<li>{{ ev|voc }}</li>{% endfor %}
+        {% endif %}
+	    {% if event_list.vc %}<li>{{ event_list.vc|vc }}</li>{% endif %}
 		<li>{{ event_list.sun_degree|sun_degree }}</li>
 		<li><a href="rise_set">Rise/Set</a></li>
 		<li>{{ event_list.moon_sign|moon_sign }}</li>

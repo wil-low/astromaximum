@@ -61,7 +61,7 @@ class SummaryView(BaseView):
     def gather_events(self):
         self.event_list = {}
         self.template_name = 'm/summary.html'
-        self.event_list['vocs'] = self.select_single_event(self.es.get_vocs())
+        self.event_list['vocs'] = self.es.get_vocs()
 
         self.event_list['vc'] = self.select_single_event(self.es.get_vc())
         #self.event_list['vocs'][0].state = Event.STATE_ACTIVE
