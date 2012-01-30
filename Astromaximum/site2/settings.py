@@ -95,6 +95,11 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+ANONYMOUS_USER = {
+    'location_id': '9de36cb2',
+    'date_range': 2,
+    }
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'zkicz_oqp@p1u57hsy@vr!wgiay020j354x5x=dmzkc61ta$81'
 
