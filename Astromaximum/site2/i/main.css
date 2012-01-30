@@ -4,7 +4,13 @@ body,ul {
 
 .hdr,.ftr {
 	text-align:center;
-	height:2em;
+    padding:1em 0em;
+}
+
+.tab a, .ftr a {
+    text-decoration:none;
+    padding:1em 0.5em;
+    border: 1px solid #abe5ff;
 }
 
 .clear {

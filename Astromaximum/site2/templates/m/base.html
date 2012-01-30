@@ -13,17 +13,15 @@
 <body>
     <div class="hdr">
         {% block hdr %}
-        <a href="summary">Summary</a>
         <a href="../{{ prev_date }}/{{ page_name }}">&lt;&lt;</a>
-        {{ date_range.0|date:"d M Y" }}
+        {% if page_name != "summary" %}<a href="summary">{% endif %}{{ date_range.0|date:"d M Y" }}{% if page_name != "summary" %}</a>{% endif %}
         <a href="../{{ next_date }}/{{ page_name }}">&gt;&gt;</a>
-        (<a href="../{{ now|date:'Y-m-d' }}/{{ page_name }}">{{ now|date:'d M Y, H:i' }}</a>)
         {% endblock %}
     </div>
     {% block content %}
 	{% endblock %}
     <div class="ftr">
-        Kiev <a href="../settings">Settings</a>
+        <p>Kiev <a href="../settings">Settings</a></p>
     </div>
 </body>
 </html>

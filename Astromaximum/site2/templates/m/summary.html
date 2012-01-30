@@ -14,7 +14,8 @@
         <li><a href="aspects">Aspects</a></li>
 	</ul>
 	<div class="clear"/>
-	{% if settings.DEBUG %}
+    <p><a href="../{{ now|date:'Y-m-d' }}/{{ page_name }}">{{ now|date:'d M Y, H:i' }}</a></p>
+    {% if settings.DEBUG %}
     <div class="event_list">
     	<h1>Events for today:</h1>
         <h2>Vocs</h2>
