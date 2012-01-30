@@ -46,6 +46,11 @@ foreach my $infile (@interpret_files) {
 			$out .= ',';
 		}
 		$line =~ s/"/\\"/g;
+		$line =~ s/[\*\~\#\^\$\}\>\@\=\{]//g;
+		$line =~ s/\|/<\/p><p>/g;
+		$line =~ s/ \-(\S)/ &mdash; $1/g;
+		$line =~ s/<p>--<\/p>/<hr\/>/g;
+		
 		$out .= << "END";
 		{
 			"pk": $primary_key,
