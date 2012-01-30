@@ -9,6 +9,7 @@
 		<li><a href="rise_set">Rise/Set</a></li>
 		<li>{{ event_list.moon_sign|moon_sign }}</li>
 		<li>{{ event_list.tithi|tithi }}</li>
+        <li>{{ event_list.planet_hour|hour }}</li>
 		<li><a href="moon_move#start">Moon<br/>move</a></li>
         <li><a href="aspects">Aspects</a></li>
 	</ul>
@@ -26,6 +27,8 @@
         <p>{{ event_list.moon_sign }}</p>
         <h2>Tithi</h2>
         <p>{{ event_list.tithi }}</p>
+        <h2>Planetary hour</h2>
+        <p>{{ event_list.planet_hour }}</p>
         <h2>Aspects</h2>
         {% for ev in event_list.aspects %} 
             <p>{{ ev }}</p>

@@ -111,3 +111,33 @@ class EventSelector():
     @staticmethod
     def get_event_text(event):
         return str(event)
+    
+    WEEK_START_HOUR = [0, 3, 6, 2, 5, 1, 4]
+    HOUR_SEQ = [Event.SE_SUN, Event.SE_VENUS, Event.SE_MERCURY,
+        Event.SE_MOON, Event.SE_SATURN, Event.SE_JUPITER, Event.SE_MARS]
+    
+    def calc_planet_hours(self, rise0, set0, rise1, start_hour):
+        hours = [];
+        day_hour = (rise1 - rise0) / 12
+        night_hour = (rise1 - set0) / 12
+        start = rise0
+        for i in range(24):
+            ev = Event()
+            ev.datetime0 = start
+            ev.planet0 = EventSelector.HOUR_SEQ[start_hour % 7]
+            if i < 12:
+                start += day_hour
+            else:
+                start += night_hour
+            ev.datetime += timedelta(seconds=-1)
+            hours.append(ev)
+            ++start_hour
+        return hours
+    
+    def get_planetary_hours(self):
+        self.set_period(self.period0 + timedelta(days=1), self.period1 + timedelta(days=1))
+        tomorrow_rise = self.get_event_on_period(Event.EV_RISE, Event.SE_SUN)
+        #Event[] aev = calcPlanetHours(getItem(Event.EV_SUN_RISE).events[0], ev, weekStartHour[weekDay - 1]);
+        #for (int i = 0; i < 24; i++) {
+        #    getItem(i < 12 ? Event.EV_DAY_HOURS : Event.EV_NIGHT_HOURS).setEvents(i % 12, aev[i]);
+        #}

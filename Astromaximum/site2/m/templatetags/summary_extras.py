@@ -57,3 +57,12 @@ def tithi(event):
         s = decorate(event, s)
         result = '<a href="tithi">Tithi<br/>%s</a>' % s
     return mark_safe(result)
+
+@register.filter
+def hour(event):
+    result = ''
+    if event:
+        s = '%s<br/>%s'  % (event.get_degree(), event.time0())
+        s = decorate(event, s)
+        result = '<a href="tithi">Tithi<br/>%s</a>' % s
+    return mark_safe(result)
