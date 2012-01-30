@@ -60,6 +60,36 @@ body,ul {
     border-color: green;
 }
 
+.lowtab {
+    list-style-type:none;
+    list-style-position:outside;
+    list-style-image:none;
+    display:block;
+    padding:2px;
+}
+
+.lowtab li {
+    border: 1px solid #abe5ff;
+    font-size:.8em;
+    display:block;
+    margin:0.1em;
+    float: left;
+    position: relative;
+    background: #F0F0F0;
+    font-family:sans-serif;
+    text-align:center;
+}
+
+.lowtab li a {
+    text-decoration:none;
+    background-repeat: no-repeat;
+    background-position: 50% 0%;
+    display:block;
+    white-space:nowrap;
+    width:5em;
+    height:2.2em;
+}
+
 .event_list {
     font-size: 50%;
 }

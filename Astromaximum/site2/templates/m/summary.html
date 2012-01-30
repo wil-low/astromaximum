@@ -8,14 +8,17 @@
         {% endif %}
 	    {% if event_list.vc %}<li>{{ event_list.vc|vc }}</li>{% endif %}
 		<li>{{ event_list.sun_degree|sun_degree }}</li>
-		<li><a href="rise_set">Rise/Set</a></li>
 		<li>{{ event_list.moon_sign|moon_sign }}</li>
 		<li>{{ event_list.tithi|tithi }}</li>
         <li>{{ event_list.planet_hour|hour }}</li>
-		<li><a href="moon_move#start">Moon<br/>move</a></li>
-        <li><a href="aspects">Aspects</a></li>
 	</ul>
 	<div class="clear"/>
+    <ul class="lowtab">
+        <li><a href="rise_set">Rise/Set</a></li>
+        <li><a href="moon_move#start">Moon<br/>move</a></li>
+        <li><a href="aspects">Aspects</a></li>
+    </ul>
+    <div class="clear"/>
     <p><a href="../{{ now|date:'Y-m-d' }}/{{ page_name }}">{{ now|date:'d M Y, H:i' }}</a></p>
     {% if settings.DEBUG %}
     <div class="event_list">
