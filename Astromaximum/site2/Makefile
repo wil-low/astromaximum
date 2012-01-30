@@ -1,5 +1,11 @@
 all: deploy
 
+upload: deploy_prod
+	bash scripts/upload.sh
+
+upload_db:
+	bash scripts/upload_db.sh
+
 deploy_prod:
 	bash scripts/make_archive.sh '/home/amdj/site2/'
 
@@ -18,4 +24,4 @@ i/a0.png:
 clean:
 	rm -f i/*.png
 
-.PHONY: deploy_prod deploy_dev art text all
+.PHONY: deploy_prod deploy_dev art text upload all
