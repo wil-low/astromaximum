@@ -62,7 +62,5 @@ def tithi(event):
 def hour(event):
     result = ''
     if event:
-        s = '%s<br/>%s'  % (event.get_degree(), event.time0())
-        s = decorate(event, s)
-        result = '<a href="tithi">Tithi<br/>%s</a>' % s
+        result = '<a href="hour">%s<br/>%s<br/>%s</a>' % (event.time0(), Event.PLANET[event.planet0], event.time1())
     return mark_safe(result)

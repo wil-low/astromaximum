@@ -8,10 +8,11 @@ class EventSelector():
     q_astrorise = Q(event_type__exact=Event.EV_ASTRORISE)
     q_astroset = Q(event_type__exact=Event.EV_ASTROSET)
 
-    def __init__(self, year, period0, period1, now):
+    def __init__(self, year, period0, period1, now, city_id):
         self.set_year(year)
         self.set_period(period0, period1)
         self.now = now
+        self.city_id = city_id
 
     def set_year(self, year):
         self.year = year
@@ -19,10 +20,14 @@ class EventSelector():
     def set_period(self, period0, period1):
         self.period0 = period0
         self.period1 = period1
+        self.weekday = self.period0.weekday()
 
     def get_event_on_period(self, event_type, planet):
+        city_id = None
+        if event_type in [Event.EV_RISE, Event.EV_SET]:
+            city_id = self.city_id
         return Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1,
-            event_type__exact=event_type, planet0__exact=planet).order_by('datetime0')
+            event_type__exact=event_type, planet0__exact=planet, city_id__exact=city_id).order_by('datetime0')
         
     def get_event_on_period_q(self, q):
         return Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1). \
@@ -118,9 +123,16 @@ class EventSelector():
     
     def calc_planet_hours(self, rise0, set0, rise1, start_hour):
         hours = [];
-        day_hour = (rise1 - rise0) / 12
-        night_hour = (rise1 - set0) / 12
-        start = rise0
+        
+        diff = set0.datetime0 - rise0.datetime0
+        diff_sec = (diff.days * 86400 + diff.seconds) / 12
+        day_hour = timedelta(seconds=diff_sec)
+        
+        diff = rise1.datetime0 - set0.datetime0
+        diff_sec = (diff.days * 86400 + diff.seconds) / 12
+        night_hour = timedelta(seconds=diff_sec)
+        
+        start = rise0.datetime0
         for i in range(24):
             ev = Event()
             ev.datetime0 = start
@@ -129,15 +141,15 @@ class EventSelector():
                 start += day_hour
             else:
                 start += night_hour
-            ev.datetime += timedelta(seconds=-1)
+            ev.datetime1 = start
             hours.append(ev)
-            ++start_hour
+            start_hour += 1
         return hours
     
     def get_planetary_hours(self):
+        today_rise = self.get_event_on_period(Event.EV_RISE, Event.SE_SUN)[0]
+        today_set = self.get_event_on_period(Event.EV_SET, Event.SE_SUN)[0]
         self.set_period(self.period0 + timedelta(days=1), self.period1 + timedelta(days=1))
-        tomorrow_rise = self.get_event_on_period(Event.EV_RISE, Event.SE_SUN)
-        #Event[] aev = calcPlanetHours(getItem(Event.EV_SUN_RISE).events[0], ev, weekStartHour[weekDay - 1]);
-        #for (int i = 0; i < 24; i++) {
-        #    getItem(i < 12 ? Event.EV_DAY_HOURS : Event.EV_NIGHT_HOURS).setEvents(i % 12, aev[i]);
-        #}
+        tomorrow_rise = self.get_event_on_period(Event.EV_RISE, Event.SE_SUN)[0]
+        hours = self.calc_planet_hours(today_rise, today_set, tomorrow_rise, EventSelector.WEEK_START_HOUR[self.weekday])
+        return hours

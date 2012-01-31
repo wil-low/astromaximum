@@ -24,7 +24,7 @@ class BaseView():
         self.current_date = datetime.datetime(int(year), int(month), int(day))
         self.prev_date = (self.current_date + datetime.timedelta(days=-1))
         self.next_date = (self.current_date + datetime.timedelta(days=1))
-        self.es = EventSelector(self.current_date.year, self.current_date, self.next_date, now)
+        self.es = EventSelector(self.current_date.year, self.current_date, self.next_date, now, settings.ANONYMOUS_USER['city_id'])
 
     def gather_events(self):
         pass
@@ -68,6 +68,8 @@ class SummaryView(BaseView):
         self.event_list['sun_degree'] = self.select_single_event(self.es.get_sun_degree())
         self.event_list['moon_sign'] = self.select_single_event(self.es.get_moon_sign())
         self.event_list['tithi'] = self.select_single_event(self.es.get_tithi())
+        self.event_list['planet_hour'] = self.select_single_event(self.es.get_planetary_hours())
+#        self.event_list['planet_hour'] = self.es.get_planetary_hours()
     #    event_list['sun_day'] = 
     #    event_list['moon_day'] = 
         #aspects
@@ -90,6 +92,10 @@ class MoonMoveView(BaseView):
         self.template_name = 'm/lists/moon_move.html'
         self.event_list = self.es.get_moon_move()
 
+class PlanetHourView(BaseView):
+    def gather_events(self):
+        self.template_name = 'm/lists/planet_hour.html'
+        self.event_list = self.es.get_planetary_hours()
 
 class RiseSetView(BaseView):
     def gather_events(self):
@@ -130,5 +136,19 @@ def event_text(request, year, month, day, event_id):
                   'caption': caption,
                   'text': text,
                   }
+    c = RequestContext(request, params)
+    return render_to_response('m/text.html', context_instance=c)
+
+@login_required
+def hour_text(request, year, month, day, planet):
+    caption = text = ''
+    text_list = Text.objects.filter(event_type__exact=Event.EV_PLANET_HOUR, param0__exact=planet).\
+        values_list('message', flat=True)
+    if text_list:
+        text = text_list[0]
+    params = {
+              'caption': caption,
+              'text': text,
+              }
     c = RequestContext(request, params)
     return render_to_response('m/text.html', context_instance=c)

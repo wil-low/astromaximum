@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import patterns, url
-from m.views import call_view, SummaryView, TithiView, AspectView, MoonMoveView, RiseSetView
+from m.views import call_view, SummaryView, TithiView, AspectView, MoonMoveView, RiseSetView,\
+    PlanetHourView
 
 def view_url(regexp, view_class):
     return url(regexp, call_view, {'view_class': view_class})
@@ -11,6 +12,8 @@ urlpatterns = patterns('',
     view_url(r'tithi$', TithiView),
     view_url(r'moon_move$', MoonMoveView),
     view_url(r'rise_set$', RiseSetView),
+    view_url(r'hour', PlanetHourView),
 
-    url(r'^text/(?P<event_id>\d+)$', 'm.views.event_text'),
+    url(r'^text/e(?P<event_id>\d+)$', 'm.views.event_text'),
+    url(r'^text/h(?P<planet>\d+)$', 'm.views.hour_text'),
 )
