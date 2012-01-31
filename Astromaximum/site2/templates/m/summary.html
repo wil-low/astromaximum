@@ -2,22 +2,22 @@
 {% load summary_extras %}
 {% block title %}Summary{% endblock %}
 {% block content %}	    
-	<ul class="tab">
+	<div class="tab">
         {% if event_list.vocs %}
-            {% for ev in event_list.vocs %}<li>{{ ev|voc }}</li>{% endfor %}
+            {% for ev in event_list.vocs %}<div>{{ ev|voc }}</div>{% endfor %}
         {% endif %}
-	    {% if event_list.vc %}<li>{{ event_list.vc|vc }}</li>{% endif %}
-		<li>{{ event_list.sun_degree|sun_degree }}</li>
-		<li>{{ event_list.moon_sign|moon_sign }}</li>
-		<li>{{ event_list.tithi|tithi }}</li>
-        <li>{{ event_list.planet_hour|hour }}</li>
-	</ul>
+	    {% if event_list.vc %}<div>{{ event_list.vc|vc }}</div>{% endif %}
+		<div>{{ event_list.sun_degree|sun_degree }}</div>
+		<div>{{ event_list.moon_sign|moon_sign }}</div>
+		<div>{{ event_list.tithi|tithi }}</div>
+        <div>{{ event_list.planet_hour|hour }}</div>
+	</div>
 	<div class="clear"/>
-    <ul class="lowtab">
-        <li><a href="rise_set">Rise/Set</a></li>
-        <li><a href="moon_move#start">Moon<br/>move</a></li>
-        <li><a href="aspects">Aspects</a></li>
-    </ul>
+    <div class="lowtab">
+        <div><a href="rise_set">Rise/Set</a></div>
+        <div><a href="moon_move#start">Moon<br/>move</a></div>
+        <div><a href="aspects">Aspects</a></div>
+    </div>
     <div class="clear"/>
     <p><a href="../{{ now|date:'Y-m-d' }}/{{ page_name }}">{{ now|date:'d M Y, H:i' }}</a></p>
     {% if settings.DEBUG %}

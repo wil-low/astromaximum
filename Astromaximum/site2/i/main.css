@@ -18,14 +18,11 @@ body,ul {
 }
 
 .tab {
-    list-style-type:none;
-	list-style-position:outside;
-	list-style-image:none;
 	display:block;
 	padding:2px;
 }
 
-.tab li {
+.tab div {
     border: 1px solid #abe5ff;
 	font-size:.8em;
 	display:block;
@@ -37,38 +34,19 @@ body,ul {
     text-align:center;
 }
 
-.tab li b {
-	color:red;
-	font-weight:normal;
-}
-
-.tab li div {
-	line-height:90px;
-}
-
-.tab li a {
+.tab div a {
     text-decoration:none;
-	background-repeat: no-repeat;
-	background-position: 50% 0%;
 	display:block;
-	white-space:nowrap;
     width:5em;
     height:4em;
 }
 
-.tab li a.green {
-    border-color: green;
-}
-
 .lowtab {
-    list-style-type:none;
-    list-style-position:outside;
-    list-style-image:none;
     display:block;
     padding:2px;
 }
 
-.lowtab li {
+.lowtab div {
     border: 1px solid #abe5ff;
     font-size:.8em;
     display:block;
@@ -80,12 +58,9 @@ body,ul {
     text-align:center;
 }
 
-.lowtab li a {
+.lowtab div a {
     text-decoration:none;
-    background-repeat: no-repeat;
-    background-position: 50% 0%;
     display:block;
-    white-space:nowrap;
     width:5em;
     height:2.2em;
 }
