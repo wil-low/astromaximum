@@ -29,8 +29,8 @@ class EventSelector():
 
     def get_event_on_period(self, event_type, planet):
         city_id = self.city(event_type)
-        return Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1,
-            event_type__exact=event_type, planet0__exact=planet, city_id__exact=city_id).order_by('datetime0')
+        return list(Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1,
+            event_type__exact=event_type, planet0__exact=planet, city_id__exact=city_id).order_by('datetime0'))
         
     def get_crossing_event(self, event_type, planet):
         city_id = self.city(event_type)
@@ -49,10 +49,10 @@ class EventSelector():
         if not is_moon:
             q = ~q
             
-        return Event.objects.filter(year__exact=self.year,
+        return list(Event.objects.filter(year__exact=self.year,
                                     datetime0__gte=self.period0, datetime0__lt=self.period1,
                                     event_type__exact=Event.EV_ASP_EXACT). \
-            filter(q).order_by('datetime0')
+            filter(q).order_by('datetime0'))
     
     def get_vocs(self):
         return self.get_event_on_period(Event.EV_VOC, Event.SE_MOON)
