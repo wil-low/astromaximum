@@ -63,9 +63,9 @@ def moon_move_list(events, date_range):
 def rise_set(event):
     result = ''
     if event:
-        s = '%d %s' % (event.degree, event.datetime0.strftime('%H:%M %d %b'))
-        s = decorate(event, s)
-        result = '<a href="text/e%s" class="aspects">%s</a>' % (event.id, s)
+        s = '%s %s %s' % (Event.PLANET[event.planet0], Event.EVENT_TYPE[event.event_type],
+            event.datetime0.strftime('%H:%M %d %b'))
+        result = '<a href="text/e%s" class="rise_set">%s</a>' % (event.id, s)
     return mark_safe(result)
 
 @register.filter

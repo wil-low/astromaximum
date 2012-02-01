@@ -5,8 +5,6 @@ from amax.models import Event
 class EventSelector():
     q_sun = Q(planet0__exact=Event.SE_SUN)
     q_moon = Q(planet0__exact=Event.SE_MOON)
-    q_astrorise = Q(event_type__exact=Event.EV_ASTRORISE)
-    q_astroset = Q(event_type__exact=Event.EV_ASTROSET)
 
     def __init__(self, year, period0, period1, now, city_id):
         self.set_year(year)
@@ -22,16 +20,23 @@ class EventSelector():
         self.period1 = period1
         self.weekday = self.period0.weekday()
 
-    def get_event_on_period(self, event_type, planet):
+    def city(self, event_type):
         city_id = None
-        if event_type in [Event.EV_RISE, Event.EV_SET]:
+        if event_type in [Event.EV_RISE, Event.EV_SET, Event.EV_ASTRORISE, Event.EV_ASTROSET]:
             city_id = self.city_id
+        #import pdb; pdb.set_trace()
+        return city_id
+
+    def get_event_on_period(self, event_type, planet):
+        city_id = self.city(event_type)
         return Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1,
             event_type__exact=event_type, planet0__exact=planet, city_id__exact=city_id).order_by('datetime0')
         
-    def get_event_on_period_q(self, q):
-        return Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1). \
-            filter(q).order_by('datetime0')
+    def get_crossing_event(self, event_type, planet):
+        city_id = self.city(event_type)
+        q_outside_range = Q(datetime0__gte=self.period1) | Q(datetime1__lt=self.period0)
+        return Event.objects.filter(year__exact=self.year, city_id__exact=city_id, event_type__exact=event_type).\
+            filter(~q_outside_range).order_by('datetime0') #, planet0__exact=planet
 
     def zeroJD(self):
         return datetime(1900, 1, 1)
@@ -55,16 +60,14 @@ class EventSelector():
     def get_vc(self):
         return self.get_event_on_period(Event.EV_VIA_COMBUSTA, Event.SE_MOON)
 
-    def get_rise_set(self, planet):
-        q_planet = Q(planet0__exact=planet)
-        rise_list = self.get_event_on_period_q(q_planet & EventSelector.q_astrorise)
-        if rise_list:
-            set_list = self.get_event_on_period_q(q_planet & EventSelector.q_astroset)
-            if set_list:
-                ev_rise = rise_list[0]
-                ev_rise.datetime1 = set_list[0].datetime0
-                return ev_rise
-        return None
+    def get_rise_sets(self):
+        city_id = self.city(Event.EV_ASTRORISE)
+        q_type = Q(event_type__exact=Event.EV_ASTRORISE) | Q(event_type__exact=Event.EV_ASTROSET)
+        #q_outside_range = Q(datetime0__gte=self.period1) | Q(datetime1__lt=self.period0)
+        q_inside_range = Q(datetime0__gte=self.period0) & Q(datetime0__lt=self.period1)
+        rise_list = list(Event.objects.filter(year__exact=self.year, city_id__exact=city_id).\
+            filter(q_inside_range & q_type).order_by('planet0', 'datetime0', 'event_type'))
+        return rise_list
     
     def get_sun_degree(self):
         return self.get_event_on_period(Event.EV_DEGREE_PASS, Event.SE_SUN)

@@ -101,11 +101,8 @@ class RiseSetView(BaseView):
     def gather_events(self):
         self.event_list = []
         self.template_name = 'm/lists/rise_set.html'
-        self.es.set_period(self.prev_date, self.next_date)
-        for planet in range(Event.SE_SUN, Event.SE_PLUTO + 1):
-            ev = self.es.get_rise_set(planet)
-            if ev:
-                self.event_list.append(ev)
+        self.es.set_period(self.current_date, self.next_date)
+        self.event_list = self.es.get_rise_sets()
 
 @login_required
 def event_text(request, year, month, day, event_id):
@@ -130,6 +127,12 @@ def event_text(request, year, month, day, event_id):
         elif ev.event_type == Event.EV_SIGN_ENTER:
             text_list = Text.objects.filter(event_type__exact=ev.event_type, 
                 param0__exact=ev.degree).values_list('message', flat=True)
+        elif ev.event_type == Event.EV_ASTRORISE:
+            text_list = Text.objects.filter(event_type__exact=Event.EV_RISE, 
+                param0__exact=ev.planet0, param1__exact=1).values_list('message', flat=True)
+        elif ev.event_type == Event.EV_ASTROSET:
+            text_list = Text.objects.filter(event_type__exact=Event.EV_RISE, 
+                param0__exact=ev.planet0, param1__exact=3).values_list('message', flat=True)
         if text_list:
             text = text_list[0]
         params = {
