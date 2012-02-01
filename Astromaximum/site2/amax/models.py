@@ -92,18 +92,18 @@ class Event(models.Model):
         'EV_DEGPASS2', 'EV_DEGPASS3', 'EV_HELP0', 'EV_HELP1', 'EV_ASTRORISE', 'EV_ASTROSET',
         'EV_APHETICS', 'EV_FAST', 'EV_ASCAPHETICS', 'EV_MSG', 'EV_BACK', 'EV_TATTVAS', 'EV_LAST']
 
-    year = models.IntegerField(default=-1)
-    city_id = models.CharField(max_length=15, null=True)
+    year = models.IntegerField(default=-1, db_index=True)
+    city_id = models.CharField(max_length=15, null=True, db_index=True)
     
-    event_type = models.IntegerField(default=EV_LAST)
+    event_type = models.IntegerField(default=EV_LAST, db_index=True)
     
     # these fields can be removed later
     date0 = models.IntegerField()
     date1 = models.IntegerField()
     
-    datetime0 = models.DateTimeField()
-    datetime1 = models.DateTimeField()
-    planet0 = models.IntegerField(default=-1)
+    datetime0 = models.DateTimeField(db_index=True)
+    datetime1 = models.DateTimeField(db_index=True)
+    planet0 = models.IntegerField(default=-1, db_index=True)
     planet1 = models.IntegerField(default=-1)
     degree = models.IntegerField(default=127)
 
