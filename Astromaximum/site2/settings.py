@@ -1,4 +1,5 @@
 # Django settings for amax_dj project.
+import os, sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -96,7 +97,7 @@ STATICFILES_FINDERS = (
 )
 
 ANONYMOUS_USER = {
-    'location_id': '9de36cb2',
+    'city_id': 'd9d95558',
     'date_range': 2,
     }
 
@@ -165,3 +166,9 @@ LOGGING = {
         },
     }
 }
+
+############ debug-panel
+if DEBUG:
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'apps/libs'))
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    INSTALLED_APPS += ('debug_toolbar',)
