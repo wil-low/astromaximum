@@ -4,7 +4,7 @@ upload: deploy_prod
 	bash scripts/upload.sh
 
 upload_db:
-	bash scripts/upload_db.sh
+	bash scripts/upload_db.sh '/home/amdj/site2/'
 
 deploy_prod:
 	bash scripts/make_archive.sh '/home/amdj/site2/'
