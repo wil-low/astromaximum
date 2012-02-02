@@ -80,7 +80,6 @@ class DataFile:
                 self.read_YMD()
                 location = Location()
                 location.id = self.read_uint()
-                self.city_id = '%08x' % location.id  # city id
                 # latitude, longitude, altitude
                 location.latitude = self.read_short() / 100.
                 location.longitude = self.read_short() / 100.
@@ -90,6 +89,7 @@ class DataFile:
                 location.country = self.read_UTF()  # country
                 location.timezone = self.read_UTF()  # timezone
                 location.save()
+                self.city_id = location
                 self.read_UTF()  # custom data
                 transitionCount = self.read_byte()
                 self.transitionTimes = []

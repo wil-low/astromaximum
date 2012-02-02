@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import dateutil.tz
+from django.conf import settings
 
 class Event(models.Model):
     SE_SUN = 0
@@ -95,7 +96,7 @@ class Event(models.Model):
         'EV_APHETICS', 'EV_FAST', 'EV_ASCAPHETICS', 'EV_MSG', 'EV_BACK', 'EV_TATTVAS', 'EV_LAST']
 
     year = models.IntegerField(default=-1, db_index=True)
-    city_id = models.CharField(max_length=15, null=True, db_index=True)
+    city_id = models.ForeignKey('Location', null=True)
     
     event_type = models.IntegerField(default=EV_LAST, db_index=True)
     
@@ -110,7 +111,7 @@ class Event(models.Model):
     degree = models.IntegerField(default=127)
 
     utc_tz = dateutil.tz.gettz('UTC')
-    tzinfo = None
+    tzinfo = utc_tz
     
     @staticmethod
     def fromutc(dtime):
@@ -222,7 +223,6 @@ class Location(models.Model):
     def __unicode__(self):
         return '%s, %s, %s' % (self.name, self.state, self.country) 
 
-
 class Text(models.Model):
     language = models.TextField()
     event_type = models.IntegerField()
@@ -239,5 +239,14 @@ class Text(models.Model):
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     location = models.ForeignKey(Location)
+    
     def __unicode__(self):
         return u'%s: %s' % (self.user.username, self.location)
+    
+    @staticmethod
+    def default_profile():
+        profile = UserProfile()
+        profile.location = Location.objects.filter(id__exact=settings.ANONYMOUS_USER['city_id'])[0]
+        return profile
+    
+    
