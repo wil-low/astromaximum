@@ -2,15 +2,18 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+import dateutil.tz
 import datetime
 from eventselector import EventSelector
 from amax.models import Event, Text
 
 def call_view_today(request):
-    now = datetime.datetime.now()
+    now = datetime.datetime.utcnow()
     return call_view(request, now.year, now.month, now.day, now)
 
 def call_view(request, year, month, day, view_class):
+    profile = request.user.get_profile()
+    Event.tzinfo = dateutil.tz.gettz(profile.location.timezone)
     v = view_class(year, month, day, datetime.datetime.utcnow())
     v.gather_events()
     return v.render(request)
@@ -21,7 +24,7 @@ class BaseView():
         self.month = month
         self.day = day
         self.now = now
-        self.current_date = datetime.datetime(int(year), int(month), int(day))
+        self.current_date = datetime.datetime(int(year), int(month), int(day), tzinfo=Event.tzinfo).astimezone(Event.utc_tz)
         self.prev_date = (self.current_date + datetime.timedelta(days=-1))
         self.next_date = (self.current_date + datetime.timedelta(days=1))
         self.es = EventSelector(self.current_date.year, self.current_date, self.next_date, now, settings.ANONYMOUS_USER['city_id'])
@@ -32,12 +35,13 @@ class BaseView():
     def render(self, request):
         params = {
                   'date_range': (self.current_date, self.next_date),
-                  'prev_date': self.prev_date.strftime('%Y-%m-%d'),
-                  'next_date': self.next_date.strftime('%Y-%m-%d'),
+                  'prev_date': self.prev_date,#.strftime('%Y-%m-%d'),
+                  'next_date': self.next_date,#.strftime('%Y-%m-%d'),
                   'now': self.now,
                   'event_list': self.event_list,
                   'settings': settings,
-                  'page_name': request.path_info.split('/')[-1]
+                  'page_name': request.path_info.split('/')[-1],
+                  'user': request.user,
                   }
         c = RequestContext(request, params)
         return render_to_response(self.template_name, context_instance = c)

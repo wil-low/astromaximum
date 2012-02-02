@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+import dateutil.tz
 
 class Event(models.Model):
     SE_SUN = 0
@@ -107,10 +109,12 @@ class Event(models.Model):
     planet1 = models.IntegerField(default=-1)
     degree = models.IntegerField(default=127)
 
+    utc_tz = dateutil.tz.gettz('UTC')
+    tzinfo = None
+    
     @staticmethod
-    def date_to_string(date):
-        "converts datetime to YYYY-MM-DD string"
-        return "%04d-%02d-%02d" % (date.year, date.month, date.day)
+    def fromutc(dtime):
+        return dtime.replace(tzinfo=Event.utc_tz).astimezone(Event.tzinfo)
 
     def __init__(self, *args, **kwargs): 
         super(Event, self).__init__(*args, **kwargs)
@@ -129,7 +133,7 @@ class Event(models.Model):
                 Event.EVENT_TYPE[self.event_type],
                 planet0_str, planet1_str, self.degree,
                 self.date0, self.date1,
-                self.datetime0, self.datetime1, self.year, self.city_id, self.state)
+                Event.fromutc(self.datetime0), Event.fromutc(self.datetime1), self.year, self.city_id, self.state)
         else:
             return u"%s %s/%s %s : (%s %s) y%s %s" % (
                 Event.EVENT_TYPE[self.event_type],
@@ -137,10 +141,10 @@ class Event(models.Model):
                 self.datetime0, self.datetime1, self.year, self.city_id)
     
     def time0(self):
-        return "%s" % self.datetime0.strftime('%H:%M')
+        return "%s" % Event.fromutc(self.datetime0).strftime('%H:%M')
     
     def time1(self):
-        return "%s" % self.datetime1.strftime('%H:%M')
+        return "%s" % Event.fromutc(self.datetime1).strftime('%H:%M')
     
     def get_degree(self):
         return self.degree & 0x3ff
@@ -231,3 +235,7 @@ class Text(models.Model):
     def __unicode__(self):
         return u'%s %s %s (%s, %s, %s)' % (Event.EVENT_TYPE[self.event_type], self.language,
             self.planet, self.param0, self.param1, self.param2)
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    location = models.ForeignKey(Location, unique=True)

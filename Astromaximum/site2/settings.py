@@ -1,5 +1,6 @@
 # Django settings for amax_dj project.
-import os, sys
+import os.path, sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '3d_party'))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -167,8 +168,9 @@ LOGGING = {
     }
 }
 
+AUTH_PROFILE_MODULE = "amax.UserProfile"
+
 ############ debug-panel
 if DEBUG:
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'apps/libs'))
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     INSTALLED_APPS += ('debug_toolbar',)

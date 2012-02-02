@@ -1,5 +1,6 @@
 {% extends "m/base.html" %}
 {% load summary_extras %}
+{% load tz_extras %}
 {% block title %}Summary{% endblock %}
 {% block content %}	    
 	<div class="tab">
@@ -19,7 +20,7 @@
         <div><a href="aspects">Aspects</a></div>
     </div>
     <div class="clear"/>
-    <p><a href="../{{ now|date:'Y-m-d' }}/{{ page_name }}">{{ now|date:'d M Y, H:i' }}</a></p>
+    <p><a href="../{{ now|date:'Y-m-d' }}/{{ page_name }}">{{ now|tz|date:'d M Y, H:i' }}</a></p>
     {% if settings.DEBUG %}
     <div class="event_list">
     	<h1>Events for today:</h1>

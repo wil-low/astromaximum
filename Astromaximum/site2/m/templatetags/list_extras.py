@@ -17,7 +17,7 @@ def decorate(event, s):
 def aspect(event):
     result = ''
     if event:
-        s = '%s %s %d&deg; %s' % (event.datetime0.strftime('%H:%M %d %b'), Event.PLANET[event.planet0], event.degree, Event.PLANET[event.planet1])
+        s = '%s %s %d&deg; %s' % (Event.fromutc(event.datetime0).strftime('%H:%M %d %b'), Event.PLANET[event.planet0], event.degree, Event.PLANET[event.planet1])
         s = decorate(event, s)
         result = '<a href="text/e%s" class="aspects">%s</a>' % (event.id, s)
     return mark_safe(result)
@@ -26,7 +26,7 @@ def aspect(event):
 def tithi(event):
     result = ''
     if event:
-        s = '%d %s' % (event.degree, event.datetime0.strftime('%H:%M %d %b'))
+        s = '%d %s' % (event.degree, Event.fromutc(event.datetime0).strftime('%H:%M %d %b'))
         s = decorate(event, s)
         result = '<a href="text/e%s" class="aspects">%s</a>' % (event.id, s)
     return mark_safe(result)
@@ -44,8 +44,8 @@ def moon_move_list(events, date_range):
             s = '%s %d&deg; ' % (Event.PLANET[event.planet1], event.degree)
         else:
             s = '%s ' % (Event.CONSTELL[event.degree])
-        s += event.datetime0.strftime('%H:%M %d %b')
-        if Event.date_between(event.datetime0, date_range[0], date_range[1]) == 0:
+        s += Event.fromutc(event.datetime0).strftime('%H:%M %d %b')
+        if Event.date_between(Event.fromutc(event.datetime0), date_range[0], date_range[1]) == 0:
             s = '<b>%s</b>' % s
             if not is_id_set:
                 output += '<li id="start">'
@@ -64,7 +64,7 @@ def rise_set(event):
     result = ''
     if event:
         s = '%s %s %s' % (Event.PLANET[event.planet0], Event.EVENT_TYPE[event.event_type],
-            event.datetime0.strftime('%H:%M %d %b'))
+            Event.fromutc(event.datetime0).strftime('%H:%M %d %b'))
         result = '<a href="text/e%s" class="rise_set">%s</a>' % (event.id, s)
     return mark_safe(result)
 
@@ -72,7 +72,7 @@ def rise_set(event):
 def hour(event):
     result = ''
     if event:
-        s = '%s %s' % (Event.PLANET[event.planet0], event.datetime0.strftime('%H:%M %d %b'))
+        s = '%s %s' % (Event.PLANET[event.planet0], Event.fromutc(event.datetime0).strftime('%H:%M %d %b'))
         s = decorate(event, s)
         result = '<a href="text/h%s" class="hour">%s</a>' % (event.planet0, s)
     return mark_safe(result)
