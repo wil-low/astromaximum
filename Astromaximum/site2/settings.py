@@ -5,6 +5,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '3d_party'))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+USE_PANEL = True
+
 PROJECT_ROOT = '/home/willow/amax/site2/'
 
 ADMINS = (
@@ -98,7 +100,7 @@ STATICFILES_FINDERS = (
 )
 
 ANONYMOUS_USER = {
-    'city_id': 'd9d95558',
+    'city_id': 0x9de36cb2, # mount Olympus
     'date_range': 2,
     }
 
@@ -171,6 +173,6 @@ LOGGING = {
 AUTH_PROFILE_MODULE = "amax.UserProfile"
 
 ############ debug-panel
-if DEBUG:
+if USE_PANEL:
     MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     INSTALLED_APPS += ('debug_toolbar',)
