@@ -5,13 +5,15 @@ from django.contrib.auth.decorators import login_required
 import dateutil.tz
 import datetime
 from eventselector import EventSelector
-from amax.models import Event, Text
+from amax.models import Event, Text, UserProfile
 
 def call_view_today(request):
     now = datetime.datetime.utcnow()
     return call_view(request, now.year, now.month, now.day, now)
 
 def call_view(request, year, month, day, view_class):
+    if request.user.is_anonymous():
+        request.user.get_profile = UserProfile.default_profile
     profile = request.user.get_profile()
     Event.tzinfo = dateutil.tz.gettz(profile.location.timezone)
     v = view_class(year, month, day, datetime.datetime.utcnow())
