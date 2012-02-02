@@ -2,7 +2,7 @@
 set -x
 DATE=`date +%Y%m%d`
 TMPDIR=tmp_deploy/
-FILES='*.py amax/*.py amax/fixtures/ data/*.py desktop/*.py i/ m/*.py m/templatetags/*.py mobi/*.py public/ templates/'
+FILES='*.py 3d_party/dateutil/*.py amax/*.py amax/fixtures/ data/*.py desktop/*.py i/ m/*.py m/templatetags/*.py mobi/*.py public/ templates/'
 PROJECT_ROOT=$1
 
 rm -rf $TMPDIR
