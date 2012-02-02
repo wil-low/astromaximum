@@ -238,4 +238,6 @@ class Text(models.Model):
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
-    location = models.ForeignKey(Location, unique=True)
+    location = models.ForeignKey(Location)
+    def __unicode__(self):
+        return u'%s: %s' % (self.user.username, self.location)
