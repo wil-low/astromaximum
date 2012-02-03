@@ -1,27 +1,41 @@
 from django.template import RequestContext
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 import dateutil.tz
 import datetime
 from eventselector import EventSelector
-from amax.models import Event, Text, UserProfile
+from amax.models import Event, Text, UserProfile, Location
+from forms import SettingsForm
+
+def get_user_profile(request):
+    if request.user.is_anonymous():
+        city_id = request.session.get('city_id', settings.ANONYMOUS_USER['city_id'])
+        profile = UserProfile()
+        locations = Location.objects.filter(id__exact=city_id)
+        if not locations:
+            city_id = settings.ANONYMOUS_USER['city_id']
+            locations = Location.objects.filter(id__exact=city_id)
+        profile.location = locations[0]
+        request.session['city_id'] = city_id
+        return profile
+    else:
+        return request.user.get_profile()
 
 def call_view_today(request):
     now = datetime.datetime.utcnow()
     return call_view(request, now.year, now.month, now.day, now)
 
 def call_view(request, year, month, day, view_class):
-    if request.user.is_anonymous():
-        request.user.get_profile = UserProfile.default_profile
-    profile = request.user.get_profile()
+    profile = get_user_profile(request)
     Event.tzinfo = dateutil.tz.gettz(profile.location.timezone)
-    v = view_class(year, month, day, datetime.datetime.utcnow())
+    v = view_class(year, month, day, datetime.datetime.utcnow(), profile.location.pk)
     v.gather_events()
-    return v.render(request)
+    return v.render(request, profile)
 
 class BaseView():
-    def __init__(self, year, month, day, now):
+    def __init__(self, year, month, day, now, city_id):
         self.year = year
         self.month = month
         self.day = day
@@ -29,12 +43,12 @@ class BaseView():
         self.current_date = datetime.datetime(int(year), int(month), int(day), tzinfo=Event.tzinfo).astimezone(Event.utc_tz)
         self.prev_date = (self.current_date + datetime.timedelta(days=-1))
         self.next_date = (self.current_date + datetime.timedelta(days=1))
-        self.es = EventSelector(self.current_date.year, self.current_date, self.next_date, now, settings.ANONYMOUS_USER['city_id'])
+        self.es = EventSelector(self.current_date.year, self.current_date, self.next_date, now, city_id)
 
     def gather_events(self):
         pass
     
-    def render(self, request):
+    def render(self, request, profile):
         params = {
                   'date_range': (self.current_date, self.next_date),
                   'prev_date': self.prev_date,#.strftime('%Y-%m-%d'),
@@ -44,6 +58,7 @@ class BaseView():
                   'settings': settings,
                   'page_name': request.path_info.split('/')[-1],
                   'user': request.user,
+                  'location': profile.location,
                   }
         c = RequestContext(request, params)
         return render_to_response(self.template_name, context_instance = c)
@@ -161,3 +176,23 @@ def hour_text(request, year, month, day, planet):
               }
     c = RequestContext(request, params)
     return render_to_response('m/text.html', context_instance=c)
+
+class SettingsView(BaseView):
+    def render(self, request, profile):
+        if request.method == 'POST':
+            form = SettingsForm(request.POST, instance=profile)
+            if request.user.is_authenticated():
+                form.save()
+            else:
+                new_profile = form.save(commit=False)
+                request.session['city_id'] = new_profile.location.pk
+            return HttpResponseRedirect('../summary')
+
+        form = SettingsForm(initial = {'location': profile.location.pk})
+        params = {
+                  'form': form,
+                  'user': request.user,
+                  'session': request.session,
+                  }
+        c = RequestContext(request, params)
+        return render_to_response('m/settings.html', context_instance=c)

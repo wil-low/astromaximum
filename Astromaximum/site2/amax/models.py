@@ -221,7 +221,14 @@ class Location(models.Model):
     altitude = models.FloatField()
     
     def __unicode__(self):
-        return '%s, %s, %s' % (self.name, self.state, self.country) 
+        s = self.name + ', '
+        if self.state:
+            s += self.state + ', '
+        s += self.country
+        return s 
+
+    class Meta:
+        ordering = ['name', 'state', 'country']
 
 class Text(models.Model):
     language = models.TextField()
@@ -238,15 +245,9 @@ class Text(models.Model):
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
-    location = models.ForeignKey(Location)
+    location = models.ForeignKey(Location, default=settings.ANONYMOUS_USER['city_id'])
     
     def __unicode__(self):
         return u'%s: %s' % (self.user.username, self.location)
-    
-    @staticmethod
-    def default_profile():
-        profile = UserProfile()
-        profile.location = Location.objects.filter(id__exact=settings.ANONYMOUS_USER['city_id'])[0]
-        return profile
     
     

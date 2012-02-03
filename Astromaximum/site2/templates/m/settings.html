@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>{% block title %}Base list {% endblock %} - Astromaximum</title>
+<title>Astromaximum</title>
 <link href="/i/main.css" rel="stylesheet" type="text/css"/>
 <meta name="format-detection" content="telephone=no" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -11,20 +11,14 @@
 <meta name="MobileOptimized" content="width" />
 </head>
 <body>
-{% load tz_extras %}
-    <div class="hdr">
-        {% block hdr %}
-        <a href="../{{ prev_date|tz|date:"Y-m-d" }}/{{ page_name }}">&lt;&lt;</a>
-        {% if page_name != "summary" %}<a href="summary">{% endif %}{{ date_range.0|tz|date:"d M Y" }}{% if page_name != "summary" %}</a>{% endif %}
-        <a href="../{{ next_date|tz|date:"Y-m-d" }}/{{ page_name }}">&gt;&gt;</a>
-        {% endblock %}
-    </div>
-    {% block content %}
-	{% endblock %}
-	<div class="ftr">
-        {% block footer %}
-        {% endblock %}
-    </div>
+{% if form.errors %}
+<p>{{ form.errors }}</p>
+{% endif %}
+<h1>Username: {{ user.username }}</h1>
+<form action="#" method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+<p>{{ session.items }}</p>
 </body>
 </html>
-

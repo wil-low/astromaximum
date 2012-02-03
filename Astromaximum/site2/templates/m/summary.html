@@ -47,3 +47,8 @@
     </div>
     {% endif %}
 {% endblock %}
+
+{% block footer %}
+    <p>{{ user.username }}, {{ location }} <a href="settings">Settings</a></p>
+{% endblock %}
+
