@@ -15,9 +15,9 @@
 	</div>
 	<div class="clear"/>
     <div class="lowtab">
-        <div><a href="rise_set">Rise/Set</a></div>
-        <div><a href="moon_move#start">Moon<br/>move</a></div>
-        <div><a href="aspects">Aspects</a></div>
+        <div><a href="../rise_set/">Rise/Set</a></div>
+        <div><a href="../moon_move/#start">Moon<br/>move</a></div>
+        <div><a href="../aspects/">Aspects</a></div>
     </div>
     <div class="clear"/>
     <p><a href="../{{ now|date:'Y-m-d' }}/{{ page_name }}">{{ now|tz|date:'d M Y, H:i' }}</a></p>
@@ -49,6 +49,6 @@
 {% endblock %}
 
 {% block footer %}
-    <p>{{ user.username }}, {{ location }} <a href="settings">Settings</a></p>
+    <p>{{ user.username }}, {{ location }} <a href="../settings/">Settings</a></p>
 {% endblock %}
 

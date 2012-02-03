@@ -19,7 +19,7 @@ def vc(event):
     if event:
         s = '%s<br/>%s'  % (event.time0(), event.time1())
         s = decorate(event, s)
-        result = '<a href="vc">VC<br/>%s</a>' % s
+        result = '<a href="../vc/">VC<br/>%s</a>' % s
     return mark_safe(result)
 
 @register.filter
@@ -28,7 +28,7 @@ def voc(event):
     if event:
         s = '%s<br/>%s'  % (event.time0(), event.time1())
         s = decorate(event, s)
-        result = '<a href="voc">VOC<br/>%s</a>' % s
+        result = '<a href="../voc/">VOC<br/>%s</a>' % s
     return mark_safe(result)
 
 @register.filter
@@ -37,7 +37,7 @@ def sun_degree(event):
     if event:
         s = '%02d&deg;%s<br/>%s' % (event.degree_number(), event.degree_zodiac(), event.time0())
         s = decorate(event, s)
-        result = '<a href="sun_dgr">%s<br/>%s</a>' % (Event.PLANET[event.planet0], s)
+        result = '<a href="../sun_dgr/">%s<br/>%s</a>' % (Event.PLANET[event.planet0], s)
     return mark_safe(result)
 
 @register.filter
@@ -46,7 +46,7 @@ def moon_sign(event):
     if event:
         s = '%s<br/>%s' % (Event.CONSTELL[event.get_degree()], event.time0())
         s = decorate(event, s)
-        result = '<a href="moon_sign">%s<br/>%s</a>' % (Event.PLANET[event.planet0], s)
+        result = '<a href="../moon_sign/">%s<br/>%s</a>' % (Event.PLANET[event.planet0], s)
     return mark_safe(result)
 
 @register.filter
@@ -55,12 +55,12 @@ def tithi(event):
     if event:
         s = '%s<br/>%s'  % (event.get_degree(), event.time0())
         s = decorate(event, s)
-        result = '<a href="tithi">Tithi<br/>%s</a>' % s
+        result = '<a href="../tithi/">Tithi<br/>%s</a>' % s
     return mark_safe(result)
 
 @register.filter
 def hour(event):
     result = ''
     if event:
-        result = '<a href="hour">%s<br/>%s<br/>%s</a>' % (event.time0(), Event.PLANET[event.planet0], event.time1())
+        result = '<a href="../hour/">%s<br/>%s<br/>%s</a>' % (event.time0(), Event.PLANET[event.planet0], event.time1())
     return mark_safe(result)

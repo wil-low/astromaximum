@@ -102,6 +102,7 @@ STATICFILES_FINDERS = (
 ANONYMOUS_USER = {
     'city_id': 0x9de36cb2, # mount Olympus
     'date_range': 2,
+    'session_expiry': 0,  # until browser is closed
     }
 
 # Make this unique, and don't share it with anybody.

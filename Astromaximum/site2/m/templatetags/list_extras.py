@@ -19,7 +19,7 @@ def aspect(event):
     if event:
         s = '%s %s %d&deg; %s' % (Event.fromutc(event.datetime0).strftime('%H:%M %d %b'), Event.PLANET[event.planet0], event.degree, Event.PLANET[event.planet1])
         s = decorate(event, s)
-        result = '<a href="text/e%s" class="aspects">%s</a>' % (event.id, s)
+        result = '<a href="../text/e%s/" class="aspects">%s</a>' % (event.id, s)
     return mark_safe(result)
 
 @register.filter
@@ -28,7 +28,7 @@ def tithi(event):
     if event:
         s = '%d %s' % (event.degree, Event.fromutc(event.datetime0).strftime('%H:%M %d %b'))
         s = decorate(event, s)
-        result = '<a href="text/e%s" class="aspects">%s</a>' % (event.id, s)
+        result = '<a href="../text/e%s/" class="aspects">%s</a>' % (event.id, s)
     return mark_safe(result)
 
 @register.filter
@@ -38,7 +38,7 @@ def moon_move_list(events, date_range):
     previous = None
     for event in events:
         if previous:
-            output += '<a href="text/m%s-%s"> &gt;&gt;</a></li>' % (previous.id, event.id)            
+            output += '<a href="../text/m%s-%s/"> &gt;&gt;</a></li>' % (previous.id, event.id)            
             output += "\n"
         if event.event_type == Event.EV_ASP_EXACT:
             s = '%s %d&deg; ' % (Event.PLANET[event.planet1], event.degree)
@@ -54,7 +54,7 @@ def moon_move_list(events, date_range):
                 output += '<li>'
         else:
             output += '<li>'
-        output += '<a href="text/e%s">%s</a>' % (event.id, s)
+        output += '<a href="../text/e%s/">%s</a>' % (event.id, s)
         previous = event
     output += "</li>\n</ul>"
     return mark_safe(output)
@@ -65,7 +65,7 @@ def rise_set(event):
     if event:
         s = '%s %s %s' % (Event.PLANET[event.planet0], Event.EVENT_TYPE[event.event_type],
             Event.fromutc(event.datetime0).strftime('%H:%M %d %b'))
-        result = '<a href="text/e%s" class="rise_set">%s</a>' % (event.id, s)
+        result = '<a href="../text/e%s/" class="rise_set">%s</a>' % (event.id, s)
     return mark_safe(result)
 
 @register.filter
@@ -74,5 +74,5 @@ def hour(event):
     if event:
         s = '%s %s' % (Event.PLANET[event.planet0], Event.fromutc(event.datetime0).strftime('%H:%M %d %b'))
         s = decorate(event, s)
-        result = '<a href="text/h%s" class="hour">%s</a>' % (event.planet0, s)
+        result = '<a href="../text/h%s/" class="hour">%s</a>' % (event.planet0, s)
     return mark_safe(result)

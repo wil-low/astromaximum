@@ -14,9 +14,9 @@
 {% load tz_extras %}
     <div class="hdr">
         {% block hdr %}
-        <a href="../{{ prev_date|tz|date:"Y-m-d" }}/{{ page_name }}">&lt;&lt;</a>
-        {% if page_name != "summary" %}<a href="summary">{% endif %}{{ date_range.0|tz|date:"d M Y" }}{% if page_name != "summary" %}</a>{% endif %}
-        <a href="../{{ next_date|tz|date:"Y-m-d" }}/{{ page_name }}">&gt;&gt;</a>
+        <a href="../../{{ prev_date|tz|date:"Y-m-d" }}/{{ page_name }}/">&lt;&lt;</a>
+        {% if page_name != "summary" %}<a href="../summary/">{% endif %}{{ date_range.0|tz|date:"d M Y" }}{% if page_name != "summary" %}</a>{% endif %}
+        <a href="../../{{ next_date|tz|date:"Y-m-d" }}/{{ page_name }}/">&gt;&gt;</a>
         {% endblock %}
     </div>
     {% block content %}

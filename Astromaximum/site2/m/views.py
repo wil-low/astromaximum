@@ -11,6 +11,7 @@ from forms import SettingsForm
 
 def get_user_profile(request):
     if request.user.is_anonymous():
+        request.session.set_expiry(settings.ANONYMOUS_USER['session_expiry'])
         city_id = request.session.get('city_id', settings.ANONYMOUS_USER['city_id'])
         profile = UserProfile()
         locations = Location.objects.filter(id__exact=city_id)
@@ -56,7 +57,7 @@ class BaseView():
                   'now': self.now,
                   'event_list': self.event_list,
                   'settings': settings,
-                  'page_name': request.path_info.split('/')[-1],
+                  'page_name': request.path_info.split('/')[-2],
                   'user': request.user,
                   'location': profile.location,
                   }
@@ -186,7 +187,7 @@ class SettingsView(BaseView):
             else:
                 new_profile = form.save(commit=False)
                 request.session['city_id'] = new_profile.location.pk
-            return HttpResponseRedirect('../summary')
+            return HttpResponseRedirect('../summary/')
 
         form = SettingsForm(initial = {'location': profile.location.pk})
         params = {
