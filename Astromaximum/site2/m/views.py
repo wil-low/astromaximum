@@ -24,9 +24,11 @@ def get_user_profile(request):
     else:
         return request.user.get_profile()
 
-def call_view_today(request):
-    now = datetime.datetime.utcnow()
-    return call_view(request, now.year, now.month, now.day, now)
+def today_summary(request):
+    profile = get_user_profile(request)
+    Event.tzinfo = dateutil.tz.gettz(profile.location.timezone)
+    now = Event.fromutc(datetime.datetime.utcnow())
+    return HttpResponseRedirect('%04d-%02d-%02d/summary/' % (now.year, now.month, now.day))
 
 def call_view(request, year, month, day, view_class):
     profile = get_user_profile(request)
