@@ -35,8 +35,8 @@ class EventSelector():
     def get_crossing_event(self, event_type, planet):
         city_id = self.city(event_type)
         q_outside_range = Q(datetime0__gte=self.period1) | Q(datetime1__lt=self.period0)
-        return Event.objects.filter(year__exact=self.year, city_id__exact=city_id, event_type__exact=event_type).\
-            filter(~q_outside_range).order_by('datetime0') #, planet0__exact=planet
+        return Event.objects.filter(year__exact=self.year, city_id__exact=city_id, event_type__exact=event_type, planet0__exact=planet).\
+            filter(~q_outside_range).order_by('datetime0')
 
     def zeroJD(self):
         return datetime(1900, 1, 1)
@@ -73,7 +73,7 @@ class EventSelector():
         return self.get_event_on_period(Event.EV_DEGREE_PASS, Event.SE_SUN)
 
     def get_moon_sign(self):
-        return self.get_event_on_period(Event.EV_SIGN_ENTER, Event.SE_MOON)
+        return self.get_crossing_event(Event.EV_SIGN_ENTER, Event.SE_MOON)
 
 #    event_list['sun_day'] = es.get_event_on_period(Event.EV_RISE, Event.SE_SUN)
 #    event_list['moon_day'] = es.get_event_on_period(Event.EV_RISE, Event.SE_MOON)
