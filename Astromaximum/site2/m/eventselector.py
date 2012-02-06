@@ -75,26 +75,6 @@ class EventSelector():
     def get_moon_sign(self):
         return self.get_crossing_event(Event.EV_SIGN_ENTER, Event.SE_MOON)
 
-#    event_list['sun_day'] = es.get_event_on_period(Event.EV_RISE, Event.SE_SUN)
-#    event_list['moon_day'] = es.get_event_on_period(Event.EV_RISE, Event.SE_MOON)
-#
-#
-#    # sun day with Navroz
-#    es.set_period(es.zeroJD(), es.finalJD())
-#    navroz_events = es.get_event_on_period(Event.EV_NAVROZ, Event.SE_SUN)
-#    navroz = navroz_events[1].date0
-#    sunrise = event_list['sun_rise'][0].date0
-#    if sunrise < navroz:
-#        navroz = navroz_events[0].date0
-#    pltDaySun = int((sunrise - navroz) / Event.SECINDAY + 0.5)
-#    if pltDaySun < 360:
-#        pltDaySun = pltDaySun % 30 + 1
-#    else:
-#        pltDaySun = -(pltDaySun - 359)
-#    sun_day_event = event_list['sun_rise'][0]
-#    sun_day_event.degree = pltDaySun
-#    event_list['sun_day'] = [sun_day_event,]
-
     def get_aspects(self):
         return self.get_aspects_on_period(False)
 
@@ -154,5 +134,5 @@ class EventSelector():
         today_set = self.get_event_on_period(Event.EV_SET, Event.SE_SUN)[0]
         self.set_period(self.period0 + timedelta(days=1), self.period1 + timedelta(days=1))
         tomorrow_rise = self.get_event_on_period(Event.EV_RISE, Event.SE_SUN)[0]
-        hours = self.calc_planet_hours(today_rise, today_set, tomorrow_rise, EventSelector.WEEK_START_HOUR[self.weekday])
+        hours = self.calc_planet_hours(today_rise, today_set, tomorrow_rise, EventSelector.WEEK_START_HOUR[self.weekday + 1])
         return hours
