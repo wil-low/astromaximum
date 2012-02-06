@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import include, patterns, url
 from m.views import call_view, SummaryView, TithiView, AspectView, MoonMoveView, RiseSetView,\
     PlanetHourView, SettingsView
 
@@ -14,6 +14,5 @@ urlpatterns = patterns('',
     view_url(r'hour/$', PlanetHourView),
     view_url(r'settings/$', SettingsView),
 
-    url(r'^text/e(?P<event_id>\d+)/$', 'm.views.event_text'),
-    url(r'^text/h(?P<planet>\d+)/$', 'm.views.hour_text'),
+    url(r'^text/', include('m.text_urls')),
 )
