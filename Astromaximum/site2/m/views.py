@@ -4,7 +4,6 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-import dateutil.tz
 import datetime
 from amax.eventselector import EventSelector
 from amax.models import Event, Text, UserProfile, Location
@@ -27,13 +26,13 @@ def get_user_profile(request):
 
 def today_summary(request):
     profile = get_user_profile(request)
-    Event.tzinfo = dateutil.tz.gettz(profile.location.timezone)
+    Event.set_tzinfo(profile.location)
     now = Event.fromutc(datetime.datetime.utcnow())
     return HttpResponseRedirect('%04d-%02d-%02d/summary/' % (now.year, now.month, now.day))
 
 def call_view(request, year, month, day, view_class, event_id=-1, direction=''):
     profile = get_user_profile(request)
-    Event.tzinfo = dateutil.tz.gettz(profile.location.timezone)
+    Event.set_tzinfo(profile.location)
     v = view_class(year, month, day, datetime.datetime.utcnow(), profile.location.pk, event_id, direction)
     v.gather_events()
     return v.render(request, profile)

@@ -227,8 +227,9 @@ class DataFile:
         print event.__unicode__()
 
     def calc_planet_hours(self, event_func):
+        Event.set_tzinfo(self.city_id)
         day_delta = timedelta(days=1)
-        period0 = datetime.utcfromtimestamp(self.startJD)
+        period0 = datetime(self.year, 1, 1, tzinfo=Event.tzinfo).astimezone(Event.utc_tz)
         es = EventSelector(self.year, period0, period0, period0, self.city_id)
         count = 0
         for i in range(self.dayCount):

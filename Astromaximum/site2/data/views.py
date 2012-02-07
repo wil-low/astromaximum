@@ -87,7 +87,12 @@ def location_generate(filename):
     @transaction.commit_on_success
     def insert():
         event_count = df.read_sub_data(df.process_event)
-        event_count += df.calc_planet_hours(df.process_event)
+        #event_count += df.calc_planet_hours(df.process_event)
+        return event_count
+
+    @transaction.commit_on_success
+    def insert_hours():
+        event_count = df.calc_planet_hours(df.process_event)
         return event_count
 
     try:
@@ -96,6 +101,7 @@ def location_generate(filename):
         message = 'Cannot insert: ' + str(year) + ' year data exist'
     except(IndexError):
         event_count = insert()
+        event_count += insert_hours()
         result = 0
         message = str(year) + ' inserted, event_count ' + str(event_count)
     df.close()

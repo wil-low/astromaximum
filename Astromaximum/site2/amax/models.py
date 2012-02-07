@@ -95,24 +95,28 @@ class Event(models.Model):
         'EV_DEGPASS2', 'EV_DEGPASS3', 'EV_HELP0', 'EV_HELP1', 'EV_ASTRORISE', 'EV_ASTROSET',
         'EV_APHETICS', 'EV_FAST', 'EV_ASCAPHETICS', 'EV_MSG', 'EV_BACK', 'EV_TATTVAS', 'EV_LAST']
 
-    year = models.IntegerField(default=-1, db_index=True)
+    year = models.IntegerField(default=-1, db_index=False)
     city_id = models.ForeignKey('Location', null=True)
     
-    event_type = models.IntegerField(default=EV_LAST, db_index=True)
+    event_type = models.IntegerField(default=EV_LAST, db_index=False)
     
     # these fields can be removed later
     date0 = models.IntegerField()
     date1 = models.IntegerField()
     
-    datetime0 = models.DateTimeField(db_index=True)
-    datetime1 = models.DateTimeField(db_index=True)
-    planet0 = models.IntegerField(default=-1, db_index=True)
+    datetime0 = models.DateTimeField(db_index=False)
+    datetime1 = models.DateTimeField(db_index=False)
+    planet0 = models.IntegerField(default=-1, db_index=False)
     planet1 = models.IntegerField(default=-1)
     degree = models.IntegerField(default=127)
 
     utc_tz = dateutil.tz.gettz('UTC')
     tzinfo = utc_tz
     
+    @staticmethod
+    def set_tzinfo(location):
+        Event.tzinfo = dateutil.tz.gettz(location.timezone)
+
     @staticmethod
     def fromutc(dtime):
         return dtime.replace(tzinfo=Event.utc_tz).astimezone(Event.tzinfo)
