@@ -100,10 +100,6 @@ class Event(models.Model):
     
     event_type = models.IntegerField(default=EV_LAST, db_index=True)
     
-    # these fields can be removed later
-    date0 = models.IntegerField()
-    date1 = models.IntegerField()
-    
     datetime0 = models.DateTimeField(db_index=False)
     datetime1 = models.DateTimeField(db_index=False)
     planet0 = models.IntegerField(default=-1, db_index=False)
@@ -124,6 +120,9 @@ class Event(models.Model):
     def __init__(self, *args, **kwargs): 
         super(Event, self).__init__(*args, **kwargs)
         self.state = Event.STATE_UNDEFINED
+        # these fields can be removed later
+        self.date0 = 0
+        self.date1 = 0
 
     def __unicode__(self):
         print_raw_date = True
@@ -134,10 +133,9 @@ class Event(models.Model):
         if Event.SE_SUN <= self.planet1 <= Event.SE_PLUTO:
             planet1_str = Event.PLANET[self.planet1]
         if print_raw_date:
-            return u"%s %s %s/%s %s : (%s %s)(%s %s) y%s %s state %d" % (
+            return u"%s %s %s/%s %s : (%s %s) y%s %s state %d" % (
                 Event.EVENT_TYPE[self.event_type], self.pk,
                 planet0_str, planet1_str, self.degree,
-                self.date0, self.date1,
                 Event.fromutc(self.datetime0), Event.fromutc(self.datetime1), self.year, self.city_id, self.state)
         else:
             return u"%s %s %s/%s %s : (%s %s) y%s %s" % (
