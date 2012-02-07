@@ -4,13 +4,17 @@ from amax.models import Event
 
 register = template.Library()
 
-def decorate(event, s):
-    if event.state == Event.STATE_GONE:
-        s = '<del>%s</del>' % s
-    elif event.state == Event.STATE_COMING:
-        s = '<i>%s</i>' % s
-    elif event.state == Event.STATE_ACTIVE:
+def decorate(event, s, now):
+    now_pos = Event.date_between(now, event.datetime0, event.datetime1)
+    if now_pos == 0:
         s = '<b>%s</b>' % s
+
+#    if event.state == Event.STATE_GONE:
+#        s = '<del>%s</del>' % s
+#    elif event.state == Event.STATE_COMING:
+#        s = '<i>%s</i>' % s
+#    elif event.state == Event.STATE_ACTIVE:
+#        s = '<b>%s</b>' % s
     return s
 
 @register.filter
@@ -18,7 +22,7 @@ def aspect(event):
     result = ''
     if event:
         s = '%s %s %d&deg; %s' % (Event.fromutc(event.datetime0).strftime('%H:%M %d %b'), Event.PLANET[event.planet0], event.degree, Event.PLANET[event.planet1])
-        s = decorate(event, s)
+        #s = decorate(event, s)
         result = '<a href="../text/e%s/" class="aspects">%s</a>' % (event.id, s)
     return mark_safe(result)
 
@@ -27,7 +31,7 @@ def tithi(event):
     result = ''
     if event:
         s = '%d %s' % (event.degree, Event.fromutc(event.datetime0).strftime('%H:%M %d %b'))
-        s = decorate(event, s)
+        #s = decorate(event, s)
         result = '<a href="../text/e%s/" class="aspects">%s</a>' % (event.id, s)
     return mark_safe(result)
 
@@ -69,10 +73,10 @@ def rise_set(event):
     return mark_safe(result)
 
 @register.filter
-def hour(event):
+def hour(event, now):
     result = ''
     if event:
-        s = '%s %s' % (Event.PLANET[event.planet0], Event.fromutc(event.datetime0).strftime('%H:%M %d %b'))
-        s = decorate(event, s)
-        result = '<a href="../text/h%s/" class="hour">%s</a>' % (event.planet0, s)
+        s = '%s %s' % (Event.fromutc(event.datetime0).strftime('%H:%M'), Event.PLANET[event.planet0])
+        s = decorate(event, s, now)
+        result = '<a href="../text/e%s/" class="hour">%s</a>' % (event.id, s)
     return mark_safe(result)

@@ -86,8 +86,10 @@ def location_generate(filename):
     
     @transaction.commit_on_success
     def insert():
-        return df.read_sub_data(df.process_event)
-    
+        event_count = df.read_sub_data(df.process_event)
+        event_count += df.calc_planet_hours(df.process_event)
+        return event_count
+
     try:
         Event.objects.filter(year__exact=year, city_id__exact=city_id)[0]
         result = 1

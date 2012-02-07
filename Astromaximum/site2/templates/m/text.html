@@ -12,11 +12,17 @@
 </head>
 <body>
 	<div class="hdr">
+	    {% if event_list %}
+	       <a href="../b{{ event_list.0.pk }}/">&lt;&lt;</a>
+	    {% endif %}
 	    <a href="../../summary">Summary</a>
+        {% if event_list %}
+           <a href="../a{{ event_list.0.pk }}/">&gt;&gt;</a>
+        {% endif %}
     </div>
     <div class="content">
-        <h3>{{ caption }}</h3>
-        <p>{{ text|safe }}</p>
+        <h3>{{ title }}</h3>
+        <p>{{ message|safe }}</p>
 	</div>
 </body>
 </html>

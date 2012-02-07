@@ -130,14 +130,14 @@ class Event(models.Model):
         if Event.SE_SUN <= self.planet1 <= Event.SE_PLUTO:
             planet1_str = Event.PLANET[self.planet1]
         if print_raw_date:
-            return u"%s %s/%s %s : (%s %s)(%s %s) y%s %s state %d" % (
-                Event.EVENT_TYPE[self.event_type],
+            return u"%s %s %s/%s %s : (%s %s)(%s %s) y%s %s state %d" % (
+                Event.EVENT_TYPE[self.event_type], self.pk,
                 planet0_str, planet1_str, self.degree,
                 self.date0, self.date1,
                 Event.fromutc(self.datetime0), Event.fromutc(self.datetime1), self.year, self.city_id, self.state)
         else:
-            return u"%s %s/%s %s : (%s %s) y%s %s" % (
-                Event.EVENT_TYPE[self.event_type],
+            return u"%s %s %s/%s %s : (%s %s) y%s %s" % (
+                Event.EVENT_TYPE[self.event_type], self.pk,
                 planet0_str, planet1_str, self.degree,
                 self.datetime0, self.datetime1, self.year, self.city_id)
     

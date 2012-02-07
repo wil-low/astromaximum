@@ -14,5 +14,5 @@ urlpatterns = patterns('',
     view_url(r'hour/$', PlanetHourView),
     view_url(r'settings/$', SettingsView),
 
-    url(r'^text/', include('m.text_urls')),
+    url(r'text/', include('m.text_urls')),
 )

@@ -20,20 +20,20 @@ class EventSelector():
         self.period1 = period1
         self.weekday = self.period0.weekday()
 
-    def city(self, event_type):
+    def get_city(self, event_type):
         city_id = None
-        if event_type in [Event.EV_RISE, Event.EV_SET, Event.EV_ASTRORISE, Event.EV_ASTROSET]:
+        if event_type in [Event.EV_RISE, Event.EV_SET, Event.EV_ASTRORISE, Event.EV_ASTROSET, Event.EV_PLANET_HOUR]:
             city_id = self.city_id
         #import pdb; pdb.set_trace()
         return city_id
 
     def get_event_on_period(self, event_type, planet):
-        city_id = self.city(event_type)
+        city_id = self.get_city(event_type)
         return list(Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1,
             event_type__exact=event_type, planet0__exact=planet, city_id__exact=city_id).order_by('datetime0'))
         
     def get_crossing_event(self, event_type, planet):
-        city_id = self.city(event_type)
+        city_id = self.get_city(event_type)
         q_outside_range = Q(datetime0__gte=self.period1) | Q(datetime1__lt=self.period0)
         return Event.objects.filter(year__exact=self.year, city_id__exact=city_id, event_type__exact=event_type, planet0__exact=planet).\
             filter(~q_outside_range).order_by('datetime0')
@@ -61,7 +61,7 @@ class EventSelector():
         return self.get_event_on_period(Event.EV_VIA_COMBUSTA, Event.SE_MOON)
 
     def get_rise_sets(self):
-        city_id = self.city(Event.EV_ASTRORISE)
+        city_id = self.get_city(Event.EV_ASTRORISE)
         q_type = Q(event_type__exact=Event.EV_ASTRORISE) | Q(event_type__exact=Event.EV_ASTROSET)
         #q_outside_range = Q(datetime0__gte=self.period1) | Q(datetime1__lt=self.period0)
         q_inside_range = Q(datetime0__gte=self.period0) & Q(datetime0__lt=self.period1)
@@ -96,43 +96,28 @@ class EventSelector():
     def get_event(event_id):
         return Event.objects.filter(id__exact=int(event_id))
 
+    def get_neighbour_event(self, ev, direction, planet):
+        q = Q()
+        if direction == 'b':
+            q &= Q(datetime0__lt=ev.datetime0)
+            ordering = '-datetime0'
+        elif direction == 'a':
+            q &= Q(datetime0__gt=ev.datetime0)
+            ordering = 'datetime0'
+        if planet:
+            q &= Q(planet0__exact=planet)
+        event_list = Event.objects.filter(event_type__exact=ev.event_type, \
+                                          year__exact=ev.year, city_id__exact=self.get_city(ev.event_type)).\
+                                          filter(q).order_by(ordering)
+        if event_list:
+            return event_list[0]
+        return None
+
     @staticmethod
     def get_event_text(event):
         return str(event)
-    
-    WEEK_START_HOUR = [0, 3, 6, 2, 5, 1, 4]
-    HOUR_SEQ = [Event.SE_SUN, Event.SE_VENUS, Event.SE_MERCURY,
-        Event.SE_MOON, Event.SE_SATURN, Event.SE_JUPITER, Event.SE_MARS]
-    
-    def calc_planet_hours(self, rise0, set0, rise1, start_hour):
-        hours = [];
-        
-        diff = set0.datetime0 - rise0.datetime0
-        diff_sec = (diff.days * 86400 + diff.seconds) / 12
-        day_hour = timedelta(seconds=diff_sec)
-        
-        diff = rise1.datetime0 - set0.datetime0
-        diff_sec = (diff.days * 86400 + diff.seconds) / 12
-        night_hour = timedelta(seconds=diff_sec)
-        
-        start = rise0.datetime0
-        for i in range(24):
-            ev = Event()
-            ev.datetime0 = start
-            ev.planet0 = EventSelector.HOUR_SEQ[start_hour % 7]
-            if i < 12:
-                start += day_hour
-            else:
-                start += night_hour
-            ev.datetime1 = start
-            hours.append(ev)
-            start_hour += 1
-        return hours
-    
+
     def get_planetary_hours(self):
-        today_rise = self.get_event_on_period(Event.EV_RISE, Event.SE_SUN)[0]
-        today_set = self.get_event_on_period(Event.EV_SET, Event.SE_SUN)[0]
-        self.set_period(self.period0 + timedelta(days=1), self.period1 + timedelta(days=1))
-        tomorrow_rise = self.get_event_on_period(Event.EV_RISE, Event.SE_SUN)[0]
-        hours = self.calc_planet_hours(today_rise, today_set, tomorrow_rise, EventSelector.WEEK_START_HOUR[self.weekday + 1])
-        return hours
+        city_id = self.get_city(Event.EV_PLANET_HOUR)
+        return list(Event.objects.filter(year__exact=self.year, datetime0__gte=self.period0, datetime0__lt=self.period1,
+            event_type__exact=Event.EV_PLANET_HOUR, city_id__exact=city_id).order_by('datetime0'))

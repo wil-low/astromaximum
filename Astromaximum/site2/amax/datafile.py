@@ -2,7 +2,8 @@ import struct
 from calendar import timegm
 from pprint import pprint
 from models import Event, Location
-from datetime import datetime
+from datetime import datetime, timedelta
+from eventselector import EventSelector
 
 class DataFile:
     EF_DATE = 0x1  # contains 2nd date - 4b
@@ -225,6 +226,57 @@ class DataFile:
     def print_event(self, event):
         print event.__unicode__()
 
+    def calc_planet_hours(self, event_func):
+        day_delta = timedelta(days=1)
+        period0 = datetime.utcfromtimestamp(self.startJD)
+        es = EventSelector(self.year, period0, period0, period0, self.city_id)
+        count = 0
+        for i in range(self.dayCount):
+            es.set_period(period0, period0 + day_delta)
+            hours = self.get_planetary_hours(es)
+            for ev in hours:
+                ev.year = self.year
+                ev.city_id = self.city_id
+                event_func(ev)
+                count += 1
+            period0 += day_delta
+        return count
+            
+    WEEK_START_HOUR = [3, 6, 2, 5, 1, 4, 0]
+    HOUR_SEQ = [Event.SE_SUN, Event.SE_VENUS, Event.SE_MERCURY,
+        Event.SE_MOON, Event.SE_SATURN, Event.SE_JUPITER, Event.SE_MARS]
+
+    def get_planetary_hours(self, es):
+        today_rise = es.get_event_on_period(Event.EV_RISE, Event.SE_SUN)[0]
+        today_set = es.get_event_on_period(Event.EV_SET, Event.SE_SUN)[0]
+        tomorrow_rise = es.get_event_on_period(Event.EV_RISE, Event.SE_SUN)[0]
+        #import pdb; pdb.set_trace()
+        hours = [];
+        start_hour = DataFile.WEEK_START_HOUR[today_rise.datetime0.weekday()]
+        
+        diff = today_set.datetime0 - today_rise.datetime0
+        diff_sec = (diff.days * 86400 + diff.seconds) / 12
+        day_hour = timedelta(seconds=diff_sec)
+        
+        diff = tomorrow_rise.datetime0 - today_set.datetime0
+        diff_sec = (diff.days * 86400 + diff.seconds) / 12
+        night_hour = timedelta(seconds=diff_sec)
+        
+        start = today_rise.datetime0
+        for i in range(24):
+            ev = Event()
+            ev.datetime0 = start
+            ev.planet0 = DataFile.HOUR_SEQ[start_hour % 7]
+            if i < 12:
+                start += day_hour
+            else:
+                start += night_hour
+            ev.datetime1 = start
+            ev.date0 = ev.date1 = 0
+            ev.event_type = Event.EV_PLANET_HOUR
+            hours.append(ev)
+            start_hour += 1
+        return hours
 
 def main():
     # import amax.datafile; amax.datafile.main()

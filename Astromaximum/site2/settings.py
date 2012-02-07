@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '3d_party'))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+#USE_PANEL = False
 USE_PANEL = True
 
 PROJECT_ROOT = '/home/willow/amax/site2/'
