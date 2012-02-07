@@ -199,17 +199,6 @@ class Event(models.Model):
             return 1
         return 0
 
-    def is_in_period(self, start, end, is_special):
-        if self.date0 == 0:
-            return False
-        f = Event.date_between(self.date0, start, end) + Event.date_between(self.date1, start, end)
-        if f == 2 or f == -2:
-            return False
-        if is_special:
-            if f == -1:
-                return False
-        return True
-        
     class Meta:
         ordering = ['datetime0']
         

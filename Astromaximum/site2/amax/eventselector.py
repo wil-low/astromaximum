@@ -86,7 +86,7 @@ class EventSelector():
         moon_sign_enter_events = list(self.get_event_on_period(Event.EV_SIGN_ENTER, Event.SE_MOON))
     
         moon_aspects.extend(moon_sign_enter_events)
-        moon_aspects.sort(key=lambda event: event.date0)
+        moon_aspects.sort(key=lambda event: event.datetime0)
         return moon_aspects
 
     def get_tithi(self):
