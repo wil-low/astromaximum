@@ -98,7 +98,7 @@ class Event(models.Model):
     year = models.IntegerField(default=-1, db_index=False)
     city_id = models.ForeignKey('Location', null=True)
     
-    event_type = models.IntegerField(default=EV_LAST, db_index=False)
+    event_type = models.IntegerField(default=EV_LAST, db_index=True)
     
     # these fields can be removed later
     date0 = models.IntegerField()
