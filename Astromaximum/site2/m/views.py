@@ -163,7 +163,11 @@ class TextView(BaseView):
                 planet = ev.planet0
             elif ev.event_type == Event.EV_PLANET_HOUR:
                 q = Q(event_type__exact=ev.event_type, param0__exact=ev.planet0)
-            
+            elif ev.event_type == Event.EV_VOC:
+                q = Q(event_type__exact=ev.event_type, planet__exact=ev.planet0)
+            elif ev.event_type == Event.EV_VIA_COMBUSTA:
+                q = Q(event_type__exact=ev.event_type, planet__exact=ev.planet0)
+
             if use_neighbour_navigation and self.direction != 'e':
                 ev = self.es.get_neighbour_event(ev, self.direction, planet)
             text_list = []

@@ -19,7 +19,7 @@ def vc(event):
     if event:
         s = '%s<br/>%s'  % (event.time0(), event.time1())
         s = decorate(event, s)
-        result = '<a href="../vc/">VC<br/>%s</a>' % s
+        result = '<a href="../text/e%s">VC<br/>%s</a>' % (event.pk, s)
     return mark_safe(result)
 
 @register.filter
@@ -28,7 +28,7 @@ def voc(event):
     if event:
         s = '%s<br/>%s'  % (event.time0(), event.time1())
         s = decorate(event, s)
-        result = '<a href="../voc/">VOC<br/>%s</a>' % s
+        result = '<a href="../text/e%s/">VOC<br/>%s</a>' % (event.pk, s)
     return mark_safe(result)
 
 @register.filter
