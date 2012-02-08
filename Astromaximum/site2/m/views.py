@@ -30,24 +30,25 @@ def today_summary(request):
     now = Event.fromutc(datetime.datetime.utcnow())
     return HttpResponseRedirect('%04d-%02d-%02d/summary/' % (now.year, now.month, now.day))
 
-def call_view(request, year, month, day, view_class, event_id=-1, direction=''):
+def call_view(request, year, month, day, view_class, event0=-1, event1=-1, direction=''):
     profile = get_user_profile(request)
     Event.set_tzinfo(profile.location)
-    v = view_class(year, month, day, datetime.datetime.utcnow(), profile.location.pk, event_id, direction)
+    v = view_class(year, month, day, datetime.datetime.utcnow(), profile.location.pk, event0, event1, direction)
     v.gather_events()
     return v.render(request, profile)
 
 @login_required
-def call_view_login_required(request, year, month, day, view_class, event_id=-1, direction=''):
-    return call_view(request, year, month, day, view_class, event_id, direction)
+def call_view_login_required(request, year, month, day, view_class, event0=-1, event1=-1, direction=''):
+    return call_view(request, year, month, day, view_class, event0, event1, direction)
 
 class BaseView():
-    def __init__(self, year, month, day, now, city_id, event_id, direction):
+    def __init__(self, year, month, day, now, city_id, event0, event1, direction):
         self.year = year
         self.month = month
         self.day = day
         self.now = now
-        self.event_id = event_id
+        self.event0 = event0
+        self.event1 = event1
         self.direction = direction
         self.current_date = datetime.datetime(int(year), int(month), int(day), tzinfo=Event.tzinfo).astimezone(Event.utc_tz)
         self.prev_date = (self.current_date + datetime.timedelta(days=-1))
@@ -137,7 +138,7 @@ class RiseSetView(BaseView):
 class TextView(BaseView):
     def gather_events(self):
         self.template_name = 'm/text.html'
-        event_list = EventSelector.get_event(self.event_id)
+        event_list = EventSelector.get_event(self.event0)
         planet = None
         use_neighbour_navigation = True
         if event_list:
@@ -173,6 +174,30 @@ class TextView(BaseView):
                 text_list = Text.objects.filter(q).values_list('message', flat=True)
                 if text_list:
                     self.message = text_list[0]
+
+class TextMoonMoveView(BaseView):
+    def gather_events(self):
+        self.template_name = 'm/text.html'
+        try:
+            event0 = EventSelector.get_event(self.event0)[0]
+        except IndexError:
+            return
+        try:
+            event1 = EventSelector.get_event(self.event1)[0]
+        except IndexError:
+            return
+        planet0 = event0.planet1
+        planet1 = event1.planet1
+        if event1.event_type == Event.EV_SIGN_ENTER:
+            planet0 = 255
+            planet1 = Event.SE_MOON
+        elif event0.event_type == Event.EV_SIGN_ENTER:
+            planet0 = Event.SE_MOON
+        q = Q(event_type__exact=Event.EV_MOON_MOVE, param0__exact=planet0, param1__exact=planet1)
+        self.title = str(event0) + str(event1)
+        text_list = Text.objects.filter(q).values_list('message', flat=True)
+        if text_list:
+            self.message = text_list[0]
 
 class SettingsView(BaseView):
     def render(self, request, profile):

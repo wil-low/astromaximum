@@ -65,6 +65,10 @@ body,ul {
     height:2.2em;
 }
 
+.lowtab div a.move {
+    width:2.5em;
+}
+
 .event_list {
     font-size: 50%;
 }

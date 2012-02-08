@@ -3,5 +3,7 @@
 {% block title %}Moon move{% endblock %}
 
 {% block content %}
+    <div class="lowtab">
     {{ event_list|moon_move_list:date_range }}
+    </div>
 {% endblock %}

@@ -79,10 +79,9 @@ class EventSelector():
         return self.get_aspects_on_period(False)
 
     def get_moon_move(self):
-        self.set_period(self.period0 + timedelta(days=-2), self.period1 + timedelta(days=+2))
+        self.set_period(self.period0 + timedelta(days=-1), self.period1 + timedelta(days=+1))
         moon_aspects = list(self.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON))
     
-        self.set_period(self.period0, self.period1 + timedelta(days=+2))
         moon_sign_enter_events = list(self.get_event_on_period(Event.EV_SIGN_ENTER, Event.SE_MOON))
     
         moon_aspects.extend(moon_sign_enter_events)
