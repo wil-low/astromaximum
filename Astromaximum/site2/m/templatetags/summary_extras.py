@@ -46,7 +46,7 @@ def moon_sign(event):
     if event:
         s = '%s<br/>%s' % (Event.CONSTELL[event.get_degree()], event.time0())
         s = decorate(event, s)
-        result = '<a href="../moon_sign/">%s<br/>%s</a>' % (Event.PLANET[event.planet0], s)
+        result = '<a href="../text/e%s">%s<br/>%s</a>' % (event.pk, Event.PLANET[event.planet0], s)
     return mark_safe(result)
 
 @register.filter

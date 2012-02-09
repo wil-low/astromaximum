@@ -155,6 +155,7 @@ class TextView(BaseView):
                     use_neighbour_navigation = False
             elif ev.event_type == Event.EV_SIGN_ENTER:
                 q = Q(event_type__exact=ev.event_type, param0__exact=ev.degree)
+                planet = ev.planet0
             elif ev.event_type == Event.EV_ASTRORISE:
                 q = Q(event_type__exact=Event.EV_RISE, param0__exact=ev.planet0, param1__exact=1)
                 planet = ev.planet0
