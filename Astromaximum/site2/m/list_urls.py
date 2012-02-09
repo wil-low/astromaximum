@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     view_url(r'aspects/$', AspectView),
     view_url(r'tithi/$', TithiView),
     view_url(r'moon_move/$', MoonMoveView),
-    view_url(r'rise_set/$', RiseSetView),
+    view_url(r'rise_set(?P<direction>[0-2])/$', RiseSetView),
     view_url(r'hour/$', PlanetHourView),
     view_url(r'settings/$', SettingsView),
 

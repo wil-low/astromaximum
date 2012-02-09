@@ -56,6 +56,7 @@ class BaseView():
         self.es = EventSelector(self.current_date.year, self.current_date, self.next_date, now, city_id)
         self.title = self.message = ''
         self.event_list = []
+        self.params = {}
 
     def gather_events(self):
         pass
@@ -63,17 +64,17 @@ class BaseView():
     def render(self, request, profile):
         params = {
                   'date_range': (self.current_date, self.next_date),
-                  'prev_date': self.prev_date,#.strftime('%Y-%m-%d'),
-                  'next_date': self.next_date,#.strftime('%Y-%m-%d'),
+                  'prev_date': self.prev_date,
+                  'next_date': self.next_date,
                   'now': self.now,
                   'event_list': self.event_list,
-                  'settings': settings,
                   'page_name': request.path_info.split('/')[-2],
                   'user': request.user,
                   'location': profile.location.name,
                   'title': self.title,
                   'message': self.message,
                   }
+        params.update(self.params)
         c = RequestContext(request, params)
         return render_to_response(self.template_name, context_instance = c)
 
@@ -96,6 +97,11 @@ class SummaryView(BaseView):
     def gather_events(self):
         self.event_list = {}
         self.template_name = 'm/summary.html'
+        self.params = {
+                       'settings': settings,
+                       'rise_set': EventSelector.RISE_SET,
+                       }
+
         self.event_list['vocs'] = self.es.get_vocs()
 
         self.event_list['vc'] = self.select_single_event(self.es.get_vc())
@@ -133,7 +139,7 @@ class RiseSetView(BaseView):
         self.event_list = []
         self.template_name = 'm/lists/rise_set.html'
         self.es.set_period(self.current_date, self.next_date)
-        self.event_list = self.es.get_rise_sets()
+        self.event_list = self.es.get_rise_sets(EventSelector.RISE_SET[int(self.direction)])
 
 class TextView(BaseView):
     def gather_events(self):

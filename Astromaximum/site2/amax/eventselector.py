@@ -3,8 +3,11 @@ from datetime import datetime, timedelta
 from amax.models import Event
 
 class EventSelector():
-    q_sun = Q(planet0__exact=Event.SE_SUN)
-    q_moon = Q(planet0__exact=Event.SE_MOON)
+    RISE_SET = [
+                [Event.SE_SUN, Event.SE_MOON, Event.SE_MERCURY,],
+                [Event.SE_VENUS, Event.SE_JUPITER,],
+                [Event.SE_MARS, Event.SE_SATURN,],
+                ]
 
     def __init__(self, year, period0, period1, now, city_id):
         self.set_year(year)
@@ -60,13 +63,15 @@ class EventSelector():
     def get_vc(self):
         return self.get_event_on_period(Event.EV_VIA_COMBUSTA, Event.SE_MOON)
 
-    def get_rise_sets(self):
+    def get_rise_sets(self, planet_list):
         city_id = self.get_city(Event.EV_ASTRORISE)
         q_type = Q(event_type__exact=Event.EV_ASTRORISE) | Q(event_type__exact=Event.EV_ASTROSET)
-        #q_outside_range = Q(datetime0__gte=self.period1) | Q(datetime1__lt=self.period0)
+        q_planet = Q()
+        for planet in planet_list:
+            q_planet |= Q(planet0__exact=planet)
         q_inside_range = Q(datetime0__gte=self.period0) & Q(datetime0__lt=self.period1)
         rise_list = list(Event.objects.filter(year__exact=self.year, city_id__exact=city_id).\
-            filter(q_inside_range & q_type).order_by('planet0', 'datetime0', 'event_type'))
+            filter(q_inside_range & q_type & q_planet).order_by('planet0', 'datetime0', 'event_type'))
         return rise_list
     
     def get_sun_degree(self):

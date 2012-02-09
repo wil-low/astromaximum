@@ -46,7 +46,7 @@ def moon_sign(event):
     if event:
         s = '%s<br/>%s' % (Event.CONSTELL[event.get_degree()], event.time0())
         s = decorate(event, s)
-        result = '<a href="../text/e%s">%s<br/>%s</a>' % (event.pk, Event.PLANET[event.planet0], s)
+        result = '<a href="../text/e%s/">%s<br/>%s</a>' % (event.pk, Event.PLANET[event.planet0], s)
     return mark_safe(result)
 
 @register.filter
@@ -64,7 +64,7 @@ def moon_phase(event):
     if event:
         s = '%s<br/>%s'  % (event.get_degree(), event.time0())
         s = decorate(event, s)
-        result = '<a href="../tithi/"><img src="../../../i/phases/ph50-%02d.png"/></a>' % event.get_degree()
+        result = '<a href="../tithi/"><img src="/i/phases/ph50-%02d.png"/></a>' % event.get_degree()
     return mark_safe(result)
 
 @register.filter
@@ -72,4 +72,9 @@ def hour(event):
     result = ''
     if event:
         result = '<a href="../hour/">%s<br/>%s<br/>%s</a>' % (event.time0(), Event.PLANET[event.planet0], event.time1())
+    return mark_safe(result)
+
+@register.filter
+def rise_set(rise_set_list):
+    result = '&nbsp;'.join(map(lambda planet: Event.PLANET[planet], rise_set_list))
     return mark_safe(result)
