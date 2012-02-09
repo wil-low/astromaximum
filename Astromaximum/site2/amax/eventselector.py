@@ -103,7 +103,7 @@ class EventSelector():
         elif direction == 'a':
             q &= Q(datetime0__gt=ev.datetime0)
             ordering = 'datetime0'
-        if planet:
+        if planet is not None:
             q &= Q(planet0__exact=planet)
         event_list = Event.objects.filter(event_type__exact=ev.event_type, \
                                           year__exact=ev.year, city_id__exact=self.get_city(ev.event_type)).\

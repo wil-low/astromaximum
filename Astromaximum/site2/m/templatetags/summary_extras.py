@@ -37,7 +37,7 @@ def sun_degree(event):
     if event:
         s = '%02d&deg;%s<br/>%s' % (event.degree_number(), event.degree_zodiac(), event.time0())
         s = decorate(event, s)
-        result = '<a href="../sun_dgr/">%s<br/>%s</a>' % (Event.PLANET[event.planet0], s)
+        result = '<a href="../text/e%s/">%s<br/>%s</a>' % (event.pk, Event.PLANET[event.planet0], s)
     return mark_safe(result)
 
 @register.filter

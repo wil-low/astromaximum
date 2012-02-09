@@ -17,9 +17,10 @@ foreach my $infile (@interpret_files) {
 	close (INF);
 	$buf[0] =~ /\!\!type\s*(\w+)/i;
 	my $evt=$1;
+	$evt =~ s/EV_DEGPASS\d+/EV_DEGREE_PASS/;
 	my $event_type = $tools::eventType{$evt};
 	if ($event_type !~ /^\d+$/) {
-		echo("Event $evt not defined in $infile! Skipped\n");
+		die "Event $evt not defined in $infile! Skipped";
 		next;
 	}
 	$buf[2]=~/\!\!planet\s*(.+?)[\n\r]+/i;
