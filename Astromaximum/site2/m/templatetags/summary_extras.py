@@ -59,6 +59,15 @@ def tithi(event):
     return mark_safe(result)
 
 @register.filter
+def moon_phase(event):
+    result = ''
+    if event:
+        s = '%s<br/>%s'  % (event.get_degree(), event.time0())
+        s = decorate(event, s)
+        result = '<a href="../tithi/"><img src="../../../i/phases/ph50-%02d.png"/></a>' % event.get_degree()
+    return mark_safe(result)
+
+@register.filter
 def hour(event):
     result = ''
     if event:
