@@ -129,6 +129,7 @@ class MoonMoveView(BaseView):
     def gather_events(self):
         self.template_name = 'm/lists/moon_move.html'
         self.event_list = self.es.get_moon_move()
+        self.params = {'settings': settings}
 
 class PlanetHourView(BaseView):
     def gather_events(self):

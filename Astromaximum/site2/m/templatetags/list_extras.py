@@ -36,32 +36,20 @@ def tithi(event):
     return mark_safe(result)
 
 @register.filter
-def moon_move_list(events, date_range):
-    is_anchor_set = is_preceding_found = is_following_found = False
-    previous = None
-    output = ''
-    for event in events:
-        if previous:
-            output += '</div><div><a class="move" href="../text/m%s-%s/"> &gt;&gt;</a></div>' % (previous.id, event.id)            
-            output += "\n"
-        if event.event_type == Event.EV_ASP_EXACT:
-            s = '%d&deg; %s<br/>' % (event.degree, Event.PLANET[event.planet1])
-        else:
-            s = '%s<br/>' % (Event.CONSTELL[event.degree])
+def moon_move(event, date_range):
+    result = ''
+    if event.event_type == Event.EV_ASP_EXACT:
+        s = '%d&deg; %s<br/>' % (event.degree, Event.PLANET[event.planet1])
+    if event.event_type == Event.EV_SIGN_ENTER:
+        s = '%s<br/>' % (Event.CONSTELL[event.degree])
+    if event.event_type == Event.EV_MOON_MOVE:
+        result = '<a href="../text/m%s-%s/" class="move">&gt;&gt;</a>' % (event.id0, event.id1)
+    else:
         s += Event.fromutc(event.datetime0).strftime('%H:%M')
         if Event.date_between(Event.fromutc(event.datetime0), date_range[0], date_range[1]) == 0:
             s = '<b>%s</b>' % s
-            if not is_anchor_set:
-                output += '<div id="start">'
-                is_anchor_set = True
-            else:
-                output += '<div>'
-        else:
-            output += '<div>'
-        output += '<a href="../text/e%s/">%s</a>' % (event.id, s)
-        previous = event
-    output += "</div>\n"
-    return mark_safe(output)
+        result = '<a href="../text/e%s/" class="moon_move">%s</a>' % (event.id, s)
+    return mark_safe(result)
 
 @register.filter
 def rise_set(event):

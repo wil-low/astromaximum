@@ -4,6 +4,15 @@
 
 {% block content %}
     <div class="lowtab">
-    {{ event_list|moon_move_list:date_range }}
+        {% for ev in event_list %}
+        <div>{{ ev|moon_move:date_range }}</div>
+        {% endfor %}
     </div>
+    {% if settings.DEBUG %}
+        <div class="clear"/>
+        <h2>Moon move</h2>
+        {% for ev in event_list %} 
+            <p>{{ ev }}</p>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

@@ -89,6 +89,8 @@ class EventSelector():
             filter(~q_outside_range).order_by('datetime0')
 
     def get_moon_move(self):
+        period0 = self.period0
+        period1 = self.period1
         self.set_period(self.period0 + timedelta(days=-1), self.period1 + timedelta(days=+1))
         moon_aspects = list(self.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON))
     
@@ -96,7 +98,47 @@ class EventSelector():
     
         moon_aspects.extend(moon_sign_enter_events)
         moon_aspects.sort(key=lambda event: event.datetime0)
-        return moon_aspects
+        
+        moon_move = []
+        first_in_period = None
+        last_in_period = None
+        for i in range(len(moon_aspects) - 1):
+            current = moon_aspects[i]
+            if Event.date_between(Event.fromutc(current.datetime0), period0, period1) == 0:
+                if first_in_period is None:
+                    first_in_period = i
+                last_in_period = i
+            transition_event = Event()
+            transition_event.event_type = Event.EV_MOON_MOVE
+            if current.event_type == Event.EV_SIGN_ENTER:
+                transition_event.datetime0 = current.datetime0
+            else:
+                transition_event.datetime0 = current.datetime1
+            transition_event.datetime1 = moon_aspects[i + 1].datetime0
+            id0 = None
+            id1 = None
+            j = i
+            while(j >= 0):
+                if moon_aspects[j].planet1 <= Event.SE_SATURN:
+                    id0 = moon_aspects[j].pk
+                    break
+                j -= 1
+            j = i + 1
+            while(j < len(moon_aspects)):
+                if moon_aspects[j].planet1 <= Event.SE_SATURN:
+                    id1 = moon_aspects[j].pk
+                    break
+                j += 1
+            transition_event.id0 = id0
+            transition_event.id1 = id1
+            moon_move.append(current)
+            moon_move.append(transition_event)
+
+        moon_move.append(moon_aspects[-1])
+        first_in_period -= 1
+        last_in_period += 1
+        moon_move = moon_move[first_in_period * 2:last_in_period * 2 + 1]
+        return moon_move
 
     def get_tithi(self):
         return self.get_event_on_period(Event.EV_TITHI, Event.SE_MOON)
