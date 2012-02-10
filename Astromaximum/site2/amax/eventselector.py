@@ -83,6 +83,11 @@ class EventSelector():
     def get_aspects(self):
         return self.get_aspects_on_period(False)
 
+    def get_retrograde(self):
+        q_outside_range = Q(datetime0__gte=self.period1) | Q(datetime1__lt=self.period0)
+        return Event.objects.filter(year__exact=self.year, city_id__exact=None, event_type__exact=Event.EV_RETROGRADE).\
+            filter(~q_outside_range).order_by('datetime0')
+
     def get_moon_move(self):
         self.set_period(self.period0 + timedelta(days=-1), self.period1 + timedelta(days=+1))
         moon_aspects = list(self.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON))

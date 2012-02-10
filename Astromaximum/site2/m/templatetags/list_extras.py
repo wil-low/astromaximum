@@ -80,3 +80,12 @@ def hour(event, now):
         s = decorate(event, s, now)
         result = '<a href="../text/e%s/" class="hour">%s</a>' % (event.id, s)
     return mark_safe(result)
+
+@register.filter
+def retrograde(event):
+    result = ''
+    if event:
+        s = '%s - %s - %s' % (Event.fromutc(event.datetime0).strftime('%d %b (%H:%M)'), Event.PLANET[event.planet0], 
+                       Event.fromutc(event.datetime1).strftime('%d %b (%H:%M)'))
+        result = '<a href="../text/e%s/" class="retro">%s</a>' % (event.id, s)
+    return mark_safe(result)

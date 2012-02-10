@@ -113,6 +113,7 @@ class SummaryView(BaseView):
         self.es.set_period(self.prev_date, self.next_date)
         self.event_list['aspects'] = self.es.get_aspects()
         self.event_list['moon_move'] = self.es.get_moon_move()
+        self.event_list['retrograde'] = self.es.get_retrograde()
     
 class AspectView(BaseView):
     def gather_events(self):
@@ -133,6 +134,11 @@ class PlanetHourView(BaseView):
     def gather_events(self):
         self.template_name = 'm/lists/planet_hour.html'
         self.event_list = self.es.get_planetary_hours()
+
+class RetrogradeView(BaseView):
+    def gather_events(self):
+        self.template_name = 'm/lists/retrograde.html'
+        self.event_list = self.es.get_retrograde()
 
 class RiseSetView(BaseView):
     def gather_events(self):
@@ -177,6 +183,9 @@ class TextView(BaseView):
             elif ev.event_type == Event.EV_DEGREE_PASS:
                 q = Q(event_type__exact=ev.event_type, param0__exact=ev.degree)
                 planet = ev.planet0
+            elif ev.event_type == Event.EV_RETROGRADE:
+                q = Q(event_type__exact=ev.event_type, param0__exact=ev.planet0)
+                use_neighbour_navigation = False
 
             if use_neighbour_navigation and self.direction != 'e':
                 ev = self.es.get_neighbour_event(ev, self.direction, planet)

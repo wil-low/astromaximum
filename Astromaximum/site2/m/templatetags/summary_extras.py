@@ -78,3 +78,9 @@ def hour(event):
 def rise_set(rise_set_list):
     result = '&nbsp;'.join(map(lambda planet: Event.PLANET[planet], rise_set_list))
     return mark_safe(result)
+
+@register.filter
+def retrograde(retrograde_list):
+    result = 'R:&nbsp;'
+    result += '&nbsp;'.join(map(lambda item: Event.PLANET[item.planet0], retrograde_list))
+    return mark_safe(result)

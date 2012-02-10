@@ -1,0 +1,11 @@
+{% extends "m/base.html" %}
+{% load list_extras %}
+{% block title %}Retrograde{% endblock %}
+
+{% block content %}
+<div class="lowtab">
+    {% for ev in event_list %}
+        <div>{{ ev|retrograde }}</div>
+    {% endfor %}
+</div> 
+{% endblock %}
