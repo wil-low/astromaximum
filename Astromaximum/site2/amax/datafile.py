@@ -1,6 +1,5 @@
 import struct
 from calendar import timegm
-from pprint import pprint
 from models import Event, Location
 from datetime import datetime, timedelta
 from eventselector import EventSelector
@@ -195,9 +194,10 @@ class DataFile:
                     last.planet1 = myplanet1
                     last.degree = mydgr
 
-                new_event = self.clone_event(last)
-                event_func(new_event)
-                event_count += 1
+                if fnext_date2:
+                    new_event = self.clone_event(last)
+                    event_func(new_event)
+                    event_count += 1
 
         except (struct.error):
             print 'EOF reached'
