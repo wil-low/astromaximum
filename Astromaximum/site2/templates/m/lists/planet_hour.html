@@ -1,0 +1,11 @@
+{% extends "m/base.html" %}
+{% load list_extras %}
+{% block title %}Planet hours{% endblock %}
+
+{% block content %}
+<div class="lowtab">
+    {% for ev in event_list %}
+        <div>{{ ev|hour:now }}</div>
+    {% endfor %}
+</div> 
+{% endblock %}

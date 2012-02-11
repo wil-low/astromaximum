@@ -250,6 +250,8 @@ class DataFile:
     def get_planetary_hours(self, es):
         today_rise = es.get_event_on_period(Event.EV_RISE, Event.SE_SUN)[0]
         today_set = es.get_event_on_period(Event.EV_SET, Event.SE_SUN)[0]
+        day_delta = timedelta(days=1)
+        es.set_period(es.period0 + day_delta, es.period1 + day_delta)
         tomorrow_rise = es.get_event_on_period(Event.EV_RISE, Event.SE_SUN)[0]
         #import pdb; pdb.set_trace()
         hours = [];
