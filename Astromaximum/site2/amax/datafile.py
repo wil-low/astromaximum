@@ -221,10 +221,40 @@ class DataFile:
         return new_event
 
     def process_event(self, event):
+        if event.event_type == Event.EV_ASTRORISE:
+            event.degree = Event.RS_ASC
+        elif event.event_type == Event.EV_ASTROSET:
+            event.event_type = Event.EV_ASTRORISE
+            event.degree = Event.RS_DSC
+        event.save()
+
+    def process_mc_ic(self, event):
         event.save()
 
     def print_event(self, event):
         print event.__unicode__()
+
+    def calc_mc_ic(self, event_func):
+        count = 0
+        Event.set_tzinfo(self.city_id)
+        for planet in range(Event.SE_SUN, Event.SE_URANUS):
+            rise_sets = list(Event.objects.filter(city_id__exact=self.city_id, event_type__exact=Event.EV_ASTRORISE, 
+                                                  planet0__exact=planet, year__exact=self.year).order_by('datetime0'))
+            for i in range(len(rise_sets) - 1):
+                diff = rise_sets[i + 1].datetime0 - rise_sets[i].datetime0
+                ev = Event()
+                ev.event_type = Event.EV_ASTRORISE
+                ev.planet0 = planet
+                ev.year = self.year
+                ev.city_id = self.city_id
+                ev.datetime0 = ev.datetime1 = rise_sets[i].datetime0 + diff / 2
+                if rise_sets[i].degree == Event.RS_ASC:
+                    ev.degree = Event.RS_MC
+                else:
+                    ev.degree = Event.RS_IC
+                event_func(ev)
+                count += 1
+        return count
 
     def calc_planet_hours(self, event_func):
         Event.set_tzinfo(self.city_id)

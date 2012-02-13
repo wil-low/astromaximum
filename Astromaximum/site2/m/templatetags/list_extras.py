@@ -55,8 +55,8 @@ def moon_move(event, date_range):
 def rise_set(event):
     result = ''
     if event:
-        s = '%s %s %s' % (Event.PLANET[event.planet0], Event.EVENT_TYPE[event.event_type],
-            Event.fromutc(event.datetime0).strftime('%H:%M %d %b'))
+        s = '%s %s %s' % (Event.PLANET[event.planet0], Event.RISE_SET_STR[event.degree],
+            Event.fromutc(event.datetime0).strftime('%H:%M'))
         result = '<a href="../text/e%s/" class="rise_set">%s</a>' % (event.id, s)
     return mark_safe(result)
 

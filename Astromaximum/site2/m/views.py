@@ -146,7 +146,8 @@ class RiseSetView(BaseView):
         self.event_list = []
         self.template_name = 'm/lists/rise_set.html'
         self.es.set_period(self.current_date, self.next_date)
-        self.event_list = self.es.get_rise_sets(EventSelector.RISE_SET[int(self.direction)])
+        for planet in EventSelector.RISE_SET[int(self.direction)]:
+            self.event_list.append(self.es.get_rise_sets(planet))
 
 class TextView(BaseView):
     def gather_events(self):
@@ -170,10 +171,7 @@ class TextView(BaseView):
                 q = Q(event_type__exact=ev.event_type, param0__exact=ev.degree)
                 planet = ev.planet0
             elif ev.event_type == Event.EV_ASTRORISE:
-                q = Q(event_type__exact=Event.EV_RISE, param0__exact=ev.planet0, param1__exact=1)
-                planet = ev.planet0
-            elif ev.event_type == Event.EV_ASTROSET:
-                q = Q(event_type__exact=Event.EV_RISE, param0__exact=ev.planet0, param1__exact=3)
+                q = Q(event_type__exact=Event.EV_RISE, param0__exact=ev.planet0, param1__exact=ev.degree + 1)
                 planet = ev.planet0
             elif ev.event_type == Event.EV_PLANET_HOUR:
                 q = Q(event_type__exact=ev.event_type, param0__exact=ev.planet0)

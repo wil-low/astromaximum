@@ -95,6 +95,11 @@ def location_generate(filename):
         event_count = df.calc_planet_hours(df.process_event)
         return event_count
 
+    @transaction.commit_on_success
+    def insert_mc_ic():
+        event_count = df.calc_mc_ic(df.process_mc_ic)
+        return event_count
+
     try:
         Event.objects.filter(year__exact=year, city_id__exact=city_id)[0]
         result = 1
@@ -102,6 +107,7 @@ def location_generate(filename):
     except(IndexError):
         event_count = insert()
         event_count += insert_hours()
+        event_count += insert_mc_ic()
         result = 0
         message = str(year) + ' inserted, event_count ' + str(event_count)
     df.close()

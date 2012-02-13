@@ -70,6 +70,13 @@ class Event(models.Model):
     EV_TATTVAS = 52
     EV_LAST = 53   # last - do not use
     
+    RS_ASC = 0
+    RS_MC = 1
+    RS_DSC = 2
+    RS_IC = 3
+    
+    RISE_SET_STR = ['ASC', 'MC', 'DSC', 'IC']
+    
     STATE_UNDEFINED = 0
     STATE_GONE = 1
     STATE_COMING = 2
@@ -95,10 +102,10 @@ class Event(models.Model):
         'EV_DEGPASS2', 'EV_DEGPASS3', 'EV_HELP0', 'EV_HELP1', 'EV_ASTRORISE', 'EV_ASTROSET',
         'EV_APHETICS', 'EV_FAST', 'EV_ASCAPHETICS', 'EV_MSG', 'EV_BACK', 'EV_TATTVAS', 'EV_LAST']
 
-    year = models.IntegerField(default=-1, db_index=False)
+    year = models.IntegerField(db_index=False)
     city_id = models.ForeignKey('Location', null=True)
     
-    event_type = models.IntegerField(default=EV_LAST, db_index=True)
+    event_type = models.IntegerField(db_index=True)
     
     datetime0 = models.DateTimeField(db_index=False)
     datetime1 = models.DateTimeField(db_index=False)

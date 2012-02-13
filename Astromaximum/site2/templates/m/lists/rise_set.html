@@ -3,9 +3,11 @@
 {% block title %}Rise/Set{% endblock %}
 
 {% block content %}
-<ul>
-    {% for ev in event_list %}
-        <li>{{ ev|rise_set }}</li>
+<div class="lowtab">
+    {% for planet_events in event_list %}
+        {% for ev in planet_events %}
+            <div>{{ ev|rise_set }}</div>
+        {% endfor %}
     {% endfor %}
-</ul> 
+</div> 
 {% endblock %}
