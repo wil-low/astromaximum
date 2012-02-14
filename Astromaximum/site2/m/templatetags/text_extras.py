@@ -22,7 +22,7 @@ def time_moment_str(event):
 def title(ev):
     result = None
     if ev.event_type == Event.EV_TITHI:
-        result = '%s<br/>%s' % (time_tithi_str(ev), _('Tithi #'))
+        result = '%s<br/>%s%s' % (time_tithi_str(ev), _('Tithi #'), ev.degree)
     elif ev.event_type == Event.EV_ASP_EXACT:
         result = '%s<br/>%s-%s&deg;-%s %s' % (time_moment_str(ev),
                                               Event.PLANET[ev.planet0],
