@@ -199,7 +199,7 @@ class TextView(BaseView):
 
 class TextMoonMoveView(BaseView):
     def gather_events(self):
-        self.template_name = 'm/text.html'
+        self.template_name = 'm/text_moon_move.html'
         try:
             event0 = EventSelector.get_event(self.event0)[0]
         except IndexError:
@@ -216,7 +216,7 @@ class TextMoonMoveView(BaseView):
         elif event0.event_type == Event.EV_SIGN_ENTER:
             planet0 = Event.SE_MOON
         q = Q(event_type__exact=Event.EV_MOON_MOVE, param0__exact=planet0, param1__exact=planet1)
-        self.title = str(event0) + str(event1)
+        self.title = [event0, event1]
         text_list = Text.objects.filter(q).values_list('message', flat=True)
         if text_list:
             self.message = text_list[0]
