@@ -41,6 +41,12 @@ body,ul {
     height:4em;
 }
 
+.tab div a.tithi {
+    color: white;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
 .lowtab {
     display:block;
     padding:2px;
