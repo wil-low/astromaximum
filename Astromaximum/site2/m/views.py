@@ -157,33 +157,19 @@ class TextView(BaseView):
         use_neighbour_navigation = True
         if event_list:
             ev = event_list[0]
-            if ev.event_type == Event.EV_TITHI:
-                q = Q(event_type__exact=ev.event_type, param0__exact=ev.degree)
-            elif ev.event_type == Event.EV_ASP_EXACT:
-                aspect_goodness = Event.ASPECT[ev.degree][1]
+            
+            if ev.event_type == Event.EV_ASP_EXACT:
                 if ev.planet0 == Event.SE_MOON:
-                    q = Q(event_type__exact=Event.EV_ASP_EXACT_MOON, param0__exact=ev.planet1, param1__exact=aspect_goodness)
                     planet = ev.planet0
                 else:
-                    q = Q(event_type__exact=ev.event_type, param0__exact=ev.planet0, param1__exact=ev.planet1, param2__exact=aspect_goodness)
                     use_neighbour_navigation = False
             elif ev.event_type == Event.EV_SIGN_ENTER:
-                q = Q(event_type__exact=ev.event_type, param0__exact=ev.degree)
                 planet = ev.planet0
             elif ev.event_type == Event.EV_ASTRORISE:
-                q = Q(event_type__exact=Event.EV_RISE, param0__exact=ev.planet0, param1__exact=ev.degree + 1)
                 planet = ev.planet0
-            elif ev.event_type == Event.EV_PLANET_HOUR:
-                q = Q(event_type__exact=ev.event_type, param0__exact=ev.planet0)
-            elif ev.event_type == Event.EV_VOC:
-                q = Q(event_type__exact=ev.event_type, planet__exact=ev.planet0)
-            elif ev.event_type == Event.EV_VIA_COMBUSTA:
-                q = Q(event_type__exact=ev.event_type, planet__exact=ev.planet0)
             elif ev.event_type == Event.EV_DEGREE_PASS:
-                q = Q(event_type__exact=ev.event_type, param0__exact=ev.degree)
                 planet = ev.planet0
             elif ev.event_type == Event.EV_RETROGRADE:
-                q = Q(event_type__exact=ev.event_type, param0__exact=ev.planet0)
                 use_neighbour_navigation = False
 
             if use_neighbour_navigation and self.direction != 'e':
@@ -193,6 +179,30 @@ class TextView(BaseView):
                 if use_neighbour_navigation:
                     self.event_list = [ev,]
                 self.title = ev
+                
+                if ev.event_type == Event.EV_TITHI:
+                    q = Q(event_type__exact=ev.event_type, param0__exact=ev.degree)
+                elif ev.event_type == Event.EV_ASP_EXACT:
+                    aspect_goodness = Event.ASPECT[ev.degree][1]
+                    if ev.planet0 == Event.SE_MOON:
+                        q = Q(event_type__exact=Event.EV_ASP_EXACT_MOON, param0__exact=ev.planet1, param1__exact=aspect_goodness)
+                    else:
+                        q = Q(event_type__exact=ev.event_type, param0__exact=ev.planet0, param1__exact=ev.planet1, param2__exact=aspect_goodness)
+                elif ev.event_type == Event.EV_SIGN_ENTER:
+                    q = Q(event_type__exact=ev.event_type, param0__exact=ev.degree)
+                elif ev.event_type == Event.EV_ASTRORISE:
+                    q = Q(event_type__exact=Event.EV_RISE, param0__exact=ev.planet0, param1__exact=ev.degree + 1)
+                elif ev.event_type == Event.EV_PLANET_HOUR:
+                    q = Q(event_type__exact=ev.event_type, param0__exact=ev.planet0)
+                elif ev.event_type == Event.EV_VOC:
+                    q = Q(event_type__exact=ev.event_type, planet__exact=ev.planet0)
+                elif ev.event_type == Event.EV_VIA_COMBUSTA:
+                    q = Q(event_type__exact=ev.event_type, planet__exact=ev.planet0)
+                elif ev.event_type == Event.EV_DEGREE_PASS:
+                    q = Q(event_type__exact=ev.event_type, param0__exact=ev.degree)
+                elif ev.event_type == Event.EV_RETROGRADE:
+                    q = Q(event_type__exact=ev.event_type, param0__exact=ev.planet0)
+
                 text_list = Text.objects.filter(q).values_list('message', flat=True)
                 if text_list:
                     self.message = text_list[0]
