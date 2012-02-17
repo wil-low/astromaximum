@@ -64,7 +64,7 @@ def rise_set(event):
 def hour(event, now):
     result = ''
     if event:
-        s = '%s %s' % (Event.fromutc(event.datetime0).strftime('%H:%M'), Event.PLANET[event.planet0])
+        s = '%s<br/>%s' % (Event.fromutc(event.datetime0).strftime('%H:%M'), Event.PLANET[event.planet0])
         s = decorate(event, s, now)
         result = '<a href="../text/e%s/" class="hour">%s</a>' % (event.id, s)
     return mark_safe(result)
