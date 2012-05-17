@@ -89,7 +89,7 @@ class EventSelector():
     def get_moon_move(self):
         period0 = self.period0
         period1 = self.period1
-        self.set_period(self.period0 + timedelta(days=-1), self.period1 + timedelta(days=+1))
+        self.set_period(self.period0 + timedelta(days=-2), self.period1 + timedelta(days=+2))
         moon_aspects = list(self.get_event_on_period(Event.EV_ASP_EXACT, Event.SE_MOON))
     
         moon_sign_enter_events = list(self.get_event_on_period(Event.EV_SIGN_ENTER, Event.SE_MOON))
@@ -133,7 +133,8 @@ class EventSelector():
             moon_move.append(transition_event)
 
         moon_move.append(moon_aspects[-1])
-        first_in_period -= 1
+        if first_in_period > 0:
+            first_in_period -= 1
         last_in_period += 1
         moon_move = moon_move[first_in_period * 2:last_in_period * 2 + 1]
         return moon_move
