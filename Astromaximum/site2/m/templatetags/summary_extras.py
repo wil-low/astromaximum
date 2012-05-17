@@ -56,6 +56,8 @@ def tithi(event):
         s = '%s<br/>%s'  % (event.get_degree(), event.time0())
         s = decorate(event, s)
         result = '<a href="../tithi/" class="tithi" style="background-image:url(/i/phases/ph50-%02d.png)">Tithi<br/>%s</a>' % (event.get_degree(), s)
+    else:
+        result = '<a class="tithi">No tithi<br/></a>'
     return mark_safe(result)
 
 @register.filter
