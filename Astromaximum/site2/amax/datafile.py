@@ -211,8 +211,8 @@ class DataFile:
         new_event.year = self.year
         new_event.city_id = self.city_id
         new_event.event_type = event.event_type
-        new_event.datetime0 = datetime.utcfromtimestamp(event.date0).replace(tzinfo=Event.utc_tz)
-        new_event.datetime1 = datetime.utcfromtimestamp(event.date1).replace(tzinfo=Event.utc_tz)
+        new_event.datetime0 = datetime.utcfromtimestamp(event.date0)
+        new_event.datetime1 = datetime.utcfromtimestamp(event.date1)
         new_event.date0 = event.date0
         new_event.date1 = event.date1
         new_event.planet0 = event.planet0

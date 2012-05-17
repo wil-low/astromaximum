@@ -43,9 +43,8 @@ body,ul {
 
 .tab div a.tithi {
     color: white;
-    background: black;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center center;
 }
 
 .lowtab {

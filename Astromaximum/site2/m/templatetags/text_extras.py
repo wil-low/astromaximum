@@ -5,7 +5,7 @@ from amax.models import Event
 
 register = template.Library()
 
-DATE_FORMAT='%H:%M %a %d %b'
+DATE_FORMAT='%H:%M %d %b'
 
 def time_range_str(event):
     return '%s - %s' % (Event.fromutc(event.datetime0).strftime(DATE_FORMAT),

@@ -33,7 +33,7 @@ def today_summary(request):
 def call_view(request, year, month, day, view_class, event0=-1, event1=-1, direction=''):
     profile = get_user_profile(request)
     Event.set_tzinfo(profile.location)
-    v = view_class(year, month, day, datetime.datetime.utcnow().replace(tzinfo=Event.utc_tz), profile.location.pk, event0, event1, direction)
+    v = view_class(year, month, day, datetime.datetime.utcnow(), profile.location.pk, event0, event1, direction)
     v.gather_events()
     return v.render(request, profile)
 
@@ -50,7 +50,7 @@ class BaseView():
         self.event0 = event0
         self.event1 = event1
         self.direction = direction
-        self.current_date = datetime.datetime(int(year), int(month), int(day), tzinfo=Event.utc_tz)
+        self.current_date = datetime.datetime(int(year), int(month), int(day), tzinfo=Event.tzinfo).astimezone(Event.utc_tz)
         self.prev_date = (self.current_date + datetime.timedelta(days=-1))
         self.next_date = (self.current_date + datetime.timedelta(days=1))
         self.es = EventSelector(self.current_date.year, self.current_date, self.next_date, now, city_id)
