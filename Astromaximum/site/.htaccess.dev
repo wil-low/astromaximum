@@ -1,0 +1,19 @@
+php_flag register_globals off
+RewriteEngine On
+Options +FollowSymlinks
+RewriteRule ^wiki(.*)$ - [L]
+RewriteCond %{ENV:REDIRECT_MYFLAG} ^$
+RewriteCond %{HTTP_HOST} ^mobi\.localhost$
+RewriteRule ^(.+) %{HTTP_HOST}$1 [E=MYFLAG:1]
+RewriteRule ^mobi\.localhost(.*) /mobi%{REQUEST_URI} [L]
+RewriteCond %{HTTP_HOST} ^forum\.localhost$
+RewriteRule ^(.+) %{HTTP_HOST}$1 [E=MYFLAG:1]
+RewriteRule ^forum\.localhost(.*) /forum%{REQUEST_URI} [L]
+RewriteCond %{HTTP_HOST} ^localhost$
+RewriteRule ^ipn/([A-Za-z]+)$ /ipn.php?sys=$1 [L]
+RewriteRule ^(ru|en|de)?/info/([0-9a-f]+)$ /shot.php?h=$2 [L]
+RewriteRule ^(ru|en|de)/shot/(.*)$ /shot.php?lang=$1&n=$2 [L]
+RewriteRule ^(ru|en|de)/(.*)/$ /$1/$2 [R]
+RewriteRule ^(ru|en|de)/([^\?]+)/(.*)$ index.php/?lang=$1&p=$2&$3 [L]
+RewriteRule ^(ru|en|de)/([^\?]+)$ index.php/?lang=$1&p=$2 [L]
+RewriteRule ^(ru|en|de)/?$ /$1/home [R]
