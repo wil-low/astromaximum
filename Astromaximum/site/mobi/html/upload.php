@@ -101,6 +101,19 @@ function up_geodata($fname, $ext){
 	rm_all($dir);
 }
 
+function read_utf($file) {
+	$len=fread($file,2);
+	$len=current(unpack("n",$len));
+	$str=fread($file,$len);
+	return $str;
+}
+
+function read_short($file) {
+	$value=fread($file,2);
+	$value=current(unpack("n",$value));
+	return $value;
+}
+
 function process_country($dir){
 	$report_errors_only = isset($_POST['error_only']);
 	$fn=glob("$dir/*.txt");
@@ -134,7 +147,7 @@ function process_country($dir){
 			list($name, $country, $yr, $txtchk, $status, $state, $is_error)=array('','',0,'','','', true);
 			
 			$rec=explode(';', $cc);
-			if(count($rec)<5){
+			if(count($rec)<8){
 				continue;
 			}
 
@@ -148,23 +161,32 @@ function process_country($dir){
 			$FF0=fopen($curfn,"rb");
 			$tr='';
 			$locdata='';
-			$yr=fread($FF0,2);
-			$yr=current(unpack("n",$yr));
+			$signature=fread($FF0,4);
+			if(strcmp($signature, 'S&WA') != 0) {
+				echo ("$curfn: Invalid signature " . $signature . '<br/>');
+				continue;
+			}
+			$version=fread($FF0,1);
+			$version=current(unpack("c",$version));
+			if($version != 2) {
+				echo ("$curfn: Unknown version " . $version . '<br/>');
+				continue;
+			}
+			$yr=read_short($FF0);
+#			trigger_error($yr, E_USER_ERROR);
 			if($yr){
-				fseek($FF0,8,0);
-				$len=0;
-				$len=fread($FF0,2);
-				$len=current(unpack("n",$len));
-				$len=fread($FF0,$len);
+				fseek($FF0,14,SEEK_CUR);
+				$loc_name = read_utf($FF0);
+				$loc_state = read_utf($FF0);
+				$loc_country = read_utf($FF0);
+				$datafile_city = "$loc_name/$loc_state/$loc_country";
+				$txt_city = "$rec[0]/$rec[1]/$rec[2]";
 				fseek($FF0,0,0);
 				$locdata=fread($FF0, filesize($curfn));
 				fclose($FF0);
 				$tst=$name;
-				if(strlen($state)){
-					$tst.=", $state";
-				}
-				if(strpos($tst, $len)===false){
-					$txtchk="<span class=\"alert\">doesn't match, found <b>$len</b></span>";
+				if(strcmp($datafile_city, $txt_city) != 0){
+					$txtchk="<span class=\"alert\">doesn't match, found <b>$datafile_city</b></span>";
 				}
 				else{
 					$txtchk="<b>OK</b>";
