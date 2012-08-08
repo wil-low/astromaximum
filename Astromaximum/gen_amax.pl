@@ -93,7 +93,7 @@ our $loclist=shift(@ARGV);
 our $outfile=shift(@ARGV);
 
 if($islocal and ($config eq 'join')){
-	inject_common($year, "$path/$year.comm");
+	inject_common($year, "$path/data/commons/$year.comm");
 	exit(0);
 }
 

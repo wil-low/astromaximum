@@ -1,2 +1,2 @@
-ancients:Data0002 m.Olympos
-ancients:Data0003 Lhasa
+ancients:9de36cb2 m.Olympus
+ancients:d8b2d6ac Lhasa
