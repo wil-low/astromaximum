@@ -1,12 +1,30 @@
-all: deploy
+DEST=mobi/dl
+SOURCE=$(DEST)/source
 
-upload:
-	bash scripts/upload.sh
+all:
 
-deploy_prod:
+upload_dev: deploy_dev
+	bash scripts/upload_dev.sh
+
+upload_prod: deploy_prod
+	bash scripts/upload_prod.sh
+
+deploy_prod: gen_amax templates
 	bash scripts/make_archive.sh
 
-deploy_dev:
+deploy_dev: gen_amax templates
 	bash scripts/make_archive.sh .dev
 
-.PHONY: deploy_prod deploy_dev upload all
+gen_amax:
+	mkdir -p $(DEST) $(SOURCE) site/i/daily; \
+	cat ../tools.pm ../genconst.pm ../gen_amax.pl > $(DEST)/gen_amax.cgi; \
+	hg log  --template '{rev}\n' ../Astromaximum | head -n 1 > $(DEST)/rev.txt; \
+	hg log  --template '{rev}\n' ../GeoAM | head -n 1 >> $(DEST)/rev.txt
+
+templates:
+	cp ../templates/AstromaximumDemo.jar $(SOURCE); \
+	cp ../templates/GeoAM.jar $(SOURCE); \
+	cp ../templates/Astromaximum-tb.jar $(SOURCE); \
+	cp ../templates/MANIFEST.MF $(SOURCE)
+
+.PHONY: deploy_prod deploy_dev upload_dev upload_prod gen_amax teplates all
