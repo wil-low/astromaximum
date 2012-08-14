@@ -41,9 +41,11 @@ $calendar_caption = '';
 if ($validuser) {
 	$cities_caption = $i18['SEL_DCITY'];
 	$calendar_caption = "{$i18['SEL_DCALENDAR']}:<br/>";
-	$year = $current_year;
+	$year = $current_year + 1;
 	while ($year >= $GLOBALS['amax']['min_demo_year']) {
-		$calendar_array[] = "<a href=\"?$lang_&amp;p=prg&amp;y=$year&amp;$sess\">$year</a> \n";
+		if (file_exists ("dl/source/$year.comm")) {
+			$calendar_array[] = "<a href=\"?$lang_&amp;p=prg&amp;y=$year&amp;$sess\">$year</a> \n";
+		}
 		--$year;
 	}
 }

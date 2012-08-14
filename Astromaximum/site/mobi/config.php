@@ -31,7 +31,7 @@ $sett=array(
 	'release_date'=>'2012-08-09',
 	
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder
-	'min_demo_year'=>2000,
+	'min_demo_year'=>2010,
     
 	'buy_enabled'=>0,
     'paymodes'=>array(7/*, 6, 4*/),
