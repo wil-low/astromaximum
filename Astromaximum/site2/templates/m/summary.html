@@ -13,8 +13,7 @@
 		<div>{{ event_list.tithi|tithi }}</div>
         <div>{{ event_list.planet_hour|hour }}</div>
 	</div>
-	<div class="clear"/>
-    <div class="lowtab">
+    <div class="clear lowtab">
         <div><a href="../rise_set0/">{{ rise_set.0|rise_set }}</a></div>
         <div><a href="../rise_set1/">{{ rise_set.1|rise_set }}</a></div>
         <div><a href="../rise_set2/">{{ rise_set.2|rise_set }}</a></div>
@@ -22,11 +21,9 @@
         <div><a href="../moon_move/#start">Moon<br/>move</a></div>
         <div><a href="../aspects/">Aspects</a></div>
     </div>
-    <div class="clear"/>
-    <div class="lowtab"><div><a href="../../">Today</a></div></div>
-    <div class="clear"/>
+    <div class="clear lowtab"><div><a href="../../">Today</a></div></div>
     {% if settings.DEBUG %}
-    <div class="event_list">
+    <div class="clear event_list">
     	<h1>Events for today:</h1>
         <h2>Vocs</h2>
         <p>{{ event_list.vocs }}</p>

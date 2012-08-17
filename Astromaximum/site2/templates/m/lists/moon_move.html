@@ -9,10 +9,11 @@
         {% endfor %}
     </div>
     {% if settings.DEBUG %}
-        <div class="clear"/>
+        <div class="clear">
         <h2>Moon move</h2>
         {% for ev in event_list %} 
             <p>{{ ev }}</p>
         {% endfor %}
+        </div>
     {% endif %}
 {% endblock %}
