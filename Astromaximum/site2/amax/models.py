@@ -208,21 +208,41 @@ class Event(models.Model):
 
     class Meta:
         ordering = ['datetime0']
-        
+
+class Country(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __unicode__(self):
+        return u'%s' % (self.name)
+
+    class Meta:
+        verbose_name_plural = "Countries"
+        ordering = ['name']
+    
+class State(models.Model):
+    name = models.CharField(max_length=100)
+    country = models.ForeignKey(Country)
+
+    def __unicode__(self):
+        return u'%s' % (self.name)
+
+    class Meta:
+        ordering = ['name']
+
 class Location(models.Model):
     name = models.CharField(max_length=100)
-    state = models.CharField(max_length=100, null=True)
-    country = models.CharField(max_length=100)
+    state = models.ForeignKey(State, null=True)
+    country = models.ForeignKey(Country)
     timezone =  models.CharField(max_length=100)
     latitude = models.FloatField()
     longitude = models.FloatField()
     altitude = models.FloatField()
     
     def __unicode__(self):
-        s = self.name + ', '
+        s = ('%08x' % self.id) + ': ' + self.name + ', '
         if self.state:
-            s += self.state + ', '
-        s += self.country
+            s += self.state.name + ', '
+        s += self.country.name
         return s 
 
     class Meta:

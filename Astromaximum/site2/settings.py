@@ -45,7 +45,12 @@ TIME_ZONE = None
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
+
+LANGUAGES = (
+  ('ru', 'Russian'),
+  ('en', 'English'),
+)
 
 SITE_ID = 1
 
@@ -122,6 +127,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+#    'django.middleware.locale.LocaleMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -147,6 +153,7 @@ INSTALLED_APPS = (
     'desktop',
     'm',
     'mobi',
+    'desktop',
 )
 
 # A sample logging configuration. The only tangible logging

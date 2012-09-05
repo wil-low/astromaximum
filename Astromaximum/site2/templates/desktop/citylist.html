@@ -1,0 +1,24 @@
+{% extends "desktop/base.html" %}
+{% load i18n %}
+{% block content %}
+{% for letter in country_letters %}
+    <br/>
+    {% for country in letter %}
+        <a href="#n{{ country.id }}">{{ country }}</a>,
+    {% endfor %}
+{% endfor %}
+
+{% for item in country_locations %}
+    <p><a id="n{{ item.0 }}"></a><b>{{ item.1 }}</b> - {{ item.2.count }} &nbsp; 
+        ( <a href="http://www.timeanddate.com/search/results.html?query={{ item.1 }}">GMT</a> ) &nbsp; 
+        ( <a href="#top">^{% trans "top" %}</a> )<br/>
+    {% for location in item.2 %}
+        {% if user.is_authenticated %}
+            <a href="citylist/{{ location.id }}">{{ location.name }}</a>,
+        {% else %}
+            {{ location.name }},
+        {% endif %}
+    {% endfor %}
+    </p>
+{% endfor %}
+{% endblock %}

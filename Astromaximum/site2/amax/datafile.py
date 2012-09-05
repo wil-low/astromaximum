@@ -1,6 +1,6 @@
 import struct
 from calendar import timegm
-from models import Event, Location
+from models import Event, Location, Country, State
 from datetime import datetime, timedelta
 from eventselector import EventSelector
 
@@ -78,6 +78,7 @@ class DataFile:
             version = self.read_byte()
             if version == 2:
                 self.read_YMD()
+                
                 location = Location()
                 location.id = self.read_uint()
                 # latitude, longitude, altitude
@@ -85,10 +86,28 @@ class DataFile:
                 location.longitude = self.read_short() / 100.
                 location.altitude = self.read_short()
                 location.name = self.read_UTF()  # city
-                location.state = self.read_UTF()  # state
-                location.country = self.read_UTF()  # country
+                state_name=self.read_UTF()
+                country_name = self.read_UTF()  # country
                 location.timezone = self.read_UTF()  # timezone
+                
+                country = None
+                try:
+                    country = Country.objects.get(name=country_name)  # country
+                except (Country.DoesNotExist):
+                    country = Country(name=country_name)
+                    country.save()
+                location.country = country
+                
+                if state_name:
+                    state = None
+                    try:
+                        state = State.objects.get(name=state_name, country=country)  # state
+                    except (State.DoesNotExist):
+                        state = State(name=state_name, country=country)
+                        state.save()
+                    location.state = state
                 location.save()
+                
                 self.city_id = location
                 self.read_UTF()  # custom data
                 transitionCount = self.read_byte()

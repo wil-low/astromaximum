@@ -10,7 +10,9 @@ from amax.models import Event, Text, UserProfile, Location
 from forms import SettingsForm
 
 def get_user_profile(request):
-    if request.user.is_anonymous():
+    if request.user.is_authernicated():
+        return request.user.get_profile()
+    else:
         request.session.set_expiry(settings.ANONYMOUS_USER['session_expiry'])
         city_id = request.session.get('city_id', settings.ANONYMOUS_USER['city_id'])
         profile = UserProfile()
@@ -21,8 +23,6 @@ def get_user_profile(request):
         profile.location = locations[0]
         request.session['city_id'] = city_id
         return profile
-    else:
-        return request.user.get_profile()
 
 def today_summary(request):
     profile = get_user_profile(request)
