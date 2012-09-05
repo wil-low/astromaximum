@@ -1,4 +1,5 @@
 syntax: glob
+*.pyc
 Astromaximum/Astromaximum/arrays/*.dat
 Astromaximum/Astromaximum/build
 Astromaximum/Astromaximum/dist
