@@ -29,8 +29,9 @@ if (document.images){
 }
 //-->
 </script>
+{% block head %}{% endblock %}
 </head>
-<body>
+<body {% block body %}{% endblock %}>
 <a id="top"></a>
 <div id="globe">
     <img src="/i/globe.jpg" width="956" height="320" usemap="#Map" alt="ASTROMAXIMUM"/>

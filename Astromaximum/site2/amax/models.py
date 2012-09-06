@@ -239,7 +239,7 @@ class Location(models.Model):
     altitude = models.FloatField()
     
     def __unicode__(self):
-        s = ('%08x' % self.id) + ': ' + self.name + ', '
+        s = self.name + ', '
         if self.state:
             s += self.state.name + ', '
         s += self.country.name

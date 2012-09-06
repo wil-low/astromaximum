@@ -1,5 +1,18 @@
 {% extends "desktop/base.html" %}
 {% load i18n %}
 {% block content %}
-Sunrise {{ id }}
+<p> |
+{% for year_nav in year_navigation %}
+    {% if year_nav == year %}
+        <b>{{ year_nav }}</b> |
+    {% else %}
+        <a href="{{ year_nav }}">{{ year_nav }}</a> |
+    {% endif %}
+{% endfor %}
+</p>
+<h4>{{ location }}</h4>
+<p>{% trans "Sunrise" %}: {{ sunrise.datetime0|date:"Y-m-d H:i" }}</p>
+<p>{% trans "Current time" %}: {{ now|date:"Y-m-d H:i" }}</p>
+<p>{% trans "Time offset" %}: GMT {{ time_offset }}</p>
+<p><a href="/citylist">&lt;&lt; {% trans "cities GMT" %}</a></p>
 {% endblock %}

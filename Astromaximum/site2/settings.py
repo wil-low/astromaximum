@@ -34,6 +34,8 @@ DATABASES = {
     }
 }
 
+INTERNAL_IPS = ('127.0.0.1',)
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -118,7 +120,7 @@ SECRET_KEY = 'zkicz_oqp@p1u57hsy@vr!wgiay020j354x5x=dmzkc61ta$81'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (

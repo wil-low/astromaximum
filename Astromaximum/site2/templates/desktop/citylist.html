@@ -14,7 +14,7 @@
         ( <a href="#top">^{% trans "top" %}</a> )<br/>
     {% for location in item.2 %}
         {% if user.is_authenticated %}
-            <a href="citylist/{{ location.id }}">{{ location.name }}</a>,
+            <a href="/citylist/{{ location.id }}/">{{ location.name }}</a>,
         {% else %}
             {{ location.name }},
         {% endif %}
