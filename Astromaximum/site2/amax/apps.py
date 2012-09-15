@@ -5,3 +5,6 @@ class J2MEApp():
     year = 2012
     demo_year = year - 1
     cities_total = 750
+
+def midlet_create():
+    pass

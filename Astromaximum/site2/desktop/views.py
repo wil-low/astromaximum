@@ -7,6 +7,7 @@ import datetime
 import simplejson as json
 from amax.apps import J2MEApp
 from amax.models import Location, Country, State, Event
+from forms import DemoForm
 
 def home_redirect(request):
     return HttpResponseRedirect('home')
@@ -93,7 +94,7 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect('home')
 
-def dl_view(request, mode=None, country_id=0, state_id=0, year=0):
+def dl(request, mode=None, country_id=0, state_id=0, year=0):
     if mode is None:
         c = RequestContext(request, {
                                      'user': request.user,
@@ -120,7 +121,7 @@ def dl_view(request, mode=None, country_id=0, state_id=0, year=0):
         response.write(json.dumps({'content': obj}, separators=(',',':')))
         return response
 
-def geo_view(request):
+def geo(request):
     if request.POST['Action']:
         pass
     c = RequestContext(request, {
@@ -128,3 +129,21 @@ def geo_view(request):
                                  'app': J2MEApp(),
                                  })
     return render_to_response('desktop/geo.html', context_instance=c)
+
+def demo(request):
+    if request.POST:
+        form = DemoForm(request.POST)
+        # Validate the form: the captcha field will automatically
+        # check the input
+        human = False
+        if form.is_valid():
+            human = True
+    else:
+        form = DemoForm()
+
+    c = RequestContext(request, {
+                                 'form': form,
+                                 'user': request.user,
+                                 'app': J2MEApp(),
+                                 })
+    return render_to_response('desktop/demo.html', context_instance=c)

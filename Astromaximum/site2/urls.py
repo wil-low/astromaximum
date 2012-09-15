@@ -12,6 +12,7 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^captcha/', include('captcha.urls')),
     
     url(r'^data/', include('data.urls')),
 

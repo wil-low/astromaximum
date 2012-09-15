@@ -1,0 +1,15 @@
+{% extends "desktop/base.html" %}
+{% load i18n %}
+{% block content %}
+<form action="/demo" method="post">
+{% csrf_token %}
+<p>Введите символы, указанные на рисунке:</p>
+{{ form.as_p }}
+<p><span class="fine">Сгенерировать календарь:</span><br/><br/>
+<!--<input type="radio" name="agree" value="demo" style="width:auto; border: 0px" checked="checked"/> -->
+<b>ASTROMAXIMUM 2011</b><br/><br/>
+<input type="button" class="ok_on" value="OK" onclick="form.submit()"/>
+<br/><br/></p>
+</form>
+<p>После установки календаря Вы можете загрузить любой из городов за 2011 год.</p>
+{% endblock %}
