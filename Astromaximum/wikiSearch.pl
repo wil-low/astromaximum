@@ -172,7 +172,7 @@ sub city_query { # city, region, cur_country, cur_state, zone, is_check_disambig
 		}
 	}
 	$content =~ s/&#160;/ /sg;
-	if ($content =~ /class="firstHeading">([^<]+)<\/h1>/s) {
+	if ($content =~ /class="firstHeading">(?:<span dir="auto">)?([^<]+)(?:<\/span>)?<\/h1>/s) {
 		$city = $1;
 		if ($real_name eq '') {
 			$real_name = $city;
