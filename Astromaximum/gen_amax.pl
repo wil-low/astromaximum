@@ -165,7 +165,6 @@ $messjar=1 if $argv=~/messjar/is;
 if($config=~/amtext/is){
 	unzip("$path/$const::DIR_TEMPLATE/AMtext.jar");
 	inject_lang($lang, 'amtext');
-	inject_icon('amtext', "res/");
 
 	my @files=glob("$path/$const::DIR_TEMP/*");
 	my $out='';
@@ -257,7 +256,6 @@ if($config=~/demo/is){
 if($config=~/geo-$/is){
 	unzip("$path/$const::DIR_TEMPLATE/GeoAM.jar");
 	my $locname=inject_locations($year, $loclist, "$path/$const::DIR_TEMP/locations.dat");
-	inject_icon('', 'res/');
 	do_jar($locname, $locname, $outfile, $GeoAMclass);
 	do_messjar($outfile);
 	$done=1;
@@ -350,7 +348,7 @@ sub inject_amdata{
 
 sub inject_icon{ # prefix, subdir
     mkdir "$const::DIR_TEMP/$_[1]";
-	my $icon_num = $ye % 4;
+	my $icon_num = $ye % 2;
 	my $prefix=shift;
     my $fn = "<$path/$const::DIR_IMG/$prefix$icon_num.png";
 	open(INF, $fn) or mydie("Cannot open $fn");
