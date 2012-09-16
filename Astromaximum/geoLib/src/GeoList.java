@@ -307,7 +307,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
 
     static long getTZoffset(long date0) {
         long offset = 0;
-        for (int i = 0; i < transitionCount; ++i) {
+        for (int i = 1; i < transitionCount; ++i) {
             if (transitionTimes[i] >= date0) {
                 offset = transitionOffsets[i - 1];
                 break;
