@@ -38,15 +38,15 @@ function alert2($str){
 
 if($chac!=-1 and $chac!=1){
 	$y_now=$current_year;
-	if($chac==0)
-		$y_now += 2;
+	if($chac==0 or $chac==2)
+		$y_now += 1;
 	$out='';
 	for($i=$y_now-1; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
 		$out.="<option value=\"$i\"";
 		if($i==$current_year) $out.=" selected=\"selected\"";
 		$out.=">$i</option>\n";
 	}
-	$year=$current_year;
+	$year=$y_now;
 
 	$tries=get_try_count(0);
 
