@@ -79,7 +79,7 @@ $is_allow_dl=($tries[1]!=0);
 $defyear=$current_year;
 if(isset($_POST['y_sel'])){
 	$defyear=$_POST['y_sel'];
-	if($chac!=0 && $defyear>$current_year){
+	if($chac!=0 && $chac!=2 && $defyear>$current_year){
 		$defyear=$current_year;
 	}
 }
@@ -149,7 +149,7 @@ function generate(){
 	onchange="document.forms.namedItem('main').submit()">
 <?php
 $y_now=$current_year;
-if($chac==0)
+if($chac==0 or $chac==2)
 	$y_now=$current_year + 1;
 for($i=$y_now; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
 	$yy=$i;
