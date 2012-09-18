@@ -28,7 +28,7 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.6"
-     inkscape:cx="100.6016"
+     inkscape:cx="100.95874"
      inkscape:cy="4.588327"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -79,7 +79,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -126,26 +126,26 @@
        inkscape:transform-center-y="4.1962877e-05" />
     <text
        xml:space="preserve"
-       style="font-size:16.96867752px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
-       x="36.029514"
-       y="1050.755"
+       style="font-size:10.41517735px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       x="40.162701"
+       y="1051.156"
        id="text5607"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5609"
-         x="36.029514"
-         y="1050.755">R</tspan></text>
+         x="40.162701"
+         y="1051.156">R</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:16.96867752px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
-       x="83.159462"
-       y="1050.8687"
+       style="font-size:10.41517735px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       x="87.818596"
+       y="1051.0472"
        id="text5607-9"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5609-0"
-         x="83.159462"
-         y="1050.8687">D</tspan></text>
+         x="87.818596"
+         y="1051.0472">D</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:3.00000024;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 102.60714,1031.2193 11.25897,9.2321 -11.25897,9.2321"
