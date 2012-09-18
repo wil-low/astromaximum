@@ -446,8 +446,10 @@ final class SummItem extends TimerTask implements RecordFilter {
                 break;
             case Event.EV_MOON_PHASE:
                 if (tag == 1) {
+                    osg.setClip(left + 1, top, width, height);
                     osg.drawImage(tithi, left + width / 2, top + height / 2,
                             Graphics.VCENTER | Graphics.HCENTER);
+                    osg.setClip(0, 0, owner.getWidth(), owner.getHeight());
                 } else {
                     owner.drawPhase(osg, left + width / 2 - Summary.IMG_HEIGHT / 2,
                             top + height / 2 - Summary.IMG_HEIGHT / 2, Summary.IMG_HEIGHT, events[0].planet1);
@@ -527,8 +529,8 @@ final class SummItem extends TimerTask implements RecordFilter {
                     final int x = getX(i, XCENTER);
                     drawImg(osg, Summary.imgPlanet, e.planet0, x, y,
                             Graphics.VCENTER | Graphics.HCENTER);
-                    drawImg(osg, Summary.imgService, 1, x - 1, y + 3,
-                            Graphics.VCENTER | Graphics.LEFT);
+                    drawImg(osg, Summary.imgService, 1, x + 3, y + 3,
+                            Graphics.VCENTER | Graphics.HCENTER);
                 }
                 break;
             case Event.EV_ASP_EXACT:
