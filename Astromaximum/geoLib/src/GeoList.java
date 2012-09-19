@@ -309,13 +309,16 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     }
 
     static long getTZoffset(long date0) {
-        long offset = 0;
+        long offset = transitionOffsets[0];
+        //System.out.println("date0=" + date0);
         for (int i = 1; i < transitionCount; ++i) {
+            //System.out.println("transitionTimes[" + i + "]=" + transitionTimes[i] + " > " + transitionOffsets[i]);
             if (transitionTimes[i] >= date0) {
                 offset = transitionOffsets[i - 1];
                 break;
             }
         }
+        //System.out.println("result=" + offset);
         return offset;
     }
 }
