@@ -95,18 +95,6 @@ my $tz_ofs=0;
 #=cut
 ######
 
-my $sqpath='d:/projects/astro/v2/db/';
-$sqpath='D:/Willow/prj/astrology/v2/db/' unless -d $sqpath;
-$sqpath='../' unless -d $sqpath;
-
-die "coords.sqb not found at $sqpath" unless -f $sqpath."coords.sqb";
-
-my $sqlite3='/usr/bin/';
-$sqlite3=$sqpath unless -d $sqlite3;
-
-$sqlite3.='sqlite3';
-#die "$sqpath\n$sqlite3\n";
-
 our $outbuf;
 our $fname;
 
