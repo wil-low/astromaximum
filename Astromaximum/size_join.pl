@@ -25,7 +25,7 @@ sub join_phases
 	print $OutF pack('n',$#bins+1);
 	my $i=0;
 	foreach my $ff(@bins){
-		open($InF, "<$ff") or die "No file";
+		open($InF, "<$ff") or die "No file $ff";
 		binmode($InF);
 		undef $/ ;
 		@buf=<$InF>;
