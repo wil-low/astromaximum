@@ -292,17 +292,20 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     }
 
     static String tzOffset2String() {
-        String result = "GMT ";
-/*        
-        long absOffsetInMins = Math.abs(tzOffset) / 60000;
-        result += tzOffset > 0 ? "+" : "-";
-        result += absOffsetInMins / 60;
-        absOffsetInMins %= 60;
-        if (absOffsetInMins > 0) {
-            result += ":" + to2String(absOffsetInMins);
+        StringBuffer result = new StringBuffer();
+        for (int i = 0; i < transitionCount; ++i) {
+            result.append(new Date(transitionTimes[i]))
+                    .append(" > ")
+                    .append(transitionNames[i])
+                    .append(" ");
+            long tzOffset = transitionOffsets[i];
+            long absOffsetInMins = Math.abs(tzOffset) / 60000;
+            result.append(tzOffset > 0 ? "+" : "-");
+            result.append(absOffsetInMins / 60);
+            absOffsetInMins %= 60;
+            result.append(":").append(to2String(absOffsetInMins)).append("|");
         }
-*/
-        return result;
+        return result.toString();
     }
 
     static long getTZoffset(long date0) {

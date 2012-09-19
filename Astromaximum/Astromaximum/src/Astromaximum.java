@@ -719,19 +719,12 @@ public class Astromaximum extends MIDlet implements CommandListener {
     void showCityInfo() {
         try {
             StringBuffer msg = new StringBuffer();
-            msg.append(getstr(164)).append("|").append(options.getCurrentCity(false)).append("|");
-
+            msg.append(getstr(164)).append("|").append(options.getCurrentCity(false)).append("||");
             for (int i = 0; i < 3; ++i) {
-                if (i > 0) msg.append(" ");
+                if (i > 0) msg.append("|");
                 msg.append(getstr(i + 182)).append(" ").append(Options.strCoords[i]);
             }
-            msg.append("|").append(getstr(186)).append(":|").append(Options.tzOffset2String());
-/*            
-            if (Options.dstExists) {
-                msg.append("|").append(getstr(187)).append(":|").append(dstDate2String(Options.dstStart));
-                msg.append("|").append(getstr(188)).append(":|").append(dstDate2String(Options.dstEnd + MSECINDAY / 24));
-            }
-             */
+            msg.append("||").append(getstr(186)).append(":|").append(Options.tzOffset2String());
             alert(msg.toString());
         }
         catch (Exception e) {
