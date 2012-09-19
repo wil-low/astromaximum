@@ -759,3 +759,17 @@ sub print_transition { #transition hashref
 		" gmt_ofs_min: " .  $transition->{gmt_ofs_min} .
 		" is_dst: " .  $transition->{is_dst} . "\n";
 }
+
+sub delete_empty_tzranged { # file list
+	my $filelist = shift;
+	open (INF, "<$filelist") or die "$!: $filelist";
+	while (my $file = <INF>) {
+		chomp($file);
+		my ($hdr, $data) = read_locations($file);
+		if (scalar(@{$hdr->{tz_range}}) == 0) {
+			print "$file: " . $hdr->{city} . ', ' . $hdr->{country} . "\n";
+			unlink ($file);
+			#print Data::Dumper->Dump([$_, $hdr], qw (file hdr));
+		}
+	}
+}
