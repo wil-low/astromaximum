@@ -28,6 +28,10 @@ my $epoch=jul(1970, 1, 1, 0);
 
 our $city_info;
 
+#my ($hdr, $data) = read_locations('data/archive/2010/PO/bce46e15.dat');
+#print Data::Dumper->Dump($hdr);
+#exit;
+
 my $year=shift(@ARGV);
 if($ARGV[0] eq 'tzonly'){
 	$tzonly=1;
@@ -644,7 +648,7 @@ sub make_header { # header hashref
 	$str .= makeUTF ($hdr->{country});
 	$str .= makeUTF ($hdr->{timezone});
 	$str .= makeUTF ($hdr->{customdata});
-	
+
 	my $tz_range = $hdr->{tz_range};
 	$str .= pack ('c', scalar(@$tz_range));
 	foreach my $transition (@$tz_range) {
@@ -668,7 +672,7 @@ sub read_locations { # filename; out: ($hdr, $data)
 		$hdr->{month} = readByte($Inf);
 		$hdr->{day} = readByte($Inf);
 		$hdr->{day_count} = readShort($Inf);
-		$hdr->{id} = readShort($Inf);
+		$hdr->{id} = readInt($Inf);
 		$hdr->{latitude} = readShort($Inf) / 100.;
 		$hdr->{longitude} = readShort($Inf) / 100.;
 		$hdr->{altitude} = readShort($Inf);
@@ -709,6 +713,7 @@ sub get_tz_array_in_range {
 	my $transTypes = $tz->{transTypes};
 	my $i = 0;
 	foreach my $transTime (@$transTimes) {
+		#print $transTime . ", " . gmtime ($transTime) . ", is_adding=" . $is_adding . "\n";
 		if ($is_adding) {
 			if ($transTimes->[$i] > $finish_time) {
 				$is_adding = 0;
@@ -726,6 +731,10 @@ sub get_tz_array_in_range {
 		}
 		++$i;
 	}
+	if (scalar(@tz_array) == 0) {
+		add_transition (\@tz_array, $tz, $i - 1);
+	}
+	#die Data::Dumper->Dump([\@tz_array], [qw(tz_array)]);
 	return \@tz_array;
 }
 
