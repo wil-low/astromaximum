@@ -1,11 +1,9 @@
 UA:d9d95558 Kiev
-
-#ancients:Data0002 m.Olympos
-#ancients:Data0003 Lhasa
-#UA:Data0000 Kiev
-#RU:Data0000 Moscow
-#WE:Data0000 London
-#US:Data0000 New York
-#CE:Data0002 Berlin
-#CE:Data0010 Vienna
-#WE:Data0117 Porto Ingles
+ancients:9de36cb2 Mount Olympus
+ancients:d8b2d6ac Lhasa
+RU:0785f285 Moscow
+WE:b542f60c London
+US:9a8bbb46 New York
+CE:f65925b6 Berlin
+CE:403bb84d Vienna
+PO:bce46e15 Tokyo
