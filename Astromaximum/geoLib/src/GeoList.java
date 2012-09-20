@@ -28,6 +28,7 @@ import java.io.*;
 //import java.util.TimeZone;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.*;
@@ -292,10 +293,20 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     }
 
     static String tzOffset2String() {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         StringBuffer result = new StringBuffer();
         for (int i = 0; i < transitionCount; ++i) {
-            result.append(new Date(transitionTimes[i]))
-                    .append(" > ")
+            calendar.setTime(new Date(transitionTimes[i]));
+            result.append(calendar.get(Calendar.YEAR))
+                    .append("-")
+                    .append(to2String(calendar.get(Calendar.MONTH)))
+                    .append("-")
+                    .append(to2String(calendar.get(Calendar.DAY_OF_MONTH)))
+                    .append(" ")
+                    .append(to2String(calendar.get(Calendar.HOUR)))
+                    .append(":")
+                    .append(to2String(calendar.get(Calendar.MINUTE)))
+                    .append(" GMT > ")
                     .append(transitionNames[i])
                     .append(" ");
             long tzOffset = transitionOffsets[i];
