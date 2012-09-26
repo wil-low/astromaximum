@@ -17,11 +17,9 @@
 const char COMMON_FILENAME[] = "/home/willow/prj/amax/amax-calculations/commons/2012.comm";
 const char LOCATION_FILENAME[] = "/home/willow/prj/amax/amax-calculations/archive/2012/UA/d9d95558.dat";
 
-pDatafile common_datafile;
-pDatafile location_datafile;
+pDatafile datafile;
 
-pDatafile make_datafile (enum datafile_type df_type, const char* filename) {
-    pDatafile result = 0;
+int add_datafile (pDatafile df, enum datafile_type df_type, const char* filename) {
     FILE* fh = fopen (filename, "rb");
     if (!fh)
         return 0;
@@ -36,46 +34,44 @@ pDatafile make_datafile (enum datafile_type df_type, const char* filename) {
             fclose(fh);
             fh = NULL;
 
-            result = datafile_init (df_type, size, buffer);
+            datafile_init (df, df_type, size, buffer);
 
             free(buffer);
         }
         if (fh != NULL) fclose(fh);
     }
-    return result;
+    return 0;
 }
 
 int init_suite(void) {
-    common_datafile = make_datafile (DFT_COMMON, COMMON_FILENAME);
-    location_datafile = make_datafile (DFT_LOCATION, LOCATION_FILENAME);
+    datafile = datafile_create();
+	add_datafile (datafile, DFT_COMMON, COMMON_FILENAME);
+    add_datafile (datafile, DFT_LOCATION, LOCATION_FILENAME);
     return 0;
 }
 
 int clean_suite(void) {
-    datafile_fini (common_datafile);
-    datafile_fini (location_datafile);
+    datafile_fini (datafile);
     return 0;
 }
 
 void test_common_header() {
-    CU_ASSERT_PTR_NOT_NULL_FATAL(common_datafile);
-    pHeaderCommon hdr = common_datafile->hdr_common_;
+    CU_ASSERT_PTR_NOT_NULL_FATAL(datafile);
+    pHeaderCommon hdr = datafile->hdr_common_;
     CU_ASSERT_PTR_NOT_NULL_FATAL(hdr);
-    CU_ASSERT_PTR_NULL(common_datafile->hdr_location_);
     CU_ASSERT_EQUAL(hdr->start_year_, 2012);
     CU_ASSERT_EQUAL(hdr->start_month_, 1);
     CU_ASSERT_EQUAL(hdr->start_day_, 1);
     CU_ASSERT_EQUAL(hdr->day_count_, 366);
     CU_ASSERT_EQUAL(hdr->custom_data_len_, 0);
     CU_ASSERT_EQUAL(hdr->custom_data_[0], 0);
-    CU_ASSERT_EQUAL(common_datafile->data_len_, 19792 - 8);
+    CU_ASSERT_EQUAL(hdr->data_len_, 19792 - 8);
 }
 
 void test_location_header() {
-    CU_ASSERT_PTR_NOT_NULL_FATAL(location_datafile);
-    pHeaderLocation hdr = location_datafile->hdr_location_;
+    CU_ASSERT_PTR_NOT_NULL_FATAL(datafile);
+    pHeaderLocation hdr = datafile->hdr_location_;
     CU_ASSERT_PTR_NOT_NULL_FATAL(hdr);
-    CU_ASSERT_PTR_NULL(location_datafile->hdr_common_);
     CU_ASSERT_EQUAL(hdr->start_year_, 2012);
     CU_ASSERT_EQUAL(hdr->start_month_, 1);
     CU_ASSERT_EQUAL(hdr->start_day_, 1);

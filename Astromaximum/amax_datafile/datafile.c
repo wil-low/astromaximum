@@ -61,37 +61,72 @@ int isInPeriod(const pEvent e, long start, long end) {
     return dateBetween(e->date0_, start, end) == 0;
 }
 
-pDatafile datafile_init (enum datafile_type df_type, size_t len, const char* data) {
+void freeCommonHeader (pHeaderCommon hdr) {
+    if (hdr) {
+		free (hdr->data_);
+		hdr->data_ = 0;
+		free (hdr);
+	}
+}
+
+void freeLocationHeader (pHeaderLocation hdr) {
+    if (hdr) {
+        free (hdr->transitionTimes_);
+        free (hdr->transitionOffsets_);
+        int i = 0;
+        for (; i < hdr->transitionCount_; ++i)
+            free (hdr->transitionNames_[i]);
+        free (hdr->transitionNames_);
+	    free (hdr);
+    }
+}
+
+pDatafile datafile_create () {
     pDatafile result = malloc (sizeof(struct datafile));
     result->hdr_common_ = 0;
     result->hdr_location_ = 0;
+    result->read_pos_ = 0;
+    return result;
+}
+
+int datafile_init (pDatafile result, enum datafile_type df_type, size_t len, const char* data) {
     result->type_ = df_type;
-    result->data_len_ = len;
-    result->data_ = data;
-    result->read_pos_ = result->data_;
     switch (df_type) {
         case DFT_COMMON: {
+            freeCommonHeader (result->hdr_common_);
+	        result->hdr_common_ = 0;
             pHeaderCommon hdr = malloc (sizeof(struct header_common));
+            hdr->data_len_ = len;
+            hdr->data_ = data;
+			result->read_pos_ = hdr->data_;
             hdr->start_year_ = readShort(result);
             hdr->start_month_ = readUnsignedByte(result);
             hdr->start_day_ = readUnsignedByte(result);
             hdr->custom_data_len_ = readUTF(result, hdr->custom_data_);
             hdr->day_count_ = readShort(result);
+
+            hdr->data_len_ = len - (result->read_pos_ - hdr->data_);
+            hdr->data_ = malloc (hdr->data_len_);
+            memcpy (hdr->data_, result->read_pos_, hdr->data_len_);
+            
             result->hdr_common_ = hdr; }
             break;
         case DFT_LOCATION: {
+            freeLocationHeader (result->hdr_location_);
+	        result->hdr_location_ = 0;
             pHeaderLocation hdr = malloc (sizeof(struct header_location));
+            hdr->data_len_ = len;
+            hdr->data_ = data;
+			result->read_pos_ = hdr->data_;
             int signature = readInt(result);
             if (signature != 0x53265741) {
                 free (hdr);
-                free (result);
-                return 0;
+                return 1;
             }
             char version = readByte(result);
             if (version != 2) {
                 free (hdr);
-                free (result);
-                return 0;
+                return 2;
             }
             hdr->start_year_ = readShort(result);
             hdr->start_month_ = readUnsignedByte(result);
@@ -118,30 +153,23 @@ pDatafile datafile_init (enum datafile_type df_type, size_t len, const char* dat
                 hdr->transitionNames_[i] = malloc (TRANSITION_NAME_LEN);
                 readUTF(result, hdr->transitionNames_[i]); // name
             }
+
+            hdr->data_len_ = len - (result->read_pos_ - hdr->data_);
+            hdr->data_ = malloc (hdr->data_len_);
+            memcpy (hdr->data_, result->read_pos_, hdr->data_len_);
+
             result->hdr_location_ = hdr; }
             break;
     }
-    result->data_len_ = len - (result->read_pos_ - result->data_);
-    result->data_ = malloc (result->data_len_);
-    memcpy (result->data_, result->read_pos_, result->data_len_);
-    result->read_pos_ = result->data_;
-    return result;
+	return 0;
 }
 
 void datafile_fini (pDatafile df) {
     if (df) {
-        free (df->data_);
-        df->data_ = 0;
-        free (df->hdr_common_);
-        if (df->hdr_location_) {
-            free (df->hdr_location_->transitionTimes_);
-            free (df->hdr_location_->transitionOffsets_);
-            int i = 0;
-            for (; i < df->hdr_location_->transitionCount_; ++i)
-                free (df->hdr_location_->transitionNames_[i]);
-            free (df->hdr_location_->transitionNames_);
-        }
-        free (df->hdr_location_);
+        freeCommonHeader(df->hdr_common_);
+        df->hdr_common_ = 0;
+        freeLocationHeader(df->hdr_location_);
+		df->hdr_location_ = 0;
         free (df);
     }
 }
