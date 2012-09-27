@@ -98,6 +98,22 @@ void test_tz_offset() {
 	CU_ASSERT_EQUAL(datafile_tz_offset(datafile, &datetime), 10800);
 }
 
+void test_events() {
+	CU_ASSERT_PTR_NOT_NULL_FATAL(datafile);
+	char buffer[100];
+	time_t start = date2time_t(2012, 1, 1, 0, 00);
+	CU_ASSERT_STRING_EQUAL(time_t2str(&start, buffer), "2012-01-01 00:00");
+	time_t end = date2time_t(2012, 6, 1, 0, 00);
+	pEvent events = malloc(500 * sizeof(struct datafile_event));
+	int count = datafile_get_events(datafile, EV_TITHI, SE_MOON, &start, &end, events);
+	int i = 0;
+	for (; i < count; ++i) {
+		event_dump(&events[i], buffer);
+		printf ("%s\n", buffer);
+	}
+	CU_ASSERT(count > 0);
+}
+
 int main() {
 	CU_pSuite pSuite = NULL;
 
@@ -109,6 +125,7 @@ int main() {
 		{"test_common_header", test_common_header},
 		{"test_location_header", test_location_header},
 		{"test_tz_offset", test_tz_offset},
+		{"test_events", test_events},
 		CU_TEST_INFO_NULL,
 	};
 
