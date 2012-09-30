@@ -101,11 +101,11 @@ void test_tz_offset() {
 void test_events() {
 	CU_ASSERT_PTR_NOT_NULL_FATAL(datafile);
 	char buffer[100];
-	time_t start = date2time_t(2012, 1, 1, 0, 00);
+	time_t start = date2time_t(2012, 9, 28, 16, 19);
 	CU_ASSERT_STRING_EQUAL(time_t2str(&start, buffer), "2012-01-01 00:00");
-	time_t end = date2time_t(2012, 6, 1, 0, 00);
+	time_t end = date2time_t(2012, 9, 29, 16, 19);
 	pEvent events = malloc(500 * sizeof(struct datafile_event));
-	int count = datafile_get_events(datafile, EV_TITHI, SE_MOON, &start, &end, events);
+	int count = datafile_get_events(datafile, EV_TITHI, SE_MOON, start, end, events);
 	int i = 0;
 	for (; i < count; ++i) {
 		event_dump(&events[i], buffer);

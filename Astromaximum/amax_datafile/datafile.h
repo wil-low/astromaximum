@@ -188,7 +188,7 @@ extern "C" {
 	int datafile_tz_offset(const pDatafile df, const time_t* date);
 	
 	DATAFILE_EXPORT
-	int datafile_get_events(const pDatafile df, int evtype, int planet, const time_t* dayStart, const time_t* dayEnd, pEvent events);
+	int datafile_get_events(const pDatafile df, int evtype, int planet, time_t dayStart, time_t dayEnd, pEvent events);
 
 #ifdef	__cplusplus
 }

@@ -246,7 +246,7 @@ void copy_event(pEvent dest, pEvent src) {
 	memcpy(dest, src, sizeof (struct datafile_event));
 }
 
-int readSubData(pDatafile df, int evtype, int planet, enum datafile_type type, const time_t* dayStart, const time_t* dayEnd, pEvent events) {
+int readSubData(pDatafile df, int evtype, int planet, enum datafile_type type, time_t dayStart, time_t dayEnd, pEvent events) {
 	const int EF_DATE = 0x1; // contains 2nd date - 4b
 	const int EF_PLANET1 = 0x2; // contains 1nd planet - 1b
 	const int EF_PLANET2 = 0x4; // contains 2nd planet - 1b
@@ -346,7 +346,7 @@ int readSubData(pDatafile df, int evtype, int planet, enum datafile_type type, c
 			last.date1_ = mydate0 - ROUNDING_SEC;
 			mydate1 = df->finalJD_;
 		}
-		if (is_event_in_period(&last, *dayStart, *dayEnd, 0))
+		if (is_event_in_period(&last, dayStart, dayEnd, 0))
 			copy_event(&(events[eventsCount++]), &last);
 		else if (eventsCount > 0)
 			break;
@@ -356,13 +356,13 @@ int readSubData(pDatafile df, int evtype, int planet, enum datafile_type type, c
 		last.date0_ = mydate0;
 		last.date1_ = mydate1;
 	}
-	if (is_event_in_period(&last, *dayStart, *dayEnd, 0)) {
+	if (is_event_in_period(&last, dayStart, dayEnd, 0)) {
 		copy_event(&events[eventsCount++], &last);
 	}
 	return eventsCount;
 }
 
-int datafile_get_events(const pDatafile df, int evtype, int planet, const time_t* dayStart, const time_t* dayEnd, pEvent events) {
+int datafile_get_events(const pDatafile df, int evtype, int planet, time_t dayStart, time_t dayEnd, pEvent events) {
 	switch (evtype) {
 		case EV_ASTRORISE:
 		case EV_ASTROSET:
