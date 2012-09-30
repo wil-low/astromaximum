@@ -93,7 +93,7 @@ our $loclist=shift(@ARGV);
 our $outfile=shift(@ARGV);
 
 if($islocal and ($config eq 'join')){
-	inject_common($year, "$path/data/commons/$year.comm");
+	inject_common($year, "$const::CALCULATIONS_DIR/commons/$year.comm");
 	exit(0);
 }
 
@@ -404,7 +404,7 @@ sub inject_locations{
 		while(my $ln=<IN>){
 			$ln =~ s/#.+//;
 			if($ln=~/(\w+):\s*(\w{8})\s+(.+)/is){
-				my $fn="$path/data/archive/$_[0]/$1/$2.dat";
+				my $fn="$const::CALCULATIONS_DIR/archive/$_[0]/$1/$2.dat";
 				if(!$locname){
 					$locname=$3;
 				}
@@ -483,7 +483,7 @@ sub inject_common{
 	        my $header=pack('nCCnna*',$year, $month, $day, length($year_info), $day_count, $year_info);
 		my $path1=$path;
 
-		$path1.="/data/archive/$year";
+		$path1="$const::CALCULATIONS_DIR/archive/$year";
 		mydie("No dir $path1") unless -d $path1;
 		open(OUTF, ">$dest") or mydie("$! $dest");
 		binmode(OUTF);
@@ -491,7 +491,6 @@ sub inject_common{
 		close(OUTF);
 
 		my @bins=glob("$path1/*.bin");
-		#my @bins=glob("$path/retro09.bin");
 		my $counter=0;
 		foreach my $ff(@bins){
 			if($ff=~/(rise|set|navroz|geo|nakshatra|degall|aphetics)/is){

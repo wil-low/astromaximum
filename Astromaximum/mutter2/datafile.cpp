@@ -503,7 +503,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
     sBuf = swapShort(fsize);
     fwrite(&sBuf, 2, 1, fout);
     fclose(fout);
-    printf(" saved.");
+    printf(" saved.  ");
     return true;
 }
 

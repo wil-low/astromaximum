@@ -15,6 +15,8 @@ our $USE_AMTEXT=0;
 
 our $TIMEZONE_DIR='/usr/share/zoneinfo';
 
+our $CALCULATIONS_DIR='/home/willow/prj/amax/amax-calculations';
+
 our $UNZIP=q("%s" -qq %s -x *META-INF* -d %s);
 #our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );
 #our $ZIP=q(cd %s & zip -vr %s *);

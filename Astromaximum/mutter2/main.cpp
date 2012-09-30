@@ -16,7 +16,7 @@ const int NOT_ENOUGH_PARAMS = -1,
         INVALID_YEAR = -2,
         INVALID_EVENT = -3;
 
-char ephemPath[] = "../swiss"; // relative to program dir
+char ephemPath[] = "swiss"; // relative to program dir
 char mypath[PATH_MAX];
 const char outFile[] = "output.txt";
 
@@ -96,17 +96,22 @@ int main(int argc, char* argv[]) {
         mypath[0] = 0;
     }
 
-    //    getcwd(mypath, PATH_MAX);
-    //    printf("App path=%s\n", mypath);
-    sprintf(path, "%s/%s", mypath, "../data");
+    getcwd(mypath, PATH_MAX);
+    printf("App path=%s\n", mypath);
+    sprintf(serr, "%s/%s", mypath, ephemPath);
+    swe_set_ephe_path(serr);
+
+    char* calc_dir = getenv("CALCULATIONS_DIR");
+    if (calc_dir) {
+        strcpy(path, calc_dir);
+    }
+    else {
+        printf("CALCULATIONS_DIR not set\n");
+        return 1;
+    }
     chdir(path);
     getcwd(mypath, PATH_MAX);
-    //    printf("chdir to %s\n", mypath);
-    sprintf(serr, "%s/%s", path, ephemPath);
-    while (pos = strchr(serr, '\\')) {
-        *pos = '/';
-    }
-    swe_set_ephe_path(ephemPath);
+    printf("chdir to %s\n", mypath);
     Event::EPOCH = swe_julday(1970, 1, 1, 0, SE_GREG_CAL);
     double outr[6];
     int res = swe_calc_ut(Event::EPOCH, SE_SUN, SEFLG_BARYCTR, outr, serr);
@@ -248,13 +253,13 @@ int main(int argc, char* argv[]) {
         fsz = ftell(fin);
     }
     if (fsz) {
-        printf("\nValid cached ephdata found. Loading...");
+        printf("\nValid cached ephdata found in %s. Loading...", ephf);
         rewind(fin);
         fread(ephData, size, 1, fin);
         fclose(fin);
         printf("Done.\n");
     } else {
-        printf("\nCalculating ephdata...");
+        printf("\nCached ephdata not found in %s. Calculating ephdata...", ephf);
         if (fin) {
             fclose(fin);
         }

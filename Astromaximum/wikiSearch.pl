@@ -26,6 +26,8 @@ my %unknown_country = (
 my %id_hash;
 my %city_hash;
 
+my $WIKIPAGES_DIR = "$const::CALCULATIONS_DIR/wikipages";
+
 # Create a user agent object
 use LWP::UserAgent;
 my $ua = LWP::UserAgent->new;
@@ -49,7 +51,7 @@ sub process_ini { # filename
 	
 	$ini =~ /data\/(.+?)\.ini/;
 	my $region = $1;
-	File::Path::make_path ("./data/wikipages/$region");
+	File::Path::make_path ("$WIKIPAGES_DIR/$region");
 
 	open (ERRFILE, ">err.log") or die "$!: err.log";
 	my $outfile = "data/world/$region.world";
@@ -144,7 +146,7 @@ sub city_query { # city, region, cur_country, cur_state, zone, is_check_disambig
 		$city = $real_name;
 	}
 	$city =~ s/\?$//;
-	my $wikifile = "./data/wikipages/$region/$city.html";
+	my $wikifile = "$WIKIPAGES_DIR/$region/$city.html";
 	my $content = '';
 	my $url = "http://en.wikipedia.org/wiki/$city";
 	print "$url\n";

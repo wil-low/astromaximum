@@ -28,7 +28,7 @@ my $epoch=jul(1970, 1, 1, 0);
 
 our $city_info;
 
-#my ($hdr, $data) = read_locations('data/archive/2010/PO/bce46e15.dat');
+#my ($hdr, $data) = read_locations('$const::CALCULATIONS_DIR/archive/2010/PO/bce46e15.dat');
 #print Data::Dumper->Dump($hdr);
 #exit;
 
@@ -62,11 +62,14 @@ EOF
 require $mypath.'tools.pm';
 require $mypath.'genconst.pm';
 
+# set env var for mutter2
+$ENV{CALCULATIONS_DIR} = $const::CALCULATIONS_DIR;
+
 my $day_count=tools::day_count($year);
-mkdir $mypath."data/archive";
-mkdir $mypath."data/archive/$year";
-mkdir $mypath."data/ephdata";
-our $path=$mypath."data/archive/";
+mkdir "$const::CALCULATIONS_DIR/archive";
+mkdir "$const::CALCULATIONS_DIR/archive/$year";
+mkdir "$const::CALCULATIONS_DIR/ephdata";
+our $path="$const::CALCULATIONS_DIR/archive/";
 our $hrepl=0;
 my $country='';
 my $tz;
@@ -135,14 +138,14 @@ sub process_ini{
 	die "Input error=".scalar(@clist)." in $input_file" if scalar(@clist)<2;
 	close(InF);
 	our $city;
-	my $newdir=ensure_slash(sprintf('%sdata/archive/%d',$mypath,$year));
+	my $newdir=ensure_slash(sprintf('%s/archive/%d', $const::CALCULATIONS_DIR, $year));
 	mkdir $newdir;
 	$newdir=ensure_slash("$newdir/$city_inf");
-	my $arcdir=$mypath.'data';
+	my $arcdir="$const::CALCULATIONS_DIR/compressed";
 	if(!-d $newdir){
 		mkdir $newdir or die "$newdir: $!";
 	}
-	my $geomask=sprintf('%sdata/archive/%d/geo0-*.bin',$mypath, $year);
+	my $geomask="$const::CALCULATIONS_DIR/archive/$year/geo0-*.bin";
 	foreach my $cit(@clist){
 		$outbuf='';
 		chomp($cit);
