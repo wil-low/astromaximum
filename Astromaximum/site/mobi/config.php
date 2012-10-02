@@ -27,7 +27,7 @@ $sett=array(
 
 	'city_count'=>751, //update PRODINFO_CITY in ru.msg
 	'price'=>'58.99',
-	'version'=>'1.2.1 r830',
+	'version'=>'<<VERSION>>',
 	'release_date'=>'2012-09-16',
 	
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder

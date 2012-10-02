@@ -544,18 +544,13 @@ sub do_jar{
 	$template=~s/<MAINCLASS>/$mainclass/isg;
 	
 	my $desc;
-	my $rev;
 	if ($mainclass eq $GeoAMclass) {
 		$desc = $const::DESCR_GEO;
-		$rev = get_revision(1);
 	}
 	else {
 		$desc = $const::DESCR_CALENDAR;
-		$rev = get_revision(0);
 	}
 	$template=~s/<DESCR>/$desc/isg;
-	$template=~s/<REVISION>/$rev/isg;
-	echo("Revision = $rev\n");
 
 	open(INF, ">$path/$const::DIR_TEMPLATE/mf") or mydie("$path/$const::DIR_TEMPLATE/mf $!");
 	binmode(INF);
@@ -1133,24 +1128,6 @@ sub mydie{
 	print FLOG "DIE: $_[0]";
 	close FLOG;
 	die $_[0];
-}
-
-sub get_revision{ # num
-    open (REV, "<$path/rev.txt") or mydie ("Revision file error: $!");
-    my @revs = <REV>;
-    close (REV);
-#    echo (scalar(@revs)."\n");
-    my $result;
-    if (scalar(@revs) == 1) {
-        my @body = split (/\s/s, "@revs");
-        $result = $body[$_[0]];
-    } else {
-        $result = $revs[$_[0]];
-    }
-#    echo("revision='$result'\n");
-    mydie ("No revision") unless $result > 0;
-	$result =~ s/[\r\n]//sg;
-	return $result;
 }
 
 # vi:et:ts=4:sw=4

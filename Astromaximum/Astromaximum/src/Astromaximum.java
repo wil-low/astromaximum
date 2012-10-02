@@ -691,12 +691,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
         if (tick != null) {
             tick = getstr(163) + " " + tick;
         }
-        tick += " " + getstr(255);
-        Astromaximum.errCode = 63;
-        String rev = getAppProperty("X-Hg-Revision");
-        if (rev != null) {
-            tick += ", r" + rev;
-        }
         msg += "||" + tick;
 //#if demo
 //#         msg += " " + getstr(154);

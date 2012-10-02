@@ -17,9 +17,7 @@ deploy_dev: gen_amax templates
 
 gen_amax:
 	mkdir -p $(DEST) $(SOURCE) site/i/daily; \
-	cat ../tools.pm ../genconst.pm ../gen_amax.pl > $(DEST)/gen_amax.cgi; \
-	hg log  --template '{rev}\n' .. | head -n 1 > $(DEST)/rev.txt; \
-	hg log  --template '{rev}\n' .. | head -n 1 >> $(DEST)/rev.txt
+	cat ../tools.pm ../genconst.pm ../gen_amax.pl > $(DEST)/gen_amax.cgi
 
 templates:
 	cp ../templates/AstromaximumDemo.jar $(SOURCE); \

@@ -17,7 +17,11 @@ cd $TMPDIR
 # change files
 rm pwdgen_local.php mobi/dl/gen_amax.log
 mv .htaccess$FILE_SUFFIX .htaccess
-chmod a+w mobi/dl/{files,inbox,source,gen_amax.log}
+chmod a+w mobi/dl/{files,inbox,source}
 chmod a+w mobi/dl/source/restore
 
-tar czfv $TARGETFILE .
+CONF=mobi/config.php
+perl -lpe 'require "../../genconst.pm"; s/<<VERSION>>/$const::VERSION/' $CONF > $CONF.new
+mv -f $CONF.new $CONF
+
+tar czf $TARGETFILE .
