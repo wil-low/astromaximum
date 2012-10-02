@@ -28,13 +28,13 @@ $sett=array(
 	'city_count'=>751, //update PRODINFO_CITY in ru.msg
 	'price'=>'58.99',
 	'version'=>'<<VERSION>>',
-	'release_date'=>'2012-09-16',
+	'release_date'=>'<<RELEASE_DATE>>',
 	
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder
 	'min_demo_year'=>2010,
     
 	'buy_enabled'=>0,
-    'paymodes'=>array(7/*, 6, 4*/),
+	'paymodes'=>array(7/*, 6, 4*/),
 
 	'paypal_url'=>'https://www.paypal.com',
 	'paypal_email'=>'paypal@astromaximum.com',

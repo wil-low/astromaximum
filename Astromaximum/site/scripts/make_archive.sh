@@ -21,7 +21,7 @@ chmod a+w mobi/dl/{files,inbox,source}
 chmod a+w mobi/dl/source/restore
 
 CONF=mobi/config.php
-perl -lpe 'require "../../genconst.pm"; s/<<VERSION>>/$const::VERSION/' $CONF > $CONF.new
+perl ../scripts/reconfigure_site.pl $CONF > $CONF.new
 mv -f $CONF.new $CONF
 
 tar czf $TARGETFILE .
