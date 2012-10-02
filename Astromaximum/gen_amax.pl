@@ -5,14 +5,14 @@ use POSIX;
 #use warnings;
 #use diagnostics;
 use POSIX;
-my $NB_VERSION='6.7';
+my $NB_VERSION='7.1';
 my $islocal=$0=~/\.pl$/is;
 my $done=0;
 if(!$islocal){
 	$const::DIR_TEMPLATE='source';
 }
 my $nb_user='$HOME/.netbeans/'.$NB_VERSION;
-my $platform='$HOME/wtk251';
+my $platform='$HOME/wtk252';
 our $winda=$^O=~/Win/is;
 our $ext = '';
 if($winda){
@@ -106,6 +106,7 @@ if($islocal and ($config eq 'rebuild')){
 	echo("Rebuilding all configs...\n");
 	my $antpath;
 	my @app=(
+	'/usr/bin/ant',
 	'/home/willow/program/nb'.$NB_VERSION.'/java2/ant/bin/ant',
 	'd:/Program Files/nb'.$NB_VERSION.'/java2/ant/bin/ant.bat',
 	);
@@ -141,7 +142,7 @@ if($islocal and ($config eq 'rebuild')){
 		"-Dproject.geoLib=\"$path/../geoLib\" clean jar";
 	echo("$cmd\n");
 	mydie("BUILD ERROR") if system($cmd);
-	my @conf=('tb', 'demo', 'imei', 'microemu'
+	my @conf=('tb', 'demo', 'microemu'
 #	'notest', 'notest_logger', 'imei', 'tb_logger'
 	);
 	foreach(@conf){
