@@ -33,7 +33,9 @@
 
 
 //Axes, Phases & VOC, VC,
-%50%asc -ascend of the planet.|Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of angles.
-%51%mc -zenith; upper culmination of the planet.| Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of corners.
-%52%dsc -descend of the planet.| Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of angles.
-%53%ic -lower culmination of the planet.| Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of angles.
+%50%Composite keys:| # 1 change screen layout; in Interpretation screen - change font| # 2 "Options"| # 3 "About..."| # 8 blue mark| # 0 Today| # # cancel '#' modifier||Single keys:|  1 previous date|  2 move cursor up|  3 next date|  4 move cursor to the left; in Week screen - interpret Moon in zodiac sign|  5 open and close Interpretation|  6 move cursor to the right; in Week screen - interpret day of week|  7 previous page|  8 move cursor down|  9 next page|  0 open Menu|  * open Help screen
+
+%51%asc -ascend of the planet.|Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of angles.
+%52%mc -zenith; upper culmination of the planet.| Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of corners.
+%53%dsc -descend of the planet.| Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of angles.
+%54%ic -lower culmination of the planet.| Blue colour marks the event occurred in the interval of -40/+28 minutes from the time entered.|Try to hold Mars and Saturn out of angles.
