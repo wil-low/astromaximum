@@ -58,7 +58,7 @@ Mercury+Venus%2,3,2% @Possibility to come to an agreement; showing sympathies, l
 %2,5,2% @Business relations, financial projects.@
 %2,6,2% @Stability of the course. Successful commerse and research activities. @~|--|medicines are useful.~
 %2,7,2% @Original decisions, innovations.@
-%2,8,2% @Inspired actions. |--|Udercover policy -productive phase.@
+%2,8,2% @Inspired actions. |--|Undercover policy -productive phase.@
 %2,9,2% @Magic of the word.@ 
 
 Venus+Mars%3,4,2% @satisfaction. favourable timr for the beginning of studying some profession.@~|--|(+) for cosmetic treatment.~
