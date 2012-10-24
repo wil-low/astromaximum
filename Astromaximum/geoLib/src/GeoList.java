@@ -299,7 +299,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
             calendar.setTime(new Date(transitionTimes[i]));
             result.append(calendar.get(Calendar.YEAR))
                     .append("-")
-                    .append(to2String(calendar.get(Calendar.MONTH)))
+                    .append(to2String(calendar.get(Calendar.MONTH) + 1))
                     .append("-")
                     .append(to2String(calendar.get(Calendar.DAY_OF_MONTH)))
                     .append(" ")
