@@ -1148,7 +1148,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                 }
             case Event.EV_SUN_DEGREE_LARGE:
             case Event.EV_SEL_DEGREES:
-                return new long[]{Event.EV_DEGPASS0 + dgr / 90, plt, dgr, Astromaximum.getSignDegree(dgr),
+                return new long[]{Event.EV_DEGREE_PASS, plt, dgr, Astromaximum.getSignDegree(dgr),
                             dgr / 30, evi.getDegType(), d0, d1
                         };
             case Event.EV_TOP_DAY:
