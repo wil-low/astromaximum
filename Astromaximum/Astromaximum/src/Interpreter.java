@@ -124,6 +124,12 @@ class Interpreter extends Canvas implements CommandListener {
     boolean findText(SummItem si, boolean ignoreAllTopics) {
         txt = "";
         final long[] params = si.getParams(si.selIndex);
+/*		
+		System.out.println("0=" + params[0] +
+				" 1=" + params[1] +
+				" 2=" + params[2] +
+				" 3=" + params[3] +
+				" 4=" + params[4]);*/
         if (params == null) {
             return false;
         }
