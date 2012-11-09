@@ -560,9 +560,8 @@ class Summary extends Canvas implements CommandListener {
             navroz = aNavroz[0].getDate0();
         }
         pltDaySun = (int) ((sunrise - navroz) * 1000 / Astromaximum.MSECINDAY + 500) / 1000;
-        if (pltDaySun < 360) {
+        if (pltDaySun < 360)
             pltDaySun = Astromaximum.getSignDegree(pltDaySun);
-        }
 
         //****** SUN DAY
         Astromaximum.errCode = 1501; // XXX

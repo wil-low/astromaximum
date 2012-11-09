@@ -395,17 +395,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#if logger
       logger("moonPhase");
 //#endif
-            errCode = 11; // XXX
-            cnt = dataFile.getEvents(Event.EV_NAVROZ, Event.SE_SUN, 0, dataFile.finalJD);
-//        evDump(nav);
-            if (cnt != 2) {
-                errCode = 12; // XXX
-                throw new Exception("Navroz event count != 2");
-            }
-            System.arraycopy(DataFile.events, 0, summary.aNavroz, 0, cnt);
-//#if logger
-      logger("Navroz");
-//#endif
             errCode = 13; // XXX
             Summary.size = Options.optLayout;
             summary.changeSize();

@@ -1113,11 +1113,13 @@ final class SummItem extends TimerTask implements RecordFilter {
             return null;
         }
         int plt = evi.planet0;
-        final int dgr = evi.getDegree();
+        int dgr = evi.getDegree();
         final long d0 = evi.getDate0();
         final long d1 = evi.getDate1();
         switch (t) {
             case Event.EV_SUN_DAY:
+				if (dgr >= 360)
+					++dgr;
                 return new long[]{Event.EV_NAVROZ, plt, dgr, d0, 0};
             case Event.EV_MOON_DAY:
                 return new long[]{t, plt, dgr, d0, d1};

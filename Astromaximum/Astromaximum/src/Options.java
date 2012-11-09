@@ -230,7 +230,6 @@ class Options extends GeoList implements CommandListener {
                 rs.setRecord(1, curCityChars, 0, curCityChars.length);
     //          rs.closeRecordStore();
                 initDB(false);
-                System.out.println("LoadCity " + curCity + "!");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -378,6 +377,12 @@ class Options extends GeoList implements CommandListener {
         strCoords[0] = latitudeToString(coords[0]);
         strCoords[1] = longitudeToString(coords[1]);
         strCoords[2] = altitudeToString(coords[2]);
+		System.out.println("LoadCity " + curCity + "!");
+		int cnt = Astromaximum.dataFile.getEvents(Event.EV_NAVROZ, Event.SE_SUN, 0, Astromaximum.dataFile.finalJD);
+		if (cnt != 2) {
+			System.out.println("Navroz event count != 2");
+		}
+		System.arraycopy(DataFile.events, 0, Astromaximum.summary.aNavroz, 0, cnt);
 
         if (Astromaximum.dataFile.geoposData[0] == 255) {
             Astromaximum.errCode = 540 + Astromaximum.dataFile.geoposData[1];

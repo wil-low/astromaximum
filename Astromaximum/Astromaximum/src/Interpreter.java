@@ -214,7 +214,7 @@ class Interpreter extends Canvas implements CommandListener {
                     break;
                 case Event.EV_NAVROZ:
                     if (params[2] >= 360) {
-                        params[2] = 359 - params[2];
+                        params[2] = 360 - params[2];
                     }
                     res.append(Astromaximum.getstr(120)).append(params[2]);//Sun_day#
                     break;
