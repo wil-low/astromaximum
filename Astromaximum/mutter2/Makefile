@@ -115,7 +115,7 @@ CFLAGS = -g -O2
 CPPFLAGS = 
 CXX = g++
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -ggdb3 -O3 -fpermissive -DNDEBUG -Wno-deprecated -DANSITZ -I/home/willow/prj/amax/amax-hg/Astromaximum/swe
+CXXFLAGS = -ggdb3 -O3 -fpermissive -DNDEBUG -Wno-deprecated -I/home/willow/prj/amax/amax-hg/Astromaximum/swe
 CYGPATH_W = echo
 DEFS = -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\"
 DEPDIR = .deps

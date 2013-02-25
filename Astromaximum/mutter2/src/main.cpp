@@ -128,16 +128,10 @@ int main(int argc, char* argv[]) {
     now.tm_sec = 0;
     now.tm_isdst = 0;
 
-#ifdef ANSITZ
     time_t loo = mktime(&now); //-_timezone;
     tm *st = gmtime(&loo);
     time_t loo1 = mktime(st);
     Event::_timezone_ = loo1 - loo;
-#else
-    time_t loo = mktime(&now) - _timezone;
-    tm *st = gmtime(&loo);
-    loo = mktime(st);
-#endif
 
     assert(sizeof (sMatrix) == 9);
     assert(EV_LAST == 52);

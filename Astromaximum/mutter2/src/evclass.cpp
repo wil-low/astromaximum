@@ -8,9 +8,7 @@
 //---------------------------------------------------------------------------
 double Event::startJD = 0;
 int Event::startYear = 0;
-#ifdef ANSITZ
 long Event::_timezone_ = 0;
-#endif
 double Event::EPOCH = 0;
 static const double SECINDAY = 24 * 3600;
 
@@ -47,11 +45,7 @@ long Event::packDate(double date) {
     now.tm_min = (int) ((hour - now.tm_hour) * 60 + 0.5);
     now.tm_sec = 0;
     now.tm_isdst = 0;
-#ifdef ANSITZ
     return mktime(&now) - Event::_timezone_;
-#else
-    return mktime(&now) - _timezone;
-#endif
 }
 
 void Event::dump() {
