@@ -128,7 +128,7 @@ function process_country($dir){
 		$sthstate = "SELECT states.id FROM states,countries WHERE states.name=%s AND country_id=%s";
 		$sthcouins = "INSERT INTO countries(name,continent) VALUES (%s,%s)";
 		$sthstateins = "INSERT INTO states(name,country_id) VALUES (%s,%s)";
-		$sthcitins = "INSERT INTO cities(name,country_id,state_id) VALUES (%s,%s,%s)";
+		$sthcitins = "INSERT INTO cities(name,country_id,state_id, key) VALUES (%s,%s,%s,%s)";
 		$sthloc = "SELECT id FROM locations WHERE year=%s AND city_id=%s";
 		$sthlocupd = "UPDATE locations SET data=0x%s WHERE id=%s";
 		$sthlocins = "INSERT INTO locations(year,city_id,data) VALUES(%s,%s,0x%s)";
@@ -155,7 +155,8 @@ function process_country($dir){
 			$continent='';
 			$state=$rec[1];
 			$country=$rec[2];
-			$curfn=sprintf("$dir/%s.dat",$rec[7]);
+			$key=$rec[7];
+			$curfn=sprintf("$dir/%s.dat",$key);
 
 			if(!file_exists($curfn)) continue;
 			$FF0=fopen($curfn,"rb");
@@ -229,7 +230,7 @@ function process_country($dir){
 			$sth=mysql_query($qq);
 	//		echo mysql_error();
 			if(!mysql_num_rows($sth)){
-				$sth=mysql_query(sprintf($sthcitins,quote_smart($name),$couid,$stateid));
+				$sth=mysql_query(sprintf($sthcitins,quote_smart($name),$couid,$stateid,quote_smart($key)));
 				$citid=mysql_insert_id();
 				$name="<span class=\"alert\">$name</span>";
 				++$cit_count;

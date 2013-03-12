@@ -34,7 +34,7 @@ if(isset($_GET['ajax'])){
             $andst=sprintf(" AND state_id=%s",quote_smart($stateid));
         }
         $stat=sprintf(
-            "SELECT cities.id, cities.name FROM cities,countries,locations".
+            "SELECT cities.id, cities.name, cities.key FROM cities,countries,locations".
             " WHERE country_id=%s AND countries.id=country_id".
             " AND city_id=cities.id %s".
             " AND locations.city_id=cities.id AND year=%d".
@@ -45,7 +45,11 @@ if(isset($_GET['ajax'])){
     $out='{"content":[';
 	$sth=mysql_query($stat); $ii=0;
 	while($row=mysql_fetch_row($sth)){
-		array_push($arr, '['.$row[0].',"'.$row[1].'"]');
+		$line = '['.$row[0].',"'.$row[1].'"';
+		if($ajax==2)
+			$line.=',"'.$row[2].'"';
+		$line.=']';
+		array_push($arr, $line);
 		$ii++;
 	}
 	$out.=implode(',', $arr);
