@@ -1,0 +1,5 @@
+<Files ~ "^([\._]ht|common$|.+\.tgz$)">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</Files>
