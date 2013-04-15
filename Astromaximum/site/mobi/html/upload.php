@@ -128,7 +128,7 @@ function process_country($dir){
 		$sthstate = "SELECT states.id FROM states,countries WHERE states.name=%s AND country_id=%s";
 		$sthcouins = "INSERT INTO countries(name,continent) VALUES (%s,%s)";
 		$sthstateins = "INSERT INTO states(name,country_id) VALUES (%s,%s)";
-		$sthcitins = "INSERT INTO cities(name,country_id,state_id, key) VALUES (%s,%s,%s,%s)";
+		$sthcitins = "INSERT INTO cities(name,country_id,state_id, `key`) VALUES (%s,%s,%s,%s)";
 		$sthloc = "SELECT id FROM locations WHERE year=%s AND city_id=%s";
 		$sthlocupd = "UPDATE locations SET data=0x%s WHERE id=%s";
 		$sthlocins = "INSERT INTO locations(year,city_id,data) VALUES(%s,%s,0x%s)";
