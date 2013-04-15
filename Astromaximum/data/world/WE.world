@@ -1,10 +1,10 @@
 ## city, state, country, latitude, longitude, altitude, timezone
 
-# @ Great Britain - England, Europe/London
-London;England;Great Britain;51.51;-0.12;24;Europe/London;b542f60c;
+# @ United Kingdom - England, Europe/London
+London;England;United Kingdom;51.51;-0.12;24;Europe/London;b542f60c;
 
-# @ Great Britain - Scotland, Europe/London
-Edinburgh;Scotland;Great Britain;55.95;-3.18;;Europe/London;ed2921da;
+# @ United Kingdom - Scotland, Europe/London
+Edinburgh;Scotland;United Kingdom;55.95;-3.18;;Europe/London;ed2921da;
 
 # @ Ireland, Europe/Dublin
 Dublin;;Ireland;53.35;-6.25;;Europe/Dublin;13b59219;
@@ -28,8 +28,8 @@ Gibraltar;;Gibraltar;36.13;-5.34;;Europe/Gibraltar;40750f60;
 # @ Luxembourg, Europe/Luxembourg
 Luxembourg;;Luxembourg;49.61;6.13;;Europe/Luxembourg;4a55af44;
 
-# @ Great Britain - England, Europe/London
-Halifax;England;Great Britain;53.73;-1.85;;Europe/London;931779ea;
+# @ United Kingdom - England, Europe/London
+Halifax;England;United Kingdom;53.73;-1.85;;Europe/London;931779ea;
 
 # @ France, Europe/Paris
 Bayonne;;France;43.49;-1.47;;Europe/Paris;3addd0a7;
@@ -54,40 +54,40 @@ Saint-Étienne;;France;45.43;4.39;;Europe/Paris;0edcaf65;
 Toulon;;France;43.13;5.92;;Europe/Paris;fa7faf2f;
 Toulouse;;France;43.6;1.44;;Europe/Paris;0fcf893d;
 
-# @ Great Britain - England, Europe/London
-Birmingham;England;Great Britain;52.48;-1.88;;Europe/London;8eec3d70;
-Brighton;England;Great Britain;50.84;-0.12;;Europe/London;93bda744;
-Bristol;England;Great Britain;51.45;-2.57;;Europe/London;33a82b81;
-Cambridge;England;Great Britain;52.21;0.12;;Europe/London;81e111fe;
-Carlisle;England;Great Britain;54.89;-2.93;;Europe/London;ee5614eb;
-Canterbury;England;Great Britain;51.28;1.09;;Europe/London;a916f35f;
-Liverpool;England;Great Britain;53.4;-2.97;;Europe/London;51457942;
-Manchester;England;Great Britain;53.47;-2.22;;Europe/London;9fe988dd;
-Norwich;England;Great Britain;52.63;1.3;;Europe/London;5ef059ad;
-Nottingham;England;Great Britain;52.95;-1.12;;Europe/London;45291b36;
-Oxford;England;Great Britain;51.75;-1.25;;Europe/London;0edd7467;
-Poole;England;Great Britain;50.72;-1.97;;Europe/London;29429930;
-Plymouth;England;Great Britain;50.37;-4.13;;Europe/London;075a064e;
-Sunderland;England;Great Britain;54.91;-1.38;;Europe/London;6e9bc4fe;
-Sheffield;England;Great Britain;53.38;-1.46;;Europe/London;20e63d5c;
-York;England;Great Britain;53.96;-1.07;;Europe/London;f272af5b;
+# @ United Kingdom - England, Europe/London
+Birmingham;England;United Kingdom;52.48;-1.88;;Europe/London;8eec3d70;
+Brighton;England;United Kingdom;50.84;-0.12;;Europe/London;93bda744;
+Bristol;England;United Kingdom;51.45;-2.57;;Europe/London;33a82b81;
+Cambridge;England;United Kingdom;52.21;0.12;;Europe/London;81e111fe;
+Carlisle;England;United Kingdom;54.89;-2.93;;Europe/London;ee5614eb;
+Canterbury;England;United Kingdom;51.28;1.09;;Europe/London;a916f35f;
+Liverpool;England;United Kingdom;53.4;-2.97;;Europe/London;51457942;
+Manchester;England;United Kingdom;53.47;-2.22;;Europe/London;9fe988dd;
+Norwich;England;United Kingdom;52.63;1.3;;Europe/London;5ef059ad;
+Nottingham;England;United Kingdom;52.95;-1.12;;Europe/London;45291b36;
+Oxford;England;United Kingdom;51.75;-1.25;;Europe/London;0edd7467;
+Poole;England;United Kingdom;50.72;-1.97;;Europe/London;29429930;
+Plymouth;England;United Kingdom;50.37;-4.13;;Europe/London;075a064e;
+Sunderland;England;United Kingdom;54.91;-1.38;;Europe/London;6e9bc4fe;
+Sheffield;England;United Kingdom;53.38;-1.46;;Europe/London;20e63d5c;
+York;England;United Kingdom;53.96;-1.07;;Europe/London;f272af5b;
 
-# @ Great Britain - Wales, Europe/London
-Bangor;Wales;Great Britain;53.23;-4.12;;Europe/London;a38fa956;
-Cardiff;Wales;Great Britain;51.48;-3.17;;Europe/London;8eafe820;
-Cardigan;Wales;Great Britain;52.08;-4.65;;Europe/London;dd4a928b;
-Swansea;Wales;Great Britain;51.62;-3.94;;Europe/London;392a6ba1;
+# @ United Kingdom - Wales, Europe/London
+Bangor;Wales;United Kingdom;53.23;-4.12;;Europe/London;a38fa956;
+Cardiff;Wales;United Kingdom;51.48;-3.17;;Europe/London;8eafe820;
+Cardigan;Wales;United Kingdom;52.08;-4.65;;Europe/London;dd4a928b;
+Swansea;Wales;United Kingdom;51.62;-3.94;;Europe/London;392a6ba1;
 
-# @ Great Britain - Scotland, Europe/London
-Aberdeen;Scotland;Great Britain;57.15;-2.1;;Europe/London;82138648;
-Dundee;Scotland;Great Britain;56.46;-2.96;;Europe/London;3b2e55ff;
-Glasgow;Scotland;Great Britain;55.86;-4.25;;Europe/London;d8202c1e;
-Poolewe;Scotland;Great Britain;57.77;-5.59;;Europe/London;5dc958b2;
+# @ United Kingdom - Scotland, Europe/London
+Aberdeen;Scotland;United Kingdom;57.15;-2.1;;Europe/London;82138648;
+Dundee;Scotland;United Kingdom;56.46;-2.96;;Europe/London;3b2e55ff;
+Glasgow;Scotland;United Kingdom;55.86;-4.25;;Europe/London;d8202c1e;
+Poolewe;Scotland;United Kingdom;57.77;-5.59;;Europe/London;5dc958b2;
 
-# @ Great Britain - Northern Ireland, Europe/London
-Belfast;Northern Ireland;Great Britain;54.6;-5.92;;Europe/London;4f06c994;
-Derry;Northern Ireland;Great Britain;55;-7.3;;Europe/London;c8092297;
-Lisburn;Northern Ireland;Great Britain;54.51;-6.02;;Europe/London;6f1b53d5;
+# @ United Kingdom - Northern Ireland, Europe/London
+Belfast;Northern Ireland;United Kingdom;54.6;-5.92;;Europe/London;4f06c994;
+Derry;Northern Ireland;United Kingdom;55;-7.3;;Europe/London;c8092297;
+Lisburn;Northern Ireland;United Kingdom;54.51;-6.02;;Europe/London;6f1b53d5;
 
 # @ Ireland, Europe/Dublin
 Cork;;Ireland;51.9;-8.46;;Europe/Dublin;b3709ebb;

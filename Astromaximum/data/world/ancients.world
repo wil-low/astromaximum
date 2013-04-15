@@ -22,8 +22,8 @@ Pyramid of Cheops;;Egypt;29.98;31.13;;Africa/Cairo;5df28df7;
 # @ Russia, Asia/Yekaterinburg
 Arkaim;;Russia;52.63;59.56;;Asia/Yekaterinburg;09fcc911;
 
-# @ England, Europe/London
-Stonehenge;;England;51.18;-1.82;;Europe/London;cdee6109;
+# @ United Kingdom - England, Europe/London
+Stonehenge;England;United Kingdom;51.18;-1.82;;Europe/London;cdee6109;
 
 # @ Iraq, Asia/Baghdad
 Babylon;;Iraq;32.54;44.42;;Asia/Baghdad;7b1d3e0a;
