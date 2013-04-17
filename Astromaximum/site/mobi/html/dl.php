@@ -19,7 +19,8 @@ if(isset($_GET['ajax'])){
     	$defyear=intval($_GET['y']);
     $arr=array();
     if(!$ajax){
-        $stat="SELECT countries.id, countries.name FROM countries ORDER BY countries.name";
+        $stat="SELECT countries.id, countries.name, count(states.id) as state_count FROM countries".
+            " left join states on (states.country_id = countries.id) group by countries.id ORDER BY countries.name";
     }
 
     if($ajax==1){
@@ -34,7 +35,7 @@ if(isset($_GET['ajax'])){
             $andst=sprintf(" AND state_id=%s",quote_smart($stateid));
         }
         $stat=sprintf(
-            "SELECT cities.id, cities.name, cities.key FROM cities,countries,locations".
+            "SELECT cities.id, cities.name, cities.`key` FROM cities,countries,locations".
             " WHERE country_id=%s AND countries.id=country_id".
             " AND city_id=cities.id %s".
             " AND locations.city_id=cities.id AND year=%d".
@@ -46,7 +47,9 @@ if(isset($_GET['ajax'])){
 	$sth=mysql_query($stat); $ii=0;
 	while($row=mysql_fetch_row($sth)){
 		$line = '['.$row[0].',"'.$row[1].'"';
-		if($ajax==2)
+		if(!$ajax)
+			$line.=','.$row[2];
+		else if($ajax==2)
 			$line.=',"'.$row[2].'"';
 		$line.=']';
 		array_push($arr, $line);
