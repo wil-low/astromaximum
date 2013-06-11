@@ -2,7 +2,6 @@
     $common_key = '';
     if (isset ($_GET['buy'])) {
         $common_key = $_GET['buy'];
-        print_r ($_POST);
         if (isset ($_POST['p']) && (strcmp ($_POST['p'], '999ec9eafd3eb789e70c2a2584d21391') == 0)) {
             include_once('year_keys.php.inc');
             $common_key = $GLOBALS['amax_droid_keys'][$common_key];
