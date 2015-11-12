@@ -5,10 +5,10 @@
 <project name="" default="jar" basedir=".">
     <description>Builds, tests, and runs the project .</description>
     <property name="project.geoLib" value="${basedir}/../geoLib"/>
-    <property name="year" value="2013"/>
+    <property name="year" value="2016"/>
     <property name="lang" value="ru"/>
     <property name="soot.dir" value="${basedir}/../3d_party/soot"/>
-    <property name="microemu.dir" value="../3d_party/microemulator-2.0.4"/>
+    <property name="microemu.dir" value="../microemulator-2.0.3"/>
     <property name="no.jbco" value="true"/>
     <import file="nbproject/build-impl.xml"/>
     <import file="../jar_or_kzip.xml"/> 
