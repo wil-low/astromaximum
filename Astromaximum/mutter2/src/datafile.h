@@ -105,14 +105,14 @@ public:
     void sortVAE(VAE &work);
     int AscendingTest();
     DataFile();
+    ~DataFile();
     double Lon, Lat, Alt;
     void choice(EventType et, VAE & work, VAE & assist, VAE & vout, VAE & work2,
             const char* prefix = "");
     void init(sEphRecord *ephdata, double start, unsigned int count);
     void AAA();
     void view(const char* fname, uint count);
-    void dump_location(const char* fname, int num, int secnum);
-    ~DataFile();
+    void dump_location(const char* country, const char* city, int secnum);
     bool loadAphetics(sAphRecord *data);
     void calcAscData();
     void calcDegPass(VAE & vae, int planet);

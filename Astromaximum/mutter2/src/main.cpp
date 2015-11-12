@@ -215,15 +215,15 @@ int main(int argc, char* argv[]) {
 //        exit(0);
         df.writeSQL(sql, "voc01.bin", EV_VOC);
         df.writeSQL(sql, "degpass00.bin", EV_DEGREE_PASS);
+        df.writeSQL(sql, "geo0-navroz.bin", EV_NAVROZ);
         fclose(sql);
         printf("\nSQL created: %s\n", fn);
         myexit(0);
     }
     if ((argc == 6) && (strcmp(argv[2], "dump") == 0)) {
-        int num = 0, secnum = -2;
-        sscanf(argv[4], "%d", &num);
+        int secnum = -2;
         sscanf(argv[5], "%d", &secnum);
-        df.dump_location(argv[3], num, secnum);
+        df.dump_location(argv[3], argv[4], secnum);
         myexit(0);
     }
     double startJD = swe_julday(year - 1, 12, 20, 0, SE_GREG_CAL);
