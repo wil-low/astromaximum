@@ -1,0 +1,12 @@
+Calculated files are placed into CALCULATIONS_DIR */home/willow/prj/amax/amax-calculations).
+
+1. Calculate ephemeris
+	perl geoCoord.pl 1980 common
+
+This calculates ephdata1980.dat.
+
+Saving cached ephemeris...Done. Restart with the same parameters to calculate common.dat
+
+2. Calculate common datafile
+	perl geoCoord.pl 1980 common
+
