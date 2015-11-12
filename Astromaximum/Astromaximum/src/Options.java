@@ -380,7 +380,7 @@ class Options extends GeoList implements CommandListener {
 		System.out.println("LoadCity " + curCity + "!");
 		int cnt = Astromaximum.dataFile.getEvents(Event.EV_NAVROZ, Event.SE_SUN, 0, Astromaximum.dataFile.finalJD);
 		if (cnt != 2) {
-			System.out.println("Navroz event count != 2");
+			System.out.println("Navroz event count " + cnt + " != 2");
 		}
 		System.arraycopy(DataFile.events, 0, Astromaximum.summary.aNavroz, 0, cnt);
 
