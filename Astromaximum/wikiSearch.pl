@@ -174,7 +174,7 @@ sub city_query { # city, region, cur_country, cur_state, zone, is_check_disambig
 		}
 	}
 	$content =~ s/&#160;/ /sg;
-	if ($content =~ /<!-- firstHeading -->(.+?)<!-- \/firstHeading -->/s) {
+	if ($content =~ /<h1 id="firstHeading"[^>]*>(.+?)<\/h1>/s) {
 		$city = $1;
 		while ($city =~ s/<\/?(\w+)[^>]*?>//s) {};
 		$city =~ s/^\s+//g;
@@ -214,7 +214,7 @@ sub city_query { # city, region, cur_country, cur_state, zone, is_check_disambig
 		dump_contents($content);
 		warn "Cannot detect elevation: $city";
 	}
-	if ($content =~ /(<span class="latitude">(.+?)(\w)<\/span> <span class="longitude">(.+?)(\w)<\/span>)/s) {
+	if ($content =~ /(<span class="latitude">(.+?)(\w)<\/span>\s*<span class="longitude">(.+?)(\w)<\/span>)/s) {
 		my ($lat, $latl, $lon, $lonl) = ($2, $3, $4, $5);
 		if ($lat =~ /([\d\.]+)°([\d\.]+)′(?:([\d\.]+)″)?/) {
 			my ($latd, $latm, $lats) = ($1, $2, $3);
