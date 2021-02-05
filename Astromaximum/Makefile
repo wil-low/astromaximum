@@ -13,10 +13,7 @@ test:
 
 gen_amax:
 	mkdir -p $(DEST) $(SOURCE) site/i/daily; \
-	cat tools.pm genconst.pm gen_amax.pl > $(DEST)/gen_amax.cgi; \
-	hg log  --template '{rev}\n' Astromaximum | head -n 1 > rev.txt; \
-	hg log  --template '{rev}\n' GeoAM | head -n 1 >> rev.txt; \
-	cp rev.txt $(DEST)
+	cat tools.pm genconst.pm gen_amax.pl > $(DEST)/gen_amax.cgi
 
 template:
 	cp templates/AstromaximumDemo.jar $(SOURCE); \

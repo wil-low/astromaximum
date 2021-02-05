@@ -425,6 +425,8 @@ final class SummItem extends TimerTask implements RecordFilter {
             case Event.EV_SUN_DEGREE_LARGE:
                 Event ev = events[0];
                 xr = getX(0, XLEFT);
+                if (ev == null)
+                    System.out.println("EV_SUN_DEGREE_LARGE NULL len=" + events.length);
                 String tmp = Integer.toString(Astromaximum.getSignDegree(ev.getDegree())) + "\u00b0";
                 osg.drawString(tmp, xr + 1, top, Graphics.TOP | Graphics.LEFT);
                 osg.setColor(0);
@@ -446,8 +448,10 @@ final class SummItem extends TimerTask implements RecordFilter {
                 break;
             case Event.EV_MOON_PHASE:
                 if (tag == 1) {
+                    osg.setClip(left + 1, top, width, height);
                     osg.drawImage(tithi, left + width / 2, top + height / 2,
                             Graphics.VCENTER | Graphics.HCENTER);
+                    osg.setClip(0, 0, owner.getWidth(), owner.getHeight());
                 } else {
                     owner.drawPhase(osg, left + width / 2 - Summary.IMG_HEIGHT / 2,
                             top + height / 2 - Summary.IMG_HEIGHT / 2, Summary.IMG_HEIGHT, events[0].planet1);
@@ -527,8 +531,8 @@ final class SummItem extends TimerTask implements RecordFilter {
                     final int x = getX(i, XCENTER);
                     drawImg(osg, Summary.imgPlanet, e.planet0, x, y,
                             Graphics.VCENTER | Graphics.HCENTER);
-                    drawImg(osg, Summary.imgService, 1, x - 1, y + 3,
-                            Graphics.VCENTER | Graphics.LEFT);
+                    drawImg(osg, Summary.imgService, 1, x + 3, y + 3,
+                            Graphics.VCENTER | Graphics.HCENTER);
                 }
                 break;
             case Event.EV_ASP_EXACT:
@@ -1111,11 +1115,13 @@ final class SummItem extends TimerTask implements RecordFilter {
             return null;
         }
         int plt = evi.planet0;
-        final int dgr = evi.getDegree();
+        int dgr = evi.getDegree();
         final long d0 = evi.getDate0();
         final long d1 = evi.getDate1();
         switch (t) {
             case Event.EV_SUN_DAY:
+				if (dgr >= 360)
+					++dgr;
                 return new long[]{Event.EV_NAVROZ, plt, dgr, d0, 0};
             case Event.EV_MOON_DAY:
                 return new long[]{t, plt, dgr, d0, d1};
@@ -1146,7 +1152,7 @@ final class SummItem extends TimerTask implements RecordFilter {
                 }
             case Event.EV_SUN_DEGREE_LARGE:
             case Event.EV_SEL_DEGREES:
-                return new long[]{Event.EV_DEGPASS0 + dgr / 90, plt, dgr, Astromaximum.getSignDegree(dgr),
+                return new long[]{Event.EV_DEGREE_PASS, plt, dgr, Astromaximum.getSignDegree(dgr),
                             dgr / 30, evi.getDegType(), d0, d1
                         };
             case Event.EV_TOP_DAY:

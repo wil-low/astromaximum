@@ -19,7 +19,8 @@ if(isset($_GET['ajax'])){
     	$defyear=intval($_GET['y']);
     $arr=array();
     if(!$ajax){
-        $stat="SELECT countries.id, countries.name FROM countries ORDER BY countries.name";
+        $stat="SELECT countries.id, countries.name, count(states.id) as state_count FROM countries".
+            " left join states on (states.country_id = countries.id) group by countries.id ORDER BY countries.name";
     }
 
     if($ajax==1){
@@ -34,7 +35,7 @@ if(isset($_GET['ajax'])){
             $andst=sprintf(" AND state_id=%s",quote_smart($stateid));
         }
         $stat=sprintf(
-            "SELECT cities.id, cities.name FROM cities,countries,locations".
+            "SELECT cities.id, cities.name, cities.`key` FROM cities,countries,locations".
             " WHERE country_id=%s AND countries.id=country_id".
             " AND city_id=cities.id %s".
             " AND locations.city_id=cities.id AND year=%d".
@@ -45,7 +46,13 @@ if(isset($_GET['ajax'])){
     $out='{"content":[';
 	$sth=mysql_query($stat); $ii=0;
 	while($row=mysql_fetch_row($sth)){
-		array_push($arr, '['.$row[0].',"'.$row[1].'"]');
+		$line = '['.$row[0].',"'.$row[1].'"';
+		if(!$ajax)
+			$line.=','.$row[2];
+		else if($ajax==2)
+			$line.=',"'.$row[2].'"';
+		$line.=']';
+		array_push($arr, $line);
 		$ii++;
 	}
 	$out.=implode(',', $arr);
@@ -79,7 +86,7 @@ $is_allow_dl=($tries[1]!=0);
 $defyear=$current_year;
 if(isset($_POST['y_sel'])){
 	$defyear=$_POST['y_sel'];
-	if($chac!=0 && $defyear>$current_year){
+	if($chac!=0 && $chac!=2 && $defyear>$current_year){
 		$defyear=$current_year;
 	}
 }
@@ -149,7 +156,7 @@ function generate(){
 	onchange="document.forms.namedItem('main').submit()">
 <?php
 $y_now=$current_year;
-if($chac==0)
+if($chac==0 or $chac==2)
 	$y_now=$current_year + 1;
 for($i=$y_now; $i>=$GLOBALS['amax']['min_demo_year']; $i--){
 	$yy=$i;

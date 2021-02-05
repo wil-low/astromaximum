@@ -65,10 +65,6 @@ final class Event {
     static final int EV_MOON_SIGN_LARGE = 36;
     static final int EV_HELP = 37;
     static final int EV_ASP_EXACT_MOON = 38;
-    static final int EV_DEGPASS0 = 39;
-    static final int EV_DEGPASS1 = 40;
-    static final int EV_DEGPASS2 = 41;
-    static final int EV_DEGPASS3 = 42;
     static final int EV_HELP0 = 43;
     static final int EV_HELP1 = 44;
     static final int EV_ASTRORISE = 45;
@@ -190,7 +186,7 @@ final class Event {
         System.out.print(f0);
         System.out.print("&");
         System.out.println(f1);
-         */
+        */
         if ((f == 2) || (f == -2)) {
             return false;
         }
@@ -299,21 +295,8 @@ final class Event {
         return s.toString();//s;
     }
 
-    static long localOffset(long date0) { // date0 is in UTC always ?
-        long ofs = GeoList.tzOffset;//-GeoList.localOffset;
-        if (Options.dstExists) {
-            /*
-            System.out.println(date0);
-            System.out.println(GeoList.dstStart);
-            System.out.println(GeoList.dstEnd);
-            System.out.println(GeoList.isSouthern);
-             */
-            int inn = dateBetween(date0, GeoList.dstStart, GeoList.dstEnd);
-            if ((inn == 0) ^ GeoList.isSouthern) {
-                ofs += Astromaximum.MSECINDAY / 24;
-            }
-        }
-        return ofs;
+    static long localOffset(long date0) { // date0 is in UTC always
+        return GeoList.getTZoffset(date0);
     }
 
     /**

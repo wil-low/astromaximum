@@ -25,16 +25,16 @@ $sett=array(
 		'de'=>array('Kiev', 'Moscow', 'London', 'New York', 'Berlin', 'Vienna'),
 	),
 
-	'city_count'=>761, //update PRODINFO_CITY in ru.msg
+	'city_count'=>751, //update PRODINFO_CITY in ru.msg
 	'price'=>'58.99',
-	'version'=>'1.1.8 r690',
-	'release_date'=>'2011/11/19',
+	'version'=>'<<VERSION>>',
+	'release_date'=>'<<RELEASE_DATE>>',
 	
 	'restore'=>"mobi/dl/source/restore", # pass restore mails folder
-	'min_demo_year'=>2000,
+	'min_demo_year'=>2010,
     
 	'buy_enabled'=>0,
-    'paymodes'=>array(7/*, 6, 4*/),
+	'paymodes'=>array(7/*, 6, 4*/),
 
 	'paypal_url'=>'https://www.paypal.com',
 	'paypal_email'=>'paypal@astromaximum.com',

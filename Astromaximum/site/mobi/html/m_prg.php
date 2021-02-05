@@ -13,7 +13,7 @@ if(!$validuser){
 	$year--;
 	$isdemo=1;
 }
-else if($year_wanted < $GLOBALS['amax']['min_demo_year'] or $year_wanted > $year){
+else if($year_wanted < $GLOBALS['amax']['min_demo_year'] or $year_wanted > $year + 1){
 	exit;
 }
 else {

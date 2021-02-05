@@ -1,16 +1,18 @@
-#!/bin/sh
+#!/bin/bash
 set -x
-# parameters: year
-if [ "$1" == "" ]; then
-	echo "Usage: sh compress_year.sh <year>"
+
+# parameters: year, calculation dir
+if [ "x$2" == "x" ]; then
+	echo "Usage: sh compress_year.sh <year> <calculations dir>"
 	exit 1
 fi
 year=$1
-cd data/archive/$year
+CALCULATIONS_DIR=$2
+cd $CALCULATIONS_DIR/archive/$year
 find . -name '*.txt' -o -name '*.dat' > $year.lst
-arch=../../$year.tbz
+arch=$CALCULATIONS_DIR/compressed/$year.tbz
 tar cjf $arch -T $year.lst
 rm $year.lst
-echo "Written ./data/$year.tbz"
+echo "Written $arch"
 ls -l $arch
 

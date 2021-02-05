@@ -101,6 +101,19 @@ function up_geodata($fname, $ext){
 	rm_all($dir);
 }
 
+function read_utf($file) {
+	$len=fread($file,2);
+	$len=current(unpack("n",$len));
+	$str=fread($file,$len);
+	return $str;
+}
+
+function read_short($file) {
+	$value=fread($file,2);
+	$value=current(unpack("n",$value));
+	return $value;
+}
+
 function process_country($dir){
 	$report_errors_only = isset($_POST['error_only']);
 	$fn=glob("$dir/*.txt");
@@ -115,7 +128,7 @@ function process_country($dir){
 		$sthstate = "SELECT states.id FROM states,countries WHERE states.name=%s AND country_id=%s";
 		$sthcouins = "INSERT INTO countries(name,continent) VALUES (%s,%s)";
 		$sthstateins = "INSERT INTO states(name,country_id) VALUES (%s,%s)";
-		$sthcitins = "INSERT INTO cities(name,country_id,state_id) VALUES (%s,%s,%s)";
+		$sthcitins = "INSERT INTO cities(name,country_id,state_id, `key`) VALUES (%s,%s,%s,%s)";
 		$sthloc = "SELECT id FROM locations WHERE year=%s AND city_id=%s";
 		$sthlocupd = "UPDATE locations SET data=0x%s WHERE id=%s";
 		$sthlocins = "INSERT INTO locations(year,city_id,data) VALUES(%s,%s,0x%s)";
@@ -132,43 +145,49 @@ function process_country($dir){
 			$cc=preg_replace('/\"\s*$/is','',$cc);
 			$cc=preg_replace('/\#.+/is','',$cc);
 			list($name, $country, $yr, $txtchk, $status, $state, $is_error)=array('','',0,'','','', true);
-			$rec=explode('|', $cc);
-			if(count($rec)<5){
+			
+			$rec=explode(';', $cc);
+			if(count($rec)<8){
 				continue;
 			}
+
 			$name=$rec[0];
-			$continent=$rec[4];
-			$continent=preg_replace('/[\n\r]/is','',$continent);
-			$name=preg_replace("/.+?\!/is",'',$name,1);
-			$country=$rec[3];
-			$country=preg_replace('/.+?\$/is','',$country,1);
-			$state='';
-			if(preg_match('/ - (.+)/is',$country,$matches)){
-				$state=$matches[1];
-				$country=preg_replace("/ - (.+)/is",'',$country,1);
-			}
-			$curfn=sprintf("$dir/Data%04d.dat",$i++);
+			$continent='';
+			$state=$rec[1];
+			$country=$rec[2];
+			$key=$rec[7];
+			$curfn=sprintf("$dir/%s.dat",$key);
+
 			if(!file_exists($curfn)) continue;
 			$FF0=fopen($curfn,"rb");
 			$tr='';
 			$locdata='';
-			$yr=fread($FF0,2);
-			$yr=current(unpack("n",$yr));
+			$signature=fread($FF0,4);
+			if(strcmp($signature, 'S&WA') != 0) {
+				echo ("$curfn: Invalid signature " . $signature . '<br/>');
+				continue;
+			}
+			$version=fread($FF0,1);
+			$version=current(unpack("c",$version));
+			if($version != 2) {
+				echo ("$curfn: Unknown version " . $version . '<br/>');
+				continue;
+			}
+			$yr=read_short($FF0);
+#			trigger_error($yr, E_USER_ERROR);
 			if($yr){
-				fseek($FF0,8,0);
-				$len=0;
-				$len=fread($FF0,2);
-				$len=current(unpack("n",$len));
-				$len=fread($FF0,$len);
+				fseek($FF0,14,SEEK_CUR);
+				$loc_name = read_utf($FF0);
+				$loc_state = read_utf($FF0);
+				$loc_country = read_utf($FF0);
+				$datafile_city = "$loc_name/$loc_state/$loc_country";
+				$txt_city = "$rec[0]/$rec[1]/$rec[2]";
 				fseek($FF0,0,0);
 				$locdata=fread($FF0, filesize($curfn));
 				fclose($FF0);
 				$tst=$name;
-				if(strlen($state)){
-					$tst.=", $state";
-				}
-				if(strpos($tst, $len)===false){
-					$txtchk="<span class=\"alert\">doesn't match, found <b>$len</b></span>";
+				if(strcmp($datafile_city, $txt_city) != 0){
+					$txtchk="<span class=\"alert\">doesn't match, found <b>$datafile_city</b></span>";
 				}
 				else{
 					$txtchk="<b>OK</b>";
@@ -211,7 +230,7 @@ function process_country($dir){
 			$sth=mysql_query($qq);
 	//		echo mysql_error();
 			if(!mysql_num_rows($sth)){
-				$sth=mysql_query(sprintf($sthcitins,quote_smart($name),$couid,$stateid));
+				$sth=mysql_query(sprintf($sthcitins,quote_smart($name),$couid,$stateid,quote_smart($key)));
 				$citid=mysql_insert_id();
 				$name="<span class=\"alert\">$name</span>";
 				++$cit_count;

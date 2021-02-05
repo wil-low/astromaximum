@@ -395,17 +395,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
 //#if logger
       logger("moonPhase");
 //#endif
-            errCode = 11; // XXX
-            cnt = dataFile.getEvents(Event.EV_NAVROZ, Event.SE_SUN, 0, dataFile.finalJD);
-//        evDump(nav);
-            if (cnt != 2) {
-                errCode = 12; // XXX
-                throw new Exception("Navroz event count != 2");
-            }
-            System.arraycopy(DataFile.events, 0, summary.aNavroz, 0, cnt);
-//#if logger
-      logger("Navroz");
-//#endif
             errCode = 13; // XXX
             Summary.size = Options.optLayout;
             summary.changeSize();
@@ -691,12 +680,6 @@ public class Astromaximum extends MIDlet implements CommandListener {
         if (tick != null) {
             tick = getstr(163) + " " + tick;
         }
-        tick += " " + getstr(255);
-        Astromaximum.errCode = 63;
-        String rev = getAppProperty("X-Hg-Revision");
-        if (rev != null) {
-            tick += ", r" + rev;
-        }
         msg += "||" + tick;
 //#if demo
 //#         msg += " " + getstr(154);
@@ -719,17 +702,12 @@ public class Astromaximum extends MIDlet implements CommandListener {
     void showCityInfo() {
         try {
             StringBuffer msg = new StringBuffer();
-            msg.append(getstr(164)).append("|").append(options.getCurrentCity(false)).append("|");
-/*
+            msg.append(getstr(164)).append("|").append(options.getCurrentCity(false)).append("||");
             for (int i = 0; i < 3; ++i) {
-               if (i > 0) msg.append(" ");
-               msg.append(getstr(i + 182)).append(" ").append(Options.coords[i]);
-            }*/
-            msg.append("|").append(getstr(186)).append(":|").append(Options.tzOffset2String());
-            if (Options.dstExists) {
-                msg.append("|").append(getstr(187)).append(":|").append(dstDate2String(Options.dstStart));
-                msg.append("|").append(getstr(188)).append(":|").append(dstDate2String(Options.dstEnd + MSECINDAY / 24));
+                if (i > 0) msg.append("|");
+                msg.append(getstr(i + 182)).append(" ").append(Options.strCoords[i]);
             }
+            msg.append("||").append(getstr(186)).append(":|").append(Options.tzOffset2String());
             alert(msg.toString());
         }
         catch (Exception e) {
@@ -784,7 +762,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
     }
   }
 //#endif
-
+/*
     static String dstDate2String(long date) {
         date += GeoList.tzOffset;
         calendar.setTime(new Date(date));
@@ -811,6 +789,7 @@ public class Astromaximum extends MIDlet implements CommandListener {
                 append(":").append(Event.to2String(mm));
         return s.toString();
     }
+*/
 }
 // # vi:et:ts=4:sw=4
 

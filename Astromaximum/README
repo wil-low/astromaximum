@@ -1,0 +1,24 @@
+Calculated files are placed into CALCULATIONS_DIR */home/willow/prj/amax/amax-calculations).
+
+1. Calculate ephemeris
+	perl geoCoord.pl 1980 common
+
+This calculates ephdata1980.dat.
+
+Saving cached ephemeris...Done. Restart with the same parameters to calculate common.dat
+
+2. Calculate common datafile
+	perl geoCoord.pl 1980 common
+	perl gen_amax.pl join 2018
+
+3. Calculate location data
+	perl geoCoord.pl 2018 all
+
+Build Astromaximum for Android
+1. cd amax-droid-hg/Backend
+2. perl calculate_demo.pl 2018 0 12 data/loclist_vasia.txt
+3. Run Eclipse from ~/program/eclipse
+4. File->Export->Export Android Application, select ~/program/keystore/amax.keystore.jks, use strong password
+
+Build Astromaximum for j2me
+1. ./gen_amax.pl notest 2018 ru loclist_vasia.txt -

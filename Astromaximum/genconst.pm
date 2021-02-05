@@ -8,10 +8,14 @@ our $DIR_INTERPRET='Astromaximum/interpret';
 our $MIDLET='Amax';
 our $PRODUCT='Astromaximum';
 our $VENDOR='S&W Axis';
-our $VERSION='1.1.8';
+our $VERSION='1.2.3';
 our $DESCR_CALENDAR='Astrological calendar';
 our $DESCR_GEO='Astromaximum city file';
 our $USE_AMTEXT=0;
+
+our $TIMEZONE_DIR='/usr/share/zoneinfo';
+
+our $CALCULATIONS_DIR='/home/willow/prj/amax/amax-calculations';
 
 our $UNZIP=q("%s" -qq %s -x *META-INF* -d %s);
 #our $unzip=q("d:/Program Files/WinRAR/WinRar.exe" x %s * %s\ );

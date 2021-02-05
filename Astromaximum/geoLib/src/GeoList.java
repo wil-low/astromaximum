@@ -28,6 +28,7 @@ import java.io.*;
 //import java.util.TimeZone;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.rms.*;
@@ -41,13 +42,13 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     protected final String STORE_NAME = "Astromaximum";
     protected DataInputStream locStream = null;
     private final MIDlet main;
-    static long dstStart;
-    static long dstEnd;
-    static boolean dstExists;
     static byte[] customData;
-    static long tzOffset;
-    static boolean isSouthern = false;
     ChoiceGroup cityList;
+    static private byte transitionCount;
+    static private long[] transitionTimes;
+    static private long[] transitionOffsets;
+    static private String[] transitionNames;
+    static int coords[] = {0, 0, 0};
 
     GeoList(MIDlet midlet, int type, InputStream loc) {
         super("");
@@ -125,40 +126,37 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         errCode = 4;
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(nextR));
         errCode = 5;
-        dis.skip(4); // YYmd
-        customData = null;
-        int count = dis.readUnsignedShort();
-        dis.skip(2); // day count
-        dis.readUTF();
-        isSouthern = false;
-        tzOffset = dis.readUnsignedShort();
-        dstExists = (tzOffset & (1 << 15)) == 0;
-        tzOffset &= (1 << 15) - 1;
-        tzOffset -= 16 * 60;
-        tzOffset *= 60000L;
-        long d_1, d_2;
-        if (dstExists) {
-            d_1 = dis.readInt() * 60000L - tzOffset;
-            d_2 = dis.readInt() * 60000L - tzOffset - 3600000L;
-            if (d_1 < d_2) { // N hemisphere
-                dstStart = d_1;
-                dstEnd = d_2;
-            } else {
-                dstStart = d_2;
-                dstEnd = d_1;
-                isSouthern = true;
+        dis.skip(4); // signature
+        byte version = dis.readByte();
+        if (version == 2) {
+            dis.skip(6); // ymd, day count
+            dis.readInt(); // city id
+            coords[0] = dis.readShort(); // latitude
+            coords[1] = dis.readShort(); // longitude
+            coords[2] = dis.readShort(); // altitude
+            customData = null;
+            dis.readUTF(); // city
+            dis.readUTF(); // state
+            dis.readUTF(); // country
+            dis.readUTF(); // timezone
+            dis.readUTF(); // custom data
+            transitionCount = dis.readByte();
+            transitionTimes = new long[transitionCount];
+            transitionOffsets = new long[transitionCount];
+            transitionNames = new String[transitionCount];
+            for (int i = 0; i < transitionCount; ++i) {
+                transitionTimes[i] = dis.readInt(); // start_date
+                transitionTimes[i] *= 1000;
+                transitionOffsets[i] = dis.readShort(); // gmt_ofs_min
+                transitionOffsets[i] *= 60000;
+                transitionNames[i] = dis.readUTF(); // name
+                System.out.println(transitionTimes[i] + ", " + new Date(transitionTimes[i]) + " > " + transitionOffsets[i] + " " + transitionNames[i]);
             }
-//#mdebug info
-//#             System.out.println(dstStart);
-//#             System.out.println(new Date(dstStart).toString());
-//#             System.out.println(dstEnd);
-//#             System.out.println(new Date(dstEnd).toString());
-//#enddebug
         }
-        if (count > 0) {
-           customData = new byte[count];
-           dis.read(customData);
+        else {
+            System.out.println("Unknown version " + version);
         }
+
 //        System.out.print("customData=");
 //        System.out.println(customData);
 
@@ -230,7 +228,7 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         String name;
         try {
             DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(b));
-            inputStream.skip(8);
+            inputStream.skip(0x15);
             name = inputStream.readUTF();
             inputStream.close();
         } catch (Exception ex) {
@@ -278,20 +276,6 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
         return res;
     }
 
-    int[] extractCoordinates() {
-        // latitude (1/100 degree), longitude (1/100 degree), altitude (meters)
-        int[] coords = {Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE};
-        try {
-            DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(customData));
-            coords[0] = inputStream.readShort();
-            coords[1] = inputStream.readShort();
-            coords[2] = inputStream.readShort();
-            inputStream.close();
-        } catch (Exception ex) {
-        }
-        return coords;
-    }
-    
     void shutdown() {
         try {
             rs.closeRecordStore();
@@ -309,15 +293,44 @@ class GeoList extends Form implements RecordComparator, RecordFilter, CommandLis
     }
 
     static String tzOffset2String() {
-        String result = "GMT ";
-        long absOffsetInMins = Math.abs(tzOffset) / 60000;
-        result += tzOffset > 0 ? "+" : "-";
-        result += absOffsetInMins / 60;
-        absOffsetInMins %= 60;
-        if (absOffsetInMins > 0) {
-            result += ":" + to2String(absOffsetInMins);
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        StringBuffer result = new StringBuffer();
+        for (int i = 0; i < transitionCount; ++i) {
+            calendar.setTime(new Date(transitionTimes[i]));
+            result.append(calendar.get(Calendar.YEAR))
+                    .append("-")
+                    .append(to2String(calendar.get(Calendar.MONTH) + 1))
+                    .append("-")
+                    .append(to2String(calendar.get(Calendar.DAY_OF_MONTH)))
+                    .append(" ")
+                    .append(to2String(calendar.get(Calendar.HOUR)))
+                    .append(":")
+                    .append(to2String(calendar.get(Calendar.MINUTE)))
+                    .append(" GMT > ")
+                    .append(transitionNames[i])
+                    .append(" ");
+            long tzOffset = transitionOffsets[i];
+            long absOffsetInMins = Math.abs(tzOffset) / 60000;
+            result.append(tzOffset > 0 ? "+" : "-");
+            result.append(absOffsetInMins / 60);
+            absOffsetInMins %= 60;
+            result.append(":").append(to2String(absOffsetInMins)).append("|");
         }
-        return result;
+        return result.toString();
+    }
+
+    static long getTZoffset(long date0) {
+        long offset = transitionOffsets[0];
+        //System.out.println("date0=" + date0);
+        for (int i = 1; i < transitionCount; ++i) {
+            //System.out.println("transitionTimes[" + i + "]=" + transitionTimes[i] + " > " + transitionOffsets[i]);
+            if (transitionTimes[i] >= date0) {
+                offset = transitionOffsets[i - 1];
+                break;
+            }
+        }
+        //System.out.println("result=" + offset);
+        return offset;
     }
 }
 

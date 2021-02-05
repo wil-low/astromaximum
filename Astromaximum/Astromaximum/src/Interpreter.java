@@ -124,6 +124,12 @@ class Interpreter extends Canvas implements CommandListener {
     boolean findText(SummItem si, boolean ignoreAllTopics) {
         txt = "";
         final long[] params = si.getParams(si.selIndex);
+/*		
+		System.out.println("0=" + params[0] +
+				" 1=" + params[1] +
+				" 2=" + params[2] +
+				" 3=" + params[3] +
+				" 4=" + params[4]);*/
         if (params == null) {
             return false;
         }
@@ -208,15 +214,12 @@ class Interpreter extends Canvas implements CommandListener {
                     break;
                 case Event.EV_NAVROZ:
                     if (params[2] >= 360) {
-                        params[2] = 359 - params[2];
+                        params[2] = 360 - params[2];
                     }
                     res.append(Astromaximum.getstr(120)).append(params[2]);//Sun_day#
                     break;
                 case Event.EV_DEG_2ND:
-                case Event.EV_DEGPASS0:
-                case Event.EV_DEGPASS1:
-                case Event.EV_DEGPASS2:
-                case Event.EV_DEGPASS3:
+                case Event.EV_DEGREE_PASS:
                     res.append(Astromaximum.PLANETS[(int) params[1]]).append(" ").append(params[3]).append("\u00b0").append(Astromaximum.CONSTELL[(int) params[4]]);
                     if (params[5] > 0) {
                         res.append(" ").append(Astromaximum.getstr(133 + (int) params[5]));//deg

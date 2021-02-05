@@ -25,6 +25,7 @@ CREATE TABLE `cities` (
   `name` varchar(50) NOT NULL default '',
   `country_id` int(11) NOT NULL default '0',
   `state_id` int(11) NOT NULL default '0',
+  `key` varchar(8) NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `name` (`name`,`country_id`,`state_id`),
   KEY `country_id` (`country_id`)

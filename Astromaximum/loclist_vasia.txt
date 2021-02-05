@@ -1,0 +1,37 @@
+EE:ff6530db Bratislava
+CE:b3c64456 Brussels
+EE:89cffdc4 Budapest
+EE:193152f2 Warsaw
+CE:403bb84d Vienna
+BALT:56ea35c4 Vilnius
+CE:b570083d Hamburg
+NE:013da7f3 Dubai
+MT:4969f4f3 Jerusalem
+UA:d9d95558 Kiev
+WE:e9c86fe4 Lisbon
+WE:b542f60c London
+US:b72debb1 Los Angeles
+UA:7c98febf Lviv
+WE:4a55af44 Luxembourg
+WE:151f5774 Madrid
+US:2441c774 Miami
+CE:9e4d8489 Milan
+BALT:4949a7ef Minsk
+RU:0785f285 Moscow
+CE:92a631b8 Munich
+US:9a8bbb46 New York
+UA:c7e7b9e2 Odessa
+WE:4423a002 Paris
+PO:e5769fc5 Beijing
+EE:d0fdcf14 Prague
+BALT:00a51a97 Riga
+CE:6eaaaccc Rome
+US:dd0d0cd2 San Francisco
+BALT:9deb3ce0 Tallinn
+PO:bce46e15 Tokyo
+UA:c9d17257 Kharkiv
+WE:ed2921da Edinburg
+CE:d49d647f Bern
+PO:b2b8cb24 Hong Kong
+US:2a547682 Philadelphia
+CA:3b64a701 Medicine Hat

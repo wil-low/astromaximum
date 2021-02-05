@@ -7,7 +7,7 @@ $DLIM=array(2, 8, 10); //download limited
 function sess_start(){
 	session_set_cookie_params(3600);
 	session_start();
-	session_register("username","uid", "pwd", "captcha_keystring");
+	#session_register("username","uid", "pwd", "captcha_keystring");
 }
 
 function find_perl(){
