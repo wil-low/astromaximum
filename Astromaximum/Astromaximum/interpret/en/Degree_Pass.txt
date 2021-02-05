@@ -1,0 +1,389 @@
+!!type EV_DEGREE_PASS
+!!params 1
+!!planet -1
+// DG Natureistics of degrees. 
+  // Nomade 
+  // 
+[1] of the Ram
+1 %0% Energy and quarrelsome disposition. Great difficulties and overcoming of obstacles; precipitation, debates, quarrels. 
+2 %1% Self-importance and numerous enemies. Enterprise. Danger of disasters. 
+3 %2% Useful friends; love of peace and order. Ability to work out well, practicalness. 
+4 %3% Extravagancy. Financial losses. Love for active life. 
+5 %4% Difficult achievement of position with the own forces. Diligence. Dangerous adventures. 
+6 %5% Success in affairs; brilliant career. 
+7 %6% Prudence and caution in everything. 
+8 %7% Irritation with consequences, wild passions. Meanness, victim of own foolishness.
+9 %8% Self-importance; eloquence and bravery.
+10 %9% Struggle in life, but with final victory. Influental friends. In the worst case — exile. 
+11 %10% Kindness; love will influence the destiny. 
+12 %11% Success in operations. Ascent, but trials and changes in destiny. 
+13 %12% Ascent and glory due to own merit and persistence. 
+14 %13% Risk of captivity or exile. Slave of own passions. Weak will, subordination. 
+15 %14% Friends' betrayal of  causing difficulties. Imprudence, recklessness.
+16 %15% Love of nature; diligence, openness. 
+17 %16% Insidents play a big role; inclination to luxury, pleasures; idleness. 
+18 %17% Happiness due to a woman. Good luck in all new affairs, ideas and plans receive support. 
+19 %18% Extravagancy, loss of estate because of the immoral life. Dishonesty. 
+20 %19% Travel to foreign lands. Success in affairs. 
+21 %20% Nobleness, self-confidence, rush for trips. 
+22 %21% Idleness, conflictness, loss of estate. A woman will cause much grief. For women — a lot of scheming. 
+23 %22% Destroys any untertaking. Obstacles, envious people may cause many misfortunes. Victory due to quick perception. 
+24 %23% Whirl of passions, slave of love, troubles because of those. Scandals. 
+25 %24% Beautiful career, unbending will, but the resistance on the way will be stronger, thus — a sad final. 
+26 %25% Ascent. Strong patrons favouring the achievement of way-up position. 
+27 %26% Changing fortune; high position only by the old age, or a quick success at the beginning and a collapse at the end. 
+28 %27% Success due to the patronage of an influental woman. The important role of people of opposite sex. 
+29 %28% Hard working life; numerous obstacles, which are to be overcome. Enterprise.
+30 %29% Tyranny and rush for power. Unhappiness caused by a woman. For women — destroyed family life. 
+
+[2] of the Taurus 
+1 %30% Success after long struggle. Dexterity, strength, negotiating of obstacles. 
+2 %31% Killed hopes, carelessness; big obstacles caused by another's strong will, idleness. 
+3 %32% Marriage of convenience with an old one. Profit from feelings and love to older ones. Planning, calculation. 
+4 %33% Rush for fame. Hot-temperedness and irritation. Family squabbling. 
+5 %34% Peacefulness. Patiency, love of rest, fidelity. 
+6 %35% Great capabilities; science fame. Multisidedness, quick-wittedness, glory, knowledge. 
+7 %36% Beauty; happy marriage, lucky partnership. Happiness, enterpise. Fame/capability in arts. 
+8 %37% Loss of estate and unhappiness due to women; for women — dangerous passions, loss of estate. 
+9 %38% Prophets of new ideas; large family. Agriculture, many troubles and work for others, trips. 
+10%39% Sensuality; illegal relations. Idleness, inclination to games and pleasures. 
+11 %40% Undoubtalle success, thrift. Rush for power, quarrels, cupidity. Ambitions, prestige, reckoning. 
+12 %41% Loyal friends, wonderful kindness; overall sympathy. The person is pleased with his destiny. 
+13 %42% Jealousy, stubborness, enviness, termagancy. Commercial talent. 
+14 %43% Nobleness, justice, peaceableness. 
+15 %44% Inclination to mysticism, research temper, adventurism and commercial talent. 
+16 %45% Inheritance, diligence, critical attitude. The person will be able to choose a better way. 
+17 %46% Fruitful efforts; exile or captivity. 
+18 %47%  Shrewishness and anger leading to fatal results; dangerous wounds by weapon. 
+19 %48% Gentle nature; success only in physical work. Changes related to  investments. 
+20 %49% Enviness, hostility, militancy, though enterprise as well. 
+21 %50% Secretiveness, secret or numerous enemies. Inability to conduct negotiations. Pursuit. Criminal actions. 
+22 %51% Success, especially in friendly enterprises. Profit from partnership and trips, flexibility, foresight. 
+23 %52% Collapse of enterprises, bad luck, disaster, wounds by falling. 
+24 %53% False friends, extra credulity leads to disasters. Debility, lonesome old age. 
+25 %54% Severity; desire to insist on the own point using force. Firmness, justice, stability. 
+26 %55% Soft temper, quiet life. Consent, wealth, kindness. 
+27 %56% Economy, thrift, wealth after work and endeavours. 
+28 %57% Ambitious person, receiving no satisfaction. Purposefulness, though disorder of actions. 
+29 %58% Odd nature, despotism, desire to have power. Wife is the leader at home; for woman — unaccomodating nature. 
+30 %59% Success in enterprises, ability to architecture, aptness, good circumstances. 
+
+[3] of the Gemini. 
+1 %60% Reliable friends favouring the good result of the struggle. Quickness of mind. 
+2 %61% Success in military career ant trials. Victory of reasonableness, good luck. 
+3 %62% Artistic nature. Arts, singing, music, joy of life. 
+4 %63% Magnanimity. Achievement of honours and loss of position (collapse after the honours). 
+5 %64% Success in military arts. 
+6 %65% Successes in courts. Critical mind, interest in science; justice. 
+7 %66% Good-heartedness. Beauty, arts, love, harmony. 
+8 %67% Unhappiness in marriage. Idleness, confrontation. 
+9 %68% Satisfaction of aspirations including material ones. Power. 
+10 %69% Success in medicine. Danger of violence, though help and protection. 
+11 %70% Very gentle nature though danger of exile or captivity. Attachment to family life, inherited success. 
+12 %71% Great unhappiness, premature loss of a loved one. Losses because of light-mindedness. 
+13 %72% Conspiration, false friends, dangerous relations. 
+14 %73% Debates, quarrels and trials. Mistakes. 
+15 %74% Habit to begin several kinds of work at once, vague plans; activity, useless in many cases. 
+16 %75% Absolute failure in everything, senseless plans. 
+17 %76% Lack of energy, life without leaving a trace, idleness. 
+18 %77% Frequent changes. Quick, insidious mind; precipitation. 
+19 %78% Loss of estate, fruitless trips, loneliness in the old age. 
+20 %79% Capabilities in sciences; protection. 
+21 %80% Odd situations. Lack of initiative, vain attempts, dependence on the will of another person. 
+22 %81% Love to solitude, interest in arts, mathematical abilities. 
+23 %82% Hard life, great troubles because of children. Unhappiness, poverty. 
+24 %83% Success in law career. Friendliness. 
+25 %84% Success due to knowledge and apprehension. 
+26 %85% Quarrels cause difficulties and dangers for life. Slander. 
+27 %86% Love will bring grief; broken, sad life, disbelief. 
+28 %87% Love for country life. Success as a result of suffering, persistence and patiency. 
+29 %88% Unquiet nature finding no satisfaction in anything. Good intellect though easily getting under one's unfluence. 
+30 %89% Dangers through friends and false well-wishers. The person will succeed having become useful to the strong one. 
+
+[4] of Cancer 
+1 %90% Sympathetic nature. Happiness in love, popularity, sea voyages. 
+2 %91% Very weak will, little happiness. 
+3 %92% Weak will. Changes. Extra dependence on the opposite sex. 
+4 %93% Passion, sensuality, inconstancy. 
+5 %94% Many troubles because of passiveness. Detriment caused by a woman. 
+6 %95% Extravagancy, stubborness. Affects, excentricity. 
+7 %96% Hot-temperedness, egoism, use of power. 
+8 %97% Unhappy family life, falsity, secrets, pretence. 
+9 %98% Liking for hard work and lack of any ambition. Efforts, economy, practicalness. 
+10 %99% Success in enterprises. Assiduity, loyalty. 
+11 %100% Sea voyages, far trips and profit from them. Enterprise. 
+12 %101% Capable workman, though wild instincts may lead to crime. 
+13 %102% Talent, success in science. Fervour, endeavour, fame, considerable estate. 
+14 %103% Commercial talent, rapid success in career. Clear mentality. 
+15 %104% Cunning, power, not disposed to married life. 
+16 %105% Struggle accompanied by success. Ascent. 
+17 %106% Complete lack of energy, weak nature. Carelessness, nervousness and fears. 
+18 %107% Destruction through game. Losses, absent-mindedness, lack of feeling of responsibility. 
+19 %108% Interest in arts, weapons, luxury. Quick mind, vanity and energy. 
+20 %109% Dependence on others, idleness, failures. Small offices, servility. 
+21 %110% Loss of estate. Trips, moving and loss of profit because of those. Dangers for real estate. 
+22 %111% Involuntariness, apathy, lack of initiative. 
+23 %112% Liking for travel; inconstancy, trouble, haste.
+24 %113% Great ambition; success in enterprises. Overcoming of obstacles, happiness and recognition. 
+25 %114% Liking for dangers and risk; independence, excentricity, disorder. 
+26 %115% Frequent changes in life, instability; danger of falling. 
+27 %116% Peace-loving nature, inclination to subordination. 
+28 %117% Observation. 
+29 %118% Failures, dangers, sadness, captivity and crimes. 
+30 %119% Achievement of goal, estate. 
+
+[5] of the Lion 
+1 %120% Success in enterprises. Bravery, victory, power. 
+2 %121% Danger of sinking or shipwreck. Happiness is volatile. 
+3 %122% Sadness, feebleness, lonesome old age, loss of cherished ones. 
+4 %123% Diplomatic abilities and career. Quick-wittedness, ascent. 
+5 %124% Success in enterprises, scientific talent. 
+6 %125% Success in military aspect. Fighting spirit, confident actions, enterprise. 
+7 %126% Success and fortune, splendid standing. Strong will, bravery, obvious superiority and power. 
+8 %127% Flaming behaviour, influence, technical interests. Passions. 
+9 %128% Prominent position, ambition and arrogance, liking for luxury. 
+10 %129% Danger for life; cruelty. 
+11 %130% Passion. Sensuality, indecencies. Exposures. 
+12 %131% Wealth and good position due to marriage. Nobility and virtue. 
+13 %132% Strong will, consistency, quiet work and successes. Practicalness. 
+14 %133% Loss of estate at own fault, due to idleness and laziness. 
+15 %134% Bright capabilities, success in enterprises. Self-confidence, power, nobility. 
+16 %135% Stubborness and conceit, obstinacy, thus — troubles. 
+17 %136% Hard life, far-away travel. 
+18 %137% Fortune and wealth. Inventiveness, research spirit. 
+19 %138% Life full of struggle and successes. Restraint. 
+20 %139% Research capabilities. Honourable institutions. 
+21 %140% Liking for sciences and career. Clear and noble spirit. 
+22 %141% Dangerous diseases, body feebleness, naivity, threat of crimes. 
+23 %142% Diplomatic capabilities. 
+24 %143% Carefulness, foresight, success. 
+25 %144% Danger of water, difficult and anxious life. 
+26 %145% Country life, liking for hard work, diligence. 
+27 %146% Success after hard work, kind or evil. Danger of commiting a crime. 
+28 %147% Sympathetic nature, many friends and protectors. Thrift. 
+29 %148% Happy marriage. Famous citizen. 
+30 %149% Various plans and ideas; clerk. Whims, dependence. 
+
+[6] of the Virgo 
+1 %150% Passionate nature, liking for pleasures, success. 
+2 %151% Reverie, weak will, inertness, bad estimate. 
+3 %152% Success in actions, thrift, foresight. 
+4 %153% Country life and successes in economy. Land cultivation, planning. 
+5 %154% Estimate, self-confidence, power and profit. 
+6 %155% Strong protection, luxury, wealth. 
+7 %156% Difficulties and sadness because of laziness. 
+8 %157% Idyll, naivety, joy of labour. 
+9 %158% Unhappy marriage. Evil lazy person. Decay. 
+10 %159% Good circumstances; for women — unlucky marriage. Income without labour. 
+11 %160% Genius, strong will, splendid career. Quick judgement, bravery, enterprise, seriousness. 
+12 %161% Falsity, reticency. Danger to cause unhappiness to a friend. 
+13 %162% Happy and quiet life, wealth. 
+14 %163% Hard, difficult life; subordination, commercial talent. 
+15 %164% Timidity, shyness, tenderness, kindness. Passion for pleasures. 
+16 %165% Success in financial enterprises. Commercial talent, diligence, persistence, great desires. 
+17 %166% Durable prosperity, care, prudence; the second half of life is quiet and happy. 
+18 %167% Good family man, long life, moderation, liking for nature. 
+19 %168% Fidgety nature with quirks; subordinate person, servant. 
+20 %169% Life full of troubles. Struggle against secret enemies. 
+21 %170% Splendid career, wealth. Great estate, easy earnings. 
+22 %171% Unbridled nature. Danger coming from love and sensuality. 
+23 %172% Business moved by water may bring good results. Sailing overseas, profit from it. 
+24 %173% Much unhappiness in life, captivity or exile. Failures and obstacles. 
+25 %174% Hot-temperedness, irritation, desire to rule. Education, learning. 
+26 %175% Pleasant nature, very useful friends, protectors, special relations. 
+27 %176% Lack of energy destroying the whole life. Light-mindedness, indecisiveness and laziness. 
+28 %177% Talent, many friends, large family. Serious research and cooperation. 
+29 %178% Mysticism. Passiveness, noble behaviour. 
+30 %179% Danger of brain disease, head wounds; muteness. 
+
+[7] of the Scales 
+1 %180% Extra eagerness may lead to bad consequences. Danger of wounding or violent death. 
+2 %181% Religiosity, successes in science. 
+3 %182% Much unhappiness in life, captivity or imprisonment. Dependence, limitations. 
+4 %183% Liking for country life; diligence, land cultivation, hard work. 
+5 %184% Dangers, unreasonable risk, unwise enthusiasm. 
+6 %185% Great grief which will be cured by happiness. Subordination, poverty, hard or stupid work. 
+7 %186% Passionate nature, danger from partnership (dangerous relations or incautious unions). 
+8 %187% Loss of a liked one, loneliness. Disease and death of close and liked people, charity. 
+9 %188% Danger of violent death. Aggressiveness, competition. 
+10 %189% Joyless life, stormy passions, person does not control himself; disaster, danger. 
+11 %190% Duality, cunning. 
+12 %191% Trouble, carelessness, laziness and improvidence. Nostalgy. 
+13 %192% Unhappy family life. Losses, separation. 
+14 %193% Theatrical talent, vanity. 
+15 %194% Light-mindedness, drunkenness, need for love. 
+16 %195% Passion for travels; hard-working and carefulness. 
+17 %196% Annoyances and loss because of carelessness; oratory talent. 
+18 %197% Wealth, liking for home. 
+19 %198% Success in enterprises. Well-off position, activity and persistence. 
+20 %199% Success in everything concerning religion. 
+21 %200% Great dependence, losses, failure, unhappiness. 
+22 %201% Losses because of carelessness; little persistence. Disaster changing life for better. 
+23 %202% Success in overcoming of obstacles. Capabilities for natural sciences and medicine. 
+24 %203% Arrogance, hautiness leading to mistakes. Insidious enemies, struggle with passions though victory of the will. 
+25 %204% Vanity, many good surprises. Good position, approach to top society. 
+26 %205% Successful struggle, bravery. 
+27 %206% Kindness. Difficult advance. 
+28 %207% Hard working life. 
+29 %208% Mysticism, weak will, sluggishness and little energy. 
+30 %209% Dangers of any kind, false confidence, dangerous friends. 
+
+[8] of the Scorpio
+1 %210% Woundings; fighting spirit, pushfulness, treason and disloyalty. 
+2 %211% Outstanding position, success in affairs. Great plans and projects, governing, exploitation of others. 
+3 %212% Philosopher; unsociableness, special absent-minded spirit. 
+4 %213% Great musical and literary talent, duality. 
+5 %214% Danger of body injury. Thoughts and ideas which will not come true. 
+6 %215% Persistence overcoming obstacles; hard-working and great patiency seldom brings results. 
+7 %216% Wealth; success in metal-related enterprises. Income, money, estate. 
+8 %217% Very passionate nature. Vigilance, hautiness, wilfulness, bravery, many interests. 
+9 %218% Sad youth, need, predilection for alcohol. 
+10 %219% Pretence, vindictiveness. Strange aspirations. 
+11 %220% Extra conceit causing great calamity. Uncarefulness, danger, boldness. 
+12 %221% Machinations of enemies, but the destiny protects in all dangers. Cunning, insidiousness, commercial talent. 
+13 %222% Achievement of an enviable position, success. Firmness, self-confidence, craft capabilities. 
+14 %223% Extra trustfulness and openness will cause unhappiness. Twist of fate. 
+15 %224% Weak will, fatality. Bad reasonableness, passions. 
+16 %225% Wealth, kind heart, aspiration for the sublime. 
+17 %226% Poverty, wandering, enemies. Cruelty, passions, treason, robbery. 
+18 %227% Unhappiness in family life, suspiciousness, distrust. Failures in actions. 
+19 %228% Greediness, hot-temperedness, struggle, passion for pleasures. 
+20 %229% Long travel, unexpected success bringing respect and honour. Self-control. 
+21 %230% Uncompromising, independence and stern temper. Many hard challenges; dangerous enterprises. 
+22 %231% Life is volatile, unstable position, vicissitudes of fate, passions, possibility of crimes. 
+23 %232% Gifted nature, wasting its forces. Numerous ideas to find the own place will not come true. 
+24 %233% Capacity for work, quiet temper, kind heart. 
+25 %234% Illegal imcome, lack of principles; unsympathetic person, able to sacrifice everything for his desires. 
+26 %235% Losses because of bad people, danger to perish in exile. Flatterer, unsympathetic person. 
+27 %236% Sympathy for other’s grief, sympathies, eloquence, literary capabilities. 
+28 %237% Success in life, outstanding position. Religiousness, spirituality, merit, respect.
+29 %238% Good capabilities, studying; success in science. Wealth. 
+30 %239% Eloquence, carefulness and cunning; bright career. 
+
+[9] of the Sagittarius
+1 %240% Failures in enterprises because of the partners’ blunders. Dangerous relations, useless aspirations. 
+2 %241% Danger of wounding. Fighting spirit, grumbling, aggressiveness, precipitation. 
+3 %242% Burny behaviour: persistence, stubborness, firmness and anger. 
+4 %243% Successful military career. Purposefulness, fighting spirit and wrath. 
+5 %244% Unforeseen dangers. Two marriages, obedience to destiny. 
+6 %245% Hard-working, patience, inventive mind. Love plays a big role in life. 
+7 %246% Quiet nature, moderation, apathy and laziness. 
+8 %247% Light-mindedness, hopes on the off-chance, passion for game. Success of thoughtful plans, but happiness is greatly debatable. 
+9 %248% Danger of fire; the life will be cut due to the own will. Passions threaten life, possibility of crimes. 
+10 %249% Wonderful circumstances. Awareness of the truth; wealth, wisdom. 
+11 %250% Cunning over strength, but using the force of others for own benefit is concerned with danger. 
+12 %251% Sensiteveness, passions, weak will. 
+13 %252% Danger of captivity or imprisonment; many troubles, robbery. Bad plans. 
+14 %253% Literary talent. Learning, religiousness, philosophic spirit. 
+15 %254% Unstable position; the started affair will result in disappointment. Due to stupidity — damage for estate and descendants. 
+16 %255% Talent losing its power with lack of goal; hopeless efforts, errors and slips, poverty. 
+17 %256% Sad ending. Loneliness, self-denial, threat for life. 
+18 %257% Danger of madness; delusions of spirit, false research. 
+19 %258% Danger of imprisonment and captivity. Frequent fire accidents, collapse of hearth. 
+20 %259% Success in affairs, sympathetic nature, good friends and relations. 
+21 %260% Splendid mental capabilities; inspiration, arts; inclination to sciences, philosophy, politics. 
+22 %261% Wounds caused by weapon, severe struggle in life, aggressiveness, anger, trouble-making. 
+23 %262% Great jealousy. Disappointment in love. Recklessness and despair. 
+24 %263% Person is the enemy to himself. Sad ending. 
+25 %264% Inclination to over-indulgence, simplicity. 
+26 %265% Adroitness, game with ideas. Keenness on stage. 
+27 %266% Hard struggle. Hostility, changeableness, danger. 
+28 %267% Remarkable all-defeating strength of will. Persistence, purposefulness. 
+29 %268% Dexterity, inconstancy, recklessness, “head diseases”. 
+30 %269% Hard life, success in mining. Happiness and unhappiness are interchangeable, some success. 
+
+[10] of the Capricorn
+1 %270% Diplomatic talents, unresolved nature. 
+2 %271% Melancholy, slightly bearable affair, many small illnesses. 
+3 %272% Thrift, carefulness, cunning, talents for sciences. 
+4 %273% Idependence; capabilities which will be used. 
+5 %274% Kindness will be exploited. Hospitality, unwise openness, possibility of robbery. 
+6 %275% Stability in feelings and affections. Extra sympathy (harmful for oneself). 
+7 %276% Love causing unhappiness; light-mindedness, jealousy, competition. 
+8 %277% Wonderful mental abilities, many changes, though happiness is vague. 
+9 %278% Apathy, downfall, precipitation. Haughtiness leads to death. 
+10 %279% Some night disasters. Reasonableness. 
+11 %280% Assistance by influental people, achievement of an honourable position. 
+12 %281% Commercial talents, energy, magnificent plans though danger of exile or captivity. 
+13 %282% Strength, self-control, trade. 
+14 %283% Irritation, unaccomodating nature, aggressiveness, dangerous job. 
+15 %284% Patience, ability to establish oneself, gain favour of others. 
+16 %285% Enterprise, brave ventures, overcoming of difficulties. 
+17 %286% Loyalty to friendship reaching self-sacrifice; oratory, good propagandist. 
+18 %287% Duplicity, good and bad qualities. Danger of wounding by big animals and machines. 
+19 %288% Big physical strength though lack of any activity. 
+20 %289% Self-esteem, dexterity, gift of imitation. 
+21 %290% Liking for sciences, quick-wittedness, awareness; good teacher. 
+22 %291% Achievent of a position due to own labour, hard-working and diligence, successes in agriculture. 
+23 %292% Passionate nature, troubles in sexual life. 
+24 %293% Successes in commerce. Diligence, foresight, technician, professional. 
+25 %294% Achievent of a bright position; diplomacy, seriousness though inconstancy. 
+26 %295% Country life, observation, trips. 
+27 %296% Inclination to solitude, sluggishness, dreamness. 
+28 %297% Exploitation, trips, pressure of material relations. 
+29 %298% Solitary, calm and quiet life. Happiness, joy from children. 
+30 %299% Misplaced hopes, small successes, disappointments, apathy. 
+
+[11] of the Aquarius 
+1 %300% Indecisiveness, diffidence and uncertainty in everything; poverty. 
+2 %301%  Deep mind, success in sciences, inventions. 
+3 %302% Griefs, troubles, losses. 
+4 %303% Achievement of a bright position, glory, estate, though fear of expenditures and losses. 
+5 %304% Passion, playing with danger, pursuit. 
+6 %305% Dexterity, artistry, wittiness; fruitless negotiations. 
+7 %306% Danger for wounding with melee weapon at war or in fighting. 
+8 %307% Independent nature, exile or captivity. 
+9 %308% Hard will, physical strength. 
+10 %309% Erroneous activity. 
+11 %310% Heavy activity though improvidence. Unwise energy, danger in profession. 
+12 %311% Exile, hard struggle, pursuit for ideas, wandering life. 
+13 %312% Danger; happiness in army, partnership; success in everything ancient. 
+14 %313% Disaster affecting the whole life. Dangerous ventures. 
+15 %314% Success in industrial enterprises. Trips. 
+16 %315% Hard-working, success in sciences, good mechanic. 
+17 %316% Physical disabilities; long-term disease. 
+18 %317% Unsociable nature, unsociability. 
+19 %318% Sad incident changing life for better; far-away trip. 
+20 %319% Long life, happy old age. 
+21 %320% Apathy, idleness, empty dreams and fantasies. 
+22 %321% Irritation and hot-temperedness causing calamity. Wounding, bankruptcy. 
+23 %322% Energy, mobility, dramatic talent, anarchism. 
+24 %323% Faint-heartedness, troubles, losses, weakness; possibility of crimes. 
+25 %324% Absent-minded person. Wealth, liking for power, danger of wounding another person. 
+26 %325%  Melancholy, pessimism, mysticism, commotion and falling. 
+27 %326% Stable constant income and estate, good family man. 
+28 %327% Passion for pleasures, tipsiness. 
+29 %328% Military art, representation and dignity; successes in commerce. 
+30 %329% Worthy bright position, strength of nature, successes in administrative career, ascent. 
+
+[12] of the Pisches
+1 %330% Happy marriage, quiet life, lucky partnership. Dual behaviour. 
+2 %331% Alternating apathy and joyfulness, lack of initiative, unwillingness to work. 
+3 %332% Inclination to over-indulgence and enjoyments. 
+4 %333% Victory at the end of life full of struggle. Sluggishness, few impulses. 
+5 %334% Devoted friends, dreams, passion for pleasures, insidious incidents. 
+6 %335% Hard income, doubtful ventures, danger from hobbies. 
+7 %336% Success in church affairs. Oratory capabilities, interest in cult. 
+8 %337% Unexpected poverty though it is possible to return the loss; danger on water. 
+9 %338% Troublesome life; exile; threat in foreign lands, possibility of crimes, fanaticism. 
+10 %339% Useful studying of medicine, talents in natural sciences. 
+11 %340% Enterprise. 
+12 %341% Cowardness, extra trouble. Enviness will bring secret enemies. 
+13 %342% Love, passion, harry family life. Artistry. 
+14 %343% Success in agriculture. Dangerous job. 
+15 %344% Cunning, energy, danger from enemies and dirty tricks, ill-wishers. Travels. 
+16 %345% Hard-working and success; thriftiness. 
+17 %346% Danger for life. 
+18 %347% Dangerous competition, liking for contests; danger from horses and cars. 
+19 %348% Wounds by melee weapon, struggle without success, lack of bravery and strong disappointment. 
+20 %349% Twists of fate; very impressionable nature, naivity and fantasies. 
+21 %350% Troublesome life with dangers. Debates, anxiety, wounding. 
+22 %351% To restrain indecency is possible only with strengthening your will. The fate is possessed by women, they cause unhappiness. 
+23 %352% Light-heartedness and apathy will ruin talent. Trip-related enterprises. 
+24 %353% Passion will cause calamities, sensitivity, great love, marriage. 
+25 %354% Fighting spirit though satisfaction through wise actions. 
+26 %355% Inventiveness, often negative concerning morals. 
+27 %356% Troublesome, wandering life, inconstancy in opinions and feelings. 
+28 %357% Gifted nature, success, influence, diplomacy, cunning in everything. 
+29 %358% Accident on water, weak nature, sad ending. 
+30 %359% Tests. Vanity, egoism, sensitivity. 
