@@ -22,3 +22,7 @@ Build Astromaximum for Android
 
 Build Astromaximum for j2me
 1. ./gen_amax.pl notest 2018 ru loclist_vasia.txt -
+
+Build Astromaximum for iOS
+1. cd amax-droid-hg/Astromaximum/app/assets
+2. Copy common.dat and locations.dat to Astromaximum project on Mac build machine
