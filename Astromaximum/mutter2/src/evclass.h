@@ -14,9 +14,7 @@ public:
     unsigned short degree;
     double julianDay;
     static double startJD;
-#ifdef ANSITZ
     static long _timezone_;
-#endif
     static double EPOCH;
     static int startYear;
     static double calcJD(long date);

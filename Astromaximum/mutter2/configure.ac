@@ -11,7 +11,7 @@ AC_PROG_CXX
 
 AC_CONFIG_MACRO_DIR([m4])
 
-CXXFLAGS="-ggdb3 -O3 -fpermissive -DNDEBUG -Wno-deprecated"
+CXXFLAGS="-ggdb3 -O3 -fpermissive -DNDEBUG -DANSITZ -Wno-deprecated"
 
 AC_ARG_WITH(swe,[  --with-swe[=DIR]    Swiss ephemeris library location])
 if test "x$with_swe" != "x" ; then

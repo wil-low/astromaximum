@@ -88,32 +88,61 @@ void DataFile::view(const char* fname, uint count) {
 }
 
 void DataFile::get_loc_contents(const char* fname, bool is_output, LOC_CONTENTS &v) {
-    char cityname[200]; //, fn[200];
+    char s[200]; //, fn[200];
     FILE *fin = fopen(fname, "rb");
     assert(fin);
     v.clear();
     if (is_output) printf("Sections of %s :", fname);
-    fseek(fin, 8, SEEK_SET);
+    fseek(fin, 21, SEEK_SET);
     int name_len;
+
     fread(&name_len, 2, 1, fin);
     name_len = (unsigned short) swapShort(name_len);
-    cityname[fread(cityname, 1, name_len, fin)] = 0;
-    if (is_output) printf("\n  City name: %s", cityname);
+    s[fread(s, 1, name_len, fin)] = 0;
+    if (is_output) printf("\n  City name: %s", s);
+
     fread(&name_len, 2, 1, fin);
-    int tzofs = (unsigned short) swapShort(name_len);
-    bool dst_app = !(tzofs & 0x8000);
-    tzofs &= (0xffff - 0x8000);
-    tzofs = tzofs - 16 * 60; //real tz in min
-    if (is_output) printf("\n  Timezone offset: %d mins", tzofs);
-    if (dst_app) {
+    name_len = (unsigned short) swapShort(name_len);
+    s[fread(s, 1, name_len, fin)] = 0;
+    if (is_output) printf("\n  State name: %s", s);
+
+    fread(&name_len, 2, 1, fin);
+    name_len = (unsigned short) swapShort(name_len);
+    s[fread(s, 1, name_len, fin)] = 0;
+    if (is_output) printf("\n  Country name: %s", s);
+
+    fread(&name_len, 2, 1, fin);
+    name_len = (unsigned short) swapShort(name_len);
+    s[fread(s, 1, name_len, fin)] = 0;
+    if (is_output) printf("\n  Timezone name: %s", s);
+
+    fread(&name_len, 2, 1, fin);
+    name_len = (unsigned short) swapShort(name_len);
+	fseek(fin, name_len, SEEK_CUR);
+
+	char trans_count;
+	fread(&trans_count, 1, 1, fin);
+    if (is_output) printf("\n  Transition count: %d", trans_count);
+
+    if (trans_count) {
         if (is_output) printf("\n  DST start & end dates:");
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < trans_count; ++i) {
             fread(&name_len, 4, 1, fin);
             name_len = swapInt(name_len);
-            long dt = 60 * ((long) (name_len + i));
+            long dt = name_len;
             Event ev(Event::calcJD(dt), 0);
             if (is_output)
-                printf("\n  %s  %ld", ev.date_sql(cityname, 0), ev.date[0]);
+                printf("\n  %s  %ld, %ld", ev.date_sql(s, 0), ev.date[0], dt);
+
+			fread(&name_len, 2, 1, fin);
+			int tzofs = (unsigned short) swapShort(name_len);
+			tzofs = tzofs - 16 * 60; //real tz in min
+			if (is_output) printf("\n  Timezone offset: %d mins", tzofs);
+
+			fread(&name_len, 2, 1, fin);
+			name_len = (unsigned short) swapShort(name_len);
+			s[fread(s, 1, name_len, fin)] = 0;
+			if (is_output) printf("\n  Timezone name: %s", s);
         }
     }
     int i = 0;
@@ -153,10 +182,11 @@ void DataFile::dump_section(const char* fname, pair<int, int> sec) {
     fclose(fin);
 }
 
-void DataFile::dump_location(const char* fname, int num, int secnum) {
+void DataFile::dump_location(const char* country, const char* city, int secnum) {
     // -1 - everything, -2 - sections only, 0..n - single section
     char fn[200]; //, cityname[200];
-    sprintf(fn, "archive/%d/%s/Data%04d.dat", Event::startYear, fname, num);
+    sprintf(fn, "archive/%d/%s/%s.dat", Event::startYear, country, city);
+	printf ("%s\n", fn);
     LOC_CONTENTS secofs;
     get_loc_contents(fn, secnum < 0, secofs);
     if (secnum == -2) return;
@@ -503,7 +533,7 @@ bool DataFile::writeSubData(const VAE & v, EventType evtype, int evflags, int pl
     sBuf = swapShort(fsize);
     fwrite(&sBuf, 2, 1, fout);
     fclose(fout);
-    printf(" saved.");
+    printf(" saved.  ");
     return true;
 }
 
@@ -525,16 +555,19 @@ int DataFile::swapInt(int var) {
 bool DataFile::readSubData(const char* fname, VAE & v) {
     char buf[200];
     sprintf(buf, "archive/%d/%s", Event::startYear, fname);
-    printf("\nReading %s: ", buf);
     FILE *fin = fopen(buf, "rb");
 
-    if (!fin)
+    if (!fin) {
+		printf("\nCannot open %s.", buf);
         return false;
+	}
     fseek(fin, 0, SEEK_END);
     long realsz = ftell(fin);
     fseek(fin, 0, SEEK_SET);
     char evtype;
     fread(&evtype, 1, 1, fin);
+	printf("\nEvent type = %d", evtype);
+    printf("\nReading %s: ", buf);
     long fsize = 0;
     int evflags = 0, recCount = 0;
     char planet;
