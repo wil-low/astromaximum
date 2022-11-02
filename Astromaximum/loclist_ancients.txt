@@ -1,0 +1,7 @@
+ancients:0f79fcad Cusco
+ancients:085e2576 Machu Picchu
+ancients:9de36cb2 Mount Olympus
+ancients:d8b2d6ac Lhasa
+ancients:39149275 Mount Ararat
+ancients:5df28df7 Pyramid of Cheops
+ancients:cdee6109 Stonehenge

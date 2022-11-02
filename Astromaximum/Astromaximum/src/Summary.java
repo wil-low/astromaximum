@@ -1286,7 +1286,7 @@ class Summary extends Canvas implements CommandListener {
     void moveMonth(int delta) {
         int oldMonth = selMonth;
         oldMonth += delta;
-        if (oldMonth >= Calendar.JANUARY && oldMonth <= Calendar.DECEMBER) {
+        /*if (oldMonth >= Calendar.JANUARY && oldMonth <= Calendar.DECEMBER)*/ {
             selMonth = oldMonth;
 //      Astromaximum.calendar.set(Calendar.YEAR, year);
             Astromaximum.calendar.setTime(selDate);

@@ -123,7 +123,7 @@ Used in:
 	
 Header fields:
 	0x0000	byte[4]		"S&WA" - constant signature
-	0x0004	byte		version (2)
+	0x0004	byte		version (3)
 	0x0005	short LB	year
 	0x0007	byte		month
 	0x0008	byte		day  ^ start of period

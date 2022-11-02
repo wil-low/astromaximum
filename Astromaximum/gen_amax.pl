@@ -460,7 +460,7 @@ sub inject_common{
 		if(scalar(@_)==0){
 			mydie("Usage: <year> [dest dir] [IMEI]\n");
 		}
-		my ($year,$month, $day, $hour, $min, $day_count)=($_[0],1,1,0,0,365);
+		my ($year,$month, $day, $hour, $min, $day_count)=($_[0] - 1, 10, 1, 0, 0, 365 + 31 + 30 + 31); # since Oct 1 of previous year
 		if($year%100==0){
 			if($year%400==0){
 				$day_count++;
@@ -472,7 +472,6 @@ sub inject_common{
 			}
 		}
 
-
 		if($_[2]){
 			if($_[2]=~/^\d{15}$/is){
 				$imei=$_[2];
@@ -482,10 +481,10 @@ sub inject_common{
 			}
 		}
 		$dest=$_[1] if $_[1];
-	        my $header=pack('nCCnna*',$year, $month, $day, length($year_info), $day_count, $year_info);
+		my $header=pack('nCCnna*',$year, $month, $day, length($year_info), $day_count, $year_info);
 		my $path1=$path;
 
-		$path1="$const::CALCULATIONS_DIR/archive/$year";
+		$path1="$const::CALCULATIONS_DIR/archive/$_[0]";
 		mydie("No dir $path1") unless -d $path1;
 		open(OUTF, ">$dest") or mydie("$! $dest");
 		binmode(OUTF);
@@ -498,6 +497,7 @@ sub inject_common{
 			if($ff=~/(rise|set|navroz|geo|nakshatra|degall|aphetics)/is){
 				next;
 			}
+			print("writeData $ff\n");
 			#   die pack('c',substr($imei,$counter++,1));
 			writeData(1, $ff, substr($imei,$counter++,1));
 			if($counter>=length($imei)){

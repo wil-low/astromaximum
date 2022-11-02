@@ -65,7 +65,7 @@ require $mypath.'genconst.pm';
 # set env var for mutter2
 $ENV{CALCULATIONS_DIR} = $const::CALCULATIONS_DIR;
 
-my $day_count=tools::day_count($year);
+my $day_count=tools::day_count($year) + 31 + 30 + 31;
 mkdir "$const::CALCULATIONS_DIR/archive";
 mkdir "$const::CALCULATIONS_DIR/archive/$year";
 mkdir "$const::CALCULATIONS_DIR/ephdata";
@@ -74,7 +74,7 @@ our $hrepl=0;
 my $country='';
 my $tz;
 
-my ($month, $day, $hour, $min)=(1,1,0,0);
+my ($month, $day, $hour, $min)=(10, 1, 0, 0);
 my $tz_ofs=0;
 {
 	my $tm=time;
@@ -160,7 +160,7 @@ sub process_ini{
 			print "\n******** $city, $state, $country: $timezone ********\n";
 			$altitude = 0 if !$altitude;
 			# take range -1 / +2 year
-			my $start_time = POSIX::mktime(0, 0, 0, $day, $month - 1, $year - 1 - 1900, 0, 0, -1);
+			my $start_time = POSIX::mktime(0, 0, 0, $day, $month - 1, $year - 2 - 1900, 0, 0, -1);
 			my $finish_time = POSIX::mktime(0, 0, 0, $day, $month - 1, $year + 2 - 1900, 0, 0, -1);
 
 			my $tz_range = get_tz_array_in_range ($timezone, $start_time, $finish_time);
@@ -174,7 +174,7 @@ sub process_ini{
 				longitude => $longitude,
 				altitude => $altitude,
 				timezone => $timezone,
-				year => $year,
+				year => $year - 1,
 				month => $month,
 				day => $day,
 				day_count => $day_count,

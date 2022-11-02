@@ -82,7 +82,7 @@ void DataFile::view(const char* fname, uint count) {
                 printf(" - ");
                 work[i]->print_date(0);
          */
-        printf("\n");
+        //printf("\n");
     }
     release(work);
 }

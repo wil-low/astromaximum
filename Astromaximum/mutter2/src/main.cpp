@@ -226,7 +226,7 @@ int main(int argc, char* argv[]) {
         df.dump_location(argv[3], argv[4], secnum);
         myexit(0);
     }
-    double startJD = swe_julday(year - 1, 12, 20, 0, SE_GREG_CAL);
+    double startJD = swe_julday(year - 1, 9, 20, 0, SE_GREG_CAL);
     printf("startJD=%f\t", startJD);
     double endJD = swe_julday(year + 1, 2, 1, 0, SE_GREG_CAL);
 

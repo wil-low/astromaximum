@@ -1,6 +1,8 @@
 //---------------------------------------------------------------------------
 
 #include <time.h>
+#include <sstream>
+#include <iomanip>
 #include "evclass.h"
 #include "events.h"
 
@@ -49,16 +51,18 @@ long Event::packDate(double date) {
 }
 
 void Event::dump() {
+    std::stringstream sstream;
     tm *st = gmtime(&date[0]);
-    printf("\n* %s - ", asctime(st));
+    sstream << "* " << std::put_time(st, "%c") << " - ";
     st = gmtime(&date[1]);
-    printf("%s", asctime(st));
+    sstream << std::put_time(st, "%c");
     int dgr = degree & 0x3fff;
     int goodbad = degree >> 14;
-    printf("  degree=%d", dgr);
+    sstream << "  degree=" << dgr;
     if (goodbad)
-        printf(" %s", goodbad == 2 ? "good" : "bad");
-    printf("  planets %u - %u", planetId[0], planetId[1]);
+        sstream << (goodbad == 2 ? "good" : "bad");
+    sstream << "  planets " << (int)planetId[0] << " - " << (int)planetId[1];
+    printf("%s\n", sstream.str().c_str());
 }
 
 void Event::dump2() {

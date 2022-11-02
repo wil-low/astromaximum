@@ -1,28 +1,33 @@
 Calculated files are placed into CALCULATIONS_DIR */home/willow/prj/amax/amax-calculations).
 
-1. Calculate ephemeris
-	perl geoCoord.pl 1980 common
+Time range is now fixed; e.g. for 2023 startDay=2022-10-01, endDay=2023-12-31 (therefore month=-3)
 
-This calculates ephdata1980.dat.
+1. Calculate ephemeris
+	perl geoCoord.pl 2023 common
+
+This calculates ephdata2023.dat.
 
 Saving cached ephemeris...Done. Restart with the same parameters to calculate common.dat
 
 2. Calculate common datafile
-	perl geoCoord.pl 1980 common
-	perl gen_amax.pl join 2018
+	perl geoCoord.pl 2023 common
+	perl gen_amax.pl join 2023
 
 3. Calculate location data
-	perl geoCoord.pl 2018 all
+	perl geoCoord.pl 2023 all
 
 Build Astromaximum for Android
-1. cd amax-droid-hg/Backend
-2. perl calculate_demo.pl 2018 0 12 data/loclist_vasia.txt
-3. Run Eclipse from ~/program/eclipse
-4. File->Export->Export Android Application, select ~/program/keystore/amax.keystore.jks, use strong password
+1. cd amax-droid/Backend
+2. perl calculate_demo.pl 2023 -3 15 data/loclist_vasia.txt
+3. Run Android Studio
+4. Build->Generate Single APK, select /home/willow/prj/swaxis.keystore, use strong password
+5. Rename /home/willow/prj/amax-droid/release/app-release.apk to Astomaximum2023.apk
 
 Build Astromaximum for j2me
-1. ./gen_amax.pl notest 2018 ru loclist_vasia.txt -
+1. ./gen_amax.pl notest 2023 ru loclist_vasia.txt -
 
 Build Astromaximum for iOS
-1. cd amax-droid-hg/Astromaximum/app/assets
-2. Copy common.dat and locations.dat to Astromaximum project on Mac build machine
+1. cd amax-droid/Backend
+2. perl calculate_demo.pl 2023 -3 15 data/loclist_vasia.txt
+3. cd amax-droid/Astromaximum/app/assets
+4. Copy common.dat and locations.dat to Astromaximum project on Mac build machine
