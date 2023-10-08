@@ -35,3 +35,84 @@ CE:d49d647f Bern
 PO:b2b8cb24 Hong Kong
 US:2a547682 Philadelphia
 CA:3b64a701 Medicine Hat
+ext_00:deb88a76 Banská Bystrica
+ext_00:e596c709 Bielsko-Biała
+EE:95f9a84c Brno
+EE:79f5d6fd Bydgoszcz
+EE:9bc9cf6d České Budějovice
+EE:65caacf6 Częstochowa
+EE:ae36f5c8 Gdańsk
+ext_00:f2260ecd Gdynia
+ext_00:87df3261 Głogów
+ext_00:ac48178a Gorzów Wielkopolski
+ext_00:7f61593b Grudziądz
+ext_00:20e62612 Jastrzębie-Zdrój
+EE:a8368fea Jelenia Góra
+ext_00:abaa45cc Kalisz
+EE:f9ec5ba4 Kielce
+ext_00:5ebbabab Konin
+EE:1451beb0 Košice
+ext_00:24e05bfc Koszalin
+ext_00:38911e53 Legnica
+ext_00:decace8b Leszno
+EE:d2f2cfad Liberec
+ext_00:fda861a8 Ljubljana
+EE:b7fa8161 Łódź
+ext_00:105c85ee Maribor
+ext_00:a0dbb124 Nitra
+ext_00:9f2c0e40 Nowy Sącz
+ext_00:d97aa305 Olomouc
+EE:0c22a61e Olsztyn
+ext_00:30c6574f Opole
+ext_00:00b7aa1b Osijek
+EE:727d8b69 Ostrava
+ext_00:26872c8f Ostrów Wielkopolski
+ext_00:641978d8 Pardubice
+ext_00:6094be97 Piła
+ext_00:b43714a7 Plzeň
+EE:1c26745a Poznań
+EE:48df10d9 Prešov
+ext_00:89b2088d Pristina
+EE:de2fb047 Przemyśl
+ext_00:923339e4 Pula
+ext_00:92b12dbc Rijeka
+ext_00:06393868 Rzeszów
+ext_00:aa41253d Sarajevo
+ext_00:91b60826 Shkodër
+ext_00:aaca4b01 Słupsk
+ext_00:64568dde Split
+EE:e23efdfc Szczecin
+ext_00:afdbc085 Tarnów
+ext_00:2ce6bf22 Tirana
+ext_00:7e53a7d9 Toruń
+ext_00:b0ef9fa8 Trenčín
+CE:320822d7 Trieste
+ext_00:105710e4 Trnava
+ext_00:0fede09a Tuzla
+ext_00:f5db8868 Umag
+ext_00:cba2ddff Ústí nad Labem
+ext_00:30f630f7 Wałbrzych
+ext_00:a43484a5 Włocławek
+ext_00:e9a31f0b Zadar
+ext_00:5ce075c0 Zagreb
+ext_00:c29b650b Zenica
+EE:0c526803 Zielona Góra
+EE:83ab2a63 Žilina
+ext_00:fdad517a Zlín
+Japan:efc952a9 Fukuoka
+Japan:60ba4fe3 Kagoshima
+Japan:24f1f84b Matsuyama
+Japan:d1e990e3 Fukuyama
+Japan:b7c95f68 Matsue
+Japan:553281b9 Okayama
+Japan:6c3229ed Kobe
+Japan:f256bc4e Osaka
+Japan:bad627af Nagoya
+Japan:a0e5114f Hamamatsu
+Japan:0d772bba Kanazawa
+Japan:4eb0df68 Niigata
+Japan:30750d24 Fukushima
+Japan:8905f33f Sendai
+Japan:450c6af0 Sapporo
+Japan:b86e9d48 Kushiro
+Japan:f30602ec Aomori

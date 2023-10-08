@@ -20,7 +20,7 @@ Build Astromaximum for Android
 1. cd amax-droid/Backend
 2. perl calculate_demo.pl 2023 -3 15 data/loclist_vasia.txt
 3. Run Android Studio
-4. Build->Generate Single APK, select /home/willow/prj/swaxis.keystore, use strong password
+4. Build->Generate Single APK, select /home/willow/prj/swaxis.keystore, use strong password; use destination folder /home/willow/prj/amax-droid
 5. Rename /home/willow/prj/amax-droid/release/app-release.apk to Astomaximum2023.apk
 
 Build Astromaximum for j2me

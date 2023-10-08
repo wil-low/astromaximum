@@ -536,6 +536,7 @@ sub parse_tz { # $tz_filename
 			$name .= pack ('c', $str[$end]);
 			++$end;
 		}
+		print "str=(" . join('|', @str) . ") '$name'\n";
 		
 		$tz[$i] = {
 			name => $name,

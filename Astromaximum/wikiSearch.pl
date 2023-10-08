@@ -7,6 +7,13 @@ use File::Path;
 require './genconst.pm';
 require './Crc32.pm';
 
+=head
+Special symbols:
+
+! after city name - do not add country name (or state for USA and Canada) when looking for wiki page
+
+=cut
+
 my %unknown_country = (
 	'Jerusalem' => 'Israel',
 	'Sarıkamış' => 'Turkey',
