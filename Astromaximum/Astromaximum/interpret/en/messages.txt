@@ -47,7 +47,7 @@
 %35% Jupiter
 %36% Saturn
 %37% Uranus
-%38% Neptun
+%38% Neptune
 %39% Pluto
 
 %40% of Sun
@@ -58,7 +58,7 @@
 %45% of Jupiter
 %46% of Saturn
 // %47% of Uranus
-// %48% of Neptun
+// %48% of Neptune
 // %49% of Pluto
 
 %50% Business activities
